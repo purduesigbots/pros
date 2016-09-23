@@ -49,7 +49,7 @@ void __attribute__((noreturn)) _exit(int status) {
 	}
 	// Dump message
 	if ((unsigned int)status < 5U) {
-		buffer = (const char *)&errorMessages[status];
+		buffer = errorMessages[status];
 		while ((c = *buffer++) != 0) {
 			while (!(USART1->SR & USART_SR_TXE));
 			USART1->DR = c;
