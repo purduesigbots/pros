@@ -1,0 +1,9 @@
+bin/
+doc/
+libpros.a
+libpros_sym.a
+include/*.h.gch
+.clang_complete
+.gcc-flags.json
+.project
+.cproject

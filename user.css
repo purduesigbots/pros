@@ -1,0 +1,11 @@
+.memItemLeft, .memItemRight {
+	font-family: monospace;
+}
+
+a.el {
+	font-family: Roboto,sans-serif;
+}
+
+.paramtype, .paramname, .memname {
+	font-family: monospace;
+}
