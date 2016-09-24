@@ -1,3 +1,5 @@
+![Build Status](http://jenkins.purduesigbots.com/job/PROS%20Kernel%20Build/badge/icon)
+
 @mainpage Welcome to PROS!
 
 @section Top Table of Contents
