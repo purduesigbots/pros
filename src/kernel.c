@@ -29,8 +29,8 @@ extern volatile uint32_t _clockLowRes;
 // Error messages for _exit
 // Since SDIV by 0 is configured not to fault, no divide by 0 can occur here
 static const char * const errorMessages[] = {
-	"Segmentation fault", "Segmentation fault", "Illegal instruction",
-	"Stack overflow", "System task failure"
+	"Segmentation fault\n", "Segmentation fault\n", "Illegal instruction\n",
+	"Stack overflow\n", "System task failure\n"
 };
 static const char * const crashMessage =
 	"\r\nThe VEX Cortex has stopped working!\r\nError cause: ";
