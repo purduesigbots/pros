@@ -16,8 +16,6 @@
 #include <watchdog.h>
 #include <task.h>
 
-#define IWDG_TIMEOUT (1000)
-
 static bool iwdgEnabled = false;
 
 // iwdgStart - Enables the watchdog 
@@ -29,7 +27,7 @@ static void iwdgTask(void* ud) {
 	(void)(ud);
 	for (;;) {
 		iwdgFeed();
-		taskDelay(IWDG_TIMEOUT / 8);
+		taskDelay(125);
 	}
 }
 
@@ -37,17 +35,9 @@ static void iwdgTask(void* ud) {
 void iwdgStart() {
 	if (!iwdgEnabled) return;
 
-	uint16_t prescalerCode = 0;
-	uint16_t prescaler = 4;
-
-	while (IWDG_TIMEOUT * (40 / prescaler) >= 0x7FF && prescalerCode < 7) {
-		prescalerCode++;
-		prescaler *= 2;
-	}
-
 	IWDG->KR = 0x5555;
-	IWDG->PR = prescalerCode;
-	IWDG->RLR = IWDG_TIMEOUT * (40 / prescaler);
+	IWDG->PR = 2; // prescalerCode
+	IWDG->RLR = 2500; // (timeout * 40) / exp(2, (2 + prescalerCode))
 	IWDG->KR = 0xAAAA;
 	IWDG->KR = 0xCCCC;
 	iwdgFeed();
