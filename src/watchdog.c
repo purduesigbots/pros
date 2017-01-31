@@ -29,7 +29,7 @@ static void iwdgTask(void* ud) {
 	(void)(ud);
 	for (;;) {
 		iwdgFeed();
-		taskDelay(IWDG_TIMEOUT / 2);
+		taskDelay(IWDG_TIMEOUT / 8);
 	}
 }
 
