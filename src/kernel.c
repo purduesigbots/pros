@@ -19,8 +19,7 @@
 #include <periph.h>
 #include <supervisor.h>
 #include <taskpriv.h>
-
-#include "watchdog.h"
+#include <watchdog.h>
 
 // Low-resolution clock
 extern volatile uint32_t _clockLowRes;
