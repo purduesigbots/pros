@@ -19,6 +19,7 @@
 #include <periph.h>
 #include <supervisor.h>
 #include <taskpriv.h>
+#include <watchdog.h>
 
 // Low-resolution clock
 extern volatile uint32_t _clockLowRes;
@@ -120,6 +121,8 @@ void startKernel() {
 	//__libc_init_array();
 	// User I/O initialization, really should be empty in most cases
 	initializeIO();
+	// Watchdog initialization, resets cortex when it locks up
+	iwdgStart();
 #ifndef NO_FILESYSTEM
 	// File system scan with the TRIM enabled/disabled
 	fsScan((csr & RCC_CSR_PORRSTF) ? true : false);
