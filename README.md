@@ -16,10 +16,11 @@ More documentation soon :)
 If on Windows, I highly recommend using Bash on Windows to set up Arcanist. It will likely be much less of a headache.
 
 1. Install php and clang-format (`sudo apt install php clang-format`)
-2. Download arcanist and libphutil into a directory you won't delete... `~` will probably suffice for Bash on Windows
+2. Download arcanist, libphutil, and clang-format-linter into a directory you won't delete... `~` will probably suffice for Bash on Windows
 ```
 git clone https://github.com/phacility/libphutil.git
 git clone https://github.com/phacility/arcanist.git
+git clone https://github.com/vhbit/clang-format-linter.git
 ```
 3. Add arcanist to PATH by appending to `~/.bashrc` or `~/.zshrc` or similar file
 ```
