@@ -225,6 +225,10 @@ LOCAL variable names should be short, and to the point. If you have some random 
 
 If you are afraid to mix up your local variable names, you have another problem, which is called the function-growth-hormone-imbalance syndrome. See chapter 6 (Functions).
 
+To clarify:
+
+All variable and class names should roughly follow the STL. That is to say, all variables, classes, and interfaces will be named in lower_snake_case. Non-type template parameters should be named in lower_snake_case, while type template parameters should be named in PascalCase (though both are preferably one letter only, use the listed conventions when you feel you must give them real names). Template template parameters should follow all previously mentioned conventions, just nested. #define macro functions should be named in lower_snake_case, as well. #define constants and other constants should be named in UPPER_SNAKE_CASE.
+
 ## 5) Typedefs
 
 Don't use typedefs to obscure the meaning of type.
