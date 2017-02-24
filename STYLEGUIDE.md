@@ -53,13 +53,11 @@ First off, I'd suggest printing out a copy of the GNU coding standards, and NOT 
 Anyway, here goes:
 
 ## 1) Indentation
-Tabs are 8 characters, and thus indentations are also 8 characters. There are heretic movements that try to make indentations 4 (or even 2!) characters deep, and that is akin to trying to define the value of PI to be 3.
+Indents are only tab characters. Spaces are for whitespace within a line. Period.
 
 Rationale: The whole idea behind indentation is to clearly define where a block of control starts and ends. Especially when you've been looking at your screen for 20 straight hours, you'll find it a lot easier to see how the indentation works if you have large indentations.
 
-Now, some people will claim that having 8-character indentations makes the code move too far to the right, and makes it hard to read on a 80-character terminal screen. The answer to that is that if you need more than 3 levels of indentation, you're screwed anyway, and should fix your program.
-
-In short, 8-char indents make things easier to read, and have the added benefit of warning you when you're nesting your functions too deep. Heed that warning.
+With tab characters, it is up to user preference how many characters deep indents look. No more flame wars (we're looking at you Linus-- eight characters, _really_?)
 
 The preferred way to ease multiple indentation levels in a switch statement is to align the switch and its subordinate case labels in the same column instead of double-indenting the case labels. E.g.:
 
