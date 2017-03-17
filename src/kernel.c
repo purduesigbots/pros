@@ -38,7 +38,7 @@ static const char * const crashMessage =
 
 // _exit - Exits the program with an error message
 void __attribute__((noreturn)) _exit(int status) {
-	char c; const char *buffer = (const char *)crashMessage;
+	char c; char const * buffer = crashMessage;
 	__disable_irq();
 	// No point in safeRobot(), since no interrupts can run and therefore no
 	// EXTI or SPI interrupts can be used to send state/start user code

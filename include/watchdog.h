@@ -15,13 +15,15 @@
 #ifndef WATCHDOG_H_
 #define WATCHDOG_H_
 
-// iwdgStart - Enables watchdog, must be called in InitializeIO
+/*
+ * Public API Function to enable watchdog.
+ * Must be called in initializeIO
+ */
 void iwdgEnable();
 
-// iwdgStart - Initializes the watchdog and feed task
+/*
+ * Initilaizes the watchdog and feed task if watchdog is enabled
+ */
 void iwdgStart();
-
-// iwdgFeed - Resets the watchdog's timer
-void iwdgFeed();
 
 #endif

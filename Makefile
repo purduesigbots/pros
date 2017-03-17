@@ -62,10 +62,10 @@ library: clean $(BINDIR) $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
 TEMPLATEFILES:=src/auto.c src/init.c src/opcontrol.c include/API.h include/main.h firmware
 template: library
 	-rm -rf $(addprefix $(ROOT)/template/,$(TEMPLATEFILES))
+	mkdir -p $(ROOT)/template/src $(ROOT)/template/inlcude $(ROOT)/template/firmware
 	$(foreach f,$(TEMPLATEFILES),cp -r $(ROOT)/$(f) $(ROOT)/template/$(f); )
 	cp $(BINDIR)/$(LIBNAME).a $(ROOT)/template/firmware/$(LIBNAME).a
-	pros conduct create-template kernel $(VERSION) pros-mainline $(ROOT)/template
-	
+	pros conduct create-template kernel $(VERSION) pros-mainline --location $(ROOT)/template -u "firmware/$(LIBNAME).a" -u "include/API.h" -u "common.mk" -i "template.pros"
 
 # Builds the documentation
 documentation:

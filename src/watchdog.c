@@ -18,9 +18,14 @@
 
 static bool iwdgEnabled = false;
 
-// iwdgStart - Enables the watchdog 
+// iwdgStart - Enables the watchdog
 void iwdgEnable() {
 	iwdgEnabled = true;
+}
+
+// iwdgFeed - Resets the watchdog's timer
+static inline void iwdgFeed() {
+	IWDG->KR = 0xAAAA;
 }
 
 static void iwdgTask(void* ud) {
@@ -33,19 +38,15 @@ static void iwdgTask(void* ud) {
 
 // iwdgStart - Initializes the watchdog with a timeout
 void iwdgStart() {
+  // implementation based on STM32 IWDG guidance. (https://goo.gl/sQaIF3)
 	if (!iwdgEnabled) return;
 
-	IWDG->KR = 0x5555;
-	IWDG->PR = 2; // prescalerCode
-	IWDG->RLR = 2500; // (timeout * 40) / exp(2, (2 + prescalerCode))
-	IWDG->KR = 0xAAAA;
-	IWDG->KR = 0xCCCC;
-	iwdgFeed();
+	IWDG->KR = 0x5555; // enable access to iwdg reg (prevents accidental writes into iwdg cofig by runaway code)
+	IWDG->PR = 2; // prescaler divides low speed internal (LSI) oscillator
+	IWDG->RLR = 2500; // (timeout * 40) / exp(2, (2 + prescalerCode)) as per specification
+	IWDG->KR = 0xAAAA; // refresh the watchdog (i.e. load these settings)
+	IWDG->KR = 0xCCCC; // start the watchdog
+	iwdgFeed(); // feed it once and start the task
 
 	taskCreate(iwdgTask, TASK_MINIMAL_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
-}
-
-// iwdgFeed - Resets the watchdog's timer
-void iwdgFeed() {
-	IWDG->KR = 0xAAAA;
 }
