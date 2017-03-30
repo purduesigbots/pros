@@ -19,11 +19,11 @@
  * Public API Function to enable watchdog.
  * Must be called in initializeIO
  */
-void iwdgEnable();
+void watchdogEnable();
 
 /*
  * Initilaizes the watchdog and feed task if watchdog is enabled
  */
-void iwdgStart();
+void watchdogStart();
 
 #endif
