@@ -1582,10 +1582,10 @@ void waitUntil(unsigned long *previousWakeTime, const unsigned long time);
  * Enables IWDG watchdog timer which will reset the cortex if it locks up due to static shock
  * or a misbehaving task preventing the timer to be reset. Not recovering from static shock
  * will cause the robot to continue moving its motors indefinitely until turned off manually.
- * 
+ *
  * This function should only be called once in initializeIO()
  */
-void iwdgEnable();
+void watchdogEnable();
 
 // End C++ extern to C
 #ifdef __cplusplus
