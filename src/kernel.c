@@ -122,7 +122,7 @@ void startKernel() {
 	// User I/O initialization, really should be empty in most cases
 	initializeIO();
 	// Watchdog initialization, resets cortex when it locks up
-	iwdgStart();
+	watchdogStart();
 #ifndef NO_FILESYSTEM
 	// File system scan with the TRIM enabled/disabled
 	fsScan((csr & RCC_CSR_PORRSTF) ? true : false);
