@@ -1,6 +1,6 @@
 stage('Build') {
 	def build_ver = '2.11.0'
-	node {
+	node ('win') {
 		def venv = new edu.purdue.pros.venv()
 		stage('Clean') {
 			if(isUnix()) {
@@ -13,6 +13,7 @@ stage('Build') {
 		}
 		stage('PROS CLI') {
 			tool 'python3'
+			venv.create_virtualenv()
 			venv.run 'pip3 install pros-cli'
 		}
 		stage('Clone') {
@@ -25,7 +26,9 @@ stage('Build') {
 			build_ver = readFile 'version'
 			echo "Build PROS at version ${build_ver}"
 		}
-		tool 'arm-gcc'
-		venv.run 'pros make template'
+		loc = tool 'arm-gcc'
+		withEnv(["PROS_TOOLCHAIN=${loc}"]) {
+		    venv.run 'pros make template'
+		}
 	}
 }
