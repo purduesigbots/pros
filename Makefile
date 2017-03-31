@@ -23,7 +23,16 @@ CPPSRC:=$(wildcard *.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all clean documentation library upload _force_look
+.PHONY: all clean documentation library template upload _force_look release develop
+
+# default version just uses the latest tag
+VERSION := `git describe --abbrev=0`
+release:
+	$(eval CCFLAGS += -D FW_VERSION="$(VERSION)")
+
+develop:
+	$(eval VERSION := `git describe --abbrev=1`)
+	$(eval CCFLAGS += -D FW_VERSION="$(VERSION)")
 
 # By default, compile program
 all: $(BINDIR) $(OUT)
@@ -49,6 +58,14 @@ library: clean $(BINDIR) $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
 	-rm -f $(BINDIR)/auto.o
 	$(MCUPREFIX)ar rvs $(BINDIR)/$(LIBNAME)_sym.a $(BINDIR)/*.o
 	$(MCUPREFIX)objcopy -S -g --strip-unneeded --keep-symbols public.txt $(BINDIR)/$(LIBNAME)_sym.a $(BINDIR)/$(LIBNAME).a
+
+TEMPLATEFILES:=src/auto.c src/init.c src/opcontrol.c include/API.h include/main.h firmware
+template: library
+	-rm -rf $(addprefix $(ROOT)/template/,$(TEMPLATEFILES))
+	mkdir -p $(ROOT)/template/src $(ROOT)/template/inlcude $(ROOT)/template/firmware
+	$(foreach f,$(TEMPLATEFILES),cp -r $(ROOT)/$(f) $(ROOT)/template/$(f); )
+	cp $(BINDIR)/$(LIBNAME).a $(ROOT)/template/firmware/$(LIBNAME).a
+	pros conduct create-template kernel $(VERSION) pros-mainline --location $(ROOT)/template -u "firmware/$(LIBNAME).a" -u "include/API.h" -u "common.mk" -i "template.pros"
 
 # Builds the documentation
 documentation:

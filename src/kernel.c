@@ -19,6 +19,7 @@
 #include <periph.h>
 #include <supervisor.h>
 #include <taskpriv.h>
+#include <watchdog.h>
 
 // Low-resolution clock
 extern volatile uint32_t _clockLowRes;
@@ -29,15 +30,15 @@ extern volatile uint32_t _clockLowRes;
 // Error messages for _exit
 // Since SDIV by 0 is configured not to fault, no divide by 0 can occur here
 static const char * const errorMessages[] = {
-	"Segmentation fault", "Segmentation fault", "Illegal instruction",
-	"Stack overflow", "System task failure"
+	"Segmentation fault\n", "Segmentation fault\n", "Illegal instruction\n",
+	"Stack overflow\n", "System task failure\n"
 };
 static const char * const crashMessage =
 	"\r\nThe VEX Cortex has stopped working!\r\nError cause: ";
 
 // _exit - Exits the program with an error message
 void __attribute__((noreturn)) _exit(int status) {
-	char c; const char *buffer = (const char *)crashMessage;
+	char c; char const * buffer = crashMessage;
 	__disable_irq();
 	// No point in safeRobot(), since no interrupts can run and therefore no
 	// EXTI or SPI interrupts can be used to send state/start user code
@@ -49,7 +50,7 @@ void __attribute__((noreturn)) _exit(int status) {
 	}
 	// Dump message
 	if ((unsigned int)status < 5U) {
-		buffer = (const char *)&errorMessages[status];
+		buffer = errorMessages[status];
 		while ((c = *buffer++) != 0) {
 			while (!(USART1->SR & USART_SR_TXE));
 			USART1->DR = c;
@@ -120,6 +121,8 @@ void startKernel() {
 	//__libc_init_array();
 	// User I/O initialization, really should be empty in most cases
 	initializeIO();
+	// Watchdog initialization, resets cortex when it locks up
+	watchdogStart();
 #ifndef NO_FILESYSTEM
 	// File system scan with the TRIM enabled/disabled
 	fsScan((csr & RCC_CSR_PORRSTF) ? true : false);
