@@ -1,6 +1,6 @@
 stage('Build') {
 	def build_ver = '2.11.0'
-	node {
+	node('win') {
 		def venv = new edu.purdue.pros.venv()
 		stage('Clean') {
 			if(isUnix()) {
