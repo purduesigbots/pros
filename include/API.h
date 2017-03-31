@@ -1585,7 +1585,7 @@ void waitUntil(unsigned long *previousWakeTime, const unsigned long time);
  *
  * This function should only be called once in initializeIO()
  */
-void watchdogEnable();
+void watchdogInit();
 
 // End C++ extern to C
 #ifdef __cplusplus

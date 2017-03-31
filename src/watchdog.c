@@ -18,8 +18,8 @@
 
 static bool iwdgEnabled = false;
 
-// iwdgStart - Enables the watchdog
-void watchdogEnable() {
+// iwdgInit - Enables the watchdog
+void watchdogInit() {
 	iwdgEnabled = true;
 }
 
