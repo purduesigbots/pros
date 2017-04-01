@@ -31,8 +31,8 @@ Drop us a line
 
 ### I think I found a bug!
 We maintain GitHub repositories for the three major components of the PROS ecosystem:
-- The Command Line Interface (cli) at [purduesigbots/pros-cli](github.com/purduesigbots/pros-cli)
-- The Atom plugin at [purduesigbots/pros-atom](github.com/purduesigbots/pros-atom)
-- The kernel ([here](github.com/purduesigbots/pros))
+- The Command Line Interface (cli) at purduesigbots/pros-cli
+- The Atom plugin at purduesigbots/pros-atom
+- The kernel (purduesigbots/pros)
 
 If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](github.com/purduesigbots/pros-docs).
