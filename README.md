@@ -28,6 +28,7 @@ We have a number of resources available on our website, including
 Drop us a line
 - at pros_development@cs.purdue.edu 
 - on the [VEX Forum](https://www.vexforum.com/index.php/)
+- on VEX Teams of the World Discord
 
 ### I think I found a bug!
 We maintain GitHub repositories for the three major components of the PROS ecosystem:
