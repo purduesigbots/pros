@@ -194,7 +194,7 @@ void svSynchronize() {
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER
-		"\r\nPROS (C)2011-2014 Purdue ACM SIGBOTS\r\n");
+		"\r\nPROS (C)2011-2017 Purdue ACM SIGBOTS\r\n");
 	print("This program has ABSOLUTELY NO WARRANTY, not even an implied\r\n"
 		"warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\r\n\r\n");
 }
