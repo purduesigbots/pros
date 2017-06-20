@@ -43,6 +43,8 @@ static uint8_t svIndex;
 static uint8_t svPacket;
 // Team name to report when asked for configuration
 char svTeamName[8];
+// Initial SV flags
+char svInitFlags = 0x0;
 
 // Supervisor transfer complete, check the flags sent
 static INLINE void _svComplete() {
@@ -133,6 +135,11 @@ void _svNextByte() {
 	SPI1->DR = spiBufferTX[idx];
 }
 
+// standaloneModeEnable - enable standalone operation
+void standaloneModeEnable() {
+	svInitFlags = 0x1;
+}
+
 // svInit - Initialize supervisor communications
 void svInit() {
 	uint8_t i;
@@ -154,6 +161,7 @@ void svInit() {
 		spiBufferTX[i] = (uint16_t)0x0000;
 	SV_OUT->key = SV_MAGIC;
 	SV_OUT->mode = 2;
+	SV_OUT->flags = svInitFlags;
 	SV_OUT->version = 1;
 	// Load in empty motor values
 	svSetAllData((uint8_t)0x7F);
@@ -182,7 +190,7 @@ void svInit() {
 
 // svSynchronize - Waits for the supervisor to synchronize, then prints the startup message
 void svSynchronize() {
-	while (!(svFlags & SV_CONNECTED)) __sleep();
+	while (!(svFlags & SV_CONNECTED)) if(svInitFlags != 0x01) __sleep();
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER

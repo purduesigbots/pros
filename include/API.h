@@ -1586,6 +1586,12 @@ void waitUntil(unsigned long *previousWakeTime, const unsigned long time);
  * This function should only be called once in initializeIO()
  */
 void watchdogInit();
+/**
+ * Enables the Cortex to run in a standalone mode- no VEXnet connection required.
+ *
+ * This function should only be called once in initializeIO()
+ */
+void standaloneModeEnable();
 
 // End C++ extern to C
 #ifdef __cplusplus
