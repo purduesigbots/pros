@@ -190,7 +190,7 @@ void svInit() {
 
 // svSynchronize - Waits for the supervisor to synchronize, then prints the startup message
 void svSynchronize() {
-	while (!(svFlags & SV_CONNECTED)) if(svInitFlags != 0x01) __sleep();
+	if(svInitFlags != 0x01) while (!(svFlags & SV_CONNECTED)) __sleep();
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER
