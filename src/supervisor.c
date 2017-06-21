@@ -137,7 +137,9 @@ void _svNextByte() {
 
 // standaloneModeEnable - enable standalone operation
 void standaloneModeEnable() {
-	svInitFlags = 0x1;
+	uint8_t mode = 0x01;
+	uint8_t flags = spiBufferTX[1];
+	spiBufferTX[1] = (mode << 8) | flags;
 }
 
 // svInit - Initialize supervisor communications
@@ -190,7 +192,6 @@ void svInit() {
 
 // svSynchronize - Waits for the supervisor to synchronize, then prints the startup message
 void svSynchronize() {
-	if(svInitFlags != 0x01) while (!(svFlags & SV_CONNECTED)) __sleep();
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER

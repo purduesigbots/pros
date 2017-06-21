@@ -1587,7 +1587,7 @@ void waitUntil(unsigned long *previousWakeTime, const unsigned long time);
  */
 void watchdogInit();
 /**
- * Enables the Cortex to run in a standalone mode- no VEXnet connection required.
+ * Enables the Cortex to run the op control task in a standalone mode- no VEXnet connection required.
  *
  * This function should only be called once in initializeIO()
  */
