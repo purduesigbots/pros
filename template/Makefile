@@ -1,11 +1,11 @@
 # Universal C Makefile for MCU targets
 
-# Path to project root (NO trailing slash!)
-ROOT=..
+# Path to project root (for top-level, so the project is in ./; first-level, ../; etc.)
+ROOT=.
 # Binary output directory
 BINDIR=$(ROOT)/bin
 # Subdirectories to include in the build
-SUBDIRS=
+SUBDIRS=src
 
 # Nothing below here needs to be modified by typical users
 
@@ -21,32 +21,48 @@ CPPSRC:=$(wildcard *.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all do_subdirs _force_look
+.PHONY: all clean upload _force_look
 
 # By default, compile program
-all: do_subdirs .
+all: $(BINDIR) $(OUT)
+
+# Remove all intermediate object files (remove the binary directory)
+clean:
+	-rm -f $(OUT)
+	-rm -rf $(BINDIR)
+
+# Uploads program to device
+upload: all
+	$(UPLOAD)
 
 # Phony force-look target
 _force_look:
 	@true
 
-# Compiles the program if anything is changed
-.: $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
-	@touch .
+# Looks in subdirectories for things to make
+$(SUBDIRS): %: _force_look
+	@$(MAKE) --no-print-directory -C $@
 
-# Builds the subdirectories
-do_subdirs: _force_look
-	@for dir in $(SUBDIRS); do $(MAKE) --no-print-directory -C $$dir || exit 1; done
+# Ensure binary directory exists
+$(BINDIR):
+	-@mkdir -p $(BINDIR)
+
+# Compile program
+$(OUT): $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
+	@echo LN $(BINDIR)/*.o $(LIBRARIES) to $@
+	@$(CC) $(LDFLAGS) $(BINDIR)/*.o $(LIBRARIES) -o $@
+	@$(MCUPREFIX)size $(SIZEFLAGS) $(OUT)
+	$(MCUPREPARE)
 
 # Assembly source file management
-$(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT)
+$(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT) $(HEADERS)
 	@echo AS $<
 	@$(AS) $(AFLAGS) -o $@ $<
 
 # Object management
 $(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS)
 	@echo CC $(INCLUDE) $<
-	@$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
+	$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
 
 $(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS)
 	@echo CPC $(INCLUDE) $<
