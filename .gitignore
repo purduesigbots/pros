@@ -7,3 +7,8 @@ include/*.h.gch
 .gcc-flags.json
 .project
 .cproject
+template/template.pros
+template/src/*
+!template/src/Makefile
+template/include
+template/firmware

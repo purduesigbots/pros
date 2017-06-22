@@ -28,11 +28,12 @@ We have a number of resources available on our website, including
 Drop us a line
 - at pros_development@cs.purdue.edu 
 - on the [VEX Forum](https://www.vexforum.com/index.php/)
+- on VEX Teams of the World Discord
 
 ### I think I found a bug!
 We maintain GitHub repositories for the three major components of the PROS ecosystem:
-- The Command Line Interface (cli) at purduesigbots/pros-cli
-- The Atom plugin at purduesigbots/pros-atom
-- The kernel (purduesigbots/pros)
+- The Command Line Interface (cli) at [purduesigbots/pros-cli](github.com/purduesigbots/pros-cli)
+- The Atom plugin at [purduesigbots/pros-atom](github.com/purduesigbots/pros-atom)
+- The kernel [here](github.com/purduesigbots/pros)
 
-If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](github.com/purduesigbots/pros-docs).
+If you find a problem with our documentation or tutorials, we have a repository for that, too, at purduesigbots/pros-docs.
