@@ -2,7 +2,7 @@
  * supervisor.c - Functions for interfacing with the NXP supervisor processor responsible for
  * handling the gory details of VEXnet
  *
- * Copyright (c) 2011-2016, Purdue University ACM SIGBots.
+ * Copyright (c) 2011-2017, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -43,8 +43,6 @@ static uint8_t svIndex;
 static uint8_t svPacket;
 // Team name to report when asked for configuration
 char svTeamName[8];
-// Initial SV flags
-char svInitFlags = 0x0;
 
 // Supervisor transfer complete, check the flags sent
 static INLINE void _svComplete() {
@@ -137,9 +135,8 @@ void _svNextByte() {
 
 // standaloneModeEnable - enable standalone operation
 void standaloneModeEnable() {
-	uint8_t mode = 0x01;
-	uint8_t flags = spiBufferTX[1];
-	spiBufferTX[1] = (mode << 8) | flags;
+	// set flag in outgoing SPI buffer to enable standlone mode
+	SV_OUT->flags |= 1;
 }
 
 // svInit - Initialize supervisor communications
@@ -163,7 +160,7 @@ void svInit() {
 		spiBufferTX[i] = (uint16_t)0x0000;
 	SV_OUT->key = SV_MAGIC;
 	SV_OUT->mode = 2;
-	SV_OUT->flags = svInitFlags;
+	SV_OUT->flags = 0;
 	SV_OUT->version = 1;
 	// Load in empty motor values
 	svSetAllData((uint8_t)0x7F);
@@ -192,6 +189,7 @@ void svInit() {
 
 // svSynchronize - Waits for the supervisor to synchronize, then prints the startup message
 void svSynchronize() {
+	while (!(svFlags & SV_CONNECTED)) __sleep();
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER
