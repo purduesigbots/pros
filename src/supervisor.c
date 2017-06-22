@@ -2,7 +2,7 @@
  * supervisor.c - Functions for interfacing with the NXP supervisor processor responsible for
  * handling the gory details of VEXnet
  *
- * Copyright (c) 2011-2016, Purdue University ACM SIGBots.
+ * Copyright (c) 2011-2017, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -133,6 +133,12 @@ void _svNextByte() {
 	SPI1->DR = spiBufferTX[idx];
 }
 
+// standaloneModeEnable - enable standalone operation
+void standaloneModeEnable() {
+	// set flag in outgoing SPI buffer to enable standlone mode
+	SV_OUT->flags |= 1;
+}
+
 // svInit - Initialize supervisor communications
 void svInit() {
 	uint8_t i;
@@ -154,6 +160,7 @@ void svInit() {
 		spiBufferTX[i] = (uint16_t)0x0000;
 	SV_OUT->key = SV_MAGIC;
 	SV_OUT->mode = 2;
+	SV_OUT->flags = 0;
 	SV_OUT->version = 1;
 	// Load in empty motor values
 	svSetAllData((uint8_t)0x7F);
@@ -186,7 +193,7 @@ void svSynchronize() {
 	// HELLO message!
 	kwait(50);
 	print("\r\nPowered by PROS " FW_VERSION "\r\n" FW_DISCLAIMER
-		"\r\nPROS (C)2011-2014 Purdue ACM SIGBOTS\r\n");
+		"\r\nPROS (C)2011-2017 Purdue ACM SIGBOTS\r\n");
 	print("This program has ABSOLUTELY NO WARRANTY, not even an implied\r\n"
 		"warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\r\n\r\n");
 }

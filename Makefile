@@ -27,15 +27,16 @@ OUT:=$(BINDIR)/$(OUTNAME)
 
 # default version just uses the latest tag
 VERSION := `git describe --abbrev=0`
+
+# By default, compile program
+all: $(BINDIR) $(OUT)
+
 release:
 	$(eval CCFLAGS += -D FW_VERSION="$(VERSION)")
 
 develop:
 	$(eval VERSION := `git describe --abbrev=1`)
 	$(eval CCFLAGS += -D FW_VERSION="$(VERSION)")
-
-# By default, compile program
-all: $(BINDIR) $(OUT)
 
 # Remove all intermediate object files (remove the binary directory)
 clean:
