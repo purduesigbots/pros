@@ -1,6 +1,6 @@
 # Contributing to PROS
 
-:tada: :+1: :steam_locomotive: Thanks for taking the time to contribute :steam_locomotive: :+1: :tada:
+:tada: :+1: :steam_locomotive: Thanks for taking the time to contribute! :steam_locomotive: :+1: :tada:
 
 **Did you find a bug?**
 - **Before opening an issue, make sure you are in the right repository!**
