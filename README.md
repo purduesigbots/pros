@@ -16,7 +16,7 @@ You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and 
 The PROS team develops a plugin for Atom to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
 
 ### Cool, how do I get it?
-Pay a visit to our website, [pros.cs.purdue.edu](pros.cs.purdue.edu), to download our latest installer or view installation instructions for your preferred platform.
+Pay a visit to our website, [pros.cs.purdue.edu](https://pros.cs.purdue.edu), to download our latest installer or view installation instructions for your preferred platform.
 
 ### How do I use it?
 We have a number of resources available on our website, including
@@ -28,12 +28,12 @@ We have a number of resources available on our website, including
 Drop us a line
 - at pros_development@cs.purdue.edu 
 - on the [VEX Forum](https://www.vexforum.com/index.php/)
-- on VEX Teams of the World Discord
+- on [VEX Teams of the World Discord](https://discord.gg/xddjWGj)
 
 ### I think I found a bug!
 We maintain GitHub repositories for the three major components of the PROS ecosystem:
-- The Command Line Interface (cli) at [purduesigbots/pros-cli](github.com/purduesigbots/pros-cli)
-- The Atom plugin at [purduesigbots/pros-atom](github.com/purduesigbots/pros-atom)
-- The kernel [here](github.com/purduesigbots/pros)
+- The Command Line Interface (cli) at [purduesigbots/pros-cli](https://github.com/purduesigbots/pros-cli)
+- The Atom plugin at [purduesigbots/pros-atom](https://github.com/purduesigbots/pros-atom)
+- The kernel [here](https://github.com/purduesigbots/pros)
 
 If you find a problem with our documentation or tutorials, we have a repository for that, too, at purduesigbots/pros-docs.
