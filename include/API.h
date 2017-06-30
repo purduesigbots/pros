@@ -743,9 +743,16 @@ bool i2cWriteRegister(uint8_t addr, uint8_t reg, uint16_t value);
  */
 typedef int PROS_FILE;
 
+
 #ifndef FILE
+/**
+ * For convenience, FILE is defined as PROS_FILE if it wasn't already defined. This provides 
+ * backwards compatability with PROS, but also allows libraries such as newlib to be incorporated
+ * into PROS projects. If you're not using C++/newlib, you can use FILE as previously
+ */
 #define FILE PROS_FILE
 #endif
+
 /**
  * Bit mask for usartInit() for 8 data bits (typical)
  */
