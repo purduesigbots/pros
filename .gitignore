@@ -12,3 +12,4 @@ template/src/*
 !template/src/Makefile
 template/include
 template/firmware
+.vscode/
