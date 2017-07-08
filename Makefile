@@ -45,6 +45,13 @@ clean:
 
 # Uploads program to device
 upload: all
+	$(FLASH)
+
+# Alias to upload, more consistent with our terminology
+flash: upload
+
+# Uploads program to device using legacy uniflasher JAR file
+upload-legacy: all
 	$(UPLOAD)
 
 # Phony force-look target
