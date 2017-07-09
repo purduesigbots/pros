@@ -736,12 +736,23 @@ bool i2cWrite(uint8_t addr, uint8_t *data, uint16_t count);
 bool i2cWriteRegister(uint8_t addr, uint8_t reg, uint16_t value);
 
 /**
- * FILE is an integer referring to a stream for the standard I/O functions.
+ * PROS_FILE is an integer referring to a stream for the standard I/O functions.
  *
- * FILE * is the standard library method of referring to a file pointer, even though there is
+ * PROS_FILE * is the standard library method of referring to a file pointer, even though there is
  * actually nothing there.
  */
-typedef int FILE;
+typedef int PROS_FILE;
+
+
+#ifndef FILE
+/**
+ * For convenience, FILE is defined as PROS_FILE if it wasn't already defined. This provides 
+ * backwards compatability with PROS, but also allows libraries such as newlib to be incorporated
+ * into PROS projects. If you're not using C++/newlib, you can disregard this and just use FILE.
+ */
+#define FILE PROS_FILE
+#endif
+
 /**
  * Bit mask for usartInit() for 8 data bits (typical)
  */
@@ -791,7 +802,7 @@ typedef int FILE;
  * @param flags a bit mask combination of the SERIAL_* flags specifying parity, stop, and data
  * bits
  */
-void usartInit(FILE *usart, unsigned int baud, unsigned int flags);
+void usartInit(PROS_FILE *usart, unsigned int baud, unsigned int flags);
 /**
  * Disables the specified USART interface.
  *
@@ -801,26 +812,26 @@ void usartInit(FILE *usart, unsigned int baud, unsigned int flags);
  *
  * @param usart the port to close, either "uart1" or "uart2"
  */
-void usartShutdown(FILE *usart);
+void usartShutdown(PROS_FILE *usart);
 
 // -------------------- Character input and output --------------------
 
 /**
  * The standard output stream uses the PC debug terminal.
  */
-#define stdout ((FILE *)3)
+#define stdout ((PROS_FILE *)3)
 /**
  * The standard input stream uses the PC debug terminal.
  */
-#define stdin ((FILE *)3)
+#define stdin ((PROS_FILE *)3)
 /**
  * UART 1 on the Cortex; must be opened first using usartInit().
  */
-#define uart1 ((FILE *)1)
+#define uart1 ((PROS_FILE *)1)
 /**
  * UART 2 on the Cortex; must be opened first using usartInit().
  */
-#define uart2 ((FILE *)2)
+#define uart2 ((PROS_FILE *)2)
 
 #ifndef EOF
 /**
@@ -857,7 +868,7 @@ void usartShutdown(FILE *usart);
  *
  * @param stream the file descriptor to close from fopen()
  */
-void fclose(FILE *stream);
+void fclose(PROS_FILE *stream);
 /**
  * Returns the number of characters that can be read without blocking (the number of
  * characters available) from the specified stream. This only works for communication ports and
@@ -870,7 +881,7 @@ void fclose(FILE *stream);
  * @return the number of characters which meet this criterion; if this number cannot be
  * determined, returns 0
  */
-int fcount(FILE *stream);
+int fcount(PROS_FILE *stream);
 /**
  * Delete the specified file if it exists and is not currently open.
  *
@@ -889,7 +900,7 @@ int fdelete(const char *file);
  * @param stream the channel to check (stdin, uart1, uart2, or an open file in Read mode)
  * @return 0 if the stream is not at EOF, or 1 otherwise.
  */
-int feof(FILE *stream);
+int feof(PROS_FILE *stream);
 /**
  * Flushes the data on the specified file channel open in Write mode. This function has no
  * effect on a communication port or a file in Read mode, as these streams are always flushed as
@@ -901,7 +912,7 @@ int feof(FILE *stream);
  * @param stream the channel to flush (an open file in Write mode)
  * @return 0 if the data was successfully flushed, EOF otherwise
  */
-int fflush(FILE *stream);
+int fflush(PROS_FILE *stream);
 /**
  * Reads and returns one character from the specified stream, blocking until complete.
  *
@@ -910,7 +921,7 @@ int fflush(FILE *stream);
  * @param stream the stream to read (stdin, uart1, uart2, or an open file in Read mode)
  * @return the next character from 0 to 255, or -1 if no character can be read
  */
-int fgetc(FILE *stream);
+int fgetc(PROS_FILE *stream);
 /**
  * Reads a string from the specified stream, storing the characters into the memory at str.
  * Characters will be read until the specified limit is reached, a new line is found, or the
@@ -925,7 +936,7 @@ int fgetc(FILE *stream);
  * @param stream the channel to read (stdin, uart1, uart2, or an open file in Read mode)
  * @return str, or NULL if zero characters could be read
  */
-char* fgets(char *str, int num, FILE *stream);
+char* fgets(char *str, int num, PROS_FILE *stream);
 /**
  * Opens the given file in the specified mode. The file name is truncated to eight characters.
  * Only four files can be in use simultaneously in any given time, with at most one of those
@@ -949,7 +960,7 @@ char* fgets(char *str, int num, FILE *stream);
  * @param mode the file mode
  * @return a file descriptor pointing to the new file, or NULL if the file could not be opened
  */
-FILE * fopen(const char *file, const char *mode);
+PROS_FILE * fopen(const char *file, const char *mode);
 /**
  * Prints the simple string to the specified stream.
  *
@@ -959,7 +970,7 @@ FILE * fopen(const char *file, const char *mode);
  * @param string the string to write
  * @param stream the stream to write (stdout, uart1, uart2, or an open file in Write mode)
  */
-void fprint(const char *string, FILE *stream);
+void fprint(const char *string, PROS_FILE *stream);
 /**
  * Writes one character to the specified stream.
  *
@@ -969,7 +980,7 @@ void fprint(const char *string, FILE *stream);
  * @param stream the stream to write (stdout, uart1, uart2, or an open file in Write mode)
  * @return the character written
  */
-int fputc(int value, FILE *stream);
+int fputc(int value, PROS_FILE *stream);
 /**
  * Behaves the same as the "fprint" function, and appends a trailing newline ("\n").
  *
@@ -979,7 +990,7 @@ int fputc(int value, FILE *stream);
  * @param stream the stream to write (stdout, uart1, uart2, or an open file in Write mode)
  * @return the number of characters written, excluding the new line
  */
-int fputs(const char *string, FILE *stream);
+int fputs(const char *string, PROS_FILE *stream);
 /**
  * Reads data from a stream into memory. Returns the number of bytes thus read.
  *
@@ -991,7 +1002,7 @@ int fputs(const char *string, FILE *stream);
  * @param stream the stream to read (stdout, uart1, uart2, or an open file in Read mode)
  * @return the number of bytes successfully read
  */
-size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
+size_t fread(void *ptr, size_t size, size_t count, PROS_FILE *stream);
 /**
  * Seeks within a file open in Read mode. This function will fail when used on a file in Write
  * mode or on any communications port.
@@ -1001,7 +1012,7 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *stream);
  * @param origin the reference location for offset: SEEK_CUR, SEEK_SET, or SEEK_END
  * @return 0 if the seek was successful, or 1 otherwise
  */
-int fseek(FILE *stream, long int offset, int origin);
+int fseek(PROS_FILE *stream, long int offset, int origin);
 /**
  * Returns the current position of the stream. This function works on files in either Read or
  * Write mode, but will fail on communications ports.
@@ -1009,7 +1020,7 @@ int fseek(FILE *stream, long int offset, int origin);
  * @param stream the stream to check
  * @return the offset of the stream, or -1 if the offset could not be determined
  */
-long int ftell(FILE *stream);
+long int ftell(PROS_FILE *stream);
 /**
  * Writes data from memory to a stream. Returns the number of bytes thus written.
  *
@@ -1021,7 +1032,7 @@ long int ftell(FILE *stream);
  * @param stream the stream to write (stdout, uart1, uart2, or an open file in Write mode)
  * @return the number of bytes successfully written
  */
-size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);
+size_t fwrite(const void *ptr, size_t size, size_t count, PROS_FILE *stream);
 /**
  * Reads and returns one character from "stdin", which is the PC debug terminal.
  *
@@ -1084,7 +1095,7 @@ int puts(const char *string);
  * @param formatString the format string as specified above
  * @return the number of characters written
  */
-int fprintf(FILE *stream, const char *formatString, ...);
+int fprintf(PROS_FILE *stream, const char *formatString, ...);
 /**
  * Prints the formatted string to the debug stream (the PC terminal).
  *
@@ -1138,7 +1149,7 @@ int sprintf(char *buffer, const char *formatString, ...);
  *
  * @param lcdPort the LCD to clear, either uart1 or uart2
  */
-void lcdClear(FILE *lcdPort);
+void lcdClear(PROS_FILE *lcdPort);
 /**
  * Initializes the LCD port, but does not change the text or settings.
  *
@@ -1147,7 +1158,7 @@ void lcdClear(FILE *lcdPort);
  *
  * @param lcdPort the LCD to initialize, either uart1 or uart2
  */
-void lcdInit(FILE *lcdPort);
+void lcdInit(PROS_FILE *lcdPort);
 /**
  * Prints the formatted string to the attached LCD.
  *
@@ -1160,9 +1171,9 @@ void lcdInit(FILE *lcdPort);
  * @param formatString the format string as specified in fprintf()
  */
 #ifdef DOXYGEN
-void lcdPrint(FILE *lcdPort, unsigned char line, const char *formatString, ...);
+void lcdPrint(PROS_FILE *lcdPort, unsigned char line, const char *formatString, ...);
 #else
-void __attribute__ ((format (printf, 3, 4))) lcdPrint(FILE *lcdPort, unsigned char line,
+void __attribute__ ((format (printf, 3, 4))) lcdPrint(PROS_FILE *lcdPort, unsigned char line,
 	const char *formatString, ...);
 #endif
 /**
@@ -1174,7 +1185,7 @@ void __attribute__ ((format (printf, 3, 4))) lcdPrint(FILE *lcdPort, unsigned ch
  * @param lcdPort the LCD to poll, either uart1 or uart2
  * @return the buttons pressed as a bit mask
  */
-unsigned int lcdReadButtons(FILE *lcdPort);
+unsigned int lcdReadButtons(PROS_FILE *lcdPort);
 /**
  * Sets the specified LCD backlight to be on or off.
  *
@@ -1183,7 +1194,7 @@ unsigned int lcdReadButtons(FILE *lcdPort);
  * @param lcdPort the LCD to adjust, either uart1 or uart2
  * @param backlight true to turn the backlight on, or false to turn it off
  */
-void lcdSetBacklight(FILE *lcdPort, bool backlight);
+void lcdSetBacklight(PROS_FILE *lcdPort, bool backlight);
 /**
  * Prints the string buffer to the attached LCD.
  *
@@ -1195,13 +1206,13 @@ void lcdSetBacklight(FILE *lcdPort, bool backlight);
  * @param line the LCD line to write, either 1 or 2
  * @param buffer the string to write
  */
-void lcdSetText(FILE *lcdPort, unsigned char line, const char *buffer);
+void lcdSetText(PROS_FILE *lcdPort, unsigned char line, const char *buffer);
 /**
  * Shut down the specified LCD port.
  *
  * @param lcdPort the LCD to stop, either uart1 or uart2
  */
-void lcdShutdown(FILE *lcdPort);
+void lcdShutdown(PROS_FILE *lcdPort);
 
 // -------------------- Real-time scheduler functions --------------------
 /**
