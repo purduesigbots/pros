@@ -23,7 +23,7 @@ CPPSRC:=$(wildcard *.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all clean documentation library template upload _force_look release develop
+.PHONY: all clean documentation library template flash upload upload-legacy _force_look release develop
 
 # default version just uses the latest tag
 VERSION := `git describe --abbrev=0`
