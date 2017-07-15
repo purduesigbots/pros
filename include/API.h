@@ -1587,6 +1587,10 @@ void waitUntil(unsigned long *previousWakeTime, const unsigned long time);
  */
 void watchdogInit();
 /**
+ * The Taskhandle used by the watchdog
+ */
+extern TaskHandle watchdogHandle;
+/**
  * Enables the Cortex to run the op control task in a standalone mode- no VEXnet connection required.
  *
  * This function should only be called once in initializeIO()
