@@ -17,6 +17,7 @@
 #include <task.h>
 
 static bool iwdgEnabled = false;
+TaskHandle watchdogHandle;
 
 // iwdgInit - Enables the watchdog
 void watchdogInit() {
@@ -49,5 +50,5 @@ void watchdogStart() {
 	IWDG->KR = 0xCCCC; // start the watchdog
 	_iwdgFeed(); // feed it once and start the task
 
-	taskCreate(_iwdgTask, TASK_MINIMAL_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	watchdogHandle = taskCreate(_iwdgTask, TASK_MINIMAL_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
 }
