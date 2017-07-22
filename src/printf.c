@@ -62,7 +62,7 @@ typedef struct {
 
 // Data for fprintf()
 typedef struct {
-	FILE *stream;
+	PROS_FILE *stream;
 	uint32_t count;
 } _fPrintfData;
 
@@ -462,7 +462,7 @@ static void format(void (*outputFn)(void*, char), void *data, const char *fmt, v
 
 // The next few functions do exactly as one might believe they should as declared in <stdio.h>
 
-void fprint(const char *str, FILE *stream) {
+void fprint(const char *str, PROS_FILE *stream) {
 	char c;
 	while ((c = *str++))
 		fputc(c, stream);
@@ -472,7 +472,7 @@ void print(const char *str) {
 	fprint(str, stdout);
 }
 
-int fputs(const char *str, FILE *stream) {
+int fputs(const char *str, PROS_FILE *stream) {
 	char c;
 	uint32_t count = 0;
 	while ((c = *str++)) {
@@ -488,7 +488,7 @@ int puts(const char *str) {
 	return fputs(str, stdout);
 }
 
-int vfprintf(FILE *stream, const char *fmt, va_list args) {
+int vfprintf(PROS_FILE *stream, const char *fmt, va_list args) {
 	_fPrintfData data;
 	data.stream = stream;
 	data.count = 0;
@@ -522,7 +522,7 @@ int vsnprintf(char *out, size_t size, const char *fmt, va_list args) {
 	return ret;
 }
 
-int fprintf(FILE *stream, const char *fmt, ...) {
+int fprintf(PROS_FILE *stream, const char *fmt, ...) {
 	va_list args;
 	int count;
 	va_start(args, fmt);

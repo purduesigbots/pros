@@ -23,7 +23,7 @@ CPPSRC:=$(wildcard *.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all clean documentation library template upload _force_look release develop
+.PHONY: all clean documentation library template flash upload upload-legacy _force_look release develop
 
 # default version just uses the latest tag
 VERSION := `git describe --abbrev=0`
@@ -45,6 +45,13 @@ clean:
 
 # Uploads program to device
 upload: all
+	$(FLASH)
+
+# Alias to upload, more consistent with our terminology
+flash: upload
+
+# Uploads program to device using legacy uniflasher JAR file
+upload-legacy: all
 	$(UPLOAD)
 
 # Phony force-look target
