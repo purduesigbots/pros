@@ -16,9 +16,9 @@ HEADERS:=$(wildcard *.$(HEXT))
 ### Special section for Cortex projects ###
 HEADERS_2:=$(wildcard ../include/*.$(HEXT))
 ### End special section ###
-CSRC=$(wildcard *.$(CEXT))
+CSRC=$(wildcard *.$(CEXT)) $(wildcard **/*.$(CEXT))
 COBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CSRC:.$(CEXT)=.o))
-CPPSRC:=$(wildcard *.$(CPPEXT))
+CPPSRC:=$(wildcard *.$(CPPEXT)) $(wildcard **/*.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
@@ -39,12 +39,14 @@ $(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT)
 ### Special section for Cortex projects ###
 
 # Object management
-$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS) $(HEADERS_2)
+$(COBJ): $(BINDIR)/$(subst ..,,$(subst /,_,%.o)): %.$(CEXT) $(HEADERS) $(HEADERS_2)
 	@echo CC $(INCLUDE) $<
-	@$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
+	@$(CC) $(INCLUDE) $(CFLAGS) -o $(BINDIR)/$(subst ..,,$(subst /,_,$@)) $<
 
-$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS) $(HEADERS_2)
+KEKSRC:=$(dir $(wildcard **/*/))
+
+$(CPPOBJ): $(BINDIR)/$(subst ..,,$(subst /,_,%.o)): %.$(CPPEXT) $(HEADERS) $(HEADERS_2)
 	@echo CPC $(INCLUDE) $<
-	@$(CPPCC) $(INCLUDE) $(CPPFLAGS) -o $@ $<
+	$(CPPCC) $(INCLUDE) $(CPPFLAGS) -o $(BINDIR)/$(subst ..,,$(subst /,_,$@)) $<
 
 ### End special section ###
