@@ -659,8 +659,8 @@ typedef void * Ultrasonic;
 /**
  * Gets the current ultrasonic sensor value in centimeters.
  *
- * If no object was found, -2 (ULTRASONIC_BEYOND_RANGE) is returned. If the ultrasonic sensor is
- * polled while it is pinging and waiting for a response, -1 (ULTRASONIC_TIMEOUT) is returned.
+ * If no object was found or if the ultrasonic sensor is polled while it is pinging and waiting
+ * for a response, -1 (ULTRA_BAD_RESPONSE) is returned.
  * If the ultrasonic sensor was never started, the return value is undefined. Round and fluffy
  * objects can cause inaccurate values to be returned.
  *
@@ -752,7 +752,7 @@ typedef int PROS_FILE;
 
 #ifndef FILE
 /**
- * For convenience, FILE is defined as PROS_FILE if it wasn't already defined. This provides 
+ * For convenience, FILE is defined as PROS_FILE if it wasn't already defined. This provides
  * backwards compatability with PROS, but also allows libraries such as newlib to be incorporated
  * into PROS projects. If you're not using C++/newlib, you can disregard this and just use FILE.
  */
