@@ -645,16 +645,9 @@ void encoderReset(Encoder enc);
 void encoderShutdown(Encoder enc);
 
 /**
- * This value is returned if the sensor is polled while the ultrasonic sensor's ping is outbound
- * and the sensor is waiting for a response.
+ * This value is returned if the sensor cannot find a reasonable value to return.
  */
-#define ULTRASONIC_TIMEOUT -1
-/**
- * This value is returned if the ultrasonic sensor cannot find a surface within its range.
- *
- * The VEX Ultrasonic Sensor's range is 3.81cm to 292.1cm.
- */
-#define ULTRASONIC_BEYOND_RANGE -2
+#define ULTRA_BAD_RESPONSE -1
 
 /**
  * Reference type for an initialized ultrasonic sensor.
@@ -668,7 +661,7 @@ typedef void * Ultrasonic;
  *
  * If no object was found, -2 (ULTRASONIC_BEYOND_RANGE) is returned. If the ultrasonic sensor is
  * polled while it is pinging and waiting for a response, -1 (ULTRASONIC_TIMEOUT) is returned.
- * If the ultrasonic sensor was never started, the return value is undefined. Round and fluffy 
+ * If the ultrasonic sensor was never started, the return value is undefined. Round and fluffy
  * objects can cause inaccurate values to be returned.
  *
  * @param ult the Ultrasonic object from ultrasonicInit() to read
