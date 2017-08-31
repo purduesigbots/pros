@@ -106,7 +106,7 @@ static void _waitForSpace(SerialPort_TypeDef* port) {
 }
 
 // fcount - Non-standard function to return estimated number of characters waiting on stream
-int fcount(FILE *stream) {
+int fcount(PROS_FILE *stream) {
 	uint32_t snew = (uint32_t)stream - 1;
 	if (snew < 3)
 		return (int)usartBufferCount(&usart[snew]);
@@ -119,7 +119,7 @@ int fcount(FILE *stream) {
 }
 
 // feof - Return 1 if the stream is at EOF, or 0 otherwise
-int feof(FILE *stream) {
+int feof(PROS_FILE *stream) {
 	uint32_t snew = (uint32_t)stream - 1;
 	if (snew < 3)
 		return (usartBufferCount(&usart[snew]) == 0) ? 1 : 0;
@@ -131,7 +131,7 @@ int feof(FILE *stream) {
 }
 
 // fgetc - Read a character from the specified stream
-int fgetc(FILE *stream) {
+int fgetc(PROS_FILE *stream) {
 	uint32_t snew = (uint32_t)stream - 1;
 	if (snew < 3) {
 		SerialPort_TypeDef *ser = &usart[snew];
@@ -149,7 +149,7 @@ int fgetc(FILE *stream) {
 }
 
 // fgets - Read a string from the specified stream
-char* fgets(char *str, int num, FILE *stream) {
+char* fgets(char *str, int num, PROS_FILE *stream) {
 	// Required by standard
 	char *ptr = str;
 	int value;
@@ -166,7 +166,7 @@ char* fgets(char *str, int num, FILE *stream) {
 }
 
 // fputc - Write a character to the specified stream
-int fputc(int value, FILE *stream) {
+int fputc(int value, PROS_FILE *stream) {
 	uint32_t snew = (uint32_t)stream - 1;
 	if (snew < 3) {
 		SerialPort_TypeDef *ser = &usart[snew];
@@ -192,7 +192,7 @@ int fputc(int value, FILE *stream) {
 }
 
 // fread - Read data from stream
-size_t fread(void *ptr, size_t size, size_t count, FILE *stream) {
+size_t fread(void *ptr, size_t size, size_t count, PROS_FILE *stream) {
 	char *memory = (char *)ptr;
 	size_t write = 0; int read;
 	for (uint32_t i = 0; i < (size * count); i++)
@@ -206,7 +206,7 @@ size_t fread(void *ptr, size_t size, size_t count, FILE *stream) {
 }
 
 // fwrite - Write data to stream
-size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream) {
+size_t fwrite(const void *ptr, size_t size, size_t count, PROS_FILE *stream) {
 	const char *memory = (const char *)ptr;
 	size_t write = 0;
 	for (uint32_t i = 0; i < (size * count); i++)
@@ -342,13 +342,13 @@ void ISR_USART3() {
 }
 
 // lcdClear - Clears the screen
-void lcdClear(FILE *lcdPort) {
+void lcdClear(PROS_FILE *lcdPort) {
 	lcdSetText(lcdPort, 1, "");
 	lcdSetText(lcdPort, 2, "");
 }
 
 // lcdInit - Enables the LCD on the specified port
-void lcdInit(FILE *lcdPort) {
+void lcdInit(PROS_FILE *lcdPort) {
 	// No flags = 8 N 1
 	if (lcdPort == uart1 || lcdPort == uart2) {
 		uint32_t idx = (uint32_t)lcdPort - 1;
@@ -361,7 +361,7 @@ void lcdInit(FILE *lcdPort) {
 }
 
 // lcdPrint - Convenience method that performs snprintf() and then lcdSetText()
-void lcdPrint(FILE *lcdPort, unsigned char line, const char *fmt, ...) {
+void lcdPrint(PROS_FILE *lcdPort, unsigned char line, const char *fmt, ...) {
 	char buffer[17];
 	// Pass to vsnprintf
 	va_list args;
@@ -375,7 +375,7 @@ void lcdPrint(FILE *lcdPort, unsigned char line, const char *fmt, ...) {
 
 // lcdReadButtons - Reads the button status from the LCD display and returns the buttons
 // pressed as a bit mask. Does not block, always returns the last button status
-unsigned int lcdReadButtons(FILE *lcdPort) {
+unsigned int lcdReadButtons(PROS_FILE *lcdPort) {
 	uint32_t port = (uint32_t)lcdPort - 1;
 	if (port < 2) {
 		if (lcd[port].flags & LCD_ACTIVE)
@@ -386,7 +386,7 @@ unsigned int lcdReadButtons(FILE *lcdPort) {
 
 // lcdSetBacklight - Turns the specified LCD backlight on or off
 // The backlight will not update until the next line is sent (maybe 15ms latency)
-void lcdSetBacklight(FILE *lcdPort, bool backlight) {
+void lcdSetBacklight(PROS_FILE *lcdPort, bool backlight) {
 	uint32_t port = (uint32_t)lcdPort - 1;
 	if (port < 2) {
 		if (backlight)
@@ -403,7 +403,7 @@ void _lcdDump(uint32_t lcdIndex) {
 	uint8_t flags = lcd[lcdIndex].flags, total;
 	if (flags & LCD_ACTIVE) {
 		// Concoct the port
-		FILE *lcdPort = (FILE*)(lcdIndex + 1);
+		PROS_FILE *lcdPort = (PROS_FILE*)(lcdIndex + 1);
 		char value, *ptr = &(lcd[lcdIndex].screen[0]);
 		// Set line (alternating order)
 		if (flags & LCD_ROW_2) {
@@ -444,7 +444,7 @@ void _lcdDump(uint32_t lcdIndex) {
 // lcdSetText - Sets a line (1 or 2) of text on the LCD to the specified null-terminated string
 // Up to 16 characters will actually be transmitted; this function is thread safe, but
 // concurrent access to the same line of the same LCD will cause garbage text to be displayed
-void lcdSetText(FILE *lcdPort, unsigned char line, const char *buffer) {
+void lcdSetText(PROS_FILE *lcdPort, unsigned char line, const char *buffer) {
 	// Blit to the buffer, automatically dumped on the idle task
 	uint32_t port = (uint32_t)lcdPort - 1, i;
 	line--;
@@ -463,7 +463,7 @@ void lcdSetText(FILE *lcdPort, unsigned char line, const char *buffer) {
 }
 
 // lcdShutdown - Disable the LCD on the specified port
-void lcdShutdown(FILE *lcdPort) {
+void lcdShutdown(PROS_FILE *lcdPort) {
 	if (lcdPort == uart1 || lcdPort == uart2) {
 		usartShutdown(lcdPort);
 		lcd[(uint32_t)lcdPort - 1].flags = 0;
@@ -510,7 +510,7 @@ void usartFlushBuffers() {
 
 // usartInit - Initialize the specified USART interface with the given connection parameters
 // The interface argument can be 1 or 2 to specify UART1 and UART2 respectively
-void usartInit(FILE *port, unsigned int baud, unsigned int flags) {
+void usartInit(PROS_FILE *port, unsigned int baud, unsigned int flags) {
 	// Determine correct USART
 	USART_TypeDef *base;
 	if (port == uart1)
@@ -545,7 +545,7 @@ void usartInit(FILE *port, unsigned int baud, unsigned int flags) {
 }
 
 // usartShutdown - Disable the specified USART interface
-void usartShutdown(FILE *usart) {
+void usartShutdown(PROS_FILE *usart) {
 	// Disable transmitter, receiver, clock, and interrupts
 	if (usart == uart1)
 		USART2->CR1 = (uint16_t)0;

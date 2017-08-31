@@ -52,7 +52,7 @@ extern "C" {
  *
  * @param fd the descriptor to close
  */
-void fclose(FILE *fd);
+void fclose(PROS_FILE *fd);
 /**
  * Delete the specified file if it exists and is not currently open.
  *
@@ -69,7 +69,7 @@ int fdelete(const char *file);
  * @param fd the channel to check
  * @return 0 if the file is not at EOF, or 1 otherwise.
  */
-int fsEof(FILE *fd);
+int fsEof(PROS_FILE *fd);
 /**
  * Flushes the data on the specified file channel.
  *
@@ -77,7 +77,7 @@ int fsEof(FILE *fd);
  * @return 0 if the data was successfully written out to Flash, EOF otherwise
  * The file data is still invalid until properly closed!
  */
-int fflush(FILE *fd);
+int fflush(PROS_FILE *fd);
 /**
  * Returns the number of bytes left in the file until EOF. Only applies to files open for
  * Read mode.
@@ -85,7 +85,7 @@ int fflush(FILE *fd);
  * @param fd the file channel to check
  * @return the number of bytes left, or 0 if this value could not be determined
  */
-uint32_t fsLeft(FILE *fd);
+uint32_t fsLeft(PROS_FILE *fd);
 /**
  * fopen() function for file system
  *
@@ -93,7 +93,7 @@ uint32_t fsLeft(FILE *fd);
  * @param mode the file mode
  * @return a pointer to file data, or NULL if the file could not be opened
  */
-FILE * fopen(const char *file, const char *mode);
+PROS_FILE * fopen(const char *file, const char *mode);
 /**
  * fread() function for file system
  *
@@ -101,7 +101,7 @@ FILE * fopen(const char *file, const char *mode);
  * @return the next byte in the file, or EOF if no byte can be read (end of file, in write
  * mode...)
  */
-int fsRead(FILE *fd);
+int fsRead(PROS_FILE *fd);
 /**
  * Scans the file system and builds a RAM structure describing the files
  * currently on the file system and the free space available.
@@ -117,14 +117,14 @@ void fsScan(bool trim);
  * @param origin the reference location for offset: SEEK_CUR, SEEK_SET, or SEEK_END
  * @return 0 if the seek was successful, or 1 otherwise
  */
-int fseek(FILE *fd, long int offset, int origin);
+int fseek(PROS_FILE *fd, long int offset, int origin);
 /**
  * ftell() function for file system
  *
  * @param fd the channel to check
  * @return the offset of the stream, or -1 if the offset could not be determined
  */
-long int ftell(FILE *fd);
+long int ftell(PROS_FILE *fd);
 /**
  * fwrite() function for file system
  *
@@ -132,7 +132,7 @@ long int ftell(FILE *fd);
  * @param value the byte to write
  * @return value if the byte was successfully written and EOF otherwise
  */
-int fsWrite(FILE *fd, int value);
+int fsWrite(PROS_FILE *fd, int value);
 
 #endif
 
