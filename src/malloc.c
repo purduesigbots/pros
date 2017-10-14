@@ -355,3 +355,16 @@ void* realloc(void *ptr, size_t len) {
 	_exitCritical();
 	return memp;
 }
+
+void* calloc(size_t num, size_t size) {
+	/* Calculate size of memory. Does not check for overflow. */
+	size_t bytes = num * size;
+	void* mem = malloc(bytes);
+	if(!mem) {
+		/* malloc failed return NULL */
+		return NULL;
+	}
+	/* Initialize Memory to 0 */
+	memset(mem, 0, bytes);
+	return mem;
+}
