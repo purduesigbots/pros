@@ -1,5 +1,5 @@
 stage('Build') {
-	node('lin&&prostools') {
+	node('linux&&prostools') {
 		checkout scm
 		sh '''
 			pip3 install --no-cache-dir git+git://github.com/purduesigbots/pros-cli.git@master
