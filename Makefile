@@ -26,7 +26,7 @@ OUT:=$(BINDIR)/$(OUTNAME)
 .PHONY: all clean documentation library template flash upload upload-legacy _force_look release develop
 
 # default version just uses the latest tag
-VERSION := `git describe --abbrev=0`
+VERSION := `git describe --dirty --abbrev`
 
 # By default, compile program
 all: $(BINDIR) $(OUT)
@@ -73,7 +73,9 @@ template: library
 	mkdir -p $(ROOT)/template/src $(ROOT)/template/include $(ROOT)/template/firmware
 	$(foreach f,$(TEMPLATEFILES),cp -r $(ROOT)/$(f) $(ROOT)/template/$(f); )
 	cp $(BINDIR)/$(LIBNAME).a $(ROOT)/template/firmware/$(LIBNAME).a
-	pros conduct create-template kernel $(VERSION) pros-mainline --location $(ROOT)/template -u "firmware/$(LIBNAME).a" -u "include/API.h" -u "common.mk" -i "template.pros"
+	pros conduct create-template kernel $(VERSION) $(ROOT)/template -u "firmware/$(LIBNAME).a" -u "include/API.h" -u "common.mk" -i "template.pros"
+	cd $(ROOT)/template && zip -r ../kernel-template *
+	
 
 # Builds the documentation
 documentation:
