@@ -2,10 +2,9 @@ stage('Build') {
 	node('linux&&prostools') {
 		checkout scm
 		sh '''
-			pip3 install --no-cache-dir git+git://github.com/purduesigbots/pros-cli.git@master
-			pros make template
+			sudo pip3 install vex
+			vex -mr kernel ./build.sh
 		   '''
 		archiveArtifacts artifacts: 'kernel-template.zip', onlyIfSuccessful: true
 	}
 }
-
