@@ -74,7 +74,9 @@ template: library
 	$(foreach f,$(TEMPLATEFILES),cp -r $(ROOT)/$(f) $(ROOT)/template/$(f); )
 	cp $(BINDIR)/$(LIBNAME).a $(ROOT)/template/firmware/$(LIBNAME).a
 	pros conduct create-template kernel $(VERSION) $(ROOT)/template -u "firmware/$(LIBNAME).a" -u "include/API.h" -u "common.mk" -i "template.pros"
+	ifdef $(shell command -v zip)
 	cd $(ROOT)/template && zip -r ../kernel-template *
+	endif
 	
 
 # Builds the documentation
