@@ -54,7 +54,7 @@ OUTNAME:=output
 OUTBIN:=$(BINDIR)/$(OUTNAME).bin
 OUTELF:=$(BINDIR)/$(OUTNAME).elf
 
-.PHONY: all clean flash upload upload-legacy library
+.PHONY: all clean flash upload upload-legacy library print_compiling
 
 # By default, compile program
 all: $(OUTBIN)
@@ -66,7 +66,7 @@ clean:
 
 # Uploads program to device
 upload: $(OUTBIN)
-	@echo Uploading $^ to $(DEVICE) using PROS CLI
+	$(call echo,Uploading $^ to $(DEVICE) using PROS CLI,$(STEP_COLOR))
 	pros flash -f $^
 
 # Alias to upload, more consistent with our terminology
@@ -74,41 +74,41 @@ flash: upload
 
 # Uploads program to device using legacy uniflasher JAR file
 upload-legacy: $(OUTBIN)
-	@echo Uploading $^ to $(DEVICE) using uniflasher
+	$(call echo,Uploading $^ to $(DEVICE) using uniflasher,$(STEP_COLOR))
 	@java -jar firmware/uniflash.jar vex $^
 
 $(OUTBIN): $(OUTELF)
 	$(VV)mkdir -p $(dir $@)
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $< | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
-	@echo Creating $@ for $(DEVICE)
-	$D$(OBJCOPY) $< -O binary $@
+	@echo -n "Creating $@ for $(DEVICE) "
+	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
 $(OUTELF): $(sort $(ASMOBJ) $(COBJ) $(CXXOBJ))
-	@echo Linking project with $(ARCHIVE_TEXT_LIST)
-	$D$(CC) $(LDFLAGS) $^ $(LIBRARIES) -o $@
+	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
+	$(call test_output,$D$(CC) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
 
 define asm_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	@echo Compiling $$<
+	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
-	$D$(AS) -c $(ASMFLAGS) -o $$@ $$<
+	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	@echo Compiling $$<
+	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
-	$D$(CC) -c $(INCLUDE) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<
+	$$(call test_output,$D$(CC) -c $(INCLUDE) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	@echo Compiling $$<
+	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
-	$D$(CXX) -c $(INCLUDE) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<
+	$$(call test_output,$D$(CXX) -c $(INCLUDE) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 
@@ -117,7 +117,7 @@ ifdef LIBNAME
 LIBOBJ=$(addsuffix .o,$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%,$(LIBSRC))))
 TEMPLATE=$(ROOT)/$(LIBNAME)-template
 
-library: clean $(LIBOBJ)
+library: clean print_compiling $(LIBOBJ)
 	@echo Creating archive of $(LIBOBJ)
 	$D$(MCUPREFIX)ar rvs $(BINDIR)/$(LIBNAME).a $(LIBOBJ)
 	@echo Copying assets to $(TEMPLATE)
