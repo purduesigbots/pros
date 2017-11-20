@@ -19,8 +19,7 @@
 #include "ifi/v5_api.h"
 #include "rtos/task.h"
 
-ssize_t _write_r(struct _reent* r, int fd, const void* buf, size_t size)
-{
+ssize_t _write_r(struct _reent* r, int fd, const void* buf, size_t size) {
 	if (fd == STDIN_FILENO || fd == STDOUT_FILENO) {
 		return vexSerialWriteBuffer(1, (uint8_t*)buf, size);
 	}
@@ -28,10 +27,18 @@ ssize_t _write_r(struct _reent* r, int fd, const void* buf, size_t size)
 	return 0;
 }
 
-void __malloc_lock() { vTaskSuspendAll(); }
+void __malloc_lock() {
+	rtos_suspend_all();
+}
 
-void __malloc_unlock() { xTaskResumeAll(); }
+void __malloc_unlock() {
+	rtos_resume_all();
+}
 
-void __env_lock() { vTaskSuspendAll(); }
+void __env_lock() {
+	rtos_suspend_all();
+}
 
-void __env_unlock() { xTaskResumeAll(); }
+void __env_unlock() {
+	rtos_resume_all();
+}

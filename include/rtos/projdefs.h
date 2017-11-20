@@ -74,22 +74,22 @@
  * Defines the prototype to which task functions must conform.  Defined in this
  * file to ensure the type is known before portable.h is included.
  */
-typedef void (*TaskFunction_t)( void * );
+typedef void (*task_fn_t)( void * );
 
 /* Converts a time in milliseconds to a time in ticks.  This macro can be
 overridden by a macro of the same name defined in FreeRTOSConfig.h in case the
 definition here is not suitable for your application. */
 #ifndef pdMS_TO_TICKS
-	#define pdMS_TO_TICKS( xTimeInMs ) ( ( TickType_t ) ( ( ( TickType_t ) ( xTimeInMs ) * ( TickType_t ) configTICK_RATE_HZ ) / ( TickType_t ) 1000 ) )
+	#define pdMS_TO_TICKS( xTimeInMs ) ( ( uint32_t ) ( ( ( uint32_t ) ( xTimeInMs ) * ( uint32_t ) configTICK_RATE_HZ ) / ( uint32_t ) 1000 ) )
 #endif
 
-#define pdFALSE			( ( BaseType_t ) 0 )
-#define pdTRUE			( ( BaseType_t ) 1 )
+#define pdFALSE			( ( int32_t ) 0 )
+#define pdTRUE			( ( int32_t ) 1 )
 
 #define pdPASS			( pdTRUE )
 #define pdFAIL			( pdFALSE )
-#define errQUEUE_EMPTY	( ( BaseType_t ) 0 )
-#define errQUEUE_FULL	( ( BaseType_t ) 0 )
+#define errQUEUE_EMPTY	( ( int32_t ) 0 )
+#define errQUEUE_FULL	( ( int32_t ) 0 )
 
 /* FreeRTOS error definitions. */
 #define errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY	( -1 )

@@ -150,7 +150,7 @@ void *pvPortMalloc( size_t xWantedSize )
 BlockLink_t *pxBlock, *pxPreviousBlock, *pxNewBlockLink;
 void *pvReturn = NULL;
 
-	vTaskSuspendAll();
+	rtos_suspend_all();
 	{
 		/* If this is the first call to malloc then the heap will require
 		initialisation to setup the list of free blocks. */
@@ -274,7 +274,7 @@ void *pvReturn = NULL;
 
 		traceMALLOC( pvReturn, xWantedSize );
 	}
-	( void ) xTaskResumeAll();
+	( void ) rtos_resume_all();
 
 	#if( configUSE_MALLOC_FAILED_HOOK == 1 )
 	{
@@ -321,14 +321,14 @@ BlockLink_t *pxLink;
 				allocated. */
 				pxLink->xBlockSize &= ~xBlockAllocatedBit;
 
-				vTaskSuspendAll();
+				rtos_suspend_all();
 				{
 					/* Add this block to the list of free blocks. */
 					xFreeBytesRemaining += pxLink->xBlockSize;
 					traceFREE( pv, pxLink->xBlockSize );
 					prvInsertBlockIntoFreeList( ( ( BlockLink_t * ) pxLink ) );
 				}
-				( void ) xTaskResumeAll();
+				( void ) rtos_resume_all();
 			}
 			else
 			{

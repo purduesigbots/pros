@@ -21,22 +21,18 @@
 
 #include "ifi/v5_api.h"
 
-#include "competition.h"
+#include "system/comp_state.h"
 
-extern void rtos_install();
+extern void rtos_initialize();
 
-StaticTask_t firstTaskBuffer;
-StackType_t firstTaskStack[8192];
+int main() {
+	rtos_initialize();
 
-int main()
-{
-	vexDisplayStringAt(10, 40, "hello world!");
+	system_daemon_initialize();
 
-	rtos_install();
+	rtos_sched_start();
 
-	competition_initialize();
-
-	vTaskStartScheduler();
+	vexDisplayPrintf(10, 60, 1, "failed to start scheduler\n");
 
 	printf("Failed to start Scheduler\n");
 	for (;;)

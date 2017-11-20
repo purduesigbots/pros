@@ -133,11 +133,11 @@ floating point context after they have been created.  A variable is stored as
 part of the tasks context that holds portNO_FLOATING_POINT_CONTEXT if the task
 does not have an FPU context, or any other value if the task does have an FPU
 context. */
-#define portNO_FLOATING_POINT_CONTEXT	( ( StackType_t ) 0 )
+#define portNO_FLOATING_POINT_CONTEXT	( ( task_stack_t ) 0 )
 
 /* Constants required to setup the initial task context. */
-#define portINITIAL_SPSR				( ( StackType_t ) 0x1f ) /* System mode, ARM mode, IRQ enabled FIQ enabled. */
-#define portTHUMB_MODE_BIT				( ( StackType_t ) 0x20 )
+#define portINITIAL_SPSR				( ( task_stack_t ) 0x1f ) /* System mode, ARM mode, IRQ enabled FIQ enabled. */
+#define portTHUMB_MODE_BIT				( ( task_stack_t ) 0x20 )
 #define portINTERRUPT_ENABLE_BIT		( 0x80UL )
 #define portTHUMB_MODE_ADDRESS			( 0x01UL )
 
@@ -258,7 +258,7 @@ __attribute__(( used )) const uint32_t ulMaxAPIPriorityMask = ( configMAX_API_CA
 /*
  * See header file for description.
  */
-StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t pxCode, void *pvParameters )
+task_stack_t *pxPortInitialiseStack( task_stack_t *pxTopOfStack, task_fn_t pxCode, void *pvParameters )
 {
 	/* Setup the initial stack of the task.  The stack is set exactly as
 	expected by the portRESTORE_CONTEXT() macro.
@@ -266,13 +266,13 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 	The fist real value on the stack is the status register, which is set for
 	system mode, with interrupts enabled.  A few NULLs are added first to ensure
 	GDB does not try decoding a non-existent return address. */
-	*pxTopOfStack = ( StackType_t ) NULL;
+	*pxTopOfStack = ( task_stack_t ) NULL;
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) NULL;
+	*pxTopOfStack = ( task_stack_t ) NULL;
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) NULL;
+	*pxTopOfStack = ( task_stack_t ) NULL;
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) portINITIAL_SPSR;
+	*pxTopOfStack = ( task_stack_t ) portINITIAL_SPSR;
 
 	if( ( ( uint32_t ) pxCode & portTHUMB_MODE_ADDRESS ) != 0x00UL )
 	{
@@ -283,37 +283,37 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 	pxTopOfStack--;
 
 	/* Next the return address, which in this case is the start of the task. */
-	*pxTopOfStack = ( StackType_t ) pxCode;
+	*pxTopOfStack = ( task_stack_t ) pxCode;
 	pxTopOfStack--;
 
 	/* Next all the registers other than the stack pointer. */
-	*pxTopOfStack = ( StackType_t ) portTASK_RETURN_ADDRESS;	/* R14 */
+	*pxTopOfStack = ( task_stack_t ) portTASK_RETURN_ADDRESS;	/* R14 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x12121212;	/* R12 */
+	*pxTopOfStack = ( task_stack_t ) 0x12121212;	/* R12 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x11111111;	/* R11 */
+	*pxTopOfStack = ( task_stack_t ) 0x11111111;	/* R11 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x10101010;	/* R10 */
+	*pxTopOfStack = ( task_stack_t ) 0x10101010;	/* R10 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x09090909;	/* R9 */
+	*pxTopOfStack = ( task_stack_t ) 0x09090909;	/* R9 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x08080808;	/* R8 */
+	*pxTopOfStack = ( task_stack_t ) 0x08080808;	/* R8 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x07070707;	/* R7 */
+	*pxTopOfStack = ( task_stack_t ) 0x07070707;	/* R7 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x06060606;	/* R6 */
+	*pxTopOfStack = ( task_stack_t ) 0x06060606;	/* R6 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x05050505;	/* R5 */
+	*pxTopOfStack = ( task_stack_t ) 0x05050505;	/* R5 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x04040404;	/* R4 */
+	*pxTopOfStack = ( task_stack_t ) 0x04040404;	/* R4 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x03030303;	/* R3 */
+	*pxTopOfStack = ( task_stack_t ) 0x03030303;	/* R3 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x02020202;	/* R2 */
+	*pxTopOfStack = ( task_stack_t ) 0x02020202;	/* R2 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) 0x01010101;	/* R1 */
+	*pxTopOfStack = ( task_stack_t ) 0x01010101;	/* R1 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( StackType_t ) pvParameters; /* R0 */
+	*pxTopOfStack = ( task_stack_t ) pvParameters; /* R0 */
 	pxTopOfStack--;
 
 	/* The task will start with a critical nesting count of 0 as interrupts are
@@ -333,7 +333,7 @@ StackType_t *pxPortInitialiseStack( StackType_t *pxTopOfStack, TaskFunction_t px
 		/* The task will start with a floating point context.  Leave enough
 		space for the registers - and ensure they are initialised to 0. */
 		pxTopOfStack -= portFPU_REGISTER_WORDS;
-		memset( pxTopOfStack, 0x00, portFPU_REGISTER_WORDS * sizeof( StackType_t ) );
+		memset( pxTopOfStack, 0x00, portFPU_REGISTER_WORDS * sizeof( task_stack_t ) );
 
 		pxTopOfStack--;
 		*pxTopOfStack = pdTRUE;
@@ -353,7 +353,7 @@ static void prvTaskExitError( void )
 {
 	/* A function that implements a task must not exit or attempt to return to
 	its caller as there is nothing to return to.  If a task wants to exit it
-	should instead call vTaskDelete( NULL ).
+	should instead call task_delete( NULL ).
 
 	Artificially force an assert() to be triggered if configASSERT() is
 	defined, then stop here so application writers can catch the error. */
@@ -363,7 +363,7 @@ static void prvTaskExitError( void )
 }
 /*-----------------------------------------------------------*/
 
-BaseType_t xPortStartScheduler( void )
+int32_t xPortStartScheduler( void )
 {
 uint32_t ulAPSR;
 
@@ -431,7 +431,7 @@ uint32_t ulAPSR;
 		}
 	}
 
-	/* Will only get here if vTaskStartScheduler() was called with the CPU in
+	/* Will only get here if rtos_sched_start() was called with the CPU in
 	a non-privileged mode or the binary point register was not set to its lowest
 	possible value.  prvTaskExitError() is referenced to prevent a compiler
 	warning about it being defined but not referenced in the case that the user

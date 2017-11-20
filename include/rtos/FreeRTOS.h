@@ -675,7 +675,7 @@ extern "C" {
 #endif
 
 #ifndef portPRIVILEGE_BIT
-	#define portPRIVILEGE_BIT ( ( UBaseType_t ) 0x00 )
+	#define portPRIVILEGE_BIT ( ( uint32_t ) 0x00 )
 #endif
 
 #ifndef portYIELD_WITHIN_API
@@ -807,11 +807,11 @@ V8 if desired. */
 #endif
 
 #if configENABLE_BACKWARD_COMPATIBILITY == 1
-	#define eTaskStateGet eTaskGetState
-	#define portTickType TickType_t
-	#define xTaskHandle TaskHandle_t
-	#define xQueueHandle QueueHandle_t
-	#define xSemaphoreHandle SemaphoreHandle_t
+	#define eTaskStateGet task_get_state
+	#define portTickType uint32_t
+	#define xTaskHandle task_t
+	#define xQueueHandle queue_t
+	#define xSemaphoreHandle sem_t
 	#define xQueueSetHandle QueueSetHandle_t
 	#define xQueueSetMemberHandle QueueSetMemberHandle_t
 	#define xTimeOutType TimeOut_t
@@ -820,7 +820,7 @@ V8 if desired. */
 	#define xTimerHandle TimerHandle_t
 	#define pdTASK_HOOK_CODE TaskHookFunction_t
 	#define portTICK_RATE_MS portTICK_PERIOD_MS
-	#define pcTaskGetTaskName pcTaskGetName
+	#define pcTaskGetTaskName task_get_name
 	#define pcTimerGetTimerName pcTimerGetName
 	#define pcQueueGetQueueName pcQueueGetName
 	#define vTaskGetTaskInfo vTaskGetInfo
@@ -828,7 +828,7 @@ V8 if desired. */
 	/* Backward compatibility within the scheduler code only - these definitions
 	are not really required but are included for completeness. */
 	#define tmrTIMER_CALLBACK TimerCallbackFunction_t
-	#define pdTASK_CODE TaskFunction_t
+	#define pdTASK_CODE task_fn_t
 	#define xListItem ListItem_t
 	#define xList List_t
 #endif /* configENABLE_BACKWARD_COMPATIBILITY */
@@ -857,7 +857,7 @@ point support. */
  */
 struct xSTATIC_LIST_ITEM
 {
-	TickType_t xDummy1;
+	uint32_t xDummy1;
 	void *pvDummy2[ 4 ];
 };
 typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
@@ -865,7 +865,7 @@ typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
 struct xSTATIC_MINI_LIST_ITEM
 {
-	TickType_t xDummy1;
+	uint32_t xDummy1;
 	void *pvDummy2[ 2 ];
 };
 typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
@@ -873,7 +873,7 @@ typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
 /* See the comments above the struct xSTATIC_LIST_ITEM definition. */
 typedef struct xSTATIC_LIST
 {
-	UBaseType_t uxDummy1;
+	uint32_t uxDummy1;
 	void *pvDummy2;
 	StaticMiniListItem_t xDummy3;
 } StaticList_t;
@@ -884,7 +884,7 @@ typedef struct xSTATIC_LIST
  * strict data hiding policy.  This means the Task structure used internally by
  * FreeRTOS is not accessible to application code.  However, if the application
  * writer wants to statically allocate the memory required to create a task then
- * the size of the task object needs to be know.  The StaticTask_t structure
+ * the size of the task object needs to be know.  The static_task_s_t structure
  * below is provided for this purpose.  Its sizes and alignment requirements are
  * guaranteed to match those of the genuine structure, no matter which
  * architecture is being used, and no matter how the values in FreeRTOSConfig.h
@@ -895,20 +895,20 @@ typedef struct xSTATIC_TCB
 {
 	void				*pxDummy1;
 	StaticListItem_t	xDummy3[ 2 ];
-	UBaseType_t			uxDummy5;
+	uint32_t			uxDummy5;
 	void				*pxDummy6;
 	uint8_t				ucDummy7[ configMAX_TASK_NAME_LEN ];
 	#if ( portSTACK_GROWTH > 0 )
 		void			*pxDummy8;
 	#endif
 	#if ( portCRITICAL_NESTING_IN_TCB == 1 )
-		UBaseType_t		uxDummy9;
+		uint32_t		uxDummy9;
 	#endif
 	#if ( configUSE_TRACE_FACILITY == 1 )
-		UBaseType_t		uxDummy10[ 2 ];
+		uint32_t		uxDummy10[ 2 ];
 	#endif
 	#if ( configUSE_MUTEXES == 1 )
-		UBaseType_t		uxDummy12[ 2 ];
+		uint32_t		uxDummy12[ 2 ];
 	#endif
 	#if ( configUSE_APPLICATION_TASK_TAG == 1 )
 		void			*pxDummy14;
@@ -930,7 +930,7 @@ typedef struct xSTATIC_TCB
 		uint8_t			uxDummy20;
 	#endif
 
-} StaticTask_t;
+} static_task_s_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a
@@ -953,11 +953,11 @@ typedef struct xSTATIC_QUEUE
 	union
 	{
 		void *pvDummy2;
-		UBaseType_t uxDummy2;
+		uint32_t uxDummy2;
 	} u;
 
 	StaticList_t xDummy3[ 2 ];
-	UBaseType_t uxDummy4[ 3 ];
+	uint32_t uxDummy4[ 3 ];
 	uint8_t ucDummy5[ 2 ];
 
 	#if( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
@@ -969,7 +969,7 @@ typedef struct xSTATIC_QUEUE
 	#endif
 
 	#if ( configUSE_TRACE_FACILITY == 1 )
-		UBaseType_t uxDummy8;
+		uint32_t uxDummy8;
 		uint8_t ucDummy9;
 	#endif
 
@@ -992,11 +992,11 @@ typedef StaticQueue_t StaticSemaphore_t;
  */
 typedef struct xSTATIC_EVENT_GROUP
 {
-	TickType_t xDummy1;
+	uint32_t xDummy1;
 	StaticList_t xDummy2;
 
 	#if( configUSE_TRACE_FACILITY == 1 )
-		UBaseType_t uxDummy3;
+		uint32_t uxDummy3;
 	#endif
 
 	#if( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
@@ -1023,11 +1023,11 @@ typedef struct xSTATIC_TIMER
 {
 	void				*pvDummy1;
 	StaticListItem_t	xDummy2;
-	TickType_t			xDummy3;
-	UBaseType_t			uxDummy4;
+	uint32_t			xDummy3;
+	uint32_t			uxDummy4;
 	void 				*pvDummy5[ 2 ];
 	#if( configUSE_TRACE_FACILITY == 1 )
-		UBaseType_t		uxDummy6;
+		uint32_t		uxDummy6;
 	#endif
 
 	#if( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )

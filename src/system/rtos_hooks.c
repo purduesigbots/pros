@@ -18,24 +18,24 @@
 
 #include "ifi/v5_api.h"
 
-// Use IFI handlers
-// void FIQInterupt()  __attribute__ ((weakref ("vexSystemFIQInterrupt")));
-// void DataAbortInterrupt() __attribute__ ((weakref
-// ("vexSystemDataAbortInterrupt")));
-// void PrefetchAbortInterrupt() __attribute__ ((weakref
-// ("vexSystemPrefetchAbortInterrupt")));
-
-void FIQInterrupt() { vexSystemFIQInterrupt(); }
+void FIQInterrupt() {
+	vexSystemFIQInterrupt();
+}
 // Replacement for DataAbortInterrupt
-void DataAbortInterrupt() { vexSystemDataAbortInterrupt(); }
+void DataAbortInterrupt() {
+	vexSystemDataAbortInterrupt();
+}
 // Replacement for PrefetchAbortInterrupt
-void PrefetchAbortInterrupt() { vexSystemPrefetchAbortInterrupt(); }
+void PrefetchAbortInterrupt() {
+	vexSystemPrefetchAbortInterrupt();
+}
 
-void _boot() { vexSystemBoot(); }
+void _boot() {
+	vexSystemBoot();
+}
 
 extern void vPortInstallFreeRTOSVectorTable(void);
-void rtos_install()
-{
+void rtos_initialize() {
 	vexSystemTimerStop();
 
 	portDISABLE_INTERRUPTS();
@@ -44,24 +44,24 @@ void rtos_install()
 }
 
 extern void FreeRTOS_Tick_Handler(void);
-void rtos_tick_interrupt_config()
-{
-	vexSystemTimerReinitForRtos(portLOWEST_USABLE_INTERRUPT_PRIORITY
-	                                << portPRIORITY_SHIFT,
+void rtos_tick_interrupt_config() {
+	vexSystemTimerReinitForRtos(portLOWEST_USABLE_INTERRUPT_PRIORITY << portPRIORITY_SHIFT,
 	                            (void (*)(void*))FreeRTOS_Tick_Handler);
 }
 
-void rtos_tick_interrupt_clear() { vexSystemTimerClearInterrupt(); }
+void rtos_tick_interrupt_clear() {
+	vexSystemTimerClearInterrupt();
+}
 
-void vApplicationFPUSafeIRQHandler(uint32_t ulICCIAR)
-{
+void vApplicationFPUSafeIRQHandler(uint32_t ulICCIAR) {
 	vexSystemApplicationIRQHandler(ulICCIAR);
 }
 
-void vInitialiseTimerForRunTimeStats(void) { vexSystemWatchdogReinitRtos(); }
+void vInitialiseTimerForRunTimeStats(void) {
+	vexSystemWatchdogReinitRtos();
+}
 
-void vApplicationMallocFailedHook(void)
-{
+void vApplicationMallocFailedHook(void) {
 	/* Called if a call to pvPortMalloc() fails because there is
 	insufficient
 	free memory available in the FreeRTOS heap.  pvPortMalloc() is called
@@ -74,8 +74,7 @@ void vApplicationMallocFailedHook(void)
 		;
 }
 
-void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
-{
+void vApplicationStackOverflowHook(task_t pxTask, char* pcTaskName) {
 	(void)pcTaskName;
 	(void)pxTask;
 
@@ -87,32 +86,24 @@ void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 		;
 }
 
-void vApplicationIdleHook(void)
-{
+void vApplicationIdleHook(void) {
 	volatile size_t xFreeHeapSpace;
 
 	/* This is just a trivial example of an idle hook.  It is called on each
 	cycle of the idle task.  It must *NOT* attempt to block.  In this case
-	the
-	idle task just queries the amount of FreeRTOS heap that remains.  See
-	the
-	memory management section on the http://www.FreeRTOS.org web site for
-	memory
-	management options.  If there is a lot of heap memory free then the
+	the idle task just queries the amount of FreeRTOS heap that remains.  See
+	the memory management section on the http://www.FreeRTOS.org web site for
+	memory management options.  If there is a lot of heap memory free then the
 	configTOTAL_HEAP_SIZE value in FreeRTOSConfig.h can be reduced to free
-	up
-	RAM. */
+	up RAM. */
 	xFreeHeapSpace = xPortGetFreeHeapSize();
-
-	vexBackgroundProcessing();
 
 	/* Remove compiler warning about xFreeHeapSpace being set but never
 	 * used. */
 	(void)xFreeHeapSpace;
 }
 
-void vAssertCalled(const char* pcFile, unsigned long ulLine)
-{
+void vAssertCalled(const char* pcFile, unsigned long ulLine) {
 	volatile unsigned long ul = 0;
 
 	(void)pcFile;
@@ -130,8 +121,6 @@ void vAssertCalled(const char* pcFile, unsigned long ulLine)
 	taskEXIT_CRITICAL();
 }
 
-void vApplicationTickHook(void) {}
-
 /*-----------------------------------------------------------------------------*/
 // FreeRTOS V9 now allows static memory allocation for tasks
 // the helper functions below are copied verbatim from demo code
@@ -141,19 +130,18 @@ void vApplicationTickHook(void) {}
 an
 implementation of vApplicationGetIdleTaskMemory() to provide the memory that is
 used by the Idle task. */
-void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
-                                   StackType_t** ppxIdleTaskStackBuffer,
-                                   uint32_t* pulIdleTaskStackSize)
-{
+void vApplicationGetIdleTaskMemory(static_task_s_t** ppxIdleTaskTCBBuffer,
+                                   task_stack_t** ppxIdleTaskStackBuffer,
+                                   uint32_t* pulIdleTaskStackSize) {
 	/* If the buffers to be provided to the Idle task are declared inside
 	this
 	function then they must be declared static - otherwise they will be
 	allocated on
 	the stack and so not exists after this function exits. */
-	static StaticTask_t xIdleTaskTCB;
-	static StackType_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
+	static static_task_s_t xIdleTaskTCB;
+	static task_stack_t uxIdleTaskStack[configMINIMAL_STACK_SIZE];
 
-	/* Pass out a pointer to the StaticTask_t structure in which the Idle
+	/* Pass out a pointer to the static_task_s_t structure in which the Idle
 	task's
 	state will be stored. */
 	*ppxIdleTaskTCBBuffer = &xIdleTaskTCB;
@@ -162,7 +150,7 @@ void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
 	*ppxIdleTaskStackBuffer = uxIdleTaskStack;
 
 	/* Pass out the size of the array pointed to by *ppxIdleTaskStackBuffer.
-	Note that, as the array is necessarily of type StackType_t,
+	Note that, as the array is necessarily of type task_stack_t,
 	configMINIMAL_STACK_SIZE is specified in words, not bytes. */
 	*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
 }
@@ -172,19 +160,18 @@ void vApplicationGetIdleTaskMemory(StaticTask_t** ppxIdleTaskTCBBuffer,
 the
 application must provide an implementation of vApplicationGetTimerTaskMemory()
 to provide the memory that is used by the Timer service task. */
-void vApplicationGetTimerTaskMemory(StaticTask_t** ppxTimerTaskTCBBuffer,
-                                    StackType_t** ppxTimerTaskStackBuffer,
-                                    uint32_t* pulTimerTaskStackSize)
-{
+void vApplicationGetTimerTaskMemory(static_task_s_t** ppxTimerTaskTCBBuffer,
+                                    task_stack_t** ppxTimerTaskStackBuffer,
+                                    uint32_t* pulTimerTaskStackSize) {
 	/* If the buffers to be provided to the Timer task are declared inside
 	this
 	function then they must be declared static - otherwise they will be
 	allocated on
 	the stack and so not exists after this function exits. */
-	static StaticTask_t xTimerTaskTCB;
-	static StackType_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
+	static static_task_s_t xTimerTaskTCB;
+	static task_stack_t uxTimerTaskStack[configTIMER_TASK_STACK_DEPTH];
 
-	/* Pass out a pointer to the StaticTask_t structure in which the Timer
+	/* Pass out a pointer to the static_task_s_t structure in which the Timer
 	task's state will be stored. */
 	*ppxTimerTaskTCBBuffer = &xTimerTaskTCB;
 
@@ -193,68 +180,79 @@ void vApplicationGetTimerTaskMemory(StaticTask_t** ppxTimerTaskTCBBuffer,
 
 	/* Pass out the size of the array pointed to by
 	*ppxTimerTaskStackBuffer.
-	Note that, as the array is necessarily of type StackType_t,
+	Note that, as the array is necessarily of type task_stack_t,
 	configMINIMAL_STACK_SIZE is specified in words, not bytes. */
 	*pulTimerTaskStackSize = configTIMER_TASK_STACK_DEPTH;
 }
 #endif
 
-/*-----------------------------------------------------------------------------*/
-/*  replacements for library memcpy, memset and memcmp */
-/*-----------------------------------------------------------------------------*/
+/******************************************************************************/
+/**                      Replacements for mem functions                      **/
+/**                                                                          **/
+/** See https://goo.gl/cHUA9b for more details                               **/
+/** Unsure if necessary due to Arm's newlib optimization                     **/
+/******************************************************************************/
+#if 0
+#if (configUSE_TASK_FPU_SUPPORT == 2)
+void* memcpy(void* restrict out, void const* restrict in, size_t n) {
+  // modified GNU algorithm to copy a word at a time
+  uint32_t* restrict lout;
+  uint32_t const* restrict lin;
 
-// An optimized version that moves 32 bits at a time for aligned buffers
-#ifdef OVERRIDE_CLIB_MEMCPY
-void* memcpy(void* pvDest, void const* pvSource, size_t len)
-{
-	long* plDst = (long*)pvDest;
-	long const* plSrc = (long const*)pvSource;
+  if (!((uint32_t)in & 0xFFFFFFFC) && !((uint32_t)out & 0xFFFFFFFC)) {
+    while(n >= sizeof(unt32_t)) {
+      *lout++ = *lin++;
+      n -= sizeof(uint32_t);
+    }
+  }
+}
+void* memcpy(void *pvDest, void const *pvSource, size_t len) {
+  long *plDst = (long *)pvDest;
+  long const *plSrc = (long const *)pvSource;
 
-	if (!((uint32_t)pvSource & 0xFFFFFFFC) &&
-	    !((uint32_t)pvDest & 0xFFFFFFFC)) {
-		while (len >= 4) {
-			*plDst++ = *plSrc++;
-			len -= 4;
-		}
-	}
+  if (!((uint32_t)pvSource & 0xFFFFFFFC) && !((uint32_t)pvDest & 0xFFFFFFFC)) {
+    while (len >= 4) {
+      *plDst++ = *plSrc++;
+      len -= 4;
+    }
+  }
 
-	char* pcDst = (char*)plDst;
-	char const* pcSrc = (char const*)plSrc;
+  char *pcDst = (char *)plDst;
+  char const *pcSrc = (char const *)plSrc;
 
-	while (len--)
-		*pcDst++ = *pcSrc++;
+  while (len--)
+    *pcDst++ = *pcSrc++;
 
-	return (pvDest);
+  return (pvDest);
 }
 
 /*-----------------------------------------------------------*/
 
-void* memset(void* pvDest, int iValue, size_t ulBytes)
-{
-	volatile unsigned char* pcDest = (unsigned char*)pvDest;
+void *memset(void *pvDest, int iValue, size_t ulBytes) {
+  volatile unsigned char *pcDest = (unsigned char *)pvDest;
 
-	if (ulBytes > 0) {
-		do {
-			*pcDest++ = (unsigned char)iValue;
-		} while (--ulBytes != 0);
-	}
+  if (ulBytes > 0) {
+    do {
+      *pcDest++ = (unsigned char)iValue;
+    } while (--ulBytes != 0);
+  }
 
-	return pvDest;
+  return pvDest;
 }
 
 /*-----------------------------------------------------------*/
 
-int memcmp(const void* pvMem1, const void* pvMem2, size_t ulBytes)
-{
-	const unsigned char *pucMem1 = pvMem1, *pucMem2 = pvMem2;
-	size_t x;
+int memcmp(const void *pvMem1, const void *pvMem2, size_t ulBytes) {
+  const unsigned char *pucMem1 = pvMem1, *pucMem2 = pvMem2;
+  size_t x;
 
-	for (x = 0; x < ulBytes; x++) {
-		if (pucMem1[x] != pucMem2[x]) {
-			break;
-		}
-	}
+  for (x = 0; x < ulBytes; x++) {
+    if (pucMem1[x] != pucMem2[x]) {
+      break;
+    }
+  }
 
-	return ulBytes - x;
+  return ulBytes - x;
 }
+#endif
 #endif

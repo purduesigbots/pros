@@ -35,10 +35,31 @@ READELF:=$(ARCHTUPLE)readelf
 # filename extensions
 CEXTS:=c
 ASMEXTS:=s S
-CPPEXTS:=cpp c++ cc
-
+CXXEXTS:=cpp c++ cc
 
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2)$(filter $(subst *,%,$2),$d))
+
+# Colors
+NO_COLOR=\x1b[0m
+OK_COLOR=\x1b[32;01m
+ERROR_COLOR=\x1b[31;01m
+WARN_COLOR=\x1b[33;01m
+STEP_COLOR=\x1b[37;01m
+OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
+DONE_STRING=$(OK_COLOR)[DONE]$(NO_COLOR)
+ERROR_STRING=$(ERROR_COLOR)[ERRORS]$(NO_COLOR)
+WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NO_COLOR)
+ECHO=echo -e
+echo=@$(ECHO) "$2$1$(NO_COLOR)"
+echon=@$(ECHO) -n "$2$1$(NO_COLOR)"
+
+catlog=cat temp.log | sed -e 's/\(error\)/$(ERROR_COLOR)\1$(NO_COLOR)/' -e 's/\(warning\)/$(WARN_COLOR)\1$(NO_COLOR)/'
+define test_output
+$1 2> temp.log || touch temp.errors
+@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && $(catlog); elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && $(catlog); else $(ECHO) "$2"; fi;
+@if test -e temp.errors; then rm -f temp.log temp.errors && false; fi;
+@rm -f temp.log temp.errors
+endef
 
 # Makefile Verbosity
 ifeq ("$(origin VERBOSE)", "command line")
@@ -67,6 +88,6 @@ VV = @
 endif
 ifeq ($(BUILD_VERBOSE), 2)
 R =
-D = 
-VV = 
+D =
+VV =
 endif

@@ -81,11 +81,11 @@ extern "C" {
 
 
 /**
- * Type by which queues are referenced.  For example, a call to xQueueCreate()
- * returns an QueueHandle_t variable that can then be used as a parameter to
- * xQueueSend(), xQueueReceive(), etc.
+ * Type by which queues are referenced.  For example, a call to queue_create()
+ * returns an queue_t variable that can then be used as a parameter to
+ * xQueueSend(), queue_recv(), etc.
  */
-typedef void * QueueHandle_t;
+typedef void * queue_t;
 
 /**
  * Type by which queue sets are referenced.  For example, a call to
@@ -97,14 +97,14 @@ typedef void * QueueSetHandle_t;
 /**
  * Queue sets can contain both queues and semaphores, so the
  * QueueSetMemberHandle_t is defined as a type to be used where a parameter or
- * return value can be either an QueueHandle_t or an SemaphoreHandle_t.
+ * return value can be either an queue_t or an sem_t.
  */
 typedef void * QueueSetMemberHandle_t;
 
 /* For internal use only. */
-#define	queueSEND_TO_BACK		( ( BaseType_t ) 0 )
-#define	queueSEND_TO_FRONT		( ( BaseType_t ) 1 )
-#define queueOVERWRITE			( ( BaseType_t ) 2 )
+#define	queueSEND_TO_BACK		( ( int32_t ) 0 )
+#define	queueSEND_TO_FRONT		( ( int32_t ) 1 )
+#define queueOVERWRITE			( ( int32_t ) 2 )
 
 /* For internal use only.  These definitions *must* match those in queue.c. */
 #define queueQUEUE_TYPE_BASE				( ( uint8_t ) 0U )
@@ -117,9 +117,9 @@ typedef void * QueueSetMemberHandle_t;
 /**
  * queue. h
  * <pre>
- QueueHandle_t xQueueCreate(
-							  UBaseType_t uxQueueLength,
-							  UBaseType_t uxItemSize
+ queue_t queue_create(
+							  uint32_t uxQueueLength,
+							  uint32_t uxItemSize
 						  );
  * </pre>
  *
@@ -129,8 +129,8 @@ typedef void * QueueSetMemberHandle_t;
  * Internally, within the FreeRTOS implementation, queues use two blocks of
  * memory.  The first block is used to hold the queue's data structures.  The
  * second block is used to hold items placed into the queue.  If a queue is
- * created using xQueueCreate() then both blocks of memory are automatically
- * dynamically allocated inside the xQueueCreate() function.  (see
+ * created using queue_create() then both blocks of memory are automatically
+ * dynamically allocated inside the queue_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
  * xQueueCreateStatic() then the application writer must provide the memory that
  * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
@@ -159,10 +159,10 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1, xQueue2;
+ queue_t xQueue1, xQueue2;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
+	xQueue1 = queue_create( 10, sizeof( uint32_t ) );
 	if( xQueue1 == 0 )
 	{
 		// Queue was not created and must not be used.
@@ -170,7 +170,7 @@ typedef void * QueueSetMemberHandle_t;
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue2 = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue2 = queue_create( 10, sizeof( struct AMessage * ) );
 	if( xQueue2 == 0 )
 	{
 		// Queue was not created and must not be used.
@@ -179,19 +179,19 @@ typedef void * QueueSetMemberHandle_t;
 	// ... Rest of task code.
  }
  </pre>
- * \defgroup xQueueCreate xQueueCreate
+ * \defgroup queue_create queue_create
  * \ingroup QueueManagement
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	#define xQueueCreate( uxQueueLength, uxItemSize ) xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
+	#define queue_create( uxQueueLength, uxItemSize ) xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
 #endif
 
 /**
  * queue. h
  * <pre>
- QueueHandle_t xQueueCreateStatic(
-							  UBaseType_t uxQueueLength,
-							  UBaseType_t uxItemSize,
+ queue_t xQueueCreateStatic(
+							  uint32_t uxQueueLength,
+							  uint32_t uxItemSize,
 							  uint8_t *pucQueueStorageBuffer,
 							  StaticQueue_t *pxQueueBuffer
 						  );
@@ -203,8 +203,8 @@ typedef void * QueueSetMemberHandle_t;
  * Internally, within the FreeRTOS implementation, queues use two blocks of
  * memory.  The first block is used to hold the queue's data structures.  The
  * second block is used to hold items placed into the queue.  If a queue is
- * created using xQueueCreate() then both blocks of memory are automatically
- * dynamically allocated inside the xQueueCreate() function.  (see
+ * created using queue_create() then both blocks of memory are automatically
+ * dynamically allocated inside the queue_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
  * xQueueCreateStatic() then the application writer must provide the memory that
  * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
@@ -251,10 +251,10 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1;
+ queue_t xQueue1;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( QUEUE_LENGTH, // The number of items the queue can hold.
+	xQueue1 = queue_create( QUEUE_LENGTH, // The number of items the queue can hold.
 							ITEM_SIZE	  // The size of each item in the queue
 							&( ucQueueStorage[ 0 ] ), // The buffer that will hold the items in the queue.
 							&xQueueBuffer ); // The buffer that will hold the queue structure.
@@ -275,10 +275,10 @@ typedef void * QueueSetMemberHandle_t;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSendToToFront(
-								   QueueHandle_t	xQueue,
+ int32_t xQueueSendToToFront(
+								   queue_t	xQueue,
 								   const void		*pvItemToQueue,
-								   TickType_t		xTicksToWait
+								   uint32_t		xTicksToWait
 							   );
  * </pre>
  *
@@ -316,15 +316,15 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1, xQueue2;
+ queue_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
+	xQueue1 = queue_create( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue2 = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue2 = queue_create( 10, sizeof( struct AMessage * ) );
 
 	// ...
 
@@ -332,7 +332,7 @@ typedef void * QueueSetMemberHandle_t;
 	{
 		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
-		if( xQueueSendToFront( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
+		if( queue_prepend( xQueue1, ( void * ) &ulVar, ( uint32_t ) 10 ) != pdPASS )
 		{
 			// Failed to post the message, even after 10 ticks.
 		}
@@ -343,7 +343,7 @@ typedef void * QueueSetMemberHandle_t;
 		// Send a pointer to a struct AMessage object.  Don't block if the
 		// queue is already full.
 		pxMessage = & xMessage;
-		xQueueSendToFront( xQueue2, ( void * ) &pxMessage, ( TickType_t ) 0 );
+		queue_prepend( xQueue2, ( void * ) &pxMessage, ( uint32_t ) 0 );
 	}
 
 	// ... Rest of task code.
@@ -352,15 +352,15 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define xQueueSendToFront( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
+#define queue_prepend( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSendToBack(
-								   QueueHandle_t	xQueue,
+ int32_t queue_append(
+								   queue_t	xQueue,
 								   const void		*pvItemToQueue,
-								   TickType_t		xTicksToWait
+								   uint32_t		xTicksToWait
 							   );
  * </pre>
  *
@@ -398,15 +398,15 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1, xQueue2;
+ queue_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
+	xQueue1 = queue_create( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue2 = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue2 = queue_create( 10, sizeof( struct AMessage * ) );
 
 	// ...
 
@@ -414,7 +414,7 @@ typedef void * QueueSetMemberHandle_t;
 	{
 		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
-		if( xQueueSendToBack( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
+		if( queue_append( xQueue1, ( void * ) &ulVar, ( uint32_t ) 10 ) != pdPASS )
 		{
 			// Failed to post the message, even after 10 ticks.
 		}
@@ -425,7 +425,7 @@ typedef void * QueueSetMemberHandle_t;
 		// Send a pointer to a struct AMessage object.  Don't block if the
 		// queue is already full.
 		pxMessage = & xMessage;
-		xQueueSendToBack( xQueue2, ( void * ) &pxMessage, ( TickType_t ) 0 );
+		queue_append( xQueue2, ( void * ) &pxMessage, ( uint32_t ) 0 );
 	}
 
 	// ... Rest of task code.
@@ -434,22 +434,22 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+#define queue_append( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSend(
-							  QueueHandle_t xQueue,
+ int32_t xQueueSend(
+							  queue_t xQueue,
 							  const void * pvItemToQueue,
-							  TickType_t xTicksToWait
+							  uint32_t xTicksToWait
 						 );
  * </pre>
  *
  * This is a macro that calls xQueueGenericSend().  It is included for
  * backward compatibility with versions of FreeRTOS.org that did not
- * include the xQueueSendToFront() and xQueueSendToBack() macros.  It is
- * equivalent to xQueueSendToBack().
+ * include the queue_prepend() and queue_append() macros.  It is
+ * equivalent to queue_append().
  *
  * Post an item on a queue.  The item is queued by copy, not by reference.
  * This function must not be called from an interrupt service routine.
@@ -482,15 +482,15 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1, xQueue2;
+ queue_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
+	xQueue1 = queue_create( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue2 = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue2 = queue_create( 10, sizeof( struct AMessage * ) );
 
 	// ...
 
@@ -498,7 +498,7 @@ typedef void * QueueSetMemberHandle_t;
 	{
 		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
-		if( xQueueSend( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10 ) != pdPASS )
+		if( xQueueSend( xQueue1, ( void * ) &ulVar, ( uint32_t ) 10 ) != pdPASS )
 		{
 			// Failed to post the message, even after 10 ticks.
 		}
@@ -509,7 +509,7 @@ typedef void * QueueSetMemberHandle_t;
 		// Send a pointer to a struct AMessage object.  Don't block if the
 		// queue is already full.
 		pxMessage = & xMessage;
-		xQueueSend( xQueue2, ( void * ) &pxMessage, ( TickType_t ) 0 );
+		xQueueSend( xQueue2, ( void * ) &pxMessage, ( uint32_t ) 0 );
 	}
 
 	// ... Rest of task code.
@@ -523,8 +523,8 @@ typedef void * QueueSetMemberHandle_t;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueOverwrite(
-							  QueueHandle_t xQueue,
+ int32_t queue_overwrite(
+							  queue_t xQueue,
 							  const void * pvItemToQueue
 						 );
  * </pre>
@@ -545,9 +545,9 @@ typedef void * QueueSetMemberHandle_t;
  * queue was created, so this many bytes will be copied from pvItemToQueue
  * into the queue storage area.
  *
- * @return xQueueOverwrite() is a macro that calls xQueueGenericSend(), and
- * therefore has the same return values as xQueueSendToFront().  However, pdPASS
- * is the only value that can be returned because xQueueOverwrite() will write
+ * @return queue_overwrite() is a macro that calls xQueueGenericSend(), and
+ * therefore has the same return values as queue_prepend().  However, pdPASS
+ * is the only value that can be returned because queue_overwrite() will write
  * to the queue even when the queue is already full.
  *
  * Example usage:
@@ -555,38 +555,38 @@ typedef void * QueueSetMemberHandle_t;
 
  void vFunction( void *pvParameters )
  {
- QueueHandle_t xQueue;
+ queue_t xQueue;
  uint32_t ulVarToSend, ulValReceived;
 
 	// Create a queue to hold one uint32_t value.  It is strongly
-	// recommended *not* to use xQueueOverwrite() on queues that can
+	// recommended *not* to use queue_overwrite() on queues that can
 	// contain more than one value, and doing so will trigger an assertion
 	// if configASSERT() is defined.
-	xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
+	xQueue = queue_create( 1, sizeof( uint32_t ) );
 
-	// Write the value 10 to the queue using xQueueOverwrite().
+	// Write the value 10 to the queue using queue_overwrite().
 	ulVarToSend = 10;
-	xQueueOverwrite( xQueue, &ulVarToSend );
+	queue_overwrite( xQueue, &ulVarToSend );
 
 	// Peeking the queue should now return 10, but leave the value 10 in
 	// the queue.  A block time of zero is used as it is known that the
 	// queue holds a value.
 	ulValReceived = 0;
-	xQueuePeek( xQueue, &ulValReceived, 0 );
+	queue_peek( xQueue, &ulValReceived, 0 );
 
 	if( ulValReceived != 10 )
 	{
 		// Error unless the item was removed by a different task.
 	}
 
-	// The queue is still full.  Use xQueueOverwrite() to overwrite the
+	// The queue is still full.  Use queue_overwrite() to overwrite the
 	// value held in the queue with 100.
 	ulVarToSend = 100;
-	xQueueOverwrite( xQueue, &ulVarToSend );
+	queue_overwrite( xQueue, &ulVarToSend );
 
 	// This time read from the queue, leaving the queue empty once more.
 	// A block time of 0 is used again.
-	xQueueReceive( xQueue, &ulValReceived, 0 );
+	queue_recv( xQueue, &ulValReceived, 0 );
 
 	// The value read should be the last value written, even though the
 	// queue was already full when the value was written.
@@ -598,25 +598,25 @@ typedef void * QueueSetMemberHandle_t;
 	// ...
 }
  </pre>
- * \defgroup xQueueOverwrite xQueueOverwrite
+ * \defgroup queue_overwrite queue_overwrite
  * \ingroup QueueManagement
  */
-#define xQueueOverwrite( xQueue, pvItemToQueue ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), 0, queueOVERWRITE )
+#define queue_overwrite( xQueue, pvItemToQueue ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), 0, queueOVERWRITE )
 
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueGenericSend(
-									QueueHandle_t xQueue,
+ int32_t xQueueGenericSend(
+									queue_t xQueue,
 									const void * pvItemToQueue,
-									TickType_t xTicksToWait
-									BaseType_t xCopyPosition
+									uint32_t xTicksToWait
+									int32_t xCopyPosition
 								);
  * </pre>
  *
- * It is preferred that the macros xQueueSend(), xQueueSendToFront() and
- * xQueueSendToBack() are used in place of calling this function directly.
+ * It is preferred that the macros xQueueSend(), queue_prepend() and
+ * queue_append() are used in place of calling this function directly.
  *
  * Post an item on a queue.  The item is queued by copy, not by reference.
  * This function must not be called from an interrupt service routine.
@@ -653,15 +653,15 @@ typedef void * QueueSetMemberHandle_t;
 
  void vATask( void *pvParameters )
  {
- QueueHandle_t xQueue1, xQueue2;
+ queue_t xQueue1, xQueue2;
  struct AMessage *pxMessage;
 
 	// Create a queue capable of containing 10 uint32_t values.
-	xQueue1 = xQueueCreate( 10, sizeof( uint32_t ) );
+	xQueue1 = queue_create( 10, sizeof( uint32_t ) );
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue2 = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue2 = queue_create( 10, sizeof( struct AMessage * ) );
 
 	// ...
 
@@ -669,7 +669,7 @@ typedef void * QueueSetMemberHandle_t;
 	{
 		// Send an uint32_t.  Wait for 10 ticks for space to become
 		// available if necessary.
-		if( xQueueGenericSend( xQueue1, ( void * ) &ulVar, ( TickType_t ) 10, queueSEND_TO_BACK ) != pdPASS )
+		if( xQueueGenericSend( xQueue1, ( void * ) &ulVar, ( uint32_t ) 10, queueSEND_TO_BACK ) != pdPASS )
 		{
 			// Failed to post the message, even after 10 ticks.
 		}
@@ -680,7 +680,7 @@ typedef void * QueueSetMemberHandle_t;
 		// Send a pointer to a struct AMessage object.  Don't block if the
 		// queue is already full.
 		pxMessage = & xMessage;
-		xQueueGenericSend( xQueue2, ( void * ) &pxMessage, ( TickType_t ) 0, queueSEND_TO_BACK );
+		xQueueGenericSend( xQueue2, ( void * ) &pxMessage, ( uint32_t ) 0, queueSEND_TO_BACK );
 	}
 
 	// ... Rest of task code.
@@ -689,15 +689,15 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQueue, TickType_t xTicksToWait, const BaseType_t xCopyPosition ) ;
+int32_t xQueueGenericSend( queue_t xQueue, const void * const pvItemToQueue, uint32_t xTicksToWait, const int32_t xCopyPosition ) ;
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueuePeek(
-							 QueueHandle_t xQueue,
+ int32_t queue_peek(
+							 queue_t xQueue,
 							 void *pvBuffer,
-							 TickType_t xTicksToWait
+							 uint32_t xTicksToWait
 						 );</pre>
  *
  * This is a macro that calls the xQueueGenericReceive() function.
@@ -708,7 +708,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * the queue was created.
  *
  * Successfully received items remain on the queue so will be returned again
- * by the next call, or a call to xQueueReceive().
+ * by the next call, or a call to queue_recv().
  *
  * This macro must not be used in an interrupt service routine.  See
  * xQueuePeekFromISR() for an alternative that can be called from an interrupt
@@ -724,7 +724,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * waiting for an item to receive should the queue be empty at the time
  * of the call.	 The time is defined in tick periods so the constant
  * portTICK_PERIOD_MS should be used to convert to real time if this is required.
- * xQueuePeek() will return immediately if xTicksToWait is 0 and the queue
+ * queue_peek() will return immediately if xTicksToWait is 0 and the queue
  * is empty.
  *
  * @return pdTRUE if an item was successfully received from the queue,
@@ -738,7 +738,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
 	char ucData[ 20 ];
  } xMessage;
 
- QueueHandle_t xQueue;
+ queue_t xQueue;
 
  // Task to create a queue and post a value.
  void vATask( void *pvParameters )
@@ -747,7 +747,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue = queue_create( 10, sizeof( struct AMessage * ) );
 	if( xQueue == 0 )
 	{
 		// Failed to create the queue.
@@ -758,7 +758,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
 	// Send a pointer to a struct AMessage object.  Don't block if the
 	// queue is already full.
 	pxMessage = & xMessage;
-	xQueueSend( xQueue, ( void * ) &pxMessage, ( TickType_t ) 0 );
+	xQueueSend( xQueue, ( void * ) &pxMessage, ( uint32_t ) 0 );
 
 	// ... Rest of task code.
  }
@@ -772,7 +772,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
 	{
 		// Peek a message on the created queue.  Block for 10 ticks if a
 		// message is not immediately available.
-		if( xQueuePeek( xQueue, &( pxRxedMessage ), ( TickType_t ) 10 ) )
+		if( queue_peek( xQueue, &( pxRxedMessage ), ( uint32_t ) 10 ) )
 		{
 			// pcRxedMessage now points to the struct AMessage variable posted
 			// by vATask, but the item still remains on the queue.
@@ -782,20 +782,20 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
 	// ... Rest of task code.
  }
  </pre>
- * \defgroup xQueueReceive xQueueReceive
+ * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-#define xQueuePeek( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdTRUE )
+#define queue_peek( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdTRUE )
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueuePeekFromISR(
-									QueueHandle_t xQueue,
+ int32_t xQueuePeekFromISR(
+									queue_t xQueue,
 									void *pvBuffer,
 								);</pre>
  *
- * A version of xQueuePeek() that can be called from an interrupt service
+ * A version of queue_peek() that can be called from an interrupt service
  * routine (ISR).
  *
  * Receive an item from a queue without removing the item from the queue.
@@ -804,7 +804,7 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * the queue was created.
  *
  * Successfully received items remain on the queue so will be returned again
- * by the next call, or a call to xQueueReceive().
+ * by the next call, or a call to queue_recv().
  *
  * @param xQueue The handle to the queue from which the item is to be
  * received.
@@ -818,15 +818,15 @@ BaseType_t xQueueGenericSend( QueueHandle_t xQueue, const void * const pvItemToQ
  * \defgroup xQueuePeekFromISR xQueuePeekFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
+int32_t xQueuePeekFromISR( queue_t xQueue, void * const pvBuffer ) ;
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueReceive(
-								 QueueHandle_t xQueue,
+ int32_t queue_recv(
+								 queue_t xQueue,
 								 void *pvBuffer,
-								 TickType_t xTicksToWait
+								 uint32_t xTicksToWait
 							);</pre>
  *
  * This is a macro that calls the xQueueGenericReceive() function.
@@ -848,7 +848,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
  *
  * @param xTicksToWait The maximum amount of time the task should block
  * waiting for an item to receive should the queue be empty at the time
- * of the call.	 xQueueReceive() will return immediately if xTicksToWait
+ * of the call.	 queue_recv() will return immediately if xTicksToWait
  * is zero and the queue is empty.  The time is defined in tick periods so the
  * constant portTICK_PERIOD_MS should be used to convert to real time if this is
  * required.
@@ -864,7 +864,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	char ucData[ 20 ];
  } xMessage;
 
- QueueHandle_t xQueue;
+ queue_t xQueue;
 
  // Task to create a queue and post a value.
  void vATask( void *pvParameters )
@@ -873,7 +873,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue = queue_create( 10, sizeof( struct AMessage * ) );
 	if( xQueue == 0 )
 	{
 		// Failed to create the queue.
@@ -884,7 +884,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	// Send a pointer to a struct AMessage object.  Don't block if the
 	// queue is already full.
 	pxMessage = & xMessage;
-	xQueueSend( xQueue, ( void * ) &pxMessage, ( TickType_t ) 0 );
+	xQueueSend( xQueue, ( void * ) &pxMessage, ( uint32_t ) 0 );
 
 	// ... Rest of task code.
  }
@@ -898,7 +898,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	{
 		// Receive a message on the created queue.  Block for 10 ticks if a
 		// message is not immediately available.
-		if( xQueueReceive( xQueue, &( pxRxedMessage ), ( TickType_t ) 10 ) )
+		if( queue_recv( xQueue, &( pxRxedMessage ), ( uint32_t ) 10 ) )
 		{
 			// pcRxedMessage now points to the struct AMessage variable posted
 			// by vATask.
@@ -908,23 +908,23 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	// ... Rest of task code.
  }
  </pre>
- * \defgroup xQueueReceive xQueueReceive
+ * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-#define xQueueReceive( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdFALSE )
+#define queue_recv( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdFALSE )
 
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueGenericReceive(
-									   QueueHandle_t	xQueue,
+ int32_t xQueueGenericReceive(
+									   queue_t	xQueue,
 									   void	*pvBuffer,
-									   TickType_t	xTicksToWait
-									   BaseType_t	xJustPeek
+									   uint32_t	xTicksToWait
+									   int32_t	xJustPeek
 									);</pre>
  *
- * It is preferred that the macro xQueueReceive() be used rather than calling
+ * It is preferred that the macro queue_recv() be used rather than calling
  * this function directly.
  *
  * Receive an item from a queue.  The item is received by copy so a buffer of
@@ -949,7 +949,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
  *
  * @param xJustPeek When set to true, the item received from the queue is not
  * actually removed from the queue - meaning a subsequent call to
- * xQueueReceive() will return the same item.  When set to false, the item
+ * queue_recv() will return the same item.  When set to false, the item
  * being received from the queue is also removed from the queue.
  *
  * @return pdTRUE if an item was successfully received from the queue,
@@ -963,7 +963,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	char ucData[ 20 ];
  } xMessage;
 
- QueueHandle_t xQueue;
+ queue_t xQueue;
 
  // Task to create a queue and post a value.
  void vATask( void *pvParameters )
@@ -972,7 +972,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 
 	// Create a queue capable of containing 10 pointers to AMessage structures.
 	// These should be passed by pointer as they contain a lot of data.
-	xQueue = xQueueCreate( 10, sizeof( struct AMessage * ) );
+	xQueue = queue_create( 10, sizeof( struct AMessage * ) );
 	if( xQueue == 0 )
 	{
 		// Failed to create the queue.
@@ -983,7 +983,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	// Send a pointer to a struct AMessage object.  Don't block if the
 	// queue is already full.
 	pxMessage = & xMessage;
-	xQueueSend( xQueue, ( void * ) &pxMessage, ( TickType_t ) 0 );
+	xQueueSend( xQueue, ( void * ) &pxMessage, ( uint32_t ) 0 );
 
 	// ... Rest of task code.
  }
@@ -997,7 +997,7 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	{
 		// Receive a message on the created queue.  Block for 10 ticks if a
 		// message is not immediately available.
-		if( xQueueGenericReceive( xQueue, &( pxRxedMessage ), ( TickType_t ) 10 ) )
+		if( xQueueGenericReceive( xQueue, &( pxRxedMessage ), ( uint32_t ) 10 ) )
 		{
 			// pcRxedMessage now points to the struct AMessage variable posted
 			// by vATask.
@@ -1007,14 +1007,14 @@ BaseType_t xQueuePeekFromISR( QueueHandle_t xQueue, void * const pvBuffer ) ;
 	// ... Rest of task code.
  }
  </pre>
- * \defgroup xQueueReceive xQueueReceive
+ * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericReceive( QueueHandle_t xQueue, void * const pvBuffer, TickType_t xTicksToWait, const BaseType_t xJustPeek ) ;
+int32_t xQueueGenericReceive( queue_t xQueue, void * const pvBuffer, uint32_t xTicksToWait, const int32_t xJustPeek ) ;
 
 /**
  * queue. h
- * <pre>UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue );</pre>
+ * <pre>uint32_t queue_get_waiting( const queue_t xQueue );</pre>
  *
  * Return the number of messages stored in a queue.
  *
@@ -1022,14 +1022,14 @@ BaseType_t xQueueGenericReceive( QueueHandle_t xQueue, void * const pvBuffer, Ti
  *
  * @return The number of messages available in the queue.
  *
- * \defgroup uxQueueMessagesWaiting uxQueueMessagesWaiting
+ * \defgroup queue_get_waiting queue_get_waiting
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) ;
+uint32_t queue_get_waiting( const queue_t xQueue ) ;
 
 /**
  * queue. h
- * <pre>UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue );</pre>
+ * <pre>uint32_t queue_get_available( const queue_t xQueue );</pre>
  *
  * Return the number of free spaces available in a queue.  This is equal to the
  * number of items that can be sent to the queue before the queue becomes full
@@ -1039,32 +1039,32 @@ UBaseType_t uxQueueMessagesWaiting( const QueueHandle_t xQueue ) ;
  *
  * @return The number of spaces available in the queue.
  *
- * \defgroup uxQueueMessagesWaiting uxQueueMessagesWaiting
+ * \defgroup queue_get_waiting queue_get_waiting
  * \ingroup QueueManagement
  */
-UBaseType_t uxQueueSpacesAvailable( const QueueHandle_t xQueue ) ;
+uint32_t queue_get_available( const queue_t xQueue ) ;
 
 /**
  * queue. h
- * <pre>void vQueueDelete( QueueHandle_t xQueue );</pre>
+ * <pre>void queue_delete( queue_t xQueue );</pre>
  *
  * Delete a queue - freeing all the memory allocated for storing of items
  * placed on the queue.
  *
  * @param xQueue A handle to the queue to be deleted.
  *
- * \defgroup vQueueDelete vQueueDelete
+ * \defgroup queue_delete queue_delete
  * \ingroup QueueManagement
  */
-void vQueueDelete( QueueHandle_t xQueue ) ;
+void queue_delete( queue_t xQueue ) ;
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSendToFrontFromISR(
-										 QueueHandle_t xQueue,
+ int32_t xQueueSendToFrontFromISR(
+										 queue_t xQueue,
 										 const void *pvItemToQueue,
-										 BaseType_t *pxHigherPriorityTaskWoken
+										 int32_t *pxHigherPriorityTaskWoken
 									  );
  </pre>
  *
@@ -1099,7 +1099,7 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
  void vBufferISR( void )
  {
  char cIn;
- BaseType_t xHigherPrioritTaskWoken;
+ int32_t xHigherPrioritTaskWoken;
 
 	// We have not woken a task at the start of the ISR.
 	xHigherPriorityTaskWoken = pdFALSE;
@@ -1132,10 +1132,10 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSendToBackFromISR(
-										 QueueHandle_t xQueue,
+ int32_t xQueueSendToBackFromISR(
+										 queue_t xQueue,
 										 const void *pvItemToQueue,
-										 BaseType_t *pxHigherPriorityTaskWoken
+										 int32_t *pxHigherPriorityTaskWoken
 									  );
  </pre>
  *
@@ -1170,7 +1170,7 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
  void vBufferISR( void )
  {
  char cIn;
- BaseType_t xHigherPriorityTaskWoken;
+ int32_t xHigherPriorityTaskWoken;
 
 	// We have not woken a task at the start of the ISR.
 	xHigherPriorityTaskWoken = pdFALSE;
@@ -1202,14 +1202,14 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueOverwriteFromISR(
-							  QueueHandle_t xQueue,
+ int32_t xQueueOverwriteFromISR(
+							  queue_t xQueue,
 							  const void * pvItemToQueue,
-							  BaseType_t *pxHigherPriorityTaskWoken
+							  int32_t *pxHigherPriorityTaskWoken
 						 );
  * </pre>
  *
- * A version of xQueueOverwrite() that can be used in an interrupt service
+ * A version of queue_overwrite() that can be used in an interrupt service
  * routine (ISR).
  *
  * Only for use with queues that can hold a single item - so the queue is either
@@ -1240,7 +1240,7 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
  * Example usage:
    <pre>
 
- QueueHandle_t xQueue;
+ queue_t xQueue;
 
  void vFunction( void *pvParameters )
  {
@@ -1248,13 +1248,13 @@ void vQueueDelete( QueueHandle_t xQueue ) ;
 	// recommended *not* to use xQueueOverwriteFromISR() on queues that can
 	// contain more than one value, and doing so will trigger an assertion
 	// if configASSERT() is defined.
-	xQueue = xQueueCreate( 1, sizeof( uint32_t ) );
+	xQueue = queue_create( 1, sizeof( uint32_t ) );
 }
 
 void vAnInterruptHandler( void )
 {
 // xHigherPriorityTaskWoken must be set to pdFALSE before it is used.
-BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+int32_t xHigherPriorityTaskWoken = pdFALSE;
 uint32_t ulVarToSend, ulValReceived;
 
 	// Write the value 10 to the queue using xQueueOverwriteFromISR().
@@ -1289,10 +1289,10 @@ uint32_t ulVarToSend, ulValReceived;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueSendFromISR(
-									 QueueHandle_t xQueue,
+ int32_t xQueueSendFromISR(
+									 queue_t xQueue,
 									 const void *pvItemToQueue,
-									 BaseType_t *pxHigherPriorityTaskWoken
+									 int32_t *pxHigherPriorityTaskWoken
 								);
  </pre>
  *
@@ -1330,7 +1330,7 @@ uint32_t ulVarToSend, ulValReceived;
  void vBufferISR( void )
  {
  char cIn;
- BaseType_t xHigherPriorityTaskWoken;
+ int32_t xHigherPriorityTaskWoken;
 
 	// We have not woken a task at the start of the ISR.
 	xHigherPriorityTaskWoken = pdFALSE;
@@ -1363,11 +1363,11 @@ uint32_t ulVarToSend, ulValReceived;
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueGenericSendFromISR(
-										   QueueHandle_t		xQueue,
+ int32_t xQueueGenericSendFromISR(
+										   queue_t		xQueue,
 										   const	void	*pvItemToQueue,
-										   BaseType_t	*pxHigherPriorityTaskWoken,
-										   BaseType_t	xCopyPosition
+										   int32_t	*pxHigherPriorityTaskWoken,
+										   int32_t	xCopyPosition
 									   );
  </pre>
  *
@@ -1409,7 +1409,7 @@ uint32_t ulVarToSend, ulValReceived;
  void vBufferISR( void )
  {
  char cIn;
- BaseType_t xHigherPriorityTaskWokenByPost;
+ int32_t xHigherPriorityTaskWokenByPost;
 
 	// We have not woken a task at the start of the ISR.
 	xHigherPriorityTaskWokenByPost = pdFALSE;
@@ -1437,16 +1437,16 @@ uint32_t ulVarToSend, ulValReceived;
  * \defgroup xQueueSendFromISR xQueueSendFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueueGenericSendFromISR( QueueHandle_t xQueue, const void * const pvItemToQueue, BaseType_t * const pxHigherPriorityTaskWoken, const BaseType_t xCopyPosition ) ;
-BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue, BaseType_t * const pxHigherPriorityTaskWoken ) ;
+int32_t xQueueGenericSendFromISR( queue_t xQueue, const void * const pvItemToQueue, int32_t * const pxHigherPriorityTaskWoken, const int32_t xCopyPosition ) ;
+int32_t xQueueGiveFromISR( queue_t xQueue, int32_t * const pxHigherPriorityTaskWoken ) ;
 
 /**
  * queue. h
  * <pre>
- BaseType_t xQueueReceiveFromISR(
-									   QueueHandle_t	xQueue,
+ int32_t xQueueReceiveFromISR(
+									   queue_t	xQueue,
 									   void	*pvBuffer,
-									   BaseType_t *pxTaskWoken
+									   int32_t *pxTaskWoken
 								   );
  * </pre>
  *
@@ -1470,16 +1470,16 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue, BaseType_t * const pxHigherP
  * Example usage:
    <pre>
 
- QueueHandle_t xQueue;
+ queue_t xQueue;
 
  // Function to create a queue and post some values.
  void vAFunction( void *pvParameters )
  {
  char cValueToPost;
- const TickType_t xTicksToWait = ( TickType_t )0xff;
+ const uint32_t xTicksToWait = ( uint32_t )0xff;
 
 	// Create a queue capable of containing 10 characters.
-	xQueue = xQueueCreate( 10, sizeof( char ) );
+	xQueue = queue_create( 10, sizeof( char ) );
 	if( xQueue == 0 )
 	{
 		// Failed to create the queue.
@@ -1504,7 +1504,7 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue, BaseType_t * const pxHigherP
  // ISR that outputs all the characters received on the queue.
  void vISR_Routine( void )
  {
- BaseType_t xTaskWokenByReceive = pdFALSE;
+ int32_t xTaskWokenByReceive = pdFALSE;
  char cRxedChar;
 
 	while( xQueueReceiveFromISR( xQueue, ( void * ) &cRxedChar, &xTaskWokenByReceive) )
@@ -1527,33 +1527,33 @@ BaseType_t xQueueGiveFromISR( QueueHandle_t xQueue, BaseType_t * const pxHigherP
  * \defgroup xQueueReceiveFromISR xQueueReceiveFromISR
  * \ingroup QueueManagement
  */
-BaseType_t xQueueReceiveFromISR( QueueHandle_t xQueue, void * const pvBuffer, BaseType_t * const pxHigherPriorityTaskWoken ) ;
+int32_t xQueueReceiveFromISR( queue_t xQueue, void * const pvBuffer, int32_t * const pxHigherPriorityTaskWoken ) ;
 
 /*
  * Utilities to query queues that are safe to use from an ISR.  These utilities
  * should be used only from witin an ISR, or within a critical section.
  */
-BaseType_t xQueueIsQueueEmptyFromISR( const QueueHandle_t xQueue ) ;
-BaseType_t xQueueIsQueueFullFromISR( const QueueHandle_t xQueue ) ;
-UBaseType_t uxQueueMessagesWaitingFromISR( const QueueHandle_t xQueue ) ;
+int32_t xQueueIsQueueEmptyFromISR( const queue_t xQueue ) ;
+int32_t xQueueIsQueueFullFromISR( const queue_t xQueue ) ;
+uint32_t uxQueueMessagesWaitingFromISR( const queue_t xQueue ) ;
 
 /*
- * For internal use only.  Use xSemaphoreCreateMutex(),
- * xSemaphoreCreateCounting() or xSemaphoreGetMutexHolder() instead of calling
+ * For internal use only.  Use mutex_create(),
+ * sem_create() or mutex_get_owner() instead of calling
  * these functions directly.
  */
-QueueHandle_t xQueueCreateMutex( const uint8_t ucQueueType ) ;
-QueueHandle_t xQueueCreateMutexStatic( const uint8_t ucQueueType, StaticQueue_t *pxStaticQueue ) ;
-QueueHandle_t xQueueCreateCountingSemaphore( const UBaseType_t uxMaxCount, const UBaseType_t uxInitialCount ) ;
-QueueHandle_t xQueueCreateCountingSemaphoreStatic( const UBaseType_t uxMaxCount, const UBaseType_t uxInitialCount, StaticQueue_t *pxStaticQueue ) ;
-void* xQueueGetMutexHolder( QueueHandle_t xSemaphore ) ;
+queue_t xQueueCreateMutex( const uint8_t ucQueueType ) ;
+queue_t xQueueCreateMutexStatic( const uint8_t ucQueueType, StaticQueue_t *pxStaticQueue ) ;
+queue_t xQueueCreateCountingSemaphore( const uint32_t uxMaxCount, const uint32_t uxInitialCount ) ;
+queue_t xQueueCreateCountingSemaphoreStatic( const uint32_t uxMaxCount, const uint32_t uxInitialCount, StaticQueue_t *pxStaticQueue ) ;
+void* xQueueGetMutexHolder( queue_t xSemaphore ) ;
 
 /*
  * For internal use only.  Use xSemaphoreTakeMutexRecursive() or
  * xSemaphoreGiveMutexRecursive() instead of calling these functions directly.
  */
-BaseType_t xQueueTakeMutexRecursive( QueueHandle_t xMutex, TickType_t xTicksToWait ) ;
-BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
+int32_t xQueueTakeMutexRecursive( queue_t xMutex, uint32_t xTicksToWait ) ;
+int32_t xQueueGiveMutexRecursive( queue_t pxMutex ) ;
 
 /*
  * Reset a queue back to its original empty state.  The return value is now
@@ -1575,7 +1575,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * created - just the number that the registry can hold.
  *
  * @param xQueue The handle of the queue being added to the registry.  This
- * is the handle returned by a call to xQueueCreate().  Semaphore and mutex
+ * is the handle returned by a call to queue_create().  Semaphore and mutex
  * handles can also be passed in here.
  *
  * @param pcName The name to be associated with the handle.  This is the
@@ -1584,7 +1584,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * preferably in ROM/Flash), not on the stack.
  */
 #if( configQUEUE_REGISTRY_SIZE > 0 )
-	void vQueueAddToRegistry( QueueHandle_t xQueue, const char *pcName ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+	void vQueueAddToRegistry( queue_t xQueue, const char *pcName ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif
 
 /*
@@ -1598,7 +1598,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * @param xQueue The handle of the queue being removed from the registry.
  */
 #if( configQUEUE_REGISTRY_SIZE > 0 )
-	void vQueueUnregisterQueue( QueueHandle_t xQueue ) ;
+	void vQueueUnregisterQueue( queue_t xQueue ) ;
 #endif
 
 /*
@@ -1613,7 +1613,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * returned.
  */
 #if( configQUEUE_REGISTRY_SIZE > 0 )
-	const char *pcQueueGetName( QueueHandle_t xQueue ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+	const char *pcQueueGetName( queue_t xQueue ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif
 
 /*
@@ -1622,7 +1622,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * RTOS objects that use the queue structure as their base.
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	QueueHandle_t xQueueGenericCreate( const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, const uint8_t ucQueueType ) ;
+	queue_t xQueueGenericCreate( const uint32_t uxQueueLength, const uint32_t uxItemSize, const uint8_t ucQueueType ) ;
 #endif
 
 /*
@@ -1631,7 +1631,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * RTOS objects that use the queue structure as their base.
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	QueueHandle_t xQueueGenericCreateStatic( const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, uint8_t *pucQueueStorage, StaticQueue_t *pxStaticQueue, const uint8_t ucQueueType ) ;
+	queue_t xQueueGenericCreateStatic( const uint32_t uxQueueLength, const uint32_t uxItemSize, uint8_t *pucQueueStorage, StaticQueue_t *pxStaticQueue, const uint8_t ucQueueType ) ;
 #endif
 
 /*
@@ -1682,7 +1682,7 @@ BaseType_t xQueueGiveMutexRecursive( QueueHandle_t pxMutex ) ;
  * @return If the queue set is created successfully then a handle to the created
  * queue set is returned.  Otherwise NULL is returned.
  */
-QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) ;
+QueueSetHandle_t xQueueCreateSet( const uint32_t uxEventQueueLength ) ;
 
 /*
  * Adds a queue or semaphore to a queue set that was previously created by a
@@ -1706,7 +1706,7 @@ QueueSetHandle_t xQueueCreateSet( const UBaseType_t uxEventQueueLength ) ;
  * queue set because it is already a member of a different queue set then pdFAIL
  * is returned.
  */
-BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) ;
+int32_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) ;
 
 /*
  * Removes a queue or semaphore from a queue set.  A queue or semaphore can only
@@ -1725,7 +1725,7 @@ BaseType_t xQueueAddToSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHan
  * then pdPASS is returned.  If the queue was not in the queue set, or the
  * queue (or semaphore) was not empty, then pdFAIL is returned.
  */
-BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) ;
+int32_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueSetHandle_t xQueueSet ) ;
 
 /*
  * xQueueSelectFromSet() selects from the members of a queue set a queue or
@@ -1761,7 +1761,7 @@ BaseType_t xQueueRemoveFromSet( QueueSetMemberHandle_t xQueueOrSemaphore, QueueS
  * in the queue set that is available, or NULL if no such queue or semaphore
  * exists before before the specified block time expires.
  */
-QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, const TickType_t xTicksToWait ) ;
+QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, const uint32_t xTicksToWait ) ;
 
 /*
  * A version of xQueueSelectFromSet() that can be used from an ISR.
@@ -1769,11 +1769,11 @@ QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, const Ti
 QueueSetMemberHandle_t xQueueSelectFromSetFromISR( QueueSetHandle_t xQueueSet ) ;
 
 /* Not public API functions. */
-void vQueueWaitForMessageRestricted( QueueHandle_t xQueue, TickType_t xTicksToWait, const BaseType_t xWaitIndefinitely ) ;
-BaseType_t xQueueGenericReset( QueueHandle_t xQueue, BaseType_t xNewQueue ) ;
-void vQueueSetQueueNumber( QueueHandle_t xQueue, UBaseType_t uxQueueNumber ) ;
-UBaseType_t uxQueueGetQueueNumber( QueueHandle_t xQueue ) ;
-uint8_t ucQueueGetQueueType( QueueHandle_t xQueue ) ;
+void vQueueWaitForMessageRestricted( queue_t xQueue, uint32_t xTicksToWait, const int32_t xWaitIndefinitely ) ;
+int32_t xQueueGenericReset( queue_t xQueue, int32_t xNewQueue ) ;
+void vQueueSetQueueNumber( queue_t xQueue, uint32_t uxQueueNumber ) ;
+uint32_t uxQueueGetQueueNumber( queue_t xQueue ) ;
+uint8_t ucQueueGetQueueType( queue_t xQueue ) ;
 
 
 #ifdef __cplusplus

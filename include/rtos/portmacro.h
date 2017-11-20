@@ -93,12 +93,12 @@
 #define portSTACK_TYPE	uint32_t
 #define portBASE_TYPE	long
 
-typedef portSTACK_TYPE StackType_t;
-typedef long BaseType_t;
-typedef unsigned long UBaseType_t;
+typedef portSTACK_TYPE task_stack_t;
+typedef long int32_t;
+typedef unsigned long uint32_t;
 
-typedef uint32_t TickType_t;
-#define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+typedef uint32_t uint32_t;
+#define portMAX_DELAY ( uint32_t ) 0xffffffffUL
 
 /* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
 not need to be guarded with a critical section. */
@@ -108,7 +108,7 @@ not need to be guarded with a critical section. */
 
 /* Hardware specifics. */
 #define portSTACK_GROWTH			( -1 )
-#define portTICK_PERIOD_MS			( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#define portTICK_PERIOD_MS			( ( uint32_t ) 1000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT			8
 
 /*-----------------------------------------------------------*/

@@ -115,14 +115,15 @@
 #define configCPU_CLOCK_HZ                      100000000UL
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
 #define configUSE_TICKLESS_IDLE                 0
-#define configTICK_RATE_HZ                      ( ( TickType_t ) 1000 )
+#define configTICK_RATE_HZ                      ( ( uint32_t ) 1000 )
 #define configPERIPHERAL_CLOCK_HZ               ( 33333000UL )
 #define configUSE_PREEMPTION                    1
 #define configUSE_IDLE_HOOK                     0
 #define configUSE_TICK_HOOK                     0
 #define configMAX_PRIORITIES                    ( 16 )
 #define configMINIMAL_STACK_SIZE                ( ( unsigned short ) 250 )
-#define configTOTAL_HEAP_SIZE                   ( 256 * 1024 )
+// allocate 1 MB for FreeRTOS heap
+#define configTOTAL_HEAP_SIZE                   ( 0x100000 )
 #define configMAX_TASK_NAME_LEN                 ( 32 )
 #define configUSE_TRACE_FACILITY                1
 #define configUSE_16_BIT_TICKS                  0

@@ -90,49 +90,49 @@ extern "C" {
 /**
  * task. h
  *
- * Type by which tasks are referenced.  For example, a call to xTaskCreate
- * returns (via a pointer parameter) an TaskHandle_t variable that can then
- * be used as a parameter to vTaskDelete to delete the task.
+ * Type by which tasks are referenced.  For example, a call to task_create
+ * returns (via a pointer parameter) an task_t variable that can then
+ * be used as a parameter to task_delete to delete the task.
  *
- * \defgroup TaskHandle_t TaskHandle_t
+ * \defgroup task_t task_t
  * \ingroup Tasks
  */
-typedef void * TaskHandle_t;
+typedef void * task_t;
 
 /*
  * Defines the prototype to which the application task hook function must
  * conform.
  */
-typedef BaseType_t (*TaskHookFunction_t)( void * );
+typedef int32_t (*TaskHookFunction_t)( void * );
 
-/* Task states returned by eTaskGetState. */
+/* Task states returned by task_get_state. */
 typedef enum
 {
-	eRunning = 0,	/* A task is querying the state of itself, so must be running. */
-	eReady,			/* The task being queried is in a read or pending ready list. */
-	eBlocked,		/* The task being queried is in the Blocked state. */
-	eSuspended,		/* The task being queried is in the Suspended state, or is in the Blocked state with an infinite time out. */
-	eDeleted,		/* The task being queried has been deleted, but its TCB has not yet been freed. */
-	eInvalid			/* Used as an 'invalid state' value. */
-} eTaskState;
+	E_TASK_STATE_RUNNING = 0,	/* A task is querying the state of itself, so must be running. */
+	E_TASK_STATE_READY,			/* The task being queried is in a read or pending ready list. */
+	E_TASK_STATE_BLOCKED,		/* The task being queried is in the Blocked state. */
+	E_TASK_STATE_SUSPENDED,		/* The task being queried is in the Suspended state, or is in the Blocked state with an infinite time out. */
+	E_TASK_STATE_DELETED,		/* The task being queried has been deleted, but its TCB has not yet been freed. */
+	E_TASK_STATE_INVALID			/* Used as an 'invalid state' value. */
+} task_state_e_t;
 
 /* Actions that can be performed when vTaskNotify() is called. */
 typedef enum
 {
-	eNoAction = 0,				/* Notify the task without updating its notify value. */
-	eSetBits,					/* Set bits in the task's notification value. */
-	eIncrement,					/* Increment the task's notification value. */
-	eSetValueWithOverwrite,		/* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
-	eSetValueWithoutOverwrite	/* Set the task's notification value if the previous value has been read by the task. */
-} eNotifyAction;
+	E_NOTIFY_ACTION_NONE = 0,				/* Notify the task without updating its notify value. */
+	E_NOTIFY_ACTION_BITS,					/* Set bits in the task's notification value. */
+	E_NOTIFY_ACTION_INCR,					/* Increment the task's notification value. */
+	E_NOTIFY_ACTION_OWRITE,		/* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
+	E_NOTIFY_ACTION_NO_OWRITE	/* Set the task's notification value if the previous value has been read by the task. */
+} notify_action_e_t;
 
 /*
  * Used internally only.
  */
 typedef struct xTIME_OUT
 {
-	BaseType_t xOverflowCount;
-	TickType_t xTimeOnEntering;
+	int32_t xOverflowCount;
+	uint32_t xTimeOnEntering;
 } TimeOut_t;
 
 /*
@@ -140,26 +140,26 @@ typedef struct xTIME_OUT
  */
 typedef struct xTASK_PARAMETERS
 {
-	TaskFunction_t pvTaskCode;
+	task_fn_t pvTaskCode;
 	const char * const pcName;	/*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 	uint16_t usStackDepth;
 	void *pvParameters;
-	UBaseType_t uxPriority;
-	StackType_t *puxStackBuffer;
+	uint32_t uxPriority;
+	task_stack_t *puxStackBuffer;
 } TaskParameters_t;
 
 /* Used with the uxTaskGetSystemState() function to return the state of each task
 in the system. */
 typedef struct xTASK_STATUS
 {
-	TaskHandle_t xHandle;			/* The handle of the task to which the rest of the information in the structure relates. */
+	task_t xHandle;			/* The handle of the task to which the rest of the information in the structure relates. */
 	const char *pcTaskName;			/* A pointer to the task's name.  This value will be invalid if the task was deleted since the structure was populated! */ /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-	UBaseType_t xTaskNumber;		/* A number unique to the task. */
-	eTaskState eCurrentState;		/* The state in which the task existed when the structure was populated. */
-	UBaseType_t uxCurrentPriority;	/* The priority at which the task was running (may be inherited) when the structure was populated. */
-	UBaseType_t uxBasePriority;		/* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
+	uint32_t xTaskNumber;		/* A number unique to the task. */
+	task_state_e_t eCurrentState;		/* The state in which the task existed when the structure was populated. */
+	uint32_t uxCurrentPriority;	/* The priority at which the task was running (may be inherited) when the structure was populated. */
+	uint32_t uxBasePriority;		/* The priority to which the task will return if the task's current priority has been inherited to avoid unbounded priority inversion when obtaining a mutex.  Only valid if configUSE_MUTEXES is defined as 1 in FreeRTOSConfig.h. */
 	uint32_t ulRunTimeCounter;		/* The total run time allocated to the task so far, as defined by the run time stats clock.  See http://www.freertos.org/rtos-run-time-stats.html.  Only valid when configGENERATE_RUN_TIME_STATS is defined as 1 in FreeRTOSConfig.h. */
-	StackType_t *pxStackBase;		/* Points to the lowest address of the task's stack area. */
+	task_stack_t *pxStackBase;		/* Points to the lowest address of the task's stack area. */
 	uint16_t usStackHighWaterMark;	/* The minimum amount of stack space that has remained for the task since the task was created.  The closer this value is to zero the closer the task has come to overflowing its stack. */
 } TaskStatus_t;
 
@@ -176,7 +176,7 @@ typedef enum
  *
  * \ingroup TaskUtils
  */
-#define tskIDLE_PRIORITY			( ( UBaseType_t ) 0U )
+#define tskIDLE_PRIORITY			( ( uint32_t ) 0U )
 
 /**
  * task. h
@@ -240,9 +240,9 @@ typedef enum
 /* Definitions returned by xTaskGetSchedulerState().  taskSCHEDULER_SUSPENDED is
 0 to generate more optimal code when configASSERT() is defined as the constant
 is used in assert() statements. */
-#define taskSCHEDULER_SUSPENDED		( ( BaseType_t ) 0 )
-#define taskSCHEDULER_NOT_STARTED	( ( BaseType_t ) 1 )
-#define taskSCHEDULER_RUNNING		( ( BaseType_t ) 2 )
+#define taskSCHEDULER_SUSPENDED		( ( int32_t ) 0 )
+#define taskSCHEDULER_NOT_STARTED	( ( int32_t ) 1 )
+#define taskSCHEDULER_RUNNING		( ( int32_t ) 2 )
 
 
 /*-----------------------------------------------------------
@@ -252,13 +252,13 @@ is used in assert() statements. */
 /**
  * task. h
  *<pre>
- BaseType_t xTaskCreate(
-							  TaskFunction_t pvTaskCode,
+ int32_t task_create(
+							  task_fn_t pvTaskCode,
 							  const char * const pcName,
 							  uint16_t usStackDepth,
 							  void *pvParameters,
-							  UBaseType_t uxPriority,
-							  TaskHandle_t *pvCreatedTask
+							  uint32_t uxPriority,
+							  task_t *pvCreatedTask
 						  );</pre>
  *
  * Create a new task and add it to the list of tasks that are ready to run.
@@ -266,17 +266,17 @@ is used in assert() statements. */
  * Internally, within the FreeRTOS implementation, tasks use two blocks of
  * memory.  The first block is used to hold the task's data structures.  The
  * second block is used by the task as its stack.  If a task is created using
- * xTaskCreate() then both blocks of memory are automatically dynamically
- * allocated inside the xTaskCreate() function.  (see
+ * task_create() then both blocks of memory are automatically dynamically
+ * allocated inside the task_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a task is created using
- * xTaskCreateStatic() then the application writer must provide the required
- * memory.  xTaskCreateStatic() therefore allows a task to be created without
+ * task_create_static() then the application writer must provide the required
+ * memory.  task_create_static() therefore allows a task to be created without
  * using any dynamic memory allocation.
  *
- * See xTaskCreateStatic() for a version that does not use any dynamic memory
+ * See task_create_static() for a version that does not use any dynamic memory
  * allocation.
  *
- * xTaskCreate() can only be used to create a task that has unrestricted
+ * task_create() can only be used to create a task that has unrestricted
  * access to the entire microcontroller memory map.
  *
  * @param pvTaskCode Pointer to the task entry function.  Tasks
@@ -317,55 +317,55 @@ is used in assert() statements. */
  void vOtherFunction( void )
  {
  static uint8_t ucParameterToPass;
- TaskHandle_t xHandle = NULL;
+ task_t xHandle = NULL;
 
 	 // Create the task, storing the handle.  Note that the passed parameter ucParameterToPass
 	 // must exist for the lifetime of the task, so in this case is declared static.  If it was just an
 	 // an automatic stack variable it might no longer exist, or at least have been corrupted, by the time
 	 // the new task attempts to access it.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, &ucParameterToPass, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, &ucParameterToPass, tskIDLE_PRIORITY, &xHandle );
      configASSERT( xHandle );
 
 	 // Use the handle to delete the task.
      if( xHandle != NULL )
      {
-	     vTaskDelete( xHandle );
+	     task_delete( xHandle );
      }
  }
    </pre>
- * \defgroup xTaskCreate xTaskCreate
+ * \defgroup task_create task_create
  * \ingroup Tasks
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	BaseType_t xTaskCreate(	TaskFunction_t pxTaskCode,
-							const char * const pcName,
-							const uint16_t usStackDepth,
-							void * const pvParameters,
-							UBaseType_t uxPriority,
-							TaskHandle_t * const pxCreatedTask ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+task_t task_create(task_fn_t task_code, void* const param,
+					uint32_t priority, const size_t stack_size,
+					const char* const name); /*lint !e971 Unqualified
+                                                     char types are allowed
+                                                     for strings and single
+                                                     characters only. */
 #endif
 
 /**
  * task. h
  *<pre>
- TaskHandle_t xTaskCreateStatic( TaskFunction_t pvTaskCode,
+ task_t task_create_static( task_fn_t pvTaskCode,
 								 const char * const pcName,
 								 uint32_t ulStackDepth,
 								 void *pvParameters,
-								 UBaseType_t uxPriority,
-								 StackType_t *pxStackBuffer,
-								 StaticTask_t *pxTaskBuffer );</pre>
+								 uint32_t uxPriority,
+								 task_stack_t *pxStackBuffer,
+								 static_task_s_t *pxTaskBuffer );</pre>
  *
  * Create a new task and add it to the list of tasks that are ready to run.
  *
  * Internally, within the FreeRTOS implementation, tasks use two blocks of
  * memory.  The first block is used to hold the task's data structures.  The
  * second block is used by the task as its stack.  If a task is created using
- * xTaskCreate() then both blocks of memory are automatically dynamically
- * allocated inside the xTaskCreate() function.  (see
+ * task_create() then both blocks of memory are automatically dynamically
+ * allocated inside the task_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a task is created using
- * xTaskCreateStatic() then the application writer must provide the required
- * memory.  xTaskCreateStatic() therefore allows a task to be created without
+ * task_create_static() then the application writer must provide the required
+ * memory.  task_create_static() therefore allows a task to be created without
  * using any dynamic memory allocation.
  *
  * @param pvTaskCode Pointer to the task entry function.  Tasks
@@ -385,11 +385,11 @@ is used in assert() statements. */
  *
  * @param uxPriority The priority at which the task will run.
  *
- * @param pxStackBuffer Must point to a StackType_t array that has at least
+ * @param pxStackBuffer Must point to a task_stack_t array that has at least
  * ulStackDepth indexes - the array will then be used as the task's stack,
  * removing the need for the stack to be allocated dynamically.
  *
- * @param pxTaskBuffer Must point to a variable of type StaticTask_t, which will
+ * @param pxTaskBuffer Must point to a variable of type static_task_s_t, which will
  * then be used to hold the task's data structures, removing the need for the
  * memory to be allocated dynamically.
  *
@@ -408,18 +408,18 @@ is used in assert() statements. */
     #define STACK_SIZE 200
 
     // Structure that will hold the TCB of the task being created.
-    StaticTask_t xTaskBuffer;
+    static_task_s_t xTaskBuffer;
 
     // Buffer that the task being created will use as its stack.  Note this is
-    // an array of StackType_t variables.  The size of StackType_t is dependent on
+    // an array of task_stack_t variables.  The size of task_stack_t is dependent on
     // the RTOS port.
-    StackType_t xStack[ STACK_SIZE ];
+    task_stack_t xStack[ STACK_SIZE ];
 
     // Function that implements the task being created.
     void vTaskCode( void * pvParameters )
     {
         // The parameter value is expected to be 1 as 1 is passed in the
-        // pvParameters value in the call to xTaskCreateStatic().
+        // pvParameters value in the call to task_create_static().
         configASSERT( ( uint32_t ) pvParameters == 1UL );
 
         for( ;; )
@@ -431,10 +431,10 @@ is used in assert() statements. */
     // Function that creates a task.
     void vOtherFunction( void )
     {
-        TaskHandle_t xHandle = NULL;
+        task_t xHandle = NULL;
 
         // Create the task without using any dynamic memory allocation.
-        xHandle = xTaskCreateStatic(
+        xHandle = task_create_static(
                       vTaskCode,       // Function that implements the task.
                       "NAME",          // Text name for the task.
                       STACK_SIZE,      // Stack size in words, not bytes.
@@ -446,24 +446,22 @@ is used in assert() statements. */
         // puxStackBuffer and pxTaskBuffer were not NULL, so the task will have
         // been created, and xHandle will be the task's handle.  Use the handle
         // to suspend the task.
-        vTaskSuspend( xHandle );
+        task_suspend( xHandle );
     }
    </pre>
- * \defgroup xTaskCreateStatic xTaskCreateStatic
+ * \defgroup task_create_static task_create_static
  * \ingroup Tasks
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	TaskHandle_t xTaskCreateStatic(	TaskFunction_t pxTaskCode,
-									const char * const pcName,
-									const uint32_t ulStackDepth,
-									void * const pvParameters,
-									UBaseType_t uxPriority,
-									StackType_t * const puxStackBuffer,
-									StaticTask_t * const pxTaskBuffer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+	task_t task_create_static(	task_fn_t task_code, void* const param,
+								uint32_t priority, const size_t stack_size,
+								const char* const name,
+								task_stack_t * const stack_buffer,
+								static_task_s_t * const task_buffer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 /**
  * task. h
- * <pre>void vTaskDelete( TaskHandle_t xTask );</pre>
+ * <pre>void task_delete( task_t xTask );</pre>
  *
  * INCLUDE_vTaskDelete must be defined as 1 for this function to be available.
  * See the configuration section for more information.
@@ -474,12 +472,12 @@ is used in assert() statements. */
  * NOTE:  The idle task is responsible for freeing the kernel allocated
  * memory from tasks that have been deleted.  It is therefore important that
  * the idle task is not starved of microcontroller processing time if your
- * application makes any calls to vTaskDelete ().  Memory allocated by the
+ * application makes any calls to task_delete ().  Memory allocated by the
  * task code is not automatically freed, and should be freed before the task
  * is deleted.
  *
  * See the demo application file death.c for sample code that utilises
- * vTaskDelete ().
+ * task_delete ().
  *
  * @param xTask The handle of the task to be deleted.  Passing NULL will
  * cause the calling task to be deleted.
@@ -488,19 +486,19 @@ is used in assert() statements. */
    <pre>
  void vOtherFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
 
 	 // Create the task, storing the handle.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
 
 	 // Use the handle to delete the task.
-	 vTaskDelete( xHandle );
+	 task_delete( xHandle );
  }
    </pre>
- * \defgroup vTaskDelete vTaskDelete
+ * \defgroup task_delete task_delete
  * \ingroup Tasks
  */
-void vTaskDelete( TaskHandle_t xTaskToDelete ) ;
+void task_delete( task_t xTaskToDelete ) ;
 
 /*-----------------------------------------------------------
  * TASK CONTROL API
@@ -508,7 +506,7 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) ;
 
 /**
  * task. h
- * <pre>void vTaskDelay( const TickType_t xTicksToDelay );</pre>
+ * <pre>void task_delay( const uint32_t xTicksToDelay );</pre>
  *
  * Delay a task for a given number of ticks.  The actual time that the
  * task remains blocked depends on the tick rate.  The constant
@@ -519,14 +517,14 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) ;
  * See the configuration section for more information.
  *
  *
- * vTaskDelay() specifies a time at which the task wishes to unblock relative to
- * the time at which vTaskDelay() is called.  For example, specifying a block
+ * task_delay() specifies a time at which the task wishes to unblock relative to
+ * the time at which task_delay() is called.  For example, specifying a block
  * period of 100 ticks will cause the task to unblock 100 ticks after
- * vTaskDelay() is called.  vTaskDelay() does not therefore provide a good method
+ * task_delay() is called.  task_delay() does not therefore provide a good method
  * of controlling the frequency of a periodic task as the path taken through the
  * code, as well as other task and interrupt activity, will effect the frequency
- * at which vTaskDelay() gets called and therefore the time at which the task
- * next executes.  See vTaskDelayUntil() for an alternative API function designed
+ * at which task_delay() gets called and therefore the time at which the task
+ * next executes.  See task_delay_until() for an alternative API function designed
  * to facilitate fixed frequency execution.  It does this by specifying an
  * absolute time (rather than a relative time) at which the calling task should
  * unblock.
@@ -539,24 +537,24 @@ void vTaskDelete( TaskHandle_t xTaskToDelete ) ;
  void vTaskFunction( void * pvParameters )
  {
  // Block for 500ms.
- const TickType_t xDelay = 500 / portTICK_PERIOD_MS;
+ const uint32_t xDelay = 500 / portTICK_PERIOD_MS;
 
 	 for( ;; )
 	 {
 		 // Simply toggle the LED every 500ms, blocking between each toggle.
 		 vToggleLED();
-		 vTaskDelay( xDelay );
+		 task_delay( xDelay );
 	 }
  }
 
- * \defgroup vTaskDelay vTaskDelay
+ * \defgroup task_delay task_delay
  * \ingroup TaskCtrl
  */
-void vTaskDelay( const TickType_t xTicksToDelay ) ;
+void task_delay( const uint32_t xTicksToDelay ) ;
 
 /**
  * task. h
- * <pre>void vTaskDelayUntil( TickType_t *pxPreviousWakeTime, const TickType_t xTimeIncrement );</pre>
+ * <pre>void task_delay_until( uint32_t *pxPreviousWakeTime, const uint32_t xTimeIncrement );</pre>
  *
  * INCLUDE_vTaskDelayUntil must be defined as 1 for this function to be available.
  * See the configuration section for more information.
@@ -564,16 +562,16 @@ void vTaskDelay( const TickType_t xTicksToDelay ) ;
  * Delay a task until a specified time.  This function can be used by periodic
  * tasks to ensure a constant execution frequency.
  *
- * This function differs from vTaskDelay () in one important aspect:  vTaskDelay () will
- * cause a task to block for the specified number of ticks from the time vTaskDelay () is
- * called.  It is therefore difficult to use vTaskDelay () by itself to generate a fixed
+ * This function differs from task_delay () in one important aspect:  task_delay () will
+ * cause a task to block for the specified number of ticks from the time task_delay () is
+ * called.  It is therefore difficult to use task_delay () by itself to generate a fixed
  * execution frequency as the time between a task starting to execute and that task
- * calling vTaskDelay () may not be fixed [the task may take a different path though the
+ * calling task_delay () may not be fixed [the task may take a different path though the
  * code between calls, or may get interrupted or preempted a different number of times
  * each time it executes].
  *
- * Whereas vTaskDelay () specifies a wake time relative to the time at which the function
- * is called, vTaskDelayUntil () specifies the absolute (exact) time at which it wishes to
+ * Whereas task_delay () specifies a wake time relative to the time at which the function
+ * is called, task_delay_until () specifies the absolute (exact) time at which it wishes to
  * unblock.
  *
  * The constant portTICK_PERIOD_MS can be used to calculate real time from the tick
@@ -582,10 +580,10 @@ void vTaskDelay( const TickType_t xTicksToDelay ) ;
  * @param pxPreviousWakeTime Pointer to a variable that holds the time at which the
  * task was last unblocked.  The variable must be initialised with the current time
  * prior to its first use (see the example below).  Following this the variable is
- * automatically updated within vTaskDelayUntil ().
+ * automatically updated within task_delay_until ().
  *
  * @param xTimeIncrement The cycle time period.  The task will be unblocked at
- * time *pxPreviousWakeTime + xTimeIncrement.  Calling vTaskDelayUntil with the
+ * time *pxPreviousWakeTime + xTimeIncrement.  Calling task_delay_until with the
  * same xTimeIncrement parameter value will cause the task to execute with
  * a fixed interface period.
  *
@@ -594,36 +592,36 @@ void vTaskDelay( const TickType_t xTicksToDelay ) ;
  // Perform an action every 10 ticks.
  void vTaskFunction( void * pvParameters )
  {
- TickType_t xLastWakeTime;
- const TickType_t xFrequency = 10;
+ uint32_t xLastWakeTime;
+ const uint32_t xFrequency = 10;
 
 	 // Initialise the xLastWakeTime variable with the current time.
-	 xLastWakeTime = xTaskGetTickCount ();
+	 xLastWakeTime = millis ();
 	 for( ;; )
 	 {
 		 // Wait for the next cycle.
-		 vTaskDelayUntil( &xLastWakeTime, xFrequency );
+		 task_delay_until( &xLastWakeTime, xFrequency );
 
 		 // Perform action here.
 	 }
  }
    </pre>
- * \defgroup vTaskDelayUntil vTaskDelayUntil
+ * \defgroup task_delay_until task_delay_until
  * \ingroup TaskCtrl
  */
-void vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, const TickType_t xTimeIncrement ) ;
+void task_delay_until( uint32_t * const pxPreviousWakeTime, const uint32_t xTimeIncrement ) ;
 
 /**
  * task. h
- * <pre>BaseType_t xTaskAbortDelay( TaskHandle_t xTask );</pre>
+ * <pre>int32_t xTaskAbortDelay( task_t xTask );</pre>
  *
  * INCLUDE_xTaskAbortDelay must be defined as 1 in FreeRTOSConfig.h for this
  * function to be available.
  *
  * A task will enter the Blocked state when it is waiting for an event.  The
  * event it is waiting for can be a temporal event (waiting for a time), such
- * as when vTaskDelay() is called, or an event on an object, such as when
- * xQueueReceive() or ulTaskNotifyTake() is called.  If the handle of a task
+ * as when task_delay() is called, or an event on an object, such as when
+ * queue_recv() or task_notify_take() is called.  If the handle of a task
  * that is in the Blocked state is used in a call to xTaskAbortDelay() then the
  * task will leave the Blocked state, and return from whichever function call
  * placed the task into the Blocked state.
@@ -636,11 +634,11 @@ void vTaskDelayUntil( TickType_t * const pxPreviousWakeTime, const TickType_t xT
  * \defgroup xTaskAbortDelay xTaskAbortDelay
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) ;
+int32_t xTaskAbortDelay( task_t xTask ) ;
 
 /**
  * task. h
- * <pre>UBaseType_t uxTaskPriorityGet( TaskHandle_t xTask );</pre>
+ * <pre>uint32_t task_get_priority( task_t xTask );</pre>
  *
  * INCLUDE_uxTaskPriorityGet must be defined as 1 for this function to be available.
  * See the configuration section for more information.
@@ -656,17 +654,17 @@ BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) ;
    <pre>
  void vAFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
 
 	 // Create a task, storing the handle.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
 
 	 // ...
 
 	 // Use the handle to obtain the priority of the created task.
 	 // It was created with tskIDLE_PRIORITY, but may have changed
 	 // it itself.
-	 if( uxTaskPriorityGet( xHandle ) != tskIDLE_PRIORITY )
+	 if( task_get_priority( xHandle ) != tskIDLE_PRIORITY )
 	 {
 		 // The task has changed it's priority.
 	 }
@@ -674,33 +672,33 @@ BaseType_t xTaskAbortDelay( TaskHandle_t xTask ) ;
 	 // ...
 
 	 // Is our priority higher than the created task?
-	 if( uxTaskPriorityGet( xHandle ) < uxTaskPriorityGet( NULL ) )
+	 if( task_get_priority( xHandle ) < task_get_priority( NULL ) )
 	 {
 		 // Our priority (obtained using NULL handle) is higher.
 	 }
  }
    </pre>
- * \defgroup uxTaskPriorityGet uxTaskPriorityGet
+ * \defgroup task_get_priority task_get_priority
  * \ingroup TaskCtrl
  */
-UBaseType_t uxTaskPriorityGet( TaskHandle_t xTask ) ;
+uint32_t task_get_priority( task_t xTask ) ;
 
 /**
  * task. h
- * <pre>UBaseType_t uxTaskPriorityGetFromISR( TaskHandle_t xTask );</pre>
+ * <pre>uint32_t uxTaskPriorityGetFromISR( task_t xTask );</pre>
  *
- * A version of uxTaskPriorityGet() that can be used from an ISR.
+ * A version of task_get_priority() that can be used from an ISR.
  */
-UBaseType_t uxTaskPriorityGetFromISR( TaskHandle_t xTask ) ;
+uint32_t uxTaskPriorityGetFromISR( task_t xTask ) ;
 
 /**
  * task. h
- * <pre>eTaskState eTaskGetState( TaskHandle_t xTask );</pre>
+ * <pre>task_state_e_t task_get_state( task_t xTask );</pre>
  *
  * INCLUDE_eTaskGetState must be defined as 1 for this function to be available.
  * See the configuration section for more information.
  *
- * Obtain the state of any task.  States are encoded by the eTaskState
+ * Obtain the state of any task.  States are encoded by the task_state_e_t
  * enumerated type.
  *
  * @param xTask Handle of the task to be queried.
@@ -709,11 +707,11 @@ UBaseType_t uxTaskPriorityGetFromISR( TaskHandle_t xTask ) ;
  * state of the task might change between the function being called, and the
  * functions return value being tested by the calling task.
  */
-eTaskState eTaskGetState( TaskHandle_t xTask ) ;
+task_state_e_t task_get_state( task_t xTask ) ;
 
 /**
  * task. h
- * <pre>void vTaskGetInfo( TaskHandle_t xTask, TaskStatus_t *pxTaskStatus, BaseType_t xGetFreeStackSpace, eTaskState eState );</pre>
+ * <pre>void vTaskGetInfo( task_t xTask, TaskStatus_t *pxTaskStatus, int32_t xGetFreeStackSpace, task_state_e_t eState );</pre>
  *
  * configUSE_TRACE_FACILITY must be defined as 1 for this function to be
  * available.  See the configuration section for more information.
@@ -739,18 +737,18 @@ eTaskState eTaskGetState( TaskHandle_t xTask ) ;
  * state of the task being queried.  Obtaining the task state is not as fast as
  * a simple assignment - so the eState parameter is provided to allow the state
  * information to be omitted from the TaskStatus_t structure.  To obtain state
- * information then set eState to eInvalid - otherwise the value passed in
+ * information then set eState to E_TASK_STATE_INVALID - otherwise the value passed in
  * eState will be reported as the task state in the TaskStatus_t structure.
  *
  * Example usage:
    <pre>
  void vAFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
  TaskStatus_t xTaskDetails;
 
     // Obtain the handle of a task from its name.
-    xHandle = xTaskGetHandle( "Task_Name" );
+    xHandle = task_get_by_name( "Task_Name" );
 
     // Check the handle is not NULL.
     configASSERT( xHandle );
@@ -759,17 +757,17 @@ eTaskState eTaskGetState( TaskHandle_t xTask ) ;
     vTaskGetInfo( xHandle,
                   &xTaskDetails,
                   pdTRUE, // Include the high water mark in xTaskDetails.
-                  eInvalid ); // Include the task state in xTaskDetails.
+                  E_TASK_STATE_INVALID ); // Include the task state in xTaskDetails.
  }
    </pre>
  * \defgroup vTaskGetInfo vTaskGetInfo
  * \ingroup TaskCtrl
  */
-void vTaskGetInfo( TaskHandle_t xTask, TaskStatus_t *pxTaskStatus, BaseType_t xGetFreeStackSpace, eTaskState eState ) ;
+void vTaskGetInfo( task_t xTask, TaskStatus_t *pxTaskStatus, int32_t xGetFreeStackSpace, task_state_e_t eState ) ;
 
 /**
  * task. h
- * <pre>void vTaskPrioritySet( TaskHandle_t xTask, UBaseType_t uxNewPriority );</pre>
+ * <pre>void task_set_priority( task_t xTask, uint32_t uxNewPriority );</pre>
  *
  * INCLUDE_vTaskPrioritySet must be defined as 1 for this function to be available.
  * See the configuration section for more information.
@@ -788,30 +786,30 @@ void vTaskGetInfo( TaskHandle_t xTask, TaskStatus_t *pxTaskStatus, BaseType_t xG
    <pre>
  void vAFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
 
 	 // Create a task, storing the handle.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
 
 	 // ...
 
 	 // Use the handle to raise the priority of the created task.
-	 vTaskPrioritySet( xHandle, tskIDLE_PRIORITY + 1 );
+	 task_set_priority( xHandle, tskIDLE_PRIORITY + 1 );
 
 	 // ...
 
 	 // Use a NULL handle to raise our priority to the same value.
-	 vTaskPrioritySet( NULL, tskIDLE_PRIORITY + 1 );
+	 task_set_priority( NULL, tskIDLE_PRIORITY + 1 );
  }
    </pre>
- * \defgroup vTaskPrioritySet vTaskPrioritySet
+ * \defgroup task_set_priority task_set_priority
  * \ingroup TaskCtrl
  */
-void vTaskPrioritySet( TaskHandle_t xTask, UBaseType_t uxNewPriority ) ;
+void task_set_priority( task_t xTask, uint32_t uxNewPriority ) ;
 
 /**
  * task. h
- * <pre>void vTaskSuspend( TaskHandle_t xTaskToSuspend );</pre>
+ * <pre>void task_suspend( task_t xTaskToSuspend );</pre>
  *
  * INCLUDE_vTaskSuspend must be defined as 1 for this function to be available.
  * See the configuration section for more information.
@@ -819,9 +817,9 @@ void vTaskPrioritySet( TaskHandle_t xTask, UBaseType_t uxNewPriority ) ;
  * Suspend any task.  When suspended a task will never get any microcontroller
  * processing time, no matter what its priority.
  *
- * Calls to vTaskSuspend are not accumulative -
- * i.e. calling vTaskSuspend () twice on the same task still only requires one
- * call to vTaskResume () to ready the suspended task.
+ * Calls to task_suspend are not accumulative -
+ * i.e. calling task_suspend () twice on the same task still only requires one
+ * call to task_resume () to ready the suspended task.
  *
  * @param xTaskToSuspend Handle to the task being suspended.  Passing a NULL
  * handle will cause the calling task to be suspended.
@@ -830,48 +828,48 @@ void vTaskPrioritySet( TaskHandle_t xTask, UBaseType_t uxNewPriority ) ;
    <pre>
  void vAFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
 
 	 // Create a task, storing the handle.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
 
 	 // ...
 
 	 // Use the handle to suspend the created task.
-	 vTaskSuspend( xHandle );
+	 task_suspend( xHandle );
 
 	 // ...
 
 	 // The created task will not run during this period, unless
-	 // another task calls vTaskResume( xHandle ).
+	 // another task calls task_resume( xHandle ).
 
 	 //...
 
 
 	 // Suspend ourselves.
-	 vTaskSuspend( NULL );
+	 task_suspend( NULL );
 
-	 // We cannot get here unless another task calls vTaskResume
+	 // We cannot get here unless another task calls task_resume
 	 // with our handle as the parameter.
  }
    </pre>
- * \defgroup vTaskSuspend vTaskSuspend
+ * \defgroup task_suspend task_suspend
  * \ingroup TaskCtrl
  */
-void vTaskSuspend( TaskHandle_t xTaskToSuspend ) ;
+void task_suspend( task_t xTaskToSuspend ) ;
 
 /**
  * task. h
- * <pre>void vTaskResume( TaskHandle_t xTaskToResume );</pre>
+ * <pre>void task_resume( task_t xTaskToResume );</pre>
  *
  * INCLUDE_vTaskSuspend must be defined as 1 for this function to be available.
  * See the configuration section for more information.
  *
  * Resumes a suspended task.
  *
- * A task that has been suspended by one or more calls to vTaskSuspend ()
+ * A task that has been suspended by one or more calls to task_suspend ()
  * will be made available for running again by a single call to
- * vTaskResume ().
+ * task_resume ().
  *
  * @param xTaskToResume Handle to the task being readied.
  *
@@ -879,46 +877,46 @@ void vTaskSuspend( TaskHandle_t xTaskToSuspend ) ;
    <pre>
  void vAFunction( void )
  {
- TaskHandle_t xHandle;
+ task_t xHandle;
 
 	 // Create a task, storing the handle.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xHandle );
 
 	 // ...
 
 	 // Use the handle to suspend the created task.
-	 vTaskSuspend( xHandle );
+	 task_suspend( xHandle );
 
 	 // ...
 
 	 // The created task will not run during this period, unless
-	 // another task calls vTaskResume( xHandle ).
+	 // another task calls task_resume( xHandle ).
 
 	 //...
 
 
 	 // Resume the suspended task ourselves.
-	 vTaskResume( xHandle );
+	 task_resume( xHandle );
 
 	 // The created task will once again get microcontroller processing
 	 // time in accordance with its priority within the system.
  }
    </pre>
- * \defgroup vTaskResume vTaskResume
+ * \defgroup task_resume task_resume
  * \ingroup TaskCtrl
  */
-void vTaskResume( TaskHandle_t xTaskToResume ) ;
+void task_resume( task_t xTaskToResume ) ;
 
 /**
  * task. h
- * <pre>void xTaskResumeFromISR( TaskHandle_t xTaskToResume );</pre>
+ * <pre>void xTaskResumeFromISR( task_t xTaskToResume );</pre>
  *
  * INCLUDE_xTaskResumeFromISR must be defined as 1 for this function to be
  * available.  See the configuration section for more information.
  *
- * An implementation of vTaskResume() that can be called from within an ISR.
+ * An implementation of task_resume() that can be called from within an ISR.
  *
- * A task that has been suspended by one or more calls to vTaskSuspend ()
+ * A task that has been suspended by one or more calls to task_suspend ()
  * will be made available for running again by a single call to
  * xTaskResumeFromISR ().
  *
@@ -936,7 +934,7 @@ void vTaskResume( TaskHandle_t xTaskToResume ) ;
  * \defgroup vTaskResumeFromISR vTaskResumeFromISR
  * \ingroup TaskCtrl
  */
-BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) ;
+int32_t xTaskResumeFromISR( task_t xTaskToResume ) ;
 
 /*-----------------------------------------------------------
  * SCHEDULER CONTROL
@@ -944,7 +942,7 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) ;
 
 /**
  * task. h
- * <pre>void vTaskStartScheduler( void );</pre>
+ * <pre>void rtos_sched_start( void );</pre>
  *
  * Starts the real time kernel tick processing.  After calling the kernel
  * has control over which tasks are executed and when.
@@ -957,40 +955,40 @@ BaseType_t xTaskResumeFromISR( TaskHandle_t xTaskToResume ) ;
  void vAFunction( void )
  {
 	 // Create at least one task before starting the kernel.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
 
 	 // Start the real time kernel with preemption.
-	 vTaskStartScheduler ();
+	 rtos_sched_start ();
 
-	 // Will not get here unless a task calls vTaskEndScheduler ()
+	 // Will not get here unless a task calls rtos_sched_stop ()
  }
    </pre>
  *
- * \defgroup vTaskStartScheduler vTaskStartScheduler
+ * \defgroup rtos_sched_start rtos_sched_start
  * \ingroup SchedulerControl
  */
-void vTaskStartScheduler( void ) ;
+void rtos_sched_start( void ) ;
 
 /**
  * task. h
- * <pre>void vTaskEndScheduler( void );</pre>
+ * <pre>void rtos_sched_stop( void );</pre>
  *
  * NOTE:  At the time of writing only the x86 real mode port, which runs on a PC
  * in place of DOS, implements this function.
  *
  * Stops the real time kernel tick.  All created tasks will be automatically
  * deleted and multitasking (either preemptive or cooperative) will
- * stop.  Execution then resumes from the point where vTaskStartScheduler ()
- * was called, as if vTaskStartScheduler () had just returned.
+ * stop.  Execution then resumes from the point where rtos_sched_start ()
+ * was called, as if rtos_sched_start () had just returned.
  *
  * See the demo application file main. c in the demo/PC directory for an
- * example that uses vTaskEndScheduler ().
+ * example that uses rtos_sched_stop ().
  *
- * vTaskEndScheduler () requires an exit function to be defined within the
+ * rtos_sched_stop () requires an exit function to be defined within the
  * portable layer (see vPortEndScheduler () in port. c for the PC port).  This
  * performs hardware specific operations such as stopping the kernel tick.
  *
- * vTaskEndScheduler () will cause all of the resources allocated by the
+ * rtos_sched_stop () will cause all of the resources allocated by the
  * kernel to be freed - but will not free resources allocated by application
  * tasks.
  *
@@ -1004,42 +1002,42 @@ void vTaskStartScheduler( void ) ;
 
 		 // At some point we want to end the real time kernel processing
 		 // so call ...
-		 vTaskEndScheduler ();
+		 rtos_sched_stop ();
 	 }
  }
 
  void vAFunction( void )
  {
 	 // Create at least one task before starting the kernel.
-	 xTaskCreate( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
+	 task_create( vTaskCode, "NAME", STACK_SIZE, NULL, tskIDLE_PRIORITY, NULL );
 
 	 // Start the real time kernel with preemption.
-	 vTaskStartScheduler ();
+	 rtos_sched_start ();
 
 	 // Will only get here when the vTaskCode () task has called
-	 // vTaskEndScheduler ().  When we get here we are back to single task
+	 // rtos_sched_stop ().  When we get here we are back to single task
 	 // execution.
  }
    </pre>
  *
- * \defgroup vTaskEndScheduler vTaskEndScheduler
+ * \defgroup rtos_sched_stop rtos_sched_stop
  * \ingroup SchedulerControl
  */
-void vTaskEndScheduler( void ) ;
+void rtos_sched_stop( void ) ;
 
 /**
  * task. h
- * <pre>void vTaskSuspendAll( void );</pre>
+ * <pre>void rtos_suspend_all( void );</pre>
  *
  * Suspends the scheduler without disabling interrupts.  Context switches will
  * not occur while the scheduler is suspended.
  *
- * After calling vTaskSuspendAll () the calling task will continue to execute
- * without risk of being swapped out until a call to xTaskResumeAll () has been
+ * After calling rtos_suspend_all () the calling task will continue to execute
+ * without risk of being swapped out until a call to rtos_resume_all () has been
  * made.
  *
  * API functions that have the potential to cause a context switch (for example,
- * vTaskDelayUntil(), xQueueSend(), etc.) must not be called while the scheduler
+ * task_delay_until(), xQueueSend(), etc.) must not be called while the scheduler
  * is suspended.
  *
  * Example usage:
@@ -1059,7 +1057,7 @@ void vTaskEndScheduler( void ) ;
 		 // ticks.
 
 		 // Prevent the real time kernel swapping out the task.
-		 vTaskSuspendAll ();
+		 rtos_suspend_all ();
 
 		 // Perform the operation here.  There is no need to use critical
 		 // sections as we have all the microcontroller processing time.
@@ -1069,24 +1067,24 @@ void vTaskEndScheduler( void ) ;
 		 // ...
 
 		 // The operation is complete.  Restart the kernel.
-		 xTaskResumeAll ();
+		 rtos_resume_all ();
 	 }
  }
    </pre>
- * \defgroup vTaskSuspendAll vTaskSuspendAll
+ * \defgroup rtos_suspend_all rtos_suspend_all
  * \ingroup SchedulerControl
  */
-void vTaskSuspendAll( void ) ;
+void rtos_suspend_all( void ) ;
 
 /**
  * task. h
- * <pre>BaseType_t xTaskResumeAll( void );</pre>
+ * <pre>int32_t rtos_resume_all( void );</pre>
  *
  * Resumes scheduler activity after it was suspended by a call to
- * vTaskSuspendAll().
+ * rtos_suspend_all().
  *
- * xTaskResumeAll() only resumes the scheduler.  It does not unsuspend tasks
- * that were previously suspended by a call to vTaskSuspend().
+ * rtos_resume_all() only resumes the scheduler.  It does not unsuspend tasks
+ * that were previously suspended by a call to task_suspend().
  *
  * @return If resuming the scheduler caused a context switch then pdTRUE is
  *		  returned, otherwise pdFALSE is returned.
@@ -1108,7 +1106,7 @@ void vTaskSuspendAll( void ) ;
 		 // ticks.
 
 		 // Prevent the real time kernel swapping out the task.
-		 vTaskSuspendAll ();
+		 rtos_suspend_all ();
 
 		 // Perform the operation here.  There is no need to use critical
 		 // sections as we have all the microcontroller processing time.
@@ -1120,17 +1118,17 @@ void vTaskSuspendAll( void ) ;
 		 // The operation is complete.  Restart the kernel.  We want to force
 		 // a context switch - but there is no point if resuming the scheduler
 		 // caused a context switch already.
-		 if( !xTaskResumeAll () )
+		 if( !rtos_resume_all () )
 		 {
 			  taskYIELD ();
 		 }
 	 }
  }
    </pre>
- * \defgroup xTaskResumeAll xTaskResumeAll
+ * \defgroup rtos_resume_all rtos_resume_all
  * \ingroup SchedulerControl
  */
-BaseType_t xTaskResumeAll( void ) ;
+int32_t rtos_resume_all( void ) ;
 
 /*-----------------------------------------------------------
  * TASK UTILITIES
@@ -1138,61 +1136,61 @@ BaseType_t xTaskResumeAll( void ) ;
 
 /**
  * task. h
- * <PRE>TickType_t xTaskGetTickCount( void );</PRE>
+ * <PRE>uint32_t millis( void );</PRE>
  *
- * @return The count of ticks since vTaskStartScheduler was called.
+ * @return The count of ticks since rtos_sched_start was called.
  *
- * \defgroup xTaskGetTickCount xTaskGetTickCount
+ * \defgroup millis millis
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCount( void ) ;
+uint32_t millis( void ) ;
 
 /**
  * task. h
- * <PRE>TickType_t xTaskGetTickCountFromISR( void );</PRE>
+ * <PRE>uint32_t xTaskGetTickCountFromISR( void );</PRE>
  *
- * @return The count of ticks since vTaskStartScheduler was called.
+ * @return The count of ticks since rtos_sched_start was called.
  *
- * This is a version of xTaskGetTickCount() that is safe to be called from an
- * ISR - provided that TickType_t is the natural word size of the
+ * This is a version of millis() that is safe to be called from an
+ * ISR - provided that uint32_t is the natural word size of the
  * microcontroller being used or interrupt nesting is either not supported or
  * not being used.
  *
  * \defgroup xTaskGetTickCountFromISR xTaskGetTickCountFromISR
  * \ingroup TaskUtils
  */
-TickType_t xTaskGetTickCountFromISR( void ) ;
+uint32_t xTaskGetTickCountFromISR( void ) ;
 
 /**
  * task. h
- * <PRE>uint16_t uxTaskGetNumberOfTasks( void );</PRE>
+ * <PRE>uint16_t task_get_count( void );</PRE>
  *
  * @return The number of tasks that the real time kernel is currently managing.
  * This includes all ready, blocked and suspended tasks.  A task that
  * has been deleted but not yet freed by the idle task will also be
  * included in the count.
  *
- * \defgroup uxTaskGetNumberOfTasks uxTaskGetNumberOfTasks
+ * \defgroup task_get_count task_get_count
  * \ingroup TaskUtils
  */
-UBaseType_t uxTaskGetNumberOfTasks( void ) ;
+uint32_t task_get_count( void ) ;
 
 /**
  * task. h
- * <PRE>char *pcTaskGetName( TaskHandle_t xTaskToQuery );</PRE>
+ * <PRE>char *task_get_name( task_t xTaskToQuery );</PRE>
  *
  * @return The text (human readable) name of the task referenced by the handle
  * xTaskToQuery.  A task can query its own name by either passing in its own
  * handle, or by setting xTaskToQuery to NULL.
  *
- * \defgroup pcTaskGetName pcTaskGetName
+ * \defgroup task_get_name task_get_name
  * \ingroup TaskUtils
  */
-char *pcTaskGetName( TaskHandle_t xTaskToQuery ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+char *task_get_name( task_t xTaskToQuery ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /**
  * task. h
- * <PRE>TaskHandle_t xTaskGetHandle( const char *pcNameToQuery );</PRE>
+ * <PRE>task_t task_get_by_name( const char *pcNameToQuery );</PRE>
  *
  * NOTE:  This function takes a relatively long time to complete and should be
  * used sparingly.
@@ -1204,11 +1202,11 @@ char *pcTaskGetName( TaskHandle_t xTaskToQuery ) ; /*lint !e971 Unqualified char
  * \defgroup pcTaskGetHandle pcTaskGetHandle
  * \ingroup TaskUtils
  */
-TaskHandle_t xTaskGetHandle( const char *pcNameToQuery ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+task_t task_get_by_name( const char *pcNameToQuery ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 
 /**
  * task.h
- * <PRE>UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask );</PRE>
+ * <PRE>uint32_t uxTaskGetStackHighWaterMark( task_t xTask );</PRE>
  *
  * INCLUDE_uxTaskGetStackHighWaterMark must be set to 1 in FreeRTOSConfig.h for
  * this function to be available.
@@ -1225,7 +1223,7 @@ TaskHandle_t xTaskGetHandle( const char *pcNameToQuery ) ; /*lint !e971 Unqualif
  * actual spaces on the stack rather than bytes) since the task referenced by
  * xTask was created.
  */
-UBaseType_t uxTaskGetStackHighWaterMark( TaskHandle_t xTask ) ;
+uint32_t uxTaskGetStackHighWaterMark( task_t xTask ) ;
 
 /* When using trace macros it is sometimes necessary to include task.h before
 FreeRTOS.h.  When this is done TaskHookFunction_t will not yet have been defined,
@@ -1237,21 +1235,21 @@ constant. */
 	#if configUSE_APPLICATION_TASK_TAG == 1
 		/**
 		 * task.h
-		 * <pre>void vTaskSetApplicationTaskTag( TaskHandle_t xTask, TaskHookFunction_t pxHookFunction );</pre>
+		 * <pre>void vTaskSetApplicationTaskTag( task_t xTask, TaskHookFunction_t pxHookFunction );</pre>
 		 *
 		 * Sets pxHookFunction to be the task hook function used by the task xTask.
 		 * Passing xTask as NULL has the effect of setting the calling tasks hook
 		 * function.
 		 */
-		void vTaskSetApplicationTaskTag( TaskHandle_t xTask, TaskHookFunction_t pxHookFunction ) ;
+		void vTaskSetApplicationTaskTag( task_t xTask, TaskHookFunction_t pxHookFunction ) ;
 
 		/**
 		 * task.h
-		 * <pre>void xTaskGetApplicationTaskTag( TaskHandle_t xTask );</pre>
+		 * <pre>void xTaskGetApplicationTaskTag( task_t xTask );</pre>
 		 *
 		 * Returns the pxHookFunction value assigned to the task xTask.
 		 */
-		TaskHookFunction_t xTaskGetApplicationTaskTag( TaskHandle_t xTask ) ;
+		TaskHookFunction_t xTaskGetApplicationTaskTag( task_t xTask ) ;
 	#endif /* configUSE_APPLICATION_TASK_TAG ==1 */
 #endif /* ifdef configUSE_APPLICATION_TASK_TAG */
 
@@ -1262,14 +1260,14 @@ constant. */
 	kernel does not use the pointers itself, so the application writer can use
 	the pointers for any purpose they wish.  The following two functions are
 	used to set and query a pointer respectively. */
-	void vTaskSetThreadLocalStoragePointer( TaskHandle_t xTaskToSet, BaseType_t xIndex, void *pvValue ) ;
-	void *pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery, BaseType_t xIndex ) ;
+	void vTaskSetThreadLocalStoragePointer( task_t xTaskToSet, int32_t xIndex, void *pvValue ) ;
+	void *pvTaskGetThreadLocalStoragePointer( task_t xTaskToQuery, int32_t xIndex ) ;
 
 #endif
 
 /**
  * task.h
- * <pre>BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter );</pre>
+ * <pre>int32_t xTaskCallApplicationTaskHook( task_t xTask, void *pvParameter );</pre>
  *
  * Calls the hook function associated with xTask.  Passing xTask as NULL has
  * the effect of calling the Running tasks (the calling task) hook function.
@@ -1278,7 +1276,7 @@ constant. */
  * wants.  The return value is the value returned by the task hook function
  * registered by the user.
  */
-BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter ) ;
+int32_t xTaskCallApplicationTaskHook( task_t xTask, void *pvParameter ) ;
 
 /**
  * xTaskGetIdleTaskHandle() is only available if
@@ -1287,7 +1285,7 @@ BaseType_t xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter )
  * Simply returns the handle of the idle task.  It is not valid to call
  * xTaskGetIdleTaskHandle() before the scheduler has been started.
  */
-TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
+task_t xTaskGetIdleTaskHandle( void ) ;
 
 /**
  * configUSE_TRACE_FACILITY must be defined as 1 in FreeRTOSConfig.h for
@@ -1305,7 +1303,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
  * @param pxTaskStatusArray A pointer to an array of TaskStatus_t structures.
  * The array must contain at least one TaskStatus_t structure for each task
  * that is under the control of the RTOS.  The number of tasks under the control
- * of the RTOS can be determined using the uxTaskGetNumberOfTasks() API function.
+ * of the RTOS can be determined using the task_get_count() API function.
  *
  * @param uxArraySize The size of the array pointed to by the pxTaskStatusArray
  * parameter.  The size is specified as the number of indexes in the array, or
@@ -1320,7 +1318,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
  *
  * @return The number of TaskStatus_t structures that were populated by
  * uxTaskGetSystemState().  This should equal the number returned by the
- * uxTaskGetNumberOfTasks() API function, but will be zero if the value passed
+ * task_get_count() API function, but will be zero if the value passed
  * in the uxArraySize parameter was too small.
  *
  * Example usage:
@@ -1331,7 +1329,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
 	void vTaskGetRunTimeStats( char *pcWriteBuffer )
 	{
 	TaskStatus_t *pxTaskStatusArray;
-	volatile UBaseType_t uxArraySize, x;
+	volatile uint32_t uxArraySize, x;
 	uint32_t ulTotalRunTime, ulStatsAsPercentage;
 
 		// Make sure the write buffer does not contain a string.
@@ -1339,7 +1337,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
 
 		// Take a snapshot of the number of tasks in case it changes while this
 		// function is executing.
-		uxArraySize = uxTaskGetNumberOfTasks();
+		uxArraySize = task_get_count();
 
 		// Allocate a TaskStatus_t structure for each task.  An array could be
 		// allocated statically at compile time.
@@ -1386,7 +1384,7 @@ TaskHandle_t xTaskGetIdleTaskHandle( void ) ;
 	}
 	</pre>
  */
-UBaseType_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, uint32_t * const pulTotalRunTime ) ;
+uint32_t uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const uint32_t uxArraySize, uint32_t * const pulTotalRunTime ) ;
 
 /**
  * task. h
@@ -1491,7 +1489,7 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction );</PRE>
+ * <PRE>int32_t xTaskNotify( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
@@ -1510,20 +1508,20 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  * weight and fast binary or counting semaphores.
  *
  * A notification sent to a task will remain pending until it is cleared by the
- * task calling xTaskNotifyWait() or ulTaskNotifyTake().  If the task was
+ * task calling task_notify_wait() or task_notify_take().  If the task was
  * already in the Blocked state to wait for a notification when the notification
  * arrives then the task will automatically be removed from the Blocked state
  * (unblocked) and the notification cleared.
  *
- * A task can use xTaskNotifyWait() to [optionally] block to wait for a
- * notification to be pending, or ulTaskNotifyTake() to [optionally] block
+ * A task can use task_notify_wait() to [optionally] block to wait for a
+ * notification to be pending, or task_notify_take() to [optionally] block
  * to wait for its notification value to have a non-zero value.  The task does
  * not consume any CPU time while it is in the Blocked state.
  *
  * See http://www.FreeRTOS.org/RTOS-task-notifications.html for details.
  *
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
- * task can be returned from the xTaskCreate() API function used to create the
+ * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
  * xTaskGetCurrentTaskHandle().
  *
@@ -1533,27 +1531,27 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  * @param eAction Specifies how the notification updates the task's notification
  * value, if at all.  Valid values for eAction are as follows:
  *
- * eSetBits -
+ * E_NOTIFY_ACTION_BITS -
  * The task's notification value is bitwise ORed with ulValue.  xTaskNofify()
  * always returns pdPASS in this case.
  *
- * eIncrement -
+ * E_NOTIFY_ACTION_INCR -
  * The task's notification value is incremented.  ulValue is not used and
  * xTaskNotify() always returns pdPASS in this case.
  *
- * eSetValueWithOverwrite -
+ * E_NOTIFY_ACTION_OWRITE -
  * The task's notification value is set to the value of ulValue, even if the
  * task being notified had not yet processed the previous notification (the
  * task already had a notification pending).  xTaskNotify() always returns
  * pdPASS in this case.
  *
- * eSetValueWithoutOverwrite -
+ * E_NOTIFY_ACTION_NO_OWRITE -
  * If the task being notified did not already have a notification pending then
  * the task's notification value is set to ulValue and xTaskNotify() will
  * return pdPASS.  If the task being notified already had a notification
  * pending then no action is performed and pdFAIL is returned.
  *
- * eNoAction -
+ * E_NOTIFY_ACTION_NONE -
  * The task receives a notification without its notification value being
  * updated.  ulValue is not used and xTaskNotify() always returns pdPASS in
  * this case.
@@ -1568,13 +1566,13 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  * \defgroup xTaskNotify xTaskNotify
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue ) ;
+int32_t xTaskGenericNotify( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, uint32_t *pulPreviousNotificationValue ) ;
 #define xTaskNotify( xTaskToNotify, ulValue, eAction ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL )
-#define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
+#define task_notify_send( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, BaseType_t *pxHigherPriorityTaskWoken );</PRE>
+ * <PRE>int32_t xTaskNotifyFromISR( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, int32_t *pxHigherPriorityTaskWoken );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
@@ -1596,20 +1594,20 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNo
  * weight and fast binary or counting semaphores.
  *
  * A notification sent to a task will remain pending until it is cleared by the
- * task calling xTaskNotifyWait() or ulTaskNotifyTake().  If the task was
+ * task calling task_notify_wait() or task_notify_take().  If the task was
  * already in the Blocked state to wait for a notification when the notification
  * arrives then the task will automatically be removed from the Blocked state
  * (unblocked) and the notification cleared.
  *
- * A task can use xTaskNotifyWait() to [optionally] block to wait for a
- * notification to be pending, or ulTaskNotifyTake() to [optionally] block
+ * A task can use task_notify_wait() to [optionally] block to wait for a
+ * notification to be pending, or task_notify_take() to [optionally] block
  * to wait for its notification value to have a non-zero value.  The task does
  * not consume any CPU time while it is in the Blocked state.
  *
  * See http://www.FreeRTOS.org/RTOS-task-notifications.html for details.
  *
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
- * task can be returned from the xTaskCreate() API function used to create the
+ * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
  * xTaskGetCurrentTaskHandle().
  *
@@ -1619,27 +1617,27 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNo
  * @param eAction Specifies how the notification updates the task's notification
  * value, if at all.  Valid values for eAction are as follows:
  *
- * eSetBits -
+ * E_NOTIFY_ACTION_BITS -
  * The task's notification value is bitwise ORed with ulValue.  xTaskNofify()
  * always returns pdPASS in this case.
  *
- * eIncrement -
+ * E_NOTIFY_ACTION_INCR -
  * The task's notification value is incremented.  ulValue is not used and
  * xTaskNotify() always returns pdPASS in this case.
  *
- * eSetValueWithOverwrite -
+ * E_NOTIFY_ACTION_OWRITE -
  * The task's notification value is set to the value of ulValue, even if the
  * task being notified had not yet processed the previous notification (the
  * task already had a notification pending).  xTaskNotify() always returns
  * pdPASS in this case.
  *
- * eSetValueWithoutOverwrite -
+ * E_NOTIFY_ACTION_NO_OWRITE -
  * If the task being notified did not already have a notification pending then
  * the task's notification value is set to ulValue and xTaskNotify() will
  * return pdPASS.  If the task being notified already had a notification
  * pending then no action is performed and pdFAIL is returned.
  *
- * eNoAction -
+ * E_NOTIFY_ACTION_NONE -
  * The task receives a notification without its notification value being
  * updated.  ulValue is not used and xTaskNotify() always returns pdPASS in
  * this case.
@@ -1659,13 +1657,13 @@ BaseType_t xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNo
  * \defgroup xTaskNotify xTaskNotify
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue, BaseType_t *pxHigherPriorityTaskWoken ) ;
+int32_t xTaskGenericNotifyFromISR( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, uint32_t *pulPreviousNotificationValue, int32_t *pxHigherPriorityTaskWoken ) ;
 #define xTaskNotifyFromISR( xTaskToNotify, ulValue, eAction, pxHigherPriorityTaskWoken ) xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL, ( pxHigherPriorityTaskWoken ) )
 #define xTaskNotifyAndQueryFromISR( xTaskToNotify, ulValue, eAction, pulPreviousNotificationValue, pxHigherPriorityTaskWoken ) xTaskGenericNotifyFromISR( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotificationValue ), ( pxHigherPriorityTaskWoken ) )
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait );</pre>
+ * <PRE>int32_t task_notify_wait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, uint32_t xTicksToWait );</pre>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
@@ -1684,13 +1682,13 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulVal
  * weight and fast binary or counting semaphores.
  *
  * A notification sent to a task will remain pending until it is cleared by the
- * task calling xTaskNotifyWait() or ulTaskNotifyTake().  If the task was
+ * task calling task_notify_wait() or task_notify_take().  If the task was
  * already in the Blocked state to wait for a notification when the notification
  * arrives then the task will automatically be removed from the Blocked state
  * (unblocked) and the notification cleared.
  *
- * A task can use xTaskNotifyWait() to [optionally] block to wait for a
- * notification to be pending, or ulTaskNotifyTake() to [optionally] block
+ * A task can use task_notify_wait() to [optionally] block to wait for a
+ * notification to be pending, or task_notify_take() to [optionally] block
  * to wait for its notification value to have a non-zero value.  The task does
  * not consume any CPU time while it is in the Blocked state.
  *
@@ -1705,7 +1703,7 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulVal
  * ulBitsToClearOnEntry to 0 will leave the task's notification value unchanged.
  *
  * @param ulBitsToClearOnExit If a notification is pending or received before
- * the calling task exits the xTaskNotifyWait() function then the task's
+ * the calling task exits the task_notify_wait() function then the task's
  * notification value (see the xTaskNotify() API function) is passed out using
  * the pulNotificationValue parameter.  Then any bits that are set in
  * ulBitsToClearOnExit will be cleared in the task's notification value (note
@@ -1723,24 +1721,24 @@ BaseType_t xTaskGenericNotifyFromISR( TaskHandle_t xTaskToNotify, uint32_t ulVal
  *
  * @param xTicksToWait The maximum amount of time that the task should wait in
  * the Blocked state for a notification to be received, should a notification
- * not already be pending when xTaskNotifyWait() was called.  The task
+ * not already be pending when task_notify_wait() was called.  The task
  * will not consume any processing time while it is in the Blocked state.  This
  * is specified in kernel ticks, the macro pdMS_TO_TICSK( value_in_ms ) can be
  * used to convert a time specified in milliseconds to a time specified in
  * ticks.
  *
  * @return If a notification was received (including notifications that were
- * already pending when xTaskNotifyWait was called) then pdPASS is
+ * already pending when task_notify_wait was called) then pdPASS is
  * returned.  Otherwise pdFAIL is returned.
  *
- * \defgroup xTaskNotifyWait xTaskNotifyWait
+ * \defgroup task_notify_wait task_notify_wait
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait ) ;
+int32_t task_notify_wait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, uint32_t xTicksToWait ) ;
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyGive( TaskHandle_t xTaskToNotify );</PRE>
+ * <PRE>int32_t xTaskNotifyGive( task_t xTaskToNotify );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this macro
  * to be available.
@@ -1760,33 +1758,33 @@ BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClea
  *
  * xTaskNotifyGive() is a helper macro intended for use when task notifications
  * are used as light weight and faster binary or counting semaphore equivalents.
- * Actual FreeRTOS semaphores are given using the xSemaphoreGive() API function,
+ * Actual FreeRTOS semaphores are given using the sem_post() API function,
  * the equivalent action that instead uses a task notification is
  * xTaskNotifyGive().
  *
  * When task notifications are being used as a binary or counting semaphore
  * equivalent then the task being notified should wait for the notification
  * using the ulTaskNotificationTake() API function rather than the
- * xTaskNotifyWait() API function.
+ * task_notify_wait() API function.
  *
  * See http://www.FreeRTOS.org/RTOS-task-notifications.html for more details.
  *
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
- * task can be returned from the xTaskCreate() API function used to create the
+ * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
  * xTaskGetCurrentTaskHandle().
  *
  * @return xTaskNotifyGive() is a macro that calls xTaskNotify() with the
- * eAction parameter set to eIncrement - so pdPASS is always returned.
+ * eAction parameter set to E_NOTIFY_ACTION_INCR - so pdPASS is always returned.
  *
  * \defgroup xTaskNotifyGive xTaskNotifyGive
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyGive( xTaskToNotify ) xTaskGenericNotify( ( xTaskToNotify ), ( 0 ), eIncrement, NULL )
+#define xTaskNotifyGive( xTaskToNotify ) xTaskGenericNotify( ( xTaskToNotify ), ( 0 ), E_NOTIFY_ACTION_INCR, NULL )
 
 /**
  * task. h
- * <PRE>void vTaskNotifyGiveFromISR( TaskHandle_t xTaskHandle, BaseType_t *pxHigherPriorityTaskWoken );
+ * <PRE>void vTaskNotifyGiveFromISR( task_t xTaskHandle, int32_t *pxHigherPriorityTaskWoken );
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this macro
  * to be available.
@@ -1816,12 +1814,12 @@ BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClea
  * When task notifications are being used as a binary or counting semaphore
  * equivalent then the task being notified should wait for the notification
  * using the ulTaskNotificationTake() API function rather than the
- * xTaskNotifyWait() API function.
+ * task_notify_wait() API function.
  *
  * See http://www.FreeRTOS.org/RTOS-task-notifications.html for more details.
  *
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
- * task can be returned from the xTaskCreate() API function used to create the
+ * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
  * xTaskGetCurrentTaskHandle().
  *
@@ -1834,14 +1832,14 @@ BaseType_t xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClea
  * requested from an ISR is dependent on the port - see the documentation page
  * for the port in use.
  *
- * \defgroup xTaskNotifyWait xTaskNotifyWait
+ * \defgroup task_notify_wait task_notify_wait
  * \ingroup TaskNotifications
  */
-void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPriorityTaskWoken ) ;
+void vTaskNotifyGiveFromISR( task_t xTaskToNotify, int32_t *pxHigherPriorityTaskWoken ) ;
 
 /**
  * task. h
- * <PRE>uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait );</pre>
+ * <PRE>uint32_t task_notify_take( int32_t xClearCountOnExit, uint32_t xTicksToWait );</pre>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this
  * function to be available.
@@ -1859,28 +1857,28 @@ void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPri
  * task notifications can be used to send data to a task, or be used as light
  * weight and fast binary or counting semaphores.
  *
- * ulTaskNotifyTake() is intended for use when a task notification is used as a
+ * task_notify_take() is intended for use when a task notification is used as a
  * faster and lighter weight binary or counting semaphore alternative.  Actual
- * FreeRTOS semaphores are taken using the xSemaphoreTake() API function, the
+ * FreeRTOS semaphores are taken using the sem_wait() API function, the
  * equivalent action that instead uses a task notification is
- * ulTaskNotifyTake().
+ * task_notify_take().
  *
  * When a task is using its notification value as a binary or counting semaphore
  * other tasks should send notifications to it using the xTaskNotifyGive()
  * macro, or xTaskNotify() function with the eAction parameter set to
- * eIncrement.
+ * E_NOTIFY_ACTION_INCR.
  *
- * ulTaskNotifyTake() can either clear the task's notification value to
+ * task_notify_take() can either clear the task's notification value to
  * zero on exit, in which case the notification value acts like a binary
  * semaphore, or decrement the task's notification value on exit, in which case
  * the notification value acts like a counting semaphore.
  *
- * A task can use ulTaskNotifyTake() to [optionally] block to wait for a
+ * A task can use task_notify_take() to [optionally] block to wait for a
  * the task's notification value to be non-zero.  The task does not consume any
  * CPU time while it is in the Blocked state.
  *
- * Where as xTaskNotifyWait() will return when a notification is pending,
- * ulTaskNotifyTake() will return when the task's notification value is
+ * Where as task_notify_wait() will return when a notification is pending,
+ * task_notify_take() will return when the task's notification value is
  * not zero.
  *
  * See http://www.FreeRTOS.org/RTOS-task-notifications.html for details.
@@ -1895,7 +1893,7 @@ void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPri
  * @param xTicksToWait The maximum amount of time that the task should wait in
  * the Blocked state for the task's notification value to be greater than zero,
  * should the count not already be greater than zero when
- * ulTaskNotifyTake() was called.  The task will not consume any processing
+ * task_notify_take() was called.  The task will not consume any processing
  * time while it is in the Blocked state.  This is specified in kernel ticks,
  * the macro pdMS_TO_TICSK( value_in_ms ) can be used to convert a time
  * specified in milliseconds to a time specified in ticks.
@@ -1903,14 +1901,14 @@ void vTaskNotifyGiveFromISR( TaskHandle_t xTaskToNotify, BaseType_t *pxHigherPri
  * @return The task's notification count before it is either cleared to zero or
  * decremented (see the xClearCountOnExit parameter).
  *
- * \defgroup ulTaskNotifyTake ulTaskNotifyTake
+ * \defgroup task_notify_take task_notify_take
  * \ingroup TaskNotifications
  */
-uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait ) ;
+uint32_t task_notify_take( int32_t xClearCountOnExit, uint32_t xTicksToWait ) ;
 
 /**
  * task. h
- * <PRE>BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask );</pre>
+ * <PRE>int32_t task_notify_clear( task_t xTask );</pre>
  *
  * If the notification state of the task referenced by the handle xTask is
  * eNotified, then set the task's notification state to eNotWaitingNotification.
@@ -1919,10 +1917,10 @@ uint32_t ulTaskNotifyTake( BaseType_t xClearCountOnExit, TickType_t xTicksToWait
  *
  * @return pdTRUE if the task's notification state was set to
  * eNotWaitingNotification, otherwise pdFALSE.
- * \defgroup xTaskNotifyStateClear xTaskNotifyStateClear
+ * \defgroup task_notify_clear task_notify_clear
  * \ingroup TaskNotifications
  */
-BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask );
+int32_t task_notify_clear( task_t xTask );
 
 /*-----------------------------------------------------------
  * SCHEDULER INTERNALS AVAILABLE FOR PORTING PURPOSES
@@ -1943,7 +1941,7 @@ BaseType_t xTaskNotifyStateClear( TaskHandle_t xTask );
  *   + Time slicing is in use and there is a task of equal priority to the
  *     currently running task.
  */
-BaseType_t xTaskIncrementTick( void ) ;
+int32_t xTaskIncrementTick( void ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -1976,8 +1974,8 @@ BaseType_t xTaskIncrementTick( void ) ;
  * portTICK_PERIOD_MS can be used to convert kernel ticks into a real time
  * period.
  */
-void vTaskPlaceOnEventList( List_t * const pxEventList, const TickType_t xTicksToWait ) ;
-void vTaskPlaceOnUnorderedEventList( List_t * pxEventList, const TickType_t xItemValue, const TickType_t xTicksToWait ) ;
+void vTaskPlaceOnEventList( List_t * const pxEventList, const uint32_t xTicksToWait ) ;
+void vTaskPlaceOnUnorderedEventList( List_t * pxEventList, const uint32_t xItemValue, const uint32_t xTicksToWait ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -1990,7 +1988,7 @@ void vTaskPlaceOnUnorderedEventList( List_t * pxEventList, const TickType_t xIte
  * indefinitely, whereas vTaskPlaceOnEventList() does.
  *
  */
-void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, TickType_t xTicksToWait, const BaseType_t xWaitIndefinitely ) ;
+void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, uint32_t xTicksToWait, const int32_t xWaitIndefinitely ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS AN
@@ -2016,8 +2014,8 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, TickType_t xTi
  * @return pdTRUE if the task being removed has a higher priority than the task
  * making the call, otherwise pdFALSE.
  */
-BaseType_t xTaskRemoveFromEventList( const List_t * const pxEventList ) ;
-BaseType_t xTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem, const TickType_t xItemValue ) ;
+int32_t xTaskRemoveFromEventList( const List_t * const pxEventList ) ;
+int32_t xTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem, const uint32_t xItemValue ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -2033,12 +2031,12 @@ void vTaskSwitchContext( void ) ;
  * THESE FUNCTIONS MUST NOT BE USED FROM APPLICATION CODE.  THEY ARE USED BY
  * THE EVENT BITS MODULE.
  */
-TickType_t uxTaskResetEventItemValue( void ) ;
+uint32_t uxTaskResetEventItemValue( void ) ;
 
 /*
  * Return the handle of the calling task.
  */
-TaskHandle_t xTaskGetCurrentTaskHandle( void ) ;
+task_t xTaskGetCurrentTaskHandle( void ) ;
 
 /*
  * Capture the current time status for future reference.
@@ -2049,7 +2047,7 @@ void vTaskSetTimeOutState( TimeOut_t * const pxTimeOut ) ;
  * Compare the time status now with that previously captured to see if the
  * timeout has expired.
  */
-BaseType_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, TickType_t * const pxTicksToWait ) ;
+int32_t xTaskCheckForTimeOut( TimeOut_t * const pxTimeOut, uint32_t * const pxTicksToWait ) ;
 
 /*
  * Shortcut used by the queue implementation to prevent unnecessary call to
@@ -2061,30 +2059,30 @@ void vTaskMissedYield( void ) ;
  * Returns the scheduler state as taskSCHEDULER_RUNNING,
  * taskSCHEDULER_NOT_STARTED or taskSCHEDULER_SUSPENDED.
  */
-BaseType_t xTaskGetSchedulerState( void ) ;
+int32_t xTaskGetSchedulerState( void ) ;
 
 /*
  * Raises the priority of the mutex holder to that of the calling task should
  * the mutex holder have a priority less than the calling task.
  */
-void vTaskPriorityInherit( TaskHandle_t const pxMutexHolder ) ;
+void vTaskPriorityInherit( task_t const pxMutexHolder ) ;
 
 /*
  * Set the priority of a task back to its proper priority in the case that it
  * inherited a higher priority while it was holding a semaphore.
  */
-BaseType_t xTaskPriorityDisinherit( TaskHandle_t const pxMutexHolder ) ;
+int32_t xTaskPriorityDisinherit( task_t const pxMutexHolder ) ;
 
 /*
  * Get the uxTCBNumber assigned to the task referenced by the xTask parameter.
  */
-UBaseType_t uxTaskGetTaskNumber( TaskHandle_t xTask ) ;
+uint32_t uxTaskGetTaskNumber( task_t xTask ) ;
 
 /*
  * Set the uxTaskNumber of the task referenced by the xTask parameter to
  * uxHandle.
  */
-void vTaskSetTaskNumber( TaskHandle_t xTask, const UBaseType_t uxHandle ) ;
+void vTaskSetTaskNumber( task_t xTask, const uint32_t uxHandle ) ;
 
 /*
  * Only available when configUSE_TICKLESS_IDLE is set to 1.
@@ -2094,7 +2092,7 @@ void vTaskSetTaskNumber( TaskHandle_t xTask, const UBaseType_t uxHandle ) ;
  * to date with the actual execution time by being skipped forward by a time
  * equal to the idle period.
  */
-void vTaskStepTick( const TickType_t xTicksToJump ) ;
+void vTaskStepTick( const uint32_t xTicksToJump ) ;
 
 /*
  * Only avilable when configUSE_TICKLESS_IDLE is set to 1.

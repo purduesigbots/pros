@@ -2,8 +2,8 @@
 	"linters": {
 		"clang-format": {
 			"type": "clang-format",
-			"include": "(.*\\.c$)",
-			"exclude": "(^src/rtos/)"
+			"include": "(.*\\.(c|cpp|h|hpp)$)",
+			"exclude": "(^(src|include)/(rtos|ifi)/)"
 		},
 		"spelling": {
 			"type": "spelling",

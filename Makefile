@@ -9,7 +9,7 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
-INCLUDE=-I$(INCDIR)
+INCLUDE=-iquote$(INCDIR)
 
 ASMSRC:=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext)))
 ASMOBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(ASMSRC)))
@@ -37,28 +37,36 @@ clean:
 	-$Drm -rf $(BINDIR)
 
 $(OUTBIN): $(OUTELF)
-	@echo Creating binary
 	$(VV)mkdir -p $(dir $@)
-	@echo Output size:
-	-$D$(SIZETOOL) $(SIZEFLAGS) $< | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
-	@echo Creating $(OUTBIN) for V5
-	$D$(OBJCOPY) $(OUTELF) -O binary $(OUTBIN)
+	@echo -n "Creating $@ for $(DEVICE) "
+	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
-$(OUTELF): $(ASMOBJ) $(COBJ)
-	@echo Linking project
-	$D$(CC) $(LDFLAGS) $(ASMOBJ) $(COBJ) $(LIBRARIES) -o $@
+$(OUTELF): $(sort $(ASMOBJ) $(COBJ) $(CXXOBJ))
+	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
+	$(call test_output,$D$(CC) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
+	@echo Section sizes:
+	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
 
-$(ASMOBJ): $(BINDIR)/%.o: $(SRCDIR)/%
-	@echo Assembling $<
-	$(VV)mkdir -p $(dir $@)
-	$D$(AS) -c $(ASMFLAGS) -o $@ $<
+define asm_rule
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	@echo -n "Compiling $$< "
+	$(VV)mkdir -p $$(dir $$@)
+	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
+endef
+$(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
-$(COBJ): $(BINDIR)/%.o: $(SRCDIR)/%
-	@echo Compiling $<
-	$(VV)mkdir -p $(dir $@)
-	$D$(CC) -c $(INCLUDE) -I$(INCDIR)/$(dir $*) $(CFLAGS) -o $@ $<
+define c_rule
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	@echo -n "Compiling $$< "
+	$(VV)mkdir -p $$(dir $$@)
+	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+endef
+$(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
-$(CXXOBJ): $(BINDIR)/%.o: $(SRCDIR)/%
-	@echo Compiling $<
-	$(VV)mkdir -p $(dir $@)
-	$D$(CXX) -c $(INCLUDE) -I$(INCDIR)/$(dir $*) $(CXXFLAGS) -o $@ $<
+define cxx_rule
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	@echo -n "Compiling $$< "
+	$(VV)mkdir -p $$(dir $$@)
+	$$(call test_output,$D$(CXX) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
+endef
+$(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
