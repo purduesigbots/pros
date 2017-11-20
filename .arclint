@@ -4,6 +4,10 @@
 			"type": "clang-format",
 			"include": "(.*\\.c$)",
 			"exclude": "(^src/rtos/)"
+		},
+		"spelling": {
+			"type": "spelling",
+			"include": "(.*)"
 		}
 	}
 }

@@ -146,10 +146,6 @@ extern "C" {
 	#error configMAX_PRIORITIES must be defined to be greater than or equal to 1.
 #endif
 
-#ifndef configUSE_CO_ROUTINES
-	#define configUSE_CO_ROUTINES 0
-#endif
-
 #ifndef INCLUDE_vTaskPrioritySet
 	#define INCLUDE_vTaskPrioritySet 0
 #endif
@@ -216,12 +212,6 @@ extern "C" {
 
 #ifndef INCLUDE_xTaskGetCurrentTaskHandle
 	#define INCLUDE_xTaskGetCurrentTaskHandle 0
-#endif
-
-#if configUSE_CO_ROUTINES != 0
-	#ifndef configMAX_CO_ROUTINE_PRIORITIES
-		#error configMAX_CO_ROUTINE_PRIORITIES must be greater than or equal to 1.
-	#endif
 #endif
 
 #ifndef configUSE_DAEMON_TASK_STARTUP_HOOK
@@ -728,10 +718,6 @@ extern "C" {
 	#define configUSE_TIME_SLICING 1
 #endif
 
-#ifndef configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS
-	#define configINCLUDE_APPLICATION_DEFINED_PRIVILEGED_FUNCTIONS 0
-#endif
-
 #ifndef configUSE_STATS_FORMATTING_FUNCTIONS
 	#define configUSE_STATS_FORMATTING_FUNCTIONS 0
 #endif
@@ -829,11 +815,9 @@ V8 if desired. */
 	#define xQueueSetHandle QueueSetHandle_t
 	#define xQueueSetMemberHandle QueueSetMemberHandle_t
 	#define xTimeOutType TimeOut_t
-	#define xMemoryRegion MemoryRegion_t
 	#define xTaskParameters TaskParameters_t
 	#define xTaskStatusType	TaskStatus_t
 	#define xTimerHandle TimerHandle_t
-	#define xCoRoutineHandle CoRoutineHandle_t
 	#define pdTASK_HOOK_CODE TaskHookFunction_t
 	#define portTICK_RATE_MS portTICK_PERIOD_MS
 	#define pcTaskGetTaskName pcTaskGetName
@@ -910,9 +894,6 @@ typedef struct xSTATIC_LIST
 typedef struct xSTATIC_TCB
 {
 	void				*pxDummy1;
-	#if ( portUSING_MPU_WRAPPERS == 1 )
-		xMPU_SETTINGS	xDummy2;
-	#endif
 	StaticListItem_t	xDummy3[ 2 ];
 	UBaseType_t			uxDummy5;
 	void				*pxDummy6;
@@ -1060,4 +1041,3 @@ typedef struct xSTATIC_TIMER
 #endif
 
 #endif /* INC_FREERTOS_H */
-

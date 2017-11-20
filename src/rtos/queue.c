@@ -70,24 +70,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
-all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
-
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
-
-#if ( configUSE_CO_ROUTINES == 1 )
-	#include "croutine.h"
-#endif
-
-/* Lint e961 and e750 are suppressed as a MISRA exception justified because the
-MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined for the
-header files above, but not in this file, in order to generate the correct
-privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750. */
 
 
 /* Constants used with the cRxLock and cTxLock structure members. */
@@ -193,7 +178,7 @@ typedef xQUEUE Queue_t;
 	/* The queue registry is simply an array of QueueRegistryItem_t structures.
 	The pcQueueName member of a structure being NULL is indicative of the
 	array position being vacant. */
-	PRIVILEGED_DATA QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
+	 QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
 
 #endif /* configQUEUE_REGISTRY_SIZE */
 
@@ -205,46 +190,46 @@ typedef xQUEUE Queue_t;
  * to indicate that a task may require unblocking.  When the queue in unlocked
  * these lock counts are inspected, and the appropriate action taken.
  */
-static void prvUnlockQueue( Queue_t * const pxQueue ) PRIVILEGED_FUNCTION;
+static void prvUnlockQueue( Queue_t * const pxQueue ) ;
 
 /*
  * Uses a critical section to determine if there is any data in a queue.
  *
  * @return pdTRUE if the queue contains no items, otherwise pdFALSE.
  */
-static BaseType_t prvIsQueueEmpty( const Queue_t *pxQueue ) PRIVILEGED_FUNCTION;
+static BaseType_t prvIsQueueEmpty( const Queue_t *pxQueue ) ;
 
 /*
  * Uses a critical section to determine if there is any space in a queue.
  *
  * @return pdTRUE if there is no space, otherwise pdFALSE;
  */
-static BaseType_t prvIsQueueFull( const Queue_t *pxQueue ) PRIVILEGED_FUNCTION;
+static BaseType_t prvIsQueueFull( const Queue_t *pxQueue ) ;
 
 /*
  * Copies an item into the queue, either at the front of the queue or the
  * back of the queue.
  */
-static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue, const void *pvItemToQueue, const BaseType_t xPosition ) PRIVILEGED_FUNCTION;
+static BaseType_t prvCopyDataToQueue( Queue_t * const pxQueue, const void *pvItemToQueue, const BaseType_t xPosition ) ;
 
 /*
  * Copies an item out of a queue.
  */
-static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer ) PRIVILEGED_FUNCTION;
+static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer ) ;
 
 #if ( configUSE_QUEUE_SETS == 1 )
 	/*
 	 * Checks to see if a queue is a member of a queue set, and if so, notifies
 	 * the queue set that the queue contains data.
 	 */
-	static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue, const BaseType_t xCopyPosition ) PRIVILEGED_FUNCTION;
+	static BaseType_t prvNotifyQueueSetContainer( const Queue_t * const pxQueue, const BaseType_t xCopyPosition ) ;
 #endif
 
 /*
  * Called after a Queue_t structure has been allocated either statically or
  * dynamically to fill in the structure's members.
  */
-static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, uint8_t *pucQueueStorage, const uint8_t ucQueueType, Queue_t *pxNewQueue ) PRIVILEGED_FUNCTION;
+static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength, const UBaseType_t uxItemSize, uint8_t *pucQueueStorage, const uint8_t ucQueueType, Queue_t *pxNewQueue ) ;
 
 /*
  * Mutexes are a special type of queue.  When a mutex is created, first the
@@ -252,7 +237,7 @@ static void prvInitialiseNewQueue( const UBaseType_t uxQueueLength, const UBaseT
  * as a mutex.
  */
 #if( configUSE_MUTEXES == 1 )
-	static void prvInitialiseMutex( Queue_t *pxNewQueue ) PRIVILEGED_FUNCTION;
+	static void prvInitialiseMutex( Queue_t *pxNewQueue ) ;
 #endif
 
 /*-----------------------------------------------------------*/
@@ -1989,281 +1974,6 @@ BaseType_t xReturn;
 } /*lint !e818 xQueue could not be pointer to const because it is a typedef. */
 /*-----------------------------------------------------------*/
 
-#if ( configUSE_CO_ROUTINES == 1 )
-
-	BaseType_t xQueueCRSend( QueueHandle_t xQueue, const void *pvItemToQueue, TickType_t xTicksToWait )
-	{
-	BaseType_t xReturn;
-	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
-
-		/* If the queue is already full we may have to block.  A critical section
-		is required to prevent an interrupt removing something from the queue
-		between the check to see if the queue is full and blocking on the queue. */
-		portDISABLE_INTERRUPTS();
-		{
-			if( prvIsQueueFull( pxQueue ) != pdFALSE )
-			{
-				/* The queue is full - do we want to block or just leave without
-				posting? */
-				if( xTicksToWait > ( TickType_t ) 0 )
-				{
-					/* As this is called from a coroutine we cannot block directly, but
-					return indicating that we need to block. */
-					vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToSend ) );
-					portENABLE_INTERRUPTS();
-					return errQUEUE_BLOCKED;
-				}
-				else
-				{
-					portENABLE_INTERRUPTS();
-					return errQUEUE_FULL;
-				}
-			}
-		}
-		portENABLE_INTERRUPTS();
-
-		portDISABLE_INTERRUPTS();
-		{
-			if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
-			{
-				/* There is room in the queue, copy the data into the queue. */
-				prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
-				xReturn = pdPASS;
-
-				/* Were any co-routines waiting for data to become available? */
-				if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
-				{
-					/* In this instance the co-routine could be placed directly
-					into the ready list as we are within a critical section.
-					Instead the same pending ready list mechanism is used as if
-					the event were caused from within an interrupt. */
-					if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
-					{
-						/* The co-routine waiting has a higher priority so record
-						that a yield might be appropriate. */
-						xReturn = errQUEUE_YIELD;
-					}
-					else
-					{
-						mtCOVERAGE_TEST_MARKER();
-					}
-				}
-				else
-				{
-					mtCOVERAGE_TEST_MARKER();
-				}
-			}
-			else
-			{
-				xReturn = errQUEUE_FULL;
-			}
-		}
-		portENABLE_INTERRUPTS();
-
-		return xReturn;
-	}
-
-#endif /* configUSE_CO_ROUTINES */
-/*-----------------------------------------------------------*/
-
-#if ( configUSE_CO_ROUTINES == 1 )
-
-	BaseType_t xQueueCRReceive( QueueHandle_t xQueue, void *pvBuffer, TickType_t xTicksToWait )
-	{
-	BaseType_t xReturn;
-	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
-
-		/* If the queue is already empty we may have to block.  A critical section
-		is required to prevent an interrupt adding something to the queue
-		between the check to see if the queue is empty and blocking on the queue. */
-		portDISABLE_INTERRUPTS();
-		{
-			if( pxQueue->uxMessagesWaiting == ( UBaseType_t ) 0 )
-			{
-				/* There are no messages in the queue, do we want to block or just
-				leave with nothing? */
-				if( xTicksToWait > ( TickType_t ) 0 )
-				{
-					/* As this is a co-routine we cannot block directly, but return
-					indicating that we need to block. */
-					vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToReceive ) );
-					portENABLE_INTERRUPTS();
-					return errQUEUE_BLOCKED;
-				}
-				else
-				{
-					portENABLE_INTERRUPTS();
-					return errQUEUE_FULL;
-				}
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
-		}
-		portENABLE_INTERRUPTS();
-
-		portDISABLE_INTERRUPTS();
-		{
-			if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
-			{
-				/* Data is available from the queue. */
-				pxQueue->u.pcReadFrom += pxQueue->uxItemSize;
-				if( pxQueue->u.pcReadFrom >= pxQueue->pcTail )
-				{
-					pxQueue->u.pcReadFrom = pxQueue->pcHead;
-				}
-				else
-				{
-					mtCOVERAGE_TEST_MARKER();
-				}
-				--( pxQueue->uxMessagesWaiting );
-				( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
-
-				xReturn = pdPASS;
-
-				/* Were any co-routines waiting for space to become available? */
-				if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
-				{
-					/* In this instance the co-routine could be placed directly
-					into the ready list as we are within a critical section.
-					Instead the same pending ready list mechanism is used as if
-					the event were caused from within an interrupt. */
-					if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
-					{
-						xReturn = errQUEUE_YIELD;
-					}
-					else
-					{
-						mtCOVERAGE_TEST_MARKER();
-					}
-				}
-				else
-				{
-					mtCOVERAGE_TEST_MARKER();
-				}
-			}
-			else
-			{
-				xReturn = pdFAIL;
-			}
-		}
-		portENABLE_INTERRUPTS();
-
-		return xReturn;
-	}
-
-#endif /* configUSE_CO_ROUTINES */
-/*-----------------------------------------------------------*/
-
-#if ( configUSE_CO_ROUTINES == 1 )
-
-	BaseType_t xQueueCRSendFromISR( QueueHandle_t xQueue, const void *pvItemToQueue, BaseType_t xCoRoutinePreviouslyWoken )
-	{
-	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
-
-		/* Cannot block within an ISR so if there is no space on the queue then
-		exit without doing anything. */
-		if( pxQueue->uxMessagesWaiting < pxQueue->uxLength )
-		{
-			prvCopyDataToQueue( pxQueue, pvItemToQueue, queueSEND_TO_BACK );
-
-			/* We only want to wake one co-routine per ISR, so check that a
-			co-routine has not already been woken. */
-			if( xCoRoutinePreviouslyWoken == pdFALSE )
-			{
-				if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToReceive ) ) == pdFALSE )
-				{
-					if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToReceive ) ) != pdFALSE )
-					{
-						return pdTRUE;
-					}
-					else
-					{
-						mtCOVERAGE_TEST_MARKER();
-					}
-				}
-				else
-				{
-					mtCOVERAGE_TEST_MARKER();
-				}
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
-		}
-		else
-		{
-			mtCOVERAGE_TEST_MARKER();
-		}
-
-		return xCoRoutinePreviouslyWoken;
-	}
-
-#endif /* configUSE_CO_ROUTINES */
-/*-----------------------------------------------------------*/
-
-#if ( configUSE_CO_ROUTINES == 1 )
-
-	BaseType_t xQueueCRReceiveFromISR( QueueHandle_t xQueue, void *pvBuffer, BaseType_t *pxCoRoutineWoken )
-	{
-	BaseType_t xReturn;
-	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
-
-		/* We cannot block from an ISR, so check there is data available. If
-		not then just leave without doing anything. */
-		if( pxQueue->uxMessagesWaiting > ( UBaseType_t ) 0 )
-		{
-			/* Copy the data from the queue. */
-			pxQueue->u.pcReadFrom += pxQueue->uxItemSize;
-			if( pxQueue->u.pcReadFrom >= pxQueue->pcTail )
-			{
-				pxQueue->u.pcReadFrom = pxQueue->pcHead;
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
-			--( pxQueue->uxMessagesWaiting );
-			( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
-
-			if( ( *pxCoRoutineWoken ) == pdFALSE )
-			{
-				if( listLIST_IS_EMPTY( &( pxQueue->xTasksWaitingToSend ) ) == pdFALSE )
-				{
-					if( xCoRoutineRemoveFromEventList( &( pxQueue->xTasksWaitingToSend ) ) != pdFALSE )
-					{
-						*pxCoRoutineWoken = pdTRUE;
-					}
-					else
-					{
-						mtCOVERAGE_TEST_MARKER();
-					}
-				}
-				else
-				{
-					mtCOVERAGE_TEST_MARKER();
-				}
-			}
-			else
-			{
-				mtCOVERAGE_TEST_MARKER();
-			}
-
-			xReturn = pdPASS;
-		}
-		else
-		{
-			xReturn = pdFAIL;
-		}
-
-		return xReturn;
-	}
-
-#endif /* configUSE_CO_ROUTINES */
-/*-----------------------------------------------------------*/
-
 #if ( configQUEUE_REGISTRY_SIZE > 0 )
 
 	void vQueueAddToRegistry( QueueHandle_t xQueue, const char *pcQueueName ) /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
@@ -2552,15 +2262,3 @@ BaseType_t xReturn;
 	}
 
 #endif /* configUSE_QUEUE_SETS */
-
-
-
-
-
-
-
-
-
-
-
-

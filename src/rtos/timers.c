@@ -70,11 +70,6 @@
 /* Standard includes. */
 #include <stdlib.h>
 
-/* Defining MPU_WRAPPERS_INCLUDED_FROM_API_FILE prevents task.h from redefining
-all the API functions to use the MPU wrappers.  That should only be done when
-task.h is included from an application file. */
-#define MPU_WRAPPERS_INCLUDED_FROM_API_FILE
-
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -83,12 +78,6 @@ task.h is included from an application file. */
 #if ( INCLUDE_xTimerPendFunctionCall == 1 ) && ( configUSE_TIMERS == 0 )
 	#error configUSE_TIMERS must be set to 1 to make the xTimerPendFunctionCall() function available.
 #endif
-
-/* Lint e961 and e750 are suppressed as a MISRA exception justified because the
-MPU ports require MPU_WRAPPERS_INCLUDED_FROM_API_FILE to be defined for the
-header files above, but not in this file, in order to generate the correct
-privileged Vs unprivileged linkage and placement. */
-#undef MPU_WRAPPERS_INCLUDED_FROM_API_FILE /*lint !e961 !e750. */
 
 
 /* This entire source file will be skipped if the application is not configured
@@ -164,14 +153,14 @@ static variables must be declared volatile. */
 /* The list in which active timers are stored.  Timers are referenced in expire
 time order, with the nearest expiry time at the front of the list.  Only the
 timer service task is allowed to access these lists. */
-PRIVILEGED_DATA static List_t xActiveTimerList1;
-PRIVILEGED_DATA static List_t xActiveTimerList2;
-PRIVILEGED_DATA static List_t *pxCurrentTimerList;
-PRIVILEGED_DATA static List_t *pxOverflowTimerList;
+ static List_t xActiveTimerList1;
+ static List_t xActiveTimerList2;
+ static List_t *pxCurrentTimerList;
+ static List_t *pxOverflowTimerList;
 
 /* A queue that is used to send commands to the timer service task. */
-PRIVILEGED_DATA static QueueHandle_t xTimerQueue = NULL;
-PRIVILEGED_DATA static TaskHandle_t xTimerTaskHandle = NULL;
+ static QueueHandle_t xTimerQueue = NULL;
+ static TaskHandle_t xTimerTaskHandle = NULL;
 
 /*lint +e956 */
 
@@ -191,44 +180,44 @@ PRIVILEGED_DATA static TaskHandle_t xTimerTaskHandle = NULL;
  * Initialise the infrastructure used by the timer service task if it has not
  * been initialised already.
  */
-static void prvCheckForValidListAndQueue( void ) PRIVILEGED_FUNCTION;
+static void prvCheckForValidListAndQueue( void ) ;
 
 /*
  * The timer service task (daemon).  Timer functionality is controlled by this
  * task.  Other tasks communicate with the timer service task using the
  * xTimerQueue queue.
  */
-static void prvTimerTask( void *pvParameters ) PRIVILEGED_FUNCTION;
+static void prvTimerTask( void *pvParameters ) ;
 
 /*
  * Called by the timer service task to interpret and process a command it
  * received on the timer queue.
  */
-static void prvProcessReceivedCommands( void ) PRIVILEGED_FUNCTION;
+static void prvProcessReceivedCommands( void ) ;
 
 /*
  * Insert the timer into either xActiveTimerList1, or xActiveTimerList2,
  * depending on if the expire time causes a timer counter overflow.
  */
-static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer, const TickType_t xNextExpiryTime, const TickType_t xTimeNow, const TickType_t xCommandTime ) PRIVILEGED_FUNCTION;
+static BaseType_t prvInsertTimerInActiveList( Timer_t * const pxTimer, const TickType_t xNextExpiryTime, const TickType_t xTimeNow, const TickType_t xCommandTime ) ;
 
 /*
  * An active timer has reached its expire time.  Reload the timer if it is an
  * auto reload timer, then call its callback.
  */
-static void prvProcessExpiredTimer( const TickType_t xNextExpireTime, const TickType_t xTimeNow ) PRIVILEGED_FUNCTION;
+static void prvProcessExpiredTimer( const TickType_t xNextExpireTime, const TickType_t xTimeNow ) ;
 
 /*
  * The tick count has overflowed.  Switch the timer lists after ensuring the
  * current timer list does not still reference some timers.
  */
-static void prvSwitchTimerLists( void ) PRIVILEGED_FUNCTION;
+static void prvSwitchTimerLists( void ) ;
 
 /*
  * Obtain the current tick count, setting *pxTimerListsWereSwitched to pdTRUE
  * if a tick count overflow occurred since prvSampleTimeNow() was last called.
  */
-static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched ) PRIVILEGED_FUNCTION;
+static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched ) ;
 
 /*
  * If the timer list contains any active timers then return the expire time of
@@ -236,13 +225,13 @@ static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched 
  * timer list does not contain any timers then return 0 and set *pxListWasEmpty
  * to pdTRUE.
  */
-static TickType_t prvGetNextExpireTime( BaseType_t * const pxListWasEmpty ) PRIVILEGED_FUNCTION;
+static TickType_t prvGetNextExpireTime( BaseType_t * const pxListWasEmpty ) ;
 
 /*
  * If a timer has expired, process it.  Otherwise, block the timer service task
  * until either a timer does expire or a command is received.
  */
-static void prvProcessTimerOrBlockTask( const TickType_t xNextExpireTime, BaseType_t xListWasEmpty ) PRIVILEGED_FUNCTION;
+static void prvProcessTimerOrBlockTask( const TickType_t xNextExpireTime, BaseType_t xListWasEmpty ) ;
 
 /*
  * Called after a Timer_t structure has been allocated either statically or
@@ -253,7 +242,7 @@ static void prvInitialiseNewTimer(	const char * const pcTimerName,
 									const UBaseType_t uxAutoReload,
 									void * const pvTimerID,
 									TimerCallbackFunction_t pxCallbackFunction,
-									Timer_t *pxNewTimer ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+									Timer_t *pxNewTimer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 /*-----------------------------------------------------------*/
 
 BaseType_t xTimerCreateTimerTask( void )
@@ -660,7 +649,7 @@ TickType_t xNextExpireTime;
 static TickType_t prvSampleTimeNow( BaseType_t * const pxTimerListsWereSwitched )
 {
 TickType_t xTimeNow;
-PRIVILEGED_DATA static TickType_t xLastTime = ( TickType_t ) 0U; /*lint !e956 Variable is only accessible to one task. */
+ static TickType_t xLastTime = ( TickType_t ) 0U; /*lint !e956 Variable is only accessible to one task. */
 
 	xTimeNow = xTaskGetTickCount();
 
@@ -1087,6 +1076,3 @@ Timer_t * const pxTimer = ( Timer_t * ) xTimer;
 to include software timer functionality.  If you want to include software timer
 functionality then ensure configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
 #endif /* configUSE_TIMERS == 1 */
-
-
-

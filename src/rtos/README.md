@@ -23,3 +23,14 @@ Purdue's CS250 (Computer Architecture) and CS354 (Operating Systems) for
 requisite background knowledge. For more info about the Zynq/A9 port, see 
 FreeRTOS's documentation on [Zynq](http://www.freertos.org/RTOS-Xilinx-Zynq.html) 
 and the [A9](http://www.freertos.org/Using-FreeRTOS-on-Cortex-A-Embedded-Processors.html).
+
+## Modifications to FreeRTOS
+We've somewhat significantly refactored the FreeRTOS kernel so that any FreeRTOS
+functions used within PROS align with the PROS coding style. See refactor.csv in
+this directory.
+
+We've removed the use of `BaseType_t` and `UBaseType_t` from any public facing
+API since we felt it unnecessary. Additionally, all variables pertaining to ticks
+on the PROS internal or public facing APIs have become millisecond precision, and 
+the conversion done immediately upon entering the functiion.
+

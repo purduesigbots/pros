@@ -1,3 +1,17 @@
+/**
+ * rtos_hooks.c - FreeRTOS hooks for initialization and interrupts
+ *
+ * FreeRTOS requires some porting to each platform to handle certain tasks. This
+ * file contains the various methods required to be implemented for FreeRTOS.
+ *
+ * Copyright (c) 2017, Purdue University ACM SIGBots
+ * All rights reserved.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "rtos/FreeRTOS.h"
 #include "rtos/semphr.h"
 #include "rtos/task.h"
@@ -20,7 +34,7 @@ void PrefetchAbortInterrupt() { vexSystemPrefetchAbortInterrupt(); }
 void _boot() { vexSystemBoot(); }
 
 extern void vPortInstallFreeRTOSVectorTable(void);
-void rtos_initialize()
+void rtos_install()
 {
 	vexSystemTimerStop();
 
@@ -60,7 +74,7 @@ void vApplicationMallocFailedHook(void)
 		;
 }
 
-void vApplicationStackOverflowHook(task_handle_t pxTask, char* pcTaskName)
+void vApplicationStackOverflowHook(TaskHandle_t pxTask, char* pcTaskName)
 {
 	(void)pcTaskName;
 	(void)pxTask;

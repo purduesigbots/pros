@@ -20,7 +20,9 @@ CXXOBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CXXSRC)))
 
 LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lv5rts,-lc,-lm,-lgcc,--end-group
 
+ifndef OUTBIN
 OUTNAME:=$(notdir $(realpath .))
+endif
 OUTBIN:=$(BINDIR)/$(OUTNAME).bin
 OUTELF:=$(BINDIR)/$(OUTNAME).elf
 
@@ -37,9 +39,10 @@ clean:
 $(OUTBIN): $(OUTELF)
 	@echo Creating binary
 	$(VV)mkdir -p $(dir $@)
-	$D$(OBJCOPY) $(OUTELF) -O binary $(OUTBIN)
 	@echo Output size:
 	-$D$(SIZETOOL) $(SIZEFLAGS) $< | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
+	@echo Creating $(OUTBIN) for V5
+	$D$(OBJCOPY) $(OUTELF) -O binary $(OUTBIN)
 
 $(OUTELF): $(ASMOBJ) $(COBJ)
 	@echo Linking project

@@ -16,8 +16,8 @@ COMMA := ,
 LNK_FLAGS = -T?%$(FWDIR)/v5.ld --gc-sections
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
-CFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections
-CXXFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections -fno-rtti -fno-threadsafe-statics -fno-exceptions 
+CFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections --std=gnu11
+CXXFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections -fno-rtti -fno-threadsafe-statics -fno-exceptions --std=gnu++14
 LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib  $(subst ?%,$(SPACE),$(addprefix -Wl$(COMMA), $(LNK_FLAGS)))
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
