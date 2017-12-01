@@ -3,10 +3,10 @@ FWDIR:=$(ROOT)/firmware
 SRC:=$(ROOT)/src
 INCLUDE:=$(ROOT)/include
 
-LIBRARIES=-lgcc -lm
 ARCHTUPLE=arm-none-eabi-
 
 MFLAGS=-march=armv7-a -mfpu=neon-fp16 -mfloat-abi=softfp
+CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
 
 WARNFLAGS=-Wall
 
@@ -16,8 +16,8 @@ COMMA := ,
 LNK_FLAGS = -T?%$(FWDIR)/v5.ld --gc-sections
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
-CFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections --std=gnu11
-CXXFLAGS=$(MFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections -fno-rtti -fno-threadsafe-statics -fno-exceptions --std=gnu++14
+CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections --std=gnu11
+CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -funwind-tables -ffunction-sections -fdata-sections  --std=gnu++14
 LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib  $(subst ?%,$(SPACE),$(addprefix -Wl$(COMMA), $(LNK_FLAGS)))
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
@@ -28,6 +28,7 @@ AR:=$(ARCHTUPLE)ar
 AS:=$(ARCHTUPLE)gcc
 CC:=$(ARCHTUPLE)gcc
 CXX:=$(ARCHTUPLE)g++
+LD:=$(ARCHTUPLE)g++
 OBJCOPY:=$(ARCHTUPLE)objcopy
 SIZETOOL:=$(ARCHTUPLE)size
 READELF:=$(ARCHTUPLE)readelf

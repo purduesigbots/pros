@@ -22,6 +22,8 @@ StaticTask_t                static_task_s_t
 BaseType_t                  int32_t
 UBaseType_t                 uint32_t
 TickType_t					uint32_t
+ListItem_t					list_item_t
+StaticSemaphore_t   sem_buf_t
 
 
 
@@ -67,4 +69,3 @@ xSemaphoreCreateCounting		sem_create
 vSemaphoreDelete			sem_delete
 xSemaphoreGetMutexHolder	mutex_get_owner
 uxSemaphoreGetCount			sem_get_count
-

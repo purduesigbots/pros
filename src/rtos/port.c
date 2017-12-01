@@ -255,6 +255,12 @@ __attribute__(( used )) const uint32_t ulMaxAPIPriorityMask = ( configMAX_API_CA
 
 /*-----------------------------------------------------------*/
 
+static void task_clean_up() {
+	// TODO: Make this a kernel debugging statement
+	// vexDisplayString(1, "Reaping dying task: %s", task_get_name(NULL));
+	task_delete(NULL);
+}
+
 /*
  * See header file for description.
  */
@@ -283,11 +289,12 @@ task_stack_t *pxPortInitialiseStack( task_stack_t *pxTopOfStack, task_fn_t pxCod
 	pxTopOfStack--;
 
 	/* Next the return address, which in this case is the start of the task. */
-	*pxTopOfStack = ( task_stack_t ) pxCode;
+	extern void task_fn_wrapper(task_fn_t fn, void* args);
+	*pxTopOfStack = ( task_stack_t ) task_fn_wrapper;
 	pxTopOfStack--;
 
 	/* Next all the registers other than the stack pointer. */
-	*pxTopOfStack = ( task_stack_t ) portTASK_RETURN_ADDRESS;	/* R14 */
+	*pxTopOfStack = ( task_stack_t ) task_clean_up;	/* R14 */
 	pxTopOfStack--;
 	*pxTopOfStack = ( task_stack_t ) 0x12121212;	/* R12 */
 	pxTopOfStack--;
@@ -311,9 +318,9 @@ task_stack_t *pxPortInitialiseStack( task_stack_t *pxTopOfStack, task_fn_t pxCod
 	pxTopOfStack--;
 	*pxTopOfStack = ( task_stack_t ) 0x02020202;	/* R2 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( task_stack_t ) 0x01010101;	/* R1 */
+	*pxTopOfStack = ( task_stack_t ) pvParameters; /* R1 */
 	pxTopOfStack--;
-	*pxTopOfStack = ( task_stack_t ) pvParameters; /* R0 */
+	*pxTopOfStack = ( task_stack_t ) pxCode; /* R0 */
 	pxTopOfStack--;
 
 	/* The task will start with a critical nesting count of 0 as interrupts are

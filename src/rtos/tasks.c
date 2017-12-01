@@ -1002,6 +1002,8 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 		configASSERT( ( xTimeIncrement > 0U ) );
 		configASSERT( uxSchedulerSuspended == 0 );
 
+		const uint32_t xTicksIncrement = pdMS_TO_TICKS(xTimeIncrement);
+
 		rtos_suspend_all();
 		{
 			/* Minor optimisation.  The tick count cannot change in this
@@ -1009,9 +1011,9 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 			const uint32_t xConstTickCount = xTickCount;
 
 			/* Generate the tick time at which the task wants to wake. */
-			xTimeToWake = *pxPreviousWakeTime + xTimeIncrement;
+		        xTimeToWake = *pxPreviousWakeTime + xTicksIncrement;
 
-			if( xConstTickCount < *pxPreviousWakeTime )
+		        if( xConstTickCount < *pxPreviousWakeTime )
 			{
 				/* The tick count has overflowed since this function was
 				lasted called.  In this case the only time we should ever
@@ -1089,7 +1091,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 			{
 				traceTASK_DELAY();
 
-				/* A task that is removed from the event list while the
+			        /* A task that is removed from the event list while the
 				scheduler is suspended will not get placed in the ready
 				list or removed from the blocked list until the scheduler
 				is resumed.

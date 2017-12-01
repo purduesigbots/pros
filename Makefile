@@ -18,7 +18,7 @@ COBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CSRC)))
 CXXSRC:=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext)))
 CXXOBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CXXSRC)))
 
-LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lv5rts,-lc,-lm,-lgcc,--end-group
+LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lv5rts,-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group
 
 ifndef OUTBIN
 OUTNAME:=$(notdir $(realpath .))
@@ -32,6 +32,8 @@ VERSION:=`git describe --abbrev=0`
 
 all: clean $(OUTBIN)
 
+quick: $(OUTBIN)
+
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
@@ -43,7 +45,7 @@ $(OUTBIN): $(OUTELF)
 
 $(OUTELF): $(sort $(ASMOBJ) $(COBJ) $(CXXOBJ))
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(CC) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
+	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
 

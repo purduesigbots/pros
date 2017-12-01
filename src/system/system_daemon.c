@@ -23,7 +23,7 @@ static void _system_daemon_task(void* ign);
 #define DISABLED_STATE 0
 #define AUTONOMOUS_STATE 1
 #define OPCONTROL_STATE 2
-uint32_t vexCompetitionStatus(void) {
+__attribute__((weak)) uint32_t vexCompetitionStatus(void) {
 	return OPCONTROL_STATE;
 }
 
@@ -43,12 +43,14 @@ static void _system_daemon_task(void* ign) {
 
 	task_suspend(NULL);  // _initialize_task will resume us
 
+	time = millis();
 	while (1) {
 		taskENTER_CRITICAL();
 		{
 			vexBackgroundProcessing();  // TODO: figure out how much stack space this requires
 		}
 		taskEXIT_CRITICAL();
+
 		if (unlikely(status != vexCompetitionStatus())) {
 			// TODO: make sure vexCompetitionStatus returns a valid result. Don't know
 			// what to expect yet
