@@ -4,9 +4,11 @@ SRC:=$(ROOT)/src
 INCLUDE:=$(ROOT)/include
 
 ARCHTUPLE=arm-none-eabi-
+DEVICE=VEX EDR V5
 
 MFLAGS=-march=armv7-a -mfpu=neon-fp16 -mfloat-abi=softfp
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
+GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
 
 WARNFLAGS=-Wall
 
@@ -16,8 +18,8 @@ COMMA := ,
 LNK_FLAGS = -T?%$(FWDIR)/v5.ld --gc-sections
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
-CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -ffunction-sections -fdata-sections --std=gnu11
-CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -funwind-tables -ffunction-sections -fdata-sections  --std=gnu++14
+CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11
+CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -funwind-tables $(GCCFLAGS)  --std=gnu++14
 LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib  $(subst ?%,$(SPACE),$(addprefix -Wl$(COMMA), $(LNK_FLAGS)))
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
@@ -38,7 +40,7 @@ CEXTS:=c
 ASMEXTS:=s S
 CXXEXTS:=cpp c++ cc
 
-rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2)$(filter $(subst *,%,$2),$d))
+rwildcard=$(foreach d,$(filter-out $3,$(wildcard $1*)),$(call rwildcard,$d/,$2,$3)$(filter $(subst *,%,$2),$d))
 
 # Colors
 NO_COLOR=\x1b[0m
@@ -50,14 +52,13 @@ OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
 DONE_STRING=$(OK_COLOR)[DONE]$(NO_COLOR)
 ERROR_STRING=$(ERROR_COLOR)[ERRORS]$(NO_COLOR)
 WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NO_COLOR)
-ECHO=echo -e
+ECHO=/bin/echo -e
 echo=@$(ECHO) "$2$1$(NO_COLOR)"
 echon=@$(ECHO) -n "$2$1$(NO_COLOR)"
 
-catlog=cat temp.log | sed -e 's/\(error\)/$(ERROR_COLOR)\1$(NO_COLOR)/' -e 's/\(warning\)/$(WARN_COLOR)\1$(NO_COLOR)/'
 define test_output
 $1 2> temp.log || touch temp.errors
-@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && $(catlog); elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && $(catlog); else $(ECHO) "$2"; fi;
+@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && cat temp.log; elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && cat temp.log; else $(ECHO) "$2"; fi;
 @if test -e temp.errors; then rm -f temp.log temp.errors && false; fi;
 @rm -f temp.log temp.errors
 endef

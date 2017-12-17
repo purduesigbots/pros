@@ -53,6 +53,18 @@ mutex_t mutex_recursive_create();
  * @return
  *          1 if the mutex was obtained, 0 otherwise
  */
-bool_t mutex_take_recursive(mutex_t mutex, uint32_t wait_time);
+bool_t mutex_recursive_take(mutex_t mutex, uint32_t wait_time);
+
+/**
+ * Gives a recursive mutex
+ *
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking#recursive_mutexes for details.
+ *
+ * @param mutex
+ *          A mutex handle created by mutex_recursive_create
+ * @return
+ *          1 if the mutex was obtained, 0 otherwise
+ */
+bool_t mutex_recursive_give(mutex_t mutex);
 
 #endif /* _PROS_API_EXTENDED_H_ */

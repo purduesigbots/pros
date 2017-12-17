@@ -42,3 +42,9 @@ void __env_lock() {
 void __env_unlock() {
 	rtos_resume_all();
 }
+
+void _exit(int status) {
+	// TODO implement this
+	for (;;)
+		;
+}

@@ -77,6 +77,7 @@
 #include "queue.h"
 
 typedef queue_t sem_t;
+typedef queue_t mutex_t;
 
 #define semBINARY_SEMAPHORE_QUEUE_LENGTH	( ( uint8_t ) 1U )
 #define semSEMAPHORE_QUEUE_ITEM_LENGTH		( ( uint8_t ) 0U )
@@ -200,9 +201,7 @@ typedef queue_t sem_t;
  * \defgroup sem_binary_create sem_binary_create
  * \ingroup Semaphores
  */
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	#define sem_binary_create() xQueueGenericCreate( ( uint32_t ) 1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE )
-#endif
+sem_t sem_binary_create();
 
 /**
  * semphr. h
@@ -328,7 +327,7 @@ typedef queue_t sem_t;
  * \defgroup sem_wait sem_wait
  * \ingroup Semaphores
  */
-#define sem_wait( xSemaphore, xBlockTime )		xQueueGenericReceive( ( queue_t ) ( xSemaphore ), NULL, ( xBlockTime ), pdFALSE )
+uint8_t sem_wait(sem_t sem, uint32_t block_time);
 
 /**
  * semphr. h
@@ -421,9 +420,7 @@ typedef queue_t sem_t;
  * \defgroup mutex_recursive_take mutex_recursive_take
  * \ingroup Semaphores
  */
-#if( configUSE_RECURSIVE_MUTEXES == 1 )
-	#define mutex_recursive_take( xMutex, xBlockTime )	xQueueTakeMutexRecursive( ( xMutex ), ( xBlockTime ) )
-#endif
+uint8_t mutex_recursive_take(mutex_t mutex, uint32_t block_time);
 
 /**
  * semphr. h
@@ -486,7 +483,7 @@ typedef queue_t sem_t;
  * \defgroup sem_post sem_post
  * \ingroup Semaphores
  */
-#define sem_post( xSemaphore )		xQueueGenericSend( ( queue_t ) ( xSemaphore ), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK )
+uint8_t sem_post(sem_t sem);
 
 /**
  * semphr. h
@@ -570,9 +567,7 @@ typedef queue_t sem_t;
  * \defgroup mutex_recursive_give mutex_recursive_give
  * \ingroup Semaphores
  */
-#if( configUSE_RECURSIVE_MUTEXES == 1 )
-	#define mutex_recursive_give( xMutex )	xQueueGiveMutexRecursive( ( xMutex ) )
-#endif
+uint8_t mutex_recursive_give(mutex_t mutex);
 
 /**
  * semphr. h
@@ -754,9 +749,7 @@ typedef queue_t sem_t;
  * \defgroup mutex_create mutex_create
  * \ingroup Semaphores
  */
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	#define mutex_create() xQueueCreateMutex( queueQUEUE_TYPE_MUTEX )
-#endif
+mutex_t mutex_create();
 
 /**
  * semphr. h
@@ -883,9 +876,7 @@ typedef queue_t sem_t;
  * \defgroup mutex_recursive_create mutex_recursive_create
  * \ingroup Semaphores
  */
-#if( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
-	#define mutex_recursive_create() xQueueCreateMutex( queueQUEUE_TYPE_RECURSIVE_MUTEX )
-#endif
+mutex_t mutex_recursive_create();
 
 /**
  * semphr. h

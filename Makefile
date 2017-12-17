@@ -9,16 +9,19 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
+EXCLUDE_SRCDIRS=$(SRCDIR)/tests
+
 INCLUDE=-iquote$(INCDIR)
 
-ASMSRC:=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext)))
+ASMSRC:=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $(EXCLUDE_SRCDIRS)))
 ASMOBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(ASMSRC)))
-CSRC:=$(foreach cext,$(CEXTS),$(call rwildcard, $(SRCDIR),*.$(cext)))
+CSRC:=$(foreach cext,$(CEXTS),$(call rwildcard, $(SRCDIR),*.$(cext), $(EXCLUDE_SRCDIRS)))
 COBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CSRC)))
-CXXSRC:=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext)))
+CXXSRC:=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext), $(EXCLUDE_SRCDIRS)))
 CXXOBJ:=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CXXSRC)))
 
-LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lv5rts,-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group
+LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group
+ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
 
 ifndef OUTBIN
 OUTNAME:=$(notdir $(realpath .))

@@ -35,6 +35,8 @@ typedef bool bool_t;
 
 #define TASK_NAME_MAX_LEN 32
 
+#define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
+
 typedef void* task_t;
 typedef void (*task_fn_t)(void*);
 

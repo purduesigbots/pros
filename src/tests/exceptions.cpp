@@ -6,9 +6,6 @@
 #include "rtos/FreeRTOS.h"
 #include "rtos/task.h"
 
-// Need this for now
-extern "C" void vexTasksRun() {}
-
 extern "C" void throw_it() {
 	throw std::runtime_error("RT err in function");
 }
