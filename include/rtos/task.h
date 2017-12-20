@@ -336,14 +336,12 @@ is used in assert() statements. */
  * \defgroup task_create task_create
  * \ingroup Tasks
  */
-#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 task_t task_create(task_fn_t task_code, void* const param,
 					uint32_t priority, const size_t stack_size,
 					const char* const name); /*lint !e971 Unqualified
                                                      char types are allowed
                                                      for strings and single
                                                      characters only. */
-#endif
 
 /**
  * task. h
@@ -452,13 +450,11 @@ task_t task_create(task_fn_t task_code, void* const param,
  * \defgroup task_create_static task_create_static
  * \ingroup Tasks
  */
-#if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	task_t task_create_static(	task_fn_t task_code, void* const param,
-								uint32_t priority, const size_t stack_size,
-								const char* const name,
-								task_stack_t * const stack_buffer,
-								static_task_s_t * const task_buffer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-#endif /* configSUPPORT_STATIC_ALLOCATION */
+task_t task_create_static(	task_fn_t task_code, void* const param,
+							uint32_t priority, const size_t stack_size,
+							const char* const name,
+							task_stack_t * const stack_buffer,
+							static_task_s_t * const task_buffer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
 /**
  * task. h
  * <pre>void task_delete( task_t xTask );</pre>
