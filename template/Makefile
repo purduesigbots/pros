@@ -48,6 +48,22 @@ ARCHIVES:=$(wildcard $(FWDIR)/*.a)
 
 ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA)$(SPACE),$(sort $(foreach archive,$(ARCHIVES),$(basename $(notdir $(archive))))))
 
+ifdef $(shell comand -v gnumfmt 2> /dev/null)  # support for MacOS
+SIZES_NUMFMT:=| gnumfmt --field=-4 --header $(NUMFMTFLAGS)
+else
+ifdef $(shell command -v numfmt 2> /dev/null)
+SIZES_NUMFMT:=| numfmt --field=-4 --header $(NUMFMTFLAGS)
+else
+SIZES_NUMFMT:=
+endif
+endif
+
+ifdef $(shell command -v sed 2> /dev/null)
+SIZES_SED:=| sed -e 's/  dec/total/'
+else
+SIZES_SED:=
+endif
+
 LIBRARIES=$(ARCHIVES) -L$(FWDIR) -Wl,--start-group,-lc,-lm,-lgcc,--end-group
 
 OUTNAME:=output
@@ -80,7 +96,7 @@ upload-legacy: $(OUTBIN)
 $(OUTBIN): $(OUTELF)
 	$(VV)mkdir -p $(dir $@)
 	@echo Section sizes:
-	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $< | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
+	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $< $(SIZES_SED) $(SIZES_NUMFMT)
 	@echo -n "Creating $@ for $(DEVICE) "
 	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
