@@ -43,6 +43,7 @@ COMMA := ,
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2)$(filter $(subst *,%,$2),$d))
 
 # Colors
+# comment the *_COLOR lines to remove ANSI escape colors (e.g. if your terminal doesn't support escape codes)
 NO_COLOR=\x1b[0m
 OK_COLOR=\x1b[32;01m
 ERROR_COLOR=\x1b[31;01m
@@ -52,7 +53,7 @@ OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
 DONE_STRING=$(OK_COLOR)[DONE]$(NO_COLOR)
 ERROR_STRING=$(ERROR_COLOR)[ERRORS]$(NO_COLOR)
 WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NO_COLOR)
-ECHO=echo -e
+ECHO=/bin/echo -e
 echo=@$(ECHO) "$2$1$(NO_COLOR)"
 echon=@$(ECHO) -n "$2$1$(NO_COLOR)"
 
