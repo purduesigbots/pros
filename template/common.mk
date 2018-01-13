@@ -19,7 +19,7 @@ MCULFLAGS=-nostartfiles -Wl,-static -Bfirmware -Wl,-u,VectorTable -Wl,-T -Xlinke
 # Flags for programs
 AFLAGS:=$(MCUAFLAGS)
 ARFLAGS:=$(MCUCFLAGS)
-CCFLAGS:=-Wall $(MCUCFLAGS) -Os -ffunction-sections -fdata-sections -fsigned-char -fomit-frame-pointer -fsingle-precision-constant
+CCFLAGS:=-Wall $(MCUCFLAGS) -Os -ffunction-sections -fsigned-char -fomit-frame-pointer -fsingle-precision-constant
 CFLAGS:=$(CCFLAGS) -std=gnu99 -Werror=implicit-function-declaration
 CXXFLAGS:=$(CCFLAGS) -fno-exceptions -fno-rtti -felide-constructors
 LDFLAGS:=-Wall $(MCUCFLAGS) $(MCULFLAGS) -Wl,--gc-sections
