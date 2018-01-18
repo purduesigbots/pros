@@ -26,8 +26,8 @@ extern "C" {
 
 #define KDBG_FILENO 3
 
-#define wprintf(fmt, ...) dprintf(STDERR_FILENO, "%s:%d -- " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
-#define wprint(str) wprintf("%s", str)
+#define warn_printf(fmt, ...) dprintf(STDERR_FILENO, "%s:%d -- " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
+#define warn_wprint(str) wprintf("%s", str)
 
 #define kprintf(fmt, ...) dprintf(KDBG_FILENO, "%s:%d -- " fmt "\n", __FILE__, __LINE__, ##__VA_ARGS__)
 #define kprint(str) kprintf("%s", str)
