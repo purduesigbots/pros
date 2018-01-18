@@ -26,10 +26,10 @@ and the [A9](http://www.freertos.org/Using-FreeRTOS-on-Cortex-A-Embedded-Process
 
 ## Modifications to FreeRTOS
 We've somewhat significantly refactored the FreeRTOS kernel so that any FreeRTOS
-functions used within PROS align with the PROS coding style. See refactor.csv in
+functions used within PROS align with the PROS coding style. See refactor.tsv in
 this directory.
 
-We've removed the use of `BaseType_t` and `UBaseType_t` from any public facing
+We've removed the use of `int32_t` and `uint32_t` from any public facing
 API since we felt it unnecessary. Additionally, all variables pertaining to ticks
 on the PROS internal or public facing APIs have become millisecond precision, and 
 the conversion done immediately upon entering the functiion.

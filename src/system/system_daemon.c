@@ -1,7 +1,5 @@
-#include "system/system.h"
 #include "ifi/v5_api.h"
-#include "rtos/task.h"
-#include "system/comp_state.h"
+#include "kapi.h"
 #include "system/optimizers.h"
 
 static task_stack_t competition_task_stack[TASK_STACK_DEPTH_DEFAULT];
@@ -15,6 +13,7 @@ static task_t system_daemon_task;
 static void _disabled_task(void* ign);
 static void _autonomous_task(void* ign);
 static void _opcontrol_task(void* ign);
+static void _competition_initialize_task(void* ign);
 
 static void _initialize_task(void* ign);
 static void _system_daemon_task(void* ign);
@@ -27,9 +26,19 @@ __attribute__((weak)) uint32_t vexCompetitionStatus(void) {
 	return OPCONTROL_STATE;
 }
 
-char task_names[3][32] = { "PROS Disabled (user)", "PROS Autonomous (user)", "PROS Operator Control (user)" };
+char task_names[3][32] = { "User Disabled (PROS)", "User Autonomous (PROS)", "User Operator Control (PROS)" };
 
 task_fn_t task_fns[3] = { _disabled_task, _autonomous_task, _opcontrol_task };
+
+extern void ser_output_flush(void);
+
+// does the basic background operations that need to occur every 2ms
+static inline void do_background_operations() {
+	ser_output_flush();
+	rtos_suspend_all();
+	vexBackgroundProcessing();
+	rtos_resume_all();
+}
 
 static void _system_daemon_task(void* ign) {
 	uint32_t time = millis();
@@ -37,19 +46,39 @@ static void _system_daemon_task(void* ign) {
 	uint32_t status = (uint32_t)-1;
 	uint32_t task_state;
 
+	// start up user initialize task. once the user initialize function completes,
+	// the _initialize_task will notify us and we can go into normal competition
+	// monitoring mode
 	competition_task =
 	    task_create_static(_initialize_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
-	                       "PROS Initialization (user)", competition_task_stack, &competition_task_buffer);
-
-	task_suspend(NULL);  // _initialize_task will resume us
+	                       "User Initialization (PROS)", competition_task_stack, &competition_task_buffer);
 
 	time = millis();
-	while (1) {
-		taskENTER_CRITICAL();
-		{
-			vexBackgroundProcessing();  // TODO: figure out how much stack space this requires
+	while (!task_notify_take(true, 2)) {
+		// wait for initialize to finish
+		do_background_operations();
+	}
+
+	// we're starting in disabled mode, which means we should run user competition initialization
+	// This exact logic will likely be slightly modified once we know what vexCompetitionStatus() returns
+	// so that handoffs between comp init -> disabled or unconnected -> disabled work correctly
+	if (vexCompetitionStatus() == DISABLED_STATE) {
+		status = DISABLED_STATE;
+		task_state = task_get_state(competition_task);
+		// delete the task only if it's validly running. will never be
+		// E_TASK_STATE_RUNNING
+		if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
+		    task_state == E_TASK_STATE_SUSPENDED) {
+			task_delete(competition_task);
 		}
-		taskEXIT_CRITICAL();
+
+		competition_task = task_create_static(_competition_initialize_task, NULL, TASK_PRIORITY_DEFAULT,
+		                                      TASK_STACK_DEPTH_DEFAULT, "User Comp. Init. (PROS)",
+		                                      competition_task_stack, &competition_task_buffer);
+	}
+
+	while (1) {
+		do_background_operations();
 
 		if (unlikely(status != vexCompetitionStatus())) {
 			// TODO: make sure vexCompetitionStatus returns a valid result. Don't know
@@ -80,14 +109,46 @@ void system_daemon_initialize() {
 	                       "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
 }
 
-__attribute__((weak)) void autonomous() {}
-__attribute__((weak)) void initialize() {}
-__attribute__((weak)) void opcontrol() {}
-__attribute__((weak)) void disabled() {}
+// description of some cases for implementing autonomous:
+// user implements autonomous w/C linkage: system daemon starts _autonomous_task which calls the user's autonomous()
+// implement w/C++ linkage: sysd starts _autonomous_task calls autonomous() defined here which calls cpp_autonomous
+// which calls the user's C++ linkage autonomous()
+// implement no autonomous: see above, but cpp_autonomous implements a stub C++ autonomous()
+
+// Our weak functions call C++ links of these functions, allowing users to only optionally extern "C" the task functions
+extern void cpp_autonomous();
+extern void cpp_initialize();
+extern void cpp_opcontrol();
+extern void cpp_disabled();
+extern void cpp_competition_initialize();
+
+// default implementations of the different competition modes attempt to call the C++
+// linkage version of the function
+__attribute__((weak)) void autonomous() {
+	cpp_autonomous();
+}
+__attribute__((weak)) void initialize() {
+	cpp_initialize();
+}
+__attribute__((weak)) void opcontrol() {
+	cpp_opcontrol();
+}
+__attribute__((weak)) void disabled() {
+	cpp_disabled();
+}
+__attribute__((weak)) void competition_initialize() {
+	cpp_competition_initialize();
+}
+
+// these functions are what actually get called by the system daemon, which attempt
+// to call whatever the user declares
+static void _competition_initialize_task(void* ign) {
+	competition_initialize();
+}
 
 static void _initialize_task(void* ign) {
 	initialize();
-	task_resume(system_daemon_task);
+	task_notify(system_daemon_task);
 }
 static void _autonomous_task(void* ign) {
 	autonomous();

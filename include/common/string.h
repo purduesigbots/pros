@@ -1,7 +1,7 @@
 /**
- * system/optimizers.h - optimizers for the kernel
+ * system/common/string.h - Extra string functions header
  *
- * Probably shouldn't use anything from this header
+ * See system/common/string.c for discussion
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -13,6 +13,12 @@
 
 #pragma once
 
-// See https://stackoverflow.com/q/109710 for discussion
-#define likely(cond) __builtin_expect(!!(cond), 1)
-#define unlikely(cond) __builtin_expect(!!(cond), 0)
+/**
+ * strdup but uses the kernel heap
+ */
+char* kstrdup(const char* s);
+
+/**
+ * strndup but uses the kernel heap
+ */
+char* kstrndup(const char* s, size_t n);

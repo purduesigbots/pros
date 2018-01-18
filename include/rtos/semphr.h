@@ -75,6 +75,7 @@
 #endif
 
 #include "queue.h"
+#include "task.h"
 
 typedef queue_t sem_t;
 typedef queue_t mutex_t;
@@ -205,7 +206,7 @@ sem_t sem_binary_create();
 
 /**
  * semphr. h
- * <pre>sem_t xSemaphoreCreateBinaryStatic( StaticSemaphore_t *pxSemaphoreBuffer )</pre>
+ * <pre>sem_t xSemaphoreCreateBinaryStatic( static_sem_s_t *pxSemaphoreBuffer )</pre>
  *
  * Creates a new binary semaphore instance, and returns a handle by which the
  * new semaphore can be referenced.
@@ -230,7 +231,7 @@ sem_t sem_binary_create();
  * semaphore does not use a priority inheritance mechanism.  For an alternative
  * that does use priority inheritance see mutex_create().
  *
- * @param pxSemaphoreBuffer Must point to a variable of type StaticSemaphore_t,
+ * @param pxSemaphoreBuffer Must point to a variable of type static_sem_s_t,
  * which will then be used to hold the semaphore's data structure, removing the
  * need for the memory to be allocated dynamically.
  *
@@ -240,7 +241,7 @@ sem_t sem_binary_create();
  * Example usage:
  <pre>
  sem_t xSemaphore = NULL;
- StaticSemaphore_t xSemaphoreBuffer;
+ static_sem_s_t xSemaphoreBuffer;
 
  void vATask( void * pvParameters )
  {
@@ -706,8 +707,8 @@ uint8_t mutex_recursive_give(mutex_t mutex);
  * using mutex_create() then the required memory is automatically
  * dynamically allocated inside the mutex_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a mutex is created using
- * xSemaphoreCreateMutexStatic() then the application writer must provided the
- * memory.  xSemaphoreCreateMutexStatic() therefore allows a mutex to be created
+ * mutex_create_static() then the application writer must provided the
+ * memory.  mutex_create_static() therefore allows a mutex to be created
  * without using any dynamic memory allocation.
  *
  * Mutexes created using this function can be accessed using the sem_wait()
@@ -753,7 +754,7 @@ mutex_t mutex_create();
 
 /**
  * semphr. h
- * <pre>sem_t xSemaphoreCreateMutexStatic( StaticSemaphore_t *pxMutexBuffer )</pre>
+ * <pre>sem_t mutex_create_static( static_sem_s_t *pxMutexBuffer )</pre>
  *
  * Creates a new mutex type semaphore instance, and returns a handle by which
  * the new mutex can be referenced.
@@ -763,8 +764,8 @@ mutex_t mutex_create();
  * using mutex_create() then the required memory is automatically
  * dynamically allocated inside the mutex_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a mutex is created using
- * xSemaphoreCreateMutexStatic() then the application writer must provided the
- * memory.  xSemaphoreCreateMutexStatic() therefore allows a mutex to be created
+ * mutex_create_static() then the application writer must provided the
+ * memory.  mutex_create_static() therefore allows a mutex to be created
  * without using any dynamic memory allocation.
  *
  * Mutexes created using this function can be accessed using the sem_wait()
@@ -782,7 +783,7 @@ mutex_t mutex_create();
  * semaphore and another always 'takes' the semaphore) and from within interrupt
  * service routines.
  *
- * @param pxMutexBuffer Must point to a variable of type StaticSemaphore_t,
+ * @param pxMutexBuffer Must point to a variable of type static_sem_s_t,
  * which will be used to hold the mutex's data structure, removing the need for
  * the memory to be allocated dynamically.
  *
@@ -792,30 +793,94 @@ mutex_t mutex_create();
  * Example usage:
  <pre>
  sem_t xSemaphore;
- StaticSemaphore_t xMutexBuffer;
+ static_sem_s_t xMutexBuffer;
 
  void vATask( void * pvParameters )
  {
     // A mutex cannot be used before it has been created.  xMutexBuffer is
-    // into xSemaphoreCreateMutexStatic() so no dynamic memory allocation is
+    // into mutex_create_static() so no dynamic memory allocation is
     // attempted.
-    xSemaphore = xSemaphoreCreateMutexStatic( &xMutexBuffer );
+    xSemaphore = mutex_create_static( &xMutexBuffer );
 
     // As no dynamic memory allocation was performed, xSemaphore cannot be NULL,
     // so there is no need to check it.
  }
  </pre>
- * \defgroup xSemaphoreCreateMutexStatic xSemaphoreCreateMutexStatic
+ * \defgroup mutex_create_static mutex_create_static
  * \ingroup Semaphores
  */
  #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	#define xSemaphoreCreateMutexStatic( pxMutexBuffer ) xQueueCreateMutexStatic( queueQUEUE_TYPE_MUTEX, ( pxMutexBuffer ) )
+mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer);
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
+    /**
+     * semphr. h
+     * <pre>sem_t mutex_recursive_create( void )</pre>
+     *
+     * Creates a new recursive mutex type semaphore instance, and returns a handle
+     * by which the new recursive mutex can be referenced.
+     *
+     * Internally, within the FreeRTOS implementation, recursive mutexs use a block
+     * of memory, in which the mutex structure is stored.  If a recursive mutex is
+     * created using mutex_recursive_create() then the required memory is
+     * automatically dynamically allocated inside the
+     * mutex_recursive_create() function.  (see
+     * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
+     * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
+     * provide the memory that will get used by the mutex.
+     * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
+     * be created without using any dynamic memory allocation.
+     *
+     * Mutexes created using this macro can be accessed using the
+     * mutex_recursive_take() and mutex_recursive_give() macros.  The
+     * sem_wait() and sem_post() macros must not be used.
+     *
+     * A mutex used recursively can be 'taken' repeatedly by the owner. The mutex
+     * doesn't become available again until the owner has called
+     * mutex_recursive_give() for each successful 'take' request.  For example,
+     * if a task successfully 'takes' the same mutex 5 times then the mutex will
+     * not be available to any other task until it has also  'given' the mutex back
+     * exactly five times.
+     *
+     * This type of semaphore uses a priority inheritance mechanism so a task
+     * 'taking' a semaphore MUST ALWAYS 'give' the semaphore back once the
+     * semaphore it is no longer required.
+     *
+     * Mutex type semaphores cannot be used from within interrupt service routines.
+     *
+     * See sem_binary_create() for an alternative implementation that can be
+     * used for pure synchronisation (where one task or interrupt always 'gives' the
+     * semaphore and another always 'takes' the semaphore) and from within interrupt
+     * service routines.
+     *
+     * @return xSemaphore Handle to the created mutex semaphore.  Should be of type
+     * sem_t.
+     *
+     * Example usage:
+     <pre>
+     sem_t xSemaphore;
+
+     void vATask( void * pvParameters )
+     {
+        // Semaphore cannot be used before a call to mutex_create().
+        // This is a macro so pass the variable in directly.
+        xSemaphore = mutex_recursive_create();
+
+        if( xSemaphore != NULL )
+        {
+            // The semaphore was created successfully.
+            // The semaphore can now be used.
+        }
+     }
+     </pre>
+     * \defgroup mutex_recursive_create mutex_recursive_create
+     * \ingroup Semaphores
+     */
+    mutex_t mutex_recursive_create();
 
 /**
  * semphr. h
- * <pre>sem_t mutex_recursive_create( void )</pre>
+ * <pre>sem_t xSemaphoreCreateRecursiveMutexStatic( static_sem_s_t *pxMutexBuffer )</pre>
  *
  * Creates a new recursive mutex type semaphore instance, and returns a handle
  * by which the new recursive mutex can be referenced.
@@ -853,72 +918,7 @@ mutex_t mutex_create();
  * semaphore and another always 'takes' the semaphore) and from within interrupt
  * service routines.
  *
- * @return xSemaphore Handle to the created mutex semaphore.  Should be of type
- * sem_t.
- *
- * Example usage:
- <pre>
- sem_t xSemaphore;
-
- void vATask( void * pvParameters )
- {
-    // Semaphore cannot be used before a call to mutex_create().
-    // This is a macro so pass the variable in directly.
-    xSemaphore = mutex_recursive_create();
-
-    if( xSemaphore != NULL )
-    {
-        // The semaphore was created successfully.
-        // The semaphore can now be used.
-    }
- }
- </pre>
- * \defgroup mutex_recursive_create mutex_recursive_create
- * \ingroup Semaphores
- */
-mutex_t mutex_recursive_create();
-
-/**
- * semphr. h
- * <pre>sem_t xSemaphoreCreateRecursiveMutexStatic( StaticSemaphore_t *pxMutexBuffer )</pre>
- *
- * Creates a new recursive mutex type semaphore instance, and returns a handle
- * by which the new recursive mutex can be referenced.
- *
- * Internally, within the FreeRTOS implementation, recursive mutexs use a block
- * of memory, in which the mutex structure is stored.  If a recursive mutex is
- * created using mutex_recursive_create() then the required memory is
- * automatically dynamically allocated inside the
- * mutex_recursive_create() function.  (see
- * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
- * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
- * provide the memory that will get used by the mutex.
- * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
- * be created without using any dynamic memory allocation.
- *
- * Mutexes created using this macro can be accessed using the
- * mutex_recursive_take() and mutex_recursive_give() macros.  The
- * sem_wait() and sem_post() macros must not be used.
- *
- * A mutex used recursively can be 'taken' repeatedly by the owner. The mutex
- * doesn't become available again until the owner has called
- * mutex_recursive_give() for each successful 'take' request.  For example,
- * if a task successfully 'takes' the same mutex 5 times then the mutex will
- * not be available to any other task until it has also  'given' the mutex back
- * exactly five times.
- *
- * This type of semaphore uses a priority inheritance mechanism so a task
- * 'taking' a semaphore MUST ALWAYS 'give' the semaphore back once the
- * semaphore it is no longer required.
- *
- * Mutex type semaphores cannot be used from within interrupt service routines.
- *
- * See sem_binary_create() for an alternative implementation that can be
- * used for pure synchronisation (where one task or interrupt always 'gives' the
- * semaphore and another always 'takes' the semaphore) and from within interrupt
- * service routines.
- *
- * @param pxMutexBuffer Must point to a variable of type StaticSemaphore_t,
+ * @param pxMutexBuffer Must point to a variable of type static_sem_s_t,
  * which will then be used to hold the recursive mutex's data structure,
  * removing the need for the memory to be allocated dynamically.
  *
@@ -929,7 +929,7 @@ mutex_t mutex_recursive_create();
  * Example usage:
  <pre>
  sem_t xSemaphore;
- StaticSemaphore_t xMutexBuffer;
+ static_sem_s_t xMutexBuffer;
 
  void vATask( void * pvParameters )
  {
@@ -968,9 +968,9 @@ mutex_t mutex_recursive_create();
  * required memory is automatically dynamically allocated inside the
  * sem_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a counting semaphore is created
- * using xSemaphoreCreateCountingStatic() then the application writer can
+ * using sem_create_static() then the application writer can
  * instead optionally provide the memory that will get used by the counting
- * semaphore.  xSemaphoreCreateCountingStatic() therefore allows a counting
+ * semaphore.  sem_create_static() therefore allows a counting
  * semaphore to be created without using any dynamic memory allocation.
  *
  * Counting semaphores are typically used for two things:
@@ -1028,12 +1028,12 @@ mutex_t mutex_recursive_create();
  * \ingroup Semaphores
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	#define sem_create( uxMaxCount, uxInitialCount ) xQueueCreateCountingSemaphore( ( uxMaxCount ), ( uxInitialCount ) )
+sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount);
 #endif
 
 /**
  * semphr. h
- * <pre>sem_t xSemaphoreCreateCountingStatic( uint32_t uxMaxCount, uint32_t uxInitialCount, StaticSemaphore_t *pxSemaphoreBuffer )</pre>
+ * <pre>sem_t sem_create_static( uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t *pxSemaphoreBuffer )</pre>
  *
  * Creates a new counting semaphore instance, and returns a handle by which the
  * new counting semaphore can be referenced.
@@ -1048,8 +1048,8 @@ mutex_t mutex_recursive_create();
  * required memory is automatically dynamically allocated inside the
  * sem_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a counting semaphore is created
- * using xSemaphoreCreateCountingStatic() then the application writer must
- * provide the memory.  xSemaphoreCreateCountingStatic() therefore allows a
+ * using sem_create_static() then the application writer must
+ * provide the memory.  sem_create_static() therefore allows a
  * counting semaphore to be created without using any dynamic memory allocation.
  *
  * Counting semaphores are typically used for two things:
@@ -1080,7 +1080,7 @@ mutex_t mutex_recursive_create();
  * @param uxInitialCount The count value assigned to the semaphore when it is
  *        created.
  *
- * @param pxSemaphoreBuffer Must point to a variable of type StaticSemaphore_t,
+ * @param pxSemaphoreBuffer Must point to a variable of type static_sem_s_t,
  * which will then be used to hold the semaphore's data structure, removing the
  * need for the memory to be allocated dynamically.
  *
@@ -1091,14 +1091,14 @@ mutex_t mutex_recursive_create();
  * Example usage:
  <pre>
  sem_t xSemaphore;
- StaticSemaphore_t xSemaphoreBuffer;
+ static_sem_s_t xSemaphoreBuffer;
 
  void vATask( void * pvParameters )
  {
  sem_t xSemaphore = NULL;
 
     // Counting semaphore cannot be used before they have been created.  Create
-    // a counting semaphore using xSemaphoreCreateCountingStatic().  The max
+    // a counting semaphore using sem_create_static().  The max
     // value to which the semaphore can count is 10, and the initial value
     // assigned to the count will be 0.  The address of xSemaphoreBuffer is
     // passed in and will be used to hold the semaphore structure, so no dynamic
@@ -1109,11 +1109,11 @@ mutex_t mutex_recursive_create();
     // is no need to check its value.
  }
  </pre>
- * \defgroup xSemaphoreCreateCountingStatic xSemaphoreCreateCountingStatic
+ * \defgroup sem_create_static sem_create_static
  * \ingroup Semaphores
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	#define xSemaphoreCreateCountingStatic( uxMaxCount, uxInitialCount, pxSemaphoreBuffer ) xQueueCreateCountingSemaphoreStatic( ( uxMaxCount ), ( uxInitialCount ), ( pxSemaphoreBuffer ) )
+sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t* pxSemaphoreBuffer);
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
@@ -1128,7 +1128,7 @@ mutex_t mutex_recursive_create();
  * \defgroup sem_delete sem_delete
  * \ingroup Semaphores
  */
-#define sem_delete( xSemaphore ) queue_delete( ( queue_t ) ( xSemaphore ) )
+void sem_delete(sem_t xSemaphore);
 
 /**
  * semphr.h
@@ -1143,7 +1143,7 @@ mutex_t mutex_recursive_create();
  * the holder may change between the function exiting and the returned value
  * being tested.
  */
-#define mutex_get_owner( xSemaphore ) xQueueGetMutexHolder( ( xSemaphore ) )
+task_t mutex_get_owner(sem_t xMutex);
 
 /**
  * semphr.h
@@ -1155,7 +1155,7 @@ mutex_t mutex_recursive_create();
  * semaphore is not available.
  *
  */
-#define sem_get_count( xSemaphore ) queue_get_waiting( ( queue_t ) ( xSemaphore ) )
+uint32_t sem_get_count(sem_t xSemaphore);
 
 #endif /* SEMAPHORE_H */
 

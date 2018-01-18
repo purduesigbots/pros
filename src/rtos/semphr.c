@@ -147,8 +147,8 @@ uint8_t sem_post(sem_t sem) {
  * using mutex_create() then the required memory is automatically
  * dynamically allocated inside the mutex_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a mutex is created using
- * xSemaphoreCreateMutexStatic() then the application writer must provided the
- * memory.  xSemaphoreCreateMutexStatic() therefore allows a mutex to be created
+ * mutex_create_static() then the application writer must provided the
+ * memory.  mutex_create_static() therefore allows a mutex to be created
  * without using any dynamic memory allocation.
  *
  * Mutexes created using this function can be accessed using the sem_wait()
@@ -509,4 +509,28 @@ uint8_t mutex_recursive_give(mutex_t mutex) {
  */
 uint8_t mutex_recursive_take(mutex_t mutex, uint32_t block_time) {
 	return xQueueTakeMutexRecursive((mutex), (block_time));
+}
+
+sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount) {
+	return xQueueCreateCountingSemaphore((uxMaxCount), (uxInitialCount));
+}
+
+void sem_delete(sem_t xSemaphore) {
+	queue_delete((queue_t)(xSemaphore));
+}
+
+task_t mutex_get_owner(sem_t xMutex) {
+	return xQueueGetMutexHolder((xMutex));
+}
+
+uint32_t sem_get_count( sem_t xSemaphore ) {
+	return queue_get_waiting((queue_t)(xSemaphore));
+}
+
+mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer) {
+	return xQueueCreateMutexStatic(queueQUEUE_TYPE_MUTEX, (pxMutexBuffer));
+}
+
+sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t* pxSemaphoreBuffer) {
+	return xQueueCreateCountingSemaphoreStatic((uxMaxCount), (uxInitialCount), (pxSemaphoreBuffer));
 }

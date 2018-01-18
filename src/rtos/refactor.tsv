@@ -23,7 +23,8 @@ BaseType_t                  int32_t
 UBaseType_t                 uint32_t
 TickType_t					uint32_t
 ListItem_t					list_item_t
-StaticSemaphore_t   sem_buf_t
+StaticSemaphore_t   static_sem_s_t
+StaticQueue_t       static_queue_s_t
 
 
 
@@ -45,7 +46,7 @@ xTaskGetTickCount		millis
 uxTaskGetNumberOfTasks 	task_get_count
 pcTaskGetName			task_get_name
 xTaskGetHandle			task_get_by_name
-xTaskNotifyAndQuery		task_notify_send
+xTaskGenericNotify		task_notify_ext
 ulTaskNotifyTake		task_notify_take
 xTaskNotifyWait			task_notify_wait
 xTaskNotifyStateClear	task_notify_clear
@@ -69,3 +70,8 @@ xSemaphoreCreateCounting		sem_create
 vSemaphoreDelete			sem_delete
 xSemaphoreGetMutexHolder	mutex_get_owner
 uxSemaphoreGetCount			sem_get_count
+pvPortMalloc                kmalloc
+vPortFree                   kfree
+xSemaphoreCreateMutexStatic     mutex_create_static
+xSemaphoreCreateCountingStatic  sem_create_static
+xQueueCreateStatic              queue_create_static

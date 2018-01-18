@@ -1337,7 +1337,7 @@ task_t xTaskGetIdleTaskHandle( void ) ;
 
 		// Allocate a TaskStatus_t structure for each task.  An array could be
 		// allocated statically at compile time.
-		pxTaskStatusArray = pvPortMalloc( uxArraySize * sizeof( TaskStatus_t ) );
+		pxTaskStatusArray = kmalloc( uxArraySize * sizeof( TaskStatus_t ) );
 
 		if( pxTaskStatusArray != NULL )
 		{
@@ -1375,7 +1375,7 @@ task_t xTaskGetIdleTaskHandle( void ) ;
 			}
 
 			// The array is no longer needed, free the memory it consumes.
-			vPortFree( pxTaskStatusArray );
+			kfree( pxTaskStatusArray );
 		}
 	}
 	</pre>
@@ -1562,9 +1562,8 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  * \defgroup xTaskNotify xTaskNotify
  * \ingroup TaskNotifications
  */
-int32_t xTaskGenericNotify( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, uint32_t *pulPreviousNotificationValue ) ;
-#define xTaskNotify( xTaskToNotify, ulValue, eAction ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL )
-#define task_notify_send( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) xTaskGenericNotify( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
+int32_t task_notify_ext( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, uint32_t *pulPreviousNotificationValue ) ;
+#define xTaskNotify( xTaskToNotify, ulValue, eAction ) task_notify_ext( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL )
 
 /**
  * task. h
@@ -1734,7 +1733,7 @@ int32_t task_notify_wait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearO
 
 /**
  * task. h
- * <PRE>int32_t xTaskNotifyGive( task_t xTaskToNotify );</PRE>
+ * <PRE>int32_t task_notify( task_t xTaskToNotify );</PRE>
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this macro
  * to be available.
@@ -1776,7 +1775,7 @@ int32_t task_notify_wait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearO
  * \defgroup xTaskNotifyGive xTaskNotifyGive
  * \ingroup TaskNotifications
  */
-#define xTaskNotifyGive( xTaskToNotify ) xTaskGenericNotify( ( xTaskToNotify ), ( 0 ), E_NOTIFY_ACTION_INCR, NULL )
+int32_t task_notify(task_t xTaskToNotify);
 
 /**
  * task. h
@@ -2011,7 +2010,7 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, uint32_t xTick
  * making the call, otherwise pdFALSE.
  */
 int32_t xTaskRemoveFromEventList( const List_t * const pxEventList ) ;
-int32_t xTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem, const uint32_t xItemValue ) ;
+int32_t xTaskRemoveFromUnorderedEventList( list_item_t * pxEventListItem, const uint32_t xItemValue ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY

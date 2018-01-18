@@ -4,7 +4,7 @@
  * FreeRTOS requires some porting to each platform to handle certain tasks. This
  * file contains the various methods required to be implemented for FreeRTOS.
  *
- * Copyright (c) 2017, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,6 +18,7 @@
 
 #include "ifi/v5_api.h"
 
+// Fast interrupt handler
 void FIQInterrupt() {
 	vexSystemFIQInterrupt();
 }
@@ -62,9 +63,9 @@ void vInitialiseTimerForRunTimeStats(void) {
 }
 
 void vApplicationMallocFailedHook(void) {
-	/* Called if a call to pvPortMalloc() fails because there is
+	/* Called if a call to kmalloc() fails because there is
 	insufficient
-	free memory available in the FreeRTOS heap.  pvPortMalloc() is called
+	free memory available in the FreeRTOS heap.  kmalloc() is called
 	internally by FreeRTOS API functions that create tasks, queues, software
 	timers, and semaphores.  The size of the FreeRTOS heap is set by the
 	configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h. */
@@ -78,12 +79,16 @@ void vApplicationStackOverflowHook(task_t pxTask, char* pcTaskName) {
 	(void)pcTaskName;
 	(void)pxTask;
 
+	vexSerialWriteBuffer(1, (uint8_t*)"FATAL ERROR!! Task ", 19);
+	vexSerialWriteBuffer(1, (uint8_t*)pcTaskName, 30);
+	vexSerialWriteBuffer(1, (uint8_t*)" overflowed its stack!\n", 23);
+
 	/* Run time stack overflow checking is performed if
 	configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
 	function is called if a stack overflow is detected. */
 	taskDISABLE_INTERRUPTS();
-	for (;;)
-		;
+	for (;;) vexBackgroundProcessing();
+	;
 }
 
 void vApplicationIdleHook(void) {

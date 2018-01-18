@@ -4,7 +4,7 @@
  * Contains the various methods needed to enable standard C library support
  * through the use of the Arm-distributed implementation of newlib.
  *
- * Copyright (c) 2017, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -19,32 +19,25 @@
 #include "ifi/v5_api.h"
 #include "rtos/task.h"
 
-ssize_t _write_r(struct _reent* r, int fd, const void* buf, size_t size) {
-	if (fd == STDIN_FILENO || fd == STDOUT_FILENO) {
-		return vexSerialWriteBuffer(1, (uint8_t*)buf, size);
-	}
-	r->_errno = EBADF;
-	return 0;
-}
-
-void __malloc_lock() {
-	rtos_suspend_all();
-}
-
-void __malloc_unlock() {
-	rtos_resume_all();
-}
-
-void __env_lock() {
-	rtos_suspend_all();
-}
-
-void __env_unlock() {
-	rtos_resume_all();
-}
-
 void _exit(int status) {
-	// TODO implement this
-	for (;;)
-		;
+	// TODO: print status code, maybe backtrace as well
+	while (1) {
+		vexBackgroundProcessing();
+	}
+}
+
+void __malloc_lock(void) {
+	rtos_suspend_all();
+}
+
+void __malloc_unlock(void) {
+	rtos_resume_all();
+}
+
+void __env_lock(void) {
+	rtos_suspend_all();
+}
+
+void __env_unlock(void) {
+	rtos_resume_all();
 }

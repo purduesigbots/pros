@@ -68,7 +68,7 @@
 */
 
 /*
- * A sample implementation of pvPortMalloc() and vPortFree() that combines
+ * A sample implementation of kmalloc() and kfree() that combines
  * (coalescences) adjacent memory blocks as they are freed, and in so doing
  * limits memory fragmentation.
  *
@@ -119,7 +119,7 @@ static void prvInsertBlockIntoFreeList( BlockLink_t *pxBlockToInsert );
 
 /*
  * Called automatically to setup the required heap structures the first time
- * pvPortMalloc() is called.
+ * kmalloc() is called.
  */
 static void prvHeapInit( void );
 
@@ -145,7 +145,7 @@ static size_t xBlockAllocatedBit = 0;
 
 /*-----------------------------------------------------------*/
 
-void *pvPortMalloc( size_t xWantedSize )
+void *kmalloc( size_t xWantedSize )
 {
 BlockLink_t *pxBlock, *pxPreviousBlock, *pxNewBlockLink;
 void *pvReturn = NULL;
@@ -295,7 +295,7 @@ void *pvReturn = NULL;
 }
 /*-----------------------------------------------------------*/
 
-void vPortFree( void *pv )
+void kfree( void *pv )
 {
 uint8_t *puc = ( uint8_t * ) pv;
 BlockLink_t *pxLink;

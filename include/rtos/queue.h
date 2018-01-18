@@ -132,8 +132,8 @@ typedef void * QueueSetMemberHandle_t;
  * created using queue_create() then both blocks of memory are automatically
  * dynamically allocated inside the queue_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
- * xQueueCreateStatic() then the application writer must provide the memory that
- * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
+ * queue_create_static() then the application writer must provide the memory that
+ * will get used by the queue.  queue_create_static() therefore allows a queue to
  * be created without using any dynamic memory allocation.
  *
  * http://www.FreeRTOS.org/Embedded-RTOS-Queues.html
@@ -183,17 +183,17 @@ typedef void * QueueSetMemberHandle_t;
  * \ingroup QueueManagement
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	#define queue_create( uxQueueLength, uxItemSize ) xQueueGenericCreate( ( uxQueueLength ), ( uxItemSize ), ( queueQUEUE_TYPE_BASE ) )
+	queue_t queue_create(uint32_t uxQueueLength, uint32_t uxItemSize);
 #endif
 
 /**
  * queue. h
  * <pre>
- queue_t xQueueCreateStatic(
+ queue_t queue_create_static(
 							  uint32_t uxQueueLength,
 							  uint32_t uxItemSize,
 							  uint8_t *pucQueueStorageBuffer,
-							  StaticQueue_t *pxQueueBuffer
+							  static_queue_s_t *pxQueueBuffer
 						  );
  * </pre>
  *
@@ -206,8 +206,8 @@ typedef void * QueueSetMemberHandle_t;
  * created using queue_create() then both blocks of memory are automatically
  * dynamically allocated inside the queue_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a queue is created using
- * xQueueCreateStatic() then the application writer must provide the memory that
- * will get used by the queue.  xQueueCreateStatic() therefore allows a queue to
+ * queue_create_static() then the application writer must provide the memory that
+ * will get used by the queue.  queue_create_static() therefore allows a queue to
  * be created without using any dynamic memory allocation.
  *
  * http://www.FreeRTOS.org/Embedded-RTOS-Queues.html
@@ -225,7 +225,7 @@ typedef void * QueueSetMemberHandle_t;
  * one time - which is ( uxQueueLength * uxItemsSize ) bytes.  If uxItemSize is
  * zero then pucQueueStorageBuffer can be NULL.
  *
- * @param pxQueueBuffer Must point to a variable of type StaticQueue_t, which
+ * @param pxQueueBuffer Must point to a variable of type static_queue_s_t, which
  * will be used to hold the queue's data structure.
  *
  * @return If the queue is created then a handle to the created queue is
@@ -243,7 +243,7 @@ typedef void * QueueSetMemberHandle_t;
  #define ITEM_SIZE sizeof( uint32_t )
 
  // xQueueBuffer will hold the queue structure.
- StaticQueue_t xQueueBuffer;
+ static_queue_s_t xQueueBuffer;
 
  // ucQueueStorage will hold the items posted to the queue.  Must be at least
  // [(queue length) * ( queue item size)] bytes long.
@@ -265,17 +265,18 @@ typedef void * QueueSetMemberHandle_t;
 	// ... Rest of task code.
  }
  </pre>
- * \defgroup xQueueCreateStatic xQueueCreateStatic
+ * \defgroup queue_create_static queue_create_static
  * \ingroup QueueManagement
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	#define xQueueCreateStatic( uxQueueLength, uxItemSize, pucQueueStorage, pxQueueBuffer ) xQueueGenericCreateStatic( ( uxQueueLength ), ( uxItemSize ), ( pucQueueStorage ), ( pxQueueBuffer ), ( queueQUEUE_TYPE_BASE ) )
+	queue_t queue_create_static(uint32_t uxQueueLength, uint32_t uxItemSize,
+	                           uint8_t *pucQueueStorageBuffer, static_queue_s_t *pxQueueBuffer);
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
  * queue. h
  * <pre>
- int32_t xQueueSendToToFront(
+ int32_t queue_prepend(
 								   queue_t	xQueue,
 								   const void		*pvItemToQueue,
 								   uint32_t		xTicksToWait
@@ -352,7 +353,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define queue_prepend( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_FRONT )
+bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * queue. h
@@ -434,7 +435,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-#define queue_append( xQueue, pvItemToQueue, xTicksToWait ) xQueueGenericSend( ( xQueue ), ( pvItemToQueue ), ( xTicksToWait ), queueSEND_TO_BACK )
+bool_t queue_append(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * queue. h
@@ -785,7 +786,7 @@ int32_t xQueueGenericSend( queue_t xQueue, const void * const pvItemToQueue, uin
  * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-#define queue_peek( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdTRUE )
+bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * queue. h
@@ -911,8 +912,7 @@ int32_t xQueuePeekFromISR( queue_t xQueue, void * const pvBuffer ) ;
  * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-#define queue_recv( xQueue, pvBuffer, xTicksToWait ) xQueueGenericReceive( ( xQueue ), ( pvBuffer ), ( xTicksToWait ), pdFALSE )
-
+bool_t queue_recv(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * queue. h
@@ -1543,9 +1543,9 @@ uint32_t uxQueueMessagesWaitingFromISR( const queue_t xQueue ) ;
  * these functions directly.
  */
 queue_t xQueueCreateMutex( const uint8_t ucQueueType ) ;
-queue_t xQueueCreateMutexStatic( const uint8_t ucQueueType, StaticQueue_t *pxStaticQueue ) ;
+queue_t xQueueCreateMutexStatic( const uint8_t ucQueueType, static_queue_s_t *pxStaticQueue ) ;
 queue_t xQueueCreateCountingSemaphore( const uint32_t uxMaxCount, const uint32_t uxInitialCount ) ;
-queue_t xQueueCreateCountingSemaphoreStatic( const uint32_t uxMaxCount, const uint32_t uxInitialCount, StaticQueue_t *pxStaticQueue ) ;
+queue_t xQueueCreateCountingSemaphoreStatic( const uint32_t uxMaxCount, const uint32_t uxInitialCount, static_queue_s_t *pxStaticQueue ) ;
 void* xQueueGetMutexHolder( queue_t xSemaphore ) ;
 
 /*
@@ -1559,7 +1559,7 @@ int32_t xQueueGiveMutexRecursive( queue_t pxMutex ) ;
  * Reset a queue back to its original empty state.  The return value is now
  * obsolete and is always set to pdPASS.
  */
-#define xQueueReset( xQueue ) xQueueGenericReset( xQueue, pdFALSE )
+void queue_reset(queue_t queue);
 
 /*
  * The registry is provided as a means for kernel aware debuggers to
@@ -1631,7 +1631,7 @@ int32_t xQueueGiveMutexRecursive( queue_t pxMutex ) ;
  * RTOS objects that use the queue structure as their base.
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-	queue_t xQueueGenericCreateStatic( const uint32_t uxQueueLength, const uint32_t uxItemSize, uint8_t *pucQueueStorage, StaticQueue_t *pxStaticQueue, const uint8_t ucQueueType ) ;
+	queue_t xQueueGenericCreateStatic( const uint32_t uxQueueLength, const uint32_t uxItemSize, uint8_t *pucQueueStorage, static_queue_s_t *pxStaticQueue, const uint8_t ucQueueType ) ;
 #endif
 
 /*

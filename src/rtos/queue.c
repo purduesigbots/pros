@@ -313,16 +313,20 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 	return pdPASS;
 }
 /*-----------------------------------------------------------*/
+/** Generic Reset "Macros" **/
+void queue_reset(queue_t queue) {
+	xQueueGenericReset(queue, pdFALSE);
+}
 
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-	queue_t xQueueGenericCreateStatic( const uint32_t uxQueueLength, const uint32_t uxItemSize, uint8_t *pucQueueStorage, StaticQueue_t *pxStaticQueue, const uint8_t ucQueueType )
+	queue_t xQueueGenericCreateStatic( const uint32_t uxQueueLength, const uint32_t uxItemSize, uint8_t *pucQueueStorage, static_queue_s_t *pxStaticQueue, const uint8_t ucQueueType )
 	{
 	Queue_t *pxNewQueue;
 
 		configASSERT( uxQueueLength > ( uint32_t ) 0 );
 
-		/* The StaticQueue_t structure and the queue storage area must be
+		/* The static_queue_s_t structure and the queue storage area must be
 		supplied. */
 		configASSERT( pxStaticQueue != NULL );
 
@@ -334,9 +338,9 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		#if( configASSERT_DEFINED == 1 )
 		{
 			/* Sanity check that the size of the structure used to declare a
-			variable of type StaticQueue_t or StaticSemaphore_t equals the size of
+			variable of type static_queue_s_t or static_sem_s_t equals the size of
 			the real queue and semaphore structures. */
-			volatile size_t xSize = sizeof( StaticQueue_t );
+			volatile size_t xSize = sizeof( static_queue_s_t );
 			configASSERT( xSize == sizeof( Queue_t ) );
 		}
 		#endif /* configASSERT_DEFINED */
@@ -361,6 +365,12 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		}
 
 		return pxNewQueue;
+	}
+
+	queue_t queue_create_static(uint32_t uxQueueLength, uint32_t uxItemSize, uint8_t* pucQueueStorage, 
+	                            static_queue_s_t* pxQueueBuffer) {
+		return xQueueGenericCreateStatic(uxQueueLength, uxItemSize, pucQueueStorage, 
+		                                 pxQueueBuffer, queueQUEUE_TYPE_BASE);
 	}
 
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -388,7 +398,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			xQueueSizeInBytes = ( size_t ) ( uxQueueLength * uxItemSize ); /*lint !e961 MISRA exception as the casts are only redundant for some ports. */
 		}
 
-		pxNewQueue = ( Queue_t * ) pvPortMalloc( sizeof( Queue_t ) + xQueueSizeInBytes );
+		pxNewQueue = ( Queue_t * ) kmalloc( sizeof( Queue_t ) + xQueueSizeInBytes );
 
 		if( pxNewQueue != NULL )
 		{
@@ -407,8 +417,16 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
 			prvInitialiseNewQueue( uxQueueLength, uxItemSize, pucQueueStorage, ucQueueType, pxNewQueue );
 		}
+		else
+		{
+			errno = ENOMEM;
+		}
 
 		return pxNewQueue;
+	}
+
+	queue_t queue_create(uint32_t uxQueueLength, uint32_t uxItemSize) {
+	        return xQueueGenericCreate((uxQueueLength), (uxItemSize), (queueQUEUE_TYPE_BASE));
 	}
 
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -504,7 +522,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 
 #if( ( configUSE_MUTEXES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
 
-	queue_t xQueueCreateMutexStatic( const uint8_t ucQueueType, StaticQueue_t *pxStaticQueue )
+	queue_t xQueueCreateMutexStatic( const uint8_t ucQueueType, static_queue_s_t *pxStaticQueue )
 	{
 	Queue_t *pxNewQueue;
 	const uint32_t uxMutexLength = ( uint32_t ) 1, uxMutexSize = ( uint32_t ) 0;
@@ -651,7 +669,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 
 #if( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
 
-	queue_t xQueueCreateCountingSemaphoreStatic( const uint32_t uxMaxCount, const uint32_t uxInitialCount, StaticQueue_t *pxStaticQueue )
+	queue_t xQueueCreateCountingSemaphoreStatic( const uint32_t uxMaxCount, const uint32_t uxInitialCount, static_queue_s_t *pxStaticQueue )
 	{
 	queue_t xHandle;
 
@@ -834,6 +852,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 					/* Return to the original privilege level before exiting
 					the function. */
 					traceQUEUE_SEND_FAILED( pxQueue );
+					errno = ENOSPC;
 					return errQUEUE_FULL;
 				}
 				else if( xEntryTimeSet == pdFALSE )
@@ -897,11 +916,19 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			( void ) rtos_resume_all();
 
 			traceQUEUE_SEND_FAILED( pxQueue );
+			errno = ENOSPC;
 			return errQUEUE_FULL;
 		}
 	}
 }
 /*-----------------------------------------------------------*/
+/** Queue Generic Send "Macros" **/
+bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout) {
+	return xQueueGenericSend(queue, item, timeout, queueSEND_TO_FRONT);
+}
+bool_t queue_append(queue_t queue, const void* item, uint32_t timeout) {
+	return xQueueGenericSend(queue, item, timeout, queueSEND_TO_BACK);
+}
 
 int32_t xQueueGenericSendFromISR( queue_t xQueue, const void * const pvItemToQueue, int32_t * const pxHigherPriorityTaskWoken, const int32_t xCopyPosition )
 {
@@ -1331,6 +1358,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 					the block time has expired) so leave now. */
 					taskEXIT_CRITICAL();
 					traceQUEUE_RECEIVE_FAILED( pxQueue );
+					errno = ENOMSG;
 					return errQUEUE_EMPTY;
 				}
 				else if( xEntryTimeSet == pdFALSE )
@@ -1405,6 +1433,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
 			{
 				traceQUEUE_RECEIVE_FAILED( pxQueue );
+				errno = ENOMSG;
 				return errQUEUE_EMPTY;
 			}
 			else
@@ -1415,6 +1444,14 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 	}
 }
 /*-----------------------------------------------------------*/
+
+/** Generic Receive "Macros" **/
+bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout) {
+	return xQueueGenericReceive(queue, buffer, timeout, pdTRUE);
+}
+bool_t queue_recv(queue_t queue, void* buffer, uint32_t timeout) {
+	return xQueueGenericReceive(queue, buffer, timeout, pdFALSE);
+}
 
 int32_t xQueueReceiveFromISR( queue_t xQueue, void * const pvBuffer, int32_t * const pxHigherPriorityTaskWoken )
 {
@@ -1624,7 +1661,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 	{
 		/* The queue can only have been allocated dynamically - free it
 		again. */
-		vPortFree( pxQueue );
+		kfree( pxQueue );
 	}
 	#elif( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
 	{
@@ -1632,7 +1669,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		check before attempting to free the memory. */
 		if( pxQueue->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
 		{
-			vPortFree( pxQueue );
+			kfree( pxQueue );
 		}
 		else
 		{

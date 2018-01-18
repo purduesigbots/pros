@@ -5,7 +5,7 @@
  * code. Our main() initializes data structures and starts the FreeRTOS
  * scheduler.
  *
- * Copyright (c) 2017, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -15,18 +15,19 @@
 
 #include <stdio.h>
 
-#include "rtos/FreeRTOS.h"
-#include "rtos/Task.h"
-#include "rtos/semphr.h"
+#include "kapi.h"
 
 #include "ifi/v5_api.h"
 
-#include "system/comp_state.h"
-
 extern void rtos_initialize();
+extern void vfs_initialize();
+extern void system_daemon_initialize();
+extern void rtos_sched_start();
 
 int main() {
 	rtos_initialize();
+
+	vfs_initialize();
 
 	system_daemon_initialize();
 

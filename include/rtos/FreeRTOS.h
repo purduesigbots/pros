@@ -74,6 +74,11 @@
  * Include the generic headers required for the FreeRTOS port being used.
  */
 #include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <errno.h>
+
+typedef bool bool_t;
 
 /*
  * If stdint.h cannot be located then:
@@ -829,7 +834,7 @@ V8 if desired. */
 	are not really required but are included for completeness. */
 	#define tmrTIMER_CALLBACK TimerCallbackFunction_t
 	#define pdTASK_CODE task_fn_t
-	#define xListItem ListItem_t
+	#define xListItem list_item_t
 	#define xList List_t
 #endif /* configENABLE_BACKWARD_COMPATIBILITY */
 
@@ -938,7 +943,7 @@ typedef struct xSTATIC_TCB
  * strict data hiding policy.  This means the Queue structure used internally by
  * FreeRTOS is not accessible to application code.  However, if the application
  * writer wants to statically allocate the memory required to create a queue
- * then the size of the queue object needs to be know.  The StaticQueue_t
+ * then the size of the queue object needs to be know.  The static_queue_s_t
  * structure below is provided for this purpose.  Its sizes and alignment
  * requirements are guaranteed to match those of the genuine structure, no
  * matter which architecture is being used, and no matter how the values in
@@ -973,8 +978,8 @@ typedef struct xSTATIC_QUEUE
 		uint8_t ucDummy9;
 	#endif
 
-} StaticQueue_t;
-typedef StaticQueue_t StaticSemaphore_t;
+} static_queue_s_t;
+typedef static_queue_s_t static_sem_s_t;
 
 /*
  * In line with software engineering best practice, especially when supplying a

@@ -81,7 +81,7 @@ void vListInitialise( List_t * const pxList )
 	/* The list structure contains a list item which is used to mark the
 	end of the list.  To initialise the list the list end is inserted
 	as the only list entry. */
-	pxList->pxIndex = ( ListItem_t * ) &( pxList->xListEnd );			/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+	pxList->pxIndex = ( list_item_t * ) &( pxList->xListEnd );			/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
 	/* The list end value is the highest possible value in the list to
 	ensure it remains at the end of the list. */
@@ -89,8 +89,8 @@ void vListInitialise( List_t * const pxList )
 
 	/* The list end next and previous pointers point to itself so we know
 	when the list is empty. */
-	pxList->xListEnd.pxNext = ( ListItem_t * ) &( pxList->xListEnd );	/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
-	pxList->xListEnd.pxPrevious = ( ListItem_t * ) &( pxList->xListEnd );/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+	pxList->xListEnd.pxNext = ( list_item_t * ) &( pxList->xListEnd );	/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+	pxList->xListEnd.pxPrevious = ( list_item_t * ) &( pxList->xListEnd );/*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 
 	pxList->uxNumberOfItems = ( uint32_t ) 0U;
 
@@ -101,7 +101,7 @@ void vListInitialise( List_t * const pxList )
 }
 /*-----------------------------------------------------------*/
 
-void vListInitialiseItem( ListItem_t * const pxItem )
+void vListInitialiseItem( list_item_t * const pxItem )
 {
 	/* Make sure the list item is not recorded as being on a list. */
 	pxItem->pvContainer = NULL;
@@ -113,9 +113,9 @@ void vListInitialiseItem( ListItem_t * const pxItem )
 }
 /*-----------------------------------------------------------*/
 
-void vListInsertEnd( List_t * const pxList, ListItem_t * const pxNewListItem )
+void vListInsertEnd( List_t * const pxList, list_item_t * const pxNewListItem )
 {
-ListItem_t * const pxIndex = pxList->pxIndex;
+list_item_t * const pxIndex = pxList->pxIndex;
 
 	/* Only effective when configASSERT() is also defined, these tests may catch
 	the list data structures being overwritten in memory.  They will not catch
@@ -142,9 +142,9 @@ ListItem_t * const pxIndex = pxList->pxIndex;
 }
 /*-----------------------------------------------------------*/
 
-void vListInsert( List_t * const pxList, ListItem_t * const pxNewListItem )
+void vListInsert( List_t * const pxList, list_item_t * const pxNewListItem )
 {
-ListItem_t *pxIterator;
+list_item_t *pxIterator;
 const uint32_t xValueOfInsertion = pxNewListItem->xItemValue;
 
 	/* Only effective when configASSERT() is also defined, these tests may catch
@@ -189,7 +189,7 @@ const uint32_t xValueOfInsertion = pxNewListItem->xItemValue;
 			   before rtos_sched_start() has been called?).
 		**********************************************************************/
 
-		for( pxIterator = ( ListItem_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
+		for( pxIterator = ( list_item_t * ) &( pxList->xListEnd ); pxIterator->pxNext->xItemValue <= xValueOfInsertion; pxIterator = pxIterator->pxNext ) /*lint !e826 !e740 The mini list structure is used as the list end to save RAM.  This is checked and valid. */
 		{
 			/* There is nothing to do here, just iterating to the wanted
 			insertion position. */
@@ -209,7 +209,7 @@ const uint32_t xValueOfInsertion = pxNewListItem->xItemValue;
 }
 /*-----------------------------------------------------------*/
 
-uint32_t uxListRemove( ListItem_t * const pxItemToRemove )
+uint32_t uxListRemove( list_item_t * const pxItemToRemove )
 {
 /* The list item knows which list it is in.  Obtain the list from the list
 item. */

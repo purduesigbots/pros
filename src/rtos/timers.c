@@ -93,7 +93,7 @@ configUSE_TIMERS is set to 1 in FreeRTOSConfig.h. */
 typedef struct tmrTimerControl
 {
 	const char				*pcTimerName;		/*<< Text name.  This is not used by the kernel, it is included simply to make debugging easier. */ /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-	ListItem_t				xTimerListItem;		/*<< Standard linked list item as used by all kernel features for event management. */
+	list_item_t				xTimerListItem;		/*<< Standard linked list item as used by all kernel features for event management. */
 	uint32_t				xTimerPeriodInTicks;/*<< How quickly and often the timer expires. */
 	uint32_t				uxAutoReload;		/*<< Set to pdTRUE if the timer should be automatically restarted once expired.  Set to pdFALSE if the timer is, in effect, a one-shot timer. */
 	void 					*pvTimerID;			/*<< An ID to identify the timer.  This allows the timer to be identified when the same callback is used for multiple timers. */
@@ -307,7 +307,7 @@ int32_t xReturn = pdFAIL;
 	{
 	Timer_t *pxNewTimer;
 
-		pxNewTimer = ( Timer_t * ) pvPortMalloc( sizeof( Timer_t ) );
+		pxNewTimer = ( Timer_t * ) kmalloc( sizeof( Timer_t ) );
 
 		if( pxNewTimer != NULL )
 		{
@@ -828,7 +828,7 @@ uint32_t xTimeNow;
 					{
 						/* The timer can only have been allocated dynamically -
 						free it again. */
-						vPortFree( pxTimer );
+						kfree( pxTimer );
 					}
 					#elif( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configSUPPORT_STATIC_ALLOCATION == 1 ) )
 					{
@@ -837,7 +837,7 @@ uint32_t xTimeNow;
 						memory. */
 						if( pxTimer->ucStaticallyAllocated == ( uint8_t ) pdFALSE )
 						{
-							vPortFree( pxTimer );
+							kfree( pxTimer );
 						}
 						else
 						{
@@ -933,10 +933,10 @@ static void prvCheckForValidListAndQueue( void )
 			{
 				/* The timer queue is allocated statically in case
 				configSUPPORT_DYNAMIC_ALLOCATION is 0. */
-				static StaticQueue_t xStaticTimerQueue;
+				static static_queue_s_t xStaticTimerQueue;
 				static uint8_t ucStaticTimerQueueStorage[ configTIMER_QUEUE_LENGTH * sizeof( DaemonTaskMessage_t ) ];
 
-				xTimerQueue = xQueueCreateStatic( ( uint32_t ) configTIMER_QUEUE_LENGTH, sizeof( DaemonTaskMessage_t ), &( ucStaticTimerQueueStorage[ 0 ] ), &xStaticTimerQueue );
+				xTimerQueue = queue_create_static( ( uint32_t ) configTIMER_QUEUE_LENGTH, sizeof( DaemonTaskMessage_t ), &( ucStaticTimerQueueStorage[ 0 ] ), &xStaticTimerQueue );
 			}
 			#else
 			{
