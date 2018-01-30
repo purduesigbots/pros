@@ -14,6 +14,12 @@
 #ifndef _PROS_API_H_
 #define _PROS_API_H_
 
+/**
+ * If defined, some commonly used enums will have preprocessor macros which give a shorter,
+ * more convenient naming pattern. If this isn't desired, simply comment the following line out
+ */
+#define PROS_USE_SIMPLE_NAMES
+
 #ifdef __cplusplus
 #include <cstdbool>
 #include <cstddef>
@@ -34,6 +40,98 @@ extern "C" {
 #endif
 
 typedef bool bool_t;
+
+/******************************************************************************/
+/**                            V5 Miscellaneous                              **/
+/******************************************************************************/
+typedef enum { E_CONTROLLER_MASTER = 0, E_CONTROLLER_PARTNER } controller_id_e_t;
+
+typedef enum {
+	E_CONTROLLER_ANALOG_LEFT_X = 0,
+	E_CONTROLLER_ANALOG_LEFT_Y,
+	E_CONTROLLER_ANALOG_RIGHT_X,
+	E_CONTROLLER_ANALOG_RIGHT_Y
+} controller_analog_e_t;
+
+typedef enum {
+	E_CONTROLLER_DIGITAL_L1 = 4,
+	E_CONTROLLER_DIGITAL_L2,
+	E_CONTROLLER_DIGITAL_R1,
+	E_CONTROLLER_DIGITAL_R2,
+	E_CONTROLLER_DIGITAL_UP,
+	E_CONTROLLER_DIGITAL_DOWN,
+	E_CONTROLLER_DIGITAL_LEFT,
+	E_CONTROLLER_DIGITAL_RIGHT,
+	E_CONTORLLER_DIGITAL_X,
+	E_CONTROLLER_DIGITAL_B,
+	E_CONTROLLER_DIGITAL_Y,
+	E_CONTROLLER_DIGITAL_A
+} controller_digital_e_t;
+
+#ifdef PROS_USE_SIMPLE_NAMES
+#define CONTROLLER_MASTER E_CONTROLLER_MASTER
+#define CONTORLLER_PARTNER E_CONTROLLER_PARTNER
+#define ANALOG_LEFT_X E_CONTROLLER_ANALOG_LEFT_X
+#define ANALOG_LEFT_Y E_CONTROLLER_ANALOG_LEFT_Y
+#define ANALOG_RIGHT_X E_CONTROLLER_ANALOG_RIGHT_X
+#define ANALOG_RIGHT_Y E_CONTROLLER_ANALOG_RIGHT_Y
+#define DIGITAL_L1 E_CONTROLLER_DIGITAL_L1
+#define DIGITAL_L2 E_CONTROLLER_DIGITAL_L2
+#define DIGITAL_R1 E_CONTROLLER_DIGITAL_R1
+#define DIGITAL_R2 E_CONTROLLER_DIGITAL_R2
+#define DIGITAL_UP E_CONTROLLER_DIGITAL_UP
+#define DIGITAL_DOWN E_CONTROLLER_DIGITAL_DOWN
+#define DIGITAL_LEFT E_CONTROLLER_DIGITAL_LEFT
+#define DIGITAL_RIGHT E_CONTROLLER_DIGITAL_RIGHT
+#define DIGITAL_X E_CONTROLLER_DIGITAL_X
+#define DIGITAL_B E_CONTROLLER_DIGITAL_B
+#define DIGITAL_Y E_CONTROLLER_DIGITAL_Y
+#define DIGITAL_A E_CONTROLLER_DIGITAL_A
+#endif
+
+/**
+ * Return 0 or 1 if the controller is connected.
+ *
+ * \param id
+ * 			The ID of the controller (e.g. the master or partner controller).
+ * 			Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \return
+ * 			1 if the contrller is connected, 0 otherwise
+ */
+int32_t controller_is_connected(controller_id_e_t id);
+
+/**
+ * Gets the value of an analog channel (joystick) on a controller.
+ *
+ * \param id
+ * 			The ID of the controller (e.g. the master or partner controller).
+ * 			Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param channel
+ * 			The analog channel to get.
+ * 			Must be one of ANALOG_LEFT_X, ANALOG_LEFT_Y, ANALOG_RIGHT_X, ANALOG_RIGHT_Y
+ * \return
+ * 			Returns the current reading of the analog channel: [-127, 127].
+ * 			If the controller was not connected, then 0 is returned
+ */
+int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
+
+/**
+ * Gets the value of an digital channel (button) on a controller.
+ *
+ * \param id
+ * 			The ID of the controller (e.g. the master or partner controller).
+ * 			Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param button
+ * 			The button to read.
+ * 			Must be one of DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+ * \return
+ * 			Returns 1 if the button on the controller is pressed.
+ * 			If the controller was not connected, then 0 is returned
+ * \note
+ * 			The naming scheme for the buttons is not yet finalized as VEX finalizes
+ * 			the controller naming pattern
+ */
+int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
 
 /******************************************************************************/
 /**                             RTOS FACILITIES                              **/
