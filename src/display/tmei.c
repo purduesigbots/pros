@@ -275,7 +275,7 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 	case E_TOUCH_EVENT_PRESS:
 		linked_list_prepend_func(_touch_event_press_handler_list, (generic_fn_t)cb);
 		break;
-	case E_TOUCH_EVENT_PRESS_AUTO:
+	case E_TOUCH_EVENT_PRESS_AND_HOLD:
 		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
 		break;
 	}
@@ -305,7 +305,7 @@ void _touch_handle_task(void* ignore) {
 			case E_TOUCH_EVENT_PRESS:
 				linked_list_foreach(_touch_event_press_handler_list, _handle_cb, (void*)&event_data);
 				break;
-			case E_TOUCH_EVENT_PRESS_AUTO:
+			case E_TOUCH_EVENT_PRESS_AND_HOLD:
 				linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb,
 				                    (void*)&event_data);
 				break;
