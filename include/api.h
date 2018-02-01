@@ -494,6 +494,8 @@ bool_t sem_wait(sem_t sem, uint32_t timeout);
  */
 bool_t sem_post(sem_t sem);
 
+#include "display/llemu.h"
+
 #ifdef __cplusplus
 }
 #endif
