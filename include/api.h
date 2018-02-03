@@ -21,12 +21,14 @@
 #define PROS_USE_SIMPLE_NAMES
 
 #ifdef __cplusplus
+#include <cmath>
 #include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #else
+#include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -40,6 +42,13 @@ extern "C" {
 #endif
 
 typedef bool bool_t;
+
+/**
+ * VDML and Registry Functions
+ */
+#include "vdml/vdml_motors.h"
+#include "vdml/vdml_public.h"
+#define NUM_V5_PORTS (V5_MAX_DEVICE_PORTS)
 
 /******************************************************************************/
 /**                            V5 Miscellaneous                              **/
@@ -153,6 +162,9 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
 #define TASK_STACK_DEPTH_MIN 0x200
 
 #define TASK_NAME_MAX_LEN 32
+
+#define PROS_ERR INT32_MAX
+#define PROS_ERR_F INFINITY
 
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 

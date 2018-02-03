@@ -2,6 +2,9 @@
 #include "kapi.h"
 #include "system/optimizers.h"
 
+extern void vdml_initialize();
+extern void vdml_background_processing();
+
 static task_stack_t competition_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t competition_task_buffer;
 static task_t competition_task;
@@ -38,6 +41,7 @@ static inline void do_background_operations() {
 	rtos_suspend_all();
 	vexBackgroundProcessing();
 	rtos_resume_all();
+	vdml_background_processing();
 }
 
 static void _system_daemon_task(void* ign) {
@@ -45,6 +49,12 @@ static void _system_daemon_task(void* ign) {
 	// Initialize status to an invalid state to force an update the first loop
 	uint32_t status = (uint32_t)-1;
 	uint32_t task_state;
+
+	// XXX: Delay likely necessary for shared memory to get copied over (discovered b/c VDML would crash and burn)
+	task_delay(1);
+
+	// initialization that needs to occur with the scheduler started
+	vdml_initialize();
 
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition
