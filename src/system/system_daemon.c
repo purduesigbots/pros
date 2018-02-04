@@ -21,17 +21,19 @@ static void _competition_initialize_task(void* ign);
 static void _initialize_task(void* ign);
 static void _system_daemon_task(void* ign);
 
+#define COMP_MODE_MASK 3
 // libv5rts doesn't expose the symbol but gives us the prototype or return values (woops)
-#define DISABLED_STATE 0
-#define AUTONOMOUS_STATE 1
-#define OPCONTROL_STATE 2
-__attribute__((weak)) uint32_t vexCompetitionStatus(void) {
-	return OPCONTROL_STATE;
-}
+enum competition_states {
+	E_STATE_OPCONTROL = 0,
+	E_STATE_AUTON = 1,
+	E_STATE_DISABLED = 2,
+	E_STATE_INIT = 3,
+	E_STATE_UNKNOWN
+};
 
-char task_names[3][32] = { "User Disabled (PROS)", "User Autonomous (PROS)", "User Operator Control (PROS)" };
-
-task_fn_t task_fns[3] = { _disabled_task, _autonomous_task, _opcontrol_task };
+char task_names[4][32] = { "User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
+	                   "User Comp. Init. (PROS)" };
+task_fn_t task_fns[4] = { _opcontrol_task, _autonomous_task, _disabled_task, _competition_initialize_task };
 
 extern void ser_output_flush(void);
 
@@ -47,7 +49,7 @@ static inline void do_background_operations() {
 static void _system_daemon_task(void* ign) {
 	uint32_t time = millis();
 	// Initialize status to an invalid state to force an update the first loop
-	uint32_t status = (uint32_t)-1;
+	uint32_t status = (uint32_t)(1 << 8);
 	uint32_t task_state;
 
 	// XXX: Delay likely necessary for shared memory to get copied over (discovered b/c VDML would crash and burn)
@@ -69,44 +71,41 @@ static void _system_daemon_task(void* ign) {
 		do_background_operations();
 	}
 
-	// we're starting in disabled mode, which means we should run user competition initialization
-	// This exact logic will likely be slightly modified once we know what vexCompetitionStatus() returns
-	// so that handoffs between comp init -> disabled or unconnected -> disabled work correctly
-	if (vexCompetitionStatus() == DISABLED_STATE) {
-		status = DISABLED_STATE;
-		task_state = task_get_state(competition_task);
-		// delete the task only if it's validly running. will never be
-		// E_TASK_STATE_RUNNING
-		if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
-		    task_state == E_TASK_STATE_SUSPENDED) {
-			task_delete(competition_task);
-		}
-
-		competition_task = task_create_static(_competition_initialize_task, NULL, TASK_PRIORITY_DEFAULT,
-		                                      TASK_STACK_DEPTH_DEFAULT, "User Comp. Init. (PROS)",
-		                                      competition_task_stack, &competition_task_buffer);
-	}
-
 	while (1) {
 		do_background_operations();
 
-		if (unlikely(status != vexCompetitionStatus())) {
+		if (unlikely(status != competition_get_status())) {
 			// TODO: make sure vexCompetitionStatus returns a valid result. Don't know
 			// what to expect yet
 
 			// Have a new competition status, need to clean up whatever's running
-			status = vexCompetitionStatus();
+			uint32_t old_status = status;
+			status = competition_get_status();
+			enum competition_states new_state = status & COMP_MODE_MASK;
+			if (new_state & E_STATE_DISABLED) {
+				new_state = E_STATE_DISABLED;
+			}
+			// competition initialize runs only when entering disabled and when we weren't previously
+			// connected to field control
+			if (new_state == E_STATE_DISABLED && !(old_status & COMPETITION_CONNECTED)) {
+				new_state = E_STATE_INIT;
+			}
+			if (!(status & COMPETITION_CONNECTED)) {
+				new_state = E_STATE_OPCONTROL;
+			}
+
 			task_state = task_get_state(competition_task);
-			// delete the task only if it's validly running. will never be
-			// E_TASK_STATE_RUNNING
+			// delete the task only if it's in normal operation (e.g. not deleted)
+			// The valid task states AREN'T deleted, invalid, or running (running means it's
+			// the current task, which will never be the case)
 			if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
 			    task_state == E_TASK_STATE_SUSPENDED) {
 				task_delete(competition_task);
 			}
 
-			competition_task =
-			    task_create_static(task_fns[status], NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
-			                       task_names[status], competition_task_stack, &competition_task_buffer);
+			competition_task = task_create_static(task_fns[new_state], NULL, TASK_PRIORITY_DEFAULT,
+			                                      TASK_STACK_DEPTH_DEFAULT, task_names[new_state],
+			                                      competition_task_stack, &competition_task_buffer);
 		}
 
 		task_delay_until(&time, 2);

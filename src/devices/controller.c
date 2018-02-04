@@ -13,3 +13,7 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
 	// the buttons enum starts at 4, the correct place for the libv5rts
 	return vexControllerGet(id, button);
 }
+
+uint8_t competition_get_status() {
+	return vexCompetitionStatus();
+}

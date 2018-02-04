@@ -53,6 +53,24 @@ typedef bool bool_t;
 /******************************************************************************/
 /**                            V5 Miscellaneous                              **/
 /******************************************************************************/
+#define COMPETITION_AUTONOMOUS (1 << 0)
+#define COMPETITION_DISABLED (1 << 1)
+#define COMPETITION_CONNECTED (1 << 2)
+/**
+ * Get the current status of the competition control
+ *
+ * \return
+ * 			Returns the competition control status as a mask of bits with
+ * 			COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ */
+uint8_t competition_get_status();
+#define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
+#define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
+#define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
+
+/******************************************************************************/
+/**                              V5 Controller                               **/
+/******************************************************************************/
 typedef enum { E_CONTROLLER_MASTER = 0, E_CONTROLLER_PARTNER } controller_id_e_t;
 
 typedef enum {
