@@ -17,7 +17,8 @@
 #ifndef VDML_MOTORS_H
 #define VDML_MOTORS_H
 
-#include "ifi/v5_api.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 /**
  * Represents the current 'brake mode' of a motor. It is unknown/undocumented

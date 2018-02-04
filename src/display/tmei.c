@@ -13,12 +13,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "display/tmei.h"
+#include "pros/tmei.h"
 
 #include <stdlib.h>  // free
 
-#include "apix.h"
+#include "common/linkedlist.h"
 #include "ifi/v5_api.h"  // vexDisplay*
+#include "ifi/v5_apitypes.h"
+#include "kapi.h"
 
 static mutex_t _tmei_mutex = NULL;
 

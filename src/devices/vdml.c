@@ -2,7 +2,7 @@
 #include "ifi/v5_api.h"
 #include "kapi.h"
 #include "vdml/registry.h"
-#include "vdml/vdml_public.h"
+
 #include <errno.h>
 #include <stdio.h>
 

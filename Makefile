@@ -11,7 +11,7 @@ SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
 EXCLUDE_SRCDIRS=$(SRCDIR)/tests
-TEMPLATE_DIR=$(SRCDIR)/template
+EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 
 INCLUDE=-iquote$(INCDIR)
@@ -54,7 +54,7 @@ clean-library:
 library: clean-library $(LIBAR)
 
 
-$(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(TEMPLATE_DIR))
+$(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(EXCLUDE_FROM_LIB))
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)
 	@echo -n "Extracting libv5rts "
 	$Dcd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(FWDIR)/libv5rts.a

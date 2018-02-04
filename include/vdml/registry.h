@@ -18,8 +18,8 @@
 #define REGISTRY_H
 
 #include "ifi/v5_api.h"
+#include "pros/misc.h"
 #include "vdml/vdml.h"
-#include "vdml/vdml_public.h"
 
 #ifdef __cplusplus
 extern "C" {

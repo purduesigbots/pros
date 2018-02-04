@@ -14,12 +14,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "vdml/registry.h"
-#include "ifi/v5_api.h"
-#include "vdml/vdml.h"
-#include "vdml/vdml_public.h"
 #include <errno.h>
 #include <stdio.h>
+
+#include "ifi/v5_api.h"
+#include "pros/misc.h"
+#include "vdml/registry.h"
+#include "vdml/vdml.h"
 
 #include "api.h"
 #include "kapi.h"

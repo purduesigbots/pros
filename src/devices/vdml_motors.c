@@ -13,15 +13,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "vdml/vdml_motors.h"
-#include "ifi/v5_api.h"
-#include "kapi.h"
-#include "vdml/registry.h"
-#include "vdml/vdml.h"
-#include "vdml/vdml_public.h"
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
+
+#include "ifi/v5_api.h"
+#include "kapi.h"
+#include "pros/motors.h"
+#include "vdml/registry.h"
+#include "vdml/vdml.h"
 
 int32_t motor_set_velocity(int port, int16_t velocity) {
 	claim_port(port - 1, E_DEVICE_MOTOR);

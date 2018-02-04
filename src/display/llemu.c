@@ -14,7 +14,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "display/llemu.h"
+#include <string.h>
+
+#include "pros/llemu.h"
 
 static bool lcd_is_initialized = false;
 

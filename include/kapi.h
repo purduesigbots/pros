@@ -16,7 +16,7 @@
 #pragma once
 
 #include "api.h"
-#include "apix.h"
+#include "pros/apix.h"
 
 #include "rtos/FreeRTOS.h"
 
