@@ -111,19 +111,39 @@ v5_device_e registry_get_plugged_type(unsigned int port) {
 	return registry_types[port];
 }
 
-int32_t registry_validate_binding(unsigned int port) {
+int32_t registry_validate_binding(unsigned int port, v5_device_e expected_t) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-	return registry[port].device_type == (v5_device_e)registry_types[port];
-}
 
-void registry_validate_all_bindings() {
-	registry_update_types();
-	for (int i = 0; i < NUM_V5_PORTS; i++) {
-		if (!registry_validate_binding(i)) {
-			kprintf("[VDML][ERROR]Registration mismatch at port %d\n", i++);
+	// Get the registered and plugged types
+	v5_device_e registered_t = registry_get_bound_type(port);
+	v5_device_e actual_t = registry_get_plugged_type(port);
+
+	// Auto register the port if needed
+	if (registered_t == E_DEVICE_NONE && actual_t != E_DEVICE_NONE) {
+		registry_bind_port(port, actual_t);
+		registered_t = registry_get_bound_type(port);
+	}
+
+	if ((expected_t == registered_t || expected_t == E_DEVICE_NONE) && registered_t == actual_t) {
+		// All are same OR expected is none (bgp) AND reg = act.
+		// All good
+		return 0;
+	} else if (actual_t == E_DEVICE_NONE) {
+		// Warn about nothing plugged
+		if (!vdml_get_port_error(port)) {
+			kprintf("[VDML][WARNING] No device in port %d. Is it plugged in?\n", port + 1);
+			vdml_set_port_error(port);
 		}
+		return 1;
+	} else {
+		// Warn about a mismatch
+		if (!vdml_get_port_error(port)) {
+			kprintf("[VDML][WARNING] Device mistmatch in port %d.\n", port + 1);
+			vdml_set_port_error(port);
+		}
+		return 2;
 	}
 }

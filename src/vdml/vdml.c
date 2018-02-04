@@ -50,6 +50,42 @@ int port_mutex_give(int port) {
 	return mutex_give(port_mutexes[port]);
 }
 
+void port_mutex_take_all() {
+	for (int i = 0; i < NUM_V5_PORTS; i++) {
+		port_mutex_take(i);
+	}
+}
+
+void port_mutex_give_all() {
+	for (int i = 0; i < NUM_V5_PORTS; i++) {
+		port_mutex_give(i);
+	}
+}
+
+void vdml_set_port_error(int port) {
+	if (VALIDATE_PORT_NO(port)) {
+		port_errors |= (1 << port);
+	}
+}
+
+void vdml_unset_port_error(int port) {
+	if (VALIDATE_PORT_NO(port)) {
+		port_errors &= ~(1 << port);
+	}
+}
+
+bool vdml_get_port_error(int port) {
+	if (VALIDATE_PORT_NO(port)) {
+		return (port_errors >> port) & 1;
+	} else {
+		return false;
+	}
+}
+
+void vdml_reset_port_error() {
+	port_errors = 0;
+}
+
 /**
  * \brief Background processing function for the VDML system.
  *
@@ -58,47 +94,22 @@ int port_mutex_give(int port) {
  *
  * Updates the registry type array, detecting what devices are actually
  * plugged in according to the system, then compares that with the registry
- * records. For each port and condition, the following actions are performed:
+ * records.
  *
- * |      Type      |
- * |Actual |Registry|    |          Action          |
- * |None   |None    | -> |Nothing                   |
- * |Type A |None    | -> |Register Type A           |
- * |None   |Type A  | -> |Warn of unplugged device  |
- * |Type A |Type A  | -> |Nothing                   |
- * |Type A |Type B  | -> |Warn of mismatched device |
- *
- * On warnings, no operation is performed except for a printf. A printf notifes
- * the user that a device is being automatically registered.
+ * On warnings, no operation is performed.
  */
+int cycle = 0;
 void vdml_background_processing() {
+	cycle++;
+	if (cycle % 5000 == 0) {
+		vdml_reset_port_error();
+	}
+
 	// Refresh actual device types
 	registry_update_types();
 
 	// Validate the ports. Warn if mismatch.
 	for (int i = 0; i < NUM_V5_PORTS; i++) {
-		// Take the mutex for the port
-		port_mutex_take(i);
-		if (!registry_validate_binding(i)) {
-			// If what's registered is different from what's plugged in...
-			v5_device_e registered_t = registry_get_bound_type(i);
-			v5_device_e actual_t = registry_get_plugged_type(i);
-
-			if (registered_t == E_DEVICE_NONE) {
-				// Device isn't registered, but stuff is plugged in.
-				// Auto register.
-				kprintf("[VDML-BG][INFO] Auto-register port %d\n", i++);
-				registry_bind_port(i, actual_t);
-			} else if (actual_t == E_DEVICE_NONE) {
-				// Device is registered, but nothing is plugged in.
-				// Print warning.
-				kprintf("[VDML][WARNING] No device in port %d\n", i++);
-			} else {
-				// One device is registered, but another is plugged in.
-				// Print warning.
-				kprintf("[VDML][ERROR] Device type mismatch in port %d\n", i++);
-			}
-		}
-		port_mutex_give(i);
+		registry_validate_binding(i, E_DEVICE_NONE);
 	}
 }

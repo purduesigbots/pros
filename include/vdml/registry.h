@@ -76,20 +76,27 @@ v5_device_e registry_get_bound_type(unsigned int port);
 v5_device_e registry_get_plugged_type(unsigned int port);
 
 /*
- * \brief Checks whether there is a mismatch between the device registered in
- * 			a port and the device actually in that port
+ * \brief Checks whether there is a discrepancy between the binding of the port
+ *        and what is actually plugged in.
  *
- * Check what device type is registered in the given port and compares it to the
- * device actually plugged into that port.
+ * If a device is plugged in but not registered, registers the port.
+ * If a device is not plugged in and a device is registered, warns the user.
+ * If one type of device is registered but another is plugged in, warns the user.
  *
- * \param[in]	port	the port number to check
+ * \param[in] port the port number to check
+ * \param[in] expected_t the expected type (i.e., the type of function being
+ *            called. If E_DEVICE_NONE, indicates that background processing is
+ *            calling this, and a mismatch will only occur if there is an actual
+ *            discrepancy between what is registered and what is plugged in.
  *
- * \return 1 if the device registered matches the actual device, 0 if it doesnt,
- *           and PROS_ERR if an error occurs
+ * \return 0 if the device registered matches the device plugged and the
+ *         expected device matches both of those or is E_DEVICE_NONE, 1 if the
+ *         a registered device is not plugged in, and 2 if there is a mismatch.
+ *         PROS_ERR on exception.
  *
  * \exception EINVAL the port number is out of range
  */
-int32_t registry_validate_binding(unsigned int port);
+int32_t registry_validate_binding(unsigned int port, v5_device_e expected_t);
 
 #ifdef __cplusplus
 }

@@ -39,11 +39,13 @@ extern void ser_output_flush(void);
 
 // does the basic background operations that need to occur every 2ms
 static inline void do_background_operations() {
+	port_mutex_take_all();
 	ser_output_flush();
 	rtos_suspend_all();
 	vexBackgroundProcessing();
 	rtos_resume_all();
 	vdml_background_processing();
+	port_mutex_give_all();
 }
 
 static void _system_daemon_task(void* ign) {

@@ -134,7 +134,7 @@ int _close_r(struct _reent* r, int file) {
 		return -1;
 	}
 	int ret = file_table[file].driver->close_r(r, file_table[file].arg);
-	if(ret == 0) {
+	if (ret == 0) {
 		gid_free(&file_table_gids, file);
 	}
 	return ret;

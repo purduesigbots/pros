@@ -17,6 +17,9 @@
 #ifndef VDML_H
 #define VDML_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
 /**
  * Macro, returns true if the port is in range, false otherwise.
  */
@@ -29,18 +32,16 @@
  * If a port isn't yet registered, it registered as a motor automatically.
  * If a mutex cannot be taken, errno is set to EACCES (access denied) and returns.
  */
-#define claim_port(port, new_device_type)                                                                              \
+#define claim_port(port, device_type)                                                                                  \
 	if (!VALIDATE_PORT_NO(port)) {                                                                                 \
 		errno = EINVAL;                                                                                        \
 		return PROS_ERR;                                                                                       \
 	}                                                                                                              \
-	v5_smart_device_s_t device = registry_get_device(port);                                                        \
-	if (device.device_type == E_DEVICE_NONE) {                                                                     \
-		/* Register the device as a motor */                                                                   \
-		kprintf("[VDML][INFO]Registering device on port %d\n", port + 1);                                      \
-		registry_bind_port(port, new_device_type);                                                             \
-		device = registry_get_device(port);                                                                    \
+	if (registry_validate_binding(port, device_type) != 0) {                                                       \
+		errno = EINVAL;                                                                                        \
+		return PROS_ERR;                                                                                       \
 	}                                                                                                              \
+	v5_smart_device_s_t device = registry_get_device(port);                                                        \
 	if (!port_mutex_take(port)) {                                                                                  \
 		errno = EACCES;                                                                                        \
 		return PROS_ERR;                                                                                       \
@@ -54,6 +55,41 @@
 	port_mutex_give(port);                                                                                         \
 	if (rtn == PROS_ERR || rtn == PROS_ERR_F) errno = 0;                                                           \
 	return rtn;
+
+/**
+ * Bitmap to indicate if a port has had an error printed or not.
+ */
+int32_t port_errors;
+
+/**
+ * Sets the port's bit to 1, indicating there has already been an error on this
+ * port.
+ *
+ * \param[in] port The port to set.
+ */
+void vdml_set_port_error(int port);
+
+/**
+ * Sets the port's bit to 0, effectively resetting it.
+ *
+ * \param[in] port The port to unset.
+ */
+void vdml_unset_port_error(int port);
+
+/**
+ * Gets the error bit for the port, indicating whether or not there has been an
+ * error on this port.
+ *
+ * \param[in] port The port to check
+ *
+ * \return True if the port's bit is set, false otherwise.
+ */
+bool vdml_get_port_error(int port);
+
+/**
+ * Reset all ports' error bits.
+ */
+void vdml_reset_port_error();
 
 /**
  * \brief Claims the mutex for the given port.
@@ -88,5 +124,9 @@ int port_mutex_take(int port);
  * \exception EINVAL Port is out of range.
  */
 int port_mutex_give(int port);
+
+void port_mutex_take_all();
+
+void port_mutex_give_all();
 
 #endif /*VDML_H*/
