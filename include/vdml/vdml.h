@@ -30,7 +30,6 @@
  * If a mutex cannot be taken, errno is set to EACCES (access denied) and returns.
  */
 #define claim_port(port, new_device_type)                                                                              \
-	port--;                                                                                                        \
 	if (!VALIDATE_PORT_NO(port)) {                                                                                 \
 		errno = EINVAL;                                                                                        \
 		return PROS_ERR;                                                                                       \
