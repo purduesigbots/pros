@@ -57,7 +57,7 @@ $(BINDIR):
 # Compile program
 $(OUT): $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
 	@echo LN $(BINDIR)/*.o $(LIBRARIES) to $@
-	@$(CC) $(LDFLAGS) $(BINDIR)/*.o $(LIBRARIES) -o $@
+	@$(CC) $(LDFLAGS) $(BINDIR)/*.o -Wl,--start-group $(LIBRARIES) -Wl,--end-group -o $@
 	@$(MCUPREFIX)size $(SIZEFLAGS) $(OUT)
 	$(MCUPREPARE)
 
