@@ -18,6 +18,7 @@
 #include <comm.h>
 #include <stdarg.h>
 #include <limits.h>
+#include <string.h>
 
 #ifdef PRINTF_FLOAT
 #include <math.h>
@@ -192,31 +193,237 @@ static inline uint64_t _div10(const uint64_t input) {
 	return ((uint64_t)nhighbits << 28) | (uint64_t)nlowbits;
 }
 
-// Prints a floating point number with the given precision
-static void printd(void (*outputFn)(void*, char), void *data, double value,
-		uint32_t widthTotal, uint32_t widthAfter, uint32_t pad) {
-	// Lots of declarations
-	union {
+
+inline static void _printd_handle_large_exp(void (*outputFn)(void*, char), void* data,
+    uint64_t mantissa, int64_t exponent)
+{
+    uint16_t ffp[64];
+
+    // Sets the entire ffp array to zero
+    memset(ffp, 0, 64);
+
+    uint64_t integer_val = mantissa;
+    uint32_t j = 0;
+
+    // Boil the exponent down to less than 16
+    uint32_t q = exponent - 52;
+
+    while (q >= 16U) {
+        j++;
+        q -= 16U;
+    }
+
+    uint32_t p = 0;
+
+    // Force it into position, the double shift allows optimization with one word
+    if (q > 11U) {
+        p = (uint32_t)((integer_val>> 32U) >> (32U - q));
+    }
+
+    integer_val <<= q;
+
+    int i = j;
+    j += 4U;
+
+    // Load directly, this is pretty cheap
+    for (; i < j; i++) {
+        ffp[i] = (uint16_t)(integer_val & 0xFFFFULL);
+        integer_val >>= 16;
+    }
+
+    // Extended precision overlay
+    if (p) {
+        ffp[i] = (uint16_t)p;
+        j++;
+    }
+
+    uint16_t partials[80];
+
+    // Rolldown loop
+    p = 0U;
+    do {
+        uint32_t q = 0U;
+        int i = j;
+        do {
+            i--;
+            // Accumulate the last q
+            q = (q << 16) + (uint32_t)ffp[i];
+
+            uint32_t d = q / 10000U;
+
+            // If we erased the top, move it down one
+            if (d == 0 && i == j-1)
+                j--;
+
+            ffp[i] = (uint16_t)d;
+            q -= d * 10000U;
+        } while (i);
+
+        // Store partial
+        partials[p++] = (uint16_t)q;
+
+    } while (j);
+
+    // Write partials high to low
+    while (p) {
+        const char * str;
+        p--;
+
+        uint32_t q = partials[p];
+        uint32_t d = q / 100U;
+
+        // First 2 digits
+        str = two_digits[d];
+        if (j || d > 9)
+            outputFn(data, str[0]);
+        if (j || d)
+            outputFn(data, str[1]);
+
+        // Second 2 digits
+        q -= 100 * d;
+        str = two_digits[q];
+
+        if (j || d || q > 9)
+            outputFn(data, str[0]);
+
+        outputFn(data, str[1]);
+
+        j++;
+    }
+}
+
+static void _printd_get_floating_values(double value,
+    uint64_t* mantissa, int32_t* exponent, int8_t* negative)
+{
+    // Union is used to convert from double to uint64_t
+    union {
 		double dval;
 		uint64_t ival;
 	} input;
-	char dump[20]; uint16_t partials[80], ffp[64];
-	int32_t exponent; uint64_t mantissa, decimal, addend, sum;
-	uint32_t i, j, q, d, p;
+
 	// Tear down into parts (theoretically should be 0 cycles if optimized)
 	input.dval = value;
-	mantissa = input.ival;
+	uint64_t entire_float = input.ival;
+
 	// These operations are cheap and one time
-	if (mantissa & 0x8000000000000000ULL) {
+	if (entire_float & 0x8000000000000000ULL)
+        *negative = 1;
+    else
+        *negative = 0;
+
+    // Split the exponent off
+	*exponent = (int16_t)((entire_float & 0x7FF0000000000000ULL) >> 52) - 1023;
+	*mantissa = (entire_float & 0x000FFFFFFFFFFFFFULL) | 0x0010000000000000ULL;
+}
+
+// Returns 0 if there was NO rounding over an integer line. (Ie, 0.99 -> 1.00)
+// Returns 1 if was rounding
+inline static int _printd_get_decimals(char* output,
+    uint64_t mantissa, int64_t exponent, int widthAfter)
+{
+    uint64_t sum = 0;
+    uint64_t decimal = 0;
+
+    // Split off decimal part from the mantissa
+    // Once again, these instructions are cheap and one-time
+    if (exponent >= 52 || exponent <= -76)
+        // Double variables are purely integer if in this range
+        decimal = 0;
+    else if (exponent >= -12)
+        decimal = mantissa << (uint32_t)(12 + exponent);
+    else if (exponent > -76)
+        decimal = mantissa >> (uint32_t)(-exponent - 12);
+
+    // Get the decimal value
+    uint64_t decimal_val = 500000000000000000ULL;
+
+    for (int i = 0; i < 52 && decimal != 0ULL; i++) {
+        if (decimal & 0x8000000000000000ULL)
+            sum += decimal_val;
+        // Everything in this loop is cheap: shift is 2 cycles per (lsr and ror)
+        // the if is 2 ("tst x, #0x80000000", "itt ne"), the potential addition is 2
+        // ("addne x, x, y" "adcne x, x, y")
+        decimal_val >>= 1;
+        decimal <<= 1;
+    }
+
+    // Dividing by ten using 64 bits is very very ugly, but we can do better
+    for (int i = 0; i < 18; i++) {
+
+        // Rounding correctly
+        if (i == 15 - widthAfter)
+        {
+            sum += 500ULL;
+        }
+
+        decimal_val = _div10(sum);
+
+        // Multiply 64 bits is bad but not horrible
+        output[i] = '0' + (char)(sum - decimal_val * 10ULL);
+        sum = decimal_val;
+    }
+
+    return decimal_val;
+}
+
+inline static void _printd_handle_small_exp(void (*outputFn)(void*, char), void* data,
+    uint64_t mantissa, int64_t exponent, int roundingOverInt, int totalWidth, uint32_t pad)
+{
+    // Shift until the decimal portion of the mantissa are removed from
+    // the floating point number
+    // Ex. If the floating value is 123.456, integer_val = 123
+		// TODO: integer_val must be 64bit to account for all floating point numbers
+		//       Currently it's 32 bit so that it can perform modulus 10 later on,
+		//       which is not supported by the ARM M3-32bit uproc.
+		//       Create a function that can do mod10 in 64 bit.  
+    uint32_t integer_val = mantissa >> (uint32_t)(52U - exponent);
+
+    // This is for the case were the decimal rounded over an integer.
+    // For instance, 1.9999 rounded to 2.0000, so "1" must be incremented to "2"
+    if (roundingOverInt > 0)
+        integer_val++;
+
+    int index = 0;
+    char output[20];
+
+    // Saves the integer to a character array.
+    // Ie. 123 will be saved as '3', '2', 1', ...
+    do {
+        output[index++] = (integer_val % 10) + '0';
+        integer_val = _div10(integer_val);
+    } while (integer_val);
+
+    // Determine pad-before character
+    char pc = (pad & PAD_ZERO) ? '0' : ' ';
+
+    // Insert padding characters
+    for (int i = index; i < totalWidth; i++)
+        outputFn(data, pc);
+
+    // Since the data is saved in the char array backwards,
+    // print it out to the screen in reverse order.
+    for (index = index - 1; index >= 0; index--)
+        outputFn(data, output[index]);
+}
+
+// Prints a floating point number with the given precision
+static void printd(void (*outputFn)(void*, char), void *data, double value,
+		uint32_t widthTotal, uint32_t widthAfter, uint32_t pad) {
+
+	int32_t exponent;
+	uint64_t mantissa;
+	int8_t negative;
+
+ 	_printd_get_floating_values(value, &mantissa, &exponent, &negative);
+
+	if (negative){
 		outputFn(data, '-');
 		widthTotal--;
 	} else if (pad & PAD_LEADING_PLUS) {
 		outputFn(data, '+');
 		widthTotal--;
 	}
-	// Split the exponent off
-	exponent = (int16_t)((mantissa & 0x7FF0000000000000ULL) >> 52) - 1023;
-	mantissa = (mantissa & 0x000FFFFFFFFFFFFFULL) | 0x0010000000000000ULL;
+
 	if (exponent == (int16_t)1024) {
 		const char *inf;
 		// Handle Inf and Nan
@@ -224,131 +431,44 @@ static void printd(void (*outputFn)(void*, char), void *data, double value,
 			inf = "Inf";
 		else
 			inf = "NaN";
-		prints(outputFn, data, inf, widthTotal, pad);
-	} else {
-		// Adjust the total width to be equal to width not used by decimals and period
-		widthTotal -= (widthAfter + 1);
-		// Unsigned overflow fix as there are at most 308 decimal digits
-		if (widthTotal > 308) widthTotal = 0;
-		// Zero the ffp array, somewhat slow but needed
-		for (i = 63; i; i--)
-			ffp[i] = (uint16_t)0U;
-		ffp[0] = (uint16_t)0U;
-		// Calculate the leading value
-		if (exponent >= 0) {
-			j = p = 0U;
-			// Shift into alignment
-			if (exponent <= 52)
-				addend = mantissa >> (uint32_t)(52U - exponent);
-			else {
-				addend = mantissa;
-				// Boil the exponent down to less than 16
-				q = exponent - 52;
-				while (q >= 16U) {
-					j++;
-					q -= 16U;
-				}
-				// Force it into position, the double shift allows optimization with one word
-				if (q > 11U)
-					p = (uint32_t)((addend >> 32U) >> (32U - q));
-				addend <<= q;
-			}
-			i = j;
-			j += 4U;
-			// Load directly, this is pretty cheap
-			for (; i < j; i++) {
-				ffp[i] = (uint16_t)(addend & 0xFFFFULL);
-				addend >>= 16;
-			}
-			// Extended precision overlay
-			if (p) {
-				ffp[i] = (uint16_t)p;
-				j++;
-			}
-			// Rolldown loop
-			p = 0U;
-			do {
-				q = 0U;
-				i = j;
-				do {
-					i--;
-					// Accumulate the last q
-					q = (q << 16) + (uint32_t)ffp[i];
-					d = q / 10000U;
-					// If we erased the top, move it down one
-					if (d == 0 && i == j-1) j--;
-					ffp[i] = (uint16_t)d;
-					q -= d * 10000U;
-				} while (i);
-				// Store partial
-				partials[p++] = (uint16_t)q;
-			} while (j);
-			// Write partials high to low
-			while (p) {
-				const char * str;
-				p--;
-				q = partials[p];
-				d = q / 100U;
-				// First 2 digits
-				str = two_digits[d];
-				if (j || d > 9)
-					outputFn(data, str[0]);
-				if (j || d)
-					outputFn(data, str[1]);
-				// Second 2 digits
-				q -= 100 * d;
-				str = two_digits[q];
-				if (j || d || q > 9)
-					outputFn(data, str[0]);
-				outputFn(data, str[1]);
-				// Count # printed
-				j++;
-			}
-		} else {
-			// Whole part is guaranteed to be zero
-			outputFn(data, '0');
-			j = 1U;
-		}
-		// Split off decimal part from the mantissa
-		// Once again, these instructions are cheap and one-time
-		if (exponent >= 52 || exponent <= -76)
-			decimal = 0;
-		else if (exponent >= -12)
-			decimal = mantissa << (uint32_t)(12 + exponent);
-		else if (exponent > -76)
-			decimal = mantissa >> (uint32_t)(-exponent - 12);
-		// Get the decimal value
-		addend = 500000000000000000ULL; sum = 0;
-		for (i = 0; i < 52 && decimal != 0ULL; i++) {
-			if (decimal & 0x8000000000000000ULL)
-				sum += addend;
-			// Everything in this loop is cheap: shift is 2 cycles per (lsr and ror)
-			// the if is 2 ("tst x, #0x80000000", "itt ne"), the potential addition is 2
-			// ("addne x, x, y" "adcne x, x, y")
-			addend >>= 1;
-			decimal <<= 1;
-		}
-		// Round to nearest 15 decimals, if we divide by 1000 we have 15 good places
-		outputFn(data, '.');
-		// Dividing by ten using 64 bits is very very ugly, but we can do better
-		for (i = 0; i < 18; i++) {
-			// Rounding correctly
-			if (i == 15 - widthAfter)
-				sum += 500ULL;
-			addend = _div10(sum);
-			// Multiply 64 bits is bad but not horrible
-			dump[i] = '0' + (char)(sum - addend * 10ULL);
-			sum = addend;
-		}
-		// Output the decimal part
-		for (i = 0; i < widthAfter; i++)
-			outputFn(data, dump[17 - i]);
-		// If there's not enough, pad after with spaces or zeroes
-		char pc = (pad & PAD_ZERO) ? '0' : ' ';
-		for (; j < widthTotal; j++)
-			// Dump away
-			outputFn(data, pc);
+
+		prints(outputFn, data, inf, widthTotal, ' ');
+
+    return;
 	}
+
+	// Get decimal points values.  If there was some rounding over
+	// an integer value, it will be dealt in the handle_small_exp value.
+	char decimal_output[20];
+	int rounding_over_int =
+			_printd_get_decimals(decimal_output, mantissa, exponent, widthAfter);
+
+	// Adjust the total width to be equal to width not used by decimals and period
+	widthTotal -= (widthAfter + 1);
+
+	if (widthTotal > 308) widthTotal = 0;
+
+	// Print leading decimals if the floating point is greater then 1
+  // Otherwise print a zero
+  if (exponent <= 52) {
+      uint32_t totalIntegerWidth = widthTotal - widthAfter - 1;
+
+      _printd_handle_small_exp(outputFn,
+          data, mantissa, exponent,
+          rounding_over_int, totalIntegerWidth, pad);
+  }
+  // An exponent of greater then 52 means there is no decimal point for this number
+  // This must be handled differently then a simple bitshift TODO: why?
+  else {
+      _printd_handle_large_exp(outputFn, data, mantissa, exponent);
+  }
+
+	// Round to nearest 15 decimals, if we divide by 1000 we have 15 good places
+	outputFn(data, '.');
+
+	// Output the decimal part
+	for (int i = 0; i < widthAfter; i++)
+			outputFn(data, decimal_output[17 - i]);
 }
 #endif
 
