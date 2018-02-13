@@ -17,6 +17,7 @@
 #define _PROS_API_EXTENDED_H_
 
 #include "api.h"
+#include "tmei.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,23 +31,14 @@ extern "C" {
 /******************************************************************************/
 
 typedef void* queue_t;
+typedef void* sem_t;
 
 /**
  * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a semaphore, etc.)
  *
  * See https://pros.cs.purdue.edu/v5/extended/multitasking#abort_delay for details.
  */
-bool_t task_abort_delay(task_t task);
-
-/**
- * Creates a binary semaphore.
- *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#binary_semaphores for details.
- *
- * \return
- *          A newly created semaphore.
- */
-sem_t sem_binary_create();
+bool task_abort_delay(task_t task);
 
 /**
  * Creates a recursive mutex which can be locked recursively by the owner.
@@ -56,7 +48,7 @@ sem_t sem_binary_create();
  * \return
  *          A newly created recursive mutex.
  */
-mutex_t mutex_recursive_create();
+mutex_t mutex_recursive_create(void);
 
 /**
  * Takes a recursive mutex
@@ -70,7 +62,7 @@ mutex_t mutex_recursive_create();
  * \return
  *          1 if the mutex was obtained, 0 otherwise
  */
-bool_t mutex_recursive_take(mutex_t mutex, uint32_t wait_time);
+bool mutex_recursive_take(mutex_t mutex, uint32_t wait_time);
 
 /**
  * Gives a recursive mutex
@@ -82,7 +74,7 @@ bool_t mutex_recursive_take(mutex_t mutex, uint32_t wait_time);
  * \return
  *          1 if the mutex was obtained, 0 otherwise
  */
-bool_t mutex_recursive_give(mutex_t mutex);
+bool mutex_recursive_give(mutex_t mutex);
 
 /**
  * Returns a handle to the current owner of a mutex.
@@ -95,6 +87,64 @@ bool_t mutex_recursive_give(mutex_t mutex);
  *          A handle to the current task that owns the mutex, or NULL if the mutex isn't owned.
  */
 task_t mutex_get_owner(mutex_t mutex);
+
+/**
+ * Creates a counting sempahore.
+ *
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ *
+ * \param max_count
+ *          The maximum count value that can be reached.
+ * \param init_count
+ *          The initial count value assigned to the new semaphore.
+ * \return
+ *          A newly created semaphore. If an error occurred, NULL will be
+ *			returned and errno can be checked for hints as to why sem_create failed.
+ */
+sem_t sem_create(uint32_t max_count, uint32_t init_count);
+
+/**
+ * Creates a binary semaphore.
+ *
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking#binary_semaphores for details.
+ *
+ * \return
+ *          A newly created semaphore.
+ */
+sem_t sem_binary_create(void);
+
+/**
+ * Waits for the semaphore's value to be greater than 0. If the value is already
+ * greater than 0, this function immediately returns.
+ *
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ *
+ * \param sem
+ *          Semaphore to wait on
+ * \param timeout
+ *          Time to wait before the semaphore's becomes available. A timeout of 0
+ *          can be used to poll the sempahore. TIMEOUT_MAX can be used to block
+ *          indefinitely.
+ * \return
+ *          True if the semaphore was successfully take, false otherwise.
+ *          If false is returned, then errno is set with a hint about why the
+ *          sempahore couldn't be taken.
+ */
+bool sem_wait(sem_t sem, uint32_t timeout);
+
+/**
+ * Increments a semaphore's value.
+ *
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ *
+ * \param sem
+ *          Semaphore to post
+ * \return
+ *          True if the value was incremented, false otherwise. If false is
+ *          returned, then errno is set with a hint about why the semaphore
+ *          couldn't be taken.
+ */
+bool sem_post(sem_t sem);
 
 /**
  * Returns the current value of the semaphore.
@@ -138,7 +188,7 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
  * \return
  *          true if the item was preprended, false otherwise.
  */
-bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout);
+bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * Posts an item to the end of a queue. The item is queued by copy, not by reference.
@@ -156,7 +206,7 @@ bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout);
  * \return
  *          true if the item was preprended, false otherwise.
  */
-bool_t queue_append(queue_t queue, const void* item, uint32_t timeout);
+bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * Receive an item from a queue without removing the item from the queue.
@@ -174,7 +224,7 @@ bool_t queue_append(queue_t queue, const void* item, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_peek(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * Receive an item from the queue.
@@ -192,7 +242,7 @@ bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool_t queue_recv(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_recv(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * Return the number of messages stored in a queue.
@@ -235,6 +285,65 @@ void queue_delete(queue_t queue);
  *          Queue handle to reset
  */
 void queue_reset(queue_t queue);
+
+/******************************************************************************/
+/**                           Device Registration                            **/
+/******************************************************************************/
+
+/*
+ * \brief List of possible v5 devices
+ *
+ * This list contains all current V5 Devices, and mirrors V5_DeviceType from the
+ * api.
+ */
+typedef enum v5_device_e {
+	E_DEVICE_NONE = 0,
+	E_DEVICE_MOTOR = 2,
+	E_DEVICE_LED = 3,
+	E_DEVICE_RGB = 4,
+	E_DEVICE_BUMPER = 5,
+	E_DEVICE_IMU = 6,
+	E_DEVICE_RANGE = 7,
+	E_DEVICE_RADIO = 8,
+	E_DEVICE_TETHER = 9,
+	E_DEVICE_BRAIN = 10,
+	E_DEVICE_VISION = 11,
+	E_DEVICE_ADI = 12,
+	E_DEVICE_GYRO = 0x46,
+	E_DEVICE_SONAR = 0x47,
+	E_DEVICE_GENERIC = 128,
+	E_DEVICE_UNDEFINED = 255
+} v5_device_e;
+
+/*
+ * \brief Registers a device in the given port
+ *
+ * Registers a device of the given type in the given port into the registry, if
+ * that type of device is detected to be plugged in to that port.
+ *
+ * \param[in]  port             the port number to register the device
+ * \param[in]  device			the type of device to register
+ *
+ * \return 1 upon success, PROS_ERR upon failure
+ *
+ * \exception EINVAL Port number is out of range.
+ * \exception EINVAL A different device than specified is plugged in.
+ * \exception EADDRINUSE the port is already registered to another device
+ */
+int registry_bind_port(unsigned int port, v5_device_e device_type);
+
+/*
+ * \brief Deregisters a devices from the given port
+ *
+ * Removes the device registed in the given port, if there is one.
+ *
+ * \param[in]  port      		the port number to deregister
+ *
+ * \return 1 upon success, PROS_ERR upon failure
+ *
+ * \exception EINVAL the port number is out of range
+ */
+int registry_unbind_port(unsigned int port);
 
 #ifdef __cplusplus
 }

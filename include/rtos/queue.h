@@ -353,7 +353,7 @@ typedef void * QueueSetMemberHandle_t;
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout);
+bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * queue. h
@@ -435,7 +435,7 @@ bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout);
  * \defgroup xQueueSend xQueueSend
  * \ingroup QueueManagement
  */
-bool_t queue_append(queue_t queue, const void* item, uint32_t timeout);
+bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * queue. h
@@ -786,7 +786,7 @@ int32_t xQueueGenericSend( queue_t xQueue, const void * const pvItemToQueue, uin
  * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_peek(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * queue. h
@@ -912,7 +912,7 @@ int32_t xQueuePeekFromISR( queue_t xQueue, void * const pvBuffer ) ;
  * \defgroup queue_recv queue_recv
  * \ingroup QueueManagement
  */
-bool_t queue_recv(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_recv(queue_t queue, void* buffer, uint32_t timeout);
 
 /**
  * queue. h

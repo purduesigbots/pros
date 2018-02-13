@@ -923,10 +923,10 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 /** Queue Generic Send "Macros" **/
-bool_t queue_prepend(queue_t queue, const void* item, uint32_t timeout) {
+bool queue_prepend(queue_t queue, const void* item, uint32_t timeout) {
 	return xQueueGenericSend(queue, item, timeout, queueSEND_TO_FRONT);
 }
-bool_t queue_append(queue_t queue, const void* item, uint32_t timeout) {
+bool queue_append(queue_t queue, const void* item, uint32_t timeout) {
 	return xQueueGenericSend(queue, item, timeout, queueSEND_TO_BACK);
 }
 
@@ -1446,10 +1446,10 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 /*-----------------------------------------------------------*/
 
 /** Generic Receive "Macros" **/
-bool_t queue_peek(queue_t queue, void* buffer, uint32_t timeout) {
+bool queue_peek(queue_t queue, void* buffer, uint32_t timeout) {
 	return xQueueGenericReceive(queue, buffer, timeout, pdTRUE);
 }
-bool_t queue_recv(queue_t queue, void* buffer, uint32_t timeout) {
+bool queue_recv(queue_t queue, void* buffer, uint32_t timeout) {
 	return xQueueGenericReceive(queue, buffer, timeout, pdFALSE);
 }
 

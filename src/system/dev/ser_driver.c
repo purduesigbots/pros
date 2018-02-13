@@ -108,7 +108,7 @@ void ser_output_flush(void) {
 	}
 }
 
-bool_t ser_output_write(const uint8_t* buffer, size_t size, bool_t noblock) {
+bool ser_output_write(const uint8_t* buffer, size_t size, bool noblock) {
 	while (size) {
 		if (!queue_append(write_queue, buffer, noblock ? 0 : TIMEOUT_MAX)) {
 			// maybe back out what we tried to write?
@@ -176,7 +176,7 @@ int ser_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 		cobs_encode(cobs_buf, buf, len, file.stream_id);
 		cobs_buf[cobs_len] = 0;
 
-		bool_t ret = ser_output_write(cobs_buf, cobs_len + 1, file.flags & E_NOBLK_WRITE);
+		bool ret = ser_output_write(cobs_buf, cobs_len + 1, file.flags & E_NOBLK_WRITE);
 		mutex_give(write_mtx);
 
 		if (!ret) {
@@ -191,7 +191,7 @@ int ser_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 			return 0;
 		}
 
-		bool_t ret = ser_output_write(buf, len, file.flags & E_NOBLK_WRITE);
+		bool ret = ser_output_write(buf, len, file.flags & E_NOBLK_WRITE);
 
 		mutex_give(write_mtx);
 		if (!ret) {

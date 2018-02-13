@@ -88,7 +88,7 @@ void gid_free(struct gid_metadata* const metadata, uint32_t id) {
 }
 
 // Checks if the gid specified is allocated
-bool_t gid_check(struct gid_metadata* metadata, uint32_t id) {
+bool gid_check(struct gid_metadata* metadata, uint32_t id) {
 	if (id > metadata->max) {
 		return false;
 	}

@@ -59,7 +59,7 @@ static inline void inp_buffer_initialize() {
 }
 
 // if you extern this function you can place characters on the rest of the system's input buffer
-bool_t inp_buffer_post(uint8_t b) {
+bool inp_buffer_post(uint8_t b) {
 	return queue_append(inp_queue, &b, TIMEOUT_MAX);
 }
 

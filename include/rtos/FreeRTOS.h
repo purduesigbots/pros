@@ -78,8 +78,6 @@
 #include <stdbool.h>
 #include <errno.h>
 
-typedef bool bool_t;
-
 /*
  * If stdint.h cannot be located then:
  *   + If using GCC ensure the -nostdint options is *not* being used.

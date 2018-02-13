@@ -37,8 +37,6 @@
 #include <unistd.h>
 #endif
 
-typedef bool bool_t;
-
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 0
 #define PROS_VERSION_PATCH 0

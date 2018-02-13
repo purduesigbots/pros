@@ -52,7 +52,6 @@ typedef enum {
 	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
 
-typedef void* sem_t;
 typedef void* mutex_t;
 
 /**
@@ -63,7 +62,7 @@ typedef void* mutex_t;
 /**
  * Returns the number of milliseconds since PROS initialized.
  */
-uint32_t millis();
+uint32_t millis(void);
 
 /**
  * Create a new task and add it to the list of tasks that are ready to run.
@@ -193,7 +192,7 @@ void task_resume(task_t task);
  * \return
  *          The number of tasks that are currently being managed by the kernel.
  */
-uint32_t task_get_count();
+uint32_t task_get_count(void);
 
 /**
  * Obtains the name of the specified task.
@@ -265,7 +264,7 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  *          Specifies the amount of time to be spent waiting for a notification
  *          to occur.
  */
-uint32_t task_notify_take(bool_t clear_on_exit, uint32_t timeout);
+uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
 
 /**
  * Clears the notification for a task.
@@ -277,7 +276,7 @@ uint32_t task_notify_take(bool_t clear_on_exit, uint32_t timeout);
  * \return
  *          False if there was not a notification waiting, true if there was
  */
-bool_t task_notify_clear(task_t task);
+bool task_notify_clear(task_t task);
 
 /**
  * Creates a mutex
@@ -288,7 +287,7 @@ bool_t task_notify_clear(task_t task);
  *          A handle to a newly created mutex. If an error occurred, NULL will be
  *			returned and errno can be checked for hints as to why mutex_create failed.
  */
-mutex_t mutex_create();
+mutex_t mutex_create(void);
 
 /**
  * Takes and locks a mutex, waiting for up to a certain number of milliseconds
@@ -306,7 +305,7 @@ mutex_t mutex_create();
  *          is returned, then errno is set with a hint about why the the mutex
  *          couldn't be taken.
  */
-bool_t mutex_take(mutex_t mutex, uint32_t timeout);
+bool mutex_take(mutex_t mutex, uint32_t timeout);
 
 /**
  * Unlocks a mutex.
@@ -320,55 +319,7 @@ bool_t mutex_take(mutex_t mutex, uint32_t timeout);
  *          is returned, then errno is set with a hint about why the mutex couldn't
  *          be returned.
  */
-bool_t mutex_give(mutex_t mutex);
-
-/**
- * Creates a counting sempahore.
- *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
- *
- * \param max_count
- *          The maximum count value that can be reached.
- * \param init_count
- *          The initial count value assigned to the new semaphore.
- * \return
- *          A newly created semaphore. If an error occurred, NULL will be
- *			returned and errno can be checked for hints as to why sem_create failed.
- */
-sem_t sem_create(uint32_t max_count, uint32_t init_count);
-
-/**
- * Waits for the semaphore's value to be greater than 0. If the value is already
- * greater than 0, this function immediately returns.
- *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
- *
- * \param sem
- *          Semaphore to wait on
- * \param timeout
- *          Time to wait before the semaphore's becomes available. A timeout of 0
- *          can be used to poll the sempahore. TIMEOUT_MAX can be used to block
- *          indefinitely.
- * \return
- *          True if the semaphore was successfully take, false otherwise.
- *          If false is returned, then errno is set with a hint about why the
- *          sempahore couldn't be taken.
- */
-bool_t sem_wait(sem_t sem, uint32_t timeout);
-
-/**
- * Increments a semaphore's value.
- *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
- *
- * \param sem
- *          Semaphore to post
- * \return
- *          True if the value was incremented, false otherwise. If false is
- *          returned, then errno is set with a hint about why the semaphore
- *          couldn't be taken.
- */
-bool_t sem_post(sem_t sem);
+bool mutex_give(mutex_t mutex);
 
 #ifdef __cplusplus
 }

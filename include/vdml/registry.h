@@ -18,7 +18,7 @@
 #define REGISTRY_H
 
 #include "ifi/v5_api.h"
-#include "pros/misc.h"
+#include "pros/apix.h"
 #include "vdml/vdml.h"
 
 #ifdef __cplusplus

@@ -33,7 +33,7 @@ extern "C" {
  * 			Returns the competition control status as a mask of bits with
  * 			COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
  */
-uint8_t competition_get_status();
+uint8_t competition_get_status(void);
 #define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
 #define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
 #define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
@@ -67,7 +67,7 @@ typedef enum {
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #define CONTROLLER_MASTER E_CONTROLLER_MASTER
-#define CONTORLLER_PARTNER E_CONTROLLER_PARTNER
+#define CONTROLLER_PARTNER E_CONTROLLER_PARTNER
 #define ANALOG_LEFT_X E_CONTROLLER_ANALOG_LEFT_X
 #define ANALOG_LEFT_Y E_CONTROLLER_ANALOG_LEFT_Y
 #define ANALOG_RIGHT_X E_CONTROLLER_ANALOG_RIGHT_X
@@ -130,72 +130,6 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
  */
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
 
-/******************************************************************************/
-/**                           Device Registration                            **/
-/******************************************************************************/
-
-/*
- * \brief List of possible v5 devices
- *
- * This list contains all current V5 Devices, and mirrors V5_DeviceType from the
- * api.
- */
-typedef enum v5_device_e {
-	E_DEVICE_NONE = 0,
-	E_DEVICE_MOTOR = 2,
-	E_DEVICE_LED = 3,
-	E_DEVICE_RGB = 4,
-	E_DEVICE_BUMPER = 5,
-	E_DEVICE_IMU = 6,
-	E_DEVICE_RANGE = 7,
-	E_DEVICE_RADIO = 8,
-	E_DEVICE_TETHER = 9,
-	E_DEVICE_BRAIN = 10,
-	E_DEVICE_VISION = 11,
-	E_DEVICE_ADI = 12,
-	E_DEVICE_GYRO = 0x46,
-	E_DEVICE_SONAR = 0x47,
-	E_DEVICE_GENERIC = 128,
-	E_DEVICE_UNDEFINED = 255
-} v5_device_e;
-
-/*
- * \brief Registers a device in the given port
- *
- * Registers a device of the given type in the given port into the registry, if
- * that type of device is detected to be plugged in to that port.
- *
- * \param[in]  port             the port number to register the device
- * \param[in]  device			the type of device to register
- *
- * \return 1 upon success, PROS_ERR upon failure
- *
- * \exception EINVAL Port number is out of range.
- * \exception EINVAL A different device than specified is plugged in.
- * \exception EADDRINUSE the port is already registered to another device
- */
-int registry_bind_port(unsigned int port, v5_device_e device_type);
-
-/*
- * \brief Deregisters a devices from the given port
- *
- * Removes the device registed in the given port, if there is one.
- *
- * \param[in]  port      		the port number to deregister
- *
- * \return 1 upon success, PROS_ERR upon failure
- *
- * \exception EINVAL the port number is out of range
- */
-int registry_unbind_port(unsigned int port);
-
-/*
- * \brief Checks whether there is a device mismatch among all registered ports.
- *
- * Check what device type is registered in each port and compares it to the
- * device actually plugged into each port. An error is displayed upon detection
- */
-void registry_validate_all_bindings();
 #ifdef __cplusplus
 }
 #endif
