@@ -102,6 +102,23 @@ sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem
 queue_t
     queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer, static_queue_s_t* queue_buffer);
 
+/**
+ * \brief Display a non-fatal error to the built-in LCD/touch screen.
+ *
+ * Note that this function is thread-safe, which requires that the scheduler be
+ * in a functioning state. For situations in which it is unclear whether the
+ * scheduler is working, use `display_fatal_error` instead.
+ */
+void display_error(const char* text);
+/**
+ * \brief Display a fatal error to the built-in LCD/touch screen.
+ *
+ * This function is intended to be used when the integrity of the RTOS cannot be
+ * trusted. No thread-safety mechanisms are used and this function only relies
+ * on the use of the libv5rts.
+ */
+void display_fatal_error(const char* text);
+
 void kprint_hex(uint8_t* s, size_t len);
 #ifdef __cplusplus
 }

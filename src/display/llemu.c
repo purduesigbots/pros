@@ -18,7 +18,7 @@
 
 #include "pros/llemu.h"
 
-static bool lcd_is_initialized = false;
+static bool _lcd_is_initialized = false;
 
 static lcd_btn_cb_fn_t _lcd_btn0_cb;
 static lcd_btn_cb_fn_t _lcd_btn1_cb;
@@ -31,25 +31,29 @@ static const uint32_t _LCD_SCREEN_COLOR = 0x5ABC03;
 static const uint32_t _BUTTON_COLOR = 0x1A1917;
 static const uint32_t _TEXT_COLOR = 0x323D13;
 
-static const int32_t _SCREEN_X0 = 0;
-static const int32_t _SCREEN_Y0 = 0;
-static const int32_t _SCREEN_X1 = 480;
-static const int32_t _SCREEN_Y1 = 240;
-static const int32_t _LCD_SCREEN_X0 = 27;
-static const int32_t _LCD_SCREEN_Y0 = 19;
-static const int32_t _LCD_SCREEN_X1 = 453;
-static const int32_t _LCD_SCREEN_Y1 = 179;
-static const int32_t _BUTTON0_X0 = 50;
-static const int32_t _BUTTON0_X1 = 130;
-static const int32_t _BUTTON1_X0 = 200;
-static const int32_t _BUTTON1_X1 = 280;
-static const int32_t _BUTTON2_X0 = 350;
-static const int32_t _BUTTON2_X1 = 430;
-static const int32_t _BUTTON_Y0 = 190;
-static const int32_t _BUTTON_Y1 = 230;
+static const int16_t _SCREEN_X0 = 0;
+static const int16_t _SCREEN_Y0 = 0;
+static const int16_t _SCREEN_X1 = 480;
+static const int16_t _SCREEN_Y1 = 240;
+static const int16_t _LCD_SCREEN_X0 = 27;
+static const int16_t _LCD_SCREEN_Y0 = 19;
+static const int16_t _LCD_SCREEN_X1 = 453;
+static const int16_t _LCD_SCREEN_Y1 = 179;
+static const int16_t _BUTTON0_X0 = 50;
+static const int16_t _BUTTON0_X1 = 130;
+static const int16_t _BUTTON1_X0 = 200;
+static const int16_t _BUTTON1_X1 = 280;
+static const int16_t _BUTTON2_X0 = 350;
+static const int16_t _BUTTON2_X1 = 430;
+static const int16_t _BUTTON_Y0 = 190;
+static const int16_t _BUTTON_Y1 = 230;
+
+bool lcd_is_initialized(void) {
+	return _lcd_is_initialized;
+}
 
 bool lcd_initialize(void) {
-	if (lcd_is_initialized) return false;
+	if (lcd_is_initialized()) return false;
 	display_set_color_bg(_FRAME_COLOR);  // LCD frame
 	display_clear_rect(_SCREEN_X0, _SCREEN_Y0, _SCREEN_X1, _SCREEN_Y1);
 	display_set_color_bg(_LCD_SCREEN_COLOR);  // LCD screen
@@ -63,22 +67,22 @@ bool lcd_initialize(void) {
 	register_touch_callback(_lcd_cb_handle_release, E_TOUCH_EVENT_RELEASE);
 	_touch_bits = 0;
 
-	lcd_is_initialized = true;
+	_lcd_is_initialized = true;
 	return true;
 }
 
 bool lcd_shutdown(void) {
-	if (!lcd_is_initialized) {
+	if (!lcd_is_initialized()) {
 		errno = ENXIO;
 		return false;
 	}
 	display_erase();
-	lcd_is_initialized = false;
+	_lcd_is_initialized = false;
 	return true;
 }
 
-bool lcd_set_text(int16_t line, const char* fmt, ...) {
-	if (!lcd_is_initialized) {
+bool lcd_print(int16_t line, const char* fmt, ...) {
+	if (!lcd_is_initialized()) {
 		errno = ENXIO;
 		return false;
 	}
@@ -87,11 +91,13 @@ bool lcd_set_text(int16_t line, const char* fmt, ...) {
 		errno = EINVAL;
 		return false;
 	}
+	lcd_clear_line(line);
+
 	display_set_color_bg(_LCD_SCREEN_COLOR);
 	display_set_color_fg(_TEXT_COLOR);
 	char s[47];                // max number of displayable characters is 44
 	s[0] = s[1] = s[2] = ' ';  // first three characters are alignment spaces
-	strcpy(s + 3, fmt);
+	strncpy(s + 3, fmt, 44);
 	va_list args;
 	va_start(args, fmt);
 	display_vprintf(line, s, args);
@@ -102,9 +108,33 @@ bool lcd_set_text(int16_t line, const char* fmt, ...) {
 	display_clear_rect(_LCD_SCREEN_X1, _SCREEN_Y0, _SCREEN_X1, _SCREEN_Y1);
 	return true;
 }
+bool lcd_set_text(int16_t line, const char* text) {
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return false;
+	}
+	line++;
+	if (line < 0 || line > 7) {
+		errno = EINVAL;
+		return false;
+	}
+	lcd_clear_line(line);
+
+	display_set_color_bg(_LCD_SCREEN_COLOR);
+	display_set_color_fg(_TEXT_COLOR);
+	char s[47];                // max number of displayable characters is 44
+	s[0] = s[1] = s[2] = ' ';  // first three characters are alignment spaces
+	strncpy(s + 3, text, 44);
+	display_puts(line, s);
+
+	display_set_color_bg(_FRAME_COLOR);  // cover overflowing text
+	display_clear_rect(_SCREEN_X0, _SCREEN_Y0, _LCD_SCREEN_X0, _SCREEN_Y1);
+	display_clear_rect(_LCD_SCREEN_X1, _SCREEN_Y0, _SCREEN_X1, _SCREEN_Y1);
+	return true;
+}
 
 bool lcd_clear(void) {
-	if (!lcd_is_initialized) {
+	if (!lcd_is_initialized()) {
 		errno = ENXIO;
 		return false;
 	}
@@ -114,7 +144,7 @@ bool lcd_clear(void) {
 }
 
 bool lcd_clear_line(int16_t line) {
-	if (!lcd_is_initialized) {
+	if (!lcd_is_initialized()) {
 		errno = ENXIO;
 		return false;
 	}
@@ -124,7 +154,7 @@ bool lcd_clear_line(int16_t line) {
 		return false;
 	}
 	display_set_color_bg(_LCD_SCREEN_COLOR);
-	int32_t line_start_y = _LCD_SCREEN_Y0 + 20 * (line - 1);
+	int16_t line_start_y = _LCD_SCREEN_Y0 + 20 * (line - 1);
 	// NOTE: for some reason, using _LCD_SCREEN_X0 and _LCD_SCREEN_X1 makes the
 	//       rect bleed over the edges of the screen by one pixel
 	display_clear_rect(_LCD_SCREEN_X0 + 1, line_start_y, _LCD_SCREEN_X1 - 1, line_start_y + 20);

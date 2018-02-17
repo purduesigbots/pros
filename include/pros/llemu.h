@@ -29,6 +29,12 @@ extern "C" {
 #define LCD_BTN_RIGHT 1
 
 /**
+ * \brief Determine whether the emulated three-button LCD has already been
+ *        initialized
+ * \return `true` if the LCD has been initialized or `false` if not.
+ */
+bool lcd_is_initialized(void);
+/**
  * \brief Initialize the display to be an emulation of the three-button,
  *        UART-based VEX LCD
  * \return `true` if the LCD was successfully initialized, or `false` if it has
@@ -64,7 +70,22 @@ bool lcd_shutdown(void);
  * \return `true` if the operation was successful, or `false` otherwise, setting
  *         `errno` values as specified above.
  */
-bool lcd_set_text(int16_t line, const char* fmt, ...);
+bool lcd_print(int16_t line, const char* fmt, ...);
+/**
+ * \brief Display a string on the emulated three-button LCD screen
+ *
+ * This function uses the following values of `errno` when an error state is
+ * reached:
+ * `ENXIO`  - The LCD has not been initialized. Call `lcd_initialize()` first.
+ * `EINVAL` - The line number specified is not in the range [0-7]
+ *
+ * \param[in] line The line on which to display the text [0-7]
+ * \param[in] text The text to display
+ *
+ * \return `true` if the operation was successful, or `false` otherwise, setting
+ *         `errno values as specified above.
+ */
+bool lcd_set_text(int16_t line, const char* text);
 /**
  * \brief Clear the emulated three-button LCD screen
  *
