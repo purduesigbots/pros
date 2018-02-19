@@ -44,6 +44,29 @@ typedef enum adi_port_config_e {
 	E_ADI_ERR = PROS_ERR
 } adi_port_config_e_t;
 
+#ifdef PROS_USE_SIMPLE_NAMES
+#define ADI_ANALOG_IN E_ADI_ANALOG_IN
+#define ADI_ANALOG_OUT E_ADI_ANALOG_OUT
+#define ADI_DIGITAL_IN E_ADI_DIGITAL_IN
+#define ADI_DIGITAL_OUT E_ADI_DIGITAL_OUT
+#define ADI_SMART_BUTTON E_ADI_SMART_BUTTON
+#define ADI_SMART_POT E_ADI_SMART_POT
+#define ADI_LEGACY_BUTTON E_ADI_LEGACY_BUTTON
+#define ADI_LEGACY_POT E_ADI_LEGACY_POT
+#define ADI_LEGACY_LINE_SENSOR E_ADI_LEGACY_LINE_SENSOR
+#define ADI_LEGACY_LIGHT_SENSOR E_ADI_LEGACY_LIGHT_SENSOR
+#define ADI_LEGACY_GYRO E_ADI_LEGACY_GYRO
+#define ADI_LEGACY_ACCELEROMETER E_ADI_LEGACY_ACCELEROMETER
+#define ADI_LEGACY_SERVO E_ADI_LEGACY_SERVO
+#define ADI_LEGACY_PWM E_ADI_LEGACY_PWM
+#define ADI_LEGACY_ENCODER E_ADI_LEGACY_ENCODER
+#define ADI_LEGACY_ULTRASONIC E_ADI_LEGACY_ULTRASONIC
+#define ADI_TYPE_UNDEFINED E_ADI_TYPE_UNDEFINED
+#define ADI_ERR E_ADI_ERR
+#endif
+
+#define NUM_ADI_PORTS 8
+
 /*
  * For the following functions:
  * If they don't need a return value (e.g. a setter):
@@ -102,5 +125,255 @@ int32_t adi_value_set(int port, int32_t value);
  *        will be returned
  */
 int32_t adi_value_get(int port);
+
+/**
+ * Used for digital_write() to specify a logic HIGH state to output.
+ *
+ * In reality, using any non-zero expression or "true" will work to set a pin to HIGH.
+ */
+#define HIGH 1
+/**
+ * Used for digital_write() to specify a logic LOW state to output.
+ *
+ * In reality, using a zero expression or "false" will work to set a pin to LOW.
+ */
+#define LOW 0
+
+/**
+ * pin_mode() state for a digital input.
+ */
+#define INPUT 0x00
+/**
+ * pin_mode() state for a digital output.
+ */
+#define OUTPUT 0x01
+/**
+ * pin_mode() state for an analog input.
+ */
+#define INPUT_ANALOG 0x02
+
+/**
+ * pin_mode() state for an analog output.
+ */
+#define OUTPUT_ANALOG 0x03
+
+/**
+ * Calibrates the analog sensor on the specified channel.
+ *
+ * This method assumes that the true sensor value is not actively changing at this time and
+ * computes an average from approximately 500 samples, 1 ms apart, for a 0.5 s period of
+ * calibration. The average value thus calculated is returned and stored for later calls to the
+ * analog_read_calibrated() and analog_read_calibrated_HR() functions. These functions will return
+ * the difference between this value and the current sensor value when called.
+ *
+ * Do not use this function when the sensor value might be unstable
+ * (gyro rotation, accelerometer movement).
+ *
+ * \param port
+ *        the ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return the average sensor value computed by this function
+ */
+int32_t adi_analog_calibrate(int port);
+/**
+ * Reads an analog input channel and returns the 12-bit value.
+ *
+ * The value returned is undefined if the analog pin has been switched to a different mode.
+ * This function is Wiring-compatible with the exception of the larger output range. The
+ * meaning of the returned value varies depending on the sensor attached.
+ *
+ * \param port
+ *        the ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return the analog sensor value, where a value of 0 reflects an input voltage of nearly 0 V
+ * and a value of 4095 reflects an input voltage of nearly 5 V
+ */
+int32_t adi_analog_read(int port);
+/**
+ * Reads the calibrated value of an analog input channel.
+ *
+ * The analog_calibrate() function must be run first on that channel. This function is
+ * inappropriate for sensor values intended for integration, as round-off error can accumulate
+ * causing drift over time. Use analogReadCalibratedHR() instead.
+ *
+ * \param port
+ *        the ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return the difference of the sensor value from its calibrated default from -4095 to 4095
+ */
+int32_t adi_analog_read_calibrated(int port);
+/**
+ * Reads the calibrated value of an analog input channel 1-8 with enhanced precision.
+ *
+ * The analog_calibrate() function must be run first. This is intended for integrated sensor
+ * values such as gyros and accelerometers to reduce drift due to round-off, and should not be
+ * used on a sensor such as a line tracker or potentiometer.
+ *
+ * The value returned actually has 16 bits of "precision", even though the ADC only reads
+ * 12 bits, so that errors induced by the average value being between two values come out
+ * in the wash when integrated over time. Think of the value as the true value times 16.
+ *
+ * \param port
+ *        the ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return the difference of the sensor value from its calibrated default from -16384 to 16384
+ */
+int32_t adi_analog_read_calibrated_HR(int port);
+/**
+ * Gets the digital value (1 or 0) of a pin configured as a digital input.
+ *
+ * If the pin is configured as some other mode, the digital value which reflects the current
+ * state of the pin is returned, which may or may not differ from the currently set value. The
+ * return value is undefined for pins configured as Analog inputs, or for ports in use by a
+ * Communications interface. This function is Wiring-compatible.
+ *
+ * \param port
+ *        the ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \return true if the pin is HIGH, or false if it is LOW
+ */
+int32_t adi_digital_read(int port);
+/**
+ * Sets the digital value (1 or 0) of a pin configured as a digital output.
+ *
+ * If the pin is configured as some other mode, behavior is undefined. This function is
+ * Wiring-compatible.
+ *
+ * \param port
+ *        the ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param value
+ *        an expression evaluating to "true" or "false" to set the output to HIGH or LOW
+ *        respectively, or the constants HIGH or LOW themselves
+ */
+int32_t adi_digital_write(int port, bool value);
+/**
+ * Configures the pin as an input or output with a variety of settings.
+ *
+ * Do note that INPUT by default turns on the pull-up resistor, as most VEX sensors are
+ * open-drain active low. It should not be a big deal for most push-pull sources. This function
+ * is Wiring-compatible.
+ *
+ * \param port
+ *        the ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param mode
+ *        one of INPUT, INPUT_ANALOG, INPUT_FLOATING, OUTPUT, or OUTPUT_OD
+ */
+int32_t adi_pin_mode(int port, unsigned char mode);
+
+/**
+ * Sets the speed of the motor on the given port.
+ *
+ * \param port
+ *        the ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
+ * \param speed
+ *        the new signed speed; -127 is full reverse and 127 is full forward, with 0
+ *        being off
+ */
+int32_t adi_motor_set(int port, int speed);
+/**
+ * Returns the last set speed of the motor on the given port.
+ *
+ * \param port
+ *        the ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
+ */
+int32_t adi_motor_get(int port);
+/**
+ * Stops the motor on the given port.
+ *
+ * \param port
+ *        the ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
+ */
+int32_t adi_motor_stop(int port);
+
+/**
+ * Reference type for an initialized encoder.
+ *
+ * This merely contains the port number for the encoder, unlike its use as an
+ * object to store encoder data in PROS 2.
+ */
+typedef int32_t adi_encoder_t;
+
+/**
+ * Gets the number of ticks recorded by the encoder.
+ *
+ * There are 360 ticks in one revolution.
+ *
+ * \param enc
+ *        the encoder_t object from encoder_init() to read
+ *
+ * \return the signed and cumulative number of counts since the last start or reset
+ */
+int32_t adi_encoder_get(adi_encoder_t enc);
+/**
+ * Initializes and enables a quadrature encoder on two digital ports.
+ *
+ * \param port_top
+ *        the "top" wire from the encoder sensor with the removable cover side UP
+ * \param port_bottom
+ *        the "bottom" wire from the encoder sensor
+ * \param reverse
+ *        if "true", the sensor will count in the opposite direction
+ *
+ * \return an encoder_t object to be stored and used for later calls to encoder functions
+ */
+adi_encoder_t adi_encoder_init(int port_top, int port_bottom, bool reverse);
+/**
+ * Resets the encoder to zero.
+ *
+ * It is safe to use this method while an encoder is enabled. It is not necessary to call this
+ * method before stopping or starting an encoder.
+ *
+ * \param enc
+ *        the encoder_t object from encoder_init() to reset
+ */
+int32_t adi_encoder_reset(adi_encoder_t enc);
+/**
+ * Stops and disables the encoder.
+ *
+ * \param enc
+ *        the encoder_t object from encoder_init() to stop
+ */
+int32_t adi_encoder_shutdown(adi_encoder_t enc);
+
+/**
+ * Reference type for an initialized ultrasonic.
+ *
+ * This merely contains the port number for the ultrasonic, unlike its use as an
+ * object to store encoder data in PROS 2.
+ */
+typedef int32_t adi_ultrasonic_t;
+
+/**
+ * Gets the current ultrasonic sensor value in centimeters.
+ *
+ * If no object was found, zero is returned. If the ultrasonic sensor was never started, the
+ * return value is undefined. Round and fluffy objects can cause inaccurate values to be
+ * returned.
+ *
+ * \param ult
+ *        the ultrasonic_t object from ultrasonic_init() to read
+ *
+ * \return the distance to the nearest object in centimeters
+ */
+int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
+/**
+ * Initializes an ultrasonic sensor on the specified ADI ports.
+ *
+ * \param port_echo
+ *        the port connected to the yellow INPUT cable. This should be in port
+ *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
+ * \param port_ping
+ *        the port connected to the orange OUTPUT cable. This should be in the
+ *        next highest port following port_echo.
+ *
+ * \return an ultrasonic_t object to be stored and used for later calls to ultrasonic functions
+ */
+adi_ultrasonic_t adi_ultrasonic_init(int port_echo, int port_ping);
+/**
+ * Stops and disables the ultrasonic sensor.
+ *
+ * \param ult
+ *        the ultrasonic_t object from ultrasonic_init() to stop
+ */
+int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 
 #endif

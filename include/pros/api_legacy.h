@@ -12,3 +12,62 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+#ifndef _PROS_API_LEGACY_H_
+#define _PROS_API_LEGACY_H_
+
+#include "api.h"
+
+/**
+ * From adi.h
+ */
+#define analogCalibrate(port) adi_analog_calibrate(port)
+#define analogRead(port) adi_analog_read(port)
+#define analogReadCalibrated(port) adi_analog_read_calibrated(port)
+#define analogReadCalibratedHR(port) adi_analog_read_calibrated_HR(port)
+#define digitalRead(port) adi_digital_read(port)
+#define digitalWrite(port, value) adi_digital_write(port, value)
+#define pinMode(port, mode) adi_pin_mode(port, mode)
+#define adiMotorSet(port, speed) adi_motor_set(port, speed)
+#define adiMotorGet(port) adi_motor_get(port)
+#define adiMotorStop(port) adi_motor_stop(port)
+
+typedef adi_encoder_t Encoder;
+typedef adi_ultrasonic_t Ultrasonic;
+
+/**
+ * From llemu.h
+ */
+#define lcdInit lcd_initialize
+#define lcdReadButtons lcd_read_buttons
+#define lcdClear lcd_clear
+#define lcdShutdown lcd_shutdown
+// TODO: Add lcdPrint/lcdSetText
+
+/**
+ * From misc.h
+ */
+#define isEnabled() (!competition_is_disabled())
+#define isAutonomous competition_is_autonomous
+#define isOnline competition_is_connected
+#define isJoystickConnected(id) controller_is_connected(id)
+#define joystickGetAnalog(id, channel) controller_get_analog(id, channel)
+
+/**
+ * From rtos.h
+ */
+#define taskCreate(taskCode, stackDepth, parameters, priority)                                                         \
+	task_create(taskCode, parameters, priority, stackDepth, '')
+#define taskDelete(task) task_delete(task)
+#define taskDelay task_delay
+#define taskDelayUntil(previousWakeTime, cycleTime) task_delay_until(previousWakeTime, cycleTime)
+#define taskPriorityGet(task) task_get_priority(task)
+#define taskPrioritySet(task, newPriority) task_priority_set(task, newPriority)
+#define taskGetState(task) task_get_state(task)
+#define taskSuspend(task) task_suspend(task)
+#define taskResume(task) task_resume(task)
+#define taskGetCount task_get_count
+#define mutexCreate mutex_create
+#define mutexTake(mutex, blockTime) mutex_take(mutex, blockTime)
+#define mutexGive(mutex) mutex_give(mutex)
+
+#endif
