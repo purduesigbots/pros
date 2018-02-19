@@ -5,6 +5,9 @@
 extern void vdml_initialize();
 extern void vdml_background_processing();
 
+extern void port_mutex_take_all();
+extern void port_mutex_give_all();
+
 static task_stack_t competition_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t competition_task_buffer;
 static task_t competition_task;

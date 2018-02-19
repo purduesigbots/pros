@@ -42,6 +42,12 @@ int port_mutex_take(int port) {
 	return mutex_take(port_mutexes[port], TIMEOUT_MAX);
 }
 
+static inline char* print_num(char* buff, int num) {
+	*buff++ = (num / 10) + '0';
+	*buff++ = (num % 10) + '0';
+	return buff;
+}
+
 int port_mutex_give(int port) {
 	if (port < 0 || port > NUM_V5_PORTS) {
 		errno = EINVAL;
@@ -109,7 +115,83 @@ void vdml_background_processing() {
 	registry_update_types();
 
 	// Validate the ports. Warn if mismatch.
+	uint8_t error_arr[NUM_V5_PORTS];
+	int num_errors = 0;
+	int mismatch_errors = 0;
 	for (int i = 0; i < NUM_V5_PORTS; i++) {
-		registry_validate_binding(i, E_DEVICE_NONE);
+		error_arr[i] = registry_validate_binding(i, E_DEVICE_NONE);
+		if (error_arr[i] != 0) num_errors++;
+		if (error_arr[i] == 2) mismatch_errors++;
+	}
+	// Every 50 ms
+	if (cycle % 50 == 0) {
+		char line[50];
+		char* line_ptr = line;
+		if (num_errors == 0)
+			line[0] = (char)0;
+		else if (num_errors <= 6) {
+			// If we have 1-6 total errors (unplugged + mismatch), we can
+			// display a line indicating the ports where these errors occur
+			strcpy(line_ptr, "PORTS");
+			line_ptr += 5;  // 5 is length of "PORTS"
+			if (mismatch_errors != 0) {
+				strcpy(line_ptr, " MISMATCHED: ");
+				line_ptr += 13;  // 13 is length of previous string
+				for (int i = 0; i < NUM_V5_PORTS; i++) {
+					if (error_arr[i] == 2) {
+						line_ptr = print_num(line_ptr, i + 1);
+						*line_ptr++ = ',';
+					}
+				}
+				line_ptr--;
+			}
+			if (num_errors != mismatch_errors) {
+				strcpy(line_ptr, " UNPLUGGED: ");
+				line_ptr += 12;  // 12 is length of previous string
+				for (int i = 0; i < NUM_V5_PORTS; i++) {
+					if (error_arr[i] == 1) {
+						line_ptr = print_num(line_ptr, i + 1);
+						*line_ptr++ = ',';
+					}
+				}
+				line_ptr--;
+			}
+		} else {
+			/* If we have > 6 errors, we display the following:
+			 * PORT ERRORS: 1..... 6..... 11..... 16.....
+			 * where each . represents a port. A '.' indicates
+			 * there is no error on that port, a 'U' indicates
+			 * the registry expected a device there but there isn't
+			 * one, and a 'M' indicates the plugged in devices doesn't
+			 * match what we expect. The numbers are just a visual reference
+			 * to aid in determining what ports have errors.
+			 */
+			strcpy(line_ptr, "PORT ERRORS:");
+			line_ptr += 12;  // 12 is length of previous string
+			for (int i = 0; i < NUM_V5_PORTS; i++) {
+				if (i % 5 == 0) {
+					*line_ptr++ = ' ';
+					line_ptr = print_num(line_ptr, i + 1);
+				}
+				switch (error_arr[i]) {
+				case 0:
+					*line_ptr++ = '.';
+					break;
+				case 1:
+					*line_ptr++ = 'U';
+					break;
+				case 2:
+					*line_ptr++ = 'M';
+					break;
+				// Should never happen
+				default:
+					*line_ptr++ = '?';
+					break;
+				}
+			}
+		}
+		// Null terminate the string
+		*line_ptr = '\0';
+		display_error(line);
 	}
 }
