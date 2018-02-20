@@ -174,25 +174,25 @@ static void printi(void (*outputFn)(void*, char), void *data, int32_t num, uint3
 }
 
 #ifdef PRINTF_FLOAT
-// Divide 57-bit integer inside 64-bit type by 10 using 32-bit divisions
-// This is way faster on ARM than using compiler's intrinsic 64-bit divide
-// since ARM has "udiv" that can finish in 2-12 cycles
-static inline uint64_t _div10(const uint64_t input) {
-	// Split input into upper 29 and lower 28 bits
-	uint32_t highbits = (uint32_t)(input >> 28);
-	uint32_t lowbits = (uint32_t)(input & 0x0FFFFFFFULL);
-	// Recall that (57-bit #) = (29-bit # <<28) | (28-bit #)
-	// Distribute "/10": (57 bit # / 10) = (29-bit # <<28) / 10 | (28-bit #) / 10
-	// Now we can invert the /10 and <<28 if the remainder is carried down
-	// (64 bit # / 10) = (29-bit # / 10 <<28) | (remainder <<28 | 28-bit #) / 10
-	// modulus is efficient since we already computed quotient, umul by 10
-	// and then rsbs for a grand total of 2 more cycles
-	uint32_t nhighbits = highbits / 10, remain = highbits % 10;
-	// remain has at most 4 bits (1010 = 0xA) so we cannot overflow
-	uint32_t nlowbits = (lowbits | (remain << 28)) / 10;
-	return ((uint64_t)nhighbits << 28) | (uint64_t)nlowbits;
-}
+// divmod10 alg from: http://forum.arduino.cc/index.php?topic=167414.0
+void _divmod10(uint64_t in, uint64_t* div, uint64_t* mod)
+{
+    // q = in * 0.8;
+    uint64_t q = (in >> 1) + (in >> 2);
+    q = q + (q >> 4);
+    q = q + (q >> 8);
+    q = q + (q >> 16);  // not needed for 16 bit version
+    q = q + (q >> 32);
 
+    // q = q / 8;  ==> q =  in *0.1;
+    q = q >> 3;
+
+    // determine error
+    uint64_t  r = in - ((q << 3) + (q << 1));   // r = in - q*10;
+    *div = q + (r > 9);
+    if (r > 9) *mod = r - 10;
+    else *mod = r;
+}
 
 inline static void _printd_handle_large_exp(void (*outputFn)(void*, char), void* data,
     uint64_t mantissa, int64_t exponent)
@@ -356,7 +356,8 @@ inline static int _printd_get_decimals(char* output,
             sum += 500ULL;
         }
 
-        decimal_val = _div10(sum);
+        uint64_t _none_;
+        _divmod10(sum, &decimal_val, &_none_);
 
         // Multiply 64 bits is bad but not horrible
         output[i] = '0' + (char)(sum - decimal_val * 10ULL);
@@ -372,11 +373,7 @@ inline static void _printd_handle_small_exp(void (*outputFn)(void*, char), void*
     // Shift until the decimal portion of the mantissa are removed from
     // the floating point number
     // Ex. If the floating value is 123.456, integer_val = 123
-		// TODO: integer_val must be 64bit to account for all floating point numbers
-		//       Currently it's 32 bit so that it can perform modulus 10 later on,
-		//       which is not supported by the ARM M3-32bit uproc.
-		//       Create a function that can do mod10 in 64 bit.  
-    uint32_t integer_val = mantissa >> (uint32_t)(52U - exponent);
+    uint64_t integer_val = mantissa >> (uint32_t)(52U - exponent);
 
     // This is for the case were the decimal rounded over an integer.
     // For instance, 1.9999 rounded to 2.0000, so "1" must be incremented to "2"
@@ -389,8 +386,10 @@ inline static void _printd_handle_small_exp(void (*outputFn)(void*, char), void*
     // Saves the integer to a character array.
     // Ie. 123 will be saved as '3', '2', 1', ...
     do {
-        output[index++] = (integer_val % 10) + '0';
-        integer_val = _div10(integer_val);
+        uint64_t _mod;
+        _divmod10(integer_val, &integer_val, &_mod);
+
+        output[index++] = _mod + '0';
     } while (integer_val);
 
     // Determine pad-before character
@@ -434,7 +433,7 @@ static void printd(void (*outputFn)(void*, char), void *data, double value,
 
 		prints(outputFn, data, inf, widthTotal, ' ');
 
-    return;
+        return;
 	}
 
 	// Get decimal points values.  If there was some rounding over
@@ -449,19 +448,19 @@ static void printd(void (*outputFn)(void*, char), void *data, double value,
 	if (widthTotal > 308) widthTotal = 0;
 
 	// Print leading decimals if the floating point is greater then 1
-  // Otherwise print a zero
-  if (exponent <= 52) {
-      uint32_t totalIntegerWidth = widthTotal - widthAfter - 1;
+    // Otherwise print a zero
+    if (exponent <= 52) {
+      //uint32_t totalIntegerWidth = widthTotal - widthAfter - 1;
 
       _printd_handle_small_exp(outputFn,
           data, mantissa, exponent,
-          rounding_over_int, totalIntegerWidth, pad);
-  }
-  // An exponent of greater then 52 means there is no decimal point for this number
-  // This must be handled differently then a simple bitshift TODO: why?
-  else {
+          rounding_over_int, widthTotal, pad);
+    }
+    // An exponent of greater then 52 means there is no decimal point for this number
+    // This must be handled differently then a simple bitshift TODO: why?
+    else {
       _printd_handle_large_exp(outputFn, data, mantissa, exponent);
-  }
+    }
 
 	// Round to nearest 15 decimals, if we divide by 1000 we have 15 good places
 	outputFn(data, '.');
