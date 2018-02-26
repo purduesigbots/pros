@@ -57,13 +57,13 @@ bool encoder_reversed[NUM_MAX_TWOWIRE];
 	}
 
 #define validate_type(port, type)                                                                                      \
-	adi_port_config_e_t config = adi_port_config_get(port);                                                        \
+	adi_port_config_e_t config = _adi_port_config_get(port);                                                       \
 	if (config != type) {                                                                                          \
 		return PROS_ERR;                                                                                       \
 	}
 
 #define validate_analog(port)                                                                                          \
-	adi_port_config_e_t config = adi_port_config_get(port);                                                        \
+	adi_port_config_e_t config = _adi_port_config_get(port);                                                       \
 	if (config != E_ADI_ANALOG_IN && config != E_ADI_LEGACY_POT && config != E_ADI_LEGACY_LINE_SENSOR &&           \
 	    config != E_ADI_LEGACY_LIGHT_SENSOR && config != E_ADI_LEGACY_ACCELEROMETER &&                             \
 	    config != E_ADI_SMART_POT) {                                                                               \
@@ -72,14 +72,14 @@ bool encoder_reversed[NUM_MAX_TWOWIRE];
 	}
 
 #define validate_digital_in(port)                                                                                      \
-	adi_port_config_e_t config = adi_port_config_get(port);                                                        \
+	adi_port_config_e_t config = _adi_port_config_get(port);                                                       \
 	if (config != E_ADI_DIGITAL_IN && config != E_ADI_LEGACY_BUTTON && config != E_ADI_SMART_BUTTON) {             \
 		errno = EINVAL;                                                                                        \
 		return PROS_ERR;                                                                                       \
 	}
 
 #define validate_motor(port)                                                                                           \
-	adi_port_config_e_t config = adi_port_config_get(port);                                                        \
+	adi_port_config_e_t config = _adi_port_config_get(port);                                                       \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                              \
 		errno = EINVAL;                                                                                        \
 		return PROS_ERR;                                                                                       \
@@ -97,43 +97,60 @@ bool encoder_reversed[NUM_MAX_TWOWIRE];
 		port = port_bottom;                                                                                    \
 	else                                                                                                           \
 		return PROS_ERR;                                                                                       \
-	if (!(port % 2)) {                                                                                             \
+	if (port % 2 == 1) {                                                                                           \
 		return PROS_ERR;                                                                                       \
 	}
 
-int32_t adi_port_config_set(int port, adi_port_config_e_t type) {
-	transform_adi_port(port);
+static inline int32_t _adi_port_config_set(int port, adi_port_config_e_t type) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device.device_info, port, type);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
-adi_port_config_e_t adi_port_config_get(int port) {
-	transform_adi_port(port);
+static inline adi_port_config_e_t _adi_port_config_get(int port) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	adi_port_config_e_t rtn = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device.device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
-int32_t adi_value_set(int port, int32_t value) {
-	transform_adi_port(port);
+static inline int32_t _adi_value_set(int port, int32_t value) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	vexDeviceAdiValueSet(device.device_info, port, value);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
-int32_t adi_value_get(int port) {
-	transform_adi_port(port);
+static inline int32_t _adi_value_get(int port) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	int32_t rtn = vexDeviceAdiValueGet(device.device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
+int32_t adi_port_config_set(int port, adi_port_config_e_t type) {
+	transform_adi_port(port);
+	return _adi_port_config_set(port, type);
+}
+
+adi_port_config_e_t adi_port_config_get(int port) {
+	transform_adi_port(port);
+	return _adi_port_config_get(port);
+}
+
+int32_t adi_value_set(int port, int32_t value) {
+	transform_adi_port(port);
+	return _adi_value_set(port, value);
+}
+
+int32_t adi_value_get(int port) {
+	transform_adi_port(port);
+	return _adi_value_get(port);
+}
+
 int32_t adi_analog_calibrate(int port) {
+	transform_adi_port(port);
 	validate_analog(port);
 	uint32_t total = 0, i;
 	for (i = 0; i < 512; i++) {
-		total += adi_value_get(port);
+		total += _adi_value_get(port);
 		task_delay(1);
 	}
 	analog_registry[port - 1].calib = (int32_t)((total + 16) >> 5);
@@ -141,28 +158,33 @@ int32_t adi_analog_calibrate(int port) {
 }
 
 int32_t adi_analog_read(int port) {
+	transform_adi_port(port);
 	validate_analog(port);
-	return adi_value_get(port);
+	return _adi_value_get(port);
 }
 
 int32_t adi_analog_read_calibrated(int port) {
+	transform_adi_port(port);
 	validate_analog(port);
-	return (adi_value_get(port) - (analog_registry[port - 1].calib >> 4));
+	return (_adi_value_get(port) - (analog_registry[port - 1].calib >> 4));
 }
 
 int32_t adi_analog_read_calibrated_HR(int port) {
+	transform_adi_port(port);
 	validate_analog(port);
-	return ((adi_value_get(port) << 4) - analog_registry[port - 1].calib);
+	return ((_adi_value_get(port) << 4) - analog_registry[port - 1].calib);
 }
 
 int32_t adi_digital_read(int port) {
+	transform_adi_port(port);
 	validate_digital_in(port);
-	return adi_value_get(port);
+	return _adi_value_get(port);
 }
 
 int32_t adi_digital_write(int port, bool value) {
+	transform_adi_port(port);
 	validate_type(port, E_ADI_DIGITAL_OUT);
-	return adi_value_set(port, (int32_t)value);
+	return _adi_value_set(port, (int32_t)value);
 }
 
 int32_t adi_pin_mode(int port, unsigned char mode) {
@@ -187,61 +209,75 @@ int32_t adi_pin_mode(int port, unsigned char mode) {
 }
 
 int32_t adi_motor_set(int port, int speed) {
+	transform_adi_port(port);
 	validate_motor(port);
 	if (speed > ADI_MOTOR_MAX_SPEED)
 		speed = ADI_MOTOR_MAX_SPEED;
 	else if (speed < ADI_MOTOR_MIN_SPEED)
 		speed = ADI_MOTOR_MIN_SPEED;
 
-	return adi_value_set(port, speed);
+	return _adi_value_set(port, speed);
 }
 
 int32_t adi_motor_get(int port) {
+	transform_adi_port(port);
 	validate_motor(port);
-	return (adi_value_get(port) - ADI_MOTOR_MAX_SPEED);
+	return (_adi_value_get(port) - ADI_MOTOR_MAX_SPEED);
 }
 
 int32_t adi_motor_stop(int port) {
 	validate_motor(port);
-	return adi_value_set(port, 0);
+	return _adi_value_set(port, 0);
 }
 
 adi_encoder_t adi_encoder_init(int port_top, int port_bottom, bool reverse) {
+	transform_adi_port(port_top);
+	transform_adi_port(port_bottom);
 	validate_twowire(port_top, port_bottom);
 	encoder_reversed[(port - 1) / 2] = reverse;
 
-	return adi_port_config_set(port, E_ADI_LEGACY_ENCODER);
+	if (_adi_port_config_set(port, E_ADI_LEGACY_ENCODER)) {
+		return port;
+	} else {
+		return PROS_ERR;
+	}
 }
 
 int32_t adi_encoder_get(adi_encoder_t enc) {
 	validate_type(enc, E_ADI_LEGACY_ENCODER);
-	if (encoder_reversed[(enc - 1) / 2]) return (-adi_value_get(enc));
-	return adi_value_get(enc);
+	if (encoder_reversed[(enc - 1) / 2]) return (-_adi_value_get(enc));
+	return _adi_value_get(enc);
 }
 
 int32_t adi_encoder_reset(adi_encoder_t enc) {
 	validate_type(enc, E_ADI_LEGACY_ENCODER);
-	return adi_value_set(enc, 0);
+	return _adi_value_set(enc, 0);
 }
 
 int32_t adi_encoder_shutdown(adi_encoder_t enc) {
 	validate_type(enc, E_ADI_LEGACY_ENCODER);
-	return adi_port_config_set(enc, E_ADI_TYPE_UNDEFINED);
+	return _adi_port_config_set(enc, E_ADI_TYPE_UNDEFINED);
 }
 
 adi_ultrasonic_t adi_ultrasonic_init(int port_echo, int port_ping) {
+	transform_adi_port(port_echo);
+	transform_adi_port(port_ping);
 	validate_twowire(port_echo, port_ping);
 	if (port != port_echo) return PROS_ERR;
 
-	return adi_port_config_set(port_echo, E_ADI_LEGACY_ULTRASONIC);
+	if (_adi_port_config_set(port, E_ADI_LEGACY_ULTRASONIC)) {
+		return port;
+	} else {
+		return PROS_ERR;
+	}
 }
 
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	validate_type(ult, E_ADI_LEGACY_ULTRASONIC);
-	return adi_value_get(ult);
+	return _adi_value_get(ult);
 }
 
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 	validate_type(ult, E_ADI_LEGACY_ULTRASONIC);
-	return adi_port_config_set(ult, E_ADI_TYPE_UNDEFINED);
+	return _adi_port_config_set(ult, E_ADI_TYPE_UNDEFINED);
 }
