@@ -7,7 +7,7 @@ ARCHTUPLE=arm-none-eabi-
 DEVICE=VEX EDR V5
 
 MFLAGS=-march=armv7-a -mfpu=neon-fp16 -mfloat-abi=softfp
-CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -O0
+CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -Os
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
 
 WARNFLAGS=-Wall

@@ -18,13 +18,13 @@
 
 #include "pros/llemu.h"
 
-static bool _lcd_is_initialized = false;
+static volatile bool _lcd_is_initialized = false;
 
-static lcd_btn_cb_fn_t _lcd_btn0_cb;
-static lcd_btn_cb_fn_t _lcd_btn1_cb;
-static lcd_btn_cb_fn_t _lcd_btn2_cb;
+static volatile lcd_btn_cb_fn_t _lcd_btn0_cb;
+static volatile lcd_btn_cb_fn_t _lcd_btn1_cb;
+static volatile lcd_btn_cb_fn_t _lcd_btn2_cb;
 
-static uint8_t _touch_bits;
+static volatile uint8_t _touch_bits;
 
 static const uint32_t _FRAME_COLOR = 0xA18A78;
 static const uint32_t _LCD_SCREEN_COLOR = 0x5ABC03;
@@ -86,12 +86,12 @@ bool lcd_print(int16_t line, const char* fmt, ...) {
 		errno = ENXIO;
 		return false;
 	}
-	line++;                      // make lines zero-indexed in terms of the emulated LCD screen
 	if (line < 0 || line > 7) {  // make sure that the supplied line is displayable
 		errno = EINVAL;
 		return false;
 	}
 	lcd_clear_line(line);
+	line++;  // make lines zero-indexed in terms of the emulated LCD screen
 
 	display_set_color_bg(_LCD_SCREEN_COLOR);
 	display_set_color_fg(_TEXT_COLOR);
@@ -113,12 +113,12 @@ bool lcd_set_text(int16_t line, const char* text) {
 		errno = ENXIO;
 		return false;
 	}
-	line++;
 	if (line < 0 || line > 7) {
 		errno = EINVAL;
 		return false;
 	}
 	lcd_clear_line(line);
+	line++;
 
 	display_set_color_bg(_LCD_SCREEN_COLOR);
 	display_set_color_fg(_TEXT_COLOR);
@@ -148,11 +148,11 @@ bool lcd_clear_line(int16_t line) {
 		errno = ENXIO;
 		return false;
 	}
-	line++;
 	if (line < 0 || line > 7) {
 		errno = EINVAL;
 		return false;
 	}
+	line++;
 	display_set_color_bg(_LCD_SCREEN_COLOR);
 	int16_t line_start_y = _LCD_SCREEN_Y0 + 20 * (line - 1);
 	// NOTE: for some reason, using _LCD_SCREEN_X0 and _LCD_SCREEN_X1 makes the

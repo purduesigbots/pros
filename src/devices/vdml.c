@@ -104,8 +104,8 @@ void vdml_reset_port_error() {
  *
  * On warnings, no operation is performed.
  */
-int cycle = 0;
 void vdml_background_processing() {
+	static int cycle = 0;
 	cycle++;
 	if (cycle % 5000 == 0) {
 		vdml_reset_port_error();

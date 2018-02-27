@@ -26,7 +26,7 @@
 #include "kapi.h"
 
 static v5_smart_device_s_t registry[NUM_V5_PORTS];
-static V5_DeviceType registry_types[NUM_V5_PORTS];
+static V5_DeviceType registry_types[V5_MAX_DEVICE_PORTS];
 
 /*
  * \brief Initializes the registry

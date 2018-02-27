@@ -51,5 +51,6 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
+#include "pros/vision.h"
 
 #endif /* _PROS_API_H_ */
