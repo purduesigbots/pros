@@ -20,6 +20,9 @@
 
 static volatile bool _lcd_is_initialized = false;
 
+static void _lcd_cb_handle_press(int16_t x, int16_t y);
+static void _lcd_cb_handle_release(int16_t x, int16_t y);
+
 static volatile lcd_btn_cb_fn_t _lcd_btn0_cb;
 static volatile lcd_btn_cb_fn_t _lcd_btn1_cb;
 static volatile lcd_btn_cb_fn_t _lcd_btn2_cb;

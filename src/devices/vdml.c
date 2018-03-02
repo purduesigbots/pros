@@ -34,7 +34,7 @@ void port_mutex_init() {
 	}
 }
 
-int port_mutex_take(int port) {
+int port_mutex_take(uint8_t port) {
 	if (port < 0 || port > NUM_V5_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
@@ -48,7 +48,7 @@ static inline char* print_num(char* buff, int num) {
 	return buff;
 }
 
-int port_mutex_give(int port) {
+int port_mutex_give(uint8_t port) {
 	if (port < 0 || port > NUM_V5_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
@@ -68,19 +68,19 @@ void port_mutex_give_all() {
 	}
 }
 
-void vdml_set_port_error(int port) {
+void vdml_set_port_error(uint8_t port) {
 	if (VALIDATE_PORT_NO(port)) {
 		port_errors |= (1 << port);
 	}
 }
 
-void vdml_unset_port_error(int port) {
+void vdml_unset_port_error(uint8_t port) {
 	if (VALIDATE_PORT_NO(port)) {
 		port_errors &= ~(1 << port);
 	}
 }
 
-bool vdml_get_port_error(int port) {
+bool vdml_get_port_error(uint8_t port) {
 	if (VALIDATE_PORT_NO(port)) {
 		return (port_errors >> port) & 1;
 	} else {

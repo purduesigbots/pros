@@ -67,14 +67,14 @@ int32_t port_errors;
  *
  * \param[in] port The port to set.
  */
-void vdml_set_port_error(int port);
+void vdml_set_port_error(uint8_t port);
 
 /**
  * Sets the port's bit to 0, effectively resetting it.
  *
  * \param[in] port The port to unset.
  */
-void vdml_unset_port_error(int port);
+void vdml_unset_port_error(uint8_t port);
 
 /**
  * Gets the error bit for the port, indicating whether or not there has been an
@@ -84,7 +84,7 @@ void vdml_unset_port_error(int port);
  *
  * \return True if the port's bit is set, false otherwise.
  */
-bool vdml_get_port_error(int port);
+bool vdml_get_port_error(uint8_t port);
 
 /**
  * Reset all ports' error bits.
@@ -108,7 +108,7 @@ void vdml_reset_port_error();
  *
  * \exception EINVAL Port is out of range.
  */
-int port_mutex_take(int port);
+int port_mutex_take(uint8_t port);
 
 /**
  * \brief Returns the mutex for the given port.
@@ -123,7 +123,7 @@ int port_mutex_take(int port);
  *
  * \exception EINVAL Port is out of range.
  */
-int port_mutex_give(int port);
+int port_mutex_give(uint8_t port);
 
 void port_mutex_take_all();
 

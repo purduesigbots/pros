@@ -299,21 +299,11 @@ void queue_reset(queue_t queue);
 typedef enum v5_device_e {
 	E_DEVICE_NONE = 0,
 	E_DEVICE_MOTOR = 2,
-	E_DEVICE_LED = 3,
-	E_DEVICE_RGB = 4,
-	E_DEVICE_BUMPER = 5,
-	E_DEVICE_IMU = 6,
-	E_DEVICE_RANGE = 7,
 	E_DEVICE_RADIO = 8,
-	E_DEVICE_TETHER = 9,
-	E_DEVICE_BRAIN = 10,
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,
-	E_DEVICE_GYRO = 0x46,
-	E_DEVICE_SONAR = 0x47,
-	E_DEVICE_GENERIC = 128,
 	E_DEVICE_UNDEFINED = 255
-} v5_device_e;
+} v5_device_e_t;
 
 /*
  * \brief Registers a device in the given port
@@ -330,7 +320,7 @@ typedef enum v5_device_e {
  * \exception EINVAL A different device than specified is plugged in.
  * \exception EADDRINUSE the port is already registered to another device
  */
-int registry_bind_port(unsigned int port, v5_device_e device_type);
+int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
 /*
  * \brief Deregisters a devices from the given port
@@ -343,7 +333,7 @@ int registry_bind_port(unsigned int port, v5_device_e device_type);
  *
  * \exception EINVAL the port number is out of range
  */
-int registry_unbind_port(unsigned int port);
+int registry_unbind_port(uint8_t port);
 
 #ifdef __cplusplus
 }

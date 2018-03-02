@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 typedef struct {
-	v5_device_e device_type;
+	v5_device_e_t device_type;
 	V5_DeviceT device_info;
 } v5_smart_device_s_t;
 
@@ -49,7 +49,7 @@ void registry_update_types();
  *
  * \except EINVAL the port number is out of range.
  */
-v5_smart_device_s_t registry_get_device(unsigned int port);
+v5_smart_device_s_t registry_get_device(uint8_t port);
 
 /*
  * \brief Returns the type of device registered to the port.
@@ -61,7 +61,7 @@ v5_smart_device_s_t registry_get_device(unsigned int port);
  *
  * \exception EINVAL the port number is out of range
  */
-v5_device_e registry_get_bound_type(unsigned int port);
+v5_device_e_t registry_get_bound_type(uint8_t port);
 
 /*
  * \brief Returns the type of the device plugged into the port.
@@ -73,7 +73,7 @@ v5_device_e registry_get_bound_type(unsigned int port);
  *
  * \exception EINVAL the port number is out of range.
  */
-v5_device_e registry_get_plugged_type(unsigned int port);
+v5_device_e_t registry_get_plugged_type(uint8_t port);
 
 /*
  * \brief Checks whether there is a discrepancy between the binding of the port
@@ -96,7 +96,7 @@ v5_device_e registry_get_plugged_type(unsigned int port);
  *
  * \exception EINVAL the port number is out of range
  */
-int32_t registry_validate_binding(unsigned int port, v5_device_e expected_t);
+int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t);
 
 #ifdef __cplusplus
 }

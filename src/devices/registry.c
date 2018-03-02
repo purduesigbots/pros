@@ -39,7 +39,7 @@ void registry_init() {
 	kprint("[VDML][INFO]Initializing registry\n");
 	registry_update_types();
 	for (i = 0; i < NUM_V5_PORTS; i++) {
-		registry[i].device_type = (v5_device_e)registry_types[i];
+		registry[i].device_type = (v5_device_e_t)registry_types[i];
 		registry[i].device_info = vexDeviceGetByIndex(i);
 		if (registry[i].device_type != E_DEVICE_NONE) {
 			kprintf("[VDML][INFO]Register device in port %d", i + 1);
@@ -52,7 +52,7 @@ void registry_update_types() {
 	vexDeviceGetStatus(registry_types);
 }
 
-int registry_bind_port(unsigned int port, v5_device_e device_type) {
+int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 	if (!VALIDATE_PORT_NO(port)) {
 		kprintf("[VDML][ERROR]Registration: Invalid port number %d\n", port + 1);
 		errno = EINVAL;
@@ -63,7 +63,8 @@ int registry_bind_port(unsigned int port, v5_device_e device_type) {
 		errno = EADDRINUSE;
 		return PROS_ERR;
 	}
-	if ((v5_device_e)registry_types[port] != device_type && (v5_device_e)registry_types[port] != E_DEVICE_NONE) {
+	if ((v5_device_e_t)registry_types[port] != device_type &&
+	    (v5_device_e_t)registry_types[port] != E_DEVICE_NONE) {
 		kprintf("[VDML][ERROR]Registration: Device mismatch in port %d\n", port + 1);
 		errno = EINVAL;
 		return PROS_ERR;
@@ -76,7 +77,7 @@ int registry_bind_port(unsigned int port, v5_device_e device_type) {
 	return 1;
 }
 
-int registry_unbind_port(unsigned int port) {
+int registry_unbind_port(uint8_t port) {
 	port--;
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
@@ -87,7 +88,7 @@ int registry_unbind_port(unsigned int port) {
 	return 1;
 }
 
-v5_smart_device_s_t registry_get_device(unsigned int port) {
+v5_smart_device_s_t registry_get_device(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
 		v5_smart_device_s_t ret = {.device_type = E_DEVICE_NONE, .device_info = NULL };
@@ -96,7 +97,7 @@ v5_smart_device_s_t registry_get_device(unsigned int port) {
 	return registry[port];
 }
 
-v5_device_e registry_get_bound_type(unsigned int port) {
+v5_device_e_t registry_get_bound_type(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
 		return E_DEVICE_UNDEFINED;
@@ -104,7 +105,7 @@ v5_device_e registry_get_bound_type(unsigned int port) {
 	return registry[port].device_type;
 }
 
-v5_device_e registry_get_plugged_type(unsigned int port) {
+v5_device_e_t registry_get_plugged_type(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
 		return -1;
@@ -112,15 +113,15 @@ v5_device_e registry_get_plugged_type(unsigned int port) {
 	return registry_types[port];
 }
 
-int32_t registry_validate_binding(unsigned int port, v5_device_e expected_t) {
+int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
 
 	// Get the registered and plugged types
-	v5_device_e registered_t = registry_get_bound_type(port);
-	v5_device_e actual_t = registry_get_plugged_type(port);
+	v5_device_e_t registered_t = registry_get_bound_type(port);
+	v5_device_e_t actual_t = registry_get_plugged_type(port);
 
 	// Auto register the port if needed
 	if (registered_t == E_DEVICE_NONE && actual_t != E_DEVICE_NONE) {
