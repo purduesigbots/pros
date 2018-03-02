@@ -38,11 +38,11 @@ OUTBIN:=$(BINDIR)/$(OUTNAME).bin
 OUTELF:=$(BINDIR)/$(OUTNAME).elf
 LDTIMEOBJ:=$(BINDIR)/_pros_ld_timestamp.o
 
-.PHONY: all clean quick library clean-library template clean-template
+.PHONY: all clean quick library clean-library template clean-template version
 
-quick: $(OUTBIN)
+quick: version $(OUTBIN)
 
-all: clean $(OUTBIN)
+all: version clean $(OUTBIN)
 
 clean: clean-library
 	@echo Cleaning project
@@ -52,12 +52,12 @@ clean-library:
 	@echo Cleaning libpros
 	-$Drm -f $(LIBAR)
 
-library: clean-library $(LIBAR)
+library: version clean-library $(LIBAR)
 
 version: version.py
-	python3 version.py
+	$(VV)python3 version.py
 
-template: clean-template library | version
+template: version clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dcp --parents $(TEMPLATE_FILES) $(TEMPLATE_DIR)
