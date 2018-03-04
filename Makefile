@@ -55,7 +55,7 @@ clean-library:
 library: version clean-library $(LIBAR)
 
 version: version.py
-	$(VV)python3 version.py
+	$(VV)python version.py
 
 template: version clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)

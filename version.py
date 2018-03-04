@@ -1,7 +1,8 @@
+from __future__ import print_function
 import subprocess
 
 try:
-    v = subprocess.check_output(['git', 'describe', '--dirty', '--abbrev'], stderr=subprocess.DEVNULL).decode().strip()
+    v = subprocess.check_output(['git', 'describe', '--dirty', '--abbrev']).decode().strip()
     if '-' in v:
         bv = v[:v.index('-')]
         bv = bv[:bv.rindex('.') + 1] + str(int(bv[bv.rindex('.') + 1:]) + 1)

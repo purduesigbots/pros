@@ -4,7 +4,7 @@
  * \brief Prototypes for interfacing with the ADI.
  *
  * This file contains the header info for the functions used to modify the
- * status of The ADI ports.
+ * status of the ADI ports.
  *
  * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -78,11 +78,11 @@ typedef enum adi_port_config_e {
  * If they should return a bool (e.g. motor_get_over_temp_flag):
  *		They will return 1 for true, 0 for false, and PROS_ERR upon failure
  * If they should return a 32-bit integer (e.g. a getter):
- *		They will return Their value. If an error occurs, they will return
+ *		They will return their value. If an error occurs, they will return
  *		PROS_ERR. If their actual return value should be PROS_ERR (INT32_MAX)
  *		then they will set errno = 0 to indicate no error has occured.
  * If they should return a double (e.g. a getter):
- *		They will return Their value, or PROS_ERROR_F upon failure
+ *		They will return their value, or PROS_ERROR_F upon failure
  *
  * Upon returning PROS_ERR or PROS_ERR_F, errno will be set to indicate the
  * type of error. Again, some functions may return PROS_ERR as a valid value;
@@ -121,7 +121,7 @@ adi_port_config_e_t adi_port_config_get(uint8_t port);
  *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which the value
  *        will be set
  * \param value
- *        The value to set The ADI port to
+ *        The value to set the ADI port to
  *
  * \return 1 if the operation was successful, PROS_ERR otherwise
  */
