@@ -246,6 +246,25 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  */
 int32_t adi_digital_read(uint8_t port);
 /**
+ * Returns a rising-edge case for a digital button press.
+ *
+ * This function is not thread-safe.
+ * Multiple tasks polling a single button may return different results under the
+ * same circumstances, so only one task should call this function for any given
+ * button. E.g., Task A calls this function for buttons 1 and 2. Task B may call
+ * this function for button 3, but should not for buttons 1 or 2. A typical
+ * use-case for this function is to call inside opcontrol to detect new button
+ * presses, and not in any other tasks.
+ *
+ * \param port
+ *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return 1 if the button on the controller is pressed and had not been pressed
+ *         the last time this function was called, 0 otherwise.
+ */
+int32_t digital_get_new_press(uint8_t port);
+
+/**
  * Sets the digital value (1 or 0) of a pin configured as a digital output.
  *
  * If the pin is configured as some other mode, behavior is undefined. This function is

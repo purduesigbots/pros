@@ -28,19 +28,16 @@
 
 #define NUM_MAX_TWOWIRE 4
 
-typedef enum analog_type_e { E_ANALOG_IN = 0, E_ANALOG_GYRO } analog_type_e_t;
+typedef union adi_data {
+	struct {
+		int32_t calib;
+	} analog_data;
+	struct {
+		bool was_pressed;
+	} digital_data;
+} adi_data_s_t;
 
-/**
- * Defined as a struct to reduce the amount of code that will need to be
- * rewritten if additional info is needed.
- */
-typedef struct adi_analog {
-	int32_t calib, mult;
-	volatile int32_t value;
-	analog_type_e_t type;
-} adi_analog_t;
-
-adi_analog_t analog_registry[NUM_ADI_PORTS];
+adi_data_s_t adi_data[NUM_ADI_PORTS];
 
 bool encoder_reversed[NUM_MAX_TWOWIRE];
 
@@ -153,7 +150,7 @@ int32_t adi_analog_calibrate(uint8_t port) {
 		total += _adi_value_get(port);
 		task_delay(1);
 	}
-	analog_registry[port - 1].calib = (int32_t)((total + 16) >> 5);
+	adi_data[port - 1].analog_data.calib = (int32_t)((total + 16) >> 5);
 	return ((int32_t)((total + 256) >> 9));
 }
 
@@ -166,19 +163,34 @@ int32_t adi_analog_read(uint8_t port) {
 int32_t adi_analog_read_calibrated(uint8_t port) {
 	transform_adi_port(port);
 	validate_analog(port);
-	return (_adi_value_get(port) - (analog_registry[port - 1].calib >> 4));
+	return (_adi_value_get(port) - (adi_data[port - 1].analog_data.calib >> 4));
 }
 
 int32_t adi_analog_read_calibrated_HR(uint8_t port) {
 	transform_adi_port(port);
 	validate_analog(port);
-	return ((_adi_value_get(port) << 4) - analog_registry[port - 1].calib);
+	return ((_adi_value_get(port) << 4) - adi_data[port - 1].analog_data.calib);
 }
 
 int32_t adi_digital_read(uint8_t port) {
 	transform_adi_port(port);
 	validate_digital_in(port);
 	return _adi_value_get(port);
+}
+
+int32_t digital_get_new_press(uint8_t port) {
+	transform_adi_port(port);
+	int32_t pressed = _adi_value_get(port);
+
+	if (!pressed)  // buttons is not currently pressed
+		adi_data[port].digital_data.was_pressed = false;
+
+	if (pressed && !adi_data[port].digital_data.was_pressed) {
+		// button is currently pressed and was not detected as being pressed during last check
+		adi_data[port].digital_data.was_pressed = true;
+		return true;
+	} else
+		return false;  // button is not pressed or was already detected
 }
 
 int32_t adi_digital_write(uint8_t port, const bool value) {
