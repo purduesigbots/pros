@@ -262,7 +262,7 @@ int32_t adi_digital_read(uint8_t port);
  * \return 1 if the button on the controller is pressed and had not been pressed
  *         the last time this function was called, 0 otherwise.
  */
-int32_t digital_get_new_press(uint8_t port);
+int32_t adi_digital_get_new_press(uint8_t port);
 
 /**
  * Sets the digital value (1 or 0) of a pin configured as a digital output.

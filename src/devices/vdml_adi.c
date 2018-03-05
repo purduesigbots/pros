@@ -175,7 +175,7 @@ int32_t adi_digital_read(uint8_t port) {
 	return _adi_value_get(port);
 }
 
-int32_t digital_get_new_press(uint8_t port) {
+int32_t adi_digital_get_new_press(uint8_t port) {
 	transform_adi_port(port);
 	int32_t pressed = _adi_value_get(port);
 
