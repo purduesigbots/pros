@@ -3,9 +3,6 @@
  *
  * \brief VDML ADI functionality.
  *
- * This file ensure thread saftey for operations on motors by maintaining
- * an array of RTOS Mutexes and implementing functions to take and give them.
- *
  * \copyright (c) 2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public

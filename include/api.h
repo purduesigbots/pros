@@ -53,4 +53,8 @@
 #include "pros/rtos.h"
 #include "pros/vision.h"
 
+#ifdef __cplusplus
+#include "pros/adi.hpp"
+#endif
+
 #endif /* _PROS_API_H_ */
