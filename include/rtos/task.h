@@ -1,76 +1,38 @@
 /*
-    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
-    All rights reserved
-
-    VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
-
-    This file is part of the FreeRTOS distribution.
-
-    FreeRTOS is free software; you can redistribute it and/or modify it under
-    the terms of the GNU General Public License (version 2) as published by the
-    Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
-
-    ***************************************************************************
-    >>!   NOTE: The modification to the GPL is included to allow you to     !<<
-    >>!   distribute a combined work that includes FreeRTOS without being   !<<
-    >>!   obliged to provide the source code for proprietary components     !<<
-    >>!   outside of the FreeRTOS kernel.                                   !<<
-    ***************************************************************************
-
-    FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-    FOR A PARTICULAR PURPOSE.  Full license text is available on the following
-    link: http://www.freertos.org/a00114.html
-
-    ***************************************************************************
-     *                                                                       *
-     *    FreeRTOS provides completely free yet professionally developed,    *
-     *    robust, strictly quality controlled, supported, and cross          *
-     *    platform software that is more than just the market leader, it     *
-     *    is the industry's de facto standard.                               *
-     *                                                                       *
-     *    Help yourself get started quickly while simultaneously helping     *
-     *    to support the FreeRTOS project by purchasing a FreeRTOS           *
-     *    tutorial book, reference manual, or both:                          *
-     *    http://www.FreeRTOS.org/Documentation                              *
-     *                                                                       *
-    ***************************************************************************
-
-    http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
-    the FAQ page "My application does not run, what could be wrong?".  Have you
-    defined configASSERT()?
-
-    http://www.FreeRTOS.org/support - In return for receiving this top quality
-    embedded software for free we request you assist our global community by
-    participating in the support forum.
-
-    http://www.FreeRTOS.org/training - Investing in training allows your team to
-    be as productive as possible as early as possible.  Now you can receive
-    FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
-    Ltd, and the world's leading authority on the world's leading RTOS.
-
-    http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
-    including FreeRTOS+Trace - an indispensable productivity tool, a DOS
-    compatible FAT file system, and our tiny thread aware UDP/IP stack.
-
-    http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
-    Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
-
-    http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
-    Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
-    licenses offer ticketed support, indemnification and commercial middleware.
-
-    http://www.SafeRTOS.com - High Integrity Systems also provide a safety
-    engineered and independently SIL3 certified version for use in safety and
-    mission critical applications that require provable dependability.
-
-    1 tab == 4 spaces!
-*/
+ * FreeRTOS Kernel V10.0.1
+ * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * http://www.FreeRTOS.org
+ * http://aws.amazon.com/freertos
+ *
+ * 1 tab == 4 spaces!
+ */
 
 #include "FreeRTOS.h"
 
 #ifndef INC_TASK_H
 #define INC_TASK_H
+
+#ifndef INC_FREERTOS_H
+	#error "include FreeRTOS.h must appear in source files before include task.h"
+#endif
 
 #include "list.h"
 
@@ -82,10 +44,10 @@ extern "C" {
  * MACROS AND DEFINITIONS
  *----------------------------------------------------------*/
 
-#define tskKERNEL_VERSION_NUMBER "V9.0.0"
-#define tskKERNEL_VERSION_MAJOR 9
+#define tskKERNEL_VERSION_NUMBER "V10.0.1"
+#define tskKERNEL_VERSION_MAJOR 10
 #define tskKERNEL_VERSION_MINOR 0
-#define tskKERNEL_VERSION_BUILD 0
+#define tskKERNEL_VERSION_BUILD 1
 
 /**
  * task. h
@@ -135,8 +97,9 @@ typedef struct xTIME_OUT
 	uint32_t xTimeOnEntering;
 } TimeOut_t;
 
+
 /*
- * Parameters required to create a task.
+ * Parameters required to create an MPU protected task.
  */
 typedef struct xTASK_PARAMETERS
 {
@@ -255,7 +218,7 @@ is used in assert() statements. */
  int32_t task_create(
 							  task_fn_t pvTaskCode,
 							  const char * const pcName,
-							  uint16_t usStackDepth,
+							  configSTACK_DEPTH_TYPE usStackDepth,
 							  void *pvParameters,
 							  uint32_t uxPriority,
 							  task_t *pvCreatedTask
@@ -277,7 +240,9 @@ is used in assert() statements. */
  * allocation.
  *
  * task_create() can only be used to create a task that has unrestricted
- * access to the entire microcontroller memory map.
+ * access to the entire microcontroller memory map.  Systems that include MPU
+ * support can alternatively create an MPU constrained task using
+ * xTaskCreateRestricted().
  *
  * @param pvTaskCode Pointer to the task entry function.  Tasks
  * must be implemented to never return (i.e. continuous loop).
@@ -294,7 +259,11 @@ is used in assert() statements. */
  * @param pvParameters Pointer that will be used as the parameter for the task
  * being created.
  *
- * @param uxPriority The priority at which the task should run.
+ * @param uxPriority The priority at which the task should run.  Systems that
+ * include MPU support can optionally create tasks in a privileged (system)
+ * mode by setting bit portPRIVILEGE_BIT of the priority parameter.  For
+ * example, to create a privileged task at priority 2 the uxPriority parameter
+ * should be set to ( 2 | portPRIVILEGE_BIT ).
  *
  * @param pvCreatedTask Used to pass back a handle by which the created task
  * can be referenced.
@@ -336,12 +305,11 @@ is used in assert() statements. */
  * \defgroup task_create task_create
  * \ingroup Tasks
  */
-task_t task_create(task_fn_t task_code, void* const param,
-					uint32_t priority, const size_t stack_size,
-					const char* const name); /*lint !e971 Unqualified
-                                                     char types are allowed
-                                                     for strings and single
-                                                     characters only. */
+#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+	task_t task_create(task_fn_t task_code, void* const param,
+	                   uint32_t priority, const size_t stack_size,
+	                   const char* const name); 
+#endif
 
 /**
  * task. h
@@ -450,11 +418,14 @@ task_t task_create(task_fn_t task_code, void* const param,
  * \defgroup task_create_static task_create_static
  * \ingroup Tasks
  */
-task_t task_create_static(	task_fn_t task_code, void* const param,
-							uint32_t priority, const size_t stack_size,
-							const char* const name,
-							task_stack_t * const stack_buffer,
-							static_task_s_t * const task_buffer ) ; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
+#if( configSUPPORT_STATIC_ALLOCATION == 1 )
+	task_t task_create_static(	task_fn_t task_code, void* const param,
+	                            uint32_t priority, const size_t stack_size,
+	                            const char* const name,
+	                            task_stack_t * const stack_buffer,
+	                            static_task_s_t * const task_buffer ) ;
+#endif /* configSUPPORT_STATIC_ALLOCATION */
+
 /**
  * task. h
  * <pre>void task_delete( task_t xTask );</pre>
@@ -1564,6 +1535,7 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  */
 int32_t task_notify_ext( task_t xTaskToNotify, uint32_t ulValue, notify_action_e_t eAction, uint32_t *pulPreviousNotificationValue ) ;
 #define xTaskNotify( xTaskToNotify, ulValue, eAction ) task_notify_ext( ( xTaskToNotify ), ( ulValue ), ( eAction ), NULL )
+#define xTaskNotifyAndQuery( xTaskToNotify, ulValue, eAction, pulPreviousNotifyValue ) task_notify_ext( ( xTaskToNotify ), ( ulValue ), ( eAction ), ( pulPreviousNotifyValue ) )
 
 /**
  * task. h
@@ -1994,14 +1966,14 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, uint32_t xTick
  * Removes a task from both the specified event list and the list of blocked
  * tasks, and places it on a ready queue.
  *
- * xTaskRemoveFromEventList()/xTaskRemoveFromUnorderedEventList() will be called
+ * xTaskRemoveFromEventList()/vTaskRemoveFromUnorderedEventList() will be called
  * if either an event occurs to unblock a task, or the block timeout period
  * expires.
  *
  * xTaskRemoveFromEventList() is used when the event list is in task priority
  * order.  It removes the list item from the head of the event list as that will
  * have the highest priority owning task of all the tasks on the event list.
- * xTaskRemoveFromUnorderedEventList() is used when the event list is not
+ * vTaskRemoveFromUnorderedEventList() is used when the event list is not
  * ordered and the event list items hold something other than the owning tasks
  * priority.  In this case the event list item value is updated to the value
  * passed in the xItemValue parameter.
@@ -2010,7 +1982,7 @@ void vTaskPlaceOnEventListRestricted( List_t * const pxEventList, uint32_t xTick
  * making the call, otherwise pdFALSE.
  */
 int32_t xTaskRemoveFromEventList( const List_t * const pxEventList ) ;
-int32_t xTaskRemoveFromUnorderedEventList( list_item_t * pxEventListItem, const uint32_t xItemValue ) ;
+void vTaskRemoveFromUnorderedEventList( list_item_t * pxEventListItem, const uint32_t xItemValue ) ;
 
 /*
  * THIS FUNCTION MUST NOT BE USED FROM APPLICATION CODE.  IT IS ONLY
@@ -2060,13 +2032,23 @@ int32_t xTaskGetSchedulerState( void ) ;
  * Raises the priority of the mutex holder to that of the calling task should
  * the mutex holder have a priority less than the calling task.
  */
-void vTaskPriorityInherit( task_t const pxMutexHolder ) ;
+int32_t xTaskPriorityInherit( task_t const pxMutexHolder ) ;
 
 /*
  * Set the priority of a task back to its proper priority in the case that it
  * inherited a higher priority while it was holding a semaphore.
  */
 int32_t xTaskPriorityDisinherit( task_t const pxMutexHolder ) ;
+
+/*
+ * If a higher priority task attempting to obtain a mutex caused a lower
+ * priority task to inherit the higher priority task's priority - but the higher
+ * priority task then timed out without obtaining the mutex, then the lower
+ * priority task will disinherit the priority again - but only down as far as
+ * the highest priority task that is still waiting for the mutex (if there were
+ * more than one task waiting for the mutex).
+ */
+void vTaskPriorityDisinheritAfterTimeout( task_t const pxMutexHolder, uint32_t uxHighestPriorityWaitingTask ) ;
 
 /*
  * Get the uxTCBNumber assigned to the task referenced by the xTask parameter.
@@ -2110,6 +2092,13 @@ eSleepModeStatus eTaskConfirmSleepModeStatus( void ) ;
  * taken and return the handle of the task that has taken the mutex.
  */
 void *pvTaskIncrementMutexHeldCount( void ) ;
+
+/*
+ * For internal use only.  Same as vTaskSetTimeOutState(), but without a critial
+ * section.
+ */
+void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) ;
+
 
 #ifdef __cplusplus
 }

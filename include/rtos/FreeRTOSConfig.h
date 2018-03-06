@@ -139,6 +139,7 @@
 #define configUSE_QUEUE_SETS                    0
 #define configSUPPORT_STATIC_ALLOCATION         1
 #define configUSE_NEWLIB_REENTRANT              1
+#define configSTACK_DEPTH_TYPE                  size_t
 
 /* Include the query-heap CLI command to query the free heap space. */
 #define configINCLUDE_QUERY_HEAP_COMMAND        1

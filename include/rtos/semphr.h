@@ -1,71 +1,29 @@
 /*
-    FreeRTOS V9.0.0 - Copyright (C) 2016 Real Time Engineers Ltd.
-    All rights reserved
-
-    VISIT http://www.FreeRTOS.org TO ENSURE YOU ARE USING THE LATEST VERSION.
-
-    This file is part of the FreeRTOS distribution.
-
-    FreeRTOS is free software; you can redistribute it and/or modify it under
-    the terms of the GNU General Public License (version 2) as published by the
-    Free Software Foundation >>>> AND MODIFIED BY <<<< the FreeRTOS exception.
-
-    ***************************************************************************
-    >>!   NOTE: The modification to the GPL is included to allow you to     !<<
-    >>!   distribute a combined work that includes FreeRTOS without being   !<<
-    >>!   obliged to provide the source code for proprietary components     !<<
-    >>!   outside of the FreeRTOS kernel.                                   !<<
-    ***************************************************************************
-
-    FreeRTOS is distributed in the hope that it will be useful, but WITHOUT ANY
-    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-    FOR A PARTICULAR PURPOSE.  Full license text is available on the following
-    link: http://www.freertos.org/a00114.html
-
-    ***************************************************************************
-     *                                                                       *
-     *    FreeRTOS provides completely free yet professionally developed,    *
-     *    robust, strictly quality controlled, supported, and cross          *
-     *    platform software that is more than just the market leader, it     *
-     *    is the industry's de facto standard.                               *
-     *                                                                       *
-     *    Help yourself get started quickly while simultaneously helping     *
-     *    to support the FreeRTOS project by purchasing a FreeRTOS           *
-     *    tutorial book, reference manual, or both:                          *
-     *    http://www.FreeRTOS.org/Documentation                              *
-     *                                                                       *
-    ***************************************************************************
-
-    http://www.FreeRTOS.org/FAQHelp.html - Having a problem?  Start by reading
-    the FAQ page "My application does not run, what could be wrong?".  Have you
-    defined configASSERT()?
-
-    http://www.FreeRTOS.org/support - In return for receiving this top quality
-    embedded software for free we request you assist our global community by
-    participating in the support forum.
-
-    http://www.FreeRTOS.org/training - Investing in training allows your team to
-    be as productive as possible as early as possible.  Now you can receive
-    FreeRTOS training directly from Richard Barry, CEO of Real Time Engineers
-    Ltd, and the world's leading authority on the world's leading RTOS.
-
-    http://www.FreeRTOS.org/plus - A selection of FreeRTOS ecosystem products,
-    including FreeRTOS+Trace - an indispensable productivity tool, a DOS
-    compatible FAT file system, and our tiny thread aware UDP/IP stack.
-
-    http://www.FreeRTOS.org/labs - Where new FreeRTOS products go to incubate.
-    Come and try FreeRTOS+TCP, our new open source TCP/IP stack for FreeRTOS.
-
-    http://www.OpenRTOS.com - Real Time Engineers ltd. license FreeRTOS to High
-    Integrity Systems ltd. to sell under the OpenRTOS brand.  Low cost OpenRTOS
-    licenses offer ticketed support, indemnification and commercial middleware.
-
-    http://www.SafeRTOS.com - High Integrity Systems also provide a safety
-    engineered and independently SIL3 certified version for use in safety and
-    mission critical applications that require provable dependability.
-
-    1 tab == 4 spaces!
-*/
+ * FreeRTOS Kernel V10.0.1
+ * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * http://www.FreeRTOS.org
+ * http://aws.amazon.com/freertos
+ *
+ * 1 tab == 4 spaces!
+ */
 
 #ifndef SEMAPHORE_H
 #define SEMAPHORE_H
@@ -202,7 +160,9 @@ typedef queue_t mutex_t;
  * \defgroup sem_binary_create sem_binary_create
  * \ingroup Semaphores
  */
-sem_t sem_binary_create();
+#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+	sem_t sem_binary_create();
+#endif
 
 /**
  * semphr. h
@@ -392,23 +352,23 @@ uint8_t sem_wait(sem_t sem, uint32_t block_time);
 
             // ...
             // For some reason due to the nature of the code further calls to
-			// mutex_recursive_take() are made on the same mutex.  In real
-			// code these would not be just sequential calls as this would make
-			// no sense.  Instead the calls are likely to be buried inside
-			// a more complex call structure.
+            // mutex_recursive_take() are made on the same mutex.  In real
+            // code these would not be just sequential calls as this would make
+            // no sense.  Instead the calls are likely to be buried inside
+            // a more complex call structure.
             mutex_recursive_take( xMutex, ( uint32_t ) 10 );
             mutex_recursive_take( xMutex, ( uint32_t ) 10 );
 
             // The mutex has now been 'taken' three times, so will not be
-			// available to another task until it has also been given back
-			// three times.  Again it is unlikely that real code would have
-			// these calls sequentially, but instead buried in a more complex
-			// call structure.  This is just for illustrative purposes.
+            // available to another task until it has also been given back
+            // three times.  Again it is unlikely that real code would have
+            // these calls sequentially, but instead buried in a more complex
+            // call structure.  This is just for illustrative purposes.
             mutex_recursive_give( xMutex );
-			mutex_recursive_give( xMutex );
-			mutex_recursive_give( xMutex );
+            mutex_recursive_give( xMutex );
+            mutex_recursive_give( xMutex );
 
-			// Now the mutex can be taken by other tasks.
+            // Now the mutex can be taken by other tasks.
         }
         else
         {
@@ -421,7 +381,9 @@ uint8_t sem_wait(sem_t sem, uint32_t block_time);
  * \defgroup mutex_recursive_take mutex_recursive_take
  * \ingroup Semaphores
  */
-uint8_t mutex_recursive_take(mutex_t mutex, uint32_t block_time);
+#if( configUSE_RECURSIVE_MUTEXES == 1 )
+	uint8_t mutex_recursive_take(mutex_t mutex, uint32_t block_time);
+#endif
 
 /**
  * semphr. h
@@ -568,7 +530,9 @@ uint8_t sem_post(sem_t sem);
  * \defgroup mutex_recursive_give mutex_recursive_give
  * \ingroup Semaphores
  */
-uint8_t mutex_recursive_give(mutex_t mutex);
+#if( configUSE_RECURSIVE_MUTEXES == 1 )
+	uint8_t mutex_recursive_give(mutex_t mutex);
+#endif
 
 /**
  * semphr. h
@@ -750,7 +714,9 @@ uint8_t mutex_recursive_give(mutex_t mutex);
  * \defgroup mutex_create mutex_create
  * \ingroup Semaphores
  */
-mutex_t mutex_create();
+#if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
+	mutex_t mutex_create();
+#endif
 
 /**
  * semphr. h
@@ -810,73 +776,76 @@ mutex_t mutex_create();
  * \ingroup Semaphores
  */
  #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer);
+	mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer);
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
-    /**
-     * semphr. h
-     * <pre>sem_t mutex_recursive_create( void )</pre>
-     *
-     * Creates a new recursive mutex type semaphore instance, and returns a handle
-     * by which the new recursive mutex can be referenced.
-     *
-     * Internally, within the FreeRTOS implementation, recursive mutexs use a block
-     * of memory, in which the mutex structure is stored.  If a recursive mutex is
-     * created using mutex_recursive_create() then the required memory is
-     * automatically dynamically allocated inside the
-     * mutex_recursive_create() function.  (see
-     * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
-     * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
-     * provide the memory that will get used by the mutex.
-     * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
-     * be created without using any dynamic memory allocation.
-     *
-     * Mutexes created using this macro can be accessed using the
-     * mutex_recursive_take() and mutex_recursive_give() macros.  The
-     * sem_wait() and sem_post() macros must not be used.
-     *
-     * A mutex used recursively can be 'taken' repeatedly by the owner. The mutex
-     * doesn't become available again until the owner has called
-     * mutex_recursive_give() for each successful 'take' request.  For example,
-     * if a task successfully 'takes' the same mutex 5 times then the mutex will
-     * not be available to any other task until it has also  'given' the mutex back
-     * exactly five times.
-     *
-     * This type of semaphore uses a priority inheritance mechanism so a task
-     * 'taking' a semaphore MUST ALWAYS 'give' the semaphore back once the
-     * semaphore it is no longer required.
-     *
-     * Mutex type semaphores cannot be used from within interrupt service routines.
-     *
-     * See sem_binary_create() for an alternative implementation that can be
-     * used for pure synchronisation (where one task or interrupt always 'gives' the
-     * semaphore and another always 'takes' the semaphore) and from within interrupt
-     * service routines.
-     *
-     * @return xSemaphore Handle to the created mutex semaphore.  Should be of type
-     * sem_t.
-     *
-     * Example usage:
-     <pre>
-     sem_t xSemaphore;
 
-     void vATask( void * pvParameters )
-     {
-        // Semaphore cannot be used before a call to mutex_create().
-        // This is a macro so pass the variable in directly.
-        xSemaphore = mutex_recursive_create();
+/**
+ * semphr. h
+ * <pre>sem_t mutex_recursive_create( void )</pre>
+ *
+ * Creates a new recursive mutex type semaphore instance, and returns a handle
+ * by which the new recursive mutex can be referenced.
+ *
+ * Internally, within the FreeRTOS implementation, recursive mutexs use a block
+ * of memory, in which the mutex structure is stored.  If a recursive mutex is
+ * created using mutex_recursive_create() then the required memory is
+ * automatically dynamically allocated inside the
+ * mutex_recursive_create() function.  (see
+ * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
+ * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
+ * provide the memory that will get used by the mutex.
+ * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
+ * be created without using any dynamic memory allocation.
+ *
+ * Mutexes created using this macro can be accessed using the
+ * mutex_recursive_take() and mutex_recursive_give() macros.  The
+ * sem_wait() and sem_post() macros must not be used.
+ *
+ * A mutex used recursively can be 'taken' repeatedly by the owner. The mutex
+ * doesn't become available again until the owner has called
+ * mutex_recursive_give() for each successful 'take' request.  For example,
+ * if a task successfully 'takes' the same mutex 5 times then the mutex will
+ * not be available to any other task until it has also  'given' the mutex back
+ * exactly five times.
+ *
+ * This type of semaphore uses a priority inheritance mechanism so a task
+ * 'taking' a semaphore MUST ALWAYS 'give' the semaphore back once the
+ * semaphore it is no longer required.
+ *
+ * Mutex type semaphores cannot be used from within interrupt service routines.
+ *
+ * See sem_binary_create() for an alternative implementation that can be
+ * used for pure synchronisation (where one task or interrupt always 'gives' the
+ * semaphore and another always 'takes' the semaphore) and from within interrupt
+ * service routines.
+ *
+ * @return xSemaphore Handle to the created mutex semaphore.  Should be of type
+ * sem_t.
+ *
+ * Example usage:
+ <pre>
+ sem_t xSemaphore;
 
-        if( xSemaphore != NULL )
-        {
-            // The semaphore was created successfully.
-            // The semaphore can now be used.
-        }
-     }
-     </pre>
-     * \defgroup mutex_recursive_create mutex_recursive_create
-     * \ingroup Semaphores
-     */
-    mutex_t mutex_recursive_create();
+ void vATask( void * pvParameters )
+ {
+    // Semaphore cannot be used before a call to mutex_create().
+    // This is a macro so pass the variable in directly.
+    xSemaphore = mutex_recursive_create();
+
+    if( xSemaphore != NULL )
+    {
+        // The semaphore was created successfully.
+        // The semaphore can now be used.
+    }
+ }
+ </pre>
+ * \defgroup mutex_recursive_create mutex_recursive_create
+ * \ingroup Semaphores
+ */
+#if( ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) && ( configUSE_RECURSIVE_MUTEXES == 1 ) )
+	mutex_t mutex_recursive_create();
+#endif
 
 /**
  * semphr. h
@@ -1028,7 +997,7 @@ mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer);
  * \ingroup Semaphores
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount);
+	sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount);
 #endif
 
 /**
@@ -1113,7 +1082,7 @@ sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount);
  * \ingroup Semaphores
  */
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
-sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t* pxSemaphoreBuffer);
+	sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t* pxSemaphoreBuffer);
 #endif /* configSUPPORT_STATIC_ALLOCATION */
 
 /**
@@ -1144,6 +1113,17 @@ void sem_delete(sem_t xSemaphore);
  * being tested.
  */
 task_t mutex_get_owner(sem_t xMutex);
+
+/**
+ * semphr.h
+ * <pre>task_t xSemaphoreGetMutexHolderFromISR( sem_t xMutex );</pre>
+ *
+ * If xMutex is indeed a mutex type semaphore, return the current mutex holder.
+ * If xMutex is not a mutex type semaphore, or the mutex is available (not held
+ * by a task), return NULL.
+ *
+ */
+#define xSemaphoreGetMutexHolderFromISR( xSemaphore ) xQueueGetMutexHolderFromISR( ( xSemaphore ) )
 
 /**
  * semphr.h

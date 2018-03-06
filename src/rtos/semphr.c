@@ -67,7 +67,7 @@
  * \ingroup Semaphores
  */
 uint8_t sem_wait(sem_t sem, uint32_t block_time) {
-	return xQueueGenericReceive((queue_t)(sem), NULL, (block_time), pdFALSE);
+	return xQueueSemaphoreTake( ( sem ), ( block_time ) );
 }
 
 /**
@@ -199,7 +199,7 @@ uint8_t mutex_give(mutex_t sem) {
 }
 
 uint8_t mutex_take(mutex_t sem, uint32_t block_time) {
-	return xQueueGenericReceive((queue_t)(sem), NULL, (block_time), pdFALSE);
+	return xQueueSemaphoreTake( ( sem ), ( block_time ) );
 }
 
 /**
