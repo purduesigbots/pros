@@ -25,6 +25,7 @@ struct fs_driver {
 	int (*fstat_r)(struct _reent*, void* const, struct stat*);
 	int (*isatty_r)(struct _reent*, void* const);
 	off_t (*lseek_r)(struct _reent*, void* const, off_t, int);
+	int (*ctl)(void* const, const uint32_t, void* const);
 };
 
 struct file_entry {

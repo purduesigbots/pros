@@ -34,6 +34,7 @@ LD:=$(ARCHTUPLE)g++
 OBJCOPY:=$(ARCHTUPLE)objcopy
 SIZETOOL:=$(ARCHTUPLE)size
 READELF:=$(ARCHTUPLE)readelf
+STRIP:=$(ARCHTUPLE)strip
 
 # filename extensions
 CEXTS:=c

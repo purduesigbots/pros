@@ -166,3 +166,11 @@ int _isatty_r(struct _reent* r, int file) {
 	}
 	return file_table[file].driver->isatty_r(r, file_table[file].arg);
 }
+
+int32_t fdctl(int file, const uint32_t action, void* const extra_arg) {
+	if (file < 0 || !gid_check(&file_table_gids, file)) {
+		errno = EBADF;
+		return -1;
+	}
+	return file_table[file].driver->ctl(file_table[file].arg, action, extra_arg);
+}

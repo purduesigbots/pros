@@ -19,12 +19,3 @@ extern const struct fs_driver* const ser_driver;
 int ser_open_r(struct _reent* r, const char* path, int flags, int mode);
 
 void ser_initialize(void);
-
-uint32_t serctl(void* const arg, const uint32_t action, void* const parameter);
-
-#define SERCTL_ACTIVATE 10
-#define SERCTL_DEACTIVATE 11
-#define SERCTL_BLKWRITE 12
-#define SERCTL_NOBLKWRITE 13
-#define SERCTL_ENABLE_COBS 14
-#define SERCTL_DISABLE_COBS 15

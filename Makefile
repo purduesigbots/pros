@@ -38,7 +38,7 @@ OUTBIN:=$(BINDIR)/$(OUTNAME).bin
 OUTELF:=$(BINDIR)/$(OUTNAME).elf
 LDTIMEOBJ:=$(BINDIR)/_pros_ld_timestamp.o
 
-.PHONY: all clean quick library clean-library template clean-template version
+.PHONY: all clean quick library clean-library template clean-template version fix-libv5rts
 
 quick: version $(OUTBIN)
 
@@ -69,6 +69,10 @@ template: version clean-template library
 
 clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)
+
+fix-libv5rts:
+	@echo -n "Stripping unwanted symbols from libv5rts.a "
+	$(call test_output,$D$(STRIP) $(FWDIR)/libv5rts.a @libv5rts-strip-options.txt,$(DONE_STRING))
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(EXCLUDE_FROM_LIB))
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)

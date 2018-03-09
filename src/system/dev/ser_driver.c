@@ -212,6 +212,38 @@ off_t ser_lseek_r(struct _reent* r, void* const arg, off_t ptr, int dir) {
 	return -1;
 }
 
+int ser_ctl(void* const arg, const uint32_t cmd, void* const extra_arg) {
+	ser_file_s_t file = *(ser_file_s_t*)arg;
+	// lcd_print(4, "hello %x to enabled streams", (uint32_t)file.stream_id);
+	switch (cmd) {
+	case SERCTL_ACTIVATE:
+		if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size,
+		                   (uint32_t)file.stream_id)) {
+			// grep DEBUG point
+			// lcd_print(2, "Adding %x to enabled streams", (uint32_t)file.stream_id);
+			set_add(&enabled_streams_set, (uint32_t)file.stream_id);
+		}
+		return 0;
+	case SERCTL_DEACTIVATE:
+		if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size,
+		                   (uint32_t)file.stream_id)) {
+			// grep DEBUG point
+			// lcd_print(2, "Removing %x from enabled streams", (uint32_t)file.stream_id);
+			set_rm(&enabled_streams_set, (uint32_t)file.stream_id);
+		}
+		return 0;
+	case SERCTL_BLKWRITE:
+		file.flags &= ~E_NOBLK_WRITE;
+		return 0;
+	case SERCTL_NOBLKWRITE:
+		file.flags |= E_NOBLK_WRITE;
+		return 0;
+	default:
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+}
+
 /******************************************************************************/
 /**                           Driver description                             **/
 /******************************************************************************/
@@ -220,7 +252,8 @@ const struct fs_driver _ser_driver = {.close_r = ser_close_r,
 	                              .isatty_r = ser_isatty_r,
 	                              .lseek_r = ser_lseek_r,
 	                              .read_r = ser_read_r,
-	                              .write_r = ser_write_r };
+	                              .write_r = ser_write_r,
+	                              .ctl = ser_ctl };
 
 const struct fs_driver* const ser_driver = &_ser_driver;
 
@@ -261,33 +294,23 @@ int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
 }
 
 // control various components of the serial driver or a file
-uint32_t serctl(void* const arg, const uint32_t action, void* const parameter) {
-	ser_file_s_t file;
-	if (arg) {
-		file = *(ser_file_s_t*)arg;
-	}
-	switch (action) {
+int32_t serctl(const uint32_t cmd, void* const extra_arg) {
+	switch (cmd) {
 	case SERCTL_ACTIVATE:
 		if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size,
-		                   (uint32_t)parameter)) {
+		                   (uint32_t)extra_arg)) {
 			// grep DEBUG point
-			// vexDisplayString(2, "Adding %x to enabled streams", (uint32_t)parameter);
-			set_add(&enabled_streams_set, (uint32_t)parameter);
-		}
+			// vexDisplayString(2, "Adding %x to enabled streams", (uint32_t)file.stream_id);
+			set_add(&enabled_streams_set, (uint32_t)extra_arg);
+		}  // TODO: else errno
 		return 0;
 	case SERCTL_DEACTIVATE:
 		if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size,
-		                   (uint32_t)parameter)) {
+		                   (uint32_t)extra_arg)) {
 			// grep DEBUG point
-			// vexDisplayString(2, "Removing %x from enabled streams", (uint32_t)parameter);
-			set_rm(&enabled_streams_set, (uint32_t)parameter);
-		}
-		return 0;
-	case SERCTL_BLKWRITE:
-		file.flags &= ~E_NOBLK_WRITE;
-		return 0;
-	case SERCTL_NOBLKWRITE:
-		file.flags |= E_NOBLK_WRITE;
+			// vexDisplayString(2, "Removing %x from enabled streams", (uint32_t)file.stream_id);
+			set_rm(&enabled_streams_set, (uint32_t)extra_arg);
+		}  // TODO: else errno
 		return 0;
 	case SERCTL_ENABLE_COBS:
 		ser_driver_runtime_config |= E_COBS_ENABLED;
@@ -296,7 +319,8 @@ uint32_t serctl(void* const arg, const uint32_t action, void* const parameter) {
 		ser_driver_runtime_config &= ~E_COBS_ENABLED;
 		return 0;
 	default:
-		return -1;
+		errno = EINVAL;
+		return PROS_ERR;
 	}
 }
 

@@ -15,7 +15,6 @@
 #include <errno.h>
 
 #include "kapi.h"
-#include "system/dev/ser.h"
 #include "system/optimizers.h"
 
 #include "ifi/v5_api.h"
@@ -133,7 +132,7 @@ static void ser_daemon_task(void* ign) {
 					// the parameter expected to serctl is the stream id (a uint32_t), so we need
 					// to cast to a uint32_t pointer, dereference it, and cast to a void* to make
 					// the compiler happy
-					serctl(NULL, SERCTL_ACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
+					serctl(SERCTL_ACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
 					// printf("enabled %s\n", command_stack + 3);
 					command_stack_idx = 0;
 					break;
@@ -143,15 +142,15 @@ static void ser_daemon_task(void* ign) {
 					command_stack[command_stack_idx++] = vex_read_char();
 					command_stack[command_stack_idx++] = vex_read_char();
 					command_stack[command_stack_idx++] = vex_read_char();
-					serctl(NULL, SERCTL_DEACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
+					serctl(SERCTL_DEACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
 					// printf("disabled %s\n", command_stack+3);
 					command_stack_idx = 0;
 					break;
 				case 'c':
-					serctl(NULL, SERCTL_ENABLE_COBS, NULL);
+					serctl(SERCTL_ENABLE_COBS, NULL);
 					break;
 				case 'r':
-					serctl(NULL, SERCTL_DISABLE_COBS, NULL);
+					serctl(SERCTL_DISABLE_COBS, NULL);
 					break;
 				case 'i':
 					// TODO: disable kernel parsing for the next n characters
