@@ -129,4 +129,22 @@ void port_mutex_take_all();
 
 void port_mutex_give_all();
 
+/**
+ * Obtains a port mutex with bounds checking for V5_MAX_PORTS (32) not user exposed
+ * device ports (22). Intended for internal usage for protecting thread-safety on
+ * devices such as the controller and battery
+ */
+int internal_port_mutex_take(uint8_t port);
+
+/**
+ * Returns a port mutex with bounds checking for V5_MAX_PORTS (32) not user exposed
+ * device ports (22). Intended for internal usage for protecting thread-safety on
+ * devices such as the controller and battery
+ */
+int internal_port_mutex_give(uint8_t port);
+
+#define V5_PORT_BATTERY 24
+#define V5_PORT_CONTROLLER_1 25
+#define V5_PORT_CONTROLLER_2 26
+
 #endif /*VDML_H*/

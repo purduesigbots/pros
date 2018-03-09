@@ -9,8 +9,10 @@
 extern void registry_init();
 extern void port_mutex_init();
 
-mutex_t port_mutexes[NUM_V5_PORTS];            // Mutexes for each port
-static_sem_s_t port_mutex_bufs[NUM_V5_PORTS];  // Stack mem for rtos
+// we have V5_MAX_DEVICE_PORTS so that we can do thread safety on things like controllers,
+// batteries which are sort of like smart devices internally to the V5
+mutex_t port_mutexes[V5_MAX_DEVICE_PORTS];            // Mutexes for each port
+static_sem_s_t port_mutex_bufs[V5_MAX_DEVICE_PORTS];  // Stack mem for rtos
 
 /**
  * \brief Shorcut to initialize all of VDML (mutexes and register)
@@ -29,13 +31,21 @@ void vdml_initialize() {
  * returned, or worse.
  */
 void port_mutex_init() {
-	for (int i = 0; i < NUM_V5_PORTS; i++) {
+	for (int i = 0; i < V5_MAX_DEVICE_PORTS; i++) {
 		port_mutexes[i] = mutex_create_static(&(port_mutex_bufs[i]));
 	}
 }
 
 int port_mutex_take(uint8_t port) {
-	if (port < 0 || port > NUM_V5_PORTS) {
+	if (port >= NUM_V5_PORTS) {
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	return mutex_take(port_mutexes[port], TIMEOUT_MAX);
+}
+
+int internal_port_mutex_take(uint8_t port) {
+	if (port >= V5_MAX_DEVICE_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
@@ -49,7 +59,15 @@ static inline char* print_num(char* buff, int num) {
 }
 
 int port_mutex_give(uint8_t port) {
-	if (port < 0 || port > NUM_V5_PORTS) {
+	if (port >= NUM_V5_PORTS) {
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	return mutex_give(port_mutexes[port]);
+}
+
+int internal_port_mutex_give(uint8_t port) {
+	if (port >= V5_MAX_DEVICE_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
@@ -57,13 +75,13 @@ int port_mutex_give(uint8_t port) {
 }
 
 void port_mutex_take_all() {
-	for (int i = 0; i < NUM_V5_PORTS; i++) {
+	for (int i = 0; i < V5_MAX_DEVICE_PORTS; i++) {
 		port_mutex_take(i);
 	}
 }
 
 void port_mutex_give_all() {
-	for (int i = 0; i < NUM_V5_PORTS; i++) {
+	for (int i = 0; i < V5_MAX_DEVICE_PORTS; i++) {
 		port_mutex_give(i);
 	}
 }

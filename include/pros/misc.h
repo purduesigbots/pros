@@ -153,6 +153,34 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  */
 int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
 
+/**
+ * Gets the current voltage of the battery, as reported by VEXos
+ *
+ * \return The current voltage of the battery
+ */
+double battery_get_voltage();
+
+/**
+ * Gets the current current of the battery, as reported by VEXos
+ *
+ * \return The current current of the battery
+ */
+double battery_get_current();
+
+/**
+ * Gets the current temperature of the battery, as reported by VEXos
+ *
+ * \return The current temperature of the battery
+ */
+double battery_get_temperature();
+
+/**
+ * Gets the current capacity of the battery, as reported by VEXos
+ *
+ * \return The current capacity of the battery
+ */
+double battery_get_capacity();
+
 #ifdef __cplusplus
 }
 #endif

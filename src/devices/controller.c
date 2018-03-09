@@ -12,6 +12,7 @@
  */
 #include "ifi/v5_api.h"
 #include "kapi.h"
+#include "vdml/vdml.h"
 
 // From enum in misc.h
 #define NUM_BUTTONS 12
@@ -21,16 +22,70 @@
 bool button_pressed[NUM_BUTTONS * 2];
 
 int32_t controller_is_connected(controller_id_e_t id) {
-	return vexControllerConnectionStatusGet(id);
+	uint8_t port;
+	switch (id) {
+	case E_CONTROLLER_MASTER:
+		port = V5_PORT_CONTROLLER_1;
+		break;
+	case E_CONTROLLER_PARTNER:
+		port = V5_PORT_CONTROLLER_2;
+		break;
+	default:
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	if (!internal_port_mutex_take(port)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
+	int32_t rtn = vexControllerConnectionStatusGet(id);
+	internal_port_mutex_give(port);
+	return rtn;
 }
 
 int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel) {
-	return vexControllerGet(id, channel);
+	uint8_t port;
+	switch (id) {
+	case E_CONTROLLER_MASTER:
+		port = V5_PORT_CONTROLLER_1;
+		break;
+	case E_CONTROLLER_PARTNER:
+		port = V5_PORT_CONTROLLER_2;
+		break;
+	default:
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	if (!internal_port_mutex_take(port)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
+	int32_t rtn = vexControllerGet(id, channel);
+	internal_port_mutex_give(port);
+	return rtn;
 }
 
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
+	uint8_t port;
+	switch (id) {
+	case E_CONTROLLER_MASTER:
+		port = V5_PORT_CONTROLLER_1;
+		break;
+	case E_CONTROLLER_PARTNER:
+		port = V5_PORT_CONTROLLER_2;
+		break;
+	default:
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	if (!internal_port_mutex_take(port)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	// the buttons enum starts at 4, the correct place for the libv5rts
-	return vexControllerGet(id, button);
+	int32_t rtn = vexControllerGet(id, button);
+	internal_port_mutex_give(port);
+	return rtn;
 }
 
 int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button) {
@@ -49,5 +104,11 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 }
 
 uint8_t competition_get_status() {
-	return vexCompetitionStatus();
+	if (!internal_port_mutex_take(V5_PORT_CONTROLLER_1)) {
+		errno = EACCES;
+		return 255;
+	}
+	uint8_t rtn = vexCompetitionStatus();
+	internal_port_mutex_give(V5_PORT_CONTROLLER_1);
+	return rtn;
 }
