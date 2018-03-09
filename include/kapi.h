@@ -19,6 +19,7 @@
 #include "pros/apix.h"
 
 #include "rtos/FreeRTOS.h"
+#include "rtos/stream_buffer.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -58,10 +58,11 @@ static static_sem_s_t write_mtx_buf;
 static mutex_t read_mtx;   // ensures that only one read is happening at a time
 static mutex_t write_mtx;  // ensures that only one write is happening at a time
 
-// Write buffer as a queue. Initialized below in ser_driver_initialize
-static static_queue_s_t write_queue_buf;
-static uint8_t write_buffer[VEX_SERIAL_BUFFER_SIZE];
-static queue_t write_queue;
+// Write buffer as a stream buffer. Initialized below in ser_driver_initialize
+static static_stream_buf_s_t write_stream_buf;
+static uint8_t write_buf[VEX_SERIAL_BUFFER_SIZE + 1];
+static uint8_t write_scratch_buf[VEX_SERIAL_BUFFER_SIZE];  // scratch buffer
+static stream_buf_t write_stream;
 
 // We maintain a set of streams which should actually be sent over the serial line.
 // This is maintained as a separate list and don't traverse through open files b/c
@@ -95,29 +96,15 @@ extern int32_t inp_buffer_read(uint32_t timeout);
 /** a bunch of times                                                         **/
 /******************************************************************************/
 void ser_output_flush(void) {
-	const uint32_t waiting = queue_get_waiting(write_queue);
-	if (waiting && waiting <= vexSerialWriteFree(1)) {
-		uint32_t ret = vexSerialWriteBuffer(1, write_buffer, waiting);
-		if (ret == waiting) {
-			queue_reset(write_queue);
-		} else {
-			while (ret--) {
-				queue_recv(write_queue, NULL, 0);
-			}
-		}
+	size_t len = stream_buf_recv(write_stream, write_scratch_buf, vexSerialWriteFree(1), 0);
+	uint32_t ret = vexSerialWriteBuffer(1, write_scratch_buf, len);
+	if (ret != len) {
+		display_error("WARNING: some serial data has been dropped");
 	}
 }
 
 bool ser_output_write(const uint8_t* buffer, size_t size, bool noblock) {
-	while (size) {
-		if (!queue_append(write_queue, buffer, noblock ? 0 : TIMEOUT_MAX)) {
-			// maybe back out what we tried to write?
-			return false;
-		}
-		size--;
-		buffer++;
-	}
-	return true;
+	return stream_buf_send(write_stream, buffer, size, noblock ? 0 : TIMEOUT_MAX);
 }
 
 /******************************************************************************/
@@ -324,7 +311,8 @@ void ser_driver_initialize(void) {
 	set_initialize(&enabled_streams_set);
 	set_add(&enabled_streams_set, STDOUT_STREAM_ID);  // 'sout' little endian
 
-	write_queue = queue_create_static(VEX_SERIAL_BUFFER_SIZE, 1, write_buffer, &write_queue_buf);
+	// write_queue = queue_create_static(VEX_SERIAL_BUFFER_SIZE, 1, write_buffer, &write_queue_buf);
+	write_stream = stream_buf_create_static(VEX_SERIAL_BUFFER_SIZE, 0, write_buf, &write_stream_buf);
 
 	vfs_update_entry(STDIN_FILENO, ser_driver, &(RESERVED_SER_FILES[0]));
 	vfs_update_entry(STDOUT_FILENO, ser_driver, &(RESERVED_SER_FILES[1]));

@@ -25,6 +25,10 @@ TickType_t					uint32_t
 ListItem_t					list_item_t
 StaticSemaphore_t   static_sem_s_t
 StaticQueue_t       static_queue_s_t
+StreamBufferHandle_t        stream_buf_t
+StaticStreamBuffer_t        static_stream_buf_s_t
+MessageBufferHandle_t       msg_buf_t
+StaticMessageBuffer_t       static_msg_buf_s_t
 
 
 
@@ -75,3 +79,21 @@ vPortFree                   kfree
 xSemaphoreCreateMutexStatic     mutex_create_static
 xSemaphoreCreateCountingStatic  sem_create_static
 xQueueCreateStatic              queue_create_static
+xStreamBufferCreateStatic       stream_buf_create_static
+xStreamBufferCreate             stream_buf_create
+xStreamBufferSend               stream_buf_send
+xStreamBufferReceive            stream_buf_recv
+xStreamBufferDelete             stream_buf_delete
+xStreamBufferBytesAvailable     stream_buf_get_used
+xStreamBufferSpacesAvailable    stream_buf_get_unused
+xStreamBufferSetTriggerLevel    stream_buf_set_trigger
+xStreamBufferReset              stream_buf_reset
+xStreamBufferIsEmpty            stream_buf_is_empty
+xStreamBufferIsFull             stream_buf_is_full
+xMessageBufferSend              msg_buf_send
+xMessageBufferReceive           msg_buf_recv
+xMessageBufferDelete            msg_buf_delete
+xMessageBufferSpacesAvailable   msg_buf_get_unused
+xMessageBufferReset             msg_buf_reset
+xMessageBufferIsEmpty           msg_buf_is_empty
+xMessageBufferIsFull            msg_buf_is_full

@@ -1143,7 +1143,7 @@ typedef struct xSTATIC_TIMER
 * internally by FreeRTOS is not accessible to application code.  However, if
 * the application writer wants to statically allocate the memory required to
 * create a stream buffer then the size of the stream buffer object needs to be
-* know.  The StaticStreamBuffer_t structure below is provided for this purpose.
+* know.  The static_stream_buf_s_t structure below is provided for this purpose.
 * Its size and alignment requirements are guaranteed to match those of the
 * genuine structure, no matter which architecture is being used, and no matter
 * how the values in FreeRTOSConfig.h are set.  Its contents are somewhat
@@ -1158,10 +1158,10 @@ typedef struct xSTATIC_STREAM_BUFFER
 	#if ( configUSE_TRACE_FACILITY == 1 )
 		uint32_t uxDummy4;
 	#endif
-} StaticStreamBuffer_t;
+} static_stream_buf_s_t;
 
 /* Message buffers are built on stream buffers. */
-typedef StaticStreamBuffer_t StaticMessageBuffer_t;
+typedef static_stream_buf_s_t static_msg_buf_s_t;
 
 #ifdef __cplusplus
 }

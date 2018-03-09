@@ -50,17 +50,17 @@ void print_large_banner(void) {
 /******************************************************************************/
 #define INP_BUFFER_SIZE 0x1000  // 4KB... which is larger than VEX's output buffer -_-
 
-static static_queue_s_t inp_queue_buf;
+static static_stream_buf_s_t inp_stream_buf;
 static uint8_t inp_buffer[INP_BUFFER_SIZE];
-static queue_t inp_queue;
+static stream_buf_t inp_stream;
 
 static inline void inp_buffer_initialize() {
-	inp_queue = queue_create_static(INP_BUFFER_SIZE, 1, inp_buffer, &inp_queue_buf);
+	inp_stream = stream_buf_create_static(INP_BUFFER_SIZE, 1, inp_buffer, &inp_stream_buf);
 }
 
 // if you extern this function you can place characters on the rest of the system's input buffer
 bool inp_buffer_post(uint8_t b) {
-	return queue_append(inp_queue, &b, TIMEOUT_MAX);
+	return stream_buf_send(inp_stream, &b, 1, TIMEOUT_MAX);
 }
 
 int32_t inp_buffer_read(uint32_t timeout) {
@@ -69,10 +69,15 @@ int32_t inp_buffer_read(uint32_t timeout) {
 		timeout = 1;
 	}
 	uint8_t b;
-	if (!queue_recv(inp_queue, &b, timeout)) {
+	if (!stream_buf_recv(inp_stream, &b, 1, timeout)) {
 		return -1;
 	}
 	return (int32_t)b;
+}
+
+// returns the number of bytes currently in the stream
+int32_t inp_buffer_available() {
+	return stream_buf_get_used(inp_stream);
 }
 
 /******************************************************************************/

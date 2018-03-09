@@ -40,7 +40,7 @@
  * FreeRTOS objects, it is not safe to have multiple different writers or
  * multiple different readers.  If there are to be multiple different writers
  * then the application writer must place each call to a writing API function
- * (such as xStreamBufferSend()) inside a critical section and set the send
+ * (such as stream_buf_send()) inside a critical section and set the send
  * block time to 0.  Likewise, if there are to be multiple different readers
  * then the application writer must place each call to a reading API function
  * (such as xStreamBufferRead()) inside a critical section section and set the
@@ -57,26 +57,26 @@ extern "C" {
 
 /**
  * Type by which stream buffers are referenced.  For example, a call to
- * xStreamBufferCreate() returns an StreamBufferHandle_t variable that can
- * then be used as a parameter to xStreamBufferSend(), xStreamBufferReceive(),
+ * stream_buf_create() returns an stream_buf_t variable that can
+ * then be used as a parameter to stream_buf_send(), stream_buf_recv(),
  * etc.
  */
-typedef void * StreamBufferHandle_t;
+typedef void * stream_buf_t;
 
 
 /**
  * message_buffer.h
  *
 <pre>
-StreamBufferHandle_t xStreamBufferCreate( size_t xBufferSizeBytes, size_t xTriggerLevelBytes );
+stream_buf_t stream_buf_create( size_t xBufferSizeBytes, size_t xTriggerLevelBytes );
 </pre>
  *
  * Creates a new stream buffer using dynamically allocated memory.  See
- * xStreamBufferCreateStatic() for a version that uses statically allocated
+ * stream_buf_create_static() for a version that uses statically allocated
  * memory (memory that is allocated at compile time).
  *
  * configSUPPORT_DYNAMIC_ALLOCATION must be set to 1 or left undefined in
- * FreeRTOSConfig.h for xStreamBufferCreate() to be available.
+ * FreeRTOSConfig.h for stream_buf_create() to be available.
  *
  * @param xBufferSizeBytes The total number of bytes the stream buffer will be
  * able to hold at any one time.
@@ -107,13 +107,13 @@ StreamBufferHandle_t xStreamBufferCreate( size_t xBufferSizeBytes, size_t xTrigg
 
 void vAFunction( void )
 {
-StreamBufferHandle_t xStreamBuffer;
+stream_buf_t xStreamBuffer;
 const size_t xStreamBufferSizeBytes = 100, xTriggerLevel = 10;
 
     // Create a stream buffer that can hold 100 bytes.  The memory used to hold
     // both the stream buffer structure and the data in the stream buffer is
     // allocated dynamically.
-    xStreamBuffer = xStreamBufferCreate( xStreamBufferSizeBytes, xTriggerLevel );
+    xStreamBuffer = stream_buf_create( xStreamBufferSizeBytes, xTriggerLevel );
 
     if( xStreamBuffer == NULL )
     {
@@ -126,25 +126,25 @@ const size_t xStreamBufferSizeBytes = 100, xTriggerLevel = 10;
     }
 }
 </pre>
- * \defgroup xStreamBufferCreate xStreamBufferCreate
+ * \defgroup stream_buf_create stream_buf_create
  * \ingroup StreamBufferManagement
  */
-#define xStreamBufferCreate( xBufferSizeBytes, xTriggerLevelBytes ) xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE )
+#define stream_buf_create( xBufferSizeBytes, xTriggerLevelBytes ) xStreamBufferGenericCreate( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE )
 
 /**
  * stream_buffer.h
  *
 <pre>
-StreamBufferHandle_t xStreamBufferCreateStatic( size_t xBufferSizeBytes,
+stream_buf_t stream_buf_create_static( size_t xBufferSizeBytes,
                                                 size_t xTriggerLevelBytes,
                                                 uint8_t *pucStreamBufferStorageArea,
-                                                StaticStreamBuffer_t *pxStaticStreamBuffer );
+                                                static_stream_buf_s_t *pxStaticStreamBuffer );
 </pre>
  * Creates a new stream buffer using statically allocated memory.  See
- * xStreamBufferCreate() for a version that uses dynamically allocated memory.
+ * stream_buf_create() for a version that uses dynamically allocated memory.
  *
  * configSUPPORT_STATIC_ALLOCATION must be set to 1 in FreeRTOSConfig.h for
- * xStreamBufferCreateStatic() to be available.
+ * stream_buf_create_static() to be available.
  *
  * @param xBufferSizeBytes The size, in bytes, of the buffer pointed to by the
  * pucStreamBufferStorageArea parameter.
@@ -168,7 +168,7 @@ StreamBufferHandle_t xStreamBufferCreateStatic( size_t xBufferSizeBytes,
  * copied when they are written to the stream buffer.
  *
  * @param pxStaticStreamBuffer Must point to a variable of type
- * StaticStreamBuffer_t, which will be used to hold the stream buffer's data
+ * static_stream_buf_s_t, which will be used to hold the stream buffer's data
  * structure.
  *
  * @return If the stream buffer is created successfully then a handle to the
@@ -187,14 +187,14 @@ StreamBufferHandle_t xStreamBufferCreateStatic( size_t xBufferSizeBytes,
 static uint8_t ucStorageBuffer[ STORAGE_SIZE_BYTES ];
 
 // The variable used to hold the stream buffer structure.
-StaticStreamBuffer_t xStreamBufferStruct;
+static_stream_buf_s_t xStreamBufferStruct;
 
 void MyFunction( void )
 {
-StreamBufferHandle_t xStreamBuffer;
+stream_buf_t xStreamBuffer;
 const size_t xTriggerLevel = 1;
 
-    xStreamBuffer = xStreamBufferCreateStatic( sizeof( ucBufferStorage ),
+    xStreamBuffer = stream_buf_create_static( sizeof( ucBufferStorage ),
                                                xTriggerLevel,
                                                ucBufferStorage,
                                                &xStreamBufferStruct );
@@ -207,16 +207,16 @@ const size_t xTriggerLevel = 1;
 }
 
 </pre>
- * \defgroup xStreamBufferCreateStatic xStreamBufferCreateStatic
+ * \defgroup stream_buf_create_static stream_buf_create_static
  * \ingroup StreamBufferManagement
  */
-#define xStreamBufferCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE, pucStreamBufferStorageArea, pxStaticStreamBuffer )
+#define stream_buf_create_static( xBufferSizeBytes, xTriggerLevelBytes, pucStreamBufferStorageArea, pxStaticStreamBuffer ) xStreamBufferGenericCreateStatic( xBufferSizeBytes, xTriggerLevelBytes, pdFALSE, pucStreamBufferStorageArea, pxStaticStreamBuffer )
 
 /**
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_send( stream_buf_t xStreamBuffer,
                           const void *pvTxData,
                           size_t xDataLengthBytes,
                           uint32_t xTicksToWait );
@@ -233,13 +233,13 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * FreeRTOS objects, it is not safe to have multiple different writers or
  * multiple different readers.  If there are to be multiple different writers
  * then the application writer must place each call to a writing API function
- * (such as xStreamBufferSend()) inside a critical section and set the send
+ * (such as stream_buf_send()) inside a critical section and set the send
  * block time to 0.  Likewise, if there are to be multiple different readers
  * then the application writer must place each call to a reading API function
  * (such as xStreamBufferRead()) inside a critical section and set the receive
  * block time to 0.
  *
- * Use xStreamBufferSend() to write to a stream buffer from a task.  Use
+ * Use stream_buf_send() to write to a stream buffer from a task.  Use
  * xStreamBufferSendFromISR() to write to a stream buffer from an interrupt
  * service routine (ISR).
  *
@@ -271,7 +271,7 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  *
  * Example use:
 <pre>
-void vAFunction( StreamBufferHandle_t xStreamBuffer )
+void vAFunction( stream_buf_t xStreamBuffer )
 {
 size_t xBytesSent;
 uint8_t ucArrayToSend[] = { 0, 1, 2, 3 };
@@ -280,18 +280,18 @@ const uint32_t x100ms = pdMS_TO_TICKS( 100 );
 
     // Send an array to the stream buffer, blocking for a maximum of 100ms to
     // wait for enough space to be available in the stream buffer.
-    xBytesSent = xStreamBufferSend( xStreamBuffer, ( void * ) ucArrayToSend, sizeof( ucArrayToSend ), x100ms );
+    xBytesSent = stream_buf_send( xStreamBuffer, ( void * ) ucArrayToSend, sizeof( ucArrayToSend ), x100ms );
 
     if( xBytesSent != sizeof( ucArrayToSend ) )
     {
-        // The call to xStreamBufferSend() times out before there was enough
+        // The call to stream_buf_send() times out before there was enough
         // space in the buffer for the data to be written, but it did
         // successfully write xBytesSent bytes.
     }
 
     // Send the string to the stream buffer.  Return immediately if there is not
     // enough space in the buffer.
-    xBytesSent = xStreamBufferSend( xStreamBuffer, ( void * ) pcStringToSend, strlen( pcStringToSend ), 0 );
+    xBytesSent = stream_buf_send( xStreamBuffer, ( void * ) pcStringToSend, strlen( pcStringToSend ), 0 );
 
     if( xBytesSent != strlen( pcStringToSend ) )
     {
@@ -301,10 +301,10 @@ const uint32_t x100ms = pdMS_TO_TICKS( 100 );
     }
 }
 </pre>
- * \defgroup xStreamBufferSend xStreamBufferSend
+ * \defgroup stream_buf_send stream_buf_send
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_send( stream_buf_t xStreamBuffer,
 						  const void *pvTxData,
 						  size_t xDataLengthBytes,
 						  uint32_t xTicksToWait ) ;
@@ -313,7 +313,7 @@ size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferSendFromISR( stream_buf_t xStreamBuffer,
                                  const void *pvTxData,
                                  size_t xDataLengthBytes,
                                  int32_t *pxHigherPriorityTaskWoken );
@@ -331,13 +331,13 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * FreeRTOS objects, it is not safe to have multiple different writers or
  * multiple different readers.  If there are to be multiple different writers
  * then the application writer must place each call to a writing API function
- * (such as xStreamBufferSend()) inside a critical section and set the send
+ * (such as stream_buf_send()) inside a critical section and set the send
  * block time to 0.  Likewise, if there are to be multiple different readers
  * then the application writer must place each call to a reading API function
  * (such as xStreamBufferRead()) inside a critical section and set the receive
  * block time to 0.
  *
- * Use xStreamBufferSend() to write to a stream buffer from a task.  Use
+ * Use stream_buf_send() to write to a stream buffer from a task.  Use
  * xStreamBufferSendFromISR() to write to a stream buffer from an interrupt
  * service routine (ISR).
  *
@@ -371,7 +371,7 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * Example use:
 <pre>
 // A stream buffer that has already been created.
-StreamBufferHandle_t xStreamBuffer;
+stream_buf_t xStreamBuffer;
 
 void vAnInterruptServiceRoutine( void )
 {
@@ -405,7 +405,7 @@ int32_t xHigherPriorityTaskWoken = pdFALSE; // Initialised to pdFALSE.
  * \defgroup xStreamBufferSendFromISR xStreamBufferSendFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferSendFromISR( stream_buf_t xStreamBuffer,
 								 const void *pvTxData,
 								 size_t xDataLengthBytes,
 								 int32_t * const pxHigherPriorityTaskWoken ) ;
@@ -414,7 +414,7 @@ size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_recv( stream_buf_t xStreamBuffer,
                              void *pvRxData,
                              size_t xBufferLengthBytes,
                              uint32_t xTicksToWait );
@@ -431,13 +431,13 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * FreeRTOS objects, it is not safe to have multiple different writers or
  * multiple different readers.  If there are to be multiple different writers
  * then the application writer must place each call to a writing API function
- * (such as xStreamBufferSend()) inside a critical section and set the send
+ * (such as stream_buf_send()) inside a critical section and set the send
  * block time to 0.  Likewise, if there are to be multiple different readers
  * then the application writer must place each call to a reading API function
  * (such as xStreamBufferRead()) inside a critical section and set the receive
  * block time to 0.
  *
- * Use xStreamBufferReceive() to read from a stream buffer from a task.  Use
+ * Use stream_buf_recv() to read from a stream buffer from a task.  Use
  * xStreamBufferReceiveFromISR() to read from a stream buffer from an
  * interrupt service routine (ISR).
  *
@@ -449,12 +449,12 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xBufferLengthBytes The length of the buffer pointed to by the
  * pvRxData parameter.  This sets the maximum number of bytes to receive in one
- * call.  xStreamBufferReceive will return as many bytes as possible up to a
+ * call.  stream_buf_recv will return as many bytes as possible up to a
  * maximum set by xBufferLengthBytes.
  *
  * @param xTicksToWait The maximum amount of time the task should remain in the
  * Blocked state to wait for data to become available if the stream buffer is
- * empty.  xStreamBufferReceive() will return immediately if xTicksToWait is
+ * empty.  stream_buf_recv() will return immediately if xTicksToWait is
  * zero.  The block time is specified in tick periods, so the absolute time it
  * represents is dependent on the tick frequency.  The macro pdMS_TO_TICKS() can
  * be used to convert a time specified in milliseconds into a time specified in
@@ -464,7 +464,7 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * Blocked state.
  *
  * @return The number of bytes actually read from the stream buffer, which will
- * be less than xBufferLengthBytes if the call to xStreamBufferReceive() timed
+ * be less than xBufferLengthBytes if the call to stream_buf_recv() timed
  * out before xBufferLengthBytes were available.
  *
  * Example use:
@@ -479,7 +479,7 @@ const uint32_t xBlockTime = pdMS_TO_TICKS( 20 );
     // Wait in the Blocked state (so not using any CPU processing time) for a
     // maximum of 100ms for the full sizeof( ucRxData ) number of bytes to be
     // available.
-    xReceivedBytes = xStreamBufferReceive( xStreamBuffer,
+    xReceivedBytes = stream_buf_recv( xStreamBuffer,
                                            ( void * ) ucRxData,
                                            sizeof( ucRxData ),
                                            xBlockTime );
@@ -491,10 +491,10 @@ const uint32_t xBlockTime = pdMS_TO_TICKS( 20 );
     }
 }
 </pre>
- * \defgroup xStreamBufferReceive xStreamBufferReceive
+ * \defgroup stream_buf_recv stream_buf_recv
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_recv( stream_buf_t xStreamBuffer,
 							 void *pvRxData,
 							 size_t xBufferLengthBytes,
 							 uint32_t xTicksToWait ) ;
@@ -503,7 +503,7 @@ size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferReceiveFromISR( stream_buf_t xStreamBuffer,
                                     void *pvRxData,
                                     size_t xBufferLengthBytes,
                                     int32_t *pxHigherPriorityTaskWoken );
@@ -512,7 +512,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  * An interrupt safe version of the API function that receives bytes from a
  * stream buffer.
  *
- * Use xStreamBufferReceive() to read bytes from a stream buffer from a task.
+ * Use stream_buf_recv() to read bytes from a stream buffer from a task.
  * Use xStreamBufferReceiveFromISR() to read bytes from a stream buffer from an
  * interrupt service routine (ISR).
  *
@@ -524,7 +524,7 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  *
  * @param xBufferLengthBytes The length of the buffer pointed to by the
  * pvRxData parameter.  This sets the maximum number of bytes to receive in one
- * call.  xStreamBufferReceive will return as many bytes as possible up to a
+ * call.  stream_buf_recv will return as many bytes as possible up to a
  * maximum set by xBufferLengthBytes.
  *
  * @param pxHigherPriorityTaskWoken  It is possible that a stream buffer will
@@ -580,7 +580,7 @@ int32_t xHigherPriorityTaskWoken = pdFALSE;  // Initialised to pdFALSE.
  * \defgroup xStreamBufferReceiveFromISR xStreamBufferReceiveFromISR
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferReceiveFromISR( stream_buf_t xStreamBuffer,
 									void *pvRxData,
 									size_t xBufferLengthBytes,
 									int32_t * const pxHigherPriorityTaskWoken ) ;
@@ -589,12 +589,12 @@ size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
  * stream_buffer.h
  *
 <pre>
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer );
+void vStreamBufferDelete( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Deletes a stream buffer that was previously created using a call to
- * xStreamBufferCreate() or xStreamBufferCreateStatic().  If the stream
- * buffer was created using dynamic memory (that is, by xStreamBufferCreate()),
+ * stream_buf_create() or stream_buf_create_static().  If the stream
+ * buffer was created using dynamic memory (that is, by stream_buf_create()),
  * then the allocated memory is freed.
  *
  * A stream buffer handle must not be used after the stream buffer has been
@@ -605,13 +605,13 @@ void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer );
  * \defgroup vStreamBufferDelete vStreamBufferDelete
  * \ingroup StreamBufferManagement
  */
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer ) ;
+void vStreamBufferDelete( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer );
+int32_t stream_buf_is_full( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Queries a stream buffer to see if it is full.  A stream buffer is full if it
@@ -622,16 +622,16 @@ int32_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer );
  * @return If the stream buffer is full then pdTRUE is returned.  Otherwise
  * pdFALSE is returned.
  *
- * \defgroup xStreamBufferIsFull xStreamBufferIsFull
+ * \defgroup stream_buf_is_full stream_buf_is_full
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer ) ;
+int32_t stream_buf_is_full( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer );
+int32_t stream_buf_is_empty( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Queries a stream buffer to see if it is empty.  A stream buffer is empty if
@@ -642,16 +642,16 @@ int32_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer );
  * @return If the stream buffer is empty then pdTRUE is returned.  Otherwise
  * pdFALSE is returned.
  *
- * \defgroup xStreamBufferIsEmpty xStreamBufferIsEmpty
+ * \defgroup stream_buf_is_empty stream_buf_is_empty
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer ) ;
+int32_t stream_buf_is_empty( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer );
+int32_t stream_buf_reset( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Resets a stream buffer to its initial, empty, state.  Any data that was in
@@ -665,16 +665,16 @@ int32_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer );
  * a task blocked waiting to send to or read from the stream buffer then the
  * stream buffer is not reset and pdFAIL is returned.
  *
- * \defgroup xStreamBufferReset xStreamBufferReset
+ * \defgroup stream_buf_reset stream_buf_reset
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer ) ;
+int32_t stream_buf_reset( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer );
+size_t stream_buf_get_unused( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Queries a stream buffer to see how much free space it contains, which is
@@ -686,16 +686,16 @@ size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer );
  * @return The number of bytes that can be written to the stream buffer before
  * the stream buffer would be full.
  *
- * \defgroup xStreamBufferSpacesAvailable xStreamBufferSpacesAvailable
+ * \defgroup stream_buf_get_unused stream_buf_get_unused
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer ) ;
+size_t stream_buf_get_unused( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer );
+size_t stream_buf_get_used( stream_buf_t xStreamBuffer );
 </pre>
  *
  * Queries a stream buffer to see how much data it contains, which is equal to
@@ -707,16 +707,16 @@ size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer );
  * @return The number of bytes that can be read from the stream buffer before
  * the stream buffer would be empty.
  *
- * \defgroup xStreamBufferBytesAvailable xStreamBufferBytesAvailable
+ * \defgroup stream_buf_get_used stream_buf_get_used
  * \ingroup StreamBufferManagement
  */
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer ) ;
+size_t stream_buf_get_used( stream_buf_t xStreamBuffer ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer, size_t xTriggerLevel );
+int32_t stream_buf_set_trigger( stream_buf_t xStreamBuffer, size_t xTriggerLevel );
 </pre>
  *
  * A stream buffer's trigger level is the number of bytes that must be in the
@@ -734,7 +734,7 @@ int32_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer, size_t
  * level that is greater than the buffer size.
  *
  * A trigger level is set when the stream buffer is created, and can be modified
- * using xStreamBufferSetTriggerLevel().
+ * using stream_buf_set_trigger().
  *
  * @param xStreamBuffer The handle of the stream buffer being updated.
  *
@@ -744,16 +744,16 @@ int32_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer, size_t
  * then the trigger level will be updated and pdTRUE is returned.  Otherwise
  * pdFALSE is returned.
  *
- * \defgroup xStreamBufferSetTriggerLevel xStreamBufferSetTriggerLevel
+ * \defgroup stream_buf_set_trigger stream_buf_set_trigger
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer, size_t xTriggerLevel ) ;
+int32_t stream_buf_set_trigger( stream_buf_t xStreamBuffer, size_t xTriggerLevel ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken );
+int32_t xStreamBufferSendCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken );
 </pre>
  *
  * For advanced users only.
@@ -786,13 +786,13 @@ int32_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer, i
  * \defgroup xStreamBufferSendCompletedFromISR xStreamBufferSendCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken ) ;
+int32_t xStreamBufferSendCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken ) ;
 
 /**
  * stream_buffer.h
  *
 <pre>
-int32_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken );
+int32_t xStreamBufferReceiveCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken );
 </pre>
  *
  * For advanced users only.
@@ -826,23 +826,23 @@ int32_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer
  * \defgroup xStreamBufferReceiveCompletedFromISR xStreamBufferReceiveCompletedFromISR
  * \ingroup StreamBufferManagement
  */
-int32_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken ) ;
+int32_t xStreamBufferReceiveCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken ) ;
 
 /* Functions below here are not part of the public API. */
-StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
+stream_buf_t xStreamBufferGenericCreate( size_t xBufferSizeBytes,
 												 size_t xTriggerLevelBytes,
 												 int32_t xIsMessageBuffer ) ;
 
-StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
+stream_buf_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
 													   size_t xTriggerLevelBytes,
 													   int32_t xIsMessageBuffer,
 													   uint8_t * const pucStreamBufferStorageArea,
-													   StaticStreamBuffer_t * const pxStaticStreamBuffer ) ;
+													   static_stream_buf_s_t * const pxStaticStreamBuffer ) ;
 
 #if( configUSE_TRACE_FACILITY == 1 )
-	void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer, uint32_t uxStreamBufferNumber ) ;
-	uint32_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer ) ;
-	uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer ) ;
+	void vStreamBufferSetStreamBufferNumber( stream_buf_t xStreamBuffer, uint32_t uxStreamBufferNumber ) ;
+	uint32_t uxStreamBufferGetStreamBufferNumber( stream_buf_t xStreamBuffer ) ;
+	uint8_t ucStreamBufferGetStreamBufferType( stream_buf_t xStreamBuffer ) ;
 #endif
 
 #if defined( __cplusplus )

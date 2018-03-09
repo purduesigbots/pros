@@ -216,7 +216,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 
-	StreamBufferHandle_t xStreamBufferGenericCreate( size_t xBufferSizeBytes, size_t xTriggerLevelBytes, int32_t xIsMessageBuffer )
+	stream_buf_t xStreamBufferGenericCreate( size_t xBufferSizeBytes, size_t xTriggerLevelBytes, int32_t xIsMessageBuffer )
 	{
 	uint8_t *pucAllocatedMemory;
 
@@ -260,7 +260,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 			traceSTREAM_BUFFER_CREATE_FAILED( xIsMessageBuffer );
 		}
 
-		return ( StreamBufferHandle_t * ) pucAllocatedMemory; /*lint !e9087 !e826 Safe cast as allocated memory is aligned. */
+		return ( stream_buf_t * ) pucAllocatedMemory; /*lint !e9087 !e826 Safe cast as allocated memory is aligned. */
 	}
 
 #endif /* configSUPPORT_DYNAMIC_ALLOCATION */
@@ -268,14 +268,14 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 
-	StreamBufferHandle_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
+	stream_buf_t xStreamBufferGenericCreateStatic( size_t xBufferSizeBytes,
 														   size_t xTriggerLevelBytes,
 														   int32_t xIsMessageBuffer,
 														   uint8_t * const pucStreamBufferStorageArea,
-														   StaticStreamBuffer_t * const pxStaticStreamBuffer )
+														   static_stream_buf_s_t * const pxStaticStreamBuffer )
 	{
-	StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) pxStaticStreamBuffer; /*lint !e740 !e9087 Safe cast as StaticStreamBuffer_t is opaque Streambuffer_t. */
-	StreamBufferHandle_t xReturn;
+	StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) pxStaticStreamBuffer; /*lint !e740 !e9087 Safe cast as static_stream_buf_s_t is opaque Streambuffer_t. */
+	stream_buf_t xReturn;
 
 		configASSERT( pucStreamBufferStorageArea );
 		configASSERT( pxStaticStreamBuffer );
@@ -297,9 +297,9 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 		#if( configASSERT_DEFINED == 1 )
 		{
 			/* Sanity check that the size of the structure used to declare a
-			variable of type StaticStreamBuffer_t equals the size of the real
+			variable of type static_stream_buf_s_t equals the size of the real
 			message buffer structure. */
-			volatile size_t xSize = sizeof( StaticStreamBuffer_t );
+			volatile size_t xSize = sizeof( static_stream_buf_s_t );
 			configASSERT( xSize == sizeof( StreamBuffer_t ) );
 		}
 		#endif /* configASSERT_DEFINED */
@@ -318,7 +318,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 			traceSTREAM_BUFFER_CREATE( pxStreamBuffer, xIsMessageBuffer );
 
-			xReturn = ( StreamBufferHandle_t ) pxStaticStreamBuffer; /*lint !e9087 Data hiding requires cast to opaque type. */
+			xReturn = ( stream_buf_t ) pxStaticStreamBuffer; /*lint !e9087 Data hiding requires cast to opaque type. */
 		}
 		else
 		{
@@ -332,9 +332,9 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 #endif /* ( configSUPPORT_STATIC_ALLOCATION == 1 ) */
 /*-----------------------------------------------------------*/
 
-void vStreamBufferDelete( StreamBufferHandle_t xStreamBuffer )
+void vStreamBufferDelete( stream_buf_t xStreamBuffer )
 {
-StreamBuffer_t * pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 
 	configASSERT( pxStreamBuffer );
 
@@ -352,7 +352,7 @@ StreamBuffer_t * pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9
 		{
 			/* Should not be possible to get here, ucFlags must be corrupt.
 			Force an assert. */
-			configASSERT( xStreamBuffer == ( StreamBufferHandle_t ) ~0 );
+			configASSERT( xStreamBuffer == ( stream_buf_t ) ~0 );
 		}
 		#endif
 	}
@@ -365,9 +365,9 @@ StreamBuffer_t * pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferReset( StreamBufferHandle_t xStreamBuffer )
+int32_t stream_buf_reset( stream_buf_t xStreamBuffer )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 int32_t xReturn = pdFAIL, xIsMessageBuffer;
 
 #if( configUSE_TRACE_FACILITY == 1 )
@@ -419,9 +419,9 @@ int32_t xReturn = pdFAIL, xIsMessageBuffer;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferSetTriggerLevel( StreamBufferHandle_t xStreamBuffer, size_t xTriggerLevel )
+int32_t stream_buf_set_trigger( stream_buf_t xStreamBuffer, size_t xTriggerLevel )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 int32_t xReturn;
 
 	configASSERT( pxStreamBuffer );
@@ -448,9 +448,9 @@ int32_t xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSpacesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t stream_buf_get_unused( stream_buf_t xStreamBuffer )
 {
-const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xSpace;
 
 	configASSERT( pxStreamBuffer );
@@ -472,9 +472,9 @@ size_t xSpace;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferBytesAvailable( StreamBufferHandle_t xStreamBuffer )
+size_t stream_buf_get_used( stream_buf_t xStreamBuffer )
 {
-const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xReturn;
 
 	configASSERT( pxStreamBuffer );
@@ -484,12 +484,12 @@ size_t xReturn;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSend( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_send( stream_buf_t xStreamBuffer,
 						  const void *pvTxData,
 						  size_t xDataLengthBytes,
 						  uint32_t xTicksToWait )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xReturn, xSpace = 0;
 size_t xRequiredSpace = xDataLengthBytes;
 TimeOut_t xTimeOut;
@@ -520,7 +520,7 @@ TimeOut_t xTimeOut;
 			buffer. */
 			taskENTER_CRITICAL();
 			{
-				xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+				xSpace = stream_buf_get_unused( pxStreamBuffer );
 
 				if( xSpace < xRequiredSpace )
 				{
@@ -552,7 +552,7 @@ TimeOut_t xTimeOut;
 
 	if( xSpace == ( size_t ) 0 )
 	{
-		xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+		xSpace = stream_buf_get_unused( pxStreamBuffer );
 	}
 	else
 	{
@@ -585,12 +585,12 @@ TimeOut_t xTimeOut;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferSendFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferSendFromISR( stream_buf_t xStreamBuffer,
 								 const void *pvTxData,
 								 size_t xDataLengthBytes,
 								 int32_t * const pxHigherPriorityTaskWoken )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xReturn, xSpace;
 size_t xRequiredSpace = xDataLengthBytes;
 
@@ -610,7 +610,7 @@ size_t xRequiredSpace = xDataLengthBytes;
 		mtCOVERAGE_TEST_MARKER();
 	}
 
-	xSpace = xStreamBufferSpacesAvailable( pxStreamBuffer );
+	xSpace = stream_buf_get_unused( pxStreamBuffer );
 	xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
 
 	if( xReturn > ( size_t ) 0 )
@@ -688,12 +688,12 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceive( StreamBufferHandle_t xStreamBuffer,
+size_t stream_buf_recv( stream_buf_t xStreamBuffer,
 							 void *pvRxData,
 							 size_t xBufferLengthBytes,
 							 uint32_t xTicksToWait )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 
 	configASSERT( pvRxData );
@@ -792,12 +792,12 @@ size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 }
 /*-----------------------------------------------------------*/
 
-size_t xStreamBufferReceiveFromISR( StreamBufferHandle_t xStreamBuffer,
+size_t xStreamBufferReceiveFromISR( stream_buf_t xStreamBuffer,
 									void *pvRxData,
 									size_t xBufferLengthBytes,
 									int32_t * const pxHigherPriorityTaskWoken )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 
 	configASSERT( pvRxData );
@@ -899,9 +899,9 @@ size_t xOriginalTail, xReceivedLength, xNextMessageLength;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferIsEmpty( StreamBufferHandle_t xStreamBuffer )
+int32_t stream_buf_is_empty( stream_buf_t xStreamBuffer )
 {
-const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 int32_t xReturn;
 size_t xTail;
 
@@ -922,11 +922,11 @@ size_t xTail;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferIsFull( StreamBufferHandle_t xStreamBuffer )
+int32_t stream_buf_is_full( stream_buf_t xStreamBuffer )
 {
 int32_t xReturn;
 size_t xBytesToStoreMessageLength;
-const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 
 	configASSERT( pxStreamBuffer );
 
@@ -944,7 +944,7 @@ const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer
 	}
 
 	/* True if the available space equals zero. */
-	if( xStreamBufferSpacesAvailable( xStreamBuffer ) <= xBytesToStoreMessageLength )
+	if( stream_buf_get_unused( xStreamBuffer ) <= xBytesToStoreMessageLength )
 	{
 		xReturn = pdTRUE;
 	}
@@ -957,9 +957,9 @@ const StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferSendCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken )
+int32_t xStreamBufferSendCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 int32_t xReturn;
 uint32_t uxSavedInterruptStatus;
 
@@ -987,9 +987,9 @@ uint32_t uxSavedInterruptStatus;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xStreamBufferReceiveCompletedFromISR( StreamBufferHandle_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken )
+int32_t xStreamBufferReceiveCompletedFromISR( stream_buf_t xStreamBuffer, int32_t *pxHigherPriorityTaskWoken )
 {
-StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as StreamBufferHandle_t is opaque Streambuffer_t. */
+StreamBuffer_t * const pxStreamBuffer = ( StreamBuffer_t * ) xStreamBuffer; /*lint !e9087 !e9079 Safe cast as stream_buf_t is opaque Streambuffer_t. */
 int32_t xReturn;
 uint32_t uxSavedInterruptStatus;
 
@@ -1170,7 +1170,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-	uint32_t uxStreamBufferGetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer )
+	uint32_t uxStreamBufferGetStreamBufferNumber( stream_buf_t xStreamBuffer )
 	{
 		return ( ( StreamBuffer_t * ) xStreamBuffer )->uxStreamBufferNumber;
 	}
@@ -1180,7 +1180,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-	void vStreamBufferSetStreamBufferNumber( StreamBufferHandle_t xStreamBuffer, uint32_t uxStreamBufferNumber )
+	void vStreamBufferSetStreamBufferNumber( stream_buf_t xStreamBuffer, uint32_t uxStreamBufferNumber )
 	{
 		( ( StreamBuffer_t * ) xStreamBuffer )->uxStreamBufferNumber = uxStreamBufferNumber;
 	}
@@ -1190,7 +1190,7 @@ static void prvInitialiseNewStreamBuffer( StreamBuffer_t * const pxStreamBuffer,
 
 #if ( configUSE_TRACE_FACILITY == 1 )
 
-	uint8_t ucStreamBufferGetStreamBufferType( StreamBufferHandle_t xStreamBuffer )
+	uint8_t ucStreamBufferGetStreamBufferType( stream_buf_t xStreamBuffer )
 	{
 		return ( ( StreamBuffer_t * )xStreamBuffer )->ucFlags | sbFLAGS_IS_MESSAGE_BUFFER;
 	}
