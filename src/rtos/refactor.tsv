@@ -42,6 +42,7 @@ vTaskPrioritySet	task_set_priority
 eTaskGetState		task_get_state
 vTaskSuspend		task_suspend
 vTaskResume			task_resume
+xTaskAbortDelay      task_abort_delay
 vTaskStartScheduler		rtos_sched_start
 vTaskEndScheduler		rtos_sched_stop
 vTaskSuspendAll			rtos_suspend_all

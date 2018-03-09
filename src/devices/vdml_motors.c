@@ -113,7 +113,7 @@ double motor_get_temperature(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_get_over_temp_flag(uint8_t port) {
+int32_t motor_get_temp_limit_flag(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	int rtn = vexDeviceMotorOverTempFlagGet(device.device_info);
 	return_port(port - 1, rtn);
@@ -137,7 +137,7 @@ int32_t motor_get_zero_velocity_flag(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_get_zero_position(uint8_t port) {
+int32_t motor_get_zero_position_flag(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	int rtn = vexDeviceMotorZeroPositionFlagGet(device.device_info);
 	return_port(port - 1, rtn);
@@ -161,13 +161,13 @@ int32_t motor_get_reverse(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_encoder_set_units(uint8_t port, const motor_encoder_units_e_t units) {
+int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorEncoderUnitsSet(device.device_info, units);
 	return_port(port - 1, 1);
 }
 
-motor_encoder_units_e_t motor_encoder_get_units(uint8_t port) {
+motor_encoder_units_e_t motor_get_encoder_units(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	V5MotorEncoderUnits rtn = vexDeviceMotorEncoderUnitsGet(device.device_info);
 	return_port(port - 1, rtn);

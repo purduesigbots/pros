@@ -59,12 +59,12 @@ void display_copy_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t*
 	mutex_give(_tmei_mutex);
 }
 
-void display_set_pixel_fg(int16_t x, int16_t y) {
+void display_draw_pixel(int16_t x, int16_t y) {
 	mutex_take(_tmei_mutex, TIMEOUT_MAX);
 	vexDisplayPixelSet(x, y);
 	mutex_give(_tmei_mutex);
 }
-void display_set_pixel_bg(int16_t x, int16_t y) {
+void display_clear_pixel(int16_t x, int16_t y) {
 	mutex_take(_tmei_mutex, TIMEOUT_MAX);
 	vexDisplayPixelClear(x, y);
 	mutex_give(_tmei_mutex);

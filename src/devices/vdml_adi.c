@@ -196,7 +196,7 @@ int32_t adi_digital_write(uint8_t port, const bool value) {
 	return _adi_value_set(port, (int32_t)value);
 }
 
-int32_t adi_pin_mode(uint8_t port, const uint8_t mode) {
+int32_t adi_pin_mode(uint8_t port, uint8_t mode) {
 	switch (mode) {
 	case INPUT:
 		adi_port_config_set(port, E_ADI_DIGITAL_IN);

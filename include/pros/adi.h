@@ -75,7 +75,7 @@ typedef enum adi_port_config_e {
  * For the following functions:
  * If they don't need a return value (e.g. a setter):
  * 		They will return PROS_ERR upon failure and 1 upons success
- * If they should return a bool (e.g. motor_get_over_temp_flag):
+ * If they should return a bool (e.g. motor_get_temp_limit_flag):
  *		They will return 1 for true, 0 for false, and PROS_ERR upon failure
  * If they should return a 32-bit integer (e.g. a getter):
  *		They will return their value. If an error occurs, they will return
@@ -302,7 +302,7 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  *
  * \return 1 if the operation was successful, PROS_ERR otherwise
  */
-int32_t adi_motor_set(uint8_t port, const int8_t speed);
+int32_t adi_motor_set(uint8_t port, int8_t speed);
 /**
  * Returns the last set speed of the motor on the given port.
  *

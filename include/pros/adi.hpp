@@ -19,7 +19,7 @@
 
 namespace pros {
 class ADIPort {
-      public:
+	public:
 	ADIPort(uint8_t port);
 	ADIPort(uint8_t port, adi_port_config_e_t type);
 	virtual ~ADIPort();
@@ -29,19 +29,20 @@ class ADIPort {
 	int32_t value_set(int32_t value);
 	int32_t value_get();
 
-      protected:
+	protected:
 	ADIPort();
 	int _port;
 };
 
 class ADIAnalogIn : private ADIPort {
-      public:
+	public:
 	ADIAnalogIn(uint8_t port);
 
 	int32_t calibrate();
-	using ADIPort::value_get;
 	int32_t value_get_calibrated();
 	int32_t value_get_calibrated_HR();
+
+	using ADIPort::value_get;
 };
 
 using ADIPotentiometer = ADIAnalogIn;
@@ -50,14 +51,14 @@ using ADILightSensor = ADIAnalogIn;
 using ADIAccelerometer = ADIAnalogIn;
 
 class ADIAnalogOut : private ADIPort {
-      public:
+	public:
 	ADIAnalogOut(uint8_t port);
 
 	using ADIPort::value_set;
 };
 
 class ADIDigitalOut : private ADIPort {
-      public:
+	public:
 	ADIDigitalOut(uint8_t port);
 	ADIDigitalOut(uint8_t port, bool init_state);
 
@@ -65,35 +66,38 @@ class ADIDigitalOut : private ADIPort {
 };
 
 class ADIDigitalIn : private ADIPort {
-      public:
+	public:
 	ADIDigitalIn(uint8_t port);
 
-	using ADIPort::value_get;
 	int32_t get_new_press();
+
+	using ADIPort::value_get;
 };
 
 using ADIButton = ADIDigitalIn;
 
 class ADIMotor : private ADIPort {
-      public:
+	public:
 	ADIMotor(uint8_t port);
+
+	int32_t stop();
 
 	using ADIPort::value_set;
 	using ADIPort::value_get;
-	int32_t stop();
 };
 
 class ADIEncoder : private ADIPort {
-      public:
+	public:
 	ADIEncoder(uint8_t port_bottom, uint8_t port_top);
 	ADIEncoder(uint8_t port_bottom, uint8_t port_top, bool reversed);
 
-	using ADIPort::value_get;
 	int32_t reset();
+
+	using ADIPort::value_get;
 };
 
 class ADIUltrasonic : private ADIPort {
-      public:
+	public:
 	ADIUltrasonic(uint8_t port_bottom, uint8_t port_top);
 
 	using ADIPort::value_get;

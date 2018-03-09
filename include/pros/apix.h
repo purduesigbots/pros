@@ -62,7 +62,7 @@ mutex_t mutex_recursive_create(void);
  * \return
  *          1 if the mutex was obtained, 0 otherwise
  */
-bool mutex_recursive_take(mutex_t mutex, uint32_t wait_time);
+bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
 
 /**
  * Gives a recursive mutex
@@ -103,6 +103,15 @@ task_t mutex_get_owner(mutex_t mutex);
  */
 sem_t sem_create(uint32_t max_count, uint32_t init_count);
 
+/**
+ * Deletes a semaphore (or binary semaphore)
+ *
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking#semaphores for details.
+ *
+ * \param sem
+ * 			Semaphore to delete
+ */
+void sem_delete(sem_t sem);
 /**
  * Creates a binary semaphore.
  *
@@ -224,7 +233,7 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool queue_peek(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Receive an item from the queue.
@@ -242,7 +251,7 @@ bool queue_peek(queue_t queue, void* buffer, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool queue_recv(queue_t queue, void* buffer, uint32_t timeout);
+bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Return the number of messages stored in a queue.

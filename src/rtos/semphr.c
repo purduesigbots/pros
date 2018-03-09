@@ -4,7 +4,7 @@
 /**
  * semphr. h
  * <pre>sem_wait(
- *                   sem_t xSemaphore,
+ *                   sem_t sem,
  *                   uint32_t xBlockTime
  *               )</pre>
  *
@@ -12,7 +12,7 @@
  * created with a call to sem_binary_create(), mutex_create() or
  * sem_create().
  *
- * @param xSemaphore A handle to the semaphore being taken - obtained when
+ * @param sem A handle to the semaphore being taken - obtained when
  * the semaphore was created.
  *
  * @param xBlockTime The time in ticks to wait for the semaphore to become
@@ -26,13 +26,13 @@
  *
  * Example usage:
  <pre>
- sem_t xSemaphore = NULL;
+ sem_t sem = NULL;
 
  // A task that creates a semaphore.
  void vATask( void * pvParameters )
  {
     // Create the semaphore to guard a shared resource.
-    xSemaphore = sem_binary_create();
+    sem = sem_binary_create();
  }
 
  // A task that uses the semaphore.
@@ -40,11 +40,11 @@
  {
     // ... Do other things.
 
-    if( xSemaphore != NULL )
+    if( sem != NULL )
     {
         // See if we can obtain the semaphore.  If the semaphore is not available
         // wait 10 ticks to see if it becomes free.
-        if( sem_wait( xSemaphore, ( uint32_t ) 10 ) == pdTRUE )
+        if( sem_wait( sem, ( uint32_t ) 10 ) == pdTRUE )
         {
             // We were able to obtain the semaphore and can now access the
             // shared resource.
@@ -53,7 +53,7 @@
 
             // We have finished accessing the shared resource.  Release the
             // semaphore.
-            sem_post( xSemaphore );
+            sem_post( sem );
         }
         else
         {
@@ -66,25 +66,25 @@
  * \defgroup sem_wait sem_wait
  * \ingroup Semaphores
  */
-uint8_t sem_wait(sem_t sem, uint32_t block_time) {
-	return xQueueSemaphoreTake( ( sem ), ( block_time ) );
+uint8_t sem_wait(sem_t sem, uint32_t timeout) {
+	return xQueueSemaphoreTake( ( sem ), ( timeout ) );
 }
 
 /**
  * semphr. h
- * <pre>sem_post( sem_t xSemaphore )</pre>
+ * <pre>sem_post( sem_t sem )</pre>
  *
  * <i>Macro</i> to release a semaphore.  The semaphore must have previously been
  * created with a call to sem_binary_create(), mutex_create() or
  * sem_create(). and obtained using sSemaphoreTake().
  *
- * This macro must not be used from an ISR.  See xSemaphoreGiveFromISR () for
+ * This macro must not be used from an ISR.  See semGiveFromISR () for
  * an alternative which can be used from an ISR.
  *
  * This macro must also not be used on semaphores created using
  * mutex_recursive_create().
  *
- * @param xSemaphore A handle to the semaphore being released.  This is the
+ * @param sem A handle to the semaphore being released.  This is the
  * handle returned when the semaphore was created.
  *
  * @return pdTRUE if the semaphore was released.  pdFALSE if an error occurred.
@@ -94,16 +94,16 @@ uint8_t sem_wait(sem_t sem, uint32_t block_time) {
  *
  * Example usage:
  <pre>
- sem_t xSemaphore = NULL;
+ sem_t sem = NULL;
 
  void vATask( void * pvParameters )
  {
     // Create the semaphore to guard a shared resource.
-    xSemaphore = vSemaphoreCreateBinary();
+    sem = vSemaphoreCreateBinary();
 
-    if( xSemaphore != NULL )
+    if( sem != NULL )
     {
-        if( sem_post( xSemaphore ) != pdTRUE )
+        if( sem_post( sem ) != pdTRUE )
         {
             // We would expect this call to fail because we cannot give
             // a semaphore without first "taking" it!
@@ -111,7 +111,7 @@ uint8_t sem_wait(sem_t sem, uint32_t block_time) {
 
         // Obtain the semaphore - don't block if the semaphore is not
         // immediately available.
-        if( sem_wait( xSemaphore, ( uint32_t ) 0 ) )
+        if( sem_wait( sem, ( uint32_t ) 0 ) )
         {
             // We now have the semaphore and can access the shared resource.
 
@@ -119,7 +119,7 @@ uint8_t sem_wait(sem_t sem, uint32_t block_time) {
 
             // We have finished accessing the shared resource so can free the
             // semaphore.
-            if( sem_post( xSemaphore ) != pdTRUE )
+            if( sem_post( sem ) != pdTRUE )
             {
                 // We would not expect this call to fail because we must have
                 // obtained the semaphore to get here.
@@ -172,15 +172,15 @@ uint8_t sem_post(sem_t sem) {
  *
  * Example usage:
  <pre>
- sem_t xSemaphore;
+ sem_t sem;
 
  void vATask( void * pvParameters )
  {
     // Semaphore cannot be used before a call to mutex_create().
     // This is a macro so pass the variable in directly.
-    xSemaphore = mutex_create();
+    sem = mutex_create();
 
-    if( xSemaphore != NULL )
+    if( sem != NULL )
     {
         // The semaphore was created successfully.
         // The semaphore can now be used.
@@ -190,16 +190,16 @@ uint8_t sem_post(sem_t sem) {
  * \defgroup mutex_create mutex_create
  * \ingroup Semaphores
  */
-mutex_t mutex_create() {
+mutex_t mutex_create(void) {
 	return (mutex_t)xQueueCreateMutex(queueQUEUE_TYPE_MUTEX);
 }
 
-uint8_t mutex_give(mutex_t sem) {
-	return xQueueGenericSend((queue_t)(sem), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK);
+uint8_t mutex_give(mutex_t mutex) {
+	return xQueueGenericSend((queue_t)(mutex), NULL, semGIVE_BLOCK_TIME, queueSEND_TO_BACK);
 }
 
-uint8_t mutex_take(mutex_t sem, uint32_t block_time) {
-	return xQueueSemaphoreTake( ( sem ), ( block_time ) );
+uint8_t mutex_take(mutex_t mutex, uint32_t timeout) {
+	return xQueueSemaphoreTake( ( mutex ), ( timeout ) );
 }
 
 /**
@@ -218,8 +218,8 @@ uint8_t mutex_take(mutex_t sem, uint32_t block_time) {
  * is created using sem_binary_create() then the required memory is
  * automatically dynamically allocated inside the sem_binary_create()
  * function.  (see http://www.freertos.org/a00111.html).  If a binary semaphore
- * is created using xSemaphoreCreateBinaryStatic() then the application writer
- * must provide the memory.  xSemaphoreCreateBinaryStatic() therefore allows a
+ * is created using semCreateBinaryStatic() then the application writer
+ * must provide the memory.  semCreateBinaryStatic() therefore allows a
  * binary semaphore to be created without using any dynamic memory allocation.
  *
  * The old vSemaphoreCreateBinary() macro is now deprecated in favour of this
@@ -241,15 +241,15 @@ uint8_t mutex_take(mutex_t sem, uint32_t block_time) {
  *
  * Example usage:
  <pre>
- sem_t xSemaphore = NULL;
+ sem_t sem = NULL;
 
  void vATask( void * pvParameters )
  {
     // Semaphore cannot be used before a call to sem_binary_create().
     // This is a macro so pass the variable in directly.
-    xSemaphore = sem_binary_create();
+    sem = sem_binary_create();
 
-    if( xSemaphore != NULL )
+    if( sem != NULL )
     {
         // The semaphore was created successfully.
         // The semaphore can now be used.
@@ -259,7 +259,7 @@ uint8_t mutex_take(mutex_t sem, uint32_t block_time) {
  * \defgroup sem_binary_create sem_binary_create
  * \ingroup Semaphores
  */
-sem_t sem_binary_create() {
+sem_t sem_binary_create(void) {
 	return xQueueGenericCreate((uint32_t)1, semSEMAPHORE_QUEUE_ITEM_LENGTH, queueQUEUE_TYPE_BINARY_SEMAPHORE);
 }
 
@@ -276,9 +276,9 @@ sem_t sem_binary_create() {
  * automatically dynamically allocated inside the
  * mutex_recursive_create() function.  (see
  * http://www.freertos.org/a00111.html).  If a recursive mutex is created using
- * xSemaphoreCreateRecursiveMutexStatic() then the application writer must
+ * semCreateRecursiveMutexStatic() then the application writer must
  * provide the memory that will get used by the mutex.
- * xSemaphoreCreateRecursiveMutexStatic() therefore allows a recursive mutex to
+ * semCreateRecursiveMutexStatic() therefore allows a recursive mutex to
  * be created without using any dynamic memory allocation.
  *
  * Mutexes created using this macro can be accessed using the
@@ -303,20 +303,20 @@ sem_t sem_binary_create() {
  * semaphore and another always 'takes' the semaphore) and from within interrupt
  * service routines.
  *
- * @return xSemaphore Handle to the created mutex semaphore.  Should be of type
+ * @return sem Handle to the created mutex semaphore.  Should be of type
  * sem_t.
  *
  * Example usage:
  <pre>
- sem_t xSemaphore;
+ sem_t sem;
 
  void vATask( void * pvParameters )
  {
     // Semaphore cannot be used before a call to mutex_create().
     // This is a macro so pass the variable in directly.
-    xSemaphore = mutex_recursive_create();
+    sem = mutex_recursive_create();
 
-    if( xSemaphore != NULL )
+    if( sem != NULL )
     {
         // The semaphore was created successfully.
         // The semaphore can now be used.
@@ -326,7 +326,7 @@ sem_t sem_binary_create() {
  * \defgroup mutex_recursive_create mutex_recursive_create
  * \ingroup Semaphores
  */
-mutex_t mutex_recursive_create() {
+mutex_t mutex_recursive_create(void) {
 	return xQueueCreateMutex(queueQUEUE_TYPE_RECURSIVE_MUTEX);
 }
 
@@ -471,7 +471,7 @@ uint8_t mutex_recursive_give(mutex_t mutex) {
     {
         // See if we can obtain the mutex.  If the mutex is not available
         // wait 10 ticks to see if it becomes free.
-        if( mutex_recursive_take( xSemaphore, ( uint32_t ) 10 ) == pdTRUE )
+        if( mutex_recursive_take( sem, ( uint32_t ) 10 ) == pdTRUE )
         {
             // We were able to obtain the mutex and can now access the
             // shared resource.
@@ -507,30 +507,30 @@ uint8_t mutex_recursive_give(mutex_t mutex) {
  * \defgroup mutex_recursive_take mutex_recursive_take
  * \ingroup Semaphores
  */
-uint8_t mutex_recursive_take(mutex_t mutex, uint32_t block_time) {
-	return xQueueTakeMutexRecursive((mutex), (block_time));
+uint8_t mutex_recursive_take(mutex_t mutex, uint32_t timeout) {
+	return xQueueTakeMutexRecursive((mutex), (timeout));
 }
 
-sem_t sem_create(uint32_t uxMaxCount, uint32_t uxInitialCount) {
-	return xQueueCreateCountingSemaphore((uxMaxCount), (uxInitialCount));
+sem_t sem_create(uint32_t max_count, uint32_t init_count) {
+	return xQueueCreateCountingSemaphore((max_count), (init_count));
 }
 
-void sem_delete(sem_t xSemaphore) {
-	queue_delete((queue_t)(xSemaphore));
+void sem_delete(sem_t sem) {
+	queue_delete((queue_t)(sem));
 }
 
-task_t mutex_get_owner(sem_t xMutex) {
-	return xQueueGetMutexHolder((xMutex));
+task_t mutex_get_owner(mutex_t mutex) {
+	return xQueueGetMutexHolder((mutex));
 }
 
-uint32_t sem_get_count( sem_t xSemaphore ) {
-	return queue_get_waiting((queue_t)(xSemaphore));
+uint32_t sem_get_count(sem_t sem) {
+	return queue_get_waiting((queue_t)(sem));
 }
 
 mutex_t mutex_create_static(static_sem_s_t* pxMutexBuffer) {
 	return xQueueCreateMutexStatic(queueQUEUE_TYPE_MUTEX, (pxMutexBuffer));
 }
 
-sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem_s_t* pxSemaphoreBuffer) {
-	return xQueueCreateCountingSemaphoreStatic((uxMaxCount), (uxInitialCount), (pxSemaphoreBuffer));
+sem_t sem_create_static(uint32_t max_count, uint32_t init_count, static_sem_s_t* psemBuffer) {
+	return xQueueCreateCountingSemaphoreStatic((max_count), (init_count), (psemBuffer));
 }

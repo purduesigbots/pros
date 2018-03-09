@@ -20,6 +20,9 @@ ADIPort::ADIPort(uint8_t port) : _port(port) {
 ADIPort::ADIPort(uint8_t port, adi_port_config_e_t type) : _port(port) {
 	adi_port_config_set(_port, type);
 }
+ADIPort::ADIPort() {
+	// for use by derived classes like ADIEncoder
+}
 
 ADIPort::~ADIPort() {
 	adi_port_config_set(_port, E_ADI_TYPE_UNDEFINED);
@@ -43,6 +46,10 @@ int32_t ADIPort::value_get() {
 
 ADIAnalogIn::ADIAnalogIn(uint8_t port) : ADIPort(port) {
 	config_set(E_ADI_ANALOG_IN);
+}
+
+ADIAnalogOut::ADIAnalogOut(uint8_t port) : ADIPort(port) {
+	config_set(E_ADI_ANALOG_OUT);
 }
 
 int32_t ADIAnalogIn::calibrate() {

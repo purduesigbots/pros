@@ -46,3 +46,4 @@ SpacesInSquareBrackets: false
 Standard: Cpp11
 UseTab: ForIndentation
 PointerAlignment: Left
+AccessModifierOffset: 0

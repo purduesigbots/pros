@@ -173,7 +173,7 @@ static int32_t prvCopyDataToQueue( Queue_t * const pxQueue, const void *pvItemTo
 /*
  * Copies an item out of a queue.
  */
-static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer ) ;
+static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const buffer ) ;
 
 #if ( configUSE_QUEUE_SETS == 1 )
 	/*
@@ -398,8 +398,8 @@ void queue_reset(queue_t queue) {
 		return pxNewQueue;
 	}
 
-	queue_t queue_create(uint32_t uxQueueLength, uint32_t uxItemSize) {
-	        return xQueueGenericCreate((uxQueueLength), (uxItemSize), (queueQUEUE_TYPE_BASE));
+	queue_t queue_create(uint32_t length, uint32_t item_size) {
+	        return xQueueGenericCreate((length), (item_size), (queueQUEUE_TYPE_BASE));
 	}
 
 #endif /* configSUPPORT_STATIC_ALLOCATION */
@@ -626,7 +626,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 
 #if ( configUSE_RECURSIVE_MUTEXES == 1 )
 
-	int32_t xQueueTakeMutexRecursive( queue_t xMutex, uint32_t xTicksToWait )
+	int32_t xQueueTakeMutexRecursive( queue_t xMutex, uint32_t timeout )
 	{
 	int32_t xReturn;
 	Queue_t * const pxMutex = ( Queue_t * ) xMutex;
@@ -645,7 +645,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 		}
 		else
 		{
-			xReturn = xQueueSemaphoreTake( pxMutex, xTicksToWait );
+			xReturn = xQueueSemaphoreTake( pxMutex, timeout );
 
 			/* pdPASS will only be returned if the mutex was successfully
 			obtained.  The calling task may have entered the Blocked state
@@ -722,7 +722,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 #endif /* ( ( configUSE_COUNTING_SEMAPHORES == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) */
 /*-----------------------------------------------------------*/
 
-int32_t xQueueGenericSend( queue_t xQueue, const void * const pvItemToQueue, uint32_t xTicksToWait, const int32_t xCopyPosition )
+int32_t xQueueGenericSend( queue_t xQueue, const void * const pvItemToQueue, uint32_t timeout, const int32_t xCopyPosition )
 {
 int32_t xEntryTimeSet = pdFALSE, xYieldRequired;
 TimeOut_t xTimeOut;
@@ -733,7 +733,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 	configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
 	#if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
 	{
-		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( timeout != 0 ) ) );
 	}
 	#endif
 
@@ -842,7 +842,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			}
 			else
 			{
-				if( xTicksToWait == ( uint32_t ) 0 )
+				if( timeout == ( uint32_t ) 0 )
 				{
 					/* The queue was full and no block time is specified (or
 					the block time has expired) so leave now. */
@@ -877,12 +877,12 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		prvLockQueue( pxQueue );
 
 		/* Update the timeout state to see if it has expired yet. */
-		if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+		if( xTaskCheckForTimeOut( &xTimeOut, &timeout ) == pdFALSE )
 		{
 			if( prvIsQueueFull( pxQueue ) != pdFALSE )
 			{
 				traceBLOCKING_ON_QUEUE_SEND( pxQueue );
-				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToSend ), xTicksToWait );
+				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToSend ), timeout );
 
 				/* Unlocking the queue means queue events can effect the
 				event list.  It is possible that interrupts occurring now
@@ -1244,23 +1244,23 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-int32_t queue_recv( queue_t xQueue, void * const pvBuffer, uint32_t xTicksToWait )
+int32_t queue_recv(queue_t queue, void* const buffer, uint32_t timeout)
 {
 int32_t xEntryTimeSet = pdFALSE;
 TimeOut_t xTimeOut;
-Queue_t * const pxQueue = ( Queue_t * ) xQueue;
+Queue_t * const pxQueue = ( Queue_t * ) queue;
 
 	/* Check the pointer is not NULL. */
 	configASSERT( ( pxQueue ) );
 
 	/* The buffer into which data is received can only be NULL if the data size
 	is zero (so no data is copied into the buffer. */
-	configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( uint32_t ) 0U ) ) );
+	configASSERT( !( ( ( buffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( uint32_t ) 0U ) ) );
 
 	/* Cannot block if the scheduler is suspended. */
 	#if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
 	{
-		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( timeout != 0 ) ) );
 	}
 	#endif
 
@@ -1280,7 +1280,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			if( uxMessagesWaiting > ( uint32_t ) 0 )
 			{
 				/* Data available, remove one item. */
-				prvCopyDataFromQueue( pxQueue, pvBuffer );
+				prvCopyDataFromQueue( pxQueue, buffer );
 				traceQUEUE_RECEIVE( pxQueue );
 				pxQueue->uxMessagesWaiting = uxMessagesWaiting - ( uint32_t ) 1;
 
@@ -1308,7 +1308,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			}
 			else
 			{
-				if( xTicksToWait == ( uint32_t ) 0 )
+				if( timeout == ( uint32_t ) 0 )
 				{
 					/* The queue was empty and no block time is specified (or
 					the block time has expired) so leave now. */
@@ -1339,14 +1339,14 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		prvLockQueue( pxQueue );
 
 		/* Update the timeout state to see if it has expired yet. */
-		if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+		if( xTaskCheckForTimeOut( &xTimeOut, &timeout ) == pdFALSE )
 		{
 			/* The timeout has not expired.  If the queue is still empty place
 			the task on the list of tasks waiting to receive from the queue. */
 			if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
 			{
 				traceBLOCKING_ON_QUEUE_RECEIVE( pxQueue );
-				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), timeout );
 				prvUnlockQueue( pxQueue );
 				if( rtos_resume_all() == pdFALSE )
 				{
@@ -1386,7 +1386,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xQueueSemaphoreTake( queue_t xQueue, uint32_t xTicksToWait )
+int32_t xQueueSemaphoreTake( queue_t xQueue, uint32_t timeout )
 {
 int32_t xEntryTimeSet = pdFALSE;
 TimeOut_t xTimeOut;
@@ -1406,7 +1406,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 	/* Cannot block if the scheduler is suspended. */
 	#if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
 	{
-		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( timeout != 0 ) ) );
 	}
 	#endif
 
@@ -1471,7 +1471,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			}
 			else
 			{
-				if( xTicksToWait == ( uint32_t ) 0 )
+				if( timeout == ( uint32_t ) 0 )
 				{
 					/* For inheritance to have occurred there must have been an
 					initial timeout, and an adjusted timeout cannot become 0, as
@@ -1511,7 +1511,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		prvLockQueue( pxQueue );
 
 		/* Update the timeout state to see if it has expired yet. */
-		if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+		if( xTaskCheckForTimeOut( &xTimeOut, &timeout ) == pdFALSE )
 		{
 			/* A block time is specified and not expired.  If the semaphore
 			count is 0 then enter the Blocked state to wait for a semaphore to
@@ -1538,7 +1538,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 				}
 				#endif
 
-				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), timeout );
 				prvUnlockQueue( pxQueue );
 				if( rtos_resume_all() == pdFALSE )
 				{
@@ -1605,24 +1605,24 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-int32_t queue_peek( queue_t xQueue, void * const pvBuffer, uint32_t xTicksToWait )
+int32_t queue_peek(queue_t queue, void* const buffer, uint32_t timeout)
 {
 int32_t xEntryTimeSet = pdFALSE;
 TimeOut_t xTimeOut;
 int8_t *pcOriginalReadPosition;
-Queue_t * const pxQueue = ( Queue_t * ) xQueue;
+Queue_t * const pxQueue = ( Queue_t * ) queue;
 
 	/* Check the pointer is not NULL. */
 	configASSERT( ( pxQueue ) );
 
 	/* The buffer into which data is received can only be NULL if the data size
 	is zero (so no data is copied into the buffer. */
-	configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( uint32_t ) 0U ) ) );
+	configASSERT( !( ( ( buffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( uint32_t ) 0U ) ) );
 
 	/* Cannot block if the scheduler is suspended. */
 	#if ( ( INCLUDE_xTaskGetSchedulerState == 1 ) || ( configUSE_TIMERS == 1 ) )
 	{
-		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+		configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( timeout != 0 ) ) );
 	}
 	#endif
 
@@ -1646,7 +1646,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 				data, not removing it. */
 				pcOriginalReadPosition = pxQueue->u.pcReadFrom;
 
-				prvCopyDataFromQueue( pxQueue, pvBuffer );
+				prvCopyDataFromQueue( pxQueue, buffer );
 				traceQUEUE_PEEK( pxQueue );
 
 				/* The data is not being removed, so reset the read pointer. */
@@ -1676,7 +1676,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			}
 			else
 			{
-				if( xTicksToWait == ( uint32_t ) 0 )
+				if( timeout == ( uint32_t ) 0 )
 				{
 					/* The queue was empty and no block time is specified (or
 					the block time has expired) so leave now. */
@@ -1708,14 +1708,14 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 		prvLockQueue( pxQueue );
 
 		/* Update the timeout state to see if it has expired yet. */
-		if( xTaskCheckForTimeOut( &xTimeOut, &xTicksToWait ) == pdFALSE )
+		if( xTaskCheckForTimeOut( &xTimeOut, &timeout ) == pdFALSE )
 		{
 			/* Timeout has not expired yet, check to see if there is data in the
 			queue now, and if not enter the Blocked state to wait for data. */
 			if( prvIsQueueEmpty( pxQueue ) != pdFALSE )
 			{
 				traceBLOCKING_ON_QUEUE_PEEK( pxQueue );
-				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait );
+				vTaskPlaceOnEventList( &( pxQueue->xTasksWaitingToReceive ), timeout );
 				prvUnlockQueue( pxQueue );
 				if( rtos_resume_all() == pdFALSE )
 				{
@@ -1755,14 +1755,14 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xQueueReceiveFromISR( queue_t xQueue, void * const pvBuffer, int32_t * const pxHigherPriorityTaskWoken )
+int32_t xQueueReceiveFromISR( queue_t xQueue, void * const buffer, int32_t * const pxHigherPriorityTaskWoken )
 {
 int32_t xReturn;
 uint32_t uxSavedInterruptStatus;
 Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
 	configASSERT( pxQueue );
-	configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( uint32_t ) 0U ) ) );
+	configASSERT( !( ( buffer == NULL ) && ( pxQueue->uxItemSize != ( uint32_t ) 0U ) ) );
 
 	/* RTOS ports that support interrupt nesting have the concept of a maximum
 	system call (or maximum API call) interrupt priority.  Interrupts that are
@@ -1791,7 +1791,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
 			traceQUEUE_RECEIVE_FROM_ISR( pxQueue );
 
-			prvCopyDataFromQueue( pxQueue, pvBuffer );
+			prvCopyDataFromQueue( pxQueue, buffer );
 			pxQueue->uxMessagesWaiting = uxMessagesWaiting - ( uint32_t ) 1;
 
 			/* If the queue is locked the event list will not be modified.
@@ -1846,7 +1846,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-int32_t xQueuePeekFromISR( queue_t xQueue,  void * const pvBuffer )
+int32_t xQueuePeekFromISR( queue_t xQueue,  void * const buffer )
 {
 int32_t xReturn;
 uint32_t uxSavedInterruptStatus;
@@ -1854,7 +1854,7 @@ int8_t *pcOriginalReadPosition;
 Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
 	configASSERT( pxQueue );
-	configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( uint32_t ) 0U ) ) );
+	configASSERT( !( ( buffer == NULL ) && ( pxQueue->uxItemSize != ( uint32_t ) 0U ) ) );
 	configASSERT( pxQueue->uxItemSize != 0 ); /* Can't peek a semaphore. */
 
 	/* RTOS ports that support interrupt nesting have the concept of a maximum
@@ -1883,7 +1883,7 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 			/* Remember the read position so it can be reset as nothing is
 			actually being removed from the queue. */
 			pcOriginalReadPosition = pxQueue->u.pcReadFrom;
-			prvCopyDataFromQueue( pxQueue, pvBuffer );
+			prvCopyDataFromQueue( pxQueue, buffer );
 			pxQueue->u.pcReadFrom = pcOriginalReadPosition;
 
 			xReturn = pdPASS;
@@ -1900,15 +1900,15 @@ Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 }
 /*-----------------------------------------------------------*/
 
-uint32_t queue_get_waiting( const queue_t xQueue )
+uint32_t queue_get_waiting(const queue_t queue)
 {
 uint32_t uxReturn;
 
-	configASSERT( xQueue );
+	configASSERT( queue );
 
 	taskENTER_CRITICAL();
 	{
-		uxReturn = ( ( Queue_t * ) xQueue )->uxMessagesWaiting;
+		uxReturn = ( ( Queue_t * ) queue )->uxMessagesWaiting;
 	}
 	taskEXIT_CRITICAL();
 
@@ -1916,12 +1916,12 @@ uint32_t uxReturn;
 } /*lint !e818 Pointer cannot be declared const as xQueue is a typedef not pointer. */
 /*-----------------------------------------------------------*/
 
-uint32_t queue_get_available( const queue_t xQueue )
+uint32_t queue_get_available(const queue_t queue)
 {
 uint32_t uxReturn;
 Queue_t *pxQueue;
 
-	pxQueue = ( Queue_t * ) xQueue;
+	pxQueue = ( Queue_t * ) queue;
 	configASSERT( pxQueue );
 
 	taskENTER_CRITICAL();
@@ -1946,9 +1946,9 @@ uint32_t uxReturn;
 } /*lint !e818 Pointer cannot be declared const as xQueue is a typedef not pointer. */
 /*-----------------------------------------------------------*/
 
-void queue_delete( queue_t xQueue )
+void queue_delete(queue_t queue)
 {
-Queue_t * const pxQueue = ( Queue_t * ) xQueue;
+Queue_t * const pxQueue = ( Queue_t * ) queue;
 
 	configASSERT( pxQueue );
 	traceQUEUE_DELETE( pxQueue );
@@ -2124,7 +2124,7 @@ uint32_t uxMessagesWaiting;
 }
 /*-----------------------------------------------------------*/
 
-static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer )
+static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const buffer )
 {
 	if( pxQueue->uxItemSize != ( uint32_t ) 0 )
 	{
@@ -2137,7 +2137,7 @@ static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer
 		{
 			mtCOVERAGE_TEST_MARKER();
 		}
-		( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.pcReadFrom, ( size_t ) pxQueue->uxItemSize ); /*lint !e961 !e418 MISRA exception as the casts are only redundant for some ports.  Also previous logic ensures a null pointer can only be passed to memcpy() when the count is 0. */
+		( void ) memcpy( ( void * ) buffer, ( void * ) pxQueue->u.pcReadFrom, ( size_t ) pxQueue->uxItemSize ); /*lint !e961 !e418 MISRA exception as the casts are only redundant for some ports.  Also previous logic ensures a null pointer can only be passed to memcpy() when the count is 0. */
 	}
 }
 /*-----------------------------------------------------------*/
@@ -2342,7 +2342,7 @@ int32_t xReturn;
 
 #if ( configUSE_CO_ROUTINES == 1 )
 
-	int32_t xQueueCRSend( queue_t xQueue, const void *pvItemToQueue, uint32_t xTicksToWait )
+	int32_t xQueueCRSend( queue_t xQueue, const void *pvItemToQueue, uint32_t timeout )
 	{
 	int32_t xReturn;
 	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
@@ -2356,11 +2356,11 @@ int32_t xReturn;
 			{
 				/* The queue is full - do we want to block or just leave without
 				posting? */
-				if( xTicksToWait > ( uint32_t ) 0 )
+				if( timeout > ( uint32_t ) 0 )
 				{
 					/* As this is called from a coroutine we cannot block directly, but
 					return indicating that we need to block. */
-					vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToSend ) );
+					vCoRoutineAddToDelayedList( timeout, &( pxQueue->xTasksWaitingToSend ) );
 					portENABLE_INTERRUPTS();
 					return errQUEUE_BLOCKED;
 				}
@@ -2419,7 +2419,7 @@ int32_t xReturn;
 
 #if ( configUSE_CO_ROUTINES == 1 )
 
-	int32_t xQueueCRReceive( queue_t xQueue, void *pvBuffer, uint32_t xTicksToWait )
+	int32_t xQueueCRReceive( queue_t xQueue, void *buffer, uint32_t timeout )
 	{
 	int32_t xReturn;
 	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
@@ -2433,11 +2433,11 @@ int32_t xReturn;
 			{
 				/* There are no messages in the queue, do we want to block or just
 				leave with nothing? */
-				if( xTicksToWait > ( uint32_t ) 0 )
+				if( timeout > ( uint32_t ) 0 )
 				{
 					/* As this is a co-routine we cannot block directly, but return
 					indicating that we need to block. */
-					vCoRoutineAddToDelayedList( xTicksToWait, &( pxQueue->xTasksWaitingToReceive ) );
+					vCoRoutineAddToDelayedList( timeout, &( pxQueue->xTasksWaitingToReceive ) );
 					portENABLE_INTERRUPTS();
 					return errQUEUE_BLOCKED;
 				}
@@ -2469,7 +2469,7 @@ int32_t xReturn;
 					mtCOVERAGE_TEST_MARKER();
 				}
 				--( pxQueue->uxMessagesWaiting );
-				( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+				( void ) memcpy( ( void * ) buffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
 
 				xReturn = pdPASS;
 
@@ -2557,7 +2557,7 @@ int32_t xReturn;
 
 #if ( configUSE_CO_ROUTINES == 1 )
 
-	int32_t xQueueCRReceiveFromISR( queue_t xQueue, void *pvBuffer, int32_t *pxCoRoutineWoken )
+	int32_t xQueueCRReceiveFromISR( queue_t xQueue, void *buffer, int32_t *pxCoRoutineWoken )
 	{
 	int32_t xReturn;
 	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
@@ -2577,7 +2577,7 @@ int32_t xReturn;
 				mtCOVERAGE_TEST_MARKER();
 			}
 			--( pxQueue->uxMessagesWaiting );
-			( void ) memcpy( ( void * ) pvBuffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
+			( void ) memcpy( ( void * ) buffer, ( void * ) pxQueue->u.pcReadFrom, ( unsigned ) pxQueue->uxItemSize );
 
 			if( ( *pxCoRoutineWoken ) == pdFALSE )
 			{
@@ -2706,7 +2706,7 @@ int32_t xReturn;
 
 #if ( configUSE_TIMERS == 1 )
 
-	void vQueueWaitForMessageRestricted( queue_t xQueue, uint32_t xTicksToWait, const int32_t xWaitIndefinitely )
+	void vQueueWaitForMessageRestricted( queue_t xQueue, uint32_t timeout, const int32_t xWaitIndefinitely )
 	{
 	Queue_t * const pxQueue = ( Queue_t * ) xQueue;
 
@@ -2728,7 +2728,7 @@ int32_t xReturn;
 		if( pxQueue->uxMessagesWaiting == ( uint32_t ) 0U )
 		{
 			/* There is nothing in the queue, block for the specified period. */
-			vTaskPlaceOnEventListRestricted( &( pxQueue->xTasksWaitingToReceive ), xTicksToWait, xWaitIndefinitely );
+			vTaskPlaceOnEventListRestricted( &( pxQueue->xTasksWaitingToReceive ), timeout, xWaitIndefinitely );
 		}
 		else
 		{
@@ -2825,11 +2825,11 @@ int32_t xReturn;
 
 #if ( configUSE_QUEUE_SETS == 1 )
 
-	QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, uint32_t const xTicksToWait )
+	QueueSetMemberHandle_t xQueueSelectFromSet( QueueSetHandle_t xQueueSet, uint32_t const timeout )
 	{
 	QueueSetMemberHandle_t xReturn = NULL;
 
-		( void ) queue_recv( ( queue_t ) xQueueSet, &xReturn, xTicksToWait ); /*lint !e961 Casting from one typedef to another is not redundant. */
+		( void ) queue_recv( ( queue_t ) xQueueSet, &xReturn, timeout ); /*lint !e961 Casting from one typedef to another is not redundant. */
 		return xReturn;
 	}
 

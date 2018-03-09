@@ -108,7 +108,11 @@ uint32_t millis(void);
  *         referenced. If an error occurred, NULL will be returned and errno
  *         can be checked for hints as to why task_create failed.
  */
-task_t task_create(task_fn_t function, void* parameters, uint8_t prio, uint16_t stack_depth, const char* name);
+task_t task_create(task_fn_t function,
+                   void* const parameters,
+                   uint32_t prio,
+                   const uint16_t stack_depth,
+                   const char* const name);
 
 /**
  * Remove a task from the RTOS real time kernel's management.  The task being
@@ -219,7 +223,7 @@ uint32_t task_get_count(void);
  *
  * \return A pointer to the name of the task
  */
-char const* task_get_name(task_t task);
+char* task_get_name(task_t task);
 
 /**
  * Obtains a task handle from the specified name
@@ -231,7 +235,7 @@ char const* task_get_name(task_t task);
  *
  * \return A task handle with a matching name, or NULL if none were found.
  */
-task_t task_get_by_name(char* name);
+task_t task_get_by_name(const char* name);
 
 /**
  * Sends a simple notification to task and increments the notification counter.

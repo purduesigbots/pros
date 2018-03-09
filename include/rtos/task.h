@@ -307,7 +307,7 @@ is used in assert() statements. */
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
 	task_t task_create(task_fn_t task_code, void* const param,
-	                   uint32_t priority, const size_t stack_size,
+	                   uint32_t priority, const uint16_t stack_size,
 	                   const char* const name); 
 #endif
 
@@ -1871,7 +1871,7 @@ void vTaskNotifyGiveFromISR( task_t xTaskToNotify, int32_t *pxHigherPriorityTask
  * \defgroup task_notify_take task_notify_take
  * \ingroup TaskNotifications
  */
-uint32_t task_notify_take( int32_t xClearCountOnExit, uint32_t xTicksToWait ) ;
+uint32_t task_notify_take( bool xClearCountOnExit, uint32_t xTicksToWait ) ;
 
 /**
  * task. h
