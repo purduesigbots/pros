@@ -1,6 +1,5 @@
 #ifndef PROS_VISION_H_
 #define PROS_VISION_H_
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -232,4 +231,6 @@ int32_t vision_get_white_balance(uint8_t port);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
