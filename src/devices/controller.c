@@ -103,7 +103,7 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 		return false;  // button is not pressed or was already detected
 }
 
-uint8_t competition_get_status() {
+uint8_t competition_get_status(void) {
 	if (!internal_port_mutex_take(V5_PORT_CONTROLLER_1)) {
 		errno = EACCES;
 		return 255;

@@ -2,7 +2,7 @@
 #include "kapi.h"
 #include "vdml/vdml.h"
 
-double battery_get_voltage() {
+double battery_get_voltage(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
 		return PROS_ERR_F;
@@ -12,7 +12,7 @@ double battery_get_voltage() {
 	return rtn;
 }
 
-double battery_get_current() {
+double battery_get_current(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
 		return PROS_ERR_F;
@@ -22,7 +22,7 @@ double battery_get_current() {
 	return rtn;
 }
 
-double battery_get_temperature() {
+double battery_get_temperature(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
 		return PROS_ERR_F;
@@ -32,7 +32,7 @@ double battery_get_temperature() {
 	return rtn;
 }
 
-double battery_get_capacity() {
+double battery_get_capacity(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
 		return PROS_ERR_F;

@@ -158,28 +158,28 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  *
  * \return The current voltage of the battery
  */
-double battery_get_voltage();
+double battery_get_voltage(void);
 
 /**
  * Gets the current current of the battery, as reported by VEXos
  *
  * \return The current current of the battery
  */
-double battery_get_current();
+double battery_get_current(void);
 
 /**
  * Gets the current temperature of the battery, as reported by VEXos
  *
  * \return The current temperature of the battery
  */
-double battery_get_temperature();
+double battery_get_temperature(void);
 
 /**
  * Gets the current capacity of the battery, as reported by VEXos
  *
  * \return The current capacity of the battery
  */
-double battery_get_capacity();
+double battery_get_capacity(void);
 
 #ifdef __cplusplus
 }
