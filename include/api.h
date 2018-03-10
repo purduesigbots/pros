@@ -55,6 +55,7 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
+#include "pros/rtos.hpp"
 #endif
 
 #endif /* _PROS_API_H_ */
