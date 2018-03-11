@@ -20,47 +20,47 @@ Motor::Motor(uint8_t port, const bool reverse, motor_encoder_units_e_t encoder_u
 	set_gearing(gearset);
 }
 
-double Motor::get_actual_velocity() {
+double Motor::get_actual_velocity(void) {
 	return motor_get_actual_velocity(_port);
 }
 
-motor_brake_mode_e_t Motor::get_brake_mode() {
+motor_brake_mode_e_t Motor::get_brake_mode(void) {
 	return motor_get_brake_mode(_port);
 }
 
-int32_t Motor::get_current() {
+int32_t Motor::get_current(void) {
 	return motor_get_current(_port);
 }
 
-int32_t Motor::get_current_limit() {
+int32_t Motor::get_current_limit(void) {
 	return motor_get_current_limit(_port);
 }
 
-int32_t Motor::get_current_limit_flag() {
+int32_t Motor::get_current_limit_flag(void) {
 	return motor_get_current_limit_flag(_port);
 }
 
-int32_t Motor::get_direction() {
+int32_t Motor::get_direction(void) {
 	return motor_get_direction(_port);
 }
 
-double Motor::get_efficiency() {
+double Motor::get_efficiency(void) {
 	return motor_get_efficiency(_port);
 }
 
-motor_encoder_units_e_t Motor::get_encoder_units() {
+motor_encoder_units_e_t Motor::get_encoder_units(void) {
 	return motor_get_encoder_units(_port);
 }
 
-uint32_t Motor::get_faults() {
+uint32_t Motor::get_faults(void) {
 	return motor_get_faults(_port);
 }
 
-uint32_t Motor::get_flags() {
+uint32_t Motor::get_flags(void) {
 	return motor_get_flags(_port);
 }
 
-motor_gearset_e_t Motor::get_gearing() {
+motor_gearset_e_t Motor::get_gearing(void) {
 	return motor_get_gearing(_port);
 }
 
@@ -68,55 +68,55 @@ int32_t Motor::get_raw_position(uint32_t* const timestamp) {
 	return motor_get_raw_position(_port, timestamp);
 }
 
-int32_t Motor::get_temp_limit_flag() {
+int32_t Motor::get_temp_limit_flag(void) {
 	return motor_get_temp_limit_flag(_port);
 }
 
-double Motor::get_position() {
+double Motor::get_position(void) {
 	return motor_get_position(_port);
 }
 
-double Motor::get_power() {
+double Motor::get_power(void) {
 	return motor_get_power(_port);
 }
 
-int32_t Motor::get_reverse() {
+int32_t Motor::get_reverse(void) {
 	return motor_get_reverse(_port);
 }
 
-double Motor::get_temperature() {
+double Motor::get_temperature(void) {
 	return motor_get_temperature(_port);
 }
 
-double Motor::get_target() {
+double Motor::get_target(void) {
 	return motor_get_target(_port);
 }
 
-double Motor::get_torque() {
+double Motor::get_torque(void) {
 	return motor_get_torque(_port);
 }
 
-int32_t Motor::get_velocity() {
+int32_t Motor::get_velocity(void) {
 	return motor_get_velocity(_port);
 }
 
-double Motor::get_voltage() {
+double Motor::get_voltage(void) {
 	return motor_get_voltage(_port);
 }
 
-int32_t Motor::get_voltage_limit() {
+int32_t Motor::get_voltage_limit(void) {
 	return motor_get_voltage_limit(_port);
 }
 
-int32_t Motor::get_zero_velocity_flag() {
+int32_t Motor::get_zero_velocity_flag(void) {
 	return motor_get_zero_velocity_flag(_port);
 }
 
-int32_t Motor::get_zero_position_flag() {
+int32_t Motor::get_zero_position_flag(void) {
 	return motor_get_zero_position_flag(_port);
 }
 
-int32_t Motor::reset_position() {
+int32_t Motor::reset_position(void) {
 	return motor_reset_position(_port);
 }
 

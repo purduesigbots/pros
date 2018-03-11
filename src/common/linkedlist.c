@@ -76,6 +76,28 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func) {
 	it->next = n;
 }
 
+// NOTE: this will likely break if the list has intermixed data and function ptrs
+// TODO: add tag field to ll_node_s_t to easily check what is present
+void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
+	if (list == NULL || list->head == NULL) return;
+
+	ll_node_s_t* it = list->head;
+	ll_node_s_t* p = NULL;
+	while (it != NULL) {
+		if (it->payload.func == func) {
+			if (p == NULL)
+				list->head = it->next;
+			else
+				p->next = it->next;
+			kfree(it);
+			break;
+		}
+
+		p = it;
+		it = it->next;
+	}
+}
+
 void linked_list_append_data(linked_list_s_t* list, void* data) {
 	if (list == NULL) list = linked_list_init();
 
@@ -90,6 +112,28 @@ void linked_list_append_data(linked_list_s_t* list, void* data) {
 	while (it->next != NULL) it = it->next;
 
 	it->next = n;
+}
+
+// NOTE: this will likely break if the list has intermixed data and function ptrs
+// TODO: add tag field to ll_node_s_t to easily check what is present
+void linked_list_remove_data(linked_list_s_t* list, void* data) {
+	if (list == NULL || list->head == NULL) return;
+
+	ll_node_s_t* it = list->head;
+	ll_node_s_t* p = NULL;
+	while (it != NULL) {
+		if (it->payload.data == data) {
+			if (p == NULL)
+				list->head = it->next;
+			else
+				p->next = it->next;
+			kfree(it);
+			break;
+		}
+
+		p = it;
+		it = it->next;
+	}
 }
 
 void linked_list_foreach(linked_list_s_t* list, linked_list_foreach_fn_t cb, void* extra_data) {

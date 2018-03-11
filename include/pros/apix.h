@@ -367,7 +367,8 @@ int32_t serctl(const uint32_t action, void* const extra_arg);
  * \param extra_arg
  * 			An argument to pass in based on the action
  */
-int32_t usdctl(const uint32_t action, void* const extra_arg);
+// Not yet implemented
+// int32_t usdctl(const uint32_t action, void* const extra_arg);
 
 /**
  * Control settings of the way the file's driver treats the file

@@ -77,6 +77,8 @@ void linked_list_prepend_data(linked_list_s_t* list, void* data);
  * \param[in]      func     Function pointer with which to initialize the node
  */
 void linked_list_append_func(linked_list_s_t* list, generic_fn_t func);
+
+void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func);
 /**
  * \brief Append a node containing some data to a linked list
  *
@@ -86,6 +88,8 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func);
  * \param[in]      data     Data with which to initialize the node
  */
 void linked_list_append_data(linked_list_s_t* list, void* data);
+
+void linked_list_remove_data(linked_list_s_t* list, void* data);
 
 typedef void (*linked_list_foreach_fn_t)(ll_node_s_t*, void*);
 /**

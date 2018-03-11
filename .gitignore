@@ -2,4 +2,4 @@
 bin/
 .*.sw*
 template/
-./version
+version

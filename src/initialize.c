@@ -1,6 +1,6 @@
 #include "api.h"
 
-void on_left_button() {
+void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
 	if (pressed) {
@@ -14,7 +14,7 @@ void initialize() {
 	lcd_initialize();
 	lcd_set_text(1, "Hello Beta Testers!");
 
-	lcd_register_btn1_cb(on_left_button);
+	lcd_register_btn1_cb(on_center_button);
 }
 
 // the following functions don't work presently because comp. control

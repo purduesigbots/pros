@@ -306,8 +306,8 @@ is used in assert() statements. */
  * \ingroup Tasks
  */
 #if( configSUPPORT_DYNAMIC_ALLOCATION == 1 )
-	task_t task_create(task_fn_t task_code, void* const param,
-	                   uint32_t priority, const size_t stack_size,
+	task_t task_create(task_fn_t function, void* const parameters,
+	                   uint32_t prio, const uint16_t stack_depth,
 	                   const char* const name);
 #endif
 

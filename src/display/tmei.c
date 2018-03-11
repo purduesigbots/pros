@@ -6,7 +6,7 @@
  * This file represents a low-level interface for interacting with the built-in
  * LCD touch screen.
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -284,6 +284,20 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 	}
 }
 
+void unregister_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
+	switch (event_type) {
+	case E_TOUCH_EVENT_RELEASE:
+		linked_list_remove_func(_touch_event_release_handler_list, (generic_fn_t)cb);
+		break;
+	case E_TOUCH_EVENT_PRESS:
+		linked_list_remove_func(_touch_event_press_handler_list, (generic_fn_t)cb);
+		break;
+	case E_TOUCH_EVENT_PRESS_AND_HOLD:
+		linked_list_remove_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
+		break;
+	}
+}
+
 void display_error(const char* text) {
 	display_set_color_fg(COLOR_RED);
 	char s[50];
@@ -325,6 +339,11 @@ void display_fatal_error(const char* text) {
 static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t touch_handle_task_buffer;
 static task_t touch_handle_task;
+
+typedef struct touch_event_position_data_s {
+	int16_t x;
+	int16_t y;
+} touch_event_position_data_s_t;
 
 void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,

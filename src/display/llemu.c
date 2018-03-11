@@ -1,7 +1,7 @@
 /*
  * \file llemu.c
  *
- * \brief Legacy LCD Emulator
+ * Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-

@@ -24,7 +24,7 @@ namespace pros {
     task = task_create(function, parameters, prio, stack_depth, name);
   }
   Task::Task(task_t task) : task(task) { }
-  void Task::operator = (task_t const in) {
+  void Task::operator = (const task_t in) {
     task = in;
   }
   Task::~Task() {

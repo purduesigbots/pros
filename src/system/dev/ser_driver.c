@@ -294,8 +294,8 @@ int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
 }
 
 // control various components of the serial driver or a file
-int32_t serctl(const uint32_t cmd, void* const extra_arg) {
-	switch (cmd) {
+int32_t serctl(const uint32_t action, void* const extra_arg) {
+	switch (action) {
 	case SERCTL_ACTIVATE:
 		if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size,
 		                   (uint32_t)extra_arg)) {

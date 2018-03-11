@@ -55,6 +55,7 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
+#include "pros/misc.hpp"
 #include "pros/motors.hpp"
 #include "pros/rtos.hpp"
 #include "pros/vision.hpp"
