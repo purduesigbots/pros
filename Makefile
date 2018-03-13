@@ -1,14 +1,19 @@
--include ./common.mk
+CEXTS:=c
+ASMEXTS:=s S
+CXXEXTS:=cpp c++ cc
 
-WARNFLAGS += -Wpedantic
+WARNFLAGS=-Wall -Wpedantic
 
 LIBNAME=libpros
 LIBAR=$(BINDIR)/$(LIBNAME).a
 
 ROOT=.
+FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
+
+-include ./common.mk
 
 EXCLUDE_SRCDIRS=$(SRCDIR)/tests
 EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
@@ -22,9 +27,9 @@ INCLUDE=-iquote$(INCDIR)
 ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
 CSRC=$(foreach cext,$(CEXTS),$(call rwildcard, $(SRCDIR),*.$(cext), $1))
-COBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CSRC)))
+COBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CSRC,$1)))
 CXXSRC=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext), $1))
-CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(CXXSRC)))
+CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
@@ -94,10 +99,11 @@ $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
 	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
 	@echo Section sizes:
-	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ | sed --expression='s/  dec/total/' | numfmt --field=-4 --header $(NUMFMTFLAGS)
+	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
 define asm_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
 	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
@@ -106,6 +112,7 @@ $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
 	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
@@ -114,6 +121,7 @@ $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
 	$$(call test_output,$D$(CXX) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
@@ -123,7 +131,10 @@ $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 define _pros_ld_timestamp
 @echo -n "Adding timestamp "
 @# Pipe a line of code defining _PROS_COMPILE_TOOLSTAMP and _PROS_COMPILE_DIRECTORY into GCC,
-@# which allows compilation from stdin. We cefine _PROS_COMPILE_DIRECTORY using a command line-defined macro
+@# which allows compilation from stdin. We define _PROS_COMPILE_DIRECTORY using a command line-defined macro
 @# which is the pwd | sed ... | tail bit, which will grab the last 3 segments of the path and truncate it 23 characters
-$(call test_output, @echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = PCD;' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -DPCD="\"`pwd | sed -n 's/.*\/\(.*\/.*\/.*\)/\1/p' | tail -c 23`\"" -o $(LDTIMEOBJ) -,$(OK_STRING))
+$(call test_output, @echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = PCD;' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -DPCD="\"`pwd | tail -c 23`\"" -o $(LDTIMEOBJ) -,$(OK_STRING))
 endef
+
+$(BINDIR):
+	$(VV)mkdir -p $@

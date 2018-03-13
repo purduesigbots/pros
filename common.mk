@@ -1,8 +1,3 @@
-ROOT:=.
-FWDIR:=$(ROOT)/firmware
-SRC:=$(ROOT)/src
-INCLUDE:=$(ROOT)/include
-
 ARCHTUPLE=arm-none-eabi-
 DEVICE=VEX EDR V5
 
@@ -10,7 +5,7 @@ MFLAGS=-march=armv7-a -mfpu=neon-fp16 -mfloat-abi=softfp
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -Os
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
 
-WARNFLAGS=-Wall
+WARNFLAGS+=
 
 SPACE :=
 SPACE +=
@@ -36,10 +31,21 @@ SIZETOOL:=$(ARCHTUPLE)size
 READELF:=$(ARCHTUPLE)readelf
 STRIP:=$(ARCHTUPLE)strip
 
-# filename extensions
-CEXTS:=c
-ASMEXTS:=s S
-CXXEXTS:=cpp c++ cc
+ifneq (, $(shell command -v gnumfmt 2> /dev/null))
+	SIZES_NUMFMT:=| gnumfmt --field=-4 --header $(NUMFMTFLAGS)
+else
+ifneq (, $(shell command -v numfmt 2> /dev/null))
+	SIZES_NUMFMT:=| numfmt --field=-4 --header $(NUMFMTFLAGS)
+else
+	SIZES_NUMFMT:=
+endif
+endif
+
+ifneq (, $(shell command -v sed 2> /dev/null))
+SIZES_SED:=| sed -e 's/  dec/total/'
+else
+SIZES_SED:=
+endif
 
 rwildcard=$(foreach d,$(filter-out $3,$(wildcard $1*)),$(call rwildcard,$d/,$2,$3)$(filter $(subst *,%,$2),$d))
 
