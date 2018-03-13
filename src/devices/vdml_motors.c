@@ -43,7 +43,7 @@ int32_t motor_get_velocity(uint8_t port) {
 
 double motor_get_actual_velocity(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	double rtn = vexDeviceMotorVelocityGet(device.device_info);
+	double rtn = vexDeviceMotorActualVelocityGet(device.device_info);
 	return_port(port - 1, rtn);
 }
 

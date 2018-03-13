@@ -28,19 +28,19 @@ ADIPort::~ADIPort() {
 	adi_port_config_set(_port, E_ADI_TYPE_UNDEFINED);
 }
 
-int32_t ADIPort::config_set(adi_port_config_e_t type) {
+int32_t ADIPort::config_set(adi_port_config_e_t type) const {
 	return adi_port_config_set(_port, type);
 }
 
-int32_t ADIPort::config_get() {
+int32_t ADIPort::config_get() const {
 	return adi_port_config_get(_port);
 }
 
-int32_t ADIPort::value_set(int32_t value) {
+int32_t ADIPort::value_set(int32_t value) const {
 	return adi_value_set(_port, value);
 }
 
-int32_t ADIPort::value_get() {
+int32_t ADIPort::value_get() const {
 	return adi_value_get(_port);
 }
 
@@ -52,15 +52,15 @@ ADIAnalogOut::ADIAnalogOut(uint8_t port) : ADIPort(port) {
 	config_set(E_ADI_ANALOG_OUT);
 }
 
-int32_t ADIAnalogIn::calibrate() {
+int32_t ADIAnalogIn::calibrate() const {
 	return adi_analog_calibrate(_port);
 }
 
-int32_t ADIAnalogIn::value_get_calibrated() {
+int32_t ADIAnalogIn::value_get_calibrated() const {
 	return adi_analog_read_calibrated(_port);
 }
 
-int32_t ADIAnalogIn::value_get_calibrated_HR() {
+int32_t ADIAnalogIn::value_get_calibrated_HR() const {
 	return adi_analog_read_calibrated_HR(_port);
 }
 
@@ -78,7 +78,7 @@ ADIDigitalIn::ADIDigitalIn(uint8_t port) : ADIPort(port) {
 	config_set(E_ADI_DIGITAL_IN);
 }
 
-int32_t ADIDigitalIn::get_new_press() {
+int32_t ADIDigitalIn::get_new_press() const {
 	return adi_digital_get_new_press(_port);
 }
 
@@ -87,7 +87,7 @@ ADIMotor::ADIMotor(uint8_t port) : ADIPort(port) {
 	stop();
 }
 
-int32_t ADIMotor::stop() {
+int32_t ADIMotor::stop() const {
 	return adi_motor_stop(_port);
 }
 
@@ -99,7 +99,7 @@ ADIEncoder::ADIEncoder(uint8_t port_bottom, uint8_t port_top, bool reversed) {
 	_port = adi_encoder_init(port_bottom, port_top, reversed);
 }
 
-int32_t ADIEncoder::reset() {
+int32_t ADIEncoder::reset() const {
 	return adi_encoder_reset(_port);
 }
 

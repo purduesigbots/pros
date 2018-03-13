@@ -24,10 +24,10 @@ class ADIPort {
 	ADIPort(uint8_t port, adi_port_config_e_t type);
 	virtual ~ADIPort();
 
-	int32_t config_set(adi_port_config_e_t type);
-	int32_t config_get();
-	int32_t value_set(int32_t value);
-	int32_t value_get();
+	int32_t config_set(adi_port_config_e_t type) const;
+	int32_t config_get() const;
+	int32_t value_set(int32_t value) const;
+	int32_t value_get() const;
 
 	protected:
 	ADIPort();
@@ -38,9 +38,9 @@ class ADIAnalogIn : private ADIPort {
 	public:
 	ADIAnalogIn(uint8_t port);
 
-	int32_t calibrate();
-	int32_t value_get_calibrated();
-	int32_t value_get_calibrated_HR();
+	int32_t calibrate() const;
+	int32_t value_get_calibrated() const;
+	int32_t value_get_calibrated_HR() const;
 
 	using ADIPort::value_get;
 };
@@ -69,7 +69,7 @@ class ADIDigitalIn : private ADIPort {
 	public:
 	ADIDigitalIn(uint8_t port);
 
-	int32_t get_new_press();
+	int32_t get_new_press() const;
 
 	using ADIPort::value_get;
 };
@@ -80,7 +80,7 @@ class ADIMotor : private ADIPort {
 	public:
 	ADIMotor(uint8_t port);
 
-	int32_t stop();
+	int32_t stop() const;
 
 	using ADIPort::value_set;
 	using ADIPort::value_get;
@@ -91,7 +91,7 @@ class ADIEncoder : private ADIPort {
 	ADIEncoder(uint8_t port_bottom, uint8_t port_top);
 	ADIEncoder(uint8_t port_bottom, uint8_t port_top, bool reversed);
 
-	int32_t reset();
+	int32_t reset() const;
 
 	using ADIPort::value_get;
 };

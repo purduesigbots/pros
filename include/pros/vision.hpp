@@ -20,19 +20,19 @@ class Vision {
 	public:
 	Vision(uint8_t port);
 
-	int32_t clear_led(void);
-	int32_t get_exposure(void);
-	vision_object_s_t get_object(const uint32_t object_id);
-	int32_t get_object_count(void);
-	int32_t get_white_balance(void);
-	int32_t read_object(const uint32_t object_id, vision_object_s_t* const object_ptr);
-	int32_t read_objects(const uint32_t object_count, vision_object_s_t* const object_arr);
-	int32_t read_signature(const uint8_t signature_id, vision_signature_s_t* const signature_ptr);
-	int32_t save_signature(const uint8_t signature_id, vision_signature_s_t* const signature_ptr);
-	int32_t set_auto_white_balance(const uint8_t enable);
-	int32_t set_exposure(const uint8_t percent);
-	int32_t set_led(const int32_t rgb);
-	int32_t set_white_balance(const int32_t rgb);
+	int32_t clear_led(void) const;
+	int32_t get_exposure(void) const;
+	vision_object_s_t get_object(const uint32_t object_id) const;
+	int32_t get_object_count(void) const;
+	int32_t get_white_balance(void) const;
+	int32_t read_object(const uint32_t object_id, vision_object_s_t* const object_ptr) const;
+	int32_t read_objects(const uint32_t object_count, vision_object_s_t* const object_arr) const;
+	int32_t read_signature(const uint8_t signature_id, vision_signature_s_t* const signature_ptr) const;
+	int32_t save_signature(const uint8_t signature_id, vision_signature_s_t* const signature_ptr) const;
+	int32_t set_auto_white_balance(const uint8_t enable) const;
+	int32_t set_exposure(const uint8_t percent) const;
+	int32_t set_led(const int32_t rgb) const;
+	int32_t set_white_balance(const int32_t rgb) const;
 
 	private:
 	uint8_t _port;
