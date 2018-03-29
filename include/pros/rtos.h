@@ -1,10 +1,13 @@
 /**
- * pros/rtos.h - PROS API header provides high-level user functionality
+ * \file pros/rtos.h
  *
- * Contains declarations for the PROS RTOS kernel for use by typical
+ * \brief Contains declarations for the PROS RTOS kernel for use by typical
  * VEX programmers.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.

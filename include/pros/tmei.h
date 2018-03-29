@@ -1,12 +1,15 @@
 /*
- * \file tmei.h
+ * \file pros/tmei.h
  *
- * Touch Management Engine/Interface layer 0
+ * \brief Touch Management Engine/Interface layer 0
  *
  * This file represents a low-level interface for interacting with the built-in
  * LCD touch screen.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -458,4 +461,4 @@ void unregister_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_typ
 }
 #endif  // extern "C"
 
-#endif
+#endif  // _PROS_TMEI_H_

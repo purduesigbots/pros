@@ -1,9 +1,16 @@
 /**
- * apix.h - PROS Extended API header
+ * \file pros/apix.h
+ *
+ * \brief PROS Extended API header
  *
  * Contains additional declarations for use by advaned users of PROS. These
  * functions do not typically have as much error handling or require deeper
  * knowledge of real time operating systems.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/api/extended to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -444,4 +451,4 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 }
 #endif
 
-#endif /* _PROS_API_EXTENDED_H_ */
+#endif  // _PROS_API_EXTENDED_H_

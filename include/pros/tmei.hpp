@@ -1,18 +1,23 @@
 /*
- * \file tmei.hpp
+ * \file pros/tmei.hpp
  *
- * C++ bindings for Touch Management Engine/Interface layer 0
+ * \brief C++ bindings for Touch Management Engine/Interface layer 0
  *
  * This file represents a low-level interface for interacting with the built-in
  * LCD touch screen.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#pragma once
+#ifndef _PROS_TMEI_HPP_
+#define _PROS_TMEI_HPP_
+
 #include <cstdint>
 #include <string>
 
@@ -93,3 +98,5 @@ namespace touch {
 	void unregister_callback(event_cb_fn_t cb, event_e_t event_type);
 }
 }
+
+#endif  // _PROS_TMEI_HPP_

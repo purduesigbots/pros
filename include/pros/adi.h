@@ -1,17 +1,20 @@
 /**
  * \file pros/adi.h
  *
- * \brief Prototypes for interfacing with the ADI.
+ * \brief Prototypes and functions for interfacing with the ADI.
  *
- * This file contains the header info for the functions used to modify the
- * status of the ADI ports.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/adi to learn more.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #ifndef _PROS_ADI_H_
 #define _PROS_ADI_H_
 
@@ -424,4 +427,4 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 }
 #endif
 
-#endif
+#endif  // _PROS_ADI_H_

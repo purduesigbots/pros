@@ -6,7 +6,7 @@
  * This file ensure thread saftey for operations on motors by maintaining
  * an array of RTOS Mutexes and implementing functions to take and give them.
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

@@ -139,7 +139,3 @@ vPortInstallFreeRTOSVectorTable:
 
 
 .end
-
-
-
-

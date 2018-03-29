@@ -19,7 +19,7 @@ The PROS kernel follows these naming conventions:
   - Structure members: these do not have any special convention, as you will never see a structure member without seeing that it is in a structure.
 - Enumerated types: `enumname_e`
   - Enumerated type members: `E_ENUMNAME_MEMBERNAME`
-    
+
     For example, in `task_state_e`, you might have members such as `E_TASK_STATE_RUNNING`. Note that "ENUMNAME" can be multiple words, separated by underscores.
 - Function pointers: `funcname_fn`
 - Type definitions: append `_t` to the end of the structure/enum/function pointer name
@@ -36,13 +36,13 @@ These should be placed at the very start of a file.
 ```c
 /**
  * \file filename.h
- * 
+ *
  * \brief Short description of the file
- * 
+ *
  * Extended description goes here. This should explain what the functions (etc)
  * in the file contains and a general description of what they do (no specifics,
  * but they should all have something in common anyway).
- * 
+ *
  * \copyright (c) 2017, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -56,7 +56,7 @@ These should be placed immediately before the declaration of the enum.
 ```c
 /*
  * \brief Short description of the enum
- * 
+ *
  * Extended description of the enum goes here. This should explain general usage
  * patterns for the enum.
  */
@@ -76,7 +76,7 @@ These should be placed immediately before the declaration of the class.
 /*
  * \class ClassName header_file.hpp "path/to/include/header_file.hpp"
  * \brief Short description of the class
- * 
+ *
  * Extended description of the class goes here. This should explain general
  * usage patterns for the class.
  */
@@ -87,20 +87,20 @@ These should be placed immediately before the function prototype they are descri
 ```c
 /*
  * \brief Short description of the function
- * 
+ *
  * Extended description goes here. This should explain any semantic issues that
- * may arise when using the function. Below are descriptions of the function 
- * parameters. The value in the brackets can be either `in` or `out`, and 
+ * may arise when using the function. Below are descriptions of the function
+ * parameters. The value in the brackets can be either `in` or `out`, and
  * represent the direction in which the parameter goes-- for example, the `dest`
  * argument for `memcpy` would be `out`, while the `src` and `n` arguments would
  * be `in`. Also note that grouped descriptions should be avoided unless the
  * grouped parameters are intrinsically linked-- for example, (x,y,z)
  * coordinates.
- * 
+ *
  * \param[out] param0_name      param0 description
  * \param[in]  param1_name      param1 description
  * \param      arg2,arg3,arg4   description of the multiple args
- * 
+ *
  * \return Description of the return value goes here. This can be omitted if the
  *              return type is `void`. This command will end when it reaches a
  *              blank line.
@@ -110,19 +110,19 @@ These should be placed immediately before the function prototype they are descri
 ### Inline Implementation Comments
 Sometimes it is necessary to explain a particularly complex statement or series of statements. In this case, you should use inline comments, placed either immediately before or trailing the line or lines in question. In general, prefer placing such comments before offending lines, unless the comment is quite short. These comments should start with a `//` followed by a space. If they are placed trailing a line, they should be separated from the end of the line by one space.
 ```c
-float Q_rsqrt(float number) { 
+float Q_rsqrt(float number) {
     long i;
-    float x2, y; 
-    const float threehalfs = 1.5F; 
-    x2 = number * 0.5F; 
+    float x2, y;
+    const float threehalfs = 1.5F;
+    x2 = number * 0.5F;
     y  = number;
     // perform some absolute magic on these numbers to get the inverse square root
-    i  = *(long*)&y; // evil floating point bit level hacking 
-    i  = 0x5f3759df - (i >> 1); // what the [heck]? 
+    i  = *(long*)&y; // evil floating point bit level hacking
+    i  = 0x5f3759df - (i >> 1); // what the [heck]?
     y  = *(float*)&i;
-    y  = y * (threehalfs - (x2 * y * y)); // 1st iteration 
-    //y  = y * (threehalfs - (x2 * y * y)); // 2nd iteration, this can be removed 
-    return y; 
+    y  = y * (threehalfs - (x2 * y * y)); // 1st iteration
+    //y  = y * (threehalfs - (x2 * y * y)); // 2nd iteration, this can be removed
+    return y;
 }
 ```
 _Note: in the above example, there is a line of code that has been commented out. This is fine to do while testing, but any commented out lines of code should be removed before any merge into the master branch takes place, unless a compelling reason can be presented for them to remain._

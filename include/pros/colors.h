@@ -1,9 +1,12 @@
 /*
- * colors.h - Color definitions
+ * \file pros/colors.h
  *
- * This file contains macro definitions of colors (as `uint32_t`)
+ * \brief This file contains macro definitions of colors (as `uint32_t`)
  *
- * Copyright (c) 2017 Purdue University ACM SIGBots.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018 Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License v. 2.0. If a copy of the MPL was not distributed with this
@@ -168,4 +171,4 @@
 #define COLOR_LIGHT_SLATE_GREY COLOR_LIGHT_SLATE_GRAY
 #define COLOR_SLATE_GREY COLOR_SLATE_GRAY
 
-#endif
+#endif  // _PROS_COLORS_H_

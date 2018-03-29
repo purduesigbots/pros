@@ -1,7 +1,13 @@
 /**
- * pros/misc.hpp - PROS API header provides high-level user functionality
+ * \file pros/misc.hpp
  *
- * Contains miscellaneous declarations for use by typical VEX programmers using PROS.
+ * \brief Contains miscellaneous declarations such as controller and competition
+ * functions in C++
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/misc to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -20,10 +26,10 @@ class Controller {
 	public:
 	Controller(controller_id_e_t id);
 
-	int32_t is_connected(void);
-	int32_t get_analog(controller_analog_e_t channel);
-	int32_t get_digital(controller_digital_e_t button);
-	int32_t get_digital_new_press(controller_digital_e_t button);
+	std::int32_t is_connected(void);
+	std::int32_t get_analog(controller_analog_e_t channel);
+	std::int32_t get_digital(controller_digital_e_t button);
+	std::int32_t get_digital_new_press(controller_digital_e_t button);
 
 	private:
 	controller_id_e_t _id;
@@ -37,4 +43,4 @@ namespace battery {
 }
 }
 
-#endif
+#endif  // _PROS_MISC_HPP_

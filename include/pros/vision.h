@@ -1,3 +1,21 @@
+/**
+ * \file pros/vision.h
+ *
+ * \brief Contains prototypes for the VEX Vision Sensor-related functions.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/vision to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * All rights reservered.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef PROS_VISION_H_
 #define PROS_VISION_H_
 

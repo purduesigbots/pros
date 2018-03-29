@@ -18,8 +18,8 @@
 
 namespace pros {
   Task::Task(task_fn_t function, void* parameters,
-            uint32_t prio,
-            uint16_t stack_depth,
+            std::uint32_t prio,
+            std::uint16_t stack_depth,
             const char* name) {
     task = task_create(function, parameters, prio, stack_depth, name);
   }
@@ -31,15 +31,15 @@ namespace pros {
     task_delete(task);
   }
 
-  uint32_t Task::get_priority() {
+  std::uint32_t Task::get_priority() {
     return task_get_priority(task);
   }
 
-  void Task::set_priority(uint32_t prio) {
+  void Task::set_priority(std::uint32_t prio) {
     task_set_priority(task, prio);
   }
 
-  uint32_t Task::get_state() {
+  std::uint32_t Task::get_state() {
     return task_get_state(task);
   }
 
@@ -55,15 +55,15 @@ namespace pros {
     return task_get_name(task);
   }
 
-  uint32_t Task::notify() {
+  std::uint32_t Task::notify() {
     return task_notify(task);
   }
 
-  uint32_t Task::notify_ext(uint32_t value, notify_action_e_t action, uint32_t* prev_value) {
+  std::uint32_t Task::notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value) {
     return task_notify_ext(task, value, action, prev_value);
   }
 
-  uint32_t Task::notify_take(bool clear_on_exit, uint32_t timeout) {
+  std::uint32_t Task::notify_take(bool clear_on_exit, std::uint32_t timeout) {
     return task_notify_take(clear_on_exit, timeout);
   }
 
@@ -71,17 +71,17 @@ namespace pros {
     return task_notify_clear(task);
   }
 
-  void Task::delay(const uint32_t milliseconds) {
+  void Task::delay(const std::uint32_t milliseconds) {
     task_delay(milliseconds);
   }
 
-  void Task::delay_until(uint32_t* const prev_time, const uint32_t delta) {
+  void Task::delay_until(std::uint32_t* const prev_time, const std::uint32_t delta) {
     task_delay_until(prev_time, delta);
   }
 
   Mutex::Mutex() : mutex(mutex_create()) { }
 
-  bool Mutex::take(uint32_t timeout) {
+  bool Mutex::take(std::uint32_t timeout) {
     return mutex_take(mutex, timeout);
   }
 
@@ -89,7 +89,7 @@ namespace pros {
     return mutex_give(mutex);
   }
 
-  uint32_t millis(void) {
+  std::uint32_t millis(void) {
     return millis();
   }
 }

@@ -48,4 +48,3 @@ When working on PROS 3.0-related stuff, please adhere to the following workflow:
 4. After you merge and fix all merge conflicts (if there were any), run `arc diff` to start the review process on phabricator.
 5. If/when reviewers request changes, simply make your changes, commit them, then re-run `arc diff`.
 6. When your differential is accepted by the reviewers, run `arc land` to push everything to master.
-

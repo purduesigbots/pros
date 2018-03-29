@@ -1,20 +1,27 @@
 /*
  * \file llemu.hpp
  *
- * C++ bindings for Legacy LCD Emulator
+ * \brief C++ bindings for Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/llemu to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#ifndef _PROS_LLEMU_HPP_
+#define _PROS_LLEMU_HPP_
+
 #include <cstdint>
 #include <string>
 
@@ -46,3 +53,5 @@ namespace lcd {
 	void register_btn2_cb(lcd_btn_cb_fn_t cb);
 }
 }
+
+#endif  // _PROS_LLEMU_HPP_

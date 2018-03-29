@@ -1,13 +1,18 @@
 /*
  * \file llemu.h
  *
- * Legacy LCD Emulator
+ * \brief Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/llemu to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -173,4 +178,4 @@ uint8_t lcd_read_buttons(void);
 }
 #endif
 
-#endif
+#endif  // _PROS_LLEMU_H_

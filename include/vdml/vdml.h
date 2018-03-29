@@ -7,7 +7,7 @@
  * (Vex Data Management Layer) files, as well as defines for any constants used
  * by VDML.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

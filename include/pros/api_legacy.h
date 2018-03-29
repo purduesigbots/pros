@@ -1,9 +1,16 @@
 /**
- * pros/api_legacy.h - PROS 2 Legacy API header
+ * \file pros/api_legacy.h
+ *
+ * \brief PROS 2 Legacy API header
  *
  * Contains declarations for functions that are name-compatible with
  * the PROS 2 API. Some functions are not useful or cannot be
  * implemented in PROS 3, but most common functions are available.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/api/legacy to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -70,4 +77,4 @@ typedef adi_ultrasonic_t Ultrasonic;
 #define mutexTake(mutex, blockTime) mutex_take(mutex, blockTime)
 #define mutexGive(mutex) mutex_give(mutex)
 
-#endif
+#endif  // _PROS_API_LEGACY_H_

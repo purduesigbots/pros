@@ -13,6 +13,8 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 
+.DEFAULT_GOAL:=quick
+
 -include ./common.mk
 
 EXCLUDE_SRCDIRS=$(SRCDIR)/tests
@@ -45,7 +47,7 @@ LDTIMEOBJ:=$(BINDIR)/_pros_ld_timestamp.o
 
 .PHONY: all clean quick library clean-library template clean-template version fix-libv5rts
 
-quick: version $(OUTBIN)
+quick: $(OUTBIN)
 
 all: version clean $(OUTBIN)
 
@@ -135,6 +137,3 @@ define _pros_ld_timestamp
 @# which is the pwd | sed ... | tail bit, which will grab the last 3 segments of the path and truncate it 23 characters
 $(call test_output, @echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = PCD;' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -DPCD="\"`pwd | tail -c 23`\"" -o $(LDTIMEOBJ) -,$(OK_STRING))
 endef
-
-$(BINDIR):
-	$(VV)mkdir -p $@

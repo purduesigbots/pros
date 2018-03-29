@@ -1,7 +1,7 @@
 /**
  * \file controller.cpp
  *
- * Contains functions for interacting with the V5 Controller.
+ * Contains functions for std::interacting with the V5 Controller.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -15,19 +15,19 @@
 namespace pros {
 Controller::Controller(controller_id_e_t id) : _id(id) {}
 
-int32_t Controller::is_connected(void) {
+std::int32_t Controller::is_connected(void) {
 	return controller_is_connected(_id);
 }
 
-int32_t Controller::get_analog(controller_analog_e_t channel) {
+std::int32_t Controller::get_analog(controller_analog_e_t channel) {
 	return controller_get_analog(_id, channel);
 }
 
-int32_t Controller::get_digital(controller_digital_e_t button) {
+std::int32_t Controller::get_digital(controller_digital_e_t button) {
 	return controller_get_digital(_id, button);
 }
 
-int32_t Controller::get_digital_new_press(controller_digital_e_t button) {
+std::int32_t Controller::get_digital_new_press(controller_digital_e_t button) {
 	return controller_get_digital_new_press(_id, button);
 }
 }

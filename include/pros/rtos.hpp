@@ -1,10 +1,13 @@
 /**
- * pros/rtos.hpp - PROS API header provides high-level user functionality
+ * \file pros/rtos.hpp
  *
- * Contains declarations for the PROS RTOS kernel for use by typical
- * VEX programmers.
+ * \brief Contains declarations for the PROS RTOS kernel for use by typical
+ * VEX programmers in C++.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -21,46 +24,46 @@
 
 namespace pros {
 class Task {
-      public:
+	public:
 	Task(task_fn_t function,
 	     void* parameters = NULL,
-	     uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
+	     std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
 	     const char* name = "");
 	Task(task_t task);
 	void operator=(const task_t in);
 	virtual ~Task();
 
-	uint32_t get_priority();
-	void set_priority(uint32_t prio);
-	uint32_t get_state();
+	std::uint32_t get_priority();
+	void set_priority(std::uint32_t prio);
+	std::uint32_t get_state();
 	void suspend();
 	void resume();
 	const char* get_name();
-	uint32_t notify();
-	uint32_t notify_ext(uint32_t value, notify_action_e_t action, uint32_t* prev_value);
-	uint32_t notify_take(bool clear_on_exit, uint32_t timeout);
+	std::uint32_t notify();
+	std::uint32_t notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value);
+	std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
 	bool notify_clear();
 
-	static void delay(const uint32_t milliseconds);
-	static void delay_until(uint32_t* const prev_time, const uint32_t delta);
+	static void delay(const std::uint32_t milliseconds);
+	static void delay_until(std::uint32_t* const prev_time, const std::uint32_t delta);
 
-      private:
+	private:
 	task_t task;
 };
 
 class Mutex {
-      public:
+	public:
 	Mutex();
 
-	bool take(uint32_t timeout);
+	bool take(std::uint32_t timeout);
 	bool give();
 
-      private:
+	private:
 	mutex_t mutex;
 };
 
-uint32_t millis(void);
+std::uint32_t millis(void);
 }
 
 #endif

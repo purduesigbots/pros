@@ -29,7 +29,7 @@ try:
         if '#define PROS_VERSION_MINOR' in line:
             data[i] = '#define PROS_VERSION_MINOR {}\n'.format(minor)
         if '#define PROS_VERSION_PATCH' in line:
-            data[i] = '#define PROS_PATCH {}\n'.format(patch)
+            data[i] = '#define PROS_VERSION_PATCH {}\n'.format(patch)
         if '#define PROS_VERSION_STRING ' in line:
             data[i] = '#define PROS_VERSION_STRING "{}"\n'.format(semver)
     with open('include/api.h', 'w') as file:
@@ -37,4 +37,3 @@ try:
 
 except subprocess.CalledProcessError as e:
     print('Error calling git')
-

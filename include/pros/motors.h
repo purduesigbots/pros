@@ -1,21 +1,22 @@
 /**
- * \file vdml_motors.h
+ * \file pros/motors.h
  *
- * \brief Contains prototypes for the motor-related thread-safe wrapper
- * functions.
+ * \brief Contains prototypes for the Smart Motor-related functions.
  *
- * This file contains the header info for the functions used to modify the
- * status of vex motors.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/motors to learn more.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * LIcense, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef VDML_MOTORS_H
-#define VDML_MOTORS_H
+#ifndef _PROS_MOTORS_H_
+#define _PROS_MOTORS_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -534,4 +535,4 @@ int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
 }
 #endif
 
-#endif
+#endif  // _PROS_MOTORS_H_

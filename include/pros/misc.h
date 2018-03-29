@@ -1,7 +1,13 @@
 /**
- * pros/misc.h - PROS API header provides high-level user functionality
+ * \file pros/misc.h
  *
- * Contains miscellaneous declarations for use by typical VEX programmers using PROS.
+ * \brief Contains miscellaneous declarations such as controller and competition
+ * functions
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/misc to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -185,4 +191,4 @@ double battery_get_capacity(void);
 }
 #endif
 
-#endif
+#endif  // _PROS_MISC_H_

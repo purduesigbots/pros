@@ -6,7 +6,7 @@
  * This file defines a linked list implementation that operates on the FreeRTOS
  * heap, and is able to generically store function pointers and data
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

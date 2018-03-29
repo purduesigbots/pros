@@ -3,6 +3,9 @@
  *
  * Contains declarations for use by typical VEX programmers using PROS.
  *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
  *
@@ -14,12 +17,6 @@
 #ifndef _PROS_API_H_
 #define _PROS_API_H_
 
-/**
- * If defined, some commonly used enums will have preprocessor macros which give a shorter,
- * more convenient naming pattern. If this isn't desired, simply comment the following line out
- */
-#define PROS_USE_SIMPLE_NAMES
-
 #ifdef __cplusplus
 #include <cmath>
 #include <cstdbool>
@@ -27,7 +24,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#else
+#else /* (not) __cplusplus */
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -35,11 +32,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#endif
+#endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 0
-#define PROS_PATCH 4
+#define PROS_VERSION_PATCH 4
 #define PROS_VERSION_STRING "3.0.4"
 
 #define PROS_ERR (INT32_MAX)
