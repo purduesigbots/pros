@@ -17,6 +17,8 @@
 
 namespace pros {
 namespace display {
+	using namespace pros::c;
+
 	void set_color_fg(std::uint32_t color) {
 		display_set_color_fg(color);
 	}
@@ -96,6 +98,8 @@ namespace display {
 
 namespace pros {
 namespace touch {
+	using namespace pros::c;
+
 	void register_callback(event_cb_fn_t cb, event_e_t event_type) {
 		register_touch_callback(cb, event_type);
 	}

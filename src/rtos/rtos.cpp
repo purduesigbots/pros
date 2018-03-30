@@ -17,6 +17,8 @@
 #include "pros/rtos.hpp"
 
 namespace pros {
+using namespace pros::c;
+
   Task::Task(task_fn_t function, void* parameters,
             std::uint32_t prio,
             std::uint16_t stack_depth,
@@ -79,6 +81,10 @@ namespace pros {
     task_delay_until(prev_time, delta);
   }
 
+  std::uint32_t Task::get_count(void) {
+    return task_get_count();
+  }
+
   Mutex::Mutex() : mutex(mutex_create()) { }
 
   bool Mutex::take(std::uint32_t timeout) {
@@ -87,9 +93,5 @@ namespace pros {
 
   bool Mutex::give() {
     return mutex_give(mutex);
-  }
-
-  std::uint32_t millis(void) {
-    return millis();
   }
 }

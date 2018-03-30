@@ -41,6 +41,13 @@ namespace battery {
 	double get_temperature(void);
 	double get_voltage(void);
 }
+
+namespace competition {
+	std::uint8_t get_status(void);
+	std::uint8_t is_autonomous(void);
+	std::uint8_t is_connected(void);
+	std::uint8_t is_disabled(void);
+}
 }
 
-#endif  // _PROS_MISC_HPP_
+#endif

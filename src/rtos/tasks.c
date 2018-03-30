@@ -630,7 +630,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) ;
 			}
 			#endif /* configSUPPORT_STATIC_ALLOCATION */
 
-			prvInitialiseNewTask(function, name, ( uint32_t ) stack_depth, parameters, prio, 
+			prvInitialiseNewTask(function, name, ( uint32_t ) stack_depth, parameters, prio,
 				&return_val, new_tcb);
 			prvAddNewTaskToReadyList(new_tcb);
 		}
@@ -1119,6 +1119,11 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 			mtCOVERAGE_TEST_MARKER();
 		}
 	}
+
+void delay(const uint32_t milliseconds)
+{
+  task_delay(milliseconds);
+}
 
 #endif /* INCLUDE_vTaskDelay */
 /*-----------------------------------------------------------*/
@@ -4830,5 +4835,3 @@ when performing module tests). */
 	}
 
 #endif
-
-

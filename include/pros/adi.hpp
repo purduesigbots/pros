@@ -22,18 +22,17 @@
 namespace pros {
 class ADIPort {
 	public:
-	ADIPort(std::uint8_t port);
-	ADIPort(std::uint8_t port, adi_port_config_e_t type);
+	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 	virtual ~ADIPort();
 
-	std::int32_t config_set(adi_port_config_e_t type) const;
-	std::int32_t config_get() const;
-	std::int32_t value_set(std::int32_t value) const;
-	std::int32_t value_get() const;
+	std::int32_t get_config() const;
+	std::int32_t get_value() const;
+	std::int32_t set_config(adi_port_config_e_t type) const;
+	std::int32_t set_value(std::int32_t value) const;
 
 	protected:
 	ADIPort();
-	int _port;
+	std::uint8_t _port;
 };
 
 class ADIAnalogIn : private ADIPort {
@@ -41,10 +40,10 @@ class ADIAnalogIn : private ADIPort {
 	ADIAnalogIn(std::uint8_t port);
 
 	std::int32_t calibrate() const;
-	std::int32_t value_get_calibrated() const;
-	std::int32_t value_get_calibrated_HR() const;
+	std::int32_t get_value_calibrated() const;
+	std::int32_t get_value_calibrated_HR() const;
 
-	using ADIPort::value_get;
+	using ADIPort::get_value;
 };
 
 using ADIPotentiometer = ADIAnalogIn;
@@ -56,15 +55,14 @@ class ADIAnalogOut : private ADIPort {
 	public:
 	ADIAnalogOut(std::uint8_t port);
 
-	using ADIPort::value_set;
+	using ADIPort::set_value;
 };
 
 class ADIDigitalOut : private ADIPort {
 	public:
-	ADIDigitalOut(std::uint8_t port);
-	ADIDigitalOut(std::uint8_t port, bool init_state);
+	ADIDigitalOut(std::uint8_t port, bool init_state = LOW);
 
-	using ADIPort::value_set;
+	using ADIPort::set_value;
 };
 
 class ADIDigitalIn : private ADIPort {
@@ -73,7 +71,7 @@ class ADIDigitalIn : private ADIPort {
 
 	std::int32_t get_new_press() const;
 
-	using ADIPort::value_get;
+	using ADIPort::get_value;
 };
 
 using ADIButton = ADIDigitalIn;
@@ -84,26 +82,25 @@ class ADIMotor : private ADIPort {
 
 	std::int32_t stop() const;
 
-	using ADIPort::value_set;
-	using ADIPort::value_get;
+	using ADIPort::set_value;
+	using ADIPort::get_value;
 };
 
 class ADIEncoder : private ADIPort {
 	public:
-	ADIEncoder(std::uint8_t port_bottom, std::uint8_t port_top);
-	ADIEncoder(std::uint8_t port_bottom, std::uint8_t port_top, bool reversed);
+	ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed = false);
 
 	std::int32_t reset() const;
 
-	using ADIPort::value_get;
+	using ADIPort::get_value;
 };
 
 class ADIUltrasonic : private ADIPort {
 	public:
-	ADIUltrasonic(std::uint8_t port_bottom, std::uint8_t port_top);
+	ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping);
 
-	using ADIPort::value_get;
+	using ADIPort::get_value;
 };
 }
 
-#endif  // _PROS_ADI_HPP_
+#endif

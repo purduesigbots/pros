@@ -13,6 +13,8 @@
 #include "kapi.h"
 
 namespace pros {
+using namespace pros::c;
+
 Vision::Vision(std::uint8_t port) : _port(port) {}
 
 std::int32_t Vision::clear_led(void) const {

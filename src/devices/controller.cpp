@@ -1,7 +1,7 @@
 /**
  * \file controller.cpp
  *
- * Contains functions for std::interacting with the V5 Controller.
+ * Contains functions for interacting with the V5 Controller.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -13,6 +13,8 @@
 #include "kapi.h"
 
 namespace pros {
+using namespace pros::c;
+
 Controller::Controller(controller_id_e_t id) : _id(id) {}
 
 std::int32_t Controller::is_connected(void) {
@@ -29,5 +31,23 @@ std::int32_t Controller::get_digital(controller_digital_e_t button) {
 
 std::int32_t Controller::get_digital_new_press(controller_digital_e_t button) {
 	return controller_get_digital_new_press(_id, button);
+}
+
+namespace competition {
+	std::uint8_t get_status(void) {
+		return competition_get_status();
+	}
+
+	std::uint8_t is_autonomous(void) {
+		return competition_is_autonomous();
+	}
+
+	std::uint8_t is_connected(void) {
+		return competition_is_connected();
+	}
+
+	std::uint8_t is_disabled(void) {
+		return competition_is_disabled();
+	}
 }
 }

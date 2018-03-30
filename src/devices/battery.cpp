@@ -14,6 +14,8 @@
 
 namespace pros {
 namespace battery {
+	using namespace pros::c;
+
 	double get_capacity(void) {
 		return battery_get_capacity();
 	}

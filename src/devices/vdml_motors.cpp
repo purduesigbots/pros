@@ -13,6 +13,8 @@
 #include "pros/motors.hpp"
 
 namespace pros {
+using namespace pros::c;
+
 Motor::Motor(std::uint8_t port, const bool reverse, motor_encoder_units_e_t encoder_units, motor_gearset_e_t gearset)
     : _port(port) {
 	set_reverse(reverse);

@@ -3,7 +3,7 @@
  *
  * \brief VDML ADI functionality.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * \copyright (c) 2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,69 +13,63 @@
 #include "pros/adi.hpp"
 
 namespace pros {
-ADIPort::ADIPort(std::uint8_t port) : _port(port) {
-	adi_port_config_set(_port, E_ADI_TYPE_UNDEFINED);
-}
+using namespace pros::c;
 
 ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
-	adi_port_config_set(_port, type);
+	adi_port_set_config(_port, type);
 }
+
 ADIPort::ADIPort() {
 	// for use by derived classes like ADIEncoder
 }
 
 ADIPort::~ADIPort() {
-	adi_port_config_set(_port, E_ADI_TYPE_UNDEFINED);
+	adi_port_set_config(_port, E_ADI_TYPE_UNDEFINED);
 }
 
-std::int32_t ADIPort::config_set(adi_port_config_e_t type) const {
-	return adi_port_config_set(_port, type);
+std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
+	return adi_port_set_config(_port, type);
 }
 
-std::int32_t ADIPort::config_get() const {
-	return adi_port_config_get(_port);
+std::int32_t ADIPort::get_config() const {
+	return adi_port_get_config(_port);
 }
 
-std::int32_t ADIPort::value_set(std::int32_t value) const {
-	return adi_value_set(_port, value);
+std::int32_t ADIPort::set_value(std::int32_t value) const {
+	return adi_port_set_value(_port, value);
 }
 
-std::int32_t ADIPort::value_get() const {
-	return adi_value_get(_port);
+std::int32_t ADIPort::get_value() const {
+	return adi_port_get_value(_port);
 }
 
 ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port) {
-	config_set(E_ADI_ANALOG_IN);
+	set_config(E_ADI_ANALOG_IN);
 }
 
 ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port) {
-	config_set(E_ADI_ANALOG_OUT);
+	set_config(E_ADI_ANALOG_OUT);
 }
 
 std::int32_t ADIAnalogIn::calibrate() const {
 	return adi_analog_calibrate(_port);
 }
 
-std::int32_t ADIAnalogIn::value_get_calibrated() const {
+std::int32_t ADIAnalogIn::get_value_calibrated() const {
 	return adi_analog_read_calibrated(_port);
 }
 
-std::int32_t ADIAnalogIn::value_get_calibrated_HR() const {
+std::int32_t ADIAnalogIn::get_value_calibrated_HR() const {
 	return adi_analog_read_calibrated_HR(_port);
 }
 
-ADIDigitalOut::ADIDigitalOut(std::uint8_t port) : ADIPort(port) {
-	config_set(E_ADI_DIGITAL_OUT);
-	value_set(LOW);
-}
-
 ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port) {
-	config_set(E_ADI_DIGITAL_OUT);
-	value_set(init_state);
+	set_config(E_ADI_DIGITAL_OUT);
+	set_value(init_state);
 }
 
 ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port) {
-	config_set(E_ADI_DIGITAL_IN);
+	set_config(E_ADI_DIGITAL_IN);
 }
 
 std::int32_t ADIDigitalIn::get_new_press() const {
@@ -83,7 +77,7 @@ std::int32_t ADIDigitalIn::get_new_press() const {
 }
 
 ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port) {
-	config_set(E_ADI_LEGACY_PWM);
+	set_config(E_ADI_LEGACY_PWM);
 	stop();
 }
 
@@ -91,19 +85,15 @@ std::int32_t ADIMotor::stop() const {
 	return adi_motor_stop(_port);
 }
 
-ADIEncoder::ADIEncoder(std::uint8_t port_bottom, std::uint8_t port_top) {
-	_port = adi_encoder_init(port_bottom, port_top, false);
-}
-
-ADIEncoder::ADIEncoder(std::uint8_t port_bottom, std::uint8_t port_top, bool reversed) {
-	_port = adi_encoder_init(port_bottom, port_top, reversed);
+ADIEncoder::ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed) {
+	_port = adi_encoder_init(port_top, port_bottom, reversed);
 }
 
 std::int32_t ADIEncoder::reset() const {
 	return adi_encoder_reset(_port);
 }
 
-ADIUltrasonic::ADIUltrasonic(std::uint8_t port_bottom, std::uint8_t port_top) {
-	_port = adi_ultrasonic_init(port_bottom, port_top);
+ADIUltrasonic::ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping) {
+	_port = adi_ultrasonic_init(port_echo, port_ping);
 }
 }

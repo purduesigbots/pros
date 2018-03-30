@@ -47,6 +47,7 @@ class Task {
 
 	static void delay(const std::uint32_t milliseconds);
 	static void delay_until(std::uint32_t* const prev_time, const std::uint32_t delta);
+	static std::uint32_t get_count(void);
 
 	private:
 	task_t task;
@@ -63,7 +64,8 @@ class Mutex {
 	mutex_t mutex;
 };
 
-std::uint32_t millis(void);
+using pros::c::millis;
+using pros::c::delay;
 }
 
 #endif

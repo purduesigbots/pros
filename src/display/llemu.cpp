@@ -18,6 +18,8 @@
 
 namespace pros {
 namespace lcd {
+	using namespace pros::c;
+
 	bool is_initialized(void) {
 		return lcd_is_initialized();
 	}
