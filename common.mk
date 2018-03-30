@@ -1,7 +1,7 @@
 ARCHTUPLE=arm-none-eabi-
 DEVICE=VEX EDR V5
 
-MFLAGS=-march=armv7-a -mfpu=neon-fp16 -mfloat-abi=softfp
+MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -Os
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
 
@@ -101,3 +101,9 @@ R =
 D =
 VV =
 endif
+
+# these rules are for build-compile-commands, which just print out sysroot information
+cc-sysroot:
+	@echo | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) --verbose -o /dev/null -
+cxx-sysroot:
+	@echo | $(CXX) -c -x c++ $(CXXFLAGS) $(EXTRA_CXXFLAGS) --verbose -o /dev/null -

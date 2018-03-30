@@ -12,7 +12,7 @@
 		"text": {
 			"type": "text",
 			"include": "(.*)",
-			"exclude": "(^(src|include)/(rtos|ifi)/)",
+			"exclude": "(^(src|include)/(((rtos|ifi)/)|(system/dev/banners.h)))",
 			"severity": {
 				"2": "disabled",
 				"3": "disabled"

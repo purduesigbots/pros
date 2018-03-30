@@ -3,4 +3,7 @@ bin/
 .*.sw*
 template/
 version
-cquery_log\.txt
+cquery_log.txt
+compile_commands.json
+temp.log
+temp.errors
