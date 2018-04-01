@@ -22,7 +22,7 @@ EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomo
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 
 TEMPLATE_DIR=$(ROOT)/template
-TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
+TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
 
 INCLUDE=-iquote$(INCDIR)
 
@@ -72,7 +72,7 @@ template: version clean-template library
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	@echo "Creating template"
-	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel `cat $(ROOT)/version` --system "**/*" --user "src/opcontrol.{c,cpp}" --user "src/initialize.{cpp,c}" --user "src/autonomous.{cpp,c}" --target v5 --output bin/output.bin
+	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) --system "./**/*" --user "src/opcontrol.{c,cpp,cc}" --user "src/initialize.{cpp,c,cc}" --user "src/autonomous.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --target v5 --output bin/output.bin
 
 clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)

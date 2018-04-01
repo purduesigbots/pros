@@ -1,5 +1,6 @@
 from __future__ import print_function
 import subprocess
+import io
 
 try:
     v = subprocess.check_output(['git', 'describe', '--dirty', '--abbrev']).decode().strip()
@@ -21,18 +22,18 @@ try:
     assert semver.count('.') >= 2
     major, minor, patch = semver.split('.', 2)
     patch = patch.split('-', 1)[0]
-    with open('include/api.h', 'r') as file:
+    with io.open('include/api.h', 'r', encoding='ascii') as file:
         data = file.readlines()
     for i, line in enumerate(data):
         if '#define PROS_VERSION_MAJOR' in line:
-            data[i] = '#define PROS_VERSION_MAJOR {}\n'.format(major)
+            data[i] = u'#define PROS_VERSION_MAJOR {}\n'.format(major)
         if '#define PROS_VERSION_MINOR' in line:
-            data[i] = '#define PROS_VERSION_MINOR {}\n'.format(minor)
+            data[i] = u'#define PROS_VERSION_MINOR {}\n'.format(minor)
         if '#define PROS_VERSION_PATCH' in line:
-            data[i] = '#define PROS_VERSION_PATCH {}\n'.format(patch)
+            data[i] = u'#define PROS_VERSION_PATCH {}\n'.format(patch)
         if '#define PROS_VERSION_STRING ' in line:
-            data[i] = '#define PROS_VERSION_STRING "{}"\n'.format(semver)
-    with open('include/api.h', 'w') as file:
+            data[i] = u'#define PROS_VERSION_STRING "{}"\n'.format(semver)
+    with io.open('include/api.h', 'w', newline='\n', encoding='ascii') as file:
         file.writelines(data)
 
 except subprocess.CalledProcessError as e:
