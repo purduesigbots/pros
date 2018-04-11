@@ -21,15 +21,19 @@ std::int32_t Vision::clear_led(void) const {
 	return vision_clear_led(_port);
 }
 
-std::int32_t Vision::get_exposure(void) const {
+vision_object_s_t Vision::get_by_size(const uint32_t size_id) const {
+	return vision_get_by_size(_port, size_id);
+}
+
+vision_object_s_t Vision::get_by_sig(const uint32_t size_id, const uint8_t sig_id) const {
+	return vision_get_by_sig(_port, size_id, sig_id);
+}
+
+int32_t Vision::get_exposure(void) const {
 	return vision_get_exposure(_port);
 }
 
-vision_object_s_t Vision::get_object(const std::uint32_t object_id) const {
-	return vision_get_object(_port, object_id);
-}
-
-std::int32_t Vision::get_object_count(void) const {
+int32_t Vision::get_object_count(void) const {
 	return vision_get_object_count(_port);
 }
 
@@ -37,20 +41,17 @@ std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
 
-std::int32_t Vision::read_object(const std::uint32_t object_id, vision_object_s_t* const object_ptr) const {
-	return vision_read_object(_port, object_id, object_ptr);
+int32_t Vision::read_by_size(const uint32_t size_id,
+                             const uint32_t object_count,
+                             vision_object_s_t* const object_arr) const {
+	return vision_read_by_size(_port, size_id, object_count, object_arr);
 }
 
-std::int32_t Vision::read_objects(const std::uint32_t object_count, vision_object_s_t* const object_arr) const {
-	return vision_read_objects(_port, object_count, object_arr);
-}
-
-std::int32_t Vision::read_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const {
-	return vision_read_signature(_port, signature_id, signature_ptr);
-}
-
-std::int32_t Vision::save_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const {
-	return vision_save_signature(_port, signature_id, signature_ptr);
+int32_t Vision::read_by_sig(const uint32_t size_id,
+                            const uint8_t sig_id,
+                            const uint32_t object_count,
+                            vision_object_s_t* const object_arr) const {
+	return vision_read_by_sig(_port, size_id, sig_id, object_count, object_arr);
 }
 
 std::int32_t Vision::set_auto_white_balance(const std::uint8_t enable) const {
@@ -67,5 +68,9 @@ std::int32_t Vision::set_led(const std::int32_t rgb) const {
 
 std::int32_t Vision::set_white_balance(const std::int32_t rgb) const {
 	return vision_set_white_balance(_port, rgb);
+}
+
+int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
+	return vision_set_zero_point(_port, zero_point);
 }
 }

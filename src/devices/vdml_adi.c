@@ -32,11 +32,54 @@ typedef union adi_data {
 	struct {
 		bool was_pressed;
 	} digital_data;
+	struct {
+		bool reversed;
+	} encoder_data;
+	uint8_t raw[4];
 } adi_data_s_t;
 
-adi_data_s_t adi_data[NUM_ADI_PORTS];
+static int32_t get_analog_calib(uint8_t port) {
+	// adi_data_s_t data = (adi_data_s_t)(registry_get_device(port)->pad[port * 4]);
+	adi_data_s_t data;
+	data.raw[0] = registry_get_device(port)->pad[port * 4];
+	data.raw[1] = registry_get_device(port)->pad[port * 4 + 1];
+	data.raw[2] = registry_get_device(port)->pad[port * 4 + 2];
+	data.raw[3] = registry_get_device(port)->pad[port * 4 + 3];
+	return data.analog_data.calib;
+}
 
-bool encoder_reversed[NUM_MAX_TWOWIRE];
+static void set_analog_calib(uint8_t port, int32_t calib) {
+	adi_data_s_t data;
+	data.analog_data.calib = calib;
+	registry_get_device(port)->pad[port * 4] = data.raw[0];
+	registry_get_device(port)->pad[port * 4 + 1] = data.raw[1];
+	registry_get_device(port)->pad[port * 4 + 2] = data.raw[2];
+	registry_get_device(port)->pad[port * 4 + 3] = data.raw[3];
+}
+
+static bool get_digital_pressed(uint8_t port) {
+	adi_data_s_t data;
+	data.raw[0] = registry_get_device(port)->pad[port * 4];
+	return data.digital_data.was_pressed;
+}
+
+static void set_digital_pressed(uint8_t port, bool val) {
+	adi_data_s_t data;
+	data.digital_data.was_pressed = val;
+	registry_get_device(port)->pad[port * 4] = data.raw[0];
+}
+
+static bool get_encoder_reversed(uint8_t port) {
+	adi_data_s_t data;
+	data.raw[0] = registry_get_device(port)->pad[port * 4];
+	return data.encoder_data.reversed;
+}
+
+static void set_encoder_reversed(uint8_t port, bool val) {
+	adi_data_s_t data;
+	data.encoder_data.reversed = val;
+	registry_get_device(port)->pad[port * 4] = data.raw[0];
+}
 
 #define transform_adi_port(port)                                                                                       \
 	if (port >= 'a' && port <= 'h')                                                                                \
@@ -97,25 +140,25 @@ bool encoder_reversed[NUM_MAX_TWOWIRE];
 
 static inline int32_t _adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	vexDeviceAdiPortConfigSet(device.device_info, port, type);
+	vexDeviceAdiPortConfigSet(device->device_info, port, type);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
 static inline adi_port_config_e_t _adi_port_get_config(uint8_t port) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	adi_port_config_e_t rtn = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device.device_info, port);
+	adi_port_config_e_t rtn = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
 static inline int32_t _adi_port_set_value(uint8_t port, int32_t value) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	vexDeviceAdiValueSet(device.device_info, port, value);
+	vexDeviceAdiValueSet(device->device_info, port, value);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
 static inline int32_t _adi_port_get_value(uint8_t port) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	int32_t rtn = vexDeviceAdiValueGet(device.device_info, port);
+	int32_t rtn = vexDeviceAdiValueGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
@@ -147,7 +190,7 @@ int32_t adi_analog_calibrate(uint8_t port) {
 		total += _adi_port_get_value(port);
 		task_delay(1);
 	}
-	adi_data[port - 1].analog_data.calib = (int32_t)((total + 16) >> 5);
+	set_analog_calib(port, (int32_t)((total + 16) >> 5));
 	return ((int32_t)((total + 256) >> 9));
 }
 
@@ -160,13 +203,13 @@ int32_t adi_analog_read(uint8_t port) {
 int32_t adi_analog_read_calibrated(uint8_t port) {
 	transform_adi_port(port);
 	validate_analog(port);
-	return (_adi_port_get_value(port) - (adi_data[port - 1].analog_data.calib >> 4));
+	return (_adi_port_get_value(port) - (get_analog_calib(port) >> 4));
 }
 
 int32_t adi_analog_read_calibrated_HR(uint8_t port) {
 	transform_adi_port(port);
 	validate_analog(port);
-	return ((_adi_port_get_value(port) << 4) - adi_data[port - 1].analog_data.calib);
+	return ((_adi_port_get_value(port) << 4) - get_analog_calib(port));
 }
 
 int32_t adi_digital_read(uint8_t port) {
@@ -180,11 +223,11 @@ int32_t adi_digital_get_new_press(uint8_t port) {
 	int32_t pressed = _adi_port_get_value(port);
 
 	if (!pressed)  // buttons is not currently pressed
-		adi_data[port].digital_data.was_pressed = false;
+		set_digital_pressed(port, false);
 
-	if (pressed && !adi_data[port].digital_data.was_pressed) {
+	if (pressed && !get_digital_pressed(port)) {
 		// button is currently pressed and was not detected as being pressed during last check
-		adi_data[port].digital_data.was_pressed = true;
+		set_digital_pressed(port, true);
 		return true;
 	} else
 		return false;  // button is not pressed or was already detected
@@ -243,7 +286,8 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool
 	transform_adi_port(port_top);
 	transform_adi_port(port_bottom);
 	validate_twowire(port_top, port_bottom);
-	encoder_reversed[(port - 1) / 2] = reverse;
+	// encoder_reversed[(port - 1) / 2] = reverse;
+	set_encoder_reversed(port, reverse);
 
 	if (_adi_port_set_config(port, E_ADI_LEGACY_ENCODER)) {
 		return port;
@@ -254,7 +298,7 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool
 
 int32_t adi_encoder_get(adi_encoder_t enc) {
 	validate_type(enc, E_ADI_LEGACY_ENCODER);
-	if (encoder_reversed[(enc - 1) / 2]) return (-_adi_port_get_value(enc));
+	if (get_encoder_reversed(enc)) return (-_adi_port_get_value(enc));
 	return _adi_port_get_value(enc);
 }
 

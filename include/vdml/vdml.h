@@ -17,6 +17,7 @@
 #ifndef VDML_H
 #define VDML_H
 
+#include "vdml/registry.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -41,11 +42,18 @@
 		errno = EINVAL;                                                                                        \
 		return PROS_ERR;                                                                                       \
 	}                                                                                                              \
-	v5_smart_device_s_t device = registry_get_device(port);                                                        \
+	v5_smart_device_s_t* device = registry_get_device(port);                                                       \
 	if (!port_mutex_take(port)) {                                                                                  \
 		errno = EACCES;                                                                                        \
 		return PROS_ERR;                                                                                       \
 	}
+
+/**
+ * A function that executes claim_port for functions that do not return an int32_t
+ *
+ * Returns 1 upon success, PROS_ERR upon failure
+ */
+int32_t claim_port_try(uint8_t port, v5_device_e_t type);
 
 /**
  * Macro that release the mutex for the given port and sets errno to 0 if the

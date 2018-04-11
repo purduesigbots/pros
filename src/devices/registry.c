@@ -88,13 +88,12 @@ int registry_unbind_port(uint8_t port) {
 	return 1;
 }
 
-v5_smart_device_s_t registry_get_device(uint8_t port) {
+v5_smart_device_s_t* registry_get_device(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = EINVAL;
-		v5_smart_device_s_t ret = {.device_type = E_DEVICE_NONE, .device_info = NULL };
-		return ret;
+		return NULL;
 	}
-	return registry[port];
+	return &registry[port];
 }
 
 v5_device_e_t registry_get_bound_type(uint8_t port) {

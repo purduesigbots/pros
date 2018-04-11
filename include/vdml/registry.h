@@ -28,6 +28,7 @@ extern "C" {
 typedef struct {
 	v5_device_e_t device_type;
 	V5_DeviceT device_info;
+	uint8_t pad[32];  // size currently determined by ADI needs
 } v5_smart_device_s_t;
 
 /*
@@ -49,7 +50,7 @@ void registry_update_types();
  *
  * \except EINVAL the port number is out of range.
  */
-v5_smart_device_s_t registry_get_device(uint8_t port);
+v5_smart_device_s_t* registry_get_device(uint8_t port);
 
 /*
  * \brief Returns the type of device registered to the port.
