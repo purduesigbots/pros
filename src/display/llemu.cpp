@@ -18,35 +18,35 @@
 
 namespace pros {
 namespace lcd {
-	using namespace pros::c;
+using namespace pros::c;
 
-	bool is_initialized(void) {
-		return lcd_is_initialized();
-	}
-	bool initialize(void) {
-		return lcd_initialize();
-	}
-	bool shutdown(void) {
-		return lcd_shutdown();
-	}
-	bool set_text(std::int16_t line, std::string text) {
-		return lcd_set_text(line, text.c_str());
-	}
-	bool clear(void) {
-		return lcd_clear();
-	}
-	bool clear_line(std::int16_t line) {
-		return lcd_clear_line(line);
-	}
+bool is_initialized(void) {
+	return lcd_is_initialized();
+}
+bool initialize(void) {
+	return lcd_initialize();
+}
+bool shutdown(void) {
+	return lcd_shutdown();
+}
+bool set_text(std::int16_t line, std::string text) {
+	return lcd_set_text(line, text.c_str());
+}
+bool clear(void) {
+	return lcd_clear();
+}
+bool clear_line(std::int16_t line) {
+	return lcd_clear_line(line);
+}
 
-	void register_btn0_cb(lcd_btn_cb_fn_t cb) {
-		lcd_register_btn0_cb(cb);
-	}
-	void register_btn1_cb(lcd_btn_cb_fn_t cb) {
-		lcd_register_btn1_cb(cb);
-	}
-	void register_btn2_cb(lcd_btn_cb_fn_t cb) {
-		lcd_register_btn2_cb(cb);
-	}
+void register_btn0_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn0_cb(cb);
 }
+void register_btn1_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn1_cb(cb);
 }
+void register_btn2_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn2_cb(cb);
+}
+}  // namespace lcd
+}  // namespace pros

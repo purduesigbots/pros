@@ -34,11 +34,11 @@ extern "C" {
 #define kprint(str) kprintf("%s", str)
 
 #ifndef PROS_RELEASING
-#define kassert(cond)                                                                                                  \
-	do {                                                                                                           \
-		if (!(cond)) {                                                                                         \
-			kprint("Assertion failed: " #cond);                                                            \
-		}                                                                                                      \
+#define kassert(cond)                     \
+	do {                                    \
+		if (!(cond)) {                        \
+			kprint("Assertion failed: " #cond); \
+		}                                     \
 	} while (0)
 #else
 #define kassert(cond)
@@ -73,13 +73,8 @@ int32_t rtos_resume_all(void);
  * Creates a task using statically allocated buffers. All tasks used by the PROS
  * system must use statically allocated buffers.
  */
-task_t task_create_static(task_fn_t task_code,
-                          void* const param,
-                          uint32_t priority,
-                          const size_t stack_size,
-                          const char* const name,
-                          task_stack_t* const stack_buffer,
-                          static_task_s_t* const task_buffer);
+task_t task_create_static(task_fn_t task_code, void* const param, uint32_t priority, const size_t stack_size,
+                          const char* const name, task_stack_t* const stack_buffer, static_task_s_t* const task_buffer);
 
 /**
  * Creates a statically allocated mutex. See the documentation in api.h for mutex_create().
@@ -100,8 +95,8 @@ sem_t sem_create_static(uint32_t uxMaxCount, uint32_t uxInitialCount, static_sem
  *
  * All FreeRTOS primitives must be created statically if they are required for operation of the kernel.
  */
-queue_t
-    queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer, static_queue_s_t* queue_buffer);
+queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer,
+                            static_queue_s_t* queue_buffer);
 
 /**
  * \brief Display a non-fatal error to the built-in LCD/touch screen.

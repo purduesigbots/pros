@@ -96,4 +96,4 @@ std::int32_t ADIEncoder::reset(void) const {
 ADIUltrasonic::ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping) {
 	_port = adi_ultrasonic_init(port_echo, port_ping);
 }
-}
+}  // namespace pros

@@ -81,61 +81,60 @@ static void set_encoder_reversed(uint8_t port, bool val) {
 	registry_get_device(port)->pad[port * 4] = data.raw[0];
 }
 
-#define transform_adi_port(port)                                                                                       \
-	if (port >= 'a' && port <= 'h')                                                                                \
-		port -= 'a';                                                                                           \
-	else if (port >= 'A' && port <= 'H')                                                                           \
-		port -= 'A';                                                                                           \
-	else                                                                                                           \
-		port--;                                                                                                \
-	if (port > 7 || port < 0) {                                                                                    \
-		errno = EINVAL;                                                                                        \
-		return PROS_ERR;                                                                                       \
+#define transform_adi_port(port)       \
+	if (port >= 'a' && port <= 'h')      \
+		port -= 'a';                       \
+	else if (port >= 'A' && port <= 'H') \
+		port -= 'A';                       \
+	else                                 \
+		port--;                            \
+	if (port > 7 || port < 0) {          \
+		errno = EINVAL;                    \
+		return PROS_ERR;                   \
 	}
 
-#define validate_type(port, type)                                                                                      \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                                       \
-	if (config != type) {                                                                                          \
-		return PROS_ERR;                                                                                       \
+#define validate_type(port, type)                          \
+	adi_port_config_e_t config = _adi_port_get_config(port); \
+	if (config != type) {                                    \
+		return PROS_ERR;                                       \
 	}
 
-#define validate_analog(port)                                                                                          \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                                       \
-	if (config != E_ADI_ANALOG_IN && config != E_ADI_LEGACY_POT && config != E_ADI_LEGACY_LINE_SENSOR &&           \
-	    config != E_ADI_LEGACY_LIGHT_SENSOR && config != E_ADI_LEGACY_ACCELEROMETER &&                             \
-	    config != E_ADI_SMART_POT) {                                                                               \
-		errno = EINVAL;                                                                                        \
-		return PROS_ERR;                                                                                       \
+#define validate_analog(port)                                                                                     \
+	adi_port_config_e_t config = _adi_port_get_config(port);                                                        \
+	if (config != E_ADI_ANALOG_IN && config != E_ADI_LEGACY_POT && config != E_ADI_LEGACY_LINE_SENSOR &&            \
+	    config != E_ADI_LEGACY_LIGHT_SENSOR && config != E_ADI_LEGACY_ACCELEROMETER && config != E_ADI_SMART_POT) { \
+		errno = EINVAL;                                                                                               \
+		return PROS_ERR;                                                                                              \
 	}
 
-#define validate_digital_in(port)                                                                                      \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                                       \
-	if (config != E_ADI_DIGITAL_IN && config != E_ADI_LEGACY_BUTTON && config != E_ADI_SMART_BUTTON) {             \
-		errno = EINVAL;                                                                                        \
-		return PROS_ERR;                                                                                       \
+#define validate_digital_in(port)                                                                    \
+	adi_port_config_e_t config = _adi_port_get_config(port);                                           \
+	if (config != E_ADI_DIGITAL_IN && config != E_ADI_LEGACY_BUTTON && config != E_ADI_SMART_BUTTON) { \
+		errno = EINVAL;                                                                                  \
+		return PROS_ERR;                                                                                 \
 	}
 
-#define validate_motor(port)                                                                                           \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                                       \
-	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                              \
-		errno = EINVAL;                                                                                        \
-		return PROS_ERR;                                                                                       \
+#define validate_motor(port)                                        \
+	adi_port_config_e_t config = _adi_port_get_config(port);          \
+	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
+		errno = EINVAL;                                                 \
+		return PROS_ERR;                                                \
 	}
 
-#define validate_twowire(port_top, port_bottom)                                                                        \
-	if (abs(port_top - port_bottom) > 1) {                                                                         \
-		errno = EINVAL;                                                                                        \
-		return PROS_ERR;                                                                                       \
-	}                                                                                                              \
-	int port;                                                                                                      \
-	if (port_top < port_bottom)                                                                                    \
-		port = port_top;                                                                                       \
-	else if (port_bottom < port_top)                                                                               \
-		port = port_bottom;                                                                                    \
-	else                                                                                                           \
-		return PROS_ERR;                                                                                       \
-	if (port % 2 == 1) {                                                                                           \
-		return PROS_ERR;                                                                                       \
+#define validate_twowire(port_top, port_bottom) \
+	if (abs(port_top - port_bottom) > 1) {        \
+		errno = EINVAL;                             \
+		return PROS_ERR;                            \
+	}                                             \
+	int port;                                     \
+	if (port_top < port_bottom)                   \
+		port = port_top;                            \
+	else if (port_bottom < port_top)              \
+		port = port_bottom;                         \
+	else                                          \
+		return PROS_ERR;                            \
+	if (port % 2 == 1) {                          \
+		return PROS_ERR;                            \
 	}
 
 static inline int32_t _adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
@@ -241,21 +240,21 @@ int32_t adi_digital_write(uint8_t port, const bool value) {
 
 int32_t adi_pin_mode(uint8_t port, uint8_t mode) {
 	switch (mode) {
-	case INPUT:
-		adi_port_set_config(port, E_ADI_DIGITAL_IN);
-		break;
-	case OUTPUT:
-		adi_port_set_config(port, E_ADI_DIGITAL_OUT);
-		break;
-	case INPUT_ANALOG:
-		adi_port_set_config(port, E_ADI_ANALOG_IN);
-		break;
-	case OUTPUT_ANALOG:
-		adi_port_set_config(port, E_ADI_ANALOG_OUT);
-		break;
-	default:
-		errno = EINVAL;
-		return PROS_ERR;
+		case INPUT:
+			adi_port_set_config(port, E_ADI_DIGITAL_IN);
+			break;
+		case OUTPUT:
+			adi_port_set_config(port, E_ADI_DIGITAL_OUT);
+			break;
+		case INPUT_ANALOG:
+			adi_port_set_config(port, E_ADI_ANALOG_IN);
+			break;
+		case OUTPUT_ANALOG:
+			adi_port_set_config(port, E_ADI_ANALOG_OUT);
+			break;
+		default:
+			errno = EINVAL;
+			return PROS_ERR;
 	};
 	return 1;
 }

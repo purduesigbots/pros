@@ -63,8 +63,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 		errno = EADDRINUSE;
 		return PROS_ERR;
 	}
-	if ((v5_device_e_t)registry_types[port] != device_type &&
-	    (v5_device_e_t)registry_types[port] != E_DEVICE_NONE) {
+	if ((v5_device_e_t)registry_types[port] != device_type && (v5_device_e_t)registry_types[port] != E_DEVICE_NONE) {
 		kprintf("[VDML][ERROR]Registration: Device mismatch in port %d\n", port + 1);
 		errno = EINVAL;
 		return PROS_ERR;

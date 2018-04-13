@@ -13,22 +13,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "vdml/vdml.h"
 #include "ifi/v5_api.h"
 #include "ifi/v5_apitypes.h"
 #include "kapi.h"
 #include "vdml/registry.h"
+#include "vdml/vdml.h"
 
 #define ZERO_POINT(port) registry_get_device(port)->pad[port]
 
 static void _vision_transform_coords(uint8_t port, vision_object_s_t* object_ptr) {
 	switch (ZERO_POINT(port)) {
-	case E_VISION_ZERO_CENTER:
-		object_ptr->left_coord -= VISION_FOV_WIDTH / 2;
-		object_ptr->top_coord = (VISION_FOV_HEIGHT / 2) - object_ptr->top_coord;
-		break;
-	default:
-		break;
+		case E_VISION_ZERO_CENTER:
+			object_ptr->left_coord -= VISION_FOV_WIDTH / 2;
+			object_ptr->top_coord = (VISION_FOV_HEIGHT / 2) - object_ptr->top_coord;
+			break;
+		default:
+			break;
 	}
 	object_ptr->x_middle_coord = object_ptr->left_coord + (object_ptr->width / 2);
 	object_ptr->y_middle_coord = object_ptr->top_coord - (object_ptr->height / 2);
@@ -115,9 +115,7 @@ err_return:
 	return rtn;
 }
 
-int32_t vision_read_by_size(uint8_t port,
-                            const uint32_t size_id,
-                            const uint32_t object_count,
+int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t object_count,
                             vision_object_s_t* const object_arr) {
 	claim_port(port - 1, E_DEVICE_VISION);
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
@@ -138,10 +136,7 @@ int32_t vision_read_by_size(uint8_t port,
 	return_port(port - 1, c);
 }
 
-int32_t vision_read_by_sig(uint8_t port,
-                           const uint32_t size_id,
-                           const uint8_t sig_id,
-                           const uint32_t object_count,
+int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint8_t sig_id, const uint32_t object_count,
                            vision_object_s_t* const object_arr) {
 	claim_port(port - 1, E_DEVICE_VISION);
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
@@ -237,9 +232,7 @@ int32_t vision_write_signature(uint8_t port, const uint8_t signature_id, vision_
 int32_t vision_set_led(uint8_t port, const int32_t rgb) {
 	claim_port(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionLedModeSet(device->device_info, 1);
-	V5_DeviceVisionRgb _rgb = {
-		.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255
-	};
+	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionLedColorSet(device->device_info, _rgb);
 	return_port(port - 1, 1);
 }
@@ -275,9 +268,7 @@ int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable) {
 int32_t vision_set_white_balance(uint8_t port, const int32_t rgb) {
 	claim_port(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWhiteBalanceModeSet(device->device_info, 2);
-	V5_DeviceVisionRgb _rgb = {
-		.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255
-	};
+	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionWhiteBalanceSet(device->device_info, _rgb);
 	return_port(port - 1, 1);
 }

@@ -13,9 +13,7 @@
 #include "pros/motors.hpp"
 
 namespace pros {
-Motor::Motor(const std::uint8_t port,
-             const motor_gearset_e_t gearset,
-             const bool reverse,
+Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
 	set_gearing(gearset);
@@ -176,11 +174,11 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 }
 
 namespace literals {
-	const pros::Motor operator"" _m(const unsigned long long int m) {
-		return pros::Motor(m, E_MOTOR_GEARSET_36, false);
-	}
-	const pros::Motor operator"" _rm(const unsigned long long int m) {
-		return pros::Motor(m, E_MOTOR_GEARSET_36, true);
-	}
+const pros::Motor operator"" _m(const unsigned long long int m) {
+	return pros::Motor(m, E_MOTOR_GEARSET_36, false);
 }
+const pros::Motor operator"" _rm(const unsigned long long int m) {
+	return pros::Motor(m, E_MOTOR_GEARSET_36, true);
 }
+}  // namespace literals
+}  // namespace pros

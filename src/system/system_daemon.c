@@ -34,9 +34,9 @@ enum competition_states {
 	E_STATE_UNKNOWN
 };
 
-char task_names[4][32] = { "User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
-	                   "User Comp. Init. (PROS)" };
-task_fn_t task_fns[4] = { _opcontrol_task, _autonomous_task, _disabled_task, _competition_initialize_task };
+char task_names[4][32] = {"User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
+                          "User Comp. Init. (PROS)"};
+task_fn_t task_fns[4] = {_opcontrol_task, _autonomous_task, _disabled_task, _competition_initialize_task};
 
 extern void ser_output_flush(void);
 
@@ -66,9 +66,8 @@ static void _system_daemon_task(void* ign) {
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition
 	// monitoring mode
-	competition_task =
-	    task_create_static(_initialize_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
-	                       "User Initialization (PROS)", competition_task_stack, &competition_task_buffer);
+	competition_task = task_create_static(_initialize_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
+	                                      "User Initialization (PROS)", competition_task_stack, &competition_task_buffer);
 
 	time = millis();
 	while (!task_notify_take(true, 2)) {
@@ -108,9 +107,8 @@ static void _system_daemon_task(void* ign) {
 				task_delete(competition_task);
 			}
 
-			competition_task = task_create_static(task_fns[new_state], NULL, TASK_PRIORITY_DEFAULT,
-			                                      TASK_STACK_DEPTH_DEFAULT, task_names[new_state],
-			                                      competition_task_stack, &competition_task_buffer);
+			competition_task = task_create_static(task_fns[new_state], NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
+			                                      task_names[new_state], competition_task_stack, &competition_task_buffer);
 		}
 
 		task_delay_until(&time, 2);
@@ -118,9 +116,8 @@ static void _system_daemon_task(void* ign) {
 }
 
 void system_daemon_initialize() {
-	system_daemon_task =
-	    task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
-	                       "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
+	system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
+	                                        "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
 }
 
 // description of some cases for implementing autonomous:

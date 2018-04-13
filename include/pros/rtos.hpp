@@ -48,11 +48,8 @@ class Task {
 	 * reached:
 	 * ENOMEM - The stack cannot be used as the TCB was not created.
 	 */
-	Task(task_fn_t function,
-	     void* parameters = NULL,
-	     std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "");
+	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
 	 *
@@ -267,6 +264,6 @@ using pros::c::millis;
  *        The number of milliseconds to wait (1000 milliseconds per second)
  */
 using pros::c::delay;
-}
+}  // namespace pros
 
 #endif

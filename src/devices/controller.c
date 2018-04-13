@@ -24,15 +24,15 @@ bool button_pressed[NUM_BUTTONS * 2];
 int32_t controller_is_connected(controller_id_e_t id) {
 	uint8_t port;
 	switch (id) {
-	case E_CONTROLLER_MASTER:
-		port = V5_PORT_CONTROLLER_1;
-		break;
-	case E_CONTROLLER_PARTNER:
-		port = V5_PORT_CONTROLLER_2;
-		break;
-	default:
-		errno = EINVAL;
-		return PROS_ERR;
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			errno = EINVAL;
+			return PROS_ERR;
 	}
 	if (!internal_port_mutex_take(port)) {
 		errno = EACCES;
@@ -46,15 +46,15 @@ int32_t controller_is_connected(controller_id_e_t id) {
 int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel) {
 	uint8_t port;
 	switch (id) {
-	case E_CONTROLLER_MASTER:
-		port = V5_PORT_CONTROLLER_1;
-		break;
-	case E_CONTROLLER_PARTNER:
-		port = V5_PORT_CONTROLLER_2;
-		break;
-	default:
-		errno = EINVAL;
-		return PROS_ERR;
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			errno = EINVAL;
+			return PROS_ERR;
 	}
 	if (!internal_port_mutex_take(port)) {
 		errno = EACCES;
@@ -68,15 +68,15 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
 	uint8_t port;
 	switch (id) {
-	case E_CONTROLLER_MASTER:
-		port = V5_PORT_CONTROLLER_1;
-		break;
-	case E_CONTROLLER_PARTNER:
-		port = V5_PORT_CONTROLLER_2;
-		break;
-	default:
-		errno = EINVAL;
-		return PROS_ERR;
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			errno = EINVAL;
+			return PROS_ERR;
 	}
 	if (!internal_port_mutex_take(port)) {
 		errno = EACCES;

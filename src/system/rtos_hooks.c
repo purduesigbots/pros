@@ -135,8 +135,7 @@ void vAssertCalled(const char* pcFile, unsigned long ulLine) {
 an
 implementation of vApplicationGetIdleTaskMemory() to provide the memory that is
 used by the Idle task. */
-void vApplicationGetIdleTaskMemory(static_task_s_t** ppxIdleTaskTCBBuffer,
-                                   task_stack_t** ppxIdleTaskStackBuffer,
+void vApplicationGetIdleTaskMemory(static_task_s_t** ppxIdleTaskTCBBuffer, task_stack_t** ppxIdleTaskStackBuffer,
                                    uint32_t* pulIdleTaskStackSize) {
 	/* If the buffers to be provided to the Idle task are declared inside
 	this
@@ -165,8 +164,7 @@ void vApplicationGetIdleTaskMemory(static_task_s_t** ppxIdleTaskTCBBuffer,
 the
 application must provide an implementation of vApplicationGetTimerTaskMemory()
 to provide the memory that is used by the Timer service task. */
-void vApplicationGetTimerTaskMemory(static_task_s_t** ppxTimerTaskTCBBuffer,
-                                    task_stack_t** ppxTimerTaskStackBuffer,
+void vApplicationGetTimerTaskMemory(static_task_s_t** ppxTimerTaskTCBBuffer, task_stack_t** ppxTimerTaskStackBuffer,
                                     uint32_t* pulTimerTaskStackSize) {
 	/* If the buffers to be provided to the Timer task are declared inside
 	this

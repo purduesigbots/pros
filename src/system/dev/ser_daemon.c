@@ -109,52 +109,52 @@ static void ser_daemon_task(void* ign) {
 				command_stack[command_stack_idx++] = b;
 				b = command_stack[command_stack_idx++] = vex_read_char();
 				switch (b) {
-				case 'a':
-					fprintf(stderr, "I'm alive!\n");
-					command_stack_idx = 0;
-					break;
-				case 'b':
-					task_delay(20);
-					print_small_banner();
-					command_stack_idx = 0;
-					break;
-				case 'B':
-					task_delay(20);
-					print_large_banner();
-					command_stack_idx = 0;
-					break;
-				case 'e':
-					// read next 4 bytes
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					// the parameter expected to serctl is the stream id (a uint32_t), so we need
-					// to cast to a uint32_t pointer, dereference it, and cast to a void* to make
-					// the compiler happy
-					serctl(SERCTL_ACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
-					// printf("enabled %s\n", command_stack + 3);
-					command_stack_idx = 0;
-					break;
-				case 'd':
-					// read next 4 bytes
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					command_stack[command_stack_idx++] = vex_read_char();
-					serctl(SERCTL_DEACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
-					// printf("disabled %s\n", command_stack+3);
-					command_stack_idx = 0;
-					break;
-				case 'c':
-					serctl(SERCTL_ENABLE_COBS, NULL);
-					break;
-				case 'r':
-					serctl(SERCTL_DISABLE_COBS, NULL);
-					break;
-				case 'i':
-					// TODO: disable kernel parsing for the next n characters
-					break;
+					case 'a':
+						fprintf(stderr, "I'm alive!\n");
+						command_stack_idx = 0;
+						break;
+					case 'b':
+						task_delay(20);
+						print_small_banner();
+						command_stack_idx = 0;
+						break;
+					case 'B':
+						task_delay(20);
+						print_large_banner();
+						command_stack_idx = 0;
+						break;
+					case 'e':
+						// read next 4 bytes
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						// the parameter expected to serctl is the stream id (a uint32_t), so we
+						// need to cast to a uint32_t pointer, dereference it, and cast to a
+						// void* to make the compiler happy
+						serctl(SERCTL_ACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
+						// printf("enabled %s\n", command_stack + 3);
+						command_stack_idx = 0;
+						break;
+					case 'd':
+						// read next 4 bytes
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						command_stack[command_stack_idx++] = vex_read_char();
+						serctl(SERCTL_DEACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
+						// printf("disabled %s\n", command_stack+3);
+						command_stack_idx = 0;
+						break;
+					case 'c':
+						serctl(SERCTL_ENABLE_COBS, NULL);
+						break;
+					case 'r':
+						serctl(SERCTL_DISABLE_COBS, NULL);
+						break;
+					case 'i':
+						// TODO: disable kernel parsing for the next n characters
+						break;
 				}
 			}
 

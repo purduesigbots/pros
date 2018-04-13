@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include "kapi.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "kapi.h"
 
 struct set {
 	uint32_t* arr;

@@ -38,9 +38,9 @@
 static uint32_t file_table_bmp[gid_size_to_words(MAX_FILES_OPEN)];
 // the gid structure itself
 static struct gid_metadata file_table_gids = {.bitmap = file_table_bmp,
-	                                      .max = MAX_FILES_OPEN,
-	                                      .reserved = RESERVED_FILENOS,
-	                                      .bitmap_size = gid_size_to_words(MAX_FILES_OPEN) };
+                                              .max = MAX_FILES_OPEN,
+                                              .reserved = RESERVED_FILENOS,
+                                              .bitmap_size = gid_size_to_words(MAX_FILES_OPEN)};
 
 // file table mapping a file descriptor number to a driver and driver argument
 static struct file_entry file_table[MAX_FILES_OPEN];

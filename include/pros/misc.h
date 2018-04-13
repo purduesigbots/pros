@@ -91,135 +91,134 @@ typedef enum {
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-	namespace c {
+namespace c {
 #endif
 
-		/**
-		 * Checks if the controller is connected.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
-     * EACCES - Another resource is currently trying to access the controller port.
-		 *
-		 * \param id
-		 * 			  The ID of the controller (e.g. the master or partner controller).
-		 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
-		 *
-		 * \return 1 if the controller is connected, 0 otherwise
-		 */
-		int32_t controller_is_connected(controller_id_e_t id);
+/**
+ * Checks if the controller is connected.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
+ * EACCES - Another resource is currently trying to access the controller port.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ *
+ * \return 1 if the controller is connected, 0 otherwise
+ */
+int32_t controller_is_connected(controller_id_e_t id);
 
-		/**
-		 * Gets the value of an analog channel (joystick) on a controller.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
-     * EACCES - Another resource is currently trying to access the controller port.
-		 *
-		 * \param id
-		 * 			  The ID of the controller (e.g. the master or partner controller).
-		 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
-		 * \param channel
-		 * 			  The analog channel to get.
-		 * 			  Must be one of ANALOG_LEFT_X, ANALOG_LEFT_Y, ANALOG_RIGHT_X, ANALOG_RIGHT_Y
-		 *
-		 * \return The current reading of the analog channel: [-127, 127].
-		 * 			   If the controller was not connected, then 0 is returned
-		 */
-		int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
+/**
+ * Gets the value of an analog channel (joystick) on a controller.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
+ * EACCES - Another resource is currently trying to access the controller port.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param channel
+ *        The analog channel to get.
+ *        Must be one of ANALOG_LEFT_X, ANALOG_LEFT_Y, ANALOG_RIGHT_X, ANALOG_RIGHT_Y
+ *
+ * \return The current reading of the analog channel: [-127, 127].
+ *         If the controller was not connected, then 0 is returned
+ */
+int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
 
-		/**
-		 * Checks if a digital channel (button) on the controller is currently pressed.
-		 *
-		 * \note
-		 * 			The naming scheme for the buttons is not yet finalized as VEX finalizes
-		 * 			the controller naming pattern
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
-     * EACCES - Another resource is currently trying to access the controller port.
-		 *
-		 * \param id
-		 * 			  The ID of the controller (e.g. the master or partner controller).
-		 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
-		 * \param button
-		 * 			  The button to read.
-		 * 			  Must be one of DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
-		 *
-		 * \return 1 if the button on the controller is pressed.
-		 * 			   If the controller was not connected, then 0 is returned
-		 */
-		int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
+/**
+ * Checks if a digital channel (button) on the controller is currently pressed.
+ *
+ * \note The naming scheme for the buttons is not yet finalized as VEX finalizes
+ *       the controller naming pattern
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
+ * EACCES - Another resource is currently trying to access the controller port.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param button
+ *        The button to read.
+ *        Must be one of DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+ *
+ * \return 1 if the button on the controller is pressed.
+ * 			   If the controller was not connected, then 0 is returned
+ */
+int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
 
-		/**
-		 * Returns a rising-edge case for a controller button press.
-		 *
-		 * This function is not thread-safe.
-		 * Multiple tasks polling a single button may return different results under the
-		 * same circumstances, so only one task should call this function for any given
-		 * button. E.g., Task A calls this function for buttons 1 and 2. Task B may call
-		 * this function for button 3, but should not for buttons 1 or 2. A typical
-		 * use-case for this function is to call inside opcontrol to detect new button
-		 * presses, and not in any other tasks.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
-     * EACCES - Another resource is currently trying to access the controller port.
-		 *
-		 * \param id
-		 * 			  The ID of the controller (e.g. the master or partner controller).
-		 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
-		 * \param button
-		 * 			  The button to read.
-		 * 			  Must be one of DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
-		 *
-		 * \return 1 if the button on the controller is pressed and had not been pressed
-		 *         the last time this function was called, 0 otherwise.
-		 */
-		int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
+/**
+ * Returns a rising-edge case for a controller button press.
+ *
+ * This function is not thread-safe.
+ * Multiple tasks polling a single button may return different results under the
+ * same circumstances, so only one task should call this function for any given
+ * button. E.g., Task A calls this function for buttons 1 and 2. Task B may call
+ * this function for button 3, but should not for buttons 1 or 2. A typical
+ * use-case for this function is to call inside opcontrol to detect new button
+ * presses, and not in any other tasks.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is given.
+ * EACCES - Another resource is currently trying to access the controller port.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        	Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param button
+ * 			  The button to read.
+ * 			  Must be one of DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+ *
+ * \return 1 if the button on the controller is pressed and had not been pressed
+ *         the last time this function was called, 0 otherwise.
+ */
+int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
 
-		/**
-		 * Gets the current voltage of the battery, as reported by VEXos.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EACCES - Another resource is currently trying to access the battery port.
-		 *
-		 * \return The current voltage of the battery
-		 */
-		double battery_get_voltage(void);
+/**
+ * Gets the current voltage of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current voltage of the battery
+ */
+double battery_get_voltage(void);
 
-		/**
-		 * Gets the current current of the battery, as reported by VEXos.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EACCES - Another resource is currently trying to access the battery port.
-		 *
-		 * \return The current current of the battery
-		 */
-		double battery_get_current(void);
+/**
+ * Gets the current current of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current current of the battery
+ */
+double battery_get_current(void);
 
-		/**
-		 * Gets the current temperature of the battery, as reported by VEXos.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EACCES - Another resource is currently trying to access the battery port.
-		 *
-		 * \return The current temperature of the battery
-		 */
-		double battery_get_temperature(void);
+/**
+ * Gets the current temperature of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current temperature of the battery
+ */
+double battery_get_temperature(void);
 
-		/**
-		 * Gets the current capacity of the battery, as reported by VEXos.
-     *
-     * This function uses the following values of errno when an error state is reached:
-     * EACCES - Another resource is currently trying to access the battery port.
-		 *
-		 * \return The current capacity of the battery
-		 */
-		double battery_get_capacity(void);
+/**
+ * Gets the current capacity of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current capacity of the battery
+ */
+double battery_get_capacity(void);
 
 #ifdef __cplusplus
-	}
+}
 }
 }
 #endif

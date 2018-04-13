@@ -24,7 +24,9 @@ typedef struct ll_node_s {
 	struct ll_node_s* next;
 } ll_node_s_t;
 
-typedef struct { ll_node_s_t* head; } linked_list_s_t;
+typedef struct {
+	ll_node_s_t* head;
+} linked_list_s_t;
 
 /**
  * \brief Initialize a linked list node storing an arbitrary function pointer

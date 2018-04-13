@@ -62,7 +62,7 @@ typedef adi_ultrasonic_t Ultrasonic;
 /**
  * From rtos.h
  */
-#define taskCreate(taskCode, stackDepth, parameters, priority)                                                         \
+#define taskCreate(taskCode, stackDepth, parameters, priority) \
 	task_create(taskCode, parameters, priority, stackDepth, '')
 #define taskDelete(task) task_delete(task)
 #define taskDelay task_delay

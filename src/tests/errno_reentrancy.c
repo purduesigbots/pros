@@ -1,6 +1,6 @@
+#include <errno.h>
 #include "api.h"
 #include "ifi/v5_api.h"
-#include <errno.h>
 
 void task_a_fn(void* ign) {
 	vexDisplayString(2, "Errno from A is: %d\n", errno);

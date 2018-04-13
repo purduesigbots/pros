@@ -34,20 +34,20 @@ std::int32_t Controller::get_digital_new_press(controller_digital_e_t button) {
 }
 
 namespace competition {
-	std::uint8_t get_status(void) {
-		return competition_get_status();
-	}
-
-	std::uint8_t is_autonomous(void) {
-		return competition_is_autonomous();
-	}
-
-	std::uint8_t is_connected(void) {
-		return competition_is_connected();
-	}
-
-	std::uint8_t is_disabled(void) {
-		return competition_is_disabled();
-	}
+std::uint8_t get_status(void) {
+	return competition_get_status();
 }
+
+std::uint8_t is_autonomous(void) {
+	return competition_is_autonomous();
 }
+
+std::uint8_t is_connected(void) {
+	return competition_is_connected();
+}
+
+std::uint8_t is_disabled(void) {
+	return competition_is_disabled();
+}
+}  // namespace competition
+}  // namespace pros

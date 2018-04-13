@@ -372,6 +372,6 @@ class ADIUltrasonic : private ADIPort {
 	 */
 	using ADIPort::get_value;
 };
-}
+}  // namespace pros
 
 #endif

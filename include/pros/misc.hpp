@@ -105,59 +105,59 @@ class Controller {
 };
 
 namespace battery {
-	/**
-	 * Gets the current voltage of the battery, as reported by VEXos.
-	 *
-	 * This function uses the following values of errno when an error state is reached:
-	 * EACCES - Another resource is currently trying to access the battery port.
-	 *
-	 * \return The current voltage of the battery
-	 */
-	double get_capacity(void);
+/**
+ * Gets the current voltage of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current voltage of the battery
+ */
+double get_capacity(void);
 
-	/**
-	 * Gets the current current of the battery, as reported by VEXos.
-	 *
-	 * This function uses the following values of errno when an error state is reached:
-	 * EACCES - Another resource is currently trying to access the battery port.
-	 *
-	 * \return The current current of the battery
-	 */
-	double get_current(void);
+/**
+ * Gets the current current of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current current of the battery
+ */
+double get_current(void);
 
-	/**
-	 * Gets the current temperature of the battery, as reported by VEXos.
-	 *
-	 * This function uses the following values of errno when an error state is reached:
-	 * EACCES - Another resource is currently trying to access the battery port.
-	 *
-	 * \return The current temperature of the battery
-	 */
-	double get_temperature(void);
+/**
+ * Gets the current temperature of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current temperature of the battery
+ */
+double get_temperature(void);
 
-	/**
-	 * Gets the current capacity of the battery, as reported by VEXos.
-	 *
-	 * This function uses the following values of errno when an error state is reached:
-	 * EACCES - Another resource is currently trying to access the battery port.
-	 *
-	 * \return The current capacity of the battery
-	 */
-	double get_voltage(void);
-}
+/**
+ * Gets the current capacity of the battery, as reported by VEXos.
+ *
+ * This function uses the following values of errno when an error state is reached:
+ * EACCES - Another resource is currently trying to access the battery port.
+ *
+ * \return The current capacity of the battery
+ */
+double get_voltage(void);
+}  // namespace battery
 
 namespace competition {
-	/**
-	 * Get the current status of the competition control.
-	 *
-	 * \return The competition control status as a mask of bits with
-	 * 			   COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
-	 */
-	std::uint8_t get_status(void);
-	std::uint8_t is_autonomous(void);
-	std::uint8_t is_connected(void);
-	std::uint8_t is_disabled(void);
-}
-}
+/**
+ * Get the current status of the competition control.
+ *
+ * \return The competition control status as a mask of bits with
+ * 			   COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ */
+std::uint8_t get_status(void);
+std::uint8_t is_autonomous(void);
+std::uint8_t is_connected(void);
+std::uint8_t is_disabled(void);
+}  // namespace competition
+}  // namespace pros
 
 #endif

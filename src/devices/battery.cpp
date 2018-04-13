@@ -14,22 +14,22 @@
 
 namespace pros {
 namespace battery {
-	using namespace pros::c;
+using namespace pros::c;
 
-	double get_capacity(void) {
-		return battery_get_capacity();
-	}
-
-	double get_current(void) {
-		return battery_get_current();
-	}
-
-	double get_temperature(void) {
-		return battery_get_temperature();
-	}
-
-	double get_voltage(void) {
-		return battery_get_voltage();
-	}
+double get_capacity(void) {
+	return battery_get_capacity();
 }
+
+double get_current(void) {
+	return battery_get_current();
 }
+
+double get_temperature(void) {
+	return battery_get_temperature();
+}
+
+double get_voltage(void) {
+	return battery_get_voltage();
+}
+}  // namespace battery
+}  // namespace pros

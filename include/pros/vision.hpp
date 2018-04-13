@@ -35,9 +35,9 @@ class Vision {
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default behavior,
 	 * displaying the most prominent object signature color.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return 1 if no errors occurred, PROS_ERR otherwise
 	 */
@@ -45,9 +45,9 @@ class Vision {
 
 	/**
 	 * Gets the nth largest object according to size_id.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -60,10 +60,10 @@ class Vision {
 
 	/**
 	 * Gets the nth largest object of the given signature according to size_id.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
-   * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
+	 * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -78,9 +78,9 @@ class Vision {
 
 	/**
 	 * Gets the exposure parameter of the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The current exposure percentage parameter from [0,100],
 	 *         PROS_ERR if an error occurred
@@ -89,9 +89,9 @@ class Vision {
 
 	/**
 	 * Gets the number of objects currently detected by the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The number of objects detected on the specified vision sensor.
 	 *         Returns PROS_ERR if the port was invalid or an error occurred.
@@ -100,9 +100,9 @@ class Vision {
 
 	/**
 	 * Get the white balance parameter of the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The current RGB white balance setting of the sensor
 	 */
@@ -110,9 +110,9 @@ class Vision {
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param object_count
 	 *        The number of objects to read
@@ -123,15 +123,14 @@ class Vision {
 	 *         object_count if there are fewer objects detected by the vision sensor.
 	 *         Returns PROS_ERR if the port was invalid or an error occurred.
 	 */
-	std::int32_t read_by_size(const std::uint32_t size_id,
-	                          const std::uint32_t object_count,
+	std::int32_t read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
 	                          vision_object_s_t* const object_arr) const;
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param object_count
 	 *        The number of objects to read
@@ -147,16 +146,14 @@ class Vision {
 	 *         object_count if there are fewer objects detected by the vision sensor.
 	 *         Returns PROS_ERR if the port was invalid or an error occurred.
 	 */
-	std::int32_t read_by_sig(const std::uint32_t size_id,
-	                         const std::uint8_t sig_id,
-	                         const std::uint32_t object_count,
+	std::int32_t read_by_sig(const std::uint32_t size_id, const std::uint8_t sig_id, const std::uint32_t object_count,
 	                         vision_object_s_t* const object_arr) const;
 
 	/**
 	 * Enables/disables auto white-balancing on the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param enabled
 	 * 		    Pass 0 to disable, 1 to enable
@@ -167,9 +164,9 @@ class Vision {
 
 	/**
 	 * Sets the exposure parameter of the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param percent
 	 *        The new exposure percentage from [0,100]
@@ -180,9 +177,9 @@ class Vision {
 
 	/**
 	 * Sets the vision sensor LED color, overriding the automatic behavior.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param rgb
 	 *        An RGB code to set the LED to
@@ -193,9 +190,9 @@ class Vision {
 
 	/**
 	 * Sets the white balance parameter of the Vision Sensor.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return 1 if no errors occurred, PROS_ERR otherwise
 	 */
@@ -207,9 +204,9 @@ class Vision {
 	 * This will affect the coordinates returned for each request for a vision_object_s_t
 	 * from the sensor, so it is recommended that this function only be used to configure
 	 * the sensor at the beginning of its use.
-   *
-   * This function uses the following values of errno when an error state is reached:
-   * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV
@@ -221,5 +218,5 @@ class Vision {
 	private:
 	std::uint8_t _port;
 };
-}
+}  // namespace pros
 #endif

@@ -208,19 +208,19 @@ void vdml_background_processing() {
 					line_ptr = print_num(line_ptr, i + 1);
 				}
 				switch (error_arr[i]) {
-				case 0:
-					*line_ptr++ = '.';
-					break;
-				case 1:
-					*line_ptr++ = 'U';
-					break;
-				case 2:
-					*line_ptr++ = 'M';
-					break;
-				// Should never happen
-				default:
-					*line_ptr++ = '?';
-					break;
+					case 0:
+						*line_ptr++ = '.';
+						break;
+					case 1:
+						*line_ptr++ = 'U';
+						break;
+					case 2:
+						*line_ptr++ = 'M';
+						break;
+					// Should never happen
+					default:
+						*line_ptr++ = '?';
+						break;
 				}
 			}
 		}

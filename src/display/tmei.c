@@ -272,29 +272,29 @@ void _set_up_touch_callback_storage() {
 
 void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
 	switch (event_type) {
-	case E_TOUCH_EVENT_RELEASE:
-		linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
-		break;
-	case E_TOUCH_EVENT_PRESS:
-		linked_list_prepend_func(_touch_event_press_handler_list, (generic_fn_t)cb);
-		break;
-	case E_TOUCH_EVENT_PRESS_AND_HOLD:
-		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
-		break;
+		case E_TOUCH_EVENT_RELEASE:
+			linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
+			break;
+		case E_TOUCH_EVENT_PRESS:
+			linked_list_prepend_func(_touch_event_press_handler_list, (generic_fn_t)cb);
+			break;
+		case E_TOUCH_EVENT_PRESS_AND_HOLD:
+			linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
+			break;
 	}
 }
 
 void unregister_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
 	switch (event_type) {
-	case E_TOUCH_EVENT_RELEASE:
-		linked_list_remove_func(_touch_event_release_handler_list, (generic_fn_t)cb);
-		break;
-	case E_TOUCH_EVENT_PRESS:
-		linked_list_remove_func(_touch_event_press_handler_list, (generic_fn_t)cb);
-		break;
-	case E_TOUCH_EVENT_PRESS_AND_HOLD:
-		linked_list_remove_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
-		break;
+		case E_TOUCH_EVENT_RELEASE:
+			linked_list_remove_func(_touch_event_release_handler_list, (generic_fn_t)cb);
+			break;
+		case E_TOUCH_EVENT_PRESS:
+			linked_list_remove_func(_touch_event_press_handler_list, (generic_fn_t)cb);
+			break;
+		case E_TOUCH_EVENT_PRESS_AND_HOLD:
+			linked_list_remove_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
+			break;
 	}
 }
 
@@ -357,18 +357,17 @@ void _touch_handle_task(void* ignore) {
 	while (true) {
 		vexTouchDataGet(&current);
 		if (!_touch_status_equivalent(current, last)) {
-			touch_event_position_data_s_t event_data = {.x = current.lastXpos, .y = current.lastYpos };
+			touch_event_position_data_s_t event_data = {.x = current.lastXpos, .y = current.lastYpos};
 			switch (current.lastEvent) {
-			case E_TOUCH_EVENT_RELEASE:
-				linked_list_foreach(_touch_event_release_handler_list, _handle_cb, (void*)&event_data);
-				break;
-			case E_TOUCH_EVENT_PRESS:
-				linked_list_foreach(_touch_event_press_handler_list, _handle_cb, (void*)&event_data);
-				break;
-			case E_TOUCH_EVENT_PRESS_AND_HOLD:
-				linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb,
-				                    (void*)&event_data);
-				break;
+				case E_TOUCH_EVENT_RELEASE:
+					linked_list_foreach(_touch_event_release_handler_list, _handle_cb, (void*)&event_data);
+					break;
+				case E_TOUCH_EVENT_PRESS:
+					linked_list_foreach(_touch_event_press_handler_list, _handle_cb, (void*)&event_data);
+					break;
+				case E_TOUCH_EVENT_PRESS_AND_HOLD:
+					linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb, (void*)&event_data);
+					break;
 			}
 			last = current;
 		}
@@ -379,7 +378,6 @@ void _touch_handle_task(void* ignore) {
 void graphical_context_daemon_initialize(void) {
 	_tmei_mutex = mutex_create();
 	_set_up_touch_callback_storage();
-	touch_handle_task =
-	    task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MAX - 3, TASK_STACK_DEPTH_DEFAULT,
-	                       "PROS TMEI Touch Handler", touch_handle_task_stack, &touch_handle_task_buffer);
+	touch_handle_task = task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MAX - 3, TASK_STACK_DEPTH_DEFAULT,
+	                                       "PROS TMEI Touch Handler", touch_handle_task_stack, &touch_handle_task_buffer);
 }
