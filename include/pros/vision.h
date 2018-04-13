@@ -1,9 +1,9 @@
 /**
  * \file pros/vision.h
  *
- * \brief Contains prototypes for the VEX Vision Sensor-related functions.
+ * Contains prototypes for the VEX Vision Sensor-related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/vision to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -89,7 +89,11 @@ namespace pros {
 
 		/**
 		 * Clears the vision sensor LED color, reseting it back to its default behavior,
-		 * displaying the most prominent object signature color
+		 * displaying the most prominent object signature color.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -99,7 +103,11 @@ namespace pros {
 		int32_t vision_clear_led(uint8_t port);
 
 		/**
-		 * \brief Gets the nth largest object according to size_id.
+		 * Gets the nth largest object according to size_id.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -113,7 +121,12 @@ namespace pros {
 		vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id);
 
 		/**
-		 * \brief Gets the nth largest object of the given signature according to size_id.
+		 * Gets the nth largest object of the given signature according to size_id.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
+     * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -129,7 +142,11 @@ namespace pros {
 		vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint8_t sig_id);
 
 		/**
-		 * Gets the exposure parameter of the Vision Sensor
+		 * Gets the exposure parameter of the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -140,7 +157,11 @@ namespace pros {
 		int32_t vision_get_exposure(uint8_t port);
 
 		/**
-		 * \brief Returns the number of objects currently detected by the Vision Sensor.
+		 * Gets the number of objects currently detected by the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -151,17 +172,25 @@ namespace pros {
 		int32_t vision_get_object_count(uint8_t port);
 
 		/**
-		             * Get the white balance parameter of the Vision Sensor
-		             *
-		             * \param port
-		             * 		    The V5 port number from 1-21
-		             *
-		             * \return The current RGB white balance setting of the sensor
-		             */
+		 * Get the white balance parameter of the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
+		 *
+		 * \param port
+		 * 		    The V5 port number from 1-21
+		 *
+		 * \return The current RGB white balance setting of the sensor
+		 */
 		int32_t vision_get_white_balance(uint8_t port);
 
 		/**
-		 * \brief Reads up to object_count object descriptors into object_arr.
+		 * Reads up to object_count object descriptors into object_arr.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -180,7 +209,11 @@ namespace pros {
 		                            vision_object_s_t* const object_arr);
 
 		/**
-		 * \brief Reads up to object_count object descriptors into object_arr.
+		 * Reads up to object_count object descriptors into object_arr.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -205,31 +238,43 @@ namespace pros {
 		                           vision_object_s_t* const object_arr);
 
 		/**
-		             * Enable/disable auto white-balancing on the Vision Sensor
-		             *
-		             * \param port
-		             * 		    The V5 port number from 1-21
-		             * \param enabled
-		             * 		    Pass 0 to disable, 1 to enable
-		             *
-		             * \return 1 if no errors occurred, PROS_ERR otherwise
-		             */
+		 * Enables/disables auto white-balancing on the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
+		 *
+		 * \param port
+		 * 		    The V5 port number from 1-21
+		 * \param enabled
+		 * 		    Pass 0 to disable, 1 to enable
+		 *
+		 * \return 1 if no errors occurred, PROS_ERR otherwise
+		 */
 		int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable);
 
 		/**
-		             * Sets the exposure parameter of the Vision Sensor
-		             *
-		             * \param port
-		             *        The V5 port number from 1-21
-		             * \param percent
-		             *        The new exposure percentage from [0,100]
-		             *
-		             * \return 1 if no errors occurred, PROS_ERR otherwise
-		             */
+		 * Sets the exposure parameter of the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
+		 *
+		 * \param port
+		 *        The V5 port number from 1-21
+		 * \param percent
+		 *        The new exposure percentage from [0,100]
+		 *
+		 * \return 1 if no errors occurred, PROS_ERR otherwise
+		 */
 		int32_t vision_set_exposure(uint8_t port, const uint8_t percent);
 
 		/**
-		 * Sets the vision sensor LED color, overriding the automatic behavior
+		 * Sets the vision sensor LED color, overriding the automatic behavior.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 *        The V5 port number from 1-21
@@ -241,7 +286,11 @@ namespace pros {
 		int32_t vision_set_led(uint8_t port, const int32_t rgb);
 
 		/**
-		 * Sets the white balance parameter of the Vision Sensor
+		 * Sets the white balance parameter of the Vision Sensor.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 * 		    The V5 port number from 1-21
@@ -251,11 +300,15 @@ namespace pros {
 		int32_t vision_set_white_balance(uint8_t port, const int32_t rgb);
 
 		/**
-		 * \brief Sets the (0,0) coordinate for the Field of View.
+		 * Sets the (0,0) coordinate for the Field of View.
 		 *
 		 * This will affect the coordinates returned for each request for a vision_object_s_t
 		 * from the sensor, so it is recommended that this function only be used to configure
 		 * the sensor at the beginning of its use.
+     *
+     * This function uses the following values of errno when an error state is reached:
+     * EINVAL - The given value is not within the range of V5 ports (1-21).
+     * EACCES - Another resource is currently trying to access the port.
 		 *
 		 * \param port
 		 * 		    The V5 port number from 1-21

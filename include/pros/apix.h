@@ -7,7 +7,7 @@
  * functions do not typically have as much error handling or require deeper
  * knowledge of real time operating systems.
  *
- * Visit https://pros.cs.purdue.edu/v5/api/extended to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/extended/api.html to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -41,16 +41,16 @@ typedef void* queue_t;
 typedef void* sem_t;
 
 /**
- * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a semaphore, etc.)
+ * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a semaphore, etc.).
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#abort_delay for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#abort_delay for details.
  */
 bool task_abort_delay(task_t task);
 
 /**
  * Creates a recursive mutex which can be locked recursively by the owner.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#recursive_mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes for details.
  *
  * \return
  *          A newly created recursive mutex.
@@ -58,9 +58,9 @@ bool task_abort_delay(task_t task);
 mutex_t mutex_recursive_create(void);
 
 /**
- * Takes a recursive mutex
+ * Takes a recursive mutex.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#recursive_mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes for details.
  *
  * \param mutex
  *          A mutex handle created by mutex_recursive_create
@@ -72,9 +72,9 @@ mutex_t mutex_recursive_create(void);
 bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
 
 /**
- * Gives a recursive mutex
+ * Gives a recursive mutex.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#recursive_mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes for details.
  *
  * \param mutex
  *          A mutex handle created by mutex_recursive_create
@@ -86,7 +86,7 @@ bool mutex_recursive_give(mutex_t mutex);
 /**
  * Returns a handle to the current owner of a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#extra for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#extra for details.
  *
  * \param mutex
  *          A mutex handle
@@ -98,7 +98,7 @@ task_t mutex_get_owner(mutex_t mutex);
 /**
  * Creates a counting sempahore.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html#semaphores for details.
  *
  * \param max_count
  *          The maximum count value that can be reached.
@@ -113,7 +113,7 @@ sem_t sem_create(uint32_t max_count, uint32_t init_count);
 /**
  * Deletes a semaphore (or binary semaphore)
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#semaphores for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#semaphores for details.
  *
  * \param sem
  * 			Semaphore to delete
@@ -122,7 +122,7 @@ void sem_delete(sem_t sem);
 /**
  * Creates a binary semaphore.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#binary_semaphores for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking#.htmlbinary_semaphores for details.
  *
  * \return
  *          A newly created semaphore.
@@ -133,7 +133,7 @@ sem_t sem_binary_create(void);
  * Waits for the semaphore's value to be greater than 0. If the value is already
  * greater than 0, this function immediately returns.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html#semaphores for details.
  *
  * \param sem
  *          Semaphore to wait on
@@ -151,7 +151,7 @@ bool sem_wait(sem_t sem, uint32_t timeout);
 /**
  * Increments a semaphore's value.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#semaphores for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html#semaphores for details.
  *
  * \param sem
  *          Semaphore to post
@@ -165,7 +165,7 @@ bool sem_post(sem_t sem);
 /**
  * Returns the current value of the semaphore.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#extra for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#extra for details.
  *
  * \param sem
  *          A semaphore handle
@@ -177,7 +177,7 @@ uint32_t sem_get_count(sem_t sem);
 /**
  * Creates a queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param length
  *          The maximum number of items that the queue can contain.
@@ -191,7 +191,7 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
 /**
  * Posts an item to the front of a queue. The item is queued by copy, not by reference.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle
@@ -209,7 +209,7 @@ bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 /**
  * Posts an item to the end of a queue. The item is queued by copy, not by reference.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle
@@ -227,7 +227,7 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 /**
  * Receive an item from a queue without removing the item from the queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle
@@ -245,7 +245,7 @@ bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
 /**
  * Receive an item from the queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle
@@ -263,7 +263,7 @@ bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
 /**
  * Return the number of messages stored in a queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle.
@@ -275,7 +275,7 @@ uint32_t queue_get_waiting(const queue_t queue);
 /**
  * Return the number of spaces left in a queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          The queue handle.
@@ -287,7 +287,7 @@ uint32_t queue_get_available(const queue_t queue);
 /**
  * Delete a queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking#queues for details.
+ * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for details.
  *
  * \param queue
  *          Queue handle to delete
@@ -397,7 +397,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * When used with serctl, the extra argument must be the little endian representation of
  * the stream identifier (e.g. "sout" -> 0x74756f73)
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_ACTIVATE 10
 
@@ -407,7 +407,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * When used with serctl, the extra argument must be the little endian representation of
  * the stream identifier (e.g. "sout" -> 0x74756f73)
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_DEACTIVATE 11
 
@@ -416,7 +416,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  *
  * The extra argument is not used with this action, provide any value (e.g. NULL) instead
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_BLKWRITE 12
 
@@ -425,7 +425,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  *
  * The extra argument is not used with this action, provide any value (e.g. NULL) instead
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_NOBLKWRITE 13
 
@@ -434,7 +434,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  *
  * The extra argument is not used with this action, provide any value (e.g. NULL) instead
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_ENABLE_COBS 14
 
@@ -443,7 +443,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  *
  * The extra argument is not used with this action, provide any value (e.g. NULL) instead
  *
- * Visit https://pros.cs.purdue.edu/v5/filesystem#serial to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial to learn more.
  */
 #define SERCTL_DISABLE_COBS 15
 

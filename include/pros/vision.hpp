@@ -1,9 +1,9 @@
 /**
  * \file pros/vision.hpp
  *
- * \brief Contains prototypes for the VEX Vision Sensor-related functions in C++.
+ * Contains prototypes for the VEX Vision Sensor-related functions in C++.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/vision to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision to learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -24,18 +24,30 @@
 namespace pros {
 class Vision {
 	public:
+	/**
+	 * Create a Vision Sensor object on the given port.
+	 *
+	 * \param port
+	 *        The V5 port number from 1-21
+	 */
 	Vision(std::uint8_t port);
 
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default behavior,
-	 * displaying the most prominent object signature color
+	 * displaying the most prominent object signature color.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return 1 if no errors occurred, PROS_ERR otherwise
 	 */
 	std::int32_t clear_led(void) const;
 
 	/**
-	 * \brief Gets the nth largest object according to size_id.
+	 * Gets the nth largest object according to size_id.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -47,7 +59,11 @@ class Vision {
 	vision_object_s_t get_by_size(const std::uint32_t size_id) const;
 
 	/**
-	 * \brief Gets the nth largest object of the given signature according to size_id.
+	 * Gets the nth largest object of the given signature according to size_id.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
+   * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -61,7 +77,10 @@ class Vision {
 	vision_object_s_t get_by_sig(const std::uint32_t size_id, const std::uint8_t sig_id) const;
 
 	/**
-	 * Gets the exposure parameter of the Vision Sensor
+	 * Gets the exposure parameter of the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The current exposure percentage parameter from [0,100],
 	 *         PROS_ERR if an error occurred
@@ -69,7 +88,10 @@ class Vision {
 	std::int32_t get_exposure(void) const;
 
 	/**
-	 * \brief Returns the number of objects currently detected by the Vision Sensor.
+	 * Gets the number of objects currently detected by the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The number of objects detected on the specified vision sensor.
 	 *         Returns PROS_ERR if the port was invalid or an error occurred.
@@ -77,14 +99,20 @@ class Vision {
 	std::int32_t get_object_count(void) const;
 
 	/**
-	 * Get the white balance parameter of the Vision Sensor
+	 * Get the white balance parameter of the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The current RGB white balance setting of the sensor
 	 */
 	std::int32_t get_white_balance(void) const;
 
 	/**
-	 * \brief Reads up to object_count object descriptors into object_arr.
+	 * Reads up to object_count object descriptors into object_arr.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param object_count
 	 *        The number of objects to read
@@ -100,7 +128,10 @@ class Vision {
 	                          vision_object_s_t* const object_arr) const;
 
 	/**
-	 * \brief Reads up to object_count object descriptors into object_arr.
+	 * Reads up to object_count object descriptors into object_arr.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param object_count
 	 *        The number of objects to read
@@ -122,7 +153,10 @@ class Vision {
 	                         vision_object_s_t* const object_arr) const;
 
 	/**
-	 * Enable/disable auto white-balancing on the Vision Sensor
+	 * Enables/disables auto white-balancing on the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param enabled
 	 * 		    Pass 0 to disable, 1 to enable
@@ -132,7 +166,10 @@ class Vision {
 	std::int32_t set_auto_white_balance(const std::uint8_t enable) const;
 
 	/**
-	 * Sets the exposure parameter of the Vision Sensor
+	 * Sets the exposure parameter of the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param percent
 	 *        The new exposure percentage from [0,100]
@@ -142,7 +179,10 @@ class Vision {
 	std::int32_t set_exposure(const std::uint8_t percent) const;
 
 	/**
-	 * Sets the vision sensor LED color, overriding the automatic behavior
+	 * Sets the vision sensor LED color, overriding the automatic behavior.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param rgb
 	 *        An RGB code to set the LED to
@@ -152,19 +192,24 @@ class Vision {
 	std::int32_t set_led(const std::int32_t rgb) const;
 
 	/**
-	 * Sets the white balance parameter of the Vision Sensor
-	 *
+	 * Sets the white balance parameter of the Vision Sensor.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return 1 if no errors occurred, PROS_ERR otherwise
 	 */
 	std::int32_t set_white_balance(const std::int32_t rgb) const;
 
 	/**
-	 * \brief Sets the (0,0) coordinate for the Field of View.
+	 * Sets the (0,0) coordinate for the Field of View.
 	 *
 	 * This will affect the coordinates returned for each request for a vision_object_s_t
 	 * from the sensor, so it is recommended that this function only be used to configure
 	 * the sensor at the beginning of its use.
+   *
+   * This function uses the following values of errno when an error state is reached:
+   * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV

@@ -21,11 +21,11 @@ std::int32_t Vision::clear_led(void) const {
 	return vision_clear_led(_port);
 }
 
-vision_object_s_t Vision::get_by_size(const uint32_t size_id) const {
+vision_object_s_t Vision::get_by_size(const std::uint32_t size_id) const {
 	return vision_get_by_size(_port, size_id);
 }
 
-vision_object_s_t Vision::get_by_sig(const uint32_t size_id, const uint8_t sig_id) const {
+vision_object_s_t Vision::get_by_sig(const std::uint32_t size_id, const std::uint8_t sig_id) const {
 	return vision_get_by_sig(_port, size_id, sig_id);
 }
 
@@ -41,15 +41,15 @@ std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
 
-int32_t Vision::read_by_size(const uint32_t size_id,
-                             const uint32_t object_count,
+int32_t Vision::read_by_size(const std::uint32_t size_id,
+                             const std::uint32_t object_count,
                              vision_object_s_t* const object_arr) const {
 	return vision_read_by_size(_port, size_id, object_count, object_arr);
 }
 
-int32_t Vision::read_by_sig(const uint32_t size_id,
-                            const uint8_t sig_id,
-                            const uint32_t object_count,
+int32_t Vision::read_by_sig(const std::uint32_t size_id,
+                            const std::uint8_t sig_id,
+                            const std::uint32_t object_count,
                             vision_object_s_t* const object_arr) const {
 	return vision_read_by_sig(_port, size_id, sig_id, object_count, object_arr);
 }

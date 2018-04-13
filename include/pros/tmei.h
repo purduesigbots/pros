@@ -39,15 +39,16 @@ namespace pros {
 #endif
 
 		/**
-		 * Set the foreground color for subsequent graphics operations
+		 * Sets the foreground color for subsequent graphics operations.
 		 *
 		 * \param color
 		 *        The foreground color to set (it is recommended to use values
 		 * 		  from the enum defined in colors.h)
 		 */
 		void display_set_color_fg(uint32_t color);
+
 		/**
-		 * Set the background color for subsequent graphics operations
+		 * Sets the background color for subsequent graphics operations.
 		 *
 		 * \param color
 		 *        The background color to set (it is recommended to use values
@@ -56,12 +57,12 @@ namespace pros {
 		void display_set_color_bg(uint32_t color);
 
 		/**
-		 * Reset the display to the default black screen
+		 * Resets the display to the default black screen.
 		 */
 		void display_erase(void);
 
 		/**
-		 * Scroll lines on the display
+		 * Scrolls lines on the display.
 		 *
 		 * \param start_line
 		 * 		  The line from which scrolling will start
@@ -69,8 +70,9 @@ namespace pros {
 		 *        The number of lines to scroll
 		 */
 		void display_scroll(int16_t start_line, int16_t lines);
+
 		/**
-		 * Scroll lines within a region on the display
+		 * Scrolls lines within a region on the display.
 		 *
 		 * This function behaves in the same way as display_scroll, except that you
 		 * specify a rectangular region within which to scroll lines instead of a start
@@ -86,7 +88,7 @@ namespace pros {
 		void display_scroll_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines);
 
 		/**
-		 * Copy a screen region from an off-screen buffer to the screen
+		 * Copies a screen region from an off-screen buffer to the screen.
 		 *
 		 * \param x0, y0
 		 * 		  The (x,y) coordinates of the first corner of the rectangular region of
@@ -103,14 +105,15 @@ namespace pros {
 		void display_copy_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* buf, int32_t stride);
 
 		/**
-		 * Draw a pixel on the screen using the current foreground color
+		 * Draws a pixel on the screen using the current foreground color.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the pixel
 		 */
 		void display_draw_pixel(int16_t x, int16_t y);
+
 		/**
-		 * Draw a pixel on the screen using the current background color
+		 * Draws a pixel on the screen using the current background color.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the pixel
@@ -118,7 +121,7 @@ namespace pros {
 		void display_clear_pixel(int16_t x, int16_t y);
 
 		/**
-		 * Draw a line on the screen using the current foreground color
+		 * Draws a line on the screen using the current foreground color.
 		 *
 		 * \param x0, y0
 		 * 		  The (x, y) coordinates of the first point of the line
@@ -126,8 +129,9 @@ namespace pros {
 		 * 		  The (x, y) coordinates of the second point of the line
 		 */
 		void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 		/**
-		 * Draw a line on the screen using the current background color
+		 * Draws a line on the screen using the current background color.
 		 *
 		 * \param x0, y0
 		 * 		  The (x, y) coordinates of the first point of the line
@@ -137,7 +141,7 @@ namespace pros {
 		void display_clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 		/**
-		 * Draw a rectangle on the screen using the current foreground color
+		 * Draws a rectangle on the screen using the current foreground color.
 		 *
 		 * \param x0, y0
 		 * 		  The (x,y) coordinates of the first point of the rectangle
@@ -145,8 +149,9 @@ namespace pros {
 		 * 		  The (x,y) coordinates of the second point of the rectangle
 		 */
 		void display_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 		/**
-		 * Draw a rectangle on the screen using the current background color
+		 * Draws a rectangle on the screen using the current background color.
 		 *
 		 * \param x0, y0
 		 *        The (x,y) coordinates of the first point of the rectangle
@@ -154,9 +159,9 @@ namespace pros {
 		 *        The (x,y) coordinates of the second point of the rectangle
 		 */
 		void display_clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 		/**
-		 * Fill a rectangular region of the screen using the current foreground
-		 * 		  color
+		 * Fills a rectangular region of the screen using the current foreground color.
 		 *
 		 * \param x0, y0
 		 *        The (x,y) coordinates of the first point of the rectangle
@@ -166,7 +171,7 @@ namespace pros {
 		void display_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 		/**
-		 * Draw a circle on the screen using the current foreground color
+		 * Draws a circle on the screen using the current foreground color.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the center of the circle
@@ -174,8 +179,9 @@ namespace pros {
 		 *        The radius of the circle
 		 */
 		void display_draw_circle(int16_t x, int16_t y, int16_t r);
+
 		/**
-		 * Draw a circle on the screen using the current background color
+		 * Draws a circle on the screen using the current background color.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the center of the circle
@@ -183,9 +189,9 @@ namespace pros {
 		 *        The radius of the circle
 		 */
 		void display_clear_circle(int16_t x, int16_t y, int16_t r);
+
 		/**
-		 * Fill a circular region of the screen using the current foreground
-		 * 		  color
+		 * Fills a circular region of the screen using the current foreground color.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the center of the circle
@@ -195,7 +201,7 @@ namespace pros {
 		void display_fill_circle(int16_t x, int16_t y, int16_t r);
 
 		/**
-		 * Print a formatted string to the screen on the specified line
+		 * Prints a formatted string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -205,8 +211,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_printf(const int16_t line, const char* fmt, ...);
+
 		/**
-		 * Print a formatted string to the screen at the specified coordinates
+		 * Prints a formatted string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the top left corner of the string
@@ -216,8 +223,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 		/**
-		 * Print a large, formatted string to the screen on the specified line
+		 * Prints a large, formatted string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -227,8 +235,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_big_printf(const int16_t line, const char* fmt, ...);
+
 		/**
-		 * Print a large, formatted string to the screen at the specified coordinates
+		 * Prints a large, formatted string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x, y) coordinates of the top left corner of the string
@@ -238,8 +247,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_big_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 		/**
-		 * Print a small, formatted string to the screen at the specified coordinates
+		 * Prints a small, formatted string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x, y) coordinates of the top left corner of the string
@@ -249,8 +259,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_small_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 		/**
-		 * Print a centered, formatted string to the screen on the specified line
+		 * Prints a centered, formatted string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -260,8 +271,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_center_printf(const int16_t line, const char* fmt, ...);
+
 		/**
-		 * Print a large, centered, formatted string to the screen on the specified line
+		 * Prints a large, centered, formatted string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -271,8 +283,9 @@ namespace pros {
 		 *        Optional list of arguments for the format string
 		 */
 		void display_center_big_printf(const int16_t line, const char* fmt, ...);
+
 		/**
-		 * Print a string to the screen on the specified line
+		 * Prints a string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -280,8 +293,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_puts(const int16_t line, const char* text);
+
 		/**
-		 * Print a string to the screen at the specified coordinates
+		 * Prints a string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the top left corner of the string
@@ -289,8 +303,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_puts_at(int16_t x, int16_t y, const char* text);
+
 		/**
-		 * Print a large string to the screen on the specified line
+		 * Prints a large string to the screen on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -298,8 +313,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_big_puts(const int16_t line, const char* text);
+
 		/**
-		 * Print a large string to the screen at the specified coordinates
+		 * Prints a large string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the top left corner of the string
@@ -307,8 +323,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_big_puts_at(int16_t x, int16_t y, const char* text);
+
 		/**
-		 * Print a small string to the screen at the specified coordinates
+		 * Prints a small string to the screen at the specified coordinates.
 		 *
 		 * \param x, y
 		 *        The (x,y) coordinates of the top left corner of the string
@@ -316,8 +333,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_small_puts_at(int16_t x, int16_t y, const char* text);
+
 		/**
-		 * Print a centered string on the specified line
+		 * Prints a centered string on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -325,8 +343,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_center_puts(const int16_t line, const char* text);
+
 		/**
-		 * Print a large, centered string on the specified line
+		 * Prints a large, centered string on the specified line.
 		 *
 		 * \param line
 		 *        The line number on which to print
@@ -334,8 +353,9 @@ namespace pros {
 		 *        The text to display
 		 */
 		void display_center_big_puts(const int16_t line, const char* text);
+
 		/**
-		 * Print a formatted string to the screen on the specified line
+		 * Prints a formatted string to the screen on the specified line.
 		 *
 		 * Same as display_printf except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -348,8 +368,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_vprintf(const int16_t line, const char* fmt, va_list args);
+
 		/**
-		 * Print a formatted string to the screen at the specified coordinates
+		 * Prints a formatted string to the screen at the specified coordinates.
 		 *
 		 * Same as display_printf_at except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -362,8 +383,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 		/**
-		 * Print a large, formatted string to the screen on the specified line
+		 * Prints a large, formatted string to the screen on the specified line.
 		 *
 		 * Same as display_big_printf except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -376,8 +398,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_big_vprintf(const int16_t line, const char* fmt, va_list args);
+
 		/**
-		 * Print a large, formatted string to the screen at the specified coordinates
+		 * Prints a large, formatted string to the screen at the specified coordinates.
 		 *
 		 * Same as display_big_printf_at except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -390,8 +413,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_big_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 		/**
-		 * Print a small, formatted string to the screen at the specified coordinates
+		 * Prints a small, formatted string to the screen at the specified coordinates.
 		 *
 		 * Same as display_small_printf_at except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -404,8 +428,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_small_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 		/**
-		 * Print a centered, formatted string to the screen on the specified line
+		 * Prints a centered, formatted string to the screen on the specified line.
 		 *
 		 * Same as display_printf except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -418,8 +443,9 @@ namespace pros {
 		 *        List of arguments for the format string
 		 */
 		void display_center_vprintf(const int16_t line, const char* fmt, va_list args);
+
 		/**
-		 * Print a large, centered, formatted string to the screen on the specified line
+		 * Prints a large, centered, formatted string to the screen on the specified line.
 		 *
 		 * Same as display_printf except that this uses a va_list instead of the
 		 * ellipsis operator so this can be used by other functions.
@@ -434,7 +460,7 @@ namespace pros {
 		void display_center_big_vprintf(const int16_t line, const char* fmt, va_list args);
 
 		/**
-		 * Registers a user-defined callback function for an event type
+		 * Registers a user-defined callback function for an event type.
 		 *
 		 * When an event of the specified type is fired, the user-provided callback will
 		 * be invoked.
@@ -447,7 +473,7 @@ namespace pros {
 		void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type);
 
 		/**
-		 * Unregisters a user-defined callback for an event type
+		 * Unregisters a user-defined callback for an event type.
 		 *
 		 * Subsequent events of the specified type will no longer invoke the user-provided
 		 * callback when fired.

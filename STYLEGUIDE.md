@@ -43,7 +43,12 @@ These should be placed at the very start of a file.
  * in the file contains and a general description of what they do (no specifics,
  * but they should all have something in common anyway).
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filename to learn more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -55,7 +60,7 @@ These should be placed at the very start of a file.
 These should be placed immediately before the declaration of the enum.
 ```c
 /*
- * \brief Short description of the enum
+ * Short description of the enum
  *
  * Extended description of the enum goes here. This should explain general usage
  * patterns for the enum.
@@ -70,40 +75,25 @@ enum my_enum {
 ```
 _Note: in the above example, the comments describing each member of the `enum` run together and form complete sentences for effect. Please do not do this in your code!_
 
-### C++ Class-Level Comments
-These should be placed immediately before the declaration of the class.
-```cpp
-/*
- * \class ClassName header_file.hpp "path/to/include/header_file.hpp"
- * \brief Short description of the class
- *
- * Extended description of the class goes here. This should explain general
- * usage patterns for the class.
- */
-```
-
 ### Function-Level Comments
 These should be placed immediately before the function prototype they are describing in a header file.
-```c
-/*
- * \brief Short description of the function
+
+```
+/**
+ * Brief description of the function.
  *
- * Extended description goes here. This should explain any semantic issues that
- * may arise when using the function. Below are descriptions of the function
- * parameters. The value in the brackets can be either `in` or `out`, and
- * represent the direction in which the parameter goes-- for example, the `dest`
- * argument for `memcpy` would be `out`, while the `src` and `n` arguments would
- * be `in`. Also note that grouped descriptions should be avoided unless the
- * grouped parameters are intrinsically linked-- for example, (x,y,z)
- * coordinates.
+ * An extended description of the function (if applicable).
  *
- * \param[out] param0_name      param0 description
- * \param[in]  param1_name      param1 description
- * \param      arg2,arg3,arg4   description of the multiple args
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ERRNO_VALUE - Description of what causes this error
  *
- * \return Description of the return value goes here. This can be omitted if the
- *              return type is `void`. This command will end when it reaches a
- *              blank line.
+ * \param parameter_name
+ *        The parameter description
+ * \param other_parameter_name
+ *        The parameter description
+ *
+ * \return The description of the return value
  */
 ```
 
@@ -142,8 +132,23 @@ When writing code, it can sometimes be useful to leave notes to other developers
 
 While it is not strictly necessary to use these keywords in comments, they can be helpful-- modern editors (like Atom or VSCode) either highlight some of these keywords by default or have extensions that do. This can make certain comments stand out even more when developers are "grepping" the codebase (visually or otherwise).
 
-### Doxygen Reference
-To learn more about the special commands available in Doxygen, please visit [the Doxygen manual](https://www.stack.nl/~dimitri/doxygen/manual/index.html).
+### Word Choice and Tense
+
+Content for the docs should follow the
+[Google Developer Documentation Style Guide](https://developers.google.com/style/),
+and the [API Reference Comments Section](https://developers.google.com/style/api-reference-comments)
+in particular.
+
+While the Google Style Guide should determine the vast majority of the docs' word choices,
+additionally follow these content-specific guides:
+
+- All ports, Smart, ADI, or otherwise, should be referred to as a port, not a channel
+  or pin.
+- C++ functions should be written as their full function name, without removing the
+  `pros::` namespace (e.g. `pros::Motor::move`).
+- All enumerated values referenced in the code comments should be written as their
+  full name per the PROS Style Guide, not the `PROS_USE_SIMPLE_NAMES` version.
+  (e.g. `E_MOTOR_GEARSET_18`, not `E_MOTOR_GEARSET_18`).
 
 ## Linux Coding Style modifications
 

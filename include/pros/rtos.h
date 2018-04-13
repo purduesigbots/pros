@@ -7,7 +7,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -80,14 +80,14 @@ namespace pros {
 #endif
 
 		/**
-		 * Returns the number of milliseconds since PROS initialized.
+		 * Gets the number of milliseconds since PROS initialized.
 		 *
 		 * \return The number of milliseconds since PROS initialized
 		 */
 		uint32_t millis(void);
 
 		/**
-		 * Create a new task and add it to the list of tasks that are ready to run.
+		 * Creates a new task and add it to the list of tasks that are ready to run.
 		 *
 		 * \param function
 		 *        Pointer to the task entry function
@@ -120,7 +120,7 @@ namespace pros {
 		                   const char* const name);
 
 		/**
-		 * Remove a task from the RTOS real time kernel's management.  The task being
+		 * Removes a task from the RTOS real time kernel's management.  The task being
 		 * deleted will be removed from all ready, blocked, suspended and event lists.
 		 *
 		 * Memory dynamically allocated by the task is not automatically freed, and
@@ -133,7 +133,7 @@ namespace pros {
 		void task_delete(task_t task);
 
 		/**
-		 * Delay a task for a given number of milliseconds.
+		 * Delays a task for a given number of milliseconds.
 		 *
 		 * This is not the best method to have a task execute code at predefined
 		 * intervals, as the delay time is measured from when the delay is requested.
@@ -147,7 +147,7 @@ namespace pros {
 		void delay(const uint32_t milliseconds);
 
 		/**
-		 * Delay a task until a specified time.  This function can be used by periodic
+		 * Delays a task until a specified time.  This function can be used by periodic
 		 * tasks to ensure a constant execution frequency.
 		 *
 		 * The task will be woken up at the time *prev_time + delta, and *prev_time will
@@ -161,7 +161,7 @@ namespace pros {
 		void task_delay_until(uint32_t* const prev_time, const uint32_t delta);
 
 		/**
-		 * Obtains the priority of the specified task.
+		 * Gets the priority of the specified task.
 		 *
 		 * \param task
 		 *        The task to check
@@ -185,7 +185,7 @@ namespace pros {
 		void task_set_priority(task_t task, uint32_t prio);
 
 		/**
-		 * Obtains the state of the specified task.
+		 * Gets the state of the specified task.
 		 *
 		 * \param task
 		 *        The task to check
@@ -211,7 +211,7 @@ namespace pros {
 		void task_resume(task_t task);
 
 		/**
-		 * Returns the number of tasks the kernel is currently managing, including all
+		 * Gets the number of tasks the kernel is currently managing, including all
 		 * ready, blocked, or suspended tasks. A task that has been deleted, but not yet
 		 * reaped by the idle task will also be included in the count. Tasks recently
 		 * created may take one context switch to be counted.
@@ -221,7 +221,7 @@ namespace pros {
 		uint32_t task_get_count(void);
 
 		/**
-		 * Obtains the name of the specified task.
+		 * Gets the name of the specified task.
 		 *
 		 * \param task
 		 *        The task to check
@@ -231,7 +231,7 @@ namespace pros {
 		char* task_get_name(task_t task);
 
 		/**
-		 * Obtains a task handle from the specified name
+		 * Gets a task handle from the specified name
 		 *
 		 * The operation takes a relatively long time and should be used sparingly.
 		 *
@@ -245,7 +245,7 @@ namespace pros {
 		/**
 		 * Sends a simple notification to task and increments the notification counter.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/notifications for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
 		 *
 		 * \param task
 		 *			  The task to notify
@@ -259,7 +259,7 @@ namespace pros {
 		 * retrieve the value of the notification in the target task before modifying
 		 * the notification value.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/notifications for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
 		 *
 		 * \param task
 		 *        The task to notify
@@ -279,9 +279,9 @@ namespace pros {
 		uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
 		/**
-		 * Wait for a notification to be nonzero
+		 * Waits for a notification to be nonzero.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/notifications for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
 		 *
 		 * \param clear_on_exit
 		 *        If true (1), then the notification value is cleared.
@@ -298,7 +298,7 @@ namespace pros {
 		/**
 		 * Clears the notification for a task.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/notifications for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
 		 *
 		 * \param task
 		 *        The task to clear
@@ -308,9 +308,9 @@ namespace pros {
 		bool task_notify_clear(task_t task);
 
 		/**
-		 * Creates a mutex
+		 * Creates a mutex.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#mutexes for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
 		 *
 		 * \return A handle to a newly created mutex. If an error occurred, NULL will be
 		 *			   returned and errno can be checked for hints as to
@@ -322,7 +322,7 @@ namespace pros {
 		 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
 		 * before timing out.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#mutexes for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
 		 *
 		 * \param mutex
 		 *        Mutex to attempt to lock.
@@ -339,7 +339,7 @@ namespace pros {
 		/**
 		 * Unlocks a mutex.
 		 *
-		 * See https://pros.cs.purdue.edu/v5/tutorials/multitasking#mutexes for details.
+		 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
 		 *
 		 * \param mutex
 		 *        Mutex to unlock.

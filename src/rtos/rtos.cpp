@@ -29,11 +29,11 @@ using namespace pros::c;
   void Task::operator = (const task_t in) {
     task = in;
   }
-  Task::~Task() {
+  Task::~Task(void) {
     task_delete(task);
   }
 
-  std::uint32_t Task::get_priority() {
+  std::uint32_t Task::get_priority(void) {
     return task_get_priority(task);
   }
 
@@ -41,23 +41,23 @@ using namespace pros::c;
     task_set_priority(task, prio);
   }
 
-  std::uint32_t Task::get_state() {
+  std::uint32_t Task::get_state(void) {
     return task_get_state(task);
   }
 
-  void Task::suspend() {
+  void Task::suspend(void) {
     task_suspend(task);
   }
 
-  void Task::resume() {
+  void Task::resume(void) {
     task_resume(task);
   }
 
-  const char* Task::get_name() {
+  const char* Task::get_name(void) {
     return task_get_name(task);
   }
 
-  std::uint32_t Task::notify() {
+  std::uint32_t Task::notify(void) {
     return task_notify(task);
   }
 
@@ -69,7 +69,7 @@ using namespace pros::c;
     return task_notify_take(clear_on_exit, timeout);
   }
 
-  bool Task::notify_clear() {
+  bool Task::notify_clear(void) {
     return task_notify_clear(task);
   }
 
@@ -85,13 +85,13 @@ using namespace pros::c;
     return task_get_count();
   }
 
-  Mutex::Mutex() : mutex(mutex_create()) { }
+  Mutex::Mutex(void) : mutex(mutex_create()) { }
 
   bool Mutex::take(std::uint32_t timeout) {
     return mutex_take(mutex, timeout);
   }
 
-  bool Mutex::give() {
+  bool Mutex::give(void) {
     return mutex_give(mutex);
   }
 }
