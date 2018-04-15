@@ -66,8 +66,6 @@ class Task {
 	 */
 	void operator=(const task_t in);
 
-	virtual ~Task(void);
-
 	/**
 	 * Gets the priority of the specified task.
 	 *

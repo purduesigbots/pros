@@ -29,9 +29,6 @@ using namespace pros::c;
   void Task::operator = (const task_t in) {
     task = in;
   }
-  Task::~Task(void) {
-    task_delete(task);
-  }
 
   std::uint32_t Task::get_priority(void) {
     return task_get_priority(task);
