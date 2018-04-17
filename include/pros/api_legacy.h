@@ -37,6 +37,14 @@
 #define adiMotorSet(port, speed) adi_motor_set(port, speed)
 #define adiMotorGet(port) adi_motor_get(port)
 #define adiMotorStop(port) adi_motor_stop(port)
+#define encoderGet(enc) adi_encoder_get(enc)
+#define encoderInit(portTop, portBottom, reverse)                              \
+  adi_encoder_init(portTop, portBottom, reverse)
+#define encoderShutdown(enc) adi_encoder_shutdown(enc)
+#define ultrasonicGet(ult) adi_ultrasonic_get(ult)
+#define ultrasonicInit(portEcho, portPing)                                     \
+  adi_ultrasonic_init(portEcho, portPing)
+#define ultrasonicShutdown(ult) adi_ultrasonic_shutdown(ult)
 
 typedef adi_encoder_t Encoder;
 typedef adi_ultrasonic_t Ultrasonic;
@@ -47,8 +55,10 @@ typedef adi_ultrasonic_t Ultrasonic;
 #define lcdInit lcd_initialize
 #define lcdReadButtons lcd_read_buttons
 #define lcdClear lcd_clear
+#define lcdClearLine lcd_clear_line
 #define lcdShutdown lcd_shutdown
-// TODO: Add lcdPrint/lcdSetText
+#define lcdPrint(line, fmt, ...) lcd_print(line, fmt, __VA_ARGS__)
+#define lcdSetText(line, text) lcd_set_text(line, text)
 
 /**
  * From misc.h
@@ -62,11 +72,12 @@ typedef adi_ultrasonic_t Ultrasonic;
 /**
  * From rtos.h
  */
-#define taskCreate(taskCode, stackDepth, parameters, priority) \
-	task_create(taskCode, parameters, priority, stackDepth, '')
+#define taskCreate(taskCode, stackDepth, parameters, priority)                 \
+  task_create(taskCode, parameters, priority, stackDepth, "")
 #define taskDelete(task) task_delete(task)
 #define taskDelay task_delay
-#define taskDelayUntil(previousWakeTime, cycleTime) task_delay_until(previousWakeTime, cycleTime)
+#define taskDelayUntil(previousWakeTime, cycleTime)                            \
+  task_delay_until(previousWakeTime, cycleTime)
 #define taskPriorityGet(task) task_get_priority(task)
 #define taskPrioritySet(task, newPriority) task_priority_set(task, newPriority)
 #define taskGetState(task) task_get_state(task)
@@ -77,4 +88,14 @@ typedef adi_ultrasonic_t Ultrasonic;
 #define mutexTake(mutex, blockTime) mutex_take(mutex, blockTime)
 #define mutexGive(mutex) mutex_give(mutex)
 
-#endif  // _PROS_API_LEGACY_H_
+typedef task_t TaskHandle;
+typedef mutex_t Mutex;
+
+/**
+ * From motors.h
+ */
+#define motorSet(port, speed) motor_move(port, speed)
+#define motorGet(port) motor_get_voltage(port)
+#define motorStop(port) motor_move(port, 0)
+
+#endif // _PROS_API_LEGACY_H_
