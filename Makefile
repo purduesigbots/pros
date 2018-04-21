@@ -35,7 +35,7 @@ CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
-LIBRARIES=$(wildcard $(FWDIR)/*.a) -L$(FWDIR) -Wl,--start-group,-lv5rts,-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group
+LIBRARIES=-L$(FWDIR) -Wl,--start-group $(wildcard $(FWDIR)/*.a) -lc -lm -lgcc -lstdc++ -lsupc++ -Wl,--end-group
 ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
 
 ifndef OUTBIN
@@ -72,7 +72,7 @@ template: version clean-template library
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	@echo "Creating template"
-	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) --system "./**/*" --user "src/opcontrol.{c,cpp,cc}" --user "src/initialize.{cpp,c,cc}" --user "src/autonomous.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --target v5 --output bin/output.bin
+	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) --system "./**/*" --user "src/opcontrol.{c,cpp,cc}" --user "src/initialize.{cpp,c,cc}" --user "src/autonomous.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --user "Makefile" --target v5 --output bin/output.bin
 
 clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)
