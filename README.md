@@ -24,6 +24,9 @@ We have a number of resources available on our website, including
 - [A series of tutorials on how to use some of the more advanced features of PROS](http://pros.cs.purdue.edu/tutorials/)
 - [Extensive documentation on the kernel's API](http://pros.cs.purdue.edu/api/)
 
+### Does PROS support C++?
+No, PROS 2.x does not officially support C++. Some users have found ways around this, but be warned: we will not be able to help if you run into issues doing this.
+
 ### I still have questions!
 Drop us a line
 - at pros_development@cs.purdue.edu 
