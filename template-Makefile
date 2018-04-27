@@ -126,7 +126,7 @@ clean-template:
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB))
 	@echo -n "Creating $@ "
-	$(call testoutput,$D$(AR) rcs $@ $^, $(DONE_STRING))
+	$(call test_output,$D$(AR) rcs $@ $^, $(DONE_STRING))
 
 .PHONY: library
 library: $(LIBAR)
