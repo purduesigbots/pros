@@ -24,7 +24,7 @@
 #include "vdml/vdml.h"
 
 #define MOTOR_MOVE_RANGE 127
-#define MOTOR_VOLTAGE_RANGE 100
+#define MOTOR_VOLTAGE_RANGE 12000
 
 // Motor functions
 
@@ -48,13 +48,13 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
 	return_port(port - 1, 1);
 }
 
-int32_t motor_move_velocity(uint8_t port, const int16_t velocity) {
+int32_t motor_move_velocity(uint8_t port, const int32_t velocity) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVelocitySet(device->device_info, velocity);
 	return_port(port - 1, 1);
 }
 
-int32_t motor_move_voltage(uint8_t port, const int16_t voltage) {
+int32_t motor_move_voltage(uint8_t port, const int32_t voltage) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
 	return_port(port - 1, 1);
@@ -68,7 +68,7 @@ double motor_get_target_position(uint8_t port) {
 
 int32_t motor_get_target_velocity(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	int16_t rtn = vexDeviceMotorVelocityGet(device->device_info);
+	int32_t rtn = vexDeviceMotorVelocityGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
@@ -168,9 +168,9 @@ double motor_get_torque(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-double motor_get_voltage(uint8_t port) {
+int32_t motor_get_voltage(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	double rtn = vexDeviceMotorVoltageGet(device->device_info);
+	int32_t rtn = vexDeviceMotorVoltageGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
@@ -190,7 +190,7 @@ int32_t motor_tare_position(uint8_t port) {
 
 int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	vexDeviceMotorBrakeModeSet(device->device_info, mode);
+	vexDeviceMotorBrakeModeSet(device->device_info, (V5MotorBrakeMode)mode);
 	return_port(port - 1, 1);
 }
 
@@ -202,13 +202,13 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit) {
 
 int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	vexDeviceMotorEncoderUnitsSet(device->device_info, units);
+	vexDeviceMotorEncoderUnitsSet(device->device_info, (V5MotorEncoderUnits)units);
 	return_port(port - 1, 1);
 }
 
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
-	vexDeviceMotorGearingSet(device->device_info, gearset);
+	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)gearset);
 	return_port(port - 1, 1);
 }
 
@@ -227,7 +227,7 @@ int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit) {
 motor_brake_mode_e_t motor_get_brake_mode(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	V5MotorBrakeMode rtn = vexDeviceMotorBrakeModeGet(device->device_info);
-	return_port(port - 1, rtn);
+	return_port(port - 1, (motor_brake_mode_e_t)rtn);
 }
 
 int32_t motor_get_current_limit(uint8_t port) {
@@ -239,13 +239,13 @@ int32_t motor_get_current_limit(uint8_t port) {
 motor_encoder_units_e_t motor_get_encoder_units(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	V5MotorEncoderUnits rtn = vexDeviceMotorEncoderUnitsGet(device->device_info);
-	return_port(port - 1, rtn);
+	return_port(port - 1, (motor_encoder_units_e_t)rtn);
 }
 
 motor_gearset_e_t motor_get_gearing(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	V5MotorGearset rtn = vexDeviceMotorGearingGet(device->device_info);
-	return_port(port - 1, rtn);
+	return_port(port - 1, (motor_gearset_e_t)rtn);
 }
 
 int32_t motor_is_reversed(uint8_t port) {

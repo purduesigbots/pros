@@ -30,7 +30,7 @@
 
 typedef enum touch_event_e { E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, E_TOUCH_EVENT_PRESS_AND_HOLD } touch_event_e_t;
 
-typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
+typedef void (*touch_event_cb_fn_t)(int32_t, int32_t);
 
 #ifdef __cplusplus
 extern "C" {

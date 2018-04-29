@@ -66,7 +66,7 @@ leave:
 	return rtn;
 }
 
-vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint8_t sig_id) {
+vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id) {
 	vision_object_s_t rtn;
 	v5_smart_device_s_t* device;
 	uint8_t count = 0;
@@ -136,7 +136,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 	return_port(port - 1, c);
 }
 
-int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint8_t sig_id, const uint32_t object_count,
+int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
                            vision_object_s_t* const object_arr) {
 	claim_port(port - 1, E_DEVICE_VISION);
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);

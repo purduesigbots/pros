@@ -20,6 +20,8 @@
 #ifndef _PROS_MISC_H_
 #define _PROS_MISC_H_
 
+#include <stdint.h>
+
 #define NUM_V5_PORTS (22)
 
 /******************************************************************************/
@@ -185,7 +187,7 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  *
  * \return The current voltage of the battery
  */
-double battery_get_voltage(void);
+int32_t battery_get_voltage(void);
 
 /**
  * Gets the current current of the battery, as reported by VEXos.
@@ -195,7 +197,7 @@ double battery_get_voltage(void);
  *
  * \return The current current of the battery
  */
-double battery_get_current(void);
+int32_t battery_get_current(void);
 
 /**
  * Gets the current temperature of the battery, as reported by VEXos.

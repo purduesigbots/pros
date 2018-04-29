@@ -376,7 +376,7 @@ void center_big_puts(const std::int16_t line, const std::string text);
 namespace pros {
 namespace touch {
 using event_e_t = touch_event_e_t;
-using event_cb_fn_t = void (*)(std::int16_t, std::int16_t);
+using event_cb_fn_t = void (*)(std::int32_t, std::int32_t);
 
 /**
  * Registers a user-defined callback function for an event type.

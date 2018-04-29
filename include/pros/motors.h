@@ -78,8 +78,7 @@ int32_t motor_move(uint8_t port, const int8_t voltage);
  * failed,
  *         setting errno.
  */
-int32_t motor_move_absolute(uint8_t port, const double position,
-                            const int32_t velocity);
+int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the relative target position for the motor to move to.
@@ -105,8 +104,7 @@ int32_t motor_move_absolute(uint8_t port, const double position,
  * failed,
  *         setting errno.
  */
-int32_t motor_move_relative(uint8_t port, const double position,
-                            const int32_t velocity);
+int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the velocity for the motor.
@@ -134,10 +132,10 @@ int32_t motor_move_relative(uint8_t port, const double position,
  * failed,
  *         setting errno.
  */
-int32_t motor_move_velocity(uint8_t port, const int16_t velocity);
+int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
 
 /**
- * Sets the voltage for the motor from -127 to 127.
+ * Sets the output voltage for the motor from -12000 to 12000 in millivolts
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -147,13 +145,13 @@ int32_t motor_move_velocity(uint8_t port, const int16_t velocity);
  * \param port
  *        The V5 port number from 1-21
  * \param voltage
- *        The new voltage value from -127 to 127
+ *        The new voltage value from -12000 to 12000
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed,
  *         setting errno.
  */
-int32_t motor_move_voltage(uint8_t port, const int16_t voltage);
+int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
 
 /**
  * Gets the target position set for the motor by the user.
@@ -381,7 +379,7 @@ uint32_t motor_get_flags(uint8_t port);
  * \return The raw encoder count at the given timestamp or PROS_ERR if the
  *         operation failed.
  */
-int32_t motor_get_raw_position(uint8_t port, uint32_t *const timestamp);
+int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
 
 /**
  * Gets the absolute position of the motor in its encoder units.
@@ -448,7 +446,7 @@ double motor_get_temperature(uint8_t port);
 double motor_get_torque(uint8_t port);
 
 /**
- * Gets the voltage delivered to the motor in V.
+ * Gets the voltage delivered to the motor in millivolts.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -461,7 +459,7 @@ double motor_get_torque(uint8_t port);
  * \return The motor's voltage in V or PROS_ERR_F if the operation failed,
  *         setting errno.
  */
-double motor_get_voltage(uint8_t port);
+int32_t motor_get_voltage(uint8_t port);
 
 /******************************************************************************/
 /**                      Motor configuration functions                       **/
@@ -473,30 +471,30 @@ double motor_get_voltage(uint8_t port);
  * Indicates the current 'brake mode' of a motor.
  */
 typedef enum motor_brake_mode_e {
-  E_MOTOR_BRAKE_COAST = 0, // Motor coasts when stopped, traditional behavior
-  E_MOTOR_BRAKE_BRAKE = 1, // Motor brakes when stopped
-  E_MOTOR_BRAKE_HOLD = 2,  // Motor actively holds position when stopped
-  E_MOTOR_BRAKE_INVALID = INT32_MAX
+	E_MOTOR_BRAKE_COAST = 0,  // Motor coasts when stopped, traditional behavior
+	E_MOTOR_BRAKE_BRAKE = 1,  // Motor brakes when stopped
+	E_MOTOR_BRAKE_HOLD = 2,   // Motor actively holds position when stopped
+	E_MOTOR_BRAKE_INVALID = INT32_MAX
 } motor_brake_mode_e_t;
 
 /**
  * Indicates the units used by the motor encoders.
  */
 typedef enum motor_encoder_units_e {
-  E_MOTOR_ENCODER_DEGREES = 0,
-  E_MOTOR_ENCODER_ROTATIONS = 1,
-  E_MOTOR_ENCODER_COUNTS = 2,
-  E_MOTOR_ENCODER_INVALID = INT32_MAX
+	E_MOTOR_ENCODER_DEGREES = 0,
+	E_MOTOR_ENCODER_ROTATIONS = 1,
+	E_MOTOR_ENCODER_COUNTS = 2,
+	E_MOTOR_ENCODER_INVALID = INT32_MAX
 } motor_encoder_units_e_t;
 
 /**
  * Indicates the current internal gear ratio of a motor.
  */
 typedef enum motor_gearset_e {
-  E_MOTOR_GEARSET_36 = 0, // 36:1, 100 RPM, Red gear set
-  E_MOTOR_GEARSET_18 = 1, // 18:1, 200 RPM, Green gear set
-  E_MOTOR_GEARSET_06 = 2, // 6:1, 600 RPM, Blue gear set
-  E_MOTOR_GEARSET_INVALID = INT32_MAX
+	E_MOTOR_GEARSET_36 = 0,  // 36:1, 100 RPM, Red gear set
+	E_MOTOR_GEARSET_18 = 1,  // 18:1, 200 RPM, Green gear set
+	E_MOTOR_GEARSET_06 = 2,  // 6:1, 600 RPM, Blue gear set
+	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
 
 /**
@@ -592,8 +590,7 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  * failed,
  *         setting errno.
  */
-int32_t motor_set_encoder_units(uint8_t port,
-                                const motor_encoder_units_e_t units);
+int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units);
 
 /**
  * Sets one of motor_gearset_e_t for the motor.
@@ -761,4 +758,4 @@ int32_t motor_get_voltage_limit(uint8_t port);
 }
 #endif
 
-#endif // _PROS_MOTORS_H_
+#endif  // _PROS_MOTORS_H_

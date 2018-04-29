@@ -116,14 +116,14 @@ namespace battery {
 double get_capacity(void);
 
 /**
- * Gets the current current of the battery, as reported by VEXos.
+ * Gets the current current of the battery in milliamps, as reported by VEXos.
  *
  * This function uses the following values of errno when an error state is reached:
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current current of the battery
  */
-double get_current(void);
+int32_t get_current(void);
 
 /**
  * Gets the current temperature of the battery, as reported by VEXos.
@@ -136,14 +136,14 @@ double get_current(void);
 double get_temperature(void);
 
 /**
- * Gets the current capacity of the battery, as reported by VEXos.
+ * Gets the current capacity of the battery in millivolts, as reported by VEXos.
  *
  * This function uses the following values of errno when an error state is reached:
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current capacity of the battery
  */
-double get_voltage(void);
+int32_t get_voltage(void);
 }  // namespace battery
 
 namespace competition {
