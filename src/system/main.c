@@ -22,23 +22,25 @@
 extern void rtos_initialize();
 extern void vfs_initialize();
 extern void system_daemon_initialize();
-extern void graphical_context_daemon_initialize(void);
+// extern void graphical_context_daemon_initialize(void);
+extern void display_initialize(void);
 extern void rtos_sched_start();
 
 int main() {
-	rtos_initialize();
+  rtos_initialize();
 
-	vfs_initialize();
+  vfs_initialize();
 
-	system_daemon_initialize();
+  system_daemon_initialize();
 
-	graphical_context_daemon_initialize();
+  // graphical_context_daemon_initialize();
+  display_initialize();
 
-	rtos_sched_start();
+  rtos_sched_start();
 
-	vexDisplayPrintf(10, 60, 1, "failed to start scheduler\n");
+  vexDisplayPrintf(10, 60, 1, "failed to start scheduler\n");
 
-	printf("Failed to start Scheduler\n");
-	for (;;)
-		;
+  printf("Failed to start Scheduler\n");
+  for (;;)
+    ;
 }

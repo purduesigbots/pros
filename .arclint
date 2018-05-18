@@ -3,7 +3,7 @@
 		"clang-format": {
 			"type": "clang-format",
 			"include": "(.*\\.(c|cpp|h|hpp)$)",
-			"exclude": "(^(src|include)/(rtos|ifi)/)"
+			"exclude": "(^(src|include)/(rtos/|ifi/|display/lv_.+))"
 		},
 		"spelling": {
 			"type": "spelling",
@@ -12,7 +12,7 @@
 		"text": {
 			"type": "text",
 			"include": "(.*)",
-			"exclude": "(^(src|include)/(((rtos|ifi)/)|(system/dev/banners.h)))",
+			"exclude": "(^(src|include)/(((rtos|ifi)/)|(system/dev/banners.h)|(display/((lv_.+)|(licence.txt)))))",
 			"severity": {
 				"2": "disabled",
 				"3": "disabled"

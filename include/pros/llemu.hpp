@@ -18,7 +18,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+#if 0
 #ifndef _PROS_LLEMU_HPP_
 #define _PROS_LLEMU_HPP_
 
@@ -59,10 +59,13 @@ bool initialize(void);
  */
 bool shutdown(void);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
 namespace {
 template <typename T> T convert_args(T arg) { return arg; }
 const char *convert_args(const std::string &arg) { return arg.c_str(); }
 } // namespace
+#pragma GCC diagnostic pop
 
 /**
  * Displays a formatted string on the emulated three-button LCD screen.
@@ -172,3 +175,4 @@ void register_btn2_cb(lcd_btn_cb_fn_t cb);
 } // namespace pros
 
 #endif // _PROS_LLEMU_HPP_
+#endif

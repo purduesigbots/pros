@@ -17,9 +17,9 @@
 #ifndef VDML_H
 #define VDML_H
 
+#include "vdml/registry.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "vdml/registry.h"
 
 /**
  * Macro, returns true if the port is in range, false otherwise.
@@ -31,25 +31,27 @@
  * and mutex taking for all of the motor wrapper functions.
  * If port is out of range, the calling function sets errno and returns.
  * If a port isn't yet registered, it registered as a motor automatically.
- * If a mutex cannot be taken, errno is set to EACCES (access denied) and returns.
+ * If a mutex cannot be taken, errno is set to EACCES (access denied) and
+ * returns.
  */
-#define claim_port(port, device_type)                      \
-	if (!VALIDATE_PORT_NO(port)) {                           \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	if (registry_validate_binding(port, device_type) != 0) { \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	v5_smart_device_s_t* device = registry_get_device(port); \
-	if (!port_mutex_take(port)) {                            \
-		errno = EACCES;                                        \
-		return PROS_ERR;                                       \
-	}
+#define claim_port(port, device_type)                                          \
+  if (!VALIDATE_PORT_NO(port)) {                                               \
+    errno = EINVAL;                                                            \
+    return PROS_ERR;                                                           \
+  }                                                                            \
+  if (registry_validate_binding(port, device_type) != 0) {                     \
+    errno = EINVAL;                                                            \
+    return PROS_ERR;                                                           \
+  }                                                                            \
+  v5_smart_device_s_t *device = registry_get_device(port);                     \
+  if (!port_mutex_take(port)) {                                                \
+    errno = EACCES;                                                            \
+    return PROS_ERR;                                                           \
+  }
 
 /**
- * A function that executes claim_port for functions that do not return an int32_t
+ * A function that executes claim_port for functions that do not return an
+ * int32_t
  *
  * Returns 1 upon success, PROS_ERR upon failure
  */
@@ -59,15 +61,16 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * Macro that release the mutex for the given port and sets errno to 0 if the
  * function is an accessor wrapper whos return value is PROS_ERR or PROS_ERR_F.
  */
-#define return_port(port, rtn)                         \
-	port_mutex_give(port);                               \
-	if (rtn == PROS_ERR || rtn == PROS_ERR_F) errno = 0; \
-	return rtn;
+#define return_port(port, rtn)                                                 \
+  port_mutex_give(port);                                                       \
+  if (rtn == PROS_ERR || rtn == PROS_ERR_F)                                    \
+    errno = 0;                                                                 \
+  return rtn;
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.
  */
-int32_t port_errors;
+extern int32_t port_errors;
 
 /**
  * Sets the port's bit to 1, indicating there has already been an error on this
@@ -112,7 +115,8 @@ void vdml_reset_port_error();
  *
  * \param[in] port	The port number to claim.
  *
- * \return 1 if the mutex was successfully taken, 0 if not, -1 if port is invalid.
+ * \return 1 if the mutex was successfully taken, 0 if not, -1 if port is
+ * invalid.
  *
  * \exception EINVAL Port is out of range.
  */
@@ -138,15 +142,19 @@ void port_mutex_take_all();
 void port_mutex_give_all();
 
 /**
- * Obtains a port mutex with bounds checking for V5_MAX_PORTS (32) not user exposed
- * device ports (22). Intended for internal usage for protecting thread-safety on
+ * Obtains a port mutex with bounds checking for V5_MAX_PORTS (32) not user
+ * exposed
+ * device ports (22). Intended for internal usage for protecting thread-safety
+ * on
  * devices such as the controller and battery
  */
 int internal_port_mutex_take(uint8_t port);
 
 /**
- * Returns a port mutex with bounds checking for V5_MAX_PORTS (32) not user exposed
- * device ports (22). Intended for internal usage for protecting thread-safety on
+ * Returns a port mutex with bounds checking for V5_MAX_PORTS (32) not user
+ * exposed
+ * device ports (22). Intended for internal usage for protecting thread-safety
+ * on
  * devices such as the controller and battery
  */
 int internal_port_mutex_give(uint8_t port);
