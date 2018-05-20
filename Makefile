@@ -22,7 +22,7 @@ EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomo
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 
 TEMPLATE_DIR=$(ROOT)/template
-TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
+TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c $(INCDIR)/display
 
 INCLUDE=-iquote$(INCDIR)
 
@@ -67,7 +67,7 @@ version: version.py
 template: version clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
-	$Dcp --parents $(TEMPLATE_FILES) $(TEMPLATE_DIR)
+	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
