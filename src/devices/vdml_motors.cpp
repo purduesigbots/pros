@@ -178,10 +178,12 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m) {
-	return pros::Motor(m, E_MOTOR_GEARSET_36, false);
+	return pros::Motor(m);
 }
 const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-	return pros::Motor(m, E_MOTOR_GEARSET_36, true);
+	pros::Motor mtr(m);
+	mtr.set_reversed(true);
+	return mtr;
 }
 }  // namespace literals
 }  // namespace pros

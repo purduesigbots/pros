@@ -13,25 +13,44 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#if 0
+#if 1
 #include "pros/llemu.hpp"
 
 namespace pros {
 namespace lcd {
 using namespace pros::c;
 
-bool is_initialized(void) { return lcd_is_initialized(); }
-bool initialize(void) { return lcd_initialize(); }
-bool shutdown(void) { return lcd_shutdown(); }
-bool set_text(std::int16_t line, std::string text) {
-  return lcd_set_text(line, text.c_str());
+bool is_initialized(void) {
+	return lcd_is_initialized();
 }
-bool clear(void) { return lcd_clear(); }
-bool clear_line(std::int16_t line) { return lcd_clear_line(line); }
+bool initialize(void) {
+	return lcd_initialize();
+}
+bool shutdown(void) {
+	return lcd_shutdown();
+}
+bool set_text(std::int16_t line, std::string text) {
+	return lcd_set_text(line, text.c_str());
+}
+bool clear(void) {
+	return lcd_clear();
+}
+bool clear_line(std::int16_t line) {
+	return lcd_clear_line(line);
+}
 
-void register_btn0_cb(lcd_btn_cb_fn_t cb) { lcd_register_btn0_cb(cb); }
-void register_btn1_cb(lcd_btn_cb_fn_t cb) { lcd_register_btn1_cb(cb); }
-void register_btn2_cb(lcd_btn_cb_fn_t cb) { lcd_register_btn2_cb(cb); }
-} // namespace lcd
-} // namespace pros
+void register_btn0_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn0_cb(cb);
+}
+void register_btn1_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn1_cb(cb);
+}
+void register_btn2_cb(lcd_btn_cb_fn_t cb) {
+	lcd_register_btn2_cb(cb);
+}
+std::uint8_t read_buttons(void) {
+	return lcd_read_buttons();
+}
+}  // namespace lcd
+}  // namespace pros
 #endif

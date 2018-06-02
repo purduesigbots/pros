@@ -5,7 +5,7 @@
 int32_t battery_get_voltage(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
-		return PROS_ERR_F;
+		return PROS_ERR;
 	}
 	double rtn = vexBatteryVoltageGet();
 	internal_port_mutex_give(V5_PORT_BATTERY);
@@ -15,7 +15,7 @@ int32_t battery_get_voltage(void) {
 int32_t battery_get_current(void) {
 	if (!internal_port_mutex_take(V5_PORT_BATTERY)) {
 		errno = EACCES;
-		return PROS_ERR_F;
+		return PROS_ERR;
 	}
 	double rtn = vexBatteryCurrentGet();
 	internal_port_mutex_give(V5_PORT_BATTERY);

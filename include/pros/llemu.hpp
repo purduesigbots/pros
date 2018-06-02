@@ -18,7 +18,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#if 0
+#if 1
 #ifndef _PROS_LLEMU_HPP_
 #define _PROS_LLEMU_HPP_
 
@@ -62,9 +62,14 @@ bool shutdown(void);
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 namespace {
-template <typename T> T convert_args(T arg) { return arg; }
-const char *convert_args(const std::string &arg) { return arg.c_str(); }
-} // namespace
+template <typename T>
+T convert_args(T arg) {
+	return arg;
+}
+const char* convert_args(const std::string& arg) {
+	return arg.c_str();
+}
+}  // namespace
 #pragma GCC diagnostic pop
 
 /**
@@ -86,8 +91,8 @@ const char *convert_args(const std::string &arg) { return arg.c_str(); }
  *         errno values as specified above.
  */
 template <typename... Params>
-bool print(std::int16_t line, const char *fmt, Params... args) {
-  return pros::c::lcd_print(line, fmt, convert_args(args)...);
+bool print(std::int16_t line, const char* fmt, Params... args) {
+	return pros::c::lcd_print(line, fmt, convert_args(args)...);
 }
 
 /**
@@ -171,8 +176,24 @@ void register_btn1_cb(lcd_btn_cb_fn_t cb);
  *        A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn2_cb(lcd_btn_cb_fn_t cb);
-} // namespace lcd
-} // namespace pros
 
-#endif // _PROS_LLEMU_HPP_
+/**
+ * Gets the button status from the emulated three-button LCD.
+ *
+ * The value returned is a 3-bit integer where 1 0 0 indicates the left button
+ * is pressed, 0 1 0 indicates the center button is pressed, and 0 0 1
+ * indicates the right button is pressed. 0 is returned if no buttons are
+ * currently being pressed.
+ *
+ * Note that this function is provided for legacy API compatibility purposes,
+ * with the caveat that the V5 touch screen does not actually support pressing
+ * multiple points on the screen at the same time.
+ *
+ * \return The buttons pressed as a bit mask
+ */
+std::uint8_t read_buttons(void);
+}  // namespace lcd
+}  // namespace pros
+
+#endif  // _PROS_LLEMU_HPP_
 #endif
