@@ -93,7 +93,12 @@ std::int32_t ADIEncoder::reset(void) const {
 	return adi_encoder_reset(_port);
 }
 
+std::int32_t ADIEncoder::get_value(void) const {
+	return adi_encoder_get(_port);
+}
+
 ADIUltrasonic::ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping) {
-	_port = adi_ultrasonic_init(port_echo, port_ping);
+	_port = adi_ultrasonic_init(port_echo, port_ping) + 1;
+	// Add 1 to ensure that the ADIPort::get_value can be used
 }
 }  // namespace pros

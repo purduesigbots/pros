@@ -315,10 +315,12 @@ class ADIEncoder : private ADIPort {
 	 * This function uses the following values of errno when an error state is reached:
 	 * EINVAL - One or more of the port numbers is out of range.
 	 *
-	 * \param port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param type
-	 *        The configuration type for the port
+	 * \param port_top
+	 *        The "top" wire from the encoder sensor with the removable cover side UP
+	 * \param port_bottom
+	 *        The "bottom" wire from the encoder sensor
+	 * \param reverse
+	 *        If "true", the sensor will count in the opposite direction
 	 *
 	 * \return 1 if the operation was successful, PROS_ERR otherwise
 	 */
@@ -341,7 +343,7 @@ class ADIEncoder : private ADIPort {
 	 *
 	 * \return The signed and cumulative number of counts since the last start or reset
 	 */
-	using ADIPort::get_value;
+	std::int32_t get_value(void) const;
 };
 
 class ADIUltrasonic : private ADIPort {
@@ -352,10 +354,12 @@ class ADIUltrasonic : private ADIPort {
 	 * This function uses the following values of errno when an error state is reached:
 	 * EINVAL - One or more of the port numbers is out of range.
 	 *
-	 * \param port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param type
-	 *        The configuration type for the port
+	 * \param port_echo
+	 *        The port connected to the yellow INPUT cable. This should be in port
+	 *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
+	 * \param port_ping
+	 *        The port connected to the orange OUTPUT cable. This should be in the
+	 *        next highest port following port_echo.
 	 *
 	 * \return 1 if the operation was successful, PROS_ERR otherwise
 	 */
