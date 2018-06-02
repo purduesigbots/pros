@@ -27,6 +27,7 @@
 #include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/dev/ser.h"
+#include "system/dev/usd.h"
 #include "system/dev/vfs.h"
 
 #define MAX_FILELEN 128
@@ -99,8 +100,7 @@ int _open_r(struct _reent* r, const char* file, int flags, int mode) {
 		// is a serial pseudofile
 		return ser_open_r(r, file + strlen("/ser"), flags, mode);
 	} else if (strstr(file, "/usd") == file) {
-		r->_errno = ENOSYS;  // not yet implemented
-		return -1;
+		return usd_open_r(r, file + strlen("/usd"), flags, mode);
 	}
 
 	r->_errno = ENOENT;
