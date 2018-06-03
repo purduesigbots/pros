@@ -17,9 +17,9 @@
 #ifndef VDML_H
 #define VDML_H
 
-#include "vdml/registry.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "vdml/registry.h"
 
 /**
  * Macro, returns true if the port is in range, false otherwise.
@@ -34,20 +34,20 @@
  * If a mutex cannot be taken, errno is set to EACCES (access denied) and
  * returns.
  */
-#define claim_port(port, device_type)                                          \
-  if (!VALIDATE_PORT_NO(port)) {                                               \
-    errno = EINVAL;                                                            \
-    return PROS_ERR;                                                           \
-  }                                                                            \
-  if (registry_validate_binding(port, device_type) != 0) {                     \
-    errno = EINVAL;                                                            \
-    return PROS_ERR;                                                           \
-  }                                                                            \
-  v5_smart_device_s_t *device = registry_get_device(port);                     \
-  if (!port_mutex_take(port)) {                                                \
-    errno = EACCES;                                                            \
-    return PROS_ERR;                                                           \
-  }
+#define claim_port(port, device_type)                      \
+	if (!VALIDATE_PORT_NO(port)) {                           \
+		errno = EINVAL;                                        \
+		return PROS_ERR;                                       \
+	}                                                        \
+	if (registry_validate_binding(port, device_type) != 0) { \
+		errno = EINVAL;                                        \
+		return PROS_ERR;                                       \
+	}                                                        \
+	v5_smart_device_s_t* device = registry_get_device(port); \
+	if (!port_mutex_take(port)) {                            \
+		errno = EACCES;                                        \
+		return PROS_ERR;                                       \
+	}
 
 /**
  * A function that executes claim_port for functions that do not return an
@@ -61,11 +61,10 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * Macro that release the mutex for the given port and sets errno to 0 if the
  * function is an accessor wrapper whos return value is PROS_ERR or PROS_ERR_F.
  */
-#define return_port(port, rtn)                                                 \
-  port_mutex_give(port);                                                       \
-  if (rtn == PROS_ERR || rtn == PROS_ERR_F)                                    \
-    errno = 0;                                                                 \
-  return rtn;
+#define return_port(port, rtn)                         \
+	port_mutex_give(port);                               \
+	if (rtn == PROS_ERR || rtn == PROS_ERR_F) errno = 0; \
+	return rtn;
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.

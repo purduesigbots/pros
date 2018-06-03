@@ -18,7 +18,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#if 1
 #ifndef _PROS_LLEMU_HPP_
 #define _PROS_LLEMU_HPP_
 
@@ -196,4 +195,3 @@ std::uint8_t read_buttons(void);
 }  // namespace pros
 
 #endif  // _PROS_LLEMU_HPP_
-#endif

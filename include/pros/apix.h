@@ -24,6 +24,7 @@
 #define _PROS_API_EXTENDED_H_
 
 #include "api.h"
+#include "display/lvgl.h"
 #include "tmei.h"
 
 #ifdef __cplusplus
