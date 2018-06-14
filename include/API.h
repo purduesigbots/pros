@@ -556,7 +556,7 @@ typedef void * Gyro;
  * @return the signed and cumulative number of degrees rotated around the gyro's vertical axis
  * since the last start or reset
  */
-int gyroGet(Gyro gyro);
+double gyroGet(Gyro gyro);
 /**
  * Initializes and enables a gyro on an analog port.
  *

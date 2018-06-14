@@ -28,10 +28,10 @@ Analog_TypeDef _analogState[BOARD_NR_ADC_PINS];
 static volatile unsigned int gyroCount = 0;
 
 // Gets the current gyro angle in degrees
-int gyroGet(Gyro g) {
+double gyroGet(Gyro g) {
 	Analog_TypeDef *gyro = (Analog_TypeDef*)g;
 	if (gyro)
-		return (int)(gyro->value + 0x80) >> 8;
+		return (double) gyro->value / 256;
 	return 0;
 }
 

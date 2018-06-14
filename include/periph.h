@@ -247,7 +247,7 @@ void encoderReset(Encoder enc);
 void encoderShutdown(Encoder enc);
 
 // gyroGetAngle - Gets the current gyro angle in degrees
-int gyroGet(Gyro g);
+double gyroGet(Gyro g);
 // gyroInit - Initialize and calibrate the gyro - call in initialize()
 Gyro gyroInit(unsigned char port, unsigned short multiplier);
 // gyroReset - Resets the gyro angle to zero
