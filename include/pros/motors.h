@@ -50,8 +50,7 @@ namespace c {
  * \param voltage
  *        The new motor voltage from -127 to 127
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_move(uint8_t port, const int8_t voltage);
@@ -74,8 +73,7 @@ int32_t motor_move(uint8_t port, const int8_t voltage);
  * \param velocity
  *        The maximum allowable velocity for the movement in RPM
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity);
@@ -100,8 +98,7 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  * \param velocity
  *        The maximum allowable velocity for the movement in RPM
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity);
@@ -112,8 +109,7 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
  * This velocity corresponds to different actual speeds depending on the gearset
  * used for the motor. This results in a range of +-100 for E_MOTOR_GEARSET_36,
  * +-200 for E_MOTOR_GEARSET_18, and +-600 for E_MOTOR_GEARSET_6. The velocity
- * is held with PID to ensure consistent speed, as opposed to setting the
- * motor's
+ * is held with PID to ensure consistent speed, as opposed to setting the motor's
  * voltage.
  *
  * This function uses the following values of errno when an error state is
@@ -124,12 +120,10 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
  * \param port
  *        The V5 port number from 1-21
  * \param velocity
- *        The new motor velocity from +-100, +-200, or +-600 depending on the
- * motor's
+ *        The new motor velocity from +-100, +-200, or +-600 depending on the motor's
  *        gearset
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
@@ -147,11 +141,31 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
  * \param voltage
  *        The new voltage value from -12000 to 12000
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
+
+/**
+ * Changes the output velocity for a profiled movement (motor_move_absolute or
+ * motor_move_relative). This will have no effect if the motor is not following
+ * a profiled movement.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param velocity
+ *        The new motor velocity from +-100, +-200, or +-600 depending on the motor's
+ *        gearset
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
+ *         setting errno.
+ */
+int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
 
 /**
  * Gets the target position set for the motor by the user.
@@ -297,8 +311,7 @@ int32_t motor_is_over_temp(uint8_t port);
 /**
  * Checks if the motor is stopped.
  *
- * \note Although this function forwards data from the motor, the motor
- * presently
+ * \note Although this function forwards data from the motor, the motor presently
  * does not provide any value. This function returns PROS_ERR with errno set to
  * ENOSYS.
  *
@@ -313,11 +326,9 @@ int32_t motor_is_stopped(uint32_t port);
 /**
  * Checks if the motor is at its zero position.
  *
- * \note Although this function forwards data from the motor, the motor
- * presently
+ * \note Although this function forwards data from the motor, the motor presently
  * does not provide any value. This function returns PROS_ERR with errno set to
  * ENOSYS.
- *
  *
  * \param port
  *        The V5 port number from 1-21
@@ -371,10 +382,8 @@ uint32_t motor_get_flags(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  * \param timestamp[in]
- *        A pointer to a time in milliseconds for which the encoder count will
- * be returned.
- *        If NULL, the timestamp at which the encoder count was read will not be
- * supplied
+ *        A pointer to a time in milliseconds for which the encoder count will be returned.
+ *        If NULL, the timestamp at which the encoder count was read will not be supplied
  *
  * \return The raw encoder count at the given timestamp or PROS_ERR if the
  *         operation failed.
@@ -498,6 +507,36 @@ typedef enum motor_gearset_e {
 } motor_gearset_e_t;
 
 /**
+ * Holds the information about a Motor's position or velocity PID controls.
+ *
+ * These values are in 4.4 format, meaning that a value of 0x20 represents 2.0,
+ * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
+ */
+typedef struct motor_pid_full_s {
+	uint8_t kf;
+	uint8_t kp;
+	uint8_t ki;
+	uint8_t kd;
+	uint8_t filter;
+	uint16_t limit;
+	uint8_t threshold;
+	uint8_t loopspeed;
+} motor_pid_full_s_t;
+
+/**
+ * Holds just the constants for a Motor's position or velocity PID controls.
+ *
+ * These values are in 4.4 format, meaning that a value of 0x20 represents 2.0,
+ * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
+ */
+typedef struct motor_pid_s {
+	uint8_t kf;
+	uint8_t kp;
+	uint8_t ki;
+	uint8_t kd;
+} motor_pid_s_t;
+
+/**
  * Sets the position for the motor in its encoder units.
  *
  * This will be the future reference point for the motor's "absolute" position.
@@ -512,8 +551,7 @@ typedef enum motor_gearset_e {
  * \param position
  *        The new reference position in its encoder units
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_zero_position(uint8_t port, const double position);
@@ -529,8 +567,7 @@ int32_t motor_set_zero_position(uint8_t port, const double position);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *           setting errno.
  */
 int32_t motor_tare_position(uint8_t port);
@@ -548,8 +585,7 @@ int32_t motor_tare_position(uint8_t port);
  * \param mode
  *        The motor_brake_mode_e_t to set for the motor
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
@@ -567,8 +603,7 @@ int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
  * \param limit
  *        The new current limit in mA
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
@@ -586,8 +621,7 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  * \param units
  *        The new motor encoder units
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units);
@@ -605,11 +639,162 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  * \param gearset
  *        The new motor gearset
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
+
+/**
+ * Takes in floating point values and returns a properly formatted pid struct.
+ * The motor_pid_s_t struct is in 4.4 format, i.e. 0x20 is 2.0, 0x21 is 2.0625, etc.
+ * This function will convert the floating point values to the nearest 4.4 value.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param kf
+ *        The feedforward constant
+ * \param kp
+ *        The proportional constant
+ * \param ki
+ *        The integral constant
+ * \param kd
+ *        The derivative constant
+ *
+ * \return A motor_pid_s_t struct formatted properly in 4.4.
+ */
+motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
+
+/**
+ * Takes in floating point values and returns a properly formatted pid struct.
+ * The motor_pid_s_t struct is in 4.4 format, i.e. 0x20 is 2.0, 0x21 is 2.0625, etc.
+ * This function will convert the floating point values to the nearest 4.4 value.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param kf
+ *        The feedforward constant
+ * \param kp
+ *        The proportional constant
+ * \param ki
+ *        The integral constant
+ * \param kd
+ *        The derivative constant
+ * \param filter
+ *        A constant used for filtering the profile acceleration
+ * \param limit
+ *        The integral limit
+ * \param threshold
+ *        The threshold for determining if a position movement has reached its goal.
+ *        This has no effect for velocity PID calculations.
+ * \param loopspeed
+ *        The rate at which the PID computation is run
+ *
+ * \return A motor_pid_s_t struct formatted properly in 4.4.
+ */
+motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
+                                          double threshold, double loopspeed);
+
+/**
+ * Sets one of motor_pid_s_t for the motor. This intended to just modify the
+ * main PID constants.
+ *
+ * Only non-zero values of the struct will change the existing motor constants.
+ *
+ * \note This feature is in beta, it is advised to use caution when modifying
+ * the PID values. The motor could be damaged by particularly large constants.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param pid
+ *        The new motor PID constants
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
+ *         setting errno.
+ */
+int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid);
+
+/**
+ * Sets one of motor_pid_full_s_t for the motor. This intended for modification
+ * of any of the possible motor pid constants.
+ *
+ * Only non-zero values of the struct will change the existing motor constants.
+ *
+ * \note This feature is in beta, it is advised to use caution when modifying
+ * the PID values. The motor could be damaged by particularly large constants.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param pid
+ *        The new motor PID constants
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
+ *         setting errno.
+ */
+int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid);
+
+/**
+ * Sets one of motor_pid_s_t for the motor. This intended to just modify the
+ * main PID constants.
+ *
+ * Only non-zero values of the struct will change the existing motor constants.
+ *
+ * \note This feature is in beta, it is advised to use caution when modifying
+ * the PID values. The motor could be damaged by particularly large constants.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param pid
+ *        The new motor PID constants
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
+ *         setting errno.
+ */
+int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid);
+
+/**
+ * Sets one of motor_pid_full_s_t for the motor. This intended for modification
+ * of any of the possible motor pid constants.
+ *
+ * Only non-zero values of the struct will change the existing motor constants.
+ *
+ * \note This feature is in beta, it is advised to use caution when modifying
+ * the PID values. The motor could be damaged by particularly large constants.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param pid
+ *        The new motor PID constants
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
+ *         setting errno.
+ */
+int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid);
 
 /**
  * Sets the reverse flag for the motor.
@@ -626,8 +811,7 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
  * \param reverse
  *        True reverses the motor, false is default
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_reversed(uint8_t port, const bool reverse);
@@ -645,8 +829,7 @@ int32_t motor_set_reversed(uint8_t port, const bool reverse);
  * \param limit
  *        The new voltage limit in Volts
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed,
+ * \return 1 if the operation was successful or PROS_ERR if the operation failed,
  *         setting errno.
  */
 int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
@@ -716,6 +899,51 @@ motor_encoder_units_e_t motor_get_encoder_units(uint8_t port);
  *         or E_GEARSET_INVALID if the operation failed.
  */
 motor_gearset_e_t motor_get_gearing(uint8_t port);
+
+/**
+ * Gets the position PID that was set for the motor. This function will return
+ * zero for all of the parameters if the motor_set_pos_pid or
+ * motor_set_pos_pid_full
+ * functions have not been used.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * Additionally, in an error state all values of the returned struct are set
+ * to their negative maximum values.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return One of motor_gearset_e_t according to what is set for the motor,
+ *         or E_GEARSET_INVALID if the operation failed.
+ */
+motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
+
+/**
+ * Gets the velocity PID that was set for the motor. This function will return
+ * zero for all of the parameters if the motor_set_vel_pid or
+ * motor_set_vel_pid_full
+ * functions have not been used.
+ *
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EACCES - Another resource is currently trying to access the port.
+ *
+ * Additionally, in an error state all values of the returned struct are set
+ * to their negative maximum values.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return One of motor_gearset_e_t according to what is set for the motor,
+ *         or E_GEARSET_INVALID if the operation failed.
+ */
+motor_pid_full_s_t motor_get_vel_pid(uint8_t port);
 
 /**
  * Gets the operation direction of the motor as set by the user.

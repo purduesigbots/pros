@@ -24,6 +24,21 @@ Motor::Motor(const std::uint8_t port, const pros::c::motor_gearset_e_t gearset, 
 	set_encoder_units(encoder_units);
 }
 
+Motor::Motor(const std::uint8_t port, const pros::c::motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+	set_gearing(gearset);
+	set_reversed(reverse);
+}
+
+Motor::Motor(const std::uint8_t port, const pros::c::motor_gearset_e_t gearset) : _port(port) {
+	set_gearing(gearset);
+}
+
+Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
+	set_reversed(reverse);
+}
+
+Motor::Motor(const std::uint8_t port) : _port(port) {}
+
 std::int32_t Motor::operator=(const std::int8_t voltage) const {
 	return motor_move(_port, voltage);
 }
@@ -46,6 +61,10 @@ std::int32_t Motor::move_velocity(const std::int32_t velocity) const {
 
 std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
 	return motor_move_voltage(_port, voltage);
+}
+
+std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {
+	return motor_modify_profiled_velocity(_port, velocity);
 }
 
 double Motor::get_actual_velocity(void) const {
@@ -90,6 +109,14 @@ std::uint32_t Motor::get_flags(void) const {
 
 pros::c::motor_gearset_e_t Motor::get_gearing(void) const {
 	return motor_get_gearing(_port);
+}
+
+pros::c::motor_pid_full_s_t Motor::get_pos_pid(void) const {
+	return motor_get_pos_pid(_port);
+}
+
+pros::c::motor_pid_full_s_t Motor::get_vel_pid(void) const {
+	return motor_get_vel_pid(_port);
 }
 
 std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp) const {
@@ -164,6 +191,31 @@ std::int32_t Motor::set_gearing(const pros::c::motor_gearset_e_t gearset) const 
 	return motor_set_gearing(_port, gearset);
 }
 
+pros::c::motor_pid_s_t Motor::convert_pid(double kf, double kp, double ki, double kd) {
+	return motor_convert_pid(kf, kp, ki, kd);
+}
+
+pros::c::motor_pid_full_s_t Motor::convert_pid_full(double kf, double kp, double ki, double kd, double filter,
+                                                    double limit, double threshold, double loopspeed) {
+	return motor_convert_pid_full(kf, kp, ki, kd, filter, limit, threshold, loopspeed);
+}
+
+std::int32_t Motor::set_pos_pid(const pros::c::motor_pid_s_t pid) const {
+	return motor_set_pos_pid(_port, pid);
+}
+
+std::int32_t Motor::set_pos_pid_full(const pros::c::motor_pid_full_s_t pid) const {
+	return motor_set_pos_pid_full(_port, pid);
+}
+
+std::int32_t Motor::set_vel_pid(const pros::c::motor_pid_s_t pid) const {
+	return motor_set_vel_pid(_port, pid);
+}
+
+std::int32_t Motor::set_vel_pid_full(const pros::c::motor_pid_full_s_t pid) const {
+	return motor_set_vel_pid_full(_port, pid);
+}
+
 std::int32_t Motor::set_zero_position(const double position) const {
 	return motor_set_zero_position(_port, position);
 }
@@ -178,12 +230,10 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m) {
-	return pros::Motor(m);
+	return pros::Motor(m, false);
 }
 const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-	pros::Motor mtr(m);
-	mtr.set_reversed(true);
-	return mtr;
+	return pros::Motor(m, true);
 }
 }  // namespace literals
 }  // namespace pros
