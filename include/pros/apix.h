@@ -25,7 +25,6 @@
 
 #include "api.h"
 #include "display/lvgl.h"
-#include "tmei.h"
 
 #ifdef __cplusplus
 extern "C" {
