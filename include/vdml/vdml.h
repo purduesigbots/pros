@@ -63,7 +63,6 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  */
 #define return_port(port, rtn)                         \
 	port_mutex_give(port);                               \
-	if (rtn == PROS_ERR || rtn == PROS_ERR_F) errno = 0; \
 	return rtn;
 
 /**

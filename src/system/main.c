@@ -6,7 +6,7 @@
  * scheduler.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -33,21 +33,21 @@ extern void rtos_sched_start();
 // from 0-~65k. The first 0-100 priorities are reserved for language
 // implementation.
 __attribute__((constructor(101))) static void pros_init(void) {
-	rtos_initialize();
+  rtos_initialize();
 
-	vfs_initialize();
+  vfs_initialize();
 
-	system_daemon_initialize();
+  system_daemon_initialize();
 
-	display_initialize();
+  display_initialize();
 }
 
 int main() {
-	rtos_sched_start();
+  rtos_sched_start();
 
-	vexDisplayPrintf(10, 60, 1, "failed to start scheduler\n");
+  vexDisplayPrintf(10, 60, 1, "failed to start scheduler\n");
 
-	printf("Failed to start Scheduler\n");
-	for (;;)
-		;
+  printf("Failed to start Scheduler\n");
+  for (;;)
+    ;
 }

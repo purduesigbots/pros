@@ -4,7 +4,7 @@
  * See system/common/string.c for discussion
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,9 +16,9 @@
 /**
  * strdup but uses the kernel heap
  */
-char* kstrdup(const char* s);
+char *kstrdup(const char *s);
 
 /**
  * strndup but uses the kernel heap
  */
-char* kstrndup(const char* s, size_t n);
+char *kstrndup(const char *s, size_t n);

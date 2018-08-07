@@ -4,7 +4,7 @@
  * Probably shouldn't use anything from this header
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

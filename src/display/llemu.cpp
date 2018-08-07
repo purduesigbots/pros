@@ -13,7 +13,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#if 1
 #include "pros/llemu.hpp"
 
 namespace pros {
@@ -53,4 +52,3 @@ std::uint8_t read_buttons(void) {
 }
 }  // namespace lcd
 }  // namespace pros
-#endif

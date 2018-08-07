@@ -39,7 +39,7 @@ bool is_initialized(void);
  * Creates an emulation of the three-button, UART-based VEX LCD on the display.
  *
  * \return True if the LCD was successfully initialized, or false if it has
- *         already been initialized.
+ * already been initialized.
  */
 bool initialize(void);
 
@@ -54,7 +54,7 @@ bool initialize(void);
  * ENXIO - The LCD has not been initialized. Call lcd_initialize() first.
  *
  * \return True if the operation was successful, or false otherwise, setting
- *         errno values as specified above.
+ * errno values as specified above.
  */
 bool shutdown(void);
 
@@ -87,7 +87,7 @@ const char* convert_args(const std::string& arg) {
  *        Optional list of arguments for the format string
  *
  * \return True if the operation was successful, or false otherwise, setting
- *         errno values as specified above.
+ * errno values as specified above.
  */
 template <typename... Params>
 bool print(std::int16_t line, const char* fmt, Params... args) {
@@ -108,7 +108,7 @@ bool print(std::int16_t line, const char* fmt, Params... args) {
  *        The text to display
  *
  * \return True if the operation was successful, or false otherwise, setting
- *         errno values as specified above.
+ * errno values as specified above.
  */
 bool set_text(std::int16_t line, std::string text);
 
@@ -121,7 +121,7 @@ bool set_text(std::int16_t line, std::string text);
  * EINVAL - The line number specified is not in the range [0-7]
  *
  * \return True if the operation was successful, or false otherwise, setting
- *         errno values as specified above.
+ * errno values as specified above.
  */
 bool clear(void);
 
@@ -137,7 +137,7 @@ bool clear(void);
  *        The line to clear
  *
  * \return True if the operation was successful, or false otherwise, setting
- *         errno values as specified above.
+ * errno values as specified above.
  */
 bool clear_line(std::int16_t line);
 
@@ -150,7 +150,7 @@ using lcd_btn_cb_fn_t = void (*)(void);
  * user-provided callback function will be invoked.
  *
  * \param cb
- *        A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn0_cb(lcd_btn_cb_fn_t cb);
 
@@ -161,7 +161,7 @@ void register_btn0_cb(lcd_btn_cb_fn_t cb);
  * user-provided callback function will be invoked.
  *
  * \param cb
- *        A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn1_cb(lcd_btn_cb_fn_t cb);
 
@@ -172,7 +172,7 @@ void register_btn1_cb(lcd_btn_cb_fn_t cb);
  * user-provided callback function will be invoked.
  *
  * \param cb
- *        A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn2_cb(lcd_btn_cb_fn_t cb);
 
