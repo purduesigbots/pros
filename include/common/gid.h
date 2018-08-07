@@ -31,6 +31,9 @@ struct gid_metadata {
   mutex_t _lock;
 };
 
+#define bmp_set(bmp, item) bmp[item / UINT32_WIDTH] |= (1 << (item % UINT32_WIDTH))
+#define bmp_check(bmp, item) (bmp[item / UINT32_WIDTH] & (1 << (item % UINT32_WIDTH)))
+
 #ifndef UINT32_WIDTH
 #define UINT32_WIDTH 32
 #endif

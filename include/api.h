@@ -44,6 +44,7 @@
 
 #include "pros/adi.h"
 #include "pros/colors.h"
+#include "pros/jinx.h"
 #include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
