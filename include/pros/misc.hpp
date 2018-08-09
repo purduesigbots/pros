@@ -133,6 +133,85 @@ public:
    */
   std::int32_t get_digital_new_press(controller_digital_e_t button);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-function"
+	template <typename T>
+	T convert_args(T arg) {
+		return arg;
+	}
+	const char* convert_args(const std::string& arg) {
+		return arg.c_str();
+	}
+#pragma GCC diagnostic pop
+
+	/**
+	 * Sets text to the controller LCD screen.
+	 *
+	 * \note Controller text setting is currently in beta, so only the master
+	 *       controller is supported at this time, and continuous, fast updates will
+	 *       not work well.
+	 *
+	 * \param line
+	 *        The line number at which the text will be displayed. [0-2]
+	 * \param col
+	 *        The column number at which the text will be displayed. The width of the
+	 *        screen is 15 characters.
+	 * \param fmt
+	 *        The format string to print to the controller
+	 * \param ...
+	 *        The argument list for the format string
+	 *
+	 * \return 1 if the operation was successful.
+	 */
+	template <typename... Params>
+	std::int32_t print(std::uint8_t line, std::uint8_t col, const char* fmt, Params... args) {
+		return pros::c::controller_print(_id, line, fmt, convert_args(args)...);
+	}
+
+	/**
+	 * Sets text to the controller LCD screen.
+	 *
+	 * \note Controller text setting is currently in beta, so only the master
+	 *       controller is supported at this time, and continuous, fast updates will
+	 *       not work well.
+	 *
+	 * \param line
+	 *        The line number at which the text will be displayed. [0-2]
+	 * \param col
+	 *        The column number at which the text will be displayed. The width of the
+	 *        screen is 15 characters.
+	 * \param str
+	 *        The pre-formatted string to print to the controller
+	 *
+	 * \return 1 if the operation was successful.
+	 */
+	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const char* str);
+
+	/**
+	 * Clears an individual line of the controller screen.
+	 *
+	 * \note Controller text setting is currently in beta, so only the master
+	 *       controller is supported at this time, and continuous, fast updates will
+	 *       not work well.
+	 *
+	 * \param line
+	 *        The line number at which the text will be displayed. [0-2]
+	 *
+	 * \return 1 if the operation was successful.
+	 */
+	std::int32_t clear_line(std::uint8_t line);
+
+	/**
+	 * Clears all of the lines on the controller screen.
+	 *
+	 * \note Controller text setting is currently in beta, so only the master
+	 *       controller is supported at this time, and continuous, fast updates will
+	 *       not work well.
+	 *
+	 * \return 1 if the operation was successful.
+	 */
+	std::int32_t clear(void);
+
 private:
   controller_id_e_t _id;
 };

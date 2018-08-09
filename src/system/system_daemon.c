@@ -62,7 +62,6 @@ static void _system_daemon_task(void* ign) {
 
 	// initialization that needs to occur with the scheduler started
 	vdml_initialize();
-	jinx_init();
 
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition

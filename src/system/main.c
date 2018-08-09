@@ -25,7 +25,6 @@ extern void system_daemon_initialize();
 // extern void graphical_context_daemon_initialize(void);
 extern void display_initialize(void);
 extern void rtos_sched_start();
-extern void jinx_init(void);
 
 // XXX: pros_init happens inside __libc_init_array, and before any global
 // C++ constructors are invoked. This is accomplished by instructing

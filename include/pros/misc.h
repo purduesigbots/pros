@@ -7,7 +7,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topcial/controller to learn
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/controller to learn
  * more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
@@ -255,6 +255,84 @@ int32_t controller_get_digital(controller_id_e_t id,
  */
 int32_t controller_get_digital_new_press(controller_id_e_t id,
                                          controller_digital_e_t button);
+
+/**
+ * Sets text to the controller LCD screen.
+ *
+ * \note Controller text setting is currently in beta, so only the master
+ *       controller is supported at this time, and continuous, fast updates will
+ *       not work well.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param line
+ *        The line number at which the text will be displayed. [0-2]
+ * \param col
+ *        The column number at which the text will be displayed. The width of the
+ *        screen is 15 characters.
+ * \param fmt
+ *        The format string to print to the controller
+ * \param ...
+ *        The argument list for the format string
+ *
+ * \return 1 if the operation was successful.
+ */
+int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...);
+
+/**
+ * Sets text to the controller LCD screen.
+ *
+ * \note Controller text setting is currently in beta, so only the master
+ *       controller is supported at this time, and continuous, fast updates will
+ *       not work well.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param line
+ *        The line number at which the text will be displayed. [0-2]
+ * \param col
+ *        The column number at which the text will be displayed. The width of the
+ *        screen is 15 characters.
+ * \param str
+ *        The pre-formatted string to print to the controller
+ *
+ * \return 1 if the operation was successful.
+ */
+int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str);
+
+/**
+ * Clears an individual line of the controller screen.
+ *
+ * \note Controller text setting is currently in beta, so only the master
+ *       controller is supported at this time, and continuous, fast updates will
+ *       not work well.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param line
+ *        The line number at which the text will be displayed. [0-2]
+ *
+ * \return 1 if the operation was successful.
+ */
+int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
+
+/**
+ * Clears all of the lines on the controller screen.
+ *
+ * \note Controller text setting is currently in beta, so only the master
+ *       controller is supported at this time, and continuous, fast updates will
+ *       not work well.
+ *
+ * \param id
+ *        The ID of the controller (e.g. the master or partner controller).
+ *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ *
+ * \return 1 if the operation was successful.
+ */
+int32_t controller_clear(controller_id_e_t id);
 
 /**
  * Gets the current voltage of the battery, as reported by VEXos.

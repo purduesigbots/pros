@@ -42,6 +42,18 @@ Controller::get_digital_new_press(pros::controller_digital_e_t button) {
   return controller_get_digital_new_press(_id, button);
 }
 
+std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {
+	return controller_set_text(_id, line, col, str);
+}
+
+std::int32_t Controller::clear_line(std::uint8_t line) {
+	return controller_clear_line(_id, line);
+}
+
+std::int32_t Controller::clear(void) {
+	return controller_clear(_id);
+}
+
 namespace competition {
 std::uint8_t get_status(void) { return competition_get_status(); }
 

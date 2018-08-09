@@ -284,8 +284,3 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 	device->pad[port - 1] = (uint8_t)zero_point;
 	return_port(port - 1, 1);
 }
-
-uint8_t vision_get_zero_point(uint8_t port) {
-	claim_port(port - 1,E_DEVICE_VISION);
-	return_port(port - 1,ZERO_POINT(port))
-}
