@@ -359,6 +359,7 @@ typedef enum v5_device_e {
   E_DEVICE_RADIO = 8,
   E_DEVICE_VISION = 11,
   E_DEVICE_ADI = 12,
+  E_DEVICE_GENERIC = 129,
   E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
@@ -513,6 +514,21 @@ int32_t fdctl(int file, const uint32_t action, void *const extra_arg);
  * to learn more.
  */
 #define SERCTL_DISABLE_COBS 15
+
+/**
+ * Action macro to check if there is data available from the Generic Serial Device
+ *
+ * The extra argument is not used with this action, provide any value (e.g.
+ * NULL) instead
+ */
+#define DEVCTL_FIONREAD 16
+
+/**
+ * Action macro to set the Generic Serial Device's baudrate.
+ *
+ * The extra argument is the baudrate.
+ */
+#define DEVCTL_SET_BAUDRATE 17
 
 #ifdef __cplusplus
 }

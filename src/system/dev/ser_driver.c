@@ -69,11 +69,9 @@ static uint8_t write_scratch_buf[VEX_SERIAL_BUFFER_SIZE]; // scratch buffer
 static stream_buf_t write_stream;
 
 // We maintain a set of streams which should actually be sent over the serial
-// line.
-// This is maintained as a separate list and don't traverse through open files
-// b/c
-// enabled streams is done per ID not per file (multiple files may map to one
-// stream ID)
+// line. This is maintained as a separate list and don't traverse through
+// open files b/c enabled streams is done per ID not per file (multiple
+// files may map to one stream ID)
 // Initialized below in ser_driver_initialize
 static struct set enabled_streams_set;
 
@@ -232,7 +230,6 @@ off_t ser_lseek_r(struct _reent *r, void *const arg, off_t ptr, int dir) {
 
 int ser_ctl(void *const arg, const uint32_t cmd, void *const extra_arg) {
   ser_file_s_t file = *(ser_file_s_t *)arg;
-  // lcd_print(4, "hello %x to enabled streams", (uint32_t)file.stream_id);
   switch (cmd) {
   case SERCTL_ACTIVATE:
     if (!list_contains(guaranteed_delivery_streams,
@@ -324,7 +321,10 @@ int32_t serctl(const uint32_t action, void *const extra_arg) {
       // vexDisplayString(2, "Adding %x to enabled streams",
       // (uint32_t)file.stream_id);
       set_add(&enabled_streams_set, (uint32_t)extra_arg);
-    } // TODO: else errno
+    } else {
+      errno = EIO;
+      return -1;
+    }
     return 0;
   case SERCTL_DEACTIVATE:
     if (!list_contains(guaranteed_delivery_streams,
@@ -333,7 +333,10 @@ int32_t serctl(const uint32_t action, void *const extra_arg) {
       // vexDisplayString(2, "Removing %x from enabled streams",
       // (uint32_t)file.stream_id);
       set_rm(&enabled_streams_set, (uint32_t)extra_arg);
-    } // TODO: else errno
+    } else {
+      errno = EIO;
+      return -1;
+    }
     return 0;
   case SERCTL_ENABLE_COBS:
     ser_driver_runtime_config |= E_COBS_ENABLED;
@@ -358,8 +361,6 @@ void ser_driver_initialize(void) {
   set_initialize(&enabled_streams_set);
   set_add(&enabled_streams_set, STDOUT_STREAM_ID); // 'sout' little endian
 
-  // write_queue = queue_create_static(VEX_SERIAL_BUFFER_SIZE, 1, write_buffer,
-  // &write_queue_buf);
   write_stream = stream_buf_create_static(VEX_SERIAL_BUFFER_SIZE, 0, write_buf,
                                           &write_stream_buf);
 
