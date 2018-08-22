@@ -24,15 +24,7 @@ static void _competition_initialize_task(void* ign);
 static void _initialize_task(void* ign);
 static void _system_daemon_task(void* ign);
 
-#define COMP_MODE_MASK 3
-// libv5rts doesn't expose the symbol but gives us the prototype or return values (woops)
-enum competition_states {
-	E_STATE_OPCONTROL = 0,
-	E_STATE_AUTON = 1,
-	E_STATE_DISABLED = 2,
-	E_STATE_INIT = 3,
-	E_STATE_UNKNOWN
-};
+enum state_task { E_OPCONTROL_TASK = 0, E_AUTON_TASK, E_DISABLED_TASK, E_COMP_INIT_TASK };
 
 char task_names[4][32] = {"User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
                           "User Comp. Init. (PROS)"};
@@ -42,13 +34,13 @@ extern void ser_output_flush(void);
 
 // does the basic background operations that need to occur every 2ms
 static inline void do_background_operations() {
-	port_mutex_take_all();
-	ser_output_flush();
-	rtos_suspend_all();
-	vexBackgroundProcessing();
-	rtos_resume_all();
-	vdml_background_processing();
-	port_mutex_give_all();
+  port_mutex_take_all();
+  ser_output_flush();
+  rtos_suspend_all();
+  vexBackgroundProcessing();
+  rtos_resume_all();
+  vdml_background_processing();
+  port_mutex_give_all();
 }
 
 static void _system_daemon_task(void* ign) {
@@ -74,32 +66,33 @@ static void _system_daemon_task(void* ign) {
 		// wait for initialize to finish
 		do_background_operations();
 	}
-
+	bool comp_init_completed = false;
 	while (1) {
 		do_background_operations();
 
 		if (unlikely(status != competition_get_status())) {
-			// TODO: make sure vexCompetitionStatus returns a valid result. Don't know
-			// what to expect yet
-
 			// Have a new competition status, need to clean up whatever's running
 			uint32_t old_status = status;
 			status = competition_get_status();
-			enum competition_states new_state = status & COMP_MODE_MASK;
-			if (new_state & E_STATE_DISABLED) {
-				new_state = E_STATE_DISABLED;
+			enum state_task state = E_OPCONTROL_TASK;
+			if ((status & COMPETITION_DISABLED) && (old_status & COMPETITION_DISABLED)) {
+				// Don't restart the disabled task
+				continue;
 			}
-			// competition initialize runs only when entering disabled and when we weren't previously
-			// connected to field control
-			if (new_state == E_STATE_DISABLED && !(old_status & COMPETITION_CONNECTED)) {
-				new_state = E_STATE_INIT;
-			}
-			if (!(status & COMPETITION_CONNECTED)) {
-				new_state = E_STATE_OPCONTROL;
+
+			// competition initialize runs only when entering disabled
+			// and we're connected to competition control
+			if (status & (COMPETITION_DISABLED | COMPETITION_CONNECTED) && !comp_init_completed) {
+				state = E_COMP_INIT_TASK;
+				comp_init_completed = true;
+			} else if (status & COMPETITION_DISABLED) {
+				state = E_DISABLED_TASK;
+			} else if (status & COMPETITION_AUTONOMOUS) {
+				state = E_AUTON_TASK;
 			}
 
 			task_state = task_get_state(competition_task);
-			// delete the task only if it's in normal operation (e.g. not deleted)
+      // delete the task only if it's in normal operation (e.g. not deleted)
 			// The valid task states AREN'T deleted, invalid, or running (running means it's
 			// the current task, which will never be the case)
 			if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
@@ -107,8 +100,8 @@ static void _system_daemon_task(void* ign) {
 				task_delete(competition_task);
 			}
 
-			competition_task = task_create_static(task_fns[new_state], NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
-			                                      task_names[new_state], competition_task_stack, &competition_task_buffer);
+			competition_task = task_create_static(task_fns[state], NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
+			                                      task_names[state], competition_task_stack, &competition_task_buffer);
 		}
 
 		task_delay_until(&time, 2);
@@ -116,7 +109,7 @@ static void _system_daemon_task(void* ign) {
 }
 
 void system_daemon_initialize() {
-	system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
+  system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
 	                                        "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
 }
 

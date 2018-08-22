@@ -262,11 +262,5 @@ int32_t controller_clear(controller_id_e_t id) {
 }
 
 uint8_t competition_get_status(void) {
-  if (!internal_port_mutex_take(V5_PORT_CONTROLLER_1)) {
-    errno = EACCES;
-    return 255;
-  }
-  uint8_t rtn = vexCompetitionStatus();
-  internal_port_mutex_give(V5_PORT_CONTROLLER_1);
-  return rtn;
+  return vexCompetitionStatus();
 }

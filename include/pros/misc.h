@@ -28,8 +28,8 @@
 /******************************************************************************/
 /**                             V5 Competition                               **/
 /******************************************************************************/
-#define COMPETITION_AUTONOMOUS (1 << 0)
-#define COMPETITION_DISABLED (1 << 1)
+#define COMPETITION_DISABLED (1 << 0)
+#define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
 
 /**
@@ -38,13 +38,20 @@
  * \return The competition control status as a mask of bits with
  * 			   COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
  */
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+namespace c {
+#endif
 uint8_t competition_get_status(void);
-#define competition_is_disabled()                                              \
-  ((competition_get_status() & COMPETITION_DISABLED) != 0)
-#define competition_is_connected()                                             \
-  ((competition_get_status() & COMPETITION_CONNECTED) != 0)
-#define competition_is_autonomous()                                            \
-  ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
+#ifdef __cplusplus
+}
+}
+}
+#endif
+#define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
+#define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
+#define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
 
 /******************************************************************************/
 /**                              V5 Controller                               **/
