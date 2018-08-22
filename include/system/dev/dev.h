@@ -13,6 +13,6 @@
 
 #include "vfs.h"
 
-extern const struct fs_driver *const dev_driver;
-int dev_open_r(struct _reent *r, const char *path, int flags, int mode);
+extern const struct fs_driver* const dev_driver;
+int dev_open_r(struct _reent* r, const char* path, int flags, int mode);
 void dev_initialize(void);

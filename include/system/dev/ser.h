@@ -15,7 +15,7 @@
 
 #include "vfs.h"
 
-extern const struct fs_driver *const ser_driver;
-int ser_open_r(struct _reent *r, const char *path, int flags, int mode);
+extern const struct fs_driver* const ser_driver;
+int ser_open_r(struct _reent* r, const char* path, int flags, int mode);
 
 void ser_initialize(void);

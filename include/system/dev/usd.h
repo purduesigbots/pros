@@ -15,6 +15,6 @@
 
 #include "vfs.h"
 
-extern const struct fs_driver *const usd_driver;
-int usd_open_r(struct _reent *r, const char *path, int flags, int mode);
+extern const struct fs_driver* const usd_driver;
+int usd_open_r(struct _reent* r, const char* path, int flags, int mode);
 void usd_initialize(void);

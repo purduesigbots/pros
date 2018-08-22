@@ -52,27 +52,27 @@ namespace pros {
 // The maximum timeout value that can be given to, for instance, a mutex grab.
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
-typedef void *task_t;
-typedef void (*task_fn_t)(void *);
+typedef void* task_t;
+typedef void (*task_fn_t)(void*);
 
 typedef enum {
-  E_TASK_STATE_RUNNING = 0,
-  E_TASK_STATE_READY,
-  E_TASK_STATE_BLOCKED,
-  E_TASK_STATE_SUSPENDED,
-  E_TASK_STATE_DELETED,
-  E_TASK_STATE_INVALID
+	E_TASK_STATE_RUNNING = 0,
+	E_TASK_STATE_READY,
+	E_TASK_STATE_BLOCKED,
+	E_TASK_STATE_SUSPENDED,
+	E_TASK_STATE_DELETED,
+	E_TASK_STATE_INVALID
 } task_state_e_t;
 
 typedef enum {
-  E_NOTIFY_ACTION_NONE,
-  E_NOTIFY_ACTION_BITS,
-  E_NOTIFY_ACTION_INCR,
-  E_NOTIFY_ACTION_OWRITE,
-  E_NOTIFY_ACTION_NO_OWRITE
+	E_NOTIFY_ACTION_NONE,
+	E_NOTIFY_ACTION_BITS,
+	E_NOTIFY_ACTION_INCR,
+	E_NOTIFY_ACTION_OWRITE,
+	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
 
-typedef void *mutex_t;
+typedef void* mutex_t;
 
 /**
  * Refers to the current task handle
@@ -117,8 +117,8 @@ uint32_t millis(void);
  *         referenced. If an error occurred, NULL will be returned and errno
  *         can be checked for hints as to why task_create failed.
  */
-task_t task_create(task_fn_t function, void* const parameters, uint32_t prio,
-                   const uint16_t stack_depth, const char* const name);
+task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, const uint16_t stack_depth,
+                   const char* const name);
 
 /**
  * Removes a task from the RTOS real time kernel's management.  The task being
@@ -229,7 +229,7 @@ uint32_t task_get_count(void);
  *
  * \return A pointer to the name of the task
  */
-char *task_get_name(task_t task);
+char* task_get_name(task_t task);
 
 /**
  * Gets a task handle from the specified name
@@ -280,8 +280,7 @@ uint32_t task_notify(task_t task);
  * without needing to overwrite, 1 otherwise.
  * For all other NOTIFY_ACTION values: always return 0
  */
-uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action,
-                         uint32_t* prev_value);
+uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
 /**
  * Waits for a notification to be nonzero.

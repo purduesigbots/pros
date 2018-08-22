@@ -27,29 +27,29 @@ namespace pros {
  * Represents the port type for an ADI port.
  */
 typedef enum adi_port_config_e {
-  E_ADI_ANALOG_IN = 0,
-  E_ADI_ANALOG_OUT,
-  E_ADI_DIGITAL_IN,
-  E_ADI_DIGITAL_OUT,
+	E_ADI_ANALOG_IN = 0,
+	E_ADI_ANALOG_OUT,
+	E_ADI_DIGITAL_IN,
+	E_ADI_DIGITAL_OUT,
 
-  E_ADI_SMART_BUTTON,
-  E_ADI_SMART_POT,
+	E_ADI_SMART_BUTTON,
+	E_ADI_SMART_POT,
 
-  E_ADI_LEGACY_BUTTON,
-  E_ADI_LEGACY_POT,
-  E_ADI_LEGACY_LINE_SENSOR,
-  E_ADI_LEGACY_LIGHT_SENSOR,
-  E_ADI_LEGACY_GYRO,
-  E_ADI_LEGACY_ACCELEROMETER,
+	E_ADI_LEGACY_BUTTON,
+	E_ADI_LEGACY_POT,
+	E_ADI_LEGACY_LINE_SENSOR,
+	E_ADI_LEGACY_LIGHT_SENSOR,
+	E_ADI_LEGACY_GYRO,
+	E_ADI_LEGACY_ACCELEROMETER,
 
-  E_ADI_LEGACY_SERVO,
-  E_ADI_LEGACY_PWM,
+	E_ADI_LEGACY_SERVO,
+	E_ADI_LEGACY_PWM,
 
-  E_ADI_LEGACY_ENCODER,
-  E_ADI_LEGACY_ULTRASONIC,
+	E_ADI_LEGACY_ENCODER,
+	E_ADI_LEGACY_ULTRASONIC,
 
-  E_ADI_TYPE_UNDEFINED = 255,
-  E_ADI_ERR = PROS_ERR
+	E_ADI_TYPE_UNDEFINED = 255,
+	E_ADI_ERR = PROS_ERR
 } adi_port_config_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -461,8 +461,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
  */
-adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom,
-                               const bool reverse);
+adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool reverse);
 
 /**
  * Sets the encoder value to zero.
@@ -566,4 +565,4 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 }
 #endif
 
-#endif // _PROS_ADI_H_
+#endif  // _PROS_ADI_H_

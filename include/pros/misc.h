@@ -61,31 +61,28 @@ extern "C" {
 namespace pros {
 #endif
 
-typedef enum {
-  E_CONTROLLER_MASTER = 0,
-  E_CONTROLLER_PARTNER
-} controller_id_e_t;
+typedef enum { E_CONTROLLER_MASTER = 0, E_CONTROLLER_PARTNER } controller_id_e_t;
 
 typedef enum {
-  E_CONTROLLER_ANALOG_LEFT_X = 0,
-  E_CONTROLLER_ANALOG_LEFT_Y,
-  E_CONTROLLER_ANALOG_RIGHT_X,
-  E_CONTROLLER_ANALOG_RIGHT_Y
+	E_CONTROLLER_ANALOG_LEFT_X = 0,
+	E_CONTROLLER_ANALOG_LEFT_Y,
+	E_CONTROLLER_ANALOG_RIGHT_X,
+	E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
 typedef enum {
-  E_CONTROLLER_DIGITAL_L1 = 6,
-  E_CONTROLLER_DIGITAL_L2,
-  E_CONTROLLER_DIGITAL_R1,
-  E_CONTROLLER_DIGITAL_R2,
-  E_CONTROLLER_DIGITAL_UP,
-  E_CONTROLLER_DIGITAL_DOWN,
-  E_CONTROLLER_DIGITAL_LEFT,
-  E_CONTROLLER_DIGITAL_RIGHT,
-  E_CONTROLLER_DIGITAL_X,
-  E_CONTROLLER_DIGITAL_B,
-  E_CONTROLLER_DIGITAL_Y,
-  E_CONTROLLER_DIGITAL_A
+	E_CONTROLLER_DIGITAL_L1 = 6,
+	E_CONTROLLER_DIGITAL_L2,
+	E_CONTROLLER_DIGITAL_R1,
+	E_CONTROLLER_DIGITAL_R2,
+	E_CONTROLLER_DIGITAL_UP,
+	E_CONTROLLER_DIGITAL_DOWN,
+	E_CONTROLLER_DIGITAL_LEFT,
+	E_CONTROLLER_DIGITAL_RIGHT,
+	E_CONTROLLER_DIGITAL_X,
+	E_CONTROLLER_DIGITAL_B,
+	E_CONTROLLER_DIGITAL_Y,
+	E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -171,8 +168,7 @@ int32_t controller_is_connected(controller_id_e_t id);
  * \return The current reading of the analog channel: [-127, 127].
  * If the controller was not connected, then 0 is returned
  */
-int32_t controller_get_analog(controller_id_e_t id,
-                              controller_analog_e_t channel);
+int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
 
 /**
  * Gets the battery capacity of the given controller.
@@ -230,8 +226,7 @@ int32_t controller_get_battery_level(controller_id_e_t id);
  * \return 1 if the button on the controller is pressed.
  * If the controller was not connected, then 0 is returned
  */
-int32_t controller_get_digital(controller_id_e_t id,
-                               controller_digital_e_t button);
+int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
 
 /**
  * Returns a rising-edge case for a controller button press.
@@ -260,8 +255,7 @@ int32_t controller_get_digital(controller_id_e_t id,
  * \return 1 if the button on the controller is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
  */
-int32_t controller_get_digital_new_press(controller_id_e_t id,
-                                         controller_digital_e_t button);
+int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
 
 /**
  * Sets text to the controller LCD screen.
@@ -391,4 +385,4 @@ double battery_get_capacity(void);
 }
 #endif
 
-#endif // _PROS_MISC_H_
+#endif  // _PROS_MISC_H_

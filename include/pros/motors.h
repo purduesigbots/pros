@@ -76,8 +76,7 @@ int32_t motor_move(uint8_t port, const int8_t voltage);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t motor_move_absolute(uint8_t port, const double position,
-                            const int32_t velocity);
+int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the relative target position for the motor to move to.
@@ -102,8 +101,7 @@ int32_t motor_move_absolute(uint8_t port, const double position,
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t motor_move_relative(uint8_t port, const double position,
-                            const int32_t velocity);
+int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the velocity for the motor.
@@ -487,30 +485,30 @@ int32_t motor_get_voltage(uint8_t port);
  * Indicates the current 'brake mode' of a motor.
  */
 typedef enum motor_brake_mode_e {
-  E_MOTOR_BRAKE_COAST = 0, // Motor coasts when stopped, traditional behavior
-  E_MOTOR_BRAKE_BRAKE = 1, // Motor brakes when stopped
-  E_MOTOR_BRAKE_HOLD = 2,  // Motor actively holds position when stopped
-  E_MOTOR_BRAKE_INVALID = INT32_MAX
+	E_MOTOR_BRAKE_COAST = 0,  // Motor coasts when stopped, traditional behavior
+	E_MOTOR_BRAKE_BRAKE = 1,  // Motor brakes when stopped
+	E_MOTOR_BRAKE_HOLD = 2,   // Motor actively holds position when stopped
+	E_MOTOR_BRAKE_INVALID = INT32_MAX
 } motor_brake_mode_e_t;
 
 /**
  * Indicates the units used by the motor encoders.
  */
 typedef enum motor_encoder_units_e {
-  E_MOTOR_ENCODER_DEGREES = 0,
-  E_MOTOR_ENCODER_ROTATIONS = 1,
-  E_MOTOR_ENCODER_COUNTS = 2,
-  E_MOTOR_ENCODER_INVALID = INT32_MAX
+	E_MOTOR_ENCODER_DEGREES = 0,
+	E_MOTOR_ENCODER_ROTATIONS = 1,
+	E_MOTOR_ENCODER_COUNTS = 2,
+	E_MOTOR_ENCODER_INVALID = INT32_MAX
 } motor_encoder_units_e_t;
 
 /**
  * Indicates the current internal gear ratio of a motor.
  */
 typedef enum motor_gearset_e {
-  E_MOTOR_GEARSET_36 = 0, // 36:1, 100 RPM, Red gear set
-  E_MOTOR_GEARSET_18 = 1, // 18:1, 200 RPM, Green gear set
-  E_MOTOR_GEARSET_06 = 2, // 6:1, 600 RPM, Blue gear set
-  E_MOTOR_GEARSET_INVALID = INT32_MAX
+	E_MOTOR_GEARSET_36 = 0,  // 36:1, 100 RPM, Red gear set
+	E_MOTOR_GEARSET_18 = 1,  // 18:1, 200 RPM, Green gear set
+	E_MOTOR_GEARSET_06 = 2,  // 6:1, 600 RPM, Blue gear set
+	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
 
 /**
@@ -520,14 +518,14 @@ typedef enum motor_gearset_e {
  * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
  */
 typedef struct motor_pid_full_s {
-  uint8_t kf;
-  uint8_t kp;
-  uint8_t ki;
-  uint8_t kd;
-  uint8_t filter;
-  uint16_t limit;
-  uint8_t threshold;
-  uint8_t loopspeed;
+	uint8_t kf;
+	uint8_t kp;
+	uint8_t ki;
+	uint8_t kd;
+	uint8_t filter;
+	uint16_t limit;
+	uint8_t threshold;
+	uint8_t loopspeed;
 } motor_pid_full_s_t;
 
 /**
@@ -537,10 +535,10 @@ typedef struct motor_pid_full_s {
  * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
  */
 typedef struct motor_pid_s {
-  uint8_t kf;
-  uint8_t kp;
-  uint8_t ki;
-  uint8_t kd;
+	uint8_t kf;
+	uint8_t kp;
+	uint8_t ki;
+	uint8_t kd;
 } motor_pid_s_t;
 
 #ifdef __cplusplus
@@ -635,8 +633,7 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t motor_set_encoder_units(uint8_t port,
-                                const motor_encoder_units_e_t units);
+int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units);
 
 /**
  * Sets one of motor_gearset_e_t for the motor.
@@ -714,10 +711,8 @@ motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
  *
  * \return A motor_pid_s_t struct formatted properly in 4.4.
  */
-motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki,
-                                          double kd, double filter,
-                                          double limit, double threshold,
-                                          double loopspeed);
+motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
+                                          double threshold, double loopspeed);
 
 /**
  * Sets one of motor_pid_s_t for the motor. This intended to just modify the
@@ -1005,4 +1000,4 @@ int32_t motor_get_voltage_limit(uint8_t port);
 }
 #endif
 
-#endif // _PROS_MOTORS_H_
+#endif  // _PROS_MOTORS_H_

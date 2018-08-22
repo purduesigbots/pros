@@ -16,9 +16,9 @@
 /**
  * strdup but uses the kernel heap
  */
-char *kstrdup(const char *s);
+char* kstrdup(const char* s);
 
 /**
  * strndup but uses the kernel heap
  */
-char *kstrndup(const char *s, size_t n);
+char* kstrndup(const char* s, size_t n);

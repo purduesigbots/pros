@@ -34,13 +34,13 @@ extern void ser_output_flush(void);
 
 // does the basic background operations that need to occur every 2ms
 static inline void do_background_operations() {
-  port_mutex_take_all();
-  ser_output_flush();
-  rtos_suspend_all();
-  vexBackgroundProcessing();
-  rtos_resume_all();
-  vdml_background_processing();
-  port_mutex_give_all();
+	port_mutex_take_all();
+	ser_output_flush();
+	rtos_suspend_all();
+	vexBackgroundProcessing();
+	rtos_resume_all();
+	vdml_background_processing();
+	port_mutex_give_all();
 }
 
 static void _system_daemon_task(void* ign) {
@@ -92,7 +92,7 @@ static void _system_daemon_task(void* ign) {
 			}
 
 			task_state = task_get_state(competition_task);
-      // delete the task only if it's in normal operation (e.g. not deleted)
+			// delete the task only if it's in normal operation (e.g. not deleted)
 			// The valid task states AREN'T deleted, invalid, or running (running means it's
 			// the current task, which will never be the case)
 			if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
@@ -109,7 +109,7 @@ static void _system_daemon_task(void* ign) {
 }
 
 void system_daemon_initialize() {
-  system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
+	system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
 	                                        "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
 }
 

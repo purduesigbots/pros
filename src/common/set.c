@@ -25,11 +25,11 @@
  * \param set
  *          A pointer to a set structure
  */
-void set_initialize(struct set *const set) {
-  set->arr = kmalloc(8 * sizeof(*(set->arr)));
-  set->used = 0;
-  set->size = 8;
-  set->mtx = mutex_create_static(&(set->mtx_buf));
+void set_initialize(struct set* const set) {
+	set->arr = kmalloc(8 * sizeof(*(set->arr)));
+	set->used = 0;
+	set->size = 8;
+	set->mtx = mutex_create_static(&(set->mtx_buf));
 }
 
 /**
@@ -42,32 +42,32 @@ void set_initialize(struct set *const set) {
  * \return
  *          Returns true if the item was added to the set or was already present
  */
-bool set_add(struct set *const set, uint32_t item) {
-  size_t i = 0;
-  if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
-    return false;
-  }
-  for (i = 0; i < set->used; i++) {
-    if (set->arr[i] == item) {
-      mutex_give(set->mtx);
-      return true;
-    }
-  }
-  if (set->used == set->size) {
-    uint32_t *temp = set->arr;
-    set->arr = kmalloc((set->size + 8) * sizeof(*(set->arr)));
-    if (unlikely(set->arr == NULL)) {
-      set->arr = temp;
-      mutex_give(set->mtx);
-      return false;
-    }
-    memcpy(set->arr, temp, set->size * sizeof(*(set->arr)));
-    set->size += 8;
-  }
-  set->arr[set->used] = item;
-  set->used++;
-  mutex_give(set->mtx);
-  return true;
+bool set_add(struct set* const set, uint32_t item) {
+	size_t i = 0;
+	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
+		return false;
+	}
+	for (i = 0; i < set->used; i++) {
+		if (set->arr[i] == item) {
+			mutex_give(set->mtx);
+			return true;
+		}
+	}
+	if (set->used == set->size) {
+		uint32_t* temp = set->arr;
+		set->arr = kmalloc((set->size + 8) * sizeof(*(set->arr)));
+		if (unlikely(set->arr == NULL)) {
+			set->arr = temp;
+			mutex_give(set->mtx);
+			return false;
+		}
+		memcpy(set->arr, temp, set->size * sizeof(*(set->arr)));
+		set->size += 8;
+	}
+	set->arr[set->used] = item;
+	set->used++;
+	mutex_give(set->mtx);
+	return true;
 }
 
 /**
@@ -80,25 +80,25 @@ bool set_add(struct set *const set, uint32_t item) {
  * \return
  *          Returns true if the item was removed (or was already not present)
  */
-bool set_rm(struct set *set, uint32_t item) {
-  size_t i = 0;
-  if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
-    return false;
-  }
-  for (i = 0; i < set->used - 1; i++) {
-    if (set->arr[i] == item) {
-      memcpy(set->arr + i, set->arr + i + 1, set->used - i - 1);
-      set->used--;
-      mutex_give(set->mtx);
-      return true;
-    }
-  }
-  if (set->arr[set->used] == item) {
-    // this is the last item, no need to do memcpy, just decrement the counter
-    set->used--;
-  }
-  mutex_give(set->mtx);
-  return true;
+bool set_rm(struct set* set, uint32_t item) {
+	size_t i = 0;
+	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
+		return false;
+	}
+	for (i = 0; i < set->used - 1; i++) {
+		if (set->arr[i] == item) {
+			memcpy(set->arr + i, set->arr + i + 1, set->used - i - 1);
+			set->used--;
+			mutex_give(set->mtx);
+			return true;
+		}
+	}
+	if (set->arr[set->used] == item) {
+		// this is the last item, no need to do memcpy, just decrement the counter
+		set->used--;
+	}
+	mutex_give(set->mtx);
+	return true;
 }
 
 /**
@@ -111,13 +111,13 @@ bool set_rm(struct set *set, uint32_t item) {
  * \return
  *          Returns true if the item is in the set
  */
-bool set_contains(struct set *set, uint32_t item) {
-  if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
-    return false;
-  }
-  bool ret = list_contains(set->arr, set->used, item);
-  mutex_give(set->mtx);
-  return ret;
+bool set_contains(struct set* set, uint32_t item) {
+	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
+		return false;
+	}
+	bool ret = list_contains(set->arr, set->used, item);
+	mutex_give(set->mtx);
+	return ret;
 }
 
 /**
@@ -132,14 +132,13 @@ bool set_contains(struct set *set, uint32_t item) {
  * \return
  *          Returns true if the item is in the list
  */
-bool list_contains(uint32_t const *list, const size_t size,
-                   const uint32_t item) {
-  uint32_t const *const end = list + size;
-  while (list <= end) {
-    if (*list == item) {
-      return true;
-    }
-    list++;
-  }
-  return false;
+bool list_contains(uint32_t const* list, const size_t size, const uint32_t item) {
+	uint32_t const* const end = list + size;
+	while (list <= end) {
+		if (*list == item) {
+			return true;
+		}
+		list++;
+	}
+	return false;
 }

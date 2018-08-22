@@ -41,8 +41,8 @@ using namespace pros;
 /** See https://pros.cs.purdue.edu/v5/extended/multitasking to learn more.   **/
 /******************************************************************************/
 
-typedef void *queue_t;
-typedef void *sem_t;
+typedef void* queue_t;
+typedef void* sem_t;
 
 /**
  * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a
@@ -233,7 +233,7 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
  * \return
  *          true if the item was preprended, false otherwise.
  */
-bool queue_prepend(queue_t queue, const void *item, uint32_t timeout);
+bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * Posts an item to the end of a queue. The item is queued by copy, not by
@@ -254,7 +254,7 @@ bool queue_prepend(queue_t queue, const void *item, uint32_t timeout);
  * \return
  *          true if the item was preprended, false otherwise.
  */
-bool queue_append(queue_t queue, const void *item, uint32_t timeout);
+bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * Receive an item from a queue without removing the item from the queue.
@@ -275,7 +275,7 @@ bool queue_append(queue_t queue, const void *item, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool queue_peek(queue_t queue, void *const buffer, uint32_t timeout);
+bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Receive an item from the queue.
@@ -296,7 +296,7 @@ bool queue_peek(queue_t queue, void *const buffer, uint32_t timeout);
  * \return
  *          True if an item was copied into the buffer, false otherwise.
  */
-bool queue_recv(queue_t queue, void *const buffer, uint32_t timeout);
+bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Return the number of messages stored in a queue.
@@ -354,13 +354,13 @@ void queue_reset(queue_t queue);
  * api.
  */
 typedef enum v5_device_e {
-  E_DEVICE_NONE = 0,
-  E_DEVICE_MOTOR = 2,
-  E_DEVICE_RADIO = 8,
-  E_DEVICE_VISION = 11,
-  E_DEVICE_ADI = 12,
-  E_DEVICE_GENERIC = 129,
-  E_DEVICE_UNDEFINED = 255
+	E_DEVICE_NONE = 0,
+	E_DEVICE_MOTOR = 2,
+	E_DEVICE_RADIO = 8,
+	E_DEVICE_VISION = 11,
+	E_DEVICE_ADI = 12,
+	E_DEVICE_GENERIC = 129,
+	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
 /*
@@ -407,7 +407,7 @@ int registry_unbind_port(uint8_t port);
  * \param extra_arg
  * 			An argument to pass in based on the action
  */
-int32_t serctl(const uint32_t action, void *const extra_arg);
+int32_t serctl(const uint32_t action, void* const extra_arg);
 
 /**
  * Control settings of the microSD card driver.
@@ -441,7 +441,7 @@ int32_t serctl(const uint32_t action, void *const extra_arg);
  * \param extra_arg
  * 			An argument to pass in based on the action
  */
-int32_t fdctl(int file, const uint32_t action, void *const extra_arg);
+int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 
 /**
  * Action macro to pass into serctl or fdctl that activates the stream
@@ -534,4 +534,4 @@ int32_t fdctl(int file, const uint32_t action, void *const extra_arg);
 }
 #endif
 
-#endif // _PROS_API_EXTENDED_H_
+#endif  // _PROS_API_EXTENDED_H_

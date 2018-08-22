@@ -24,114 +24,114 @@
 
 namespace pros {
 class Controller {
-public:
-  /**
-   * Creates a controller object for the given controller id.
-   *
-   * \param id
-   * 			  The ID of the controller (e.g. the master or partner
-   * controller).
-   * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
-   */
-  Controller(controller_id_e_t id);
+	public:
+	/**
+	 * Creates a controller object for the given controller id.
+	 *
+	 * \param id
+	 * 			  The ID of the controller (e.g. the master or partner
+	 * controller).
+	 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+	 */
+	Controller(controller_id_e_t id);
 
-  /**
-   * Checks if the controller is connected.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \return 1 if the controller is connected, 0 otherwise
-   */
-  std::int32_t is_connected(void);
+	/**
+	 * Checks if the controller is connected.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \return 1 if the controller is connected, 0 otherwise
+	 */
+	std::int32_t is_connected(void);
 
-  /**
-   * Gets the value of an analog channel (joystick) on a controller.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \param channel
-   * 			  The analog channel to get.
-   * 			  Must be one of ANALOG_LEFT_X, ANALOG_LEFT_Y, ANALOG_RIGHT_X,
-   * ANALOG_RIGHT_Y
-   *
-   * \return The current reading of the analog channel: [-127, 127].
-   * If the controller was not connected, then 0 is returned
-   */
-  std::int32_t get_analog(controller_analog_e_t channel);
+	/**
+	 * Gets the value of an analog channel (joystick) on a controller.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \param channel
+	 * 			  The analog channel to get.
+	 * 			  Must be one of ANALOG_LEFT_X, ANALOG_LEFT_Y, ANALOG_RIGHT_X,
+	 * ANALOG_RIGHT_Y
+	 *
+	 * \return The current reading of the analog channel: [-127, 127].
+	 * If the controller was not connected, then 0 is returned
+	 */
+	std::int32_t get_analog(controller_analog_e_t channel);
 
-  /**
-   * Gets the battery capacity of the controller.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \return The controller's battery capacity
-   */
-  std::int32_t get_battery_capacity(void);
+	/**
+	 * Gets the battery capacity of the controller.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \return The controller's battery capacity
+	 */
+	std::int32_t get_battery_capacity(void);
 
-  /**
-   * Gets the battery level of the controller.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \return The controller's battery level
-   */
-  std::int32_t get_battery_level(void);
+	/**
+	 * Gets the battery level of the controller.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \return The controller's battery level
+	 */
+	std::int32_t get_battery_level(void);
 
-  /**
-   * Checks if a digital channel (button) on the controller is currently
-   * pressed.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \param button
-   * 			  The button to read.
-   * 			  Must be one of
-   * DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
-   *
-   * \return 1 if the button on the controller is pressed.
-   * If the controller was not connected, then 0 is returned
-   */
-  std::int32_t get_digital(controller_digital_e_t button);
+	/**
+	 * Checks if a digital channel (button) on the controller is currently
+	 * pressed.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \param button
+	 * 			  The button to read.
+	 * 			  Must be one of
+	 * DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+	 *
+	 * \return 1 if the button on the controller is pressed.
+	 * If the controller was not connected, then 0 is returned
+	 */
+	std::int32_t get_digital(controller_digital_e_t button);
 
-  /**
-   * Returns a rising-edge case for a controller button press.
-   *
-   * This function is not thread-safe.
-   * Multiple tasks polling a single button may return different results under
-   * the same circumstances, so only one task should call this function for any
-   * given  button. E.g., Task A calls this function for buttons 1 and 2.
-   * Task B may call this function for button 3, but should not for buttons
-   * 1 or 2. A typical use-case for this function is to call inside opcontrol
-   * to detect new button presses, and not in any other tasks.
-   *
-   * This function uses the following values of errno when an error state is
-   * reached:
-   * EACCES - Another resource is currently trying to access the controller
-   * port.
-   *
-   * \param button
-   * 			  The button to read. Must be one of
-   *        DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
-   *
-   * \return 1 if the button on the controller is pressed and had not been
-   * pressed the last time this function was called, 0 otherwise.
-   */
-  std::int32_t get_digital_new_press(controller_digital_e_t button);
+	/**
+	 * Returns a rising-edge case for a controller button press.
+	 *
+	 * This function is not thread-safe.
+	 * Multiple tasks polling a single button may return different results under
+	 * the same circumstances, so only one task should call this function for any
+	 * given  button. E.g., Task A calls this function for buttons 1 and 2.
+	 * Task B may call this function for button 3, but should not for buttons
+	 * 1 or 2. A typical use-case for this function is to call inside opcontrol
+	 * to detect new button presses, and not in any other tasks.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \param button
+	 * 			  The button to read. Must be one of
+	 *        DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+	 *
+	 * \return 1 if the button on the controller is pressed and had not been
+	 * pressed the last time this function was called, 0 otherwise.
+	 */
+	std::int32_t get_digital_new_press(controller_digital_e_t button);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
@@ -212,8 +212,8 @@ public:
 	 */
 	std::int32_t clear(void);
 
-private:
-  controller_id_e_t _id;
+	private:
+	controller_id_e_t _id;
 };
 
 namespace battery {
@@ -260,7 +260,7 @@ double get_temperature(void);
  * \return The current capacity of the battery
  */
 int32_t get_voltage(void);
-} // namespace battery
+}  // namespace battery
 
 namespace competition {
 /**
@@ -273,7 +273,7 @@ std::uint8_t get_status(void);
 std::uint8_t is_autonomous(void);
 std::uint8_t is_connected(void);
 std::uint8_t is_disabled(void);
-} // namespace competition
-} // namespace pros
+}  // namespace competition
+}  // namespace pros
 
 #endif

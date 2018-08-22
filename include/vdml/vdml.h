@@ -61,8 +61,8 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * Macro that release the mutex for the given port and sets errno to 0 if the
  * function is an accessor wrapper whos return value is PROS_ERR or PROS_ERR_F.
  */
-#define return_port(port, rtn)                         \
-	port_mutex_give(port);                               \
+#define return_port(port, rtn) \
+	port_mutex_give(port);       \
 	return rtn;
 
 /**

@@ -16,7 +16,7 @@
 #pragma once
 // The banners look extra messed up due to the ANSI escape sequences and needing
 // to escape backslashes and quotes
-static char const *const short_banner =
+static char const* const short_banner =
     "\n\n\n"
     " [1;33m _____  _____   ____   _____ [0m\n"
     " [1;33m|  __ \\|  __ \\ / __ \\ / ____|[0m          [1;33mPowered by "
@@ -28,7 +28,7 @@ static char const *const short_banner =
     " [1;33m|_|    |_|  \\_\\\\____/|_____/ [0m    Directory:[1m%29s[0m\n"
     "\n\n";
 
-static char const *const large_banner =
+static char const* const large_banner =
     "\n\n\n"
     "         [1;33m_+=+_[0m\n"
     "     [1;33m .-`  .  `-. [0m         8888888b.  8888888b.   .d88888b.   "

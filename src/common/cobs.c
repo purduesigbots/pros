@@ -19,84 +19,82 @@
 // same as cobs_encode but doesn't do anything to an output buffer for the
 // purposes of figuring out
 // exactly how much space is needed to store src
-size_t cobs_encode_measure(const uint8_t *restrict src, const size_t src_len,
-                           const uint32_t prefix) {
-  size_t read_idx = 0;
-  size_t write_idx = 1;
-  uint8_t code = 1;
+size_t cobs_encode_measure(const uint8_t* restrict src, const size_t src_len, const uint32_t prefix) {
+	size_t read_idx = 0;
+	size_t write_idx = 1;
+	uint8_t code = 1;
 
-  uint8_t *prefix_bytes = (uint8_t *)&(prefix);
-  for (read_idx = 0; read_idx < 4; read_idx++) {
-    if (prefix_bytes[read_idx] == 0) {
-      code = 1;
-      write_idx++;
-    } else {
-      write_idx++;
-      code++;
-      // code will never be 0xff since the length will always be 4
-    }
-  }
-  read_idx = 0;
+	uint8_t* prefix_bytes = (uint8_t*)&(prefix);
+	for (read_idx = 0; read_idx < 4; read_idx++) {
+		if (prefix_bytes[read_idx] == 0) {
+			code = 1;
+			write_idx++;
+		} else {
+			write_idx++;
+			code++;
+			// code will never be 0xff since the length will always be 4
+		}
+	}
+	read_idx = 0;
 
-  while (read_idx < src_len) {
-    if (src[read_idx] == 0) {
-      code = 1;
-      write_idx++;
-      read_idx++;
-    } else {
-      write_idx++;
-      read_idx++;
-      code++;
-      if (code == 0xff) {
-        code = 1;
-        write_idx++;
-      }
-    }
-  }
+	while (read_idx < src_len) {
+		if (src[read_idx] == 0) {
+			code = 1;
+			write_idx++;
+			read_idx++;
+		} else {
+			write_idx++;
+			read_idx++;
+			code++;
+			if (code == 0xff) {
+				code = 1;
+				write_idx++;
+			}
+		}
+	}
 
-  return write_idx;
+	return write_idx;
 }
 
-int cobs_encode(uint8_t *restrict dest, const uint8_t *restrict src,
-                const size_t src_len, const uint32_t prefix) {
-  size_t read_idx = 0;
-  size_t write_idx = 1;
-  size_t code_idx = 0;
-  uint8_t code = 1;
+int cobs_encode(uint8_t* restrict dest, const uint8_t* restrict src, const size_t src_len, const uint32_t prefix) {
+	size_t read_idx = 0;
+	size_t write_idx = 1;
+	size_t code_idx = 0;
+	uint8_t code = 1;
 
-  uint8_t *prefix_bytes = (uint8_t *)&prefix;
-  for (read_idx = 0; read_idx < 4;) {
-    if (prefix_bytes[read_idx] == 0) {
-      dest[code_idx] = code;
-      code = 1;
-      code_idx = write_idx++;
-      read_idx++;
-    } else {
-      dest[write_idx++] = prefix_bytes[read_idx++];
-      code++;
-      // code will never be 0xff since the length of the prefix is 4
-    }
-  }
-  read_idx = 0;
+	uint8_t* prefix_bytes = (uint8_t*)&prefix;
+	for (read_idx = 0; read_idx < 4;) {
+		if (prefix_bytes[read_idx] == 0) {
+			dest[code_idx] = code;
+			code = 1;
+			code_idx = write_idx++;
+			read_idx++;
+		} else {
+			dest[write_idx++] = prefix_bytes[read_idx++];
+			code++;
+			// code will never be 0xff since the length of the prefix is 4
+		}
+	}
+	read_idx = 0;
 
-  while (read_idx < src_len) {
-    if (src[read_idx] == 0) {
-      dest[code_idx] = code;
-      code = 1;
-      code_idx = write_idx++;
-      read_idx++;
-    } else {
-      dest[write_idx++] = src[read_idx++];
-      code++;
-      if (code == 0xff) {
-        dest[code_idx] = code;
-        code = 1;
-        code_idx = write_idx++;
-      }
-    }
-  }
+	while (read_idx < src_len) {
+		if (src[read_idx] == 0) {
+			dest[code_idx] = code;
+			code = 1;
+			code_idx = write_idx++;
+			read_idx++;
+		} else {
+			dest[write_idx++] = src[read_idx++];
+			code++;
+			if (code == 0xff) {
+				dest[code_idx] = code;
+				code = 1;
+				code_idx = write_idx++;
+			}
+		}
+	}
 
-  dest[code_idx] = code;
+	dest[code_idx] = code;
 
-  return write_idx;
+	return write_idx;
 }

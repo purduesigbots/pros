@@ -18,28 +18,27 @@ using namespace pros::c;
 Controller::Controller(pros::controller_id_e_t id) : _id(id) {}
 
 std::int32_t Controller::is_connected(void) {
-  return controller_is_connected(_id);
+	return controller_is_connected(_id);
 }
 
 std::int32_t Controller::get_analog(pros::controller_analog_e_t channel) {
-  return controller_get_analog(_id, channel);
+	return controller_get_analog(_id, channel);
 }
 
 std::int32_t Controller::get_battery_capacity(void) {
-  return controller_get_battery_capacity(_id);
+	return controller_get_battery_capacity(_id);
 }
 
 std::int32_t Controller::get_battery_level(void) {
-  return controller_get_battery_level(_id);
+	return controller_get_battery_level(_id);
 }
 
 std::int32_t Controller::get_digital(pros::controller_digital_e_t button) {
-  return controller_get_digital(_id, button);
+	return controller_get_digital(_id, button);
 }
 
-std::int32_t
-Controller::get_digital_new_press(pros::controller_digital_e_t button) {
-  return controller_get_digital_new_press(_id, button);
+std::int32_t Controller::get_digital_new_press(pros::controller_digital_e_t button) {
+	return controller_get_digital_new_press(_id, button);
 }
 
 std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {
@@ -55,12 +54,20 @@ std::int32_t Controller::clear(void) {
 }
 
 namespace competition {
-std::uint8_t get_status(void) { return competition_get_status(); }
+std::uint8_t get_status(void) {
+	return competition_get_status();
+}
 
-std::uint8_t is_autonomous(void) { return competition_is_autonomous(); }
+std::uint8_t is_autonomous(void) {
+	return competition_is_autonomous();
+}
 
-std::uint8_t is_connected(void) { return competition_is_connected(); }
+std::uint8_t is_connected(void) {
+	return competition_is_connected();
+}
 
-std::uint8_t is_disabled(void) { return competition_is_disabled(); }
-} // namespace competition
-} // namespace pros
+std::uint8_t is_disabled(void) {
+	return competition_is_disabled();
+}
+}  // namespace competition
+}  // namespace pros
