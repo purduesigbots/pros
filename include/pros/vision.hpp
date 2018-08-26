@@ -21,6 +21,8 @@
 
 #include "pros/vision.h"
 
+#include <cstdint>
+
 namespace pros {
 class Vision {
 	public:

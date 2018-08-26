@@ -21,6 +21,8 @@
 #ifndef _PROS_RTOS_H_
 #define _PROS_RTOS_H_
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 namespace pros {

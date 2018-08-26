@@ -24,6 +24,14 @@
 
 #include "api.h"
 
+#ifdef __cplusplus
+#define _NAMESPACE pros::
+#define _CNAMESPACE pros::c::
+#else
+#define _NAMESPACE
+#define _CNAMESPACE
+#endif
+
 /**
  * From adi.h
  */
@@ -44,8 +52,8 @@
 #define ultrasonicInit(portEcho, portPing) adi_ultrasonic_init(portEcho, portPing)
 #define ultrasonicShutdown(ult) adi_ultrasonic_shutdown(ult)
 
-typedef adi_encoder_t Encoder;
-typedef adi_ultrasonic_t Ultrasonic;
+typedef _CNAMESPACE adi_encoder_t Encoder;
+typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 
 /**
  * From llemu.h
@@ -85,8 +93,8 @@ typedef adi_ultrasonic_t Ultrasonic;
 #define mutexTake(mutex, blockTime) mutex_take(mutex, blockTime)
 #define mutexGive(mutex) mutex_give(mutex)
 
-typedef task_t TaskHandle;
-typedef mutex_t Mutex;
+typedef _NAMESPACE task_t TaskHandle;
+typedef _NAMESPACE mutex_t Mutex;
 
 /**
  * From motors.h
@@ -94,5 +102,8 @@ typedef mutex_t Mutex;
 #define motorSet(port, speed) motor_move(port, speed)
 #define motorGet(port) motor_get_voltage(port)
 #define motorStop(port) motor_move(port, 0)
+
+#undef _NAMESPACE
+#undef _CNAMESPACE
 
 #endif  // _PROS_API_LEGACY_H_

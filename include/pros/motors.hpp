@@ -18,6 +18,7 @@
 #ifndef _PROS_MOTORS_HPP_
 #define _PROS_MOTORS_HPP_
 
+#include <cstdint>
 #include "pros/motors.h"
 
 namespace pros {

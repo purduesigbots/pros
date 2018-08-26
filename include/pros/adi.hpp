@@ -19,6 +19,8 @@
 
 #include "pros/adi.h"
 
+#include <cstdint>
+
 namespace pros {
 class ADIPort {
 	public:

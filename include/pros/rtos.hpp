@@ -22,6 +22,8 @@
 
 #include "pros/rtos.h"
 #undef delay
+#include <cstdint>
+#include <cstdlib>
 
 namespace pros {
 class Task {

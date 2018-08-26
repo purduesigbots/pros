@@ -22,6 +22,9 @@
 
 #include "pros/misc.h"
 
+#include <cstdint>
+#include <string>
+
 namespace pros {
 class Controller {
 	public:
