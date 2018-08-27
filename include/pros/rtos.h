@@ -1,14 +1,14 @@
 /**
  * \file pros/rtos.h
  *
- * \brief Contains declarations for the PROS RTOS kernel for use by typical
- * VEX programmers.
+ * Contains declarations for the PROS RTOS kernel for use by typical VEX
+ * programmers.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html to
+ * learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking to learn
- * more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -95,6 +95,10 @@ uint32_t millis(void);
 /**
  * Creates a new task and add it to the list of tasks that are ready to run.
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENOMEM - The stack cannot be used as the TCB was not created.
+ *
  * \param function
  *        Pointer to the task entry function
  * \param parameters
@@ -111,13 +115,9 @@ uint32_t millis(void);
  *        A descriptive name for the task.  This is mainly used to facilitate
  *        debugging. The name may be up to 32 characters long.
  *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENOMEM - The stack cannot be used as the TCB was not created.
- *
- * \return A handle by which the newly created task can be
- *         referenced. If an error occurred, NULL will be returned and errno
- *         can be checked for hints as to why task_create failed.
+ * \return A handle by which the newly created task can be referenced. If an
+ * error occurred, NULL will be returned and errno can be checked for hints as
+ * to why task_create failed.
  */
 task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, const uint16_t stack_depth,
                    const char* const name);
@@ -248,7 +248,7 @@ task_t task_get_by_name(const char* name);
 /**
  * Sends a simple notification to task and increments the notification counter.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
  * details.
  *
  * \param task
@@ -263,7 +263,7 @@ uint32_t task_notify(task_t task);
  * retrieve the value of the notification in the target task before modifying
  * the notification value.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
  * details.
  *
  * \param task
@@ -278,8 +278,8 @@ uint32_t task_notify(task_t task);
  *        notification, may be NULL
  *
  * \return Dependent on the notification action.
- * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written
- * without needing to overwrite, 1 otherwise.
+ * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
+ * needing to overwrite, 1 otherwise.
  * For all other NOTIFY_ACTION values: always return 0
  */
 uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
@@ -287,7 +287,7 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
 /**
  * Waits for a notification to be nonzero.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
  * details.
  *
  * \param clear_on_exit
@@ -305,7 +305,7 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
 /**
  * Clears the notification for a task.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
  * details.
  *
  * \param task
@@ -318,12 +318,11 @@ bool task_notify_clear(task_t task);
 /**
  * Creates a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for
- *details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \return A handle to a newly created mutex. If an error occurred, NULL will be
- * returned and errno can be checked for hints as to
- * why mutex_create failed.
+ * returned and errno can be checked for hints as to why mutex_create failed.
  */
 mutex_t mutex_create(void);
 
@@ -331,15 +330,15 @@ mutex_t mutex_create(void);
  * Takes and locks a mutex, waiting for up to a certain number of milliseconds
  * before timing out.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for
- * details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \param mutex
  *        Mutex to attempt to lock.
  * \param timeout
  *        Time to wait before the mutex becomes available. A timeout of 0 can
  *        be used to poll the mutex. TIMEOUT_MAX can be used to block
- * indefinitely.
+ *        indefinitely.
  *
  * \return True if the mutex was successfully taken, false otherwise. If false
  * is returned, then errno is set with a hint about why the the mutex
@@ -350,8 +349,8 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
 /**
  * Unlocks a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for
- * details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \param mutex
  *        Mutex to unlock.
@@ -363,9 +362,9 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
 bool mutex_give(mutex_t mutex);
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 
-#endif
+#endif  // _PROS_RTOS_H_

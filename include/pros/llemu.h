@@ -1,13 +1,14 @@
 /*
- * \file llemu.h
+ * \file pros/llemu.h
  *
- * \brief Legacy LCD Emulator
+ * Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu.html to learn
+ * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -45,10 +46,10 @@ typedef struct lcd_s {
 	lv_obj_t* screen;
 	lv_obj_t* lcd_text[8];
 	lv_obj_t* btn_container;
-	lv_obj_t* btns[3];            /**< 0 => left; 1 => center; 2 => right */
-	lcd_btn_cb_fn_t callbacks[3]; /**< 0 => left; 1 => center; 2 => right */
-	volatile uint8_t touch_bits;  /**< 4 => left; 2 => center; 1 => right (no
-	                                 multitouch support) */
+	lv_obj_t* btns[3];             // < 0 => left; 1 => center; 2 => right
+	lcd_btn_cb_fn_t callbacks[3];  // < 0 => left; 1 => center; 2 => right
+	volatile uint8_t touch_bits;   // < 4 => left; 2 => center; 1 => right (no
+	                               // multitouch support)
 } lcd_s_t;
 
 #ifdef __cplusplus
@@ -223,8 +224,8 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
 uint8_t lcd_read_buttons(void);
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 #endif  // _PROS_LLEMU_H_

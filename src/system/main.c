@@ -1,5 +1,5 @@
 /**
- * main.c - PROS Kernel Startup
+ * \file system/main.c
  *
  * Contains the main startup code for PROS 3.0. main is called from vexStartup
  * code. Our main() initializes data structures and starts the FreeRTOS
@@ -15,9 +15,8 @@
 
 #include <stdio.h>
 
-#include "kapi.h"
-
 #include "ifi/v5_api.h"
+#include "kapi.h"
 
 extern void rtos_initialize();
 extern void vfs_initialize();

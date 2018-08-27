@@ -1,14 +1,14 @@
 /**
  * \file pros/misc.h
  *
- * \brief Contains miscellaneous declarations such as controller and competition
- * functions
+ * Contains prototypes for miscellaneous functions pertaining to the controller,
+ * battery, and competition control.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/controller.html to
+ * learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/controller to learn
- * more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reservered.
@@ -36,7 +36,7 @@
  * Get the current status of the competition control.
  *
  * \return The competition control status as a mask of bits with
- * 			   COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
  */
 #ifdef __cplusplus
 extern "C" {
@@ -207,9 +207,6 @@ int32_t controller_get_battery_level(controller_id_e_t id);
 /**
  * Checks if a digital channel (button) on the controller is currently pressed.
  *
- * \note The naming scheme for the buttons is not yet finalized as VEX finalizes
- *       the controller naming pattern
- *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
@@ -260,78 +257,76 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so only the master
- *       controller is supported at this time, and continuous, fast updates will
- *       not work well.
+ * \note Controller text setting is currently in beta, so  continuous, fast
+ * updates will not work well.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  * \param line
- *        The line number at which the text will be displayed. [0-2]
+ *        The line number at which the text will be displayed [0-2]
  * \param col
- *        The column number at which the text will be displayed. The width of the
- *        screen is 15 characters.
+ *        The column number at which the text will be displayed [0-14]
  * \param fmt
  *        The format string to print to the controller
  * \param ...
  *        The argument list for the format string
  *
- * \return 1 if the operation was successful.
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
 int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...);
 
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so only the master
- *       controller is supported at this time, and continuous, fast updates will
- *       not work well.
+ * \note Controller text setting is currently in beta, so  continuous, fast
+ * updates will not work well.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  * \param line
- *        The line number at which the text will be displayed. [0-2]
+ *        The line number at which the text will be displayed [0-2]
  * \param col
- *        The column number at which the text will be displayed. The width of the
- *        screen is 15 characters.
+ *        The column number at which the text will be displayed [0-14]
  * \param str
  *        The pre-formatted string to print to the controller
  *
- * \return 1 if the operation was successful.
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
 int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str);
 
 /**
  * Clears an individual line of the controller screen.
  *
- * \note Controller text setting is currently in beta, so only the master
- *       controller is supported at this time, and continuous, fast updates will
- *       not work well.
+ * \note Controller text setting is currently in beta, so  continuous, fast
+ * updates will not work well.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  * \param line
- *        The line number at which the text will be displayed. [0-2]
+ *        The line number to clear [0-2]
  *
- * \return 1 if the operation was successful.
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
 
 /**
  * Clears all of the lines on the controller screen.
  *
- * \note Controller text setting is currently in beta, so only the master
- *       controller is supported at this time, and continuous, fast updates will
- *       not work well.
+ * \note Controller text setting is currently in beta, so  continuous, fast
+ * updates will not work well.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  *
- * \return 1 if the operation was successful.
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
 int32_t controller_clear(controller_id_e_t id);
 

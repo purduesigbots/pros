@@ -1,5 +1,7 @@
 /**
- * ser_driver.c - Serial Driver
+ * \file system/dev/ser_driver.c
+ *
+ * Serial Driver
  *
  * Contains the driver for communicating over the serial line. The serial driver
  * is responsible for shipping out all data.
@@ -17,19 +19,17 @@
 #include "common/cobs.h"
 #include "common/set.h"
 #include "common/string.h"
+#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/dev/ser.h"
 #include "system/dev/vfs.h"
 #include "system/optimizers.h"
 
-#include "ifi/v5_api.h"
-
 #define VEX_SERIAL_BUFFER_SIZE 2047
 
-// ser_file_arg is 2 words (64 bits)
-// the first word is the stream_id (i.e. sout/serr/jinx/kdbg) and is exactly 4
-// characters
-// the second word contains flags for serial driver operation
+// ser_file_arg is 2 words (64 bits). The first word is the stream_id
+// (i.e. sout/serr/jinx/kdbg) and is exactly 4 characters. The second word
+// contains flags for serial driver operation
 typedef struct ser_file_arg {
 	union {
 		uint32_t stream_id;
@@ -44,11 +44,9 @@ typedef struct ser_file_arg {
 #define KDBG_STREAM_ID 0x6762646b    // 'kdbg' little endian
 
 // This array contains the serial driver's arguments for the 4 reserved file
-// descriptors
-// The fact that this array matches the order of the 4 reserved file descriptors
-// is mostly irrelevant
-// We do need to know which one is which, but they get mapped in
-// ser_driver_initialize
+// descriptors. The fact that this array matches the order of the 4 reserved
+// file descriptors is mostly irrelevant. We do need to know which one is which,
+// but they get mapped in ser_driver_initialize.
 static ser_file_s_t RESERVED_SER_FILES[] = {
     {.stream_id = STDIN_STREAM_ID, .flags = 0},
     {.stream_id = STDOUT_STREAM_ID, .flags = 0},
@@ -56,7 +54,7 @@ static ser_file_s_t RESERVED_SER_FILES[] = {
     {.stream_id = KDBG_STREAM_ID, .flags = 0},
 };
 
-// these mutexes are initialized in ser_driver_initialize
+// These mutexes are initialized in ser_driver_initialize
 static static_sem_s_t read_mtx_buf;
 static static_sem_s_t write_mtx_buf;
 static mutex_t read_mtx;   // ensures that only one read is happening at a time
@@ -76,8 +74,7 @@ static stream_buf_t write_stream;
 static struct set enabled_streams_set;
 
 // stderr is ALWAYS guaranteed to be sent over the serial line. stdout and
-// others may
-// be disabled
+// others may be disabled
 static const uint32_t guaranteed_delivery_streams[] = {
     // STDIN_STREAM_ID,
     // STDOUT_STREAM_ID,  stdout isn't guaranteed delivery, but enabled by
@@ -154,8 +151,8 @@ int ser_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 
 	if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size, file.stream_id) &&
 	    !set_contains(&enabled_streams_set, file.stream_id)) {
-		// the stream isn't a guaranteed delivery or hasn't been enabled
-		// so just pretend like the data was shipped just fine
+		// the stream isn't a guaranteed delivery or hasn't been enabled so just
+		// pretend like the data was shipped just fine
 		return len;
 	}
 
@@ -199,8 +196,7 @@ int ser_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 }
 
 int ser_close_r(struct _reent* r, void* const arg) {
-	// this does nothing for now as I'm still figuring out what newlib does
-	// kfree(arg);
+	// This does nothing for now, may be implemented later
 	return 0;
 }
 
@@ -226,16 +222,11 @@ int ser_ctl(void* const arg, const uint32_t cmd, void* const extra_arg) {
 	switch (cmd) {
 		case SERCTL_ACTIVATE:
 			if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size, (uint32_t)file.stream_id)) {
-				// grep DEBUG point
-				// lcd_print(2, "Adding %x to enabled streams", (uint32_t)file.stream_id);
 				set_add(&enabled_streams_set, (uint32_t)file.stream_id);
 			}
 			return 0;
 		case SERCTL_DEACTIVATE:
 			if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size, (uint32_t)file.stream_id)) {
-				// grep DEBUG point
-				// lcd_print(2, "Removing %x from enabled streams",
-				// (uint32_t)file.stream_id);
 				set_rm(&enabled_streams_set, (uint32_t)file.stream_id);
 			}
 			return 0;
@@ -305,9 +296,6 @@ int32_t serctl(const uint32_t action, void* const extra_arg) {
 	switch (action) {
 		case SERCTL_ACTIVATE:
 			if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size, (uint32_t)extra_arg)) {
-				// grep DEBUG point
-				// vexDisplayString(2, "Adding %x to enabled streams",
-				// (uint32_t)file.stream_id);
 				set_add(&enabled_streams_set, (uint32_t)extra_arg);
 			} else {
 				errno = EIO;
@@ -316,9 +304,6 @@ int32_t serctl(const uint32_t action, void* const extra_arg) {
 			return 0;
 		case SERCTL_DEACTIVATE:
 			if (!list_contains(guaranteed_delivery_streams, guaranteed_delivery_streams_size, (uint32_t)extra_arg)) {
-				// grep DEBUG point
-				// vexDisplayString(2, "Removing %x from enabled streams",
-				// (uint32_t)file.stream_id);
 				set_rm(&enabled_streams_set, (uint32_t)extra_arg);
 			} else {
 				errno = EIO;

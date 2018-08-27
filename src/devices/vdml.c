@@ -1,3 +1,18 @@
+/**
+ * \file devices/vdml.c
+ *
+ * VDML - VEX Data Management Layer
+ *
+ * VDML ensures thread saftey for operations on smart devices by maintaining
+ * an array of RTOS Mutexes and implementing functions to take and give them.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "vdml/vdml.h"
 #include "ifi/v5_api.h"
 #include "kapi.h"
@@ -30,14 +45,16 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type) {
 	return 1;
 }
 
-// we have V5_MAX_DEVICE_PORTS so that we can do thread safety on things like
-// controllers,
-// batteries which are sort of like smart devices internally to the V5
+/**
+ * We have V5_MAX_DEVICE_PORTS so that we can do thread safety on things like
+ * controllers, batteries which are sort of like smart devices internally to the
+ * V5
+ */
 mutex_t port_mutexes[V5_MAX_DEVICE_PORTS];            // Mutexes for each port
 static_sem_s_t port_mutex_bufs[V5_MAX_DEVICE_PORTS];  // Stack mem for rtos
 
 /**
- * \brief Shorcut to initialize all of VDML (mutexes and register)
+ * Shorcut to initialize all of VDML (mutexes and register)
  */
 void vdml_initialize() {
 	port_mutex_init();
@@ -45,7 +62,7 @@ void vdml_initialize() {
 }
 
 /**
- * \brief Initializes the mutexes for the motor ports.
+ * Initializes the mutexes for the motor ports.
  *
  * Initializes a static array of FreeRTOS mutexes to protect against race
  * conditions. For example, we don't want the Background processing task to run
@@ -133,7 +150,7 @@ void vdml_reset_port_error() {
 }
 
 /**
- * \brief Background processing function for the VDML system.
+ * Background processing function for the VDML system.
  *
  * This function should be called by the system daemon approximately every
  * 2 milliseconds.

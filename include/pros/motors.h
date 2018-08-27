@@ -1,12 +1,13 @@
 /**
  * \file pros/motors.h
  *
- * Contains prototypes for the Smart Motor-related functions.
+ * Contains prototypes for the V5 Motor-related functions.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/motors.html to learn
+ * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/motors to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -61,6 +62,9 @@ int32_t motor_move(uint8_t port, const int8_t voltage);
  * This movement is relative to the position of the motor when initialized or
  * the position when it was most recently reset with motor_set_zero_position().
  *
+ * \note This function simply sets the target for the motor, it does not block
+ * program execution until the movement finishes.
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - The given value is not within the range of V5 ports (1-21).
@@ -85,6 +89,9 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  * motor_get_position(). Providing 10.0 as the position parameter would result
  * in the motor moving clockwise 10 units, no matter what the current position
  * is.
+ *
+ * \note This function simply sets the target for the motor, it does not block
+ * program execution until the movement finishes.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -179,7 +186,7 @@ int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
  *        The V5 port number from 1-21
  *
  * \return The target position in its encoder units or PROS_ERR_F if the
- *         operation failed, setting errno.
+ * operation failed, setting errno.
  */
 double motor_get_target_position(uint8_t port);
 
@@ -249,8 +256,7 @@ int32_t motor_get_current_draw(uint8_t port);
  *        The V5 port number from 1-21
  *
  * \return 1 for moving in the positive direction, -1 for moving in the
- * negative direction, and PROS_ERR if the operation failed,
- * setting errno.
+ * negative direction, or PROS_ERR if the operation failed, setting errno.
  */
 int32_t motor_get_direction(uint8_t port);
 
@@ -286,8 +292,7 @@ double motor_get_efficiency(uint8_t port);
  *        The V5 port number from 1-21
  *
  * \return 1 if the motor's current limit is being exceeded and 0 if the current
- * limit is not exceeded, or PROS_ERR if the operation failed, setting
- * errno.
+ * limit is not exceeded, or PROS_ERR if the operation failed, setting errno.
  */
 int32_t motor_is_over_current(uint8_t port);
 
@@ -302,9 +307,8 @@ int32_t motor_is_over_current(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return 1 if the temperature limit is exceeded and 0 if the the
- * temperature is below the limit, or PROS_ERR if the operation failed,
- * setting errno.
+ * \return 1 if the temperature limit is exceeded and 0 if the the temperature
+ * is below the limit, or PROS_ERR if the operation failed, setting errno.
  */
 int32_t motor_is_over_temp(uint8_t port);
 
@@ -381,10 +385,10 @@ uint32_t motor_get_flags(uint8_t port);
  *
  * \param port
  *        The V5 port number from 1-21
- * \param timestamp[in]
- *        A pointer to a time in milliseconds for which the encoder count will
- *        be returned. If NULL, the timestamp at which the encoder count was
- *        read will not be supplied
+ * \param[in] timestamp
+ *            A pointer to a time in milliseconds for which the encoder count
+ *            will be returned. If NULL, the timestamp at which the encoder
+ *            count was read will not be supplied
  *
  * \return The raw encoder count at the given timestamp or PROS_ERR if the
  * operation failed.
@@ -478,7 +482,7 @@ int32_t motor_get_voltage(uint8_t port);
 /******************************************************************************/
 
 #ifdef __cplusplus
-}
+}  // namespace c
 #endif
 
 /**
@@ -518,14 +522,16 @@ typedef enum motor_gearset_e {
  * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
  */
 typedef struct motor_pid_full_s {
-	uint8_t kf;
-	uint8_t kp;
-	uint8_t ki;
-	uint8_t kd;
-	uint8_t filter;
-	uint16_t limit;
-	uint8_t threshold;
-	uint8_t loopspeed;
+	uint8_t kf;         // The feedforward constant
+	uint8_t kp;         // The proportional constant
+	uint8_t ki;         // The integral constants
+	uint8_t kd;         // The derivative constant
+	uint8_t filter;     // A constant used for filtering the profile acceleration
+	uint16_t limit;     // The integral limit
+	uint8_t threshold;  // The threshold for determining if a position movement has
+	                    // reached its goal. This has no effect for velocity PID
+	                    // calculations.
+	uint8_t loopspeed;  // The rate at which the PID computation is run in ms
 } motor_pid_full_s_t;
 
 /**
@@ -535,10 +541,10 @@ typedef struct motor_pid_full_s {
  * 0x21 represents 2.0625, 0x22 represents 2.125, etc.
  */
 typedef struct motor_pid_s {
-	uint8_t kf;
-	uint8_t kp;
-	uint8_t ki;
-	uint8_t kd;
+	uint8_t kf;  // The feedforward constant
+	uint8_t kp;  // The proportional constant
+	uint8_t ki;  // The integral constants
+	uint8_t kd;  // The derivative constant
 } motor_pid_s_t;
 
 #ifdef __cplusplus
@@ -704,10 +710,9 @@ motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
  *        The integral limit
  * \param threshold
  *        The threshold for determining if a position movement has reached its
- * goal.
- *        This has no effect for velocity PID calculations.
+ *        goal. This has no effect for velocity PID calculations.
  * \param loopspeed
- *        The rate at which the PID computation is run
+ *        The rate at which the PID computation is run in ms
  *
  * \return A motor_pid_s_t struct formatted properly in 4.4.
  */
@@ -739,8 +744,7 @@ motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, doubl
 int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid);
 
 /**
- * Sets one of motor_pid_full_s_t for the motor. This intended for modification
- * of any of the possible motor pid constants.
+ * Sets one of motor_pid_full_s_t for the motor.
  *
  * Only non-zero values of the struct will change the existing motor constants.
  *
@@ -787,8 +791,7 @@ int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid);
 int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid);
 
 /**
- * Sets one of motor_pid_full_s_t for the motor. This intended for modification
- * of any of the possible motor pid constants.
+ * Sets one of motor_pid_full_s_t for the motor.
  *
  * Only non-zero values of the struct will change the existing motor constants.
  *
@@ -916,9 +919,8 @@ motor_gearset_e_t motor_get_gearing(uint8_t port);
 
 /**
  * Gets the position PID that was set for the motor. This function will return
- * zero for all of the parameters if the motor_set_pos_pid or
- * motor_set_pos_pid_full
- * functions have not been used.
+ * zero for all of the parameters if the motor_set_pos_pid() or
+ * motor_set_pos_pid_full() functions have not been used.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -931,17 +933,15 @@ motor_gearset_e_t motor_get_gearing(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return One of motor_gearset_e_t according to what is set for the motor,
- * or E_GEARSET_INVALID if the operation failed.
+ * \return A motor_pid_full_s_t containing the position PID constants last set
+ * to the given motor
  */
 motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
 
 /**
  * Gets the velocity PID that was set for the motor. This function will return
- * zero for all of the parameters if the motor_set_vel_pid or
- * motor_set_vel_pid_full
- * functions have not been used.
- *
+ * zero for all of the parameters if the motor_set_vel_pid() or
+ * motor_set_vel_pid_full() functions have not been used.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -954,8 +954,8 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return One of motor_gearset_e_t according to what is set for the motor,
- * or E_GEARSET_INVALID if the operation failed.
+ * \return A motor_pid_full_s_t containing the velocity PID constants last set
+ * to the given motor
  */
 motor_pid_full_s_t motor_get_vel_pid(uint8_t port);
 
@@ -995,8 +995,8 @@ int32_t motor_is_reversed(uint8_t port);
 int32_t motor_get_voltage_limit(uint8_t port);
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 

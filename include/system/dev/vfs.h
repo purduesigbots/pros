@@ -1,5 +1,7 @@
 /**
- * system/dev/vfs.h - virtual file system header
+ * \file system/dev/vfs.h
+ *
+ * Virtual File System header
  *
  * See system/dev/vfs.c for discussion
  *

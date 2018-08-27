@@ -1,5 +1,7 @@
 /**
- * newlib_stubs.c - Port of newlib to PROS for the V5
+ * \file system/newlib_stubs.c
+ *
+ * Port of newlib to PROS for the V5
  *
  * Contains the various methods needed to enable standard C library support
  * through the use of the Arm-distributed implementation of newlib.

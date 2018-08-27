@@ -1,10 +1,10 @@
 /**
- * pros/rtos.cpp
+ * \file rtos/rtos.cpp
  *
  * Contains functions for the PROS RTOS kernel for use by typical
  * VEX programmers.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html to learn more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -13,6 +13,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+ 
 #include "kapi.h"
 #include "pros/rtos.hpp"
 

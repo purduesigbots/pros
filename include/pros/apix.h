@@ -1,7 +1,7 @@
 /**
  * \file pros/apix.h
  *
- * \brief PROS Extended API header
+ * PROS Extended API header
  *
  * Contains additional declarations for use by advaned users of PROS. These
  * functions do not typically have as much error handling or require deeper
@@ -38,7 +38,7 @@ using namespace pros;
 /**                             RTOS FACILITIES                              **/
 /**                                                                          **/
 /**                                                                          **/
-/** See https://pros.cs.purdue.edu/v5/extended/multitasking to learn more.   **/
+/**See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more**/
 /******************************************************************************/
 
 typedef void* queue_t;
@@ -60,8 +60,7 @@ bool task_abort_delay(task_t task);
  * https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes
  * for details.
  *
- * \return
- *          A newly created recursive mutex.
+ * \return A newly created recursive mutex.
  */
 mutex_t mutex_recursive_create(void);
 
@@ -73,11 +72,11 @@ mutex_t mutex_recursive_create(void);
  * for details.
  *
  * \param mutex
- *          A mutex handle created by mutex_recursive_create
+ *        A mutex handle created by mutex_recursive_create
  * \param wait_time
- *          Amount of time to wait before timing out
- * \return
- *          1 if the mutex was obtained, 0 otherwise
+ *        Amount of time to wait before timing out
+ *
+ * \return 1 if the mutex was obtained, 0 otherwise
  */
 bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
 
@@ -89,9 +88,9 @@ bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
  * for details.
  *
  * \param mutex
- *          A mutex handle created by mutex_recursive_create
- * \return
- *          1 if the mutex was obtained, 0 otherwise
+ *        A mutex handle created by mutex_recursive_create
+ *
+ * \return 1 if the mutex was obtained, 0 otherwise
  */
 bool mutex_recursive_give(mutex_t mutex);
 
@@ -102,9 +101,9 @@ bool mutex_recursive_give(mutex_t mutex);
  * details.
  *
  * \param mutex
- *          A mutex handle
- * \return
- *          A handle to the current task that owns the mutex, or NULL if the
+ *        A mutex handle
+ *
+ * \return A handle to the current task that owns the mutex, or NULL if the
  * mutex isn't owned.
  */
 task_t mutex_get_owner(mutex_t mutex);
@@ -116,13 +115,12 @@ task_t mutex_get_owner(mutex_t mutex);
  *details.
  *
  * \param max_count
- *          The maximum count value that can be reached.
+ *        The maximum count value that can be reached.
  * \param init_count
- *          The initial count value assigned to the new semaphore.
- * \return
- *          A newly created semaphore. If an error occurred, NULL will be
- *			returned and errno can be checked for hints as to why
- *sem_create failed.
+ *        The initial count value assigned to the new semaphore.
+ *
+ * \return A newly created semaphore. If an error occurred, NULL will be
+ * returned and errno can be checked for hints as to why sem_create failed.
  */
 sem_t sem_create(uint32_t max_count, uint32_t init_count);
 
@@ -133,9 +131,10 @@ sem_t sem_create(uint32_t max_count, uint32_t init_count);
  * details.
  *
  * \param sem
- * 			Semaphore to delete
+ * 			  Semaphore to delete
  */
 void sem_delete(sem_t sem);
+
 /**
  * Creates a binary semaphore.
  *
@@ -143,8 +142,7 @@ void sem_delete(sem_t sem);
  * https://pros.cs.purdue.edu/v5/extended/multitasking#.htmlbinary_semaphores
  * for details.
  *
- * \return
- *          A newly created semaphore.
+ * \return A newly created semaphore.
  */
 sem_t sem_binary_create(void);
 
@@ -156,16 +154,15 @@ sem_t sem_binary_create(void);
  * details.
  *
  * \param sem
- *          Semaphore to wait on
+ *        Semaphore to wait on
  * \param timeout
- *          Time to wait before the semaphore's becomes available. A timeout of
- * 0
- *          can be used to poll the sempahore. TIMEOUT_MAX can be used to block
- *          indefinitely.
- * \return
- *          True if the semaphore was successfully take, false otherwise.
- *          If false is returned, then errno is set with a hint about why the
- *          sempahore couldn't be taken.
+ *        Time to wait before the semaphore's becomes available. A timeout of 0
+ *        can be used to poll the sempahore. TIMEOUT_MAX can be used to block
+ *        indefinitely.
+ *
+ * \return True if the semaphore was successfully take, false otherwise. If
+ * false is returned, then errno is set with a hint about why the sempahore
+ * couldn't be taken.
  */
 bool sem_wait(sem_t sem, uint32_t timeout);
 
@@ -176,11 +173,11 @@ bool sem_wait(sem_t sem, uint32_t timeout);
  * details.
  *
  * \param sem
- *          Semaphore to post
- * \return
- *          True if the value was incremented, false otherwise. If false is
- *          returned, then errno is set with a hint about why the semaphore
- *          couldn't be taken.
+ *        Semaphore to post
+ *
+ * \return True if the value was incremented, false otherwise. If false is
+ * returned, then errno is set with a hint about why the semaphore couldn't be
+ * taken.
  */
 bool sem_post(sem_t sem);
 
@@ -191,9 +188,9 @@ bool sem_post(sem_t sem);
  * details.
  *
  * \param sem
- *          A semaphore handle
- * \return
- *          The current value of the semaphore (e.g. the number of resources
+ *        A semaphore handle
+ *
+ * \return The current value of the semaphore (e.g. the number of resources
  * available)
  */
 uint32_t sem_get_count(sem_t sem);
@@ -205,11 +202,11 @@ uint32_t sem_get_count(sem_t sem);
  * details.
  *
  * \param length
- *          The maximum number of items that the queue can contain.
+ *        The maximum number of items that the queue can contain.
  * \param item_size
- *          The number of bytes each item in the queue will require.
- * \return
- *          A handle to a newly created queue, or NULL if the queue cannot be
+ *        The number of bytes each item in the queue will require.
+ *
+ * \return A handle to a newly created queue, or NULL if the queue cannot be
  * created.
  */
 queue_t queue_create(uint32_t length, uint32_t item_size);
@@ -222,16 +219,15 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
  * details.
  *
  * \param queue
- *          The queue handle
+ *        The queue handle
  * \param item
- *          A pointer to the item that will be placed on the queue.
+ *        A pointer to the item that will be placed on the queue.
  * \param timeout
- *          Time to wait for space to become available. A timeout of 0 can
- *          be used to attempt to post without blocking. TIMEOUT_MAX can be used
- * to
- *          block indefinitely.
- * \return
- *          true if the item was preprended, false otherwise.
+ *        Time to wait for space to become available. A timeout of 0 can be used
+ *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
+ *        indefinitely.
+ *
+ * \return True if the item was preprended, false otherwise.
  */
 bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
@@ -243,16 +239,15 @@ bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
  * details.
  *
  * \param queue
- *          The queue handle
+ *        The queue handle
  * \param item
- *          A pointer to the item that will be placed on the queue.
+ *        A pointer to the item that will be placed on the queue.
  * \param timeout
- *          Time to wait for space to become available. A timeout of 0 can
- *          be used to attempt to post without blocking. TIMEOUT_MAX can be used
- * to
- *          block indefinitely.
- * \return
- *          true if the item was preprended, false otherwise.
+ *        Time to wait for space to become available. A timeout of 0 can be used
+ *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
+ *        indefinitely.
+ *
+ * \return True if the item was preprended, false otherwise.
  */
 bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 
@@ -263,17 +258,15 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
  * details.
  *
  * \param queue
- *          The queue handle
+ *        The queue handle
  * \param buffer
- *          Pointer to a buffer to which the received item will be copied
+ *        Pointer to a buffer to which the received item will be copied
  * \param timeout
- *          Time to wait for an item to be placed on the queue if the queue is
- * empty.
- *          A timeout 0 will return immediately if the queue is empty.
- * TIMEOUT_MAX can
- *          be used to block indefinitely.
- * \return
- *          True if an item was copied into the buffer, false otherwise.
+ *        Time to wait for space to become available. A timeout of 0 can be used
+ *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
+ *        indefinitely.
+ *
+ * \return True if an item was copied into the buffer, false otherwise.
  */
 bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
 
@@ -284,17 +277,15 @@ bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
  * details.
  *
  * \param queue
- *          The queue handle
+ *        The queue handle
  * \param buffer
- *          Pointer to a buffer to which the received item will be copied
+ *        Pointer to a buffer to which the received item will be copied
  * \param timeout
- *          Time to wait for an item to be placed on the queue if the queue is
- * empty.
- *          A timeout 0 will return immediately if the queue is empty.
- * TIMEOUT_MAX can
- *          be used to block indefinitely.
- * \return
- *          True if an item was copied into the buffer, false otherwise.
+ *        Time to wait for space to become available. A timeout of 0 can be used
+ *        to attempt to post without blocking. TIMEOUT_MAX can be used to block
+ *        indefinitely.
+ *
+ * \return True if an item was copied into the buffer, false otherwise.
  */
 bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
 
@@ -305,9 +296,9 @@ bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
  * details.
  *
  * \param queue
- *          The queue handle.
- * \return
- *          The number of messages available in the queue.
+ *        The queue handle.
+ *
+ * \return The number of messages available in the queue.
  */
 uint32_t queue_get_waiting(const queue_t queue);
 
@@ -318,9 +309,9 @@ uint32_t queue_get_waiting(const queue_t queue);
  * details.
  *
  * \param queue
- *          The queue handle.
- * \return
- *          The number of spaces available in the queue.
+ *        The queue handle.
+ *
+ * \return The number of spaces available in the queue.
  */
 uint32_t queue_get_available(const queue_t queue);
 
@@ -331,7 +322,7 @@ uint32_t queue_get_available(const queue_t queue);
  * details.
  *
  * \param queue
- *          Queue handle to delete
+ *        Queue handle to delete
  */
 void queue_delete(queue_t queue);
 
@@ -339,7 +330,7 @@ void queue_delete(queue_t queue);
  * Resets a queue to an empty state
  *
  * \param queue
- *          Queue handle to reset
+ *        Queue handle to reset
  */
 void queue_reset(queue_t queue);
 
@@ -348,7 +339,7 @@ void queue_reset(queue_t queue);
 /******************************************************************************/
 
 /*
- * \brief List of possible v5 devices
+ * List of possible v5 devices
  *
  * This list contains all current V5 Devices, and mirrors V5_DeviceType from the
  * api.
@@ -364,32 +355,39 @@ typedef enum v5_device_e {
 } v5_device_e_t;
 
 /*
- * \brief Registers a device in the given port
+ * Registers a device in the given port
  *
  * Registers a device of the given type in the given port into the registry, if
  * that type of device is detected to be plugged in to that port.
  *
- * \param[in]  port             the port number to register the device
- * \param[in]  device			the type of device to register
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21), or a
+ * a different device than specified is plugged in.
+ * EADDRINUSE - The port is already registered to another device.
+ *
+ * \param port
+ *        The port number to register the device
+ * \param device
+ *        The type of device to register
  *
  * \return 1 upon success, PROS_ERR upon failure
- *
- * \exception EINVAL Port number is out of range.
- * \exception EINVAL A different device than specified is plugged in.
- * \exception EADDRINUSE the port is already registered to another device
  */
 int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
 /*
- * \brief Deregisters a devices from the given port
+ * Deregisters a devices from the given port
  *
  * Removes the device registed in the given port, if there is one.
  *
- * \param[in]  port      		the port number to deregister
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ *
+ * \param port
+ *        The port number to deregister
  *
  * \return 1 upon success, PROS_ERR upon failure
- *
- * \exception EINVAL the port number is out of range
  */
 int registry_unbind_port(uint8_t port);
 
@@ -400,9 +398,7 @@ int registry_unbind_port(uint8_t port);
  * Control settings of the serial driver.
  *
  * \param action
- * 			An action to perform on the serial driver. See the
- * SERCTL_*
- * macros for
+ * 			An action to perform on the serial driver. See the SERCTL_* macros for
  * 			details on the different actions.
  * \param extra_arg
  * 			An argument to pass in based on the action
@@ -413,11 +409,10 @@ int32_t serctl(const uint32_t action, void* const extra_arg);
  * Control settings of the microSD card driver.
  *
  * \param action
- * 			An action to perform on the microSD card driver. See the
- * USDCTL_* macros for
- * 			details on the different actions.
+ * 			An action to perform on the microSD card driver. See the USDCTL_* macros
+ *      for details on the different actions.
  * \param extra_arg
- * 			An argument to pass in based on the action
+ * 		   	An argument to pass in based on the action
  */
 // Not yet implemented
 // int32_t usdctl(const uint32_t action, void* const extra_arg);
@@ -428,18 +423,12 @@ int32_t serctl(const uint32_t action, void* const extra_arg);
  * \param file
  * 			A valid file descriptor number
  * \param action
- * 			An action to perform on the file's driver. See the
- * *CTL_*
- * macros for
- * 			details on the different actions. Note that the action
- * passed
- * in must match
- * 			the correct driver (e.g. don't perform a SERCTL_* action
- * on
- * a
- * microSD card file)
+ * 			An action to perform on the file's driver. See the *CTL_* macros for
+ * 			details on the different actions. Note that the action passed in must
+ *      match the correct driver (e.g. don't perform a SERCTL_* action on a
+ *      microSD card file)
  * \param extra_arg
- * 			An argument to pass in based on the action
+ * 		  	An argument to pass in based on the action
  */
 int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 
@@ -448,8 +437,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * identifier.
  *
  * When used with serctl, the extra argument must be the little endian
- * representation of
- * the stream identifier (e.g. "sout" -> 0x74756f73)
+ * representation of the stream identifier (e.g. "sout" -> 0x74756f73)
  *
  * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial
  * to learn more.
@@ -461,8 +449,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * identifier.
  *
  * When used with serctl, the extra argument must be the little endian
- * representation of
- * the stream identifier (e.g. "sout" -> 0x74756f73)
+ * representation of the stream identifier (e.g. "sout" -> 0x74756f73)
  *
  * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filesystem.html#serial
  * to learn more.
@@ -516,7 +503,8 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 #define SERCTL_DISABLE_COBS 15
 
 /**
- * Action macro to check if there is data available from the Generic Serial Device
+ * Action macro to check if there is data available from the Generic Serial
+ * Device
  *
  * The extra argument is not used with this action, provide any value (e.g.
  * NULL) instead

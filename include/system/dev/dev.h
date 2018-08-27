@@ -1,5 +1,7 @@
 /**
- * system/dev/dev.h - Generic Serial Device driver header
+ * \file system/dev/dev.h
+ *
+ * Generic Serial Device driver header
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.

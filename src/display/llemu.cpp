@@ -1,5 +1,5 @@
 /*
- * \file llemu.cpp
+ * \file display/llemu.cpp
  *
  * C++ Legacy LCD Emulator
  *

@@ -1,5 +1,7 @@
 /**
- * system/dev/ser.h - Serial driver header
+ * \file system/dev/ser.h
+ *
+ * Serial driver header
  *
  * See system/dev/ser_driver.c and system/dev/ser_daemon.c for discussion
  *
@@ -17,5 +19,4 @@
 
 extern const struct fs_driver* const ser_driver;
 int ser_open_r(struct _reent* r, const char* path, int flags, int mode);
-
 void ser_initialize(void);

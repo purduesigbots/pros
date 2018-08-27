@@ -1,5 +1,5 @@
 /**
- * set.c - Simple sets
+ * \file common/set.c
  *
  * Contains an implementation of a thread-safe basic set in the kernel heap.
  * It's used to check which streams are enabled in ser_driver for the moment,
@@ -19,12 +19,6 @@
 #include "kapi.h"
 #include "system/optimizers.h"
 
-/**
- * Initializes a a set.
- *
- * \param set
- *          A pointer to a set structure
- */
 void set_initialize(struct set* const set) {
 	set->arr = kmalloc(8 * sizeof(*(set->arr)));
 	set->used = 0;
@@ -32,16 +26,6 @@ void set_initialize(struct set* const set) {
 	set->mtx = mutex_create_static(&(set->mtx_buf));
 }
 
-/**
- * Adds item to the set if it didn't already exist
- *
- * \param set
- *          A pointer to the set structure
- * \param item
- *          Item to add to the set
- * \return
- *          Returns true if the item was added to the set or was already present
- */
 bool set_add(struct set* const set, uint32_t item) {
 	size_t i = 0;
 	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
@@ -70,16 +54,6 @@ bool set_add(struct set* const set, uint32_t item) {
 	return true;
 }
 
-/**
- * Removes an item from the set
- *
- * \param set
- *          A pointer to the set structure
- * \param item
- *          The item to remove
- * \return
- *          Returns true if the item was removed (or was already not present)
- */
 bool set_rm(struct set* set, uint32_t item) {
 	size_t i = 0;
 	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
@@ -101,16 +75,6 @@ bool set_rm(struct set* set, uint32_t item) {
 	return true;
 }
 
-/**
- * Checks if the set contains an item
- *
- * \param set
- *          A pointer to the set structure
- * \param item
- *          The item to check
- * \return
- *          Returns true if the item is in the set
- */
 bool set_contains(struct set* set, uint32_t item) {
 	if (!mutex_take(set->mtx, TIMEOUT_MAX)) {
 		return false;
@@ -120,18 +84,6 @@ bool set_contains(struct set* set, uint32_t item) {
 	return ret;
 }
 
-/**
- * Checks if the list contains an item
- *
- * \param list
- *          A pointer to a list of words
- * \param size
- *          The number of items in the list
- * \param item
- *          The item to check
- * \return
- *          Returns true if the item is in the list
- */
 bool list_contains(uint32_t const* list, const size_t size, const uint32_t item) {
 	uint32_t const* const end = list + size;
 	while (list <= end) {

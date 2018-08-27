@@ -1,10 +1,7 @@
 /**
- * \file vdml.c
+ * \file devices/vdml_vision.c
  *
- * \brief VDML Vision Sensor Driver
- *
- * This file ensure thread saftey for operations on the Vision Sensor by maintaining
- * an array of RTOS Mutexes and implementing functions to take and give them.
+ * Contains functions for interacting with the V5 Vision Sensor.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *

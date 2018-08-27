@@ -1,14 +1,15 @@
 /**
- * \file vdml_adi.cpp
+ * \file devices/vdml_adi.cpp
  *
- * \brief VDML ADI functionality.
+ * Contains functions for interacting with the V5 ADI.
  *
- * \copyright (c) 2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 #include "pros/adi.hpp"
 

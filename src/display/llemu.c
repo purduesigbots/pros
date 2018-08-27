@@ -1,5 +1,5 @@
 /*
- * \file llemu.c
+ * \file display/llemu.c
  *
  * Legacy LCD Emulator
  *
@@ -23,8 +23,6 @@
 #include "kapi.h"
 #include "pros/llemu.h"
 
-// static lcd_s_t* _lcd;
-// static bool lcd_is_initialized = false;
 static lv_style_t frame_style;
 static lv_style_t screen_style;
 static lv_style_t button_style;

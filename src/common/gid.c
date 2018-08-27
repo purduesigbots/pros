@@ -1,5 +1,7 @@
 /**
- * gid.c - Globally Unique Identifiers Map
+ * \file gid.c
+ *
+ * Globally Unique Identifiers Map
  *
  * Contains an implementation to efficiently assign globally unique IDs
  * e.g. to assign entries in a global table
@@ -20,7 +22,6 @@
 
 // Note: the V5 is a 32-bit architecture, so we'll use 32-bit integers
 
-// Initializes a gid_metadata structure by "freeing" all IDs in the bitmap
 void gid_init(struct gid_metadata* const metadata) {
 	// metadata arguments aren't checked for correctness since this is an
 	// internal data structure
@@ -35,8 +36,6 @@ void gid_init(struct gid_metadata* const metadata) {
 	return;
 }
 
-// Allocates a gid from the gid structure and returns it. 0 is returned if there
-// are no more gids left.
 uint32_t gid_alloc(struct gid_metadata* const metadata) {
 	if (mutex_take(metadata->_lock, TIMEOUT_MAX)) {
 		size_t i;
@@ -77,7 +76,6 @@ uint32_t gid_alloc(struct gid_metadata* const metadata) {
 	return 0;
 }
 
-// Frees the gid specified from the structure.
 void gid_free(struct gid_metadata* const metadata, uint32_t id) {
 	if (id > metadata->max || id == 0) {
 		return;
@@ -87,7 +85,6 @@ void gid_free(struct gid_metadata* const metadata, uint32_t id) {
 	metadata->bitmap[word_idx] |= 1 << (id % UINT32_WIDTH);
 }
 
-// Checks if the gid specified is allocated
 bool gid_check(struct gid_metadata* metadata, uint32_t id) {
 	if (id > metadata->max) {
 		return false;

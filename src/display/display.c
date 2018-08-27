@@ -1,3 +1,15 @@
+/*
+ * \file display/display.c
+ *
+ * Main source code for interacting with the V5 Brain's LCD screen.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "display/lvgl.h"
 #include "ifi/v5_api.h"
 #include "kapi.h"
@@ -34,8 +46,6 @@ static bool vex_read_touch(lv_indev_data_t* data) {
 			data->state = LV_INDEV_STATE_REL;
 			break;
 	}
-	// printf("%d, %d (%d) (%d)\n", data->point.x, data->point.y, data->state,
-	// v5_touch_status.lastEvent);
 	return false;
 }
 
@@ -58,9 +68,6 @@ void display_initialize(void) {
 	lv_theme_set_current(lv_theme_alien_init(40, NULL));
 	lv_obj_t* page = lv_obj_create(NULL, NULL);
 	lv_obj_set_size(page, 480, 240);
-	// lv_page_set_scrl_fit(page, false, false);
-	// lv_page_set_scrl_width(page, 480);
-	// lv_page_set_scrl_height(page, 240);
 	lv_scr_load(page);
 
 	disp_daemon_task = task_create_static(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,

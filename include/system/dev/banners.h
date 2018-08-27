@@ -1,5 +1,7 @@
 /**
- * system/dev/banners.h - PROS banners printed over serial line
+ * \file system/dev/banners.h
+ *
+ * PROS banners printed over serial line
  *
  * This file should only be included ONCE (in system/dev/serial_daemon.c)
  *

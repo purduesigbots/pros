@@ -1,7 +1,7 @@
 /**
- * \file vdml_adi.c
+ * \file devices/vdml_adi.c
  *
- * \brief VDML ADI functionality.
+ * Contains functions for interacting with the V5 ADI.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -9,6 +9,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
@@ -39,7 +40,6 @@ typedef union adi_data {
 } adi_data_s_t;
 
 static int32_t get_analog_calib(uint8_t port) {
-	// adi_data_s_t data = (adi_data_s_t)(registry_get_device(port)->pad[port * 4]);
 	adi_data_s_t data;
 	data.raw[0] = registry_get_device(port)->pad[port * 4];
 	data.raw[1] = registry_get_device(port)->pad[port * 4 + 1];

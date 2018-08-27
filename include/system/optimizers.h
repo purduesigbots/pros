@@ -1,5 +1,7 @@
 /**
- * system/optimizers.h - optimizers for the kernel
+ * \file system/optimizers.h
+ *
+ * Optimizers for the kernel
  *
  * Probably shouldn't use anything from this header
  *

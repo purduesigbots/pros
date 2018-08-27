@@ -3,7 +3,8 @@
  *
  * Contains prototypes for the VEX Vision Sensor-related functions in C++.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html to learn
+ * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -38,14 +39,14 @@ class Vision {
 
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
-	 * behavior,
-	 * displaying the most prominent object signature color.
+	 * behavior, displaying the most prominent object signature color.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \return 1 if no errors occurred, PROS_ERR otherwise
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t clear_led(void) const;
 
@@ -61,7 +62,7 @@ class Vision {
 	 *        (0 is the largest item, 1 is the second largest, etc.)
 	 *
 	 * \return The vision_object_s_t object corresponding to the given size id, or
-	 *         PROS_ERR if an error occurred.
+	 * PROS_ERR if an error occurred.
 	 */
 	vision_object_s_t get_by_size(const std::uint32_t size_id) const;
 
@@ -78,7 +79,7 @@ class Vision {
 	 *        (0 is the largest item, 1 is the second largest, etc.)
 	 * \param signature
 	 *        The vision_signature_s_t signature for which an object will be
-	 * returned.
+	 *        returned.
 	 *
 	 * \return The vision_object_s_t object corresponding to the given signature
 	 * and size_id, or PROS_ERR if an error occurred.
@@ -93,7 +94,7 @@ class Vision {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The current exposure percentage parameter from [0,100],
-	 *         PROS_ERR if an error occurred
+	 * PROS_ERR if an error occurred
 	 */
 	std::int32_t get_exposure(void) const;
 
@@ -105,7 +106,7 @@ class Vision {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The number of objects detected on the specified vision sensor.
-	 *         Returns PROS_ERR if the port was invalid or an error occurred.
+	 * Returns PROS_ERR if the port was invalid or an error occurred.
 	 */
 	std::int32_t get_object_count(void) const;
 
@@ -137,8 +138,7 @@ class Vision {
 	 *
 	 * \return The number of object signatures copied. This number will be less
 	 * than object_count if there are fewer objects detected by the vision
-	 * sensor.
-	 *         Returns PROS_ERR if the port was invalid or an error occurred.
+	 * sensor. Returns PROS_ERR if the port was invalid or an error occurred.
 	 */
 	std::int32_t read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
 	                          vision_object_s_t* const object_arr) const;
@@ -163,8 +163,7 @@ class Vision {
 	 *
 	 * \return The number of object signatures copied. This number will be less
 	 * than object_count if there are fewer objects detected by the vision
-	 * sensor.
-	 *         Returns PROS_ERR if the port was invalid or an error occurred.
+	 * sensor. Returns PROS_ERR if the port was invalid or an error occurred.
 	 */
 	std::int32_t read_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id, const std::uint32_t object_count,
 	                         vision_object_s_t* const object_arr) const;
@@ -179,7 +178,8 @@ class Vision {
 	 * \param enabled
 	 * 		    Pass 0 to disable, 1 to enable
 	 *
-	 * \return 1 if no errors occurred, PROS_ERR otherwise
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_auto_white_balance(const std::uint8_t enable) const;
 
@@ -193,7 +193,8 @@ class Vision {
 	 * \param percent
 	 *        The new exposure percentage from [0,100]
 	 *
-	 * \return 1 if no errors occurred, PROS_ERR otherwise
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_exposure(const std::uint8_t percent) const;
 
@@ -207,7 +208,8 @@ class Vision {
 	 * \param rgb
 	 *        An RGB code to set the LED to
 	 *
-	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_led(const std::int32_t rgb) const;
 
@@ -221,7 +223,8 @@ class Vision {
 	 * \param rgb
 	 *        The new RGB white balance setting of the sensor
 	 *
-	 * \return 1 if no errors occurred, PROS_ERR otherwise
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_white_balance(const std::int32_t rgb) const;
 
@@ -229,9 +232,8 @@ class Vision {
 	 * Sets the (0,0) coordinate for the Field of View.
 	 *
 	 * This will affect the coordinates returned for each request for a
-	 * vision_object_s_t
-	 * from the sensor, so it is recommended that this function only be used to
-	 * configure the sensor at the beginning of its use.
+	 * vision_object_s_t from the sensor, so it is recommended that this function
+	 * only be used to configure the sensor at the beginning of its use.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -240,7 +242,8 @@ class Vision {
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV
 	 *
-	 * \return 1 if the operation was successful, or PROS_ERR if an error occurred
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_zero_point(vision_zero_e_t zero_point) const;
 
@@ -248,4 +251,4 @@ class Vision {
 	std::uint8_t _port;
 };
 }  // namespace pros
-#endif
+#endif  // _PROS_VISION_HPP_

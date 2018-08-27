@@ -1,7 +1,8 @@
 /**
- * \file controller.cpp
+ * \file devices/controller.cpp
  *
- * Contains functions for interacting with the V5 Controller.
+ * Contains functions for interacting with the V5 Controller, as well as the
+ * competition control functions.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -10,6 +11,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 
 namespace pros {

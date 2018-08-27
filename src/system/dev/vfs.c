@@ -1,10 +1,12 @@
 /**
- * vfs.c - Virtual File System
+ * \file system/dev/vfs.c
+ *
+ * Virtual File System
  *
  * VFS is responsible for maintaining the global file table and routing all
- * basic
- * I/O to the appropriate driver. There are two drivers implemented, ser and usd
- * which correspond to the serial driver and microSD card, respectively.
+ * basic I/O to the appropriate driver. There are three drivers implemented,
+ * ser, dev, and usd which correspond to the serial driver, generic smart port
+ * communication, and microSD card, respectively.
  *
  * VFS implements all of the I/O newlib stubs like open/read/write and delegates
  * them to the file's driver. Drivers don't actually have any knowledge of the

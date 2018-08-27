@@ -1,13 +1,9 @@
 /**
- * \file registry.c
- *
- * \brief VDML Device Registry
+ * \file devices/registry.c
  *
  * This file is the VDML (Vex Data Management Layer) Registry. It keeps track of
- * what devices
- * are in use on the V5. Therefore, in order to use V5 devices with PROS, they
- * must be
- * registered and deregistered using the registry
+ * what devices are in use on the V5. Therefore, in order to use V5 devices with
+ * PROS, they must be registered and deregistered using the registry.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -19,23 +15,16 @@
 #include <errno.h>
 #include <stdio.h>
 
+#include "api.h"
 #include "ifi/v5_api.h"
+#include "kapi.h"
 #include "pros/misc.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
-#include "api.h"
-#include "kapi.h"
-
 static v5_smart_device_s_t registry[NUM_V5_PORTS];
 static V5_DeviceType registry_types[V5_MAX_DEVICE_PORTS];
 
-/*
- * \brief Initializes the registry
- *
- * Initializes the registry, automatically pulling via the API information
- * regarding the devices that are already plugged in.
- */
 void registry_init() {
 	int i;
 	kprint("[VDML][INFO]Initializing registry\n");

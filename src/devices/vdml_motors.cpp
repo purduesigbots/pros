@@ -1,14 +1,15 @@
 /**
- * \file motors.cpp
+ * \file devices/vdml_motors.cpp
  *
- * \brief Motors C++ wrapper.
+ * Contains functions for interacting with the V5 Motors.
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 #include "pros/motors.hpp"
 

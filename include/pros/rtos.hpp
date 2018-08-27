@@ -1,14 +1,14 @@
 /**
  * \file pros/rtos.hpp
  *
- * \brief Contains declarations for the PROS RTOS kernel for use by typical
- * VEX programmers in C++.
+ * Contains declarations for the PROS RTOS kernel for use by typical VEX
+ * programmers.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html to
+ * learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking to learn
- * more.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -17,6 +17,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #ifndef _PROS_RTOS_HPP_
 #define _PROS_RTOS_HPP_
 
@@ -30,6 +31,10 @@ class Task {
 	public:
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENOMEM - The stack cannot be used as the TCB was not created.
 	 *
 	 * \param function
 	 *        Pointer to the task entry function
@@ -48,9 +53,6 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENOMEM - The stack cannot be used as the TCB was not created.
 	 */
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
@@ -59,7 +61,7 @@ class Task {
 	 *
 	 * \param task
 	 *        A task handle from task_create() for which to create a pros::Task
-	 *       object.
+	 *        object.
 	 */
 	Task(task_t task);
 
@@ -68,7 +70,7 @@ class Task {
 	 *
 	 * \param in
 	 *        A task handle from task_create() for which to create a pros::Task
-	 *       object.
+	 *        object.
 	 */
 	void operator=(const task_t in);
 
@@ -122,7 +124,7 @@ class Task {
 	 * Sends a simple notification to task and increments the notification
 	 * counter.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
 	 * details.
 	 *
 	 * \return Always returns true.
@@ -134,7 +136,7 @@ class Task {
 	 * also retrieve the value of the notification in the target task before
 	 * modifying the notification value.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
 	 * details.
 	 *
 	 * \param value
@@ -144,11 +146,11 @@ class Task {
 	 *        value
 	 * \param prev_value
 	 *        A pointer to store the previous value of the target task's
-	 * notification, may be NULL
+	 *        notification, may be NULL
 	 *
 	 * \return Dependent on the notification action.
-	 * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written
-	 * without needing to overwrite, 1 otherwise.
+	 * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
+	 * needing to overwrite, 1 otherwise.
 	 * For all other NOTIFY_ACTION values: always return 0
 	 */
 	std::uint32_t notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value);
@@ -156,7 +158,7 @@ class Task {
 	/**
 	 * Waits for a notification to be nonzero.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
 	 * details.
 	 *
 	 * \param clear_on_exit
@@ -174,7 +176,7 @@ class Task {
 	/**
 	 * Clears the notification for a task.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
 	 * details.
 	 *
 	 * \return False if there was not a notification waiting, true if there was
@@ -195,8 +197,7 @@ class Task {
 
 	/**
 	 * Delays a task until a specified time.  This function can be used by
-	 * periodic
-	 * tasks to ensure a constant execution frequency.
+	 * periodic tasks to ensure a constant execution frequency.
 	 *
 	 * The task will be woken up at the time *prev_time + delta, and *prev_time
 	 * will be updated to reflect the time at which the task will unblock.
@@ -230,7 +231,8 @@ class Mutex {
 	 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
 	 * before timing out.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes
+	 * See
+	 * https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
 	 * for details.
 	 *
 	 * \param timeout
@@ -247,7 +249,8 @@ class Mutex {
 	/**
 	 * Unlocks a mutex.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes
+	 * See
+	 * https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
 	 * for details.
 	 *
 	 * \return True if the mutex was successfully returned, false otherwise. If
@@ -280,4 +283,4 @@ using pros::c::millis;
 using pros::c::delay;
 }  // namespace pros
 
-#endif
+#endif  // _PROS_RTOS_HPP_s

@@ -1,13 +1,13 @@
 /**
- * \file motors.hpp
+ * \file pros/motors.hpp
  *
- * Contains prototypes for the motor-related thread-safe wrapper
- * functions.
+ * Contains prototypes for the V5 Motor-related functions.
  *
- * This file contains the header info for the functions used to modify the
- * status of vex motors.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/motors.html to learn
+ * more.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/motors to learn more.
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
  *
  * \copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -15,6 +15,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #ifndef _PROS_MOTORS_HPP_
 #define _PROS_MOTORS_HPP_
 
@@ -52,11 +53,11 @@ class Motor {
 
 	explicit Motor(const std::uint8_t port);
 
-	/******************************************************************************/
-	/**                         Motor movement functions **/
-	/** **/
-	/**          These functions allow programmers to make motors move **/
-	/******************************************************************************/
+	/****************************************************************************/
+	/**                         Motor movement functions                       **/
+	/**                                                                        **/
+	/**          These functions allow programmers to make motors move         **/
+	/****************************************************************************/
 	/**
 	 * Sets the voltage for the motor from -128 to 127.
 	 *
@@ -72,8 +73,7 @@ class Motor {
 	 *        The new motor voltage from -127 to 127
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed,
-	 *         setting errno.
+	 * failed, setting errno.
 	 */
 	virtual std::int32_t operator=(const std::int8_t voltage) const;
 
@@ -92,8 +92,7 @@ class Motor {
 	 *        The new motor voltage from -127 to 127
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed,
-	 *         setting errno.
+	 * failed, setting errno.
 	 */
 	virtual std::int32_t move(const std::int8_t voltage) const;
 
@@ -103,6 +102,9 @@ class Motor {
 	 * This movement is relative to the position of the motor when initialized or
 	 * the position when it was most recently reset with
 	 * pros::Motor::set_zero_position().
+	 *
+	 * \note This function simply sets the target for the motor, it does not block
+	 * program execution until the movement finishes.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -125,6 +127,9 @@ class Motor {
 	 * pros::Motor::motor_get_position(). Providing 10.0 as the position parameter
 	 * would result in the motor moving clockwise 10 units, no matter what the
 	 * current position is.
+	 *
+	 * \note This function simply sets the target for the motor, it does not block
+	 * program execution until the movement finishes.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -180,8 +185,8 @@ class Motor {
 	virtual std::int32_t move_voltage(const std::int32_t voltage) const;
 
 	/**
-	 * Changes the output velocity for a profiled movement (motor_move_absolute or
-	 * motor_move_relative). This will have no effect if the motor is not
+	 * Changes the output velocity for a profiled movement (motor_move_absolute()
+	 * or motor_move_relative()). This will have no effect if the motor is not
 	 * following a profiled movement.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -206,7 +211,7 @@ class Motor {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The target position in its encoder units or PROS_ERR_F if the
-	 *         operation failed, setting errno.
+	 * operation failed, setting errno.
 	 */
 	virtual double get_target_position(void) const;
 
@@ -222,11 +227,11 @@ class Motor {
 	 */
 	virtual std::int32_t get_target_velocity(void) const;
 
-	/******************************************************************************/
-	/**                        Motor telemetry functions **/
-	/** **/
-	/**    These functions allow programmers to collect telemetry from motors **/
-	/******************************************************************************/
+	/****************************************************************************/
+	/**                        Motor telemetry functions                       **/
+	/**                                                                        **/
+	/**    These functions allow programmers to collect telemetry from motors  **/
+	/****************************************************************************/
 
 	/**
 	 * Gets the actual velocity of the motor.
@@ -248,7 +253,7 @@ class Motor {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return The motor's current in mA or PROS_ERR if the operation failed,
-	 *         setting errno.
+	 * setting errno.
 	 */
 	virtual std::int32_t get_current_draw(void) const;
 
@@ -260,8 +265,7 @@ class Motor {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \return 1 for moving in the positive direction, -1 for moving in the
-	 * negative direction, and PROS_ERR if the operation failed,
-	 * setting errno.
+	 * negative direction, and PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t get_direction(void) const;
 
@@ -298,7 +302,7 @@ class Motor {
 	 * Checks if the motor is stopped.
 	 *
 	 * \note Although this function forwards data from the motor, the motor
-	 * presently does not provide any value. This function returns PROS_ERR with \
+	 * presently does not provide any value. This function returns PROS_ERR with
 	 * errno set to ENOSYS.
 	 *
 	 * \return 1 if the motor is not moving, 0 if the motor is moving, or PROS_ERR
@@ -310,12 +314,12 @@ class Motor {
 	 * Checks if the motor is at its zero position.
 	 *
 	 * \note Although this function forwards data from the motor, the motor
-	 * presently does not provide any value. This function returns PROS_ERR with \
+	 * presently does not provide any value. This function returns PROS_ERR with
 	 * errno set to ENOSYS.
 	 *
 	 * \return 1 if the motor is at zero absolute position, 0 if the motor has
-	 * moved from its absolute zero, or PROS_ERR if the operation failed,
-	 * setting errno
+	 * moved from its absolute zero, or PROS_ERR if the operation failed, setting
+	 * errno
 	 */
 	virtual std::int32_t get_zero_position_flag(void) const;
 
@@ -350,10 +354,10 @@ class Motor {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \param timestamp[in]
-	 *        A pointer to a time in milliseconds for which the encoder count will
-	 *        be returned. If NULL, the timestamp at which the encoder count was
-	 *        read will not be supplied
+	 * \param[in] timestamp
+	 *            A pointer to a time in milliseconds for which the encoder count
+	 *            will be returned. If NULL, the timestamp at which the encoder
+	 *            count was read will not be supplied
 	 *
 	 * \return The raw encoder count at the given timestamp or PROS_ERR if the
 	 * operation failed.
@@ -367,9 +371,8 @@ class Motor {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \return 1 if the temperature limit is exceeded and 0 if the the
-	 * temperature is below the limit, or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
+	 * below the limit, or PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t is_over_temp(void) const;
 
@@ -433,11 +436,11 @@ class Motor {
 	 */
 	virtual std::int32_t get_voltage(void) const;
 
-	/******************************************************************************/
-	/**                      Motor configuration functions **/
-	/** **/
+	/****************************************************************************/
+	/**                      Motor configuration functions                     **/
+	/**                                                                        **/
 	/**  These functions allow programmers to configure the behavior of motors **/
-	/******************************************************************************/
+	/****************************************************************************/
 
 	/**
 	 * Sets the position for the motor in its encoder units.
@@ -580,10 +583,9 @@ class Motor {
 	 *        The integral limit
 	 * \param threshold
 	 *        The threshold for determining if a position movement has reached its
-	 * goal.
-	 *        This has no effect for velocity PID calculations.
+	 *        goal. This has no effect for velocity PID calculations.
 	 * \param loopspeed
-	 *        The rate at which the PID computation is run
+	 *        The rate at which the PID computation is run in ms
 	 *
 	 * \return A motor_pid_s_t struct formatted properly in 4.4.
 	 */
@@ -611,9 +613,7 @@ class Motor {
 	virtual std::int32_t set_pos_pid(const motor_pid_s_t pid) const;
 
 	/**
-	 * Sets one of motor_pid_full_s_t for the motor. This intended for
-	 * modification
-	 * of any of the possible motor pid constants.
+	 * Sets one of motor_pid_full_s_t for the motor.
 	 *
 	 * Only non-zero values of the struct will change the existing motor
 	 * constants.
@@ -652,9 +652,7 @@ class Motor {
 	virtual std::int32_t set_vel_pid(const motor_pid_s_t pid) const;
 
 	/**
-	 * Sets one of motor_pid_full_s_t for the motor. This intended for
-	 * modification
-	 * of any of the possible motor pid constants.
+	 * Sets one of motor_pid_full_s_t for the motor.
 	 *
 	 * Only non-zero values of the struct will change the existing motor
 	 * constants.
@@ -756,8 +754,8 @@ class Motor {
 
 	/**
 	 * Gets the position PID that was set for the motor. This function will return
-	 * zero for all of the parameters if the motor_set_pos_pid or
-	 * motor_set_pos_pid_full functions have not been used.
+	 * zero for all of the parameters if the motor_set_pos_pid() or
+	 * motor_set_pos_pid_full() functions have not been used.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -767,15 +765,15 @@ class Motor {
 	 * Additionally, in an error state all values of the returned struct are set
 	 * to their negative maximum values.
 	 *
-	 * \return One of motor_gearset_e_t according to what is set for the motor,
-	 * or E_GEARSET_INVALID if the operation failed.
+	 * \return A motor_pid_full_s_t containing the position PID constants last set
+	 * to the given motor
 	 */
 	virtual motor_pid_full_s_t get_pos_pid(void) const;
 
 	/**
 	 * Gets the velocity PID that was set for the motor. This function will return
-	 * zero for all of the parameters if the motor_set_vel_pid or
-	 * motor_set_vel_pid_full functions have not been used.
+	 * zero for all of the parameters if the motor_set_vel_pid() or
+	 * motor_set_vel_pid_full() functions have not been used.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -785,8 +783,8 @@ class Motor {
 	 * Additionally, in an error state all values of the returned struct are set
 	 * to their negative maximum values.
 	 *
-	 * \return One of motor_gearset_e_t according to what is set for the motor,
-	 * or E_GEARSET_INVALID if the operation failed.
+	 * \return A motor_pid_full_s_t containing the velocity PID constants last set
+	 * to the given motor
 	 */
 	virtual motor_pid_full_s_t get_vel_pid(void) const;
 
@@ -825,4 +823,4 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace pros
-#endif
+#endif  // _PROS_MOTORS_HPP_

@@ -1,10 +1,11 @@
 /**
- * ser_daemon.c - Serial Input Daemon
+ * \file system/dev/ser_daemon.c
+ *
+ * Serial Input Daemon
  *
  * The serial input daemon is responsible for polling the serial line for
- * characters
- * and responding to any kernel commands (like printing the banner or enabling
- * COBS)
+ * characters and responding to any kernel commands (like printing the banner or
+ * enabling COBS)
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -16,12 +17,10 @@
 
 #include <errno.h>
 
-#include "kapi.h"
-#include "system/optimizers.h"
-
 #include "ifi/v5_api.h"
-
+#include "kapi.h"
 #include "system/dev/banners.h"
+#include "system/optimizers.h"
 
 #define MAX_COMMAND_LENGTH 32
 

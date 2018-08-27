@@ -1,5 +1,5 @@
 /**
- * \file battery.cpp
+ * \file devices/battery.cpp
  *
  * Contains functions for interacting with the V5 Battery.
  *
@@ -10,6 +10,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 
 namespace pros {

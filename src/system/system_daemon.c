@@ -1,3 +1,16 @@
+/**
+ * \file system/system_daemon.c
+ *
+ * Competition control daemon responsible for invoking the user tasks.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * All rights reserved.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/optimizers.h"
@@ -49,7 +62,8 @@ static void _system_daemon_task(void* ign) {
 	uint32_t status = (uint32_t)(1 << 8);
 	uint32_t task_state;
 
-	// XXX: Delay likely necessary for shared memory to get copied over (discovered b/c VDML would crash and burn)
+	// XXX: Delay likely necessary for shared memory to get copied over
+	// (discovered b/c VDML would crash and burn)
 	task_delay(1);
 
 	// initialization that needs to occur with the scheduler started
@@ -80,8 +94,8 @@ static void _system_daemon_task(void* ign) {
 				continue;
 			}
 
-			// competition initialize runs only when entering disabled
-			// and we're connected to competition control
+			// competition initialize runs only when entering disabled and we're
+			// connected to competition control
 			if (status & (COMPETITION_DISABLED | COMPETITION_CONNECTED) && !comp_init_completed) {
 				state = E_COMP_INIT_TASK;
 				comp_init_completed = true;
@@ -93,8 +107,8 @@ static void _system_daemon_task(void* ign) {
 
 			task_state = task_get_state(competition_task);
 			// delete the task only if it's in normal operation (e.g. not deleted)
-			// The valid task states AREN'T deleted, invalid, or running (running means it's
-			// the current task, which will never be the case)
+			// The valid task states AREN'T deleted, invalid, or running (running
+			// means it's the current task, which will never be the case)
 			if (task_state == E_TASK_STATE_READY || task_state == E_TASK_STATE_BLOCKED ||
 			    task_state == E_TASK_STATE_SUSPENDED) {
 				task_delete(competition_task);
@@ -114,10 +128,11 @@ void system_daemon_initialize() {
 }
 
 // description of some cases for implementing autonomous:
-// user implements autonomous w/C linkage: system daemon starts _autonomous_task which calls the user's autonomous()
-// implement w/C++ linkage: sysd starts _autonomous_task calls autonomous() defined here which calls cpp_autonomous
-// which calls the user's C++ linkage autonomous()
-// implement no autonomous: see above, but cpp_autonomous implements a stub C++ autonomous()
+// user implements autonomous w/C linkage: system daemon starts _autonomous_task
+// which calls the user's autonomous() implement w/C++ linkage: sysd starts
+// _autonomous_task calls autonomous() defined here which calls cpp_autonomous
+// which calls the user's C++ linkage autonomous() implement no autonomous: see
+// above, but cpp_autonomous implements a stub C++ autonomous()
 
 // Our weak functions call C++ links of these functions, allowing users to only optionally extern "C" the task functions
 extern void cpp_autonomous();
@@ -126,8 +141,8 @@ extern void cpp_opcontrol();
 extern void cpp_disabled();
 extern void cpp_competition_initialize();
 
-// default implementations of the different competition modes attempt to call the C++
-// linkage version of the function
+// default implementations of the different competition modes attempt to call
+// the C++ linkage version of the function
 __attribute__((weak)) void autonomous() {
 	cpp_autonomous();
 }
@@ -144,8 +159,8 @@ __attribute__((weak)) void competition_initialize() {
 	cpp_competition_initialize();
 }
 
-// these functions are what actually get called by the system daemon, which attempt
-// to call whatever the user declares
+// these functions are what actually get called by the system daemon, which
+// attempt to call whatever the user declares
 static void _competition_initialize_task(void* ign) {
 	competition_initialize();
 }

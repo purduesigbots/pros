@@ -1,5 +1,7 @@
 /**
- * system/dev/usd.h - microSD card driver header
+ * \file system/dev/usd.h
+ *
+ * microSD card driver header
  *
  * See system/dev/usd_driver.c for discussion
  *

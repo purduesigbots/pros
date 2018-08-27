@@ -1,7 +1,7 @@
 /*
- * \file linkedlist.c
+ * \file common/linkedlist.c
  *
- * \brief linked list implementation for internal use
+ * Linked list implementation for internal use
  *
  * This file defines a linked list implementation that operates on the FreeRTOS
  * heap, and is able to generically store function pointers and data
@@ -13,10 +13,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "common/linkedlist.h"
-
 #include <stddef.h>  // NULL
 
+#include "common/linkedlist.h"
 #include "kapi.h"
 
 ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {

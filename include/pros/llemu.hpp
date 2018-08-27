@@ -1,13 +1,14 @@
 /*
- * \file llemu.hpp
+ * \file pros/llemu.hpp
  *
- * \brief C++ bindings for Legacy LCD Emulator
+ * Legacy LCD Emulator
  *
  * This file defines a high-level API for emulating the three-button, UART-based
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/llemu.html to learn
+ * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -18,6 +19,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #ifndef _PROS_LLEMU_HPP_
 #define _PROS_LLEMU_HPP_
 

@@ -1,5 +1,7 @@
 /**
- * cpp_support.cpp - C++ support hooks
+ * \file system/cpp_support.cpp
+ *
+ * C++ support hooks
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots
  * All rights reserved.
@@ -14,7 +16,6 @@
 #include <stdexcept>
 
 #include "ifi/v5_api.h"
-
 #include "rtos/FreeRTOS.h"
 #include "rtos/task.h"
 

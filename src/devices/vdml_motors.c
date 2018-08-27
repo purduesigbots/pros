@@ -1,10 +1,7 @@
 /**
- * \file vdml.c
+ * \file devices/vdml_motors.c
  *
- * \brief VDML Devices Mutex Management.
- *
- * This file ensure thread saftey for operations on motors by maintaining
- * an array of RTOS Mutexes and implementing functions to take and give them.
+ * Contains functions for interacting with the V5 Motors.
  *
  * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
  *
@@ -101,7 +98,7 @@ static void set_vel_pid(uint8_t port, V5_DeviceMotorPid vel) {
 	registry_get_device(port)->pad[port * 4 + 23] = data.raw[23];
 }
 
-// Motor functions
+// Movement functions
 
 int32_t motor_move(uint8_t port, const int8_t voltage) {
 	// Remap the input voltage range to the motor voltage

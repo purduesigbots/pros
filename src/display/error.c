@@ -1,3 +1,16 @@
+/*
+ * \file display/error.c
+ *
+ * Error display handling. Prints an error message to the screen when the kernel
+ * is put in an error state.
+ *
+ * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "display/lvgl.h"
 #include "ifi/v5_api.h"
 #include "kapi.h"
@@ -33,7 +46,7 @@ static lv_res_t _clear_warning(lv_obj_t* btn) {
 	return LV_RES_OK;
 }
 void display_error(const char* text) {
-	// proceed iff there's not another error showing and there's an error message
+	// proceed if there's not another error showing and there's an error message
 	// to show
 	if (!text[0]) {
 		if (_window) {

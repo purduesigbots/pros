@@ -1,6 +1,7 @@
 /**
- * rtos_function_linking.c - Test that all the FreeRTOS functions link
- * correctly.
+ * \file tests/rtos_function_linking.c
+ *
+ * Test that all the FreeRTOS functions link correctly.
  *
  * Do not actually run this test - just make sure it compiles
  *

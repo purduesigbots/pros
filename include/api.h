@@ -1,5 +1,7 @@
 /**
- * api.h - PROS API header provides high-level user functionality
+ * \file api.h
+ *
+ * PROS API header provides high-level user functionality
  *
  * Contains declarations for use by typical VEX programmers using PROS.
  *
@@ -59,4 +61,4 @@
 #include "pros/vision.hpp"
 #endif
 
-#endif /* _PROS_API_H_ */
+#endif  // _PROS_API_H_

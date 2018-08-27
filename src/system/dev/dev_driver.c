@@ -1,5 +1,7 @@
 /**
- * dev_driver.c - Generic Serial Device driver
+ * \file system/dev/dev_driver.c
+ *
+ * Generic Serial Device driver
  *
  * Contains the driver for writing to any smart port with no regard to the
  * device on the other end.
@@ -11,11 +13,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+
 #include "common/set.h"
 #include "common/string.h"
 #include "ifi/v5_api.h"
