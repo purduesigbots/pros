@@ -20,13 +20,16 @@
 #define _PROS_API_H_
 
 #ifdef __cplusplus
+#include <cerrno>
 #include <cmath>
 #include <cstdbool>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 #else /* (not) __cplusplus */
+#include <errno.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
