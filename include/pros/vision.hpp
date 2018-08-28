@@ -126,6 +126,7 @@ class Vision {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * EINVAL - Fewer than object_count number of objects were found.
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param size_id
@@ -136,9 +137,11 @@ class Vision {
 	 * \param[out] object_arr
 	 *             A pointer to copy the objects into
 	 *
-	 * \return The number of object signatures copied. This number will be less
-	 * than object_count if there are fewer objects detected by the vision
-	 * sensor. Returns PROS_ERR if the port was invalid or an error occurred.
+	 * \return The number of object signatures copied. This number will be less than
+	 * object_count if there are fewer objects detected by the vision sensor.
+	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
+	 * than size_id were found. All objects in object_arr that were not found are
+	 * given VISION_OBJECT_ERR_SIG as their signature.
 	 */
 	std::int32_t read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
 	                          vision_object_s_t* const object_arr) const;
@@ -148,6 +151,7 @@ class Vision {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * EINVAL - Fewer than object_count number of objects were found.
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param object_count
@@ -161,9 +165,11 @@ class Vision {
 	 * \param[out] object_arr
 	 *             A pointer to copy the objects into
 	 *
-	 * \return The number of object signatures copied. This number will be less
-	 * than object_count if there are fewer objects detected by the vision
-	 * sensor. Returns PROS_ERR if the port was invalid or an error occurred.
+	 * \return The number of object signatures copied. This number will be less than
+	 * object_count if there are fewer objects detected by the vision sensor.
+	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
+	 * than size_id were found. All objects in object_arr that were not found are
+	 * given VISION_OBJECT_ERR_SIG as their signature.
 	 */
 	std::int32_t read_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id, const std::uint32_t object_count,
 	                         vision_object_s_t* const object_arr) const;

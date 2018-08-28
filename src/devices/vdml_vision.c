@@ -29,7 +29,6 @@ static void _vision_transform_coords(uint8_t port, vision_object_s_t* object_ptr
 	}
 	object_ptr->x_middle_coord = object_ptr->left_coord + (object_ptr->width / 2);
 	object_ptr->y_middle_coord = object_ptr->top_coord - (object_ptr->height / 2);
-	object_ptr->signature++;
 }
 
 int32_t vision_get_object_count(uint8_t port) {
@@ -68,18 +67,16 @@ vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const 
 	v5_smart_device_s_t* device;
 	uint8_t count = 0;
 	int32_t object_count = 0;
-	uint8_t id = 0;
 
 	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
 	if (err == PROS_ERR) {
 		errno = EINVAL;
 		goto err_return;
 	}
-	if (sig_id > 8 || sig_id == 0) {
+	if (sig_id > 7 || sig_id == 0) {
 		errno = EINVAL;
 		goto err_return;
 	}
-	id = sig_id - 1;
 	device = registry_get_device(port - 1);
 	object_count = vexDeviceVisionObjectCountGet(device->device_info);
 	if ((uint32_t)object_count <= size_id) {
@@ -95,7 +92,7 @@ vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const 
 			rtn = check;
 			goto err_return;
 		}
-		if (check.signature == id) {
+		if (check.signature == sig_id) {
 			if (count == size_id) {
 				rtn = check;
 				_vision_transform_coords(port - 1, &rtn);
@@ -115,10 +112,13 @@ err_return:
 int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t object_count,
                             vision_object_s_t* const object_arr) {
 	claim_port(port - 1, E_DEVICE_VISION);
+	for (uint8_t i = 0; i < object_count; i++) {
+		object_arr[i].signature = VISION_OBJECT_ERR_SIG;
+	}
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
 	if (c <= size_id) {
-		errno = EINVAL;
 		port_mutex_give(port - 1);
+		errno = EINVAL;
 		return PROS_ERR;
 	} else if (c > object_count) {
 		c = object_count;
@@ -136,6 +136,9 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
                            vision_object_s_t* const object_arr) {
 	claim_port(port - 1, E_DEVICE_VISION);
+	for (uint8_t i = 0; i < object_count; i++) {
+		object_arr[i].signature = VISION_OBJECT_ERR_SIG;
+	}
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
 	if (c <= size_id) {
 		errno = EINVAL;
@@ -145,12 +148,11 @@ int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t 
 	if (c > object_count) {
 		c = object_count;
 	}
+
 	uint8_t count = 0;
-	uint8_t id = 0;
-	id = sig_id - 1;
 	for (uint8_t i = 0; i < c; i++) {
 		vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + i));
-		if (object_arr[i].signature == id) {
+		if (object_arr[i].signature == sig_id) {
 			if (count > size_id) {
 				_vision_transform_coords(port - 1, &object_arr[i]);
 			}
@@ -182,7 +184,7 @@ vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature
 
 		return sig;
 	}
-	if (signature_id > 8 || signature_id == 0) {
+	if (signature_id > 7 || signature_id == 0) {
 		errno = EINVAL;
 		sig.id = VISION_OBJECT_ERR_SIG;
 		return sig;
@@ -194,7 +196,6 @@ vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature
 		errno = EAGAIN;
 		sig.id = VISION_OBJECT_ERR_SIG;
 	}
-	lcd_print(4, "id %d", sig.rgb);
 	port_mutex_give(port - 1);
 	return sig;
 }
