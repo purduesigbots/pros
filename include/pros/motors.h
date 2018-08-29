@@ -343,8 +343,26 @@ int32_t motor_is_stopped(uint32_t port);
  */
 int32_t motor_get_zero_position_flag(uint32_t port);
 
+#ifdef __cplusplus
+}  // namespace c
+#endif
+
+typedef enum motor_fault_e {
+	E_MOTOR_FAULT_NO_FAULTS = 0x00,
+	E_MOTOR_FAULT_MOTOR_OVER_TEMP = 0x01,  // Analogous to motor_is_over_temp()
+	E_MOTOR_FAULT_DRIVER_FAULT = 0x02,     // Indicates a motor h-bridge fault
+	E_MOTOR_FAULT_OVER_CURRENT = 0x04,     // Analogous to motor_is_over_current()
+	E_MOTOR_FAULT_DRV_OVER_CURRENT = 0x08  // Indicates an h-bridge over current
+} motor_fault_e_t;
+
+#ifdef __cplusplus
+namespace c {
+#endif
+
 /**
  * Gets the faults experienced by the motor.
+ *
+ * Compare this bitfield to the bitmasks in motor_fault_e_t.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -354,14 +372,30 @@ int32_t motor_get_zero_position_flag(uint32_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return A currently unknown bitfield containing the motor's faults.
- * 0b00000100 = Current Limit Hit
+ * \return A bitfield containing the motor's faults.
  */
 uint32_t motor_get_faults(uint8_t port);
+
+#ifdef __cplusplus
+}  // namespace c
+#endif
+
+typedef enum motor_flag_e {
+	E_MOTOR_FLAGS_NONE = 0x00,
+	E_MOTOR_FLAGS_BUSY = 0x01,           // Cannot currently communicate to the motor
+	E_MOTOR_FLAGS_ZERO_VELOCITY = 0x02,  // Analogous to motor_is_stopped()
+	E_MOTOR_FLAGS_ZERO_POSITION = 0x04   // Analogous to motor_get_zero_position_flag()
+} motor_flag_e_t;
+
+#ifdef __cplusplus
+namespace c {
+#endif
 
 /**
  * Gets the flags set by the motor's operation.
  *
+ * Compare this bitfield to the bitmasks in motor_flag_e_t.
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - The given value is not within the range of V5 ports (1-21).
@@ -370,8 +404,7 @@ uint32_t motor_get_faults(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return A currently unknown bitfield containing the motor's flags. These seem
- * to be unrelated to the individual motor_get_specific_flag functions
+ * \return A bitfield containing the motor's flags.
  */
 uint32_t motor_get_flags(uint8_t port);
 
