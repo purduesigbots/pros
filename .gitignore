@@ -8,8 +8,8 @@ include/*.h.gch
 .project
 .cproject
 template/template.pros
-template/src/*
-!template/src/Makefile
+template/src/**
 template/include
 template/firmware
+template/*.zip
 .vscode/

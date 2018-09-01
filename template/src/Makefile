@@ -1,9 +1,11 @@
-# Makefile for compiling PROS projects
+# Universal C Makefile for MCU targets
 
 # Path to project root (NO trailing slash!)
 ROOT=..
 # Binary output directory
 BINDIR=$(ROOT)/bin
+# Subdirectories to include in the build
+SUBDIRS=
 
 # Nothing below here needs to be modified by typical users
 
@@ -13,38 +15,39 @@ BINDIR=$(ROOT)/bin
 ASMSRC:=$(wildcard *.$(ASMEXT))
 ASMOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(ASMSRC:.$(ASMEXT)=.o))
 HEADERS:=$(wildcard *.$(HEXT))
-### Special section for Cortex projects ###
-HEADERS_2:=$(wildcard ../include/*.$(HEXT))
-### End special section ###
 CSRC=$(wildcard *.$(CEXT))
 COBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CSRC:.$(CEXT)=.o))
 CPPSRC:=$(wildcard *.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all
+.PHONY: all do_subdirs _force_look
 
 # By default, compile program
-all: .
+all: do_subdirs .
+
+# Phony force-look target
+_force_look:
+	@true
 
 # Compiles the program if anything is changed
-.: $(ASMOBJ) $(COBJ) $(CPPOBJ)
+.: $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
 	@touch .
+
+# Builds the subdirectories
+do_subdirs: _force_look
+	@for dir in $(SUBDIRS); do $(MAKE) --no-print-directory -C $$dir || exit 1; done
 
 # Assembly source file management
 $(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT)
 	@echo AS $<
 	@$(AS) $(AFLAGS) -o $@ $<
 
-### Special section for Cortex projects ###
-
 # Object management
-$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS) $(HEADERS_2)
+$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS)
 	@echo CC $(INCLUDE) $<
 	@$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
 
-$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS) $(HEADERS_2)
+$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS)
 	@echo CPC $(INCLUDE) $<
 	@$(CPPCC) $(INCLUDE) $(CPPFLAGS) -o $@ $<
-
-### End special section ###
