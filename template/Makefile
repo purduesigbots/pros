@@ -4,24 +4,23 @@
 ROOT=.
 # Binary output directory
 BINDIR=$(ROOT)/bin
-# Subdirectories to include in the build
-SUBDIRS=src
+SRCDIR=$(ROOT)/src
 
 # Nothing below here needs to be modified by typical users
 
 # Include common aspects of this project
 -include $(ROOT)/common.mk
 
-ASMSRC:=$(wildcard *.$(ASMEXT))
+ASMSRC:=$(call rwildcard,$(SRCDIR),*.$(ASMEXT))
 ASMOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(ASMSRC:.$(ASMEXT)=.o))
 HEADERS:=$(wildcard *.$(HEXT))
-CSRC=$(wildcard *.$(CEXT))
-COBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CSRC:.$(CEXT)=.o))
-CPPSRC:=$(wildcard *.$(CPPEXT))
+CSRC=$(call rwildcard,$(SRCDIR),*.$(CEXT))
+COBJ:=$(addprefix $(BINDIR)/, $(patsubst $(SRCDIR)/%.$(CEXT),%.o,$(CSRC)))
+CPPSRC:=$(call rwildcard,$(SRCDIR),*.$(CPPEXT))
 CPPOBJ:=$(patsubst %.o,$(BINDIR)/%.o,$(CPPSRC:.$(CPPEXT)=.o))
 OUT:=$(BINDIR)/$(OUTNAME)
 
-.PHONY: all clean flash upload upload-legacy _force_look
+.PHONY: all clean upload _force_look
 
 # By default, compile program
 all: $(BINDIR) $(OUT)
@@ -33,44 +32,37 @@ clean:
 
 # Uploads program to device
 upload: all
-	$(FLASH)
-
-# Alias to upload, more consistent with our terminology
-flash: upload
-
-# Uploads program to device using legacy uniflasher JAR file
-upload-legacy: all
 	$(UPLOAD)
 
 # Phony force-look target
 _force_look:
 	@true
 
-# Looks in subdirectories for things to make
-$(SUBDIRS): %: _force_look
-	@$(MAKE) --no-print-directory -C $@
-
 # Ensure binary directory exists
 $(BINDIR):
 	-@mkdir -p $(BINDIR)
 
 # Compile program
-$(OUT): $(SUBDIRS) $(ASMOBJ) $(COBJ) $(CPPOBJ)
+$(OUT): $(ASMOBJ) $(COBJ) $(CPPOBJ)
 	@echo LN $(BINDIR)/*.o $(LIBRARIES) to $@
 	@$(CC) $(LDFLAGS) $(BINDIR)/*.o $(LIBRARIES) -o $@
 	@$(MCUPREFIX)size $(SIZEFLAGS) $(OUT)
 	$(MCUPREPARE)
 
 # Assembly source file management
-$(ASMOBJ): $(BINDIR)/%.o: %.$(ASMEXT) $(HEADERS)
+$(ASMOBJ): $(BINDIR)/%.o: $(SRCDIR)/%.$(ASMEXT) $(HEADERS)
+	@mkdir -p $(dir $@)
 	@echo AS $<
 	@$(AS) $(AFLAGS) -o $@ $<
 
 # Object management
-$(COBJ): $(BINDIR)/%.o: %.$(CEXT) $(HEADERS)
-	@echo CC $(INCLUDE) $<
-	$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
+$(COBJ): $(BINDIR)/%.o: $(SRCDIR)/%.$(CEXT) $(HEADERS)
+	@mkdir -p $(dir $@)
+	@echo CC $(INCLUDE) $< -o $@
+	@$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
 
-$(CPPOBJ): $(BINDIR)/%.o: %.$(CPPEXT) $(HEADERS)
+$(CPPOBJ): $(BINDIR)/%.o: $(SRCDIR)/%.$(CPPEXT) $(HEADERS)
+	@mkdir -p $(dir $@)
 	@echo CPC $(INCLUDE) $<
 	@$(CPPCC) $(INCLUDE) $(CPPFLAGS) -o $@ $<
+
