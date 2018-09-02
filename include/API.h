@@ -32,6 +32,11 @@
 extern "C" {
 #endif
 
+#define PROS_VERSION_MAJOR 2
+#define PROS_VERSION_MINOR 12
+#define PROS_VERSION_PATCH 2
+#define PROS_VERSION_STRING "2.12.2-dirty+ba6071e"
+
 // -------------------- VEX competition functions --------------------
 
 /**
