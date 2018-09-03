@@ -7,7 +7,7 @@
  * include main.h instead of referencing API.h by name, to better handle any nomenclature
  * changes to this file or its contents.
  *
- * Copyright (c) 2011-2016, Purdue University ACM SIGBots.
+ * Copyright (c) 2011-2018, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -31,6 +31,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define PROS_VERSION_MAJOR 2
+#define PROS_VERSION_MINOR 12
+#define PROS_VERSION_PATCH 1
+#define PROS_VERSION_STRING "2.12.1"
 
 // -------------------- VEX competition functions --------------------
 
