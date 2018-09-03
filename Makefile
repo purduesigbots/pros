@@ -35,7 +35,7 @@ CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
-LIBRARIES=-L$(FWDIR) -Wl,--start-group $(wildcard $(FWDIR)/*.a) -lc -lm -lgcc -lstdc++ -lsupc++ -Wl,--end-group
+LIBRARIES=-Wl,--start-group $(wildcard $(FWDIR)/*.a) -lm -lgcc -Wl,--end-group
 ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
 
 ifndef OUTBIN
@@ -99,7 +99,7 @@ $(OUTBIN): $(OUTELF)
 
 $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
+	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 

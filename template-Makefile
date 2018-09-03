@@ -37,7 +37,7 @@ TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-INCLUDE=-iquote$(INCDIR)
+INCLUDE=-isystem$(INCDIR)
 
 ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
@@ -48,7 +48,7 @@ CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
-LIBRARIES=-L$(FWDIR) -Wl,--start-group $(wildcard $(FWDIR)/*.a) -Wl,--end-group
+LIBRARIES=-Wl,--start-group $(wildcard $(FWDIR)/*.a) -lm -lgcc -Wl,--end-group
 ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
 
 ifndef OUTBIN

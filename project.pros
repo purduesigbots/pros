@@ -1,0 +1,9 @@
+{
+    "py/object": "pros.conductor.project.Project",
+    "py/state": {
+        "project_name": "hello",
+        "target": "cortex",
+        "templates": { },
+        "upload_options": {}
+    }
+}
