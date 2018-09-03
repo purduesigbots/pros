@@ -27,9 +27,9 @@ extern "C" {
 
 #define FW_VERSION_MAJOR 2
 #define FW_VERSION_MINOR 12
-#define FW_VERSION_PATCH 1
+#define FW_VERSION_PATCH 2
 
-#define FW_VERSION "2.12.1"
+#define FW_VERSION "2.12.2"
 
 // PWM enable
 //#define PWM_ENABLED
