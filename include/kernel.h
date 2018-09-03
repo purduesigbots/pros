@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * kernel.h - PROS Kernel private definitions (public kernel API is kept in API.h)
  *
