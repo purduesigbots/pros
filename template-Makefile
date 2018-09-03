@@ -80,7 +80,7 @@ $(OUTBIN): $(OUTELF) $(BINDIR)
 
 $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
+	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LIBRARIES) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 

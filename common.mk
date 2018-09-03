@@ -15,7 +15,7 @@ LNK_FLAGS = --gc-sections
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
 CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) -std=gnu99
 CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -fno-exceptions -fno-rtti -felide-constructors $(GCCFLAGS) --std=gnu++11
-LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostartfiles -Wl,-static -Bfirmware -Wl,-T -Xlinker firmware/cortex.ld $(subst ?%,$(SPACE),$(addprefix -Wl$(COMMA), $(LNK_FLAGS)))
+LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostartfiles -Wl,-static -Bfirmware -Wl,-u,VectorTable -Wl,-T -Xlinker firmware/cortex.ld $(subst ?%,$(SPACE),$(addprefix -Wl$(COMMA), $(LNK_FLAGS)))
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
 
@@ -25,7 +25,7 @@ AR:=$(ARCHTUPLE)ar
 AS:=$(ARCHTUPLE)gcc
 CC:=$(ARCHTUPLE)gcc
 CXX:=$(ARCHTUPLE)g++
-LD:=$(ARCHTUPLE)g++
+LD:=$(ARCHTUPLE)gcc
 OBJCOPY:=$(ARCHTUPLE)objcopy
 SIZETOOL:=$(ARCHTUPLE)size
 READELF:=$(ARCHTUPLE)readelf
