@@ -36,5 +36,19 @@ try:
     with io.open('include/API.h', 'w', newline='\n', encoding='ascii') as file:
         file.writelines(data)
 
+    with io.open('include/kernel.h', 'r', encoding='ascii') as file:
+        data = file.readlines()
+    for i, line in enumerate(data):
+        if '#define FW_VERSION_MAJOR' in line:
+            data[i] = u'#define FW_VERSION_MAJOR {}\n'.format(major)
+        if '#define FW_VERSION_MINOR' in line:
+            data[i] = u'#define FW_VERSION_MINOR {}\n'.format(minor)
+        if '#define FW_VERSION_PATCH' in line:
+            data[i] = u'#define FW_VERSION_PATCH {}\n'.format(patch)
+        if '#define FW_VERSION ' in line:
+            data[i] = u'#define FW_VERSION "{}"\n'.format(semver)
+    with io.open('include/kernel.h', 'w', newline='\n', encoding='ascii') as file:
+        file.writelines(data)
+
 except subprocess.CalledProcessError as e:
     print('Error calling git')
