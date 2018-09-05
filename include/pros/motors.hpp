@@ -811,7 +811,8 @@ class Motor {
 	/**
 	 * Gets the voltage limit set by the user.
 	 *
-	 * Default value is 0V, which I presume means that the limit does not exist.
+	 * Default value is 0V, which means that there is no software limitation
+	 * imposed on the voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
