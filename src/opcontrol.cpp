@@ -1,7 +1,5 @@
 #include "main.h"
 
-using namespace pros::literals;
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -17,7 +15,7 @@ using namespace pros::literals;
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	auto left_mtr = 1_mtr;
+	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
