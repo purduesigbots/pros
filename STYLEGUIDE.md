@@ -37,13 +37,14 @@ These should be placed at the very start of a file.
 /**
  * \file filename.h
  *
- * \brief Short description of the file
+ * Short description of the file
  *
  * Extended description goes here. This should explain what the functions (etc)
  * in the file contains and a general description of what they do (no specifics,
  * but they should all have something in common anyway).
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filename to learn more.
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filename.html to learn
+ * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -66,11 +67,11 @@ These should be placed immediately before the declaration of the enum.
  * patterns for the enum.
  */
 enum my_enum {
-        E_MEMBER_0, /**< short description of member 0 goes here. */
-        E_MEMBER_1, /**< these can be omitted if it's painfully obvious */
-        E_MEMBER_2, /**< what each is for, or if there are just so many of */
-        E_MEMBER_3, /**< them it doesn't make practical sense to */
-        E_MEMBER_4  /**< document them all. */
+        E_MEMBER_0, // short description of member 0 goes here.
+        E_MEMBER_1, // these can be omitted if it's painfully obvious
+        E_MEMBER_2, // what each is for, or if there are just so many of
+        E_MEMBER_3, // them it doesn't make practical sense to
+        E_MEMBER_4  // document them all.
 }
 ```
 _Note: in the above example, the comments describing each member of the `enum` run together and form complete sentences for effect. Please do not do this in your code!_
@@ -93,7 +94,8 @@ These should be placed immediately before the function prototype they are descri
  * \param other_parameter_name
  *        The parameter description
  *
- * \return The description of the return value
+ * \return The description of the return value, if this is longer than one line
+ * then it will wrap around under the return statement
  */
 ```
 
