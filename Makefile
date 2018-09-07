@@ -18,11 +18,11 @@ INCDIR=$(ROOT)/include
 -include ./common.mk
 
 EXCLUDE_SRCDIRS=$(SRCDIR)/tests
-EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c
+EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.cpp $(SRCDIR)/initialize.cpp $(SRCDIR)/autonomous.cpp
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 
 TEMPLATE_DIR=$(ROOT)/template
-TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.c $(SRCDIR)/initialize.c $(SRCDIR)/autonomous.c $(INCDIR)/display
+TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.cpp $(SRCDIR)/initialize.cpp $(SRCDIR)/autonomous.cpp $(INCDIR)/display
 
 INCLUDE=-iquote$(INCDIR)
 
@@ -49,7 +49,7 @@ LDTIMEOBJ:=$(BINDIR)/_pros_ld_timestamp.o
 
 quick: $(OUTBIN)
 
-all: version clean $(OUTBIN)
+all: clean $(OUTBIN)
 
 clean: clean-library
 	@echo Cleaning project
@@ -64,7 +64,7 @@ library: version clean-library $(LIBAR)
 version: version.py
 	$(VV)python version.py
 
-template: version clean-template library
+template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
