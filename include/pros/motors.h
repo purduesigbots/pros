@@ -532,9 +532,12 @@ typedef enum motor_brake_mode_e {
  * Indicates the units used by the motor encoders.
  */
 typedef enum motor_encoder_units_e {
-	E_MOTOR_ENCODER_DEGREES = 0,
-	E_MOTOR_ENCODER_ROTATIONS = 1,
-	E_MOTOR_ENCODER_COUNTS = 2,
+	E_MOTOR_ENCODER_DEGREES = 0,    // Position is recorded as angle in degrees
+	                                // as a floating point number
+	E_MOTOR_ENCODER_ROTATIONS = 1,  // Position is recorded as angle in rotations
+	                                // as a floating point number
+	E_MOTOR_ENCODER_COUNTS = 2,     // Position is recorded as raw encoder ticks
+	                                // as a whole number
 	E_MOTOR_ENCODER_INVALID = INT32_MAX
 } motor_encoder_units_e_t;
 
