@@ -166,7 +166,7 @@ class Controller {
 	 */
 	template <typename... Params>
 	std::int32_t print(std::uint8_t line, std::uint8_t col, const char* fmt, Params... args) {
-		return pros::c::controller_print(_id, line, fmt, convert_args(args)...);
+		return pros::c::controller_print(_id, line, col, fmt, convert_args(args)...);
 	}
 
 	/**
