@@ -39,11 +39,11 @@ Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
 
 Motor::Motor(const std::uint8_t port) : _port(port) {}
 
-std::int32_t Motor::operator=(const std::int8_t voltage) const {
+std::int32_t Motor::operator=(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
 }
 
-std::int32_t Motor::move(const std::int8_t voltage) const {
+std::int32_t Motor::move(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
 }
 

@@ -54,7 +54,7 @@ namespace c {
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t motor_move(uint8_t port, const int8_t voltage);
+int32_t motor_move(uint8_t port, int32_t voltage);
 
 /**
  * Sets the target absolute position for the motor to move to.

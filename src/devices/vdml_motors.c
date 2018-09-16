@@ -100,11 +100,17 @@ static void set_vel_pid(uint8_t port, V5_DeviceMotorPid vel) {
 
 // Movement functions
 
-int32_t motor_move(uint8_t port, const int8_t voltage) {
+int32_t motor_move(uint8_t port, int32_t voltage) {
+	if (voltage > 127) {
+		voltage = 127;
+	} else if (voltage < -127) {
+		voltage = -127;
+	}
+
 	// Remap the input voltage range to the motor voltage
-	// scale to [0, 256] -> [0, 24000] -> [-100, 100]
+	// scale to [-127, 127] -> [-12000, 12000]
 	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
-	command -= MOTOR_VOLTAGE_RANGE;  // readjust back to [-100, 100]
+	command -= MOTOR_VOLTAGE_RANGE;
 	return motor_move_voltage(port, command);
 }
 
