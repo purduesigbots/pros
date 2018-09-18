@@ -58,7 +58,6 @@ static_sem_s_t port_mutex_bufs[V5_MAX_DEVICE_PORTS];  // Stack mem for rtos
  */
 void vdml_initialize() {
 	port_mutex_init();
-	registry_init();
 }
 
 /**
@@ -80,7 +79,7 @@ int port_mutex_take(uint8_t port) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-	return mutex_take(port_mutexes[port], TIMEOUT_MAX);
+	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_take(port_mutexes[port], TIMEOUT_MAX);
 }
 
 int internal_port_mutex_take(uint8_t port) {
@@ -102,7 +101,7 @@ int port_mutex_give(uint8_t port) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-	return mutex_give(port_mutexes[port]);
+	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_give(port_mutexes[port]);
 }
 
 int internal_port_mutex_give(uint8_t port) {

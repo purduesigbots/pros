@@ -191,6 +191,11 @@ void display_fatal_error(const char* text);
  */
 void kprint_hex(uint8_t* s, size_t len);
 
+int32_t xTaskGetSchedulerState();
+#define taskSCHEDULER_SUSPENDED ((int32_t)0)
+#define taskSCHEDULER_NOT_STARTED ((int32_t)1)
+#define taskSCHEDULER_RUNNING ((int32_t)2)
+
 #ifdef __cplusplus
 #undef task_t
 #undef task_fn_t
