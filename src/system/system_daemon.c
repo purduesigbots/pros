@@ -64,7 +64,7 @@ static void _system_daemon_task(void* ign) {
 
 	// XXX: Delay likely necessary for shared memory to get copied over
 	// (discovered b/c VDML would crash and burn)
-	task_delay(1);
+	task_delay(2);
 
 	// initialization that needs to occur with the scheduler started
 	vdml_initialize();
@@ -80,7 +80,6 @@ static void _system_daemon_task(void* ign) {
 		// wait for initialize to finish
 		do_background_operations();
 	}
-	bool comp_init_completed = false;
 	while (1) {
 		do_background_operations();
 
@@ -90,15 +89,15 @@ static void _system_daemon_task(void* ign) {
 			status = competition_get_status();
 			enum state_task state = E_OPCONTROL_TASK;
 			if ((status & COMPETITION_DISABLED) && (old_status & COMPETITION_DISABLED)) {
-				// Don't restart the disabled task
+				// Don't restart the disabled task even if other bits have changed (e.g. auton bit)
 				continue;
 			}
 
 			// competition initialize runs only when entering disabled and we're
 			// connected to competition control
-			if (status & (COMPETITION_DISABLED | COMPETITION_CONNECTED) && !comp_init_completed) {
+			if ((status ^ old_status) & COMPETITION_CONNECTED &&
+			    (status & (COMPETITION_DISABLED | COMPETITION_CONNECTED)) == (COMPETITION_DISABLED | COMPETITION_CONNECTED)) {
 				state = E_COMP_INIT_TASK;
-				comp_init_completed = true;
 			} else if (status & COMPETITION_DISABLED) {
 				state = E_DISABLED_TASK;
 			} else if (status & COMPETITION_AUTONOMOUS) {
