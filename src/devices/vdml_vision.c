@@ -16,10 +16,21 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
-#define ZERO_POINT(port) registry_get_device(port)->pad[port]
+typedef struct vision_data {
+	bool zero_point;
+} vision_data_s_t;
+
+static bool get_zero_point(uint8_t port) {
+	return ((vision_data_s_t*)registry_get_device(port)->pad)->zero_point;
+}
+
+static void set_zero_point(uint8_t port, bool zero_point) {
+	vision_data_s_t* data = (vision_data_s_t*)registry_get_device(port)->pad;
+	data->zero_point = zero_point;
+}
 
 static void _vision_transform_coords(uint8_t port, vision_object_s_t* object_ptr) {
-	switch (ZERO_POINT(port)) {
+	switch (get_zero_point(port)) {
 		case E_VISION_ZERO_CENTER:
 			object_ptr->left_coord -= VISION_FOV_WIDTH / 2;
 			object_ptr->top_coord = (VISION_FOV_HEIGHT / 2) - object_ptr->top_coord;
@@ -278,7 +289,18 @@ int32_t vision_get_white_balance(uint8_t port) {
 }
 
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
-	claim_port(port - 1, E_DEVICE_VISION);
-	device->pad[port - 1] = (uint8_t)zero_point;
+	if (!VALIDATE_PORT_NO(port - 1)) {
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	if (registry_validate_binding(port - 1, E_DEVICE_VISION) != 0) {
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	if (!port_mutex_take(port - 1)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
+	set_zero_point(port - 1, (bool)zero_point);
 	return_port(port - 1, 1);
 }

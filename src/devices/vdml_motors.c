@@ -23,79 +23,26 @@
 #define MOTOR_MOVE_RANGE 127
 #define MOTOR_VOLTAGE_RANGE 12000
 
-typedef union motor_data {
-	struct {
-		V5_DeviceMotorPid pos, vel;
-	} pid_data;
-	uint8_t raw[24];
+typedef struct motor_data {
+	V5_DeviceMotorPid pos_pid, vel_pid;
 } motor_data_s_t;
 
 static V5_DeviceMotorPid get_pos_pid(uint8_t port) {
-	motor_data_s_t data;
-	data.raw[0] = registry_get_device(port)->pad[port * 4];
-	data.raw[1] = registry_get_device(port)->pad[port * 4 + 1];
-	data.raw[2] = registry_get_device(port)->pad[port * 4 + 2];
-	data.raw[3] = registry_get_device(port)->pad[port * 4 + 3];
-	data.raw[4] = registry_get_device(port)->pad[port * 4 + 4];
-	data.raw[5] = registry_get_device(port)->pad[port * 4 + 5];
-	data.raw[6] = registry_get_device(port)->pad[port * 4 + 6];
-	data.raw[7] = registry_get_device(port)->pad[port * 4 + 7];
-	data.raw[8] = registry_get_device(port)->pad[port * 4 + 8];
-	data.raw[9] = registry_get_device(port)->pad[port * 4 + 9];
-	data.raw[10] = registry_get_device(port)->pad[port * 4 + 10];
-	data.raw[11] = registry_get_device(port)->pad[port * 4 + 11];
-	return data.pid_data.pos;
+	return ((motor_data_s_t*)registry_get_device(port)->pad)->pos_pid;
 }
 
 static void set_pos_pid(uint8_t port, V5_DeviceMotorPid pos) {
-	motor_data_s_t data;
-	data.pid_data.pos = pos;
-	registry_get_device(port)->pad[port * 4] = data.raw[0];
-	registry_get_device(port)->pad[port * 4 + 1] = data.raw[1];
-	registry_get_device(port)->pad[port * 4 + 2] = data.raw[2];
-	registry_get_device(port)->pad[port * 4 + 3] = data.raw[3];
-	registry_get_device(port)->pad[port * 4 + 4] = data.raw[4];
-	registry_get_device(port)->pad[port * 4 + 5] = data.raw[5];
-	registry_get_device(port)->pad[port * 4 + 6] = data.raw[6];
-	registry_get_device(port)->pad[port * 4 + 7] = data.raw[7];
-	registry_get_device(port)->pad[port * 4 + 8] = data.raw[8];
-	registry_get_device(port)->pad[port * 4 + 9] = data.raw[9];
-	registry_get_device(port)->pad[port * 4 + 10] = data.raw[10];
-	registry_get_device(port)->pad[port * 4 + 11] = data.raw[11];
+	motor_data_s_t* data = (motor_data_s_t*)registry_get_device(port)->pad;
+	data->pos_pid = pos;
 }
 
 static V5_DeviceMotorPid get_vel_pid(uint8_t port) {
-	motor_data_s_t data;
-	data.raw[12] = registry_get_device(port)->pad[port * 4 + 12];
-	data.raw[13] = registry_get_device(port)->pad[port * 4 + 13];
-	data.raw[14] = registry_get_device(port)->pad[port * 4 + 14];
-	data.raw[15] = registry_get_device(port)->pad[port * 4 + 15];
-	data.raw[16] = registry_get_device(port)->pad[port * 4 + 16];
-	data.raw[17] = registry_get_device(port)->pad[port * 4 + 17];
-	data.raw[18] = registry_get_device(port)->pad[port * 4 + 18];
-	data.raw[19] = registry_get_device(port)->pad[port * 4 + 19];
-	data.raw[20] = registry_get_device(port)->pad[port * 4 + 20];
-	data.raw[21] = registry_get_device(port)->pad[port * 4 + 21];
-	data.raw[22] = registry_get_device(port)->pad[port * 4 + 22];
-	data.raw[23] = registry_get_device(port)->pad[port * 4 + 23];
-	return data.pid_data.vel;
+	return ((motor_data_s_t*)registry_get_device(port)->pad)->vel_pid;
 }
 
 static void set_vel_pid(uint8_t port, V5_DeviceMotorPid vel) {
-	motor_data_s_t data;
-	data.pid_data.vel = vel;
-	registry_get_device(port)->pad[port * 4 + 12] = data.raw[12];
-	registry_get_device(port)->pad[port * 4 + 13] = data.raw[13];
-	registry_get_device(port)->pad[port * 4 + 14] = data.raw[14];
-	registry_get_device(port)->pad[port * 4 + 15] = data.raw[15];
-	registry_get_device(port)->pad[port * 4 + 16] = data.raw[16];
-	registry_get_device(port)->pad[port * 4 + 17] = data.raw[17];
-	registry_get_device(port)->pad[port * 4 + 18] = data.raw[18];
-	registry_get_device(port)->pad[port * 4 + 19] = data.raw[19];
-	registry_get_device(port)->pad[port * 4 + 20] = data.raw[20];
-	registry_get_device(port)->pad[port * 4 + 21] = data.raw[21];
-	registry_get_device(port)->pad[port * 4 + 22] = data.raw[22];
-	registry_get_device(port)->pad[port * 4 + 23] = data.raw[23];
+	motor_data_s_t* data = (motor_data_s_t*)registry_get_device(port)->pad;
+	data->vel_pid = vel;
 }
 
 // Movement functions

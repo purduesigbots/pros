@@ -20,14 +20,45 @@
 #include "kapi.h"
 #include "vdml/vdml.h"
 
+#define CONTROLLER_MAX_COLS 15
+
 // From enum in misc.h
 #define NUM_BUTTONS 12
 
-#define CONTROLLER_MAX_COLS 15
+typedef struct controller_data {
+	bool button_pressed[NUM_BUTTONS];
+} controller_data_s_t;
 
-// Represents the array of "was_pressed" for all available buttons.
-// There are two controllers, thus two sets of button states are stored.
-bool button_pressed[NUM_BUTTONS * 2];
+bool get_button_pressed(controller_id_e_t id, int button) {
+	uint8_t port;
+	switch (id) {
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			return 0;
+	}
+	return ((controller_data_s_t*)registry_get_device(port)->pad)->button_pressed[button];
+}
+
+void set_button_pressed(controller_id_e_t id, int button, bool state) {
+	uint8_t port;
+	switch (id) {
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			return;
+	}
+	controller_data_s_t* data = (controller_data_s_t*)registry_get_device(port)->pad;
+	data->button_pressed[button] = state;
+}
 
 int32_t controller_is_connected(controller_id_e_t id) {
 	uint8_t port;
@@ -142,18 +173,36 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
 
 int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button) {
 	int32_t pressed = controller_get_digital(id, button);
+	uint8_t port;
+	switch (id) {
+		case E_CONTROLLER_MASTER:
+			port = V5_PORT_CONTROLLER_1;
+			break;
+		case E_CONTROLLER_PARTNER:
+			port = V5_PORT_CONTROLLER_2;
+			break;
+		default:
+			errno = EINVAL;
+			return PROS_ERR;
+	}
+	if (!internal_port_mutex_take(port)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	uint8_t button_num = button - E_CONTROLLER_DIGITAL_L1;
-	if (id == E_CONTROLLER_PARTNER) button_num += NUM_BUTTONS;
 
-	if (!pressed) button_pressed[button_num] = false;
+	if (!pressed) set_button_pressed(port, button_num, false);
 
-	if (pressed && !button_pressed[button_num]) {
+	if (pressed && !get_button_pressed(port, button_num)) {
 		// button is currently pressed and was not detected as being pressed during
 		// last check
-		button_pressed[button_num] = true;
+		set_button_pressed(port, button_num, true);
+		internal_port_mutex_give(port);
 		return true;
-	} else
+	} else {
+		internal_port_mutex_give(port);
 		return false;  // button is not pressed or was already detected
+	}
 }
 
 int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str) {
