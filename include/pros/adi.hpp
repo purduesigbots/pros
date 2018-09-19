@@ -471,6 +471,60 @@ class ADIUltrasonic : private ADIPort {
 	 */
 	using ADIPort::get_value;
 };
+
+class ADIGyro : private ADIPort {
+	public:
+	/**
+	 * Initializes a gyroscope on the given port. If the given port has not
+	 * previously been configured as a gyro, then this function starts a 1 second
+	 * calibration period.
+	 *
+	 * If calibration is required, it is highly recommended that this function be
+	 * called from initialize when the robot is stationary.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EINVAL - The given value is not within the range of ADI Ports
+	 * EACCES - Another resource is currently trying to access the ADI.
+	 *
+	 * \param port
+	 *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
+	 * \param multiplier
+	 *        A scalar value that will be multiplied by the gyro heading value
+	 *        supplied by the ADI
+	 */
+	ADIGyro(std::uint8_t port, double multiplier = 1);
+
+	~ADIGyro(void) override;
+
+	/**
+	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
+	 * applied to the gyro, the return value will be a whole number representing
+	 * the number of degrees of rotation times 10.
+	 *
+	 * There are 360 degrees in a circle, thus the gyro will return 3600 for one
+	 * whole rotation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the ADI.
+	 *
+	 * \return The gyro angle in degrees.
+	 */
+	double get_value(void) const;
+
+	/**
+	 * Resets the gyroscope value to zero.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the ADI.
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	std::int32_t reset(void) const;
+};
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_

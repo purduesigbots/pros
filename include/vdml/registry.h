@@ -24,7 +24,7 @@ extern "C" {
 typedef struct {
 	v5_device_e_t device_type;
 	V5_DeviceT device_info;
-	uint8_t pad[32];  // size currently determined by ADI needs
+	uint8_t pad[128];  // 16 bytes in adi_data_s_t times 8 ADI Ports = 128
 } v5_smart_device_s_t;
 
 /*

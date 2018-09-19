@@ -36,49 +36,70 @@ typedef union adi_data {
 	struct {
 		bool reversed;
 	} encoder_data;
-	uint8_t raw[4];
+	struct __attribute__((packed)) {
+		double multiplier;
+		double tare_value;
+	} gyro_data;
 } adi_data_s_t;
 
 static int32_t get_analog_calib(uint8_t port) {
-	adi_data_s_t data;
-	data.raw[0] = registry_get_device(port)->pad[port * 4];
-	data.raw[1] = registry_get_device(port)->pad[port * 4 + 1];
-	data.raw[2] = registry_get_device(port)->pad[port * 4 + 2];
-	data.raw[3] = registry_get_device(port)->pad[port * 4 + 3];
-	return data.analog_data.calib;
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	return adi_data->analog_data.calib;
 }
 
 static void set_analog_calib(uint8_t port, int32_t calib) {
-	adi_data_s_t data;
-	data.analog_data.calib = calib;
-	registry_get_device(port)->pad[port * 4] = data.raw[0];
-	registry_get_device(port)->pad[port * 4 + 1] = data.raw[1];
-	registry_get_device(port)->pad[port * 4 + 2] = data.raw[2];
-	registry_get_device(port)->pad[port * 4 + 3] = data.raw[3];
+	port_mutex_take(port);
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	adi_data->analog_data.calib = calib;
+	port_mutex_give(port);
 }
 
 static bool get_digital_pressed(uint8_t port) {
-	adi_data_s_t data;
-	data.raw[0] = registry_get_device(port)->pad[port * 4];
-	return data.digital_data.was_pressed;
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	return adi_data->digital_data.was_pressed;
 }
 
 static void set_digital_pressed(uint8_t port, bool val) {
-	adi_data_s_t data;
-	data.digital_data.was_pressed = val;
-	registry_get_device(port)->pad[port * 4] = data.raw[0];
+	port_mutex_take(port);
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	adi_data->digital_data.was_pressed = val;
+	port_mutex_give(port);
 }
 
 static bool get_encoder_reversed(uint8_t port) {
-	adi_data_s_t data;
-	data.raw[0] = registry_get_device(port)->pad[port * 4];
-	return data.encoder_data.reversed;
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	return adi_data->encoder_data.reversed;
 }
 
 static void set_encoder_reversed(uint8_t port, bool val) {
-	adi_data_s_t data;
-	data.encoder_data.reversed = val;
-	registry_get_device(port)->pad[port * 4] = data.raw[0];
+	port_mutex_take(port);
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	adi_data->encoder_data.reversed = val;
+	port_mutex_give(port);
+}
+
+static double get_gyro_multiplier(uint8_t port) {
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	return adi_data->gyro_data.multiplier;
+}
+
+static double get_gyro_tare(uint8_t port) {
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	return adi_data->gyro_data.tare_value;
+}
+
+static void set_gyro_multiplier(uint8_t port, double mult) {
+	port_mutex_take(port);
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	adi_data->gyro_data.multiplier = mult;
+	port_mutex_give(port);
+}
+
+static void set_gyro_tare(uint8_t port, double tare) {
+	port_mutex_take(port);
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(registry_get_device(INTERNAL_ADI_PORT)->pad))[port];
+	adi_data->gyro_data.tare_value = tare;
+	port_mutex_give(port);
 }
 
 #define transform_adi_port(port)       \
@@ -97,6 +118,12 @@ static void set_encoder_reversed(uint8_t port, bool val) {
 	adi_port_config_e_t config = _adi_port_get_config(port); \
 	if (config != type) {                                    \
 		return PROS_ERR;                                       \
+	}
+
+#define validate_type_f(port, type)                        \
+	adi_port_config_e_t config = _adi_port_get_config(port); \
+	if (config != type) {                                    \
+		return PROS_ERR_F;                                     \
 	}
 
 #define validate_analog(port)                                                                                     \
@@ -285,7 +312,6 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool
 	transform_adi_port(port_top);
 	transform_adi_port(port_bottom);
 	validate_twowire(port_top, port_bottom);
-	// encoder_reversed[(port - 1) / 2] = reverse;
 	set_encoder_reversed(port, reverse);
 
 	if (_adi_port_set_config(port, E_ADI_LEGACY_ENCODER)) {
@@ -332,4 +358,44 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 	validate_type(ult, E_ADI_LEGACY_ULTRASONIC);
 	return _adi_port_set_config(ult, E_ADI_TYPE_UNDEFINED);
+}
+
+adi_gyro_t adi_gyro_init(uint8_t port, double multiplier) {
+	transform_adi_port(port);
+	if (multiplier == 0) multiplier = 1;
+	set_gyro_multiplier(port, multiplier);
+	set_gyro_tare(port, 0);
+
+	adi_port_config_e_t config = _adi_port_get_config(port);
+	if (config == E_ADI_LEGACY_GYRO) {
+		// port has already been calibrated, no need to do that again
+		return port;
+	}
+
+	int status = _adi_port_set_config(port, E_ADI_LEGACY_GYRO);
+	delay(1300);  // Actual calibration time is 1024ms, but in practice this seemed
+	              // to be the bare minimum time it takes
+	if (status)
+		return port;
+	else
+		return PROS_ERR;
+}
+
+double adi_gyro_get(adi_gyro_t gyro) {
+	validate_type_f(gyro, E_ADI_LEGACY_GYRO);
+	double rtn = (double)_adi_port_get_value(gyro);
+	rtn -= get_gyro_tare(gyro);
+	rtn *= get_gyro_multiplier(gyro);
+	return rtn;
+}
+
+int32_t adi_gyro_reset(adi_gyro_t gyro) {
+	validate_type(gyro, E_ADI_LEGACY_GYRO);
+	set_gyro_tare(gyro, _adi_port_get_value(gyro));
+	return 1;
+}
+
+int32_t adi_gyro_shutdown(adi_gyro_t gyro) {
+	validate_type(gyro, E_ADI_LEGACY_GYRO);
+	return _adi_port_set_config(gyro, E_ADI_TYPE_UNDEFINED);
 }

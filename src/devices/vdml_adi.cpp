@@ -102,4 +102,20 @@ ADIUltrasonic::ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping) {
 	_port = adi_ultrasonic_init(port_echo, port_ping) + 1;
 	// Add 1 to ensure that the ADIPort::get_value can be used
 }
+
+ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
+	_port = adi_gyro_init(port, multiplier);
+}
+
+ADIGyro::~ADIGyro(void) {
+	// Don't change the port configuration so we don't have to recalibrate
+}
+
+double ADIGyro::get_value(void) const {
+	return adi_gyro_get(_port);
+}
+
+std::int32_t ADIGyro::reset(void) const {
+	return adi_gyro_reset(_port);
+}
 }  // namespace pros
