@@ -202,6 +202,22 @@ class Controller {
 	std::int32_t clear_line(std::uint8_t line);
 
 	/**
+	 * Rumble the controller.
+	 *
+	 * \note Controller rumble activation is currently in beta, so continuous, fast
+	 * updates will not work well.
+	 *
+	 * \param rumble_pattern
+	 *				A string consisting of the characters '.', '-', and ' ', where dots
+	 *				are short rumbles, dashes are long rumbles, and spaces are pauses.
+	 *				Maximum supported length is 8 characters.
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	std::int32_t rumble(const char* rumble_pattern);
+
+	/**
 	 * Clears all of the lines on the controller screen.
 	 *
 	 * \note Controller text setting is currently in beta, so continuous, fast

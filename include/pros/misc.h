@@ -331,6 +331,25 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
 int32_t controller_clear(controller_id_e_t id);
 
 /**
+ * Rumble the controller.
+ *
+ * \note Controller rumble activation is currently in beta, so continuous, fast
+ * updates will not work well.
+ *
+ * \param id
+ *				The ID of the controller (e.g. the master or partner controller).
+ *				Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+ * \param rumble_pattern
+ *				A string consisting of the characters '.', '-', and ' ', where dots
+ *				are short rumbles, dashes are long rumbles, and spaces are pauses.
+ *				Maximum supported length is 8 characters.
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
+
+/**
  * Gets the current voltage of the battery, as reported by VEXos.
  *
  * This function uses the following values of errno when an error state is

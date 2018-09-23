@@ -306,6 +306,10 @@ int32_t controller_clear(controller_id_e_t id) {
 	return 1;
 }
 
+int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern) {
+	return controller_set_text(id, 3, 0, rumble_pattern);
+}
+
 uint8_t competition_get_status(void) {
 	return vexCompetitionStatus();
 }

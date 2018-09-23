@@ -55,6 +55,10 @@ std::int32_t Controller::clear(void) {
 	return controller_clear(_id);
 }
 
+std::int32_t Controller::rumble(const char* rumble_pattern) {
+	return controller_rumble(_id, rumble_pattern);
+}
+
 namespace competition {
 std::uint8_t get_status(void) {
 	return competition_get_status();
