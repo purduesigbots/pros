@@ -152,6 +152,11 @@ class Controller {
 	 * \note Controller text setting is currently in beta, so continuous, fast
 	 * updates will not work well.
 	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
 	 * \param line
 	 *        The line number at which the text will be displayed [0-2]
 	 * \param col
@@ -175,6 +180,11 @@ class Controller {
 	 * \note Controller text setting is currently in beta, so continuous, fast
 	 * updates will not work well.
 	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
 	 * \param line
 	 *        The line number at which the text will be displayed [0-2]
 	 * \param col
@@ -193,6 +203,11 @@ class Controller {
 	 * \note Controller text setting is currently in beta, so continuous, fast
 	 * updates will not work well.
 	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
 	 * \param line
 	 *        The line number to clear [0-2]
 	 *
@@ -206,6 +221,11 @@ class Controller {
 	 *
 	 * \note Controller rumble activation is currently in beta, so continuous, fast
 	 * updates will not work well.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
 	 *
 	 * \param rumble_pattern
 	 *				A string consisting of the characters '.', '-', and ' ', where dots
@@ -222,6 +242,11 @@ class Controller {
 	 *
 	 * \note Controller text setting is currently in beta, so continuous, fast
 	 * updates will not work well.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.

@@ -257,8 +257,14 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so  continuous, fast
+ * \note Controller text setting is currently in beta, so continuous, fast
  * updates will not work well.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
+ * given.
+ * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -280,8 +286,14 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so  continuous, fast
+ * \note Controller text setting is currently in beta, so continuous, fast
  * updates will not work well.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
+ * given.
+ * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -301,8 +313,14 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 /**
  * Clears an individual line of the controller screen.
  *
- * \note Controller text setting is currently in beta, so  continuous, fast
+ * \note Controller text setting is currently in beta, so continuous, fast
  * updates will not work well.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
+ * given.
+ * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -318,8 +336,14 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
 /**
  * Clears all of the lines on the controller screen.
  *
- * \note Controller text setting is currently in beta, so  continuous, fast
+ * \note Controller text setting is currently in beta, so continuous, fast
  * updates will not work well.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
+ * given.
+ * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -335,6 +359,12 @@ int32_t controller_clear(controller_id_e_t id);
  *
  * \note Controller rumble activation is currently in beta, so continuous, fast
  * updates will not work well.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
+ * given.
+ * EACCES - Another resource is currently trying to access the controller port.
  *
  * \param id
  *				The ID of the controller (e.g. the master or partner controller).
