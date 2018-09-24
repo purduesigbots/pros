@@ -731,8 +731,8 @@ class Motor {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The motor's current limit in mA or PROS_ERR if the operation failed,
+	 * setting errno.
 	 */
 	virtual std::int32_t get_current_limit(void) const;
 
