@@ -642,11 +642,11 @@ double adi_gyro_get(adi_gyro_t gyro);
 
 /**
  * Initializes a gyroscope on the given port. If the given port has not
- * previously been configured as a gyro, then this function starts a 1 second
+ * previously been configured as a gyro, then this function starts a 1300 ms
  * calibration period.
  *
- * If calibration is required, it is highly recommended that this function be
- * called from initialize when the robot is stationary.
+ * It is highly recommended that this function be called from initialize() when
+ * the robot is stationary to ensure proper calibration.
  *
  * This function uses the following values of errno when an error state is
  * reached:

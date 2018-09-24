@@ -476,11 +476,14 @@ class ADIGyro : private ADIPort {
 	public:
 	/**
 	 * Initializes a gyroscope on the given port. If the given port has not
-	 * previously been configured as a gyro, then this function starts a 1 second
+	 * previously been configured as a gyro, then this function starts a 1300ms
 	 * calibration period.
 	 *
-	 * If calibration is required, it is highly recommended that this function be
-	 * called from initialize when the robot is stationary.
+	 * It is highly recommended that an ADIGyro object be created in initialize()
+	 * when the robot is stationary to ensure proper calibration. If an ADIGyro
+	 * object is declared at the global scope, a hardcoded 1300ms delay at the
+	 * beginning of initialize will be necessary to ensure that the gyro's
+	 * returned values are correct at the beginning of autonomous/opcontrol.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

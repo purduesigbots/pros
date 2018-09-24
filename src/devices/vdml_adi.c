@@ -26,6 +26,10 @@
 
 #define NUM_MAX_TWOWIRE 4
 
+// Theoretical calibration time is 1024ms, but in practice this seemed to be the
+// actual time that it takes.
+#define GYRO_CALIBRATION_TIME 1300
+
 typedef union adi_data {
 	struct {
 		int32_t calib;
@@ -373,8 +377,12 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier) {
 	}
 
 	int status = _adi_port_set_config(port, E_ADI_LEGACY_GYRO);
-	delay(1300);  // Actual calibration time is 1024ms, but in practice this seemed
-	              // to be the bare minimum time it takes
+	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING)
+		// If the scheduler is currently running (meaning that this is not called
+		// from a global constructor, for example) then delay for the duration of
+		// the calibration time in VexOS.
+		delay(GYRO_CALIBRATION_TIME);
+
 	if (status)
 		return port;
 	else
