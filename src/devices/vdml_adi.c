@@ -130,21 +130,6 @@ static void set_gyro_tare(uint8_t port, double tare) {
 		return PROS_ERR_F;                                     \
 	}
 
-#define validate_analog(port)                                                                                     \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                                        \
-	if (config != E_ADI_ANALOG_IN && config != E_ADI_LEGACY_POT && config != E_ADI_LEGACY_LINE_SENSOR &&            \
-	    config != E_ADI_LEGACY_LIGHT_SENSOR && config != E_ADI_LEGACY_ACCELEROMETER && config != E_ADI_SMART_POT) { \
-		errno = EINVAL;                                                                                               \
-		return PROS_ERR;                                                                                              \
-	}
-
-#define validate_digital_in(port)                                                                    \
-	adi_port_config_e_t config = _adi_port_get_config(port);                                           \
-	if (config != E_ADI_DIGITAL_IN && config != E_ADI_LEGACY_BUTTON && config != E_ADI_SMART_BUTTON) { \
-		errno = EINVAL;                                                                                  \
-		return PROS_ERR;                                                                                 \
-	}
-
 #define validate_motor(port)                                        \
 	adi_port_config_e_t config = _adi_port_get_config(port);          \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
@@ -214,7 +199,7 @@ int32_t adi_port_get_value(uint8_t port) {
 
 int32_t adi_analog_calibrate(uint8_t port) {
 	transform_adi_port(port);
-	validate_analog(port);
+	validate_type(port, E_ADI_ANALOG_IN);
 	uint32_t total = 0, i;
 	for (i = 0; i < 512; i++) {
 		total += _adi_port_get_value(port);
@@ -226,25 +211,25 @@ int32_t adi_analog_calibrate(uint8_t port) {
 
 int32_t adi_analog_read(uint8_t port) {
 	transform_adi_port(port);
-	validate_analog(port);
+	validate_type(port, E_ADI_ANALOG_IN);
 	return _adi_port_get_value(port);
 }
 
 int32_t adi_analog_read_calibrated(uint8_t port) {
 	transform_adi_port(port);
-	validate_analog(port);
+	validate_type(port, E_ADI_ANALOG_IN);
 	return (_adi_port_get_value(port) - (get_analog_calib(port) >> 4));
 }
 
 int32_t adi_analog_read_calibrated_HR(uint8_t port) {
 	transform_adi_port(port);
-	validate_analog(port);
+	validate_type(port, E_ADI_ANALOG_IN);
 	return ((_adi_port_get_value(port) << 4) - get_analog_calib(port));
 }
 
 int32_t adi_digital_read(uint8_t port) {
 	transform_adi_port(port);
-	validate_digital_in(port);
+	validate_type(port, E_ADI_DIGITAL_IN);
 	return _adi_port_get_value(port);
 }
 
