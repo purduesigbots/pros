@@ -575,7 +575,8 @@ typedef int32_t adi_ultrasonic_t;
  * \param ult
  *        The adi_ultrasonic_t object from adi_ultrasonic_init() to read
  *
- * \return The distance to the nearest object in centimeters
+ * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
+ * measured from the sensor's mounting points.
  */
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
 
@@ -588,17 +589,17 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
  * port is not configured as an ADI Ultrasonic.
  * EACCES - Another resource is currently trying to access the ADI.
  *
- * \param port_echo
- *        The port connected to the yellow INPUT cable. This should be in port
- *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
  * \param port_ping
  *        The port connected to the orange OUTPUT cable. This should be in the
  *        next highest port following port_echo.
+ * \param port_echo
+ *        The port connected to the yellow INPUT cable. This should be in port
+ *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
  */
-adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_echo, uint8_t port_ping);
+adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
 
 /**
  * Disables the ultrasonic sensor and voids the configuration on its ports.

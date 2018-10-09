@@ -447,14 +447,14 @@ class ADIUltrasonic : private ADIPort {
 	 * EINVAL - The given value is not within the range of ADI Ports.
 	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
-	 * \param port_echo
-	 *        The port connected to the yellow INPUT cable. This should be in port
-	 *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
 	 * \param port_ping
 	 *        The port connected to the orange OUTPUT cable. This should be in the
 	 *        next highest port following port_echo.
+	 * \param port_echo
+	 *        The port connected to the yellow INPUT cable. This should be in port
+	 *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
 	 */
-	ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping);
+	ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -467,7 +467,8 @@ class ADIUltrasonic : private ADIPort {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
-	 * \return The distance to the nearest object in centimeters
+	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
+	 * meter), measured from the sensor's mounting points.
 	 */
 	using ADIPort::get_value;
 };

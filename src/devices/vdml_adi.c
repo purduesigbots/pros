@@ -326,11 +326,11 @@ int32_t adi_encoder_shutdown(adi_encoder_t enc) {
 	return _adi_port_set_config(enc, E_ADI_TYPE_UNDEFINED);
 }
 
-adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_echo, uint8_t port_ping) {
-	transform_adi_port(port_echo);
+adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo) {
 	transform_adi_port(port_ping);
-	validate_twowire(port_echo, port_ping);
-	if (port != port_echo) return PROS_ERR;
+	transform_adi_port(port_echo);
+	validate_twowire(port_ping, port_echo);
+	if (port != port_ping) return PROS_ERR;
 
 	if (_adi_port_set_config(port, E_ADI_LEGACY_ULTRASONIC)) {
 		return port;
