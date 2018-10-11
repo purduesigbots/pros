@@ -15,7 +15,6 @@
 #include "kapi.h"
 #include "system/optimizers.h"
 
-extern void vdml_initialize();
 extern void vdml_background_processing();
 
 extern void port_mutex_take_all();
@@ -64,10 +63,11 @@ static void _system_daemon_task(void* ign) {
 
 	// XXX: Delay likely necessary for shared memory to get copied over
 	// (discovered b/c VDML would crash and burn)
+	// Take all port mutexes to prevent user code from attempting to access VDML during this time. User code could be
+	// running if a task is created from a global ctor
+	port_mutex_take_all();
 	task_delay(2);
-
-	// initialization that needs to occur with the scheduler started
-	vdml_initialize();
+	port_mutex_give_all();
 
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition

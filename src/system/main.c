@@ -24,7 +24,7 @@ extern void system_daemon_initialize();
 // extern void graphical_context_daemon_initialize(void);
 extern void display_initialize(void);
 extern void rtos_sched_start();
-extern void registry_init();
+extern void vdml_initialize();
 
 // XXX: pros_init happens inside __libc_init_array, and before any global
 // C++ constructors are invoked. This is accomplished by instructing
@@ -37,7 +37,7 @@ __attribute__((constructor(101))) static void pros_init(void) {
 
 	vfs_initialize();
 
-	registry_init();
+	vdml_initialize();
 
 	system_daemon_initialize();
 

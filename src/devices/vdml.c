@@ -58,6 +58,7 @@ static_sem_s_t port_mutex_bufs[V5_MAX_DEVICE_PORTS];  // Stack mem for rtos
  */
 void vdml_initialize() {
 	port_mutex_init();
+	registry_init();
 }
 
 /**
