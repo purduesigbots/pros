@@ -5,12 +5,9 @@ This repository hosts the kernel for PROS. The PROS kernel is the operating syst
 The PROS kernel has the following features:
  * FreeRTOS Scheduler
  * FreeRTOS Heap
- * JINX, a graphical debugger
  * VDML, the end-user interface between CPU0 and CPU1
- * TMEI, the end-user graphical interface
- * Shell, a console for interacting with the microcontroller in real-time and provides real-time scripting capabilities
-
-More documentation soon :)
+ * LVGL, a graphics library tailored to embedded systems
+ * Newlib hooks for interacting with the serial communications, microSD card, onboard memory, and device-agnostic smart ports through the same API
 
 ## Using Arcanist
 Arcanist is a command line interface to some of phabricator's tools, including Differential which we will be using extensively for this project. The following are steps for setting up arcanist on your machine.
