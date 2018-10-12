@@ -240,8 +240,8 @@ class Motor {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \return The motor's actual velocity in motor_encoder_units_e_t per second
-	 * or PROS_ERR_F if the operation failed, setting errno.
+	 * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
+	 * failed, setting errno.
 	 */
 	virtual double get_actual_velocity(void) const;
 

@@ -223,8 +223,8 @@ int32_t motor_get_target_velocity(uint8_t port);
  * \param port
  *        The V5 port number from 1-21
  *
- * \return The motor's actual velocity in motor_encoder_units_e_t per second
- * or PROS_ERR_F if the operation failed, setting errno.
+ * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
+ * failed, setting errno.
  */
 double motor_get_actual_velocity(uint8_t port);
 
