@@ -155,7 +155,7 @@ task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, co
                    const char* const name);
 
 /**
- * Removes a task from the RTOS real time kernel's management.  The task being
+ * Removes a task from the RTOS real time kernel's management. The task being
  * deleted will be removed from all ready, blocked, suspended and event lists.
  *
  * Memory dynamically allocated by the task is not automatically freed, and

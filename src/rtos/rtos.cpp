@@ -13,7 +13,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
- 
+
 #include "kapi.h"
 #include "pros/rtos.hpp"
 
@@ -29,6 +29,10 @@ using namespace pros::c;
   Task::Task(task_t task) : task(task) { }
   void Task::operator = (const task_t in) {
     task = in;
+  }
+
+  void Task::remove() {
+    return task_delete(task);
   }
 
   std::uint32_t Task::get_priority(void) {
