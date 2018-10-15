@@ -22,7 +22,7 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
-static v5_smart_device_s_t registry[NUM_V5_PORTS];
+static v5_smart_device_s_t registry[V5_MAX_DEVICE_PORTS];
 static V5_DeviceType registry_types[V5_MAX_DEVICE_PORTS];
 
 void registry_init() {
@@ -80,6 +80,14 @@ int registry_unbind_port(uint8_t port) {
 
 v5_smart_device_s_t* registry_get_device(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
+		errno = EINVAL;
+		return NULL;
+	}
+	return &registry[port];
+}
+
+v5_smart_device_s_t* registry_get_device_internal(uint8_t port) {
+	if (!VALIDATE_PORT_NO_INTERNAL(port)) {
 		errno = EINVAL;
 		return NULL;
 	}

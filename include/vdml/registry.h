@@ -51,6 +51,21 @@ void registry_update_types();
 v5_smart_device_s_t* registry_get_device(uint8_t port);
 
 /*
+ * Returns the information on the device registered to the port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given value is not within the range of V5 ports (1-21).
+ *
+ * \param port
+ *        The V5 port number from 0-32
+ *
+ * \return A struct containing the device type and the info needed for api
+ * functions
+ */
+v5_smart_device_s_t* registry_get_device_internal(uint8_t port);
+
+/*
  * Returns the type of device registered to the port.
  *
  * This function uses the following values of errno when an error state is

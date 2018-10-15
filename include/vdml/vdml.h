@@ -18,9 +18,12 @@
 #include "vdml/registry.h"
 
 /**
- * Macro, returns true if the port is in range, false otherwise.
+ * Macro, returns true if the port is in range of user configurable ports,
+ * false otherwise.
  */
 #define VALIDATE_PORT_NO(PORT) ((PORT) >= 0 && (PORT) < NUM_V5_PORTS)
+
+#define VALIDATE_PORT_NO_INTERNAL(PORT) ((PORT) >= 0 && (PORT) < V5_MAX_DEVICE_PORTS)
 
 /**
  * Macro that handles error checking, sanity checking, automatic registration,
@@ -31,7 +34,7 @@
  * returns.
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 0-20
  * \param device_type
  *        The v5_device_e_t that the port is configured as
  */
@@ -60,7 +63,7 @@
  * EACCES - Another resource is currently trying to access the port.
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 0-20
  * \param device_type
  *        The v5_device_e_t that the port is configured as
  *
@@ -74,7 +77,7 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * function is an accessor wrapper whos return value is PROS_ERR or PROS_ERR_F.
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 0-20
  * \param rtn
  *        The desired return value
  *
@@ -94,7 +97,7 @@ extern int32_t port_errors;
  * port.
  *
  * \param port
- *        The V5 port number to set from 1-21
+ *        The V5 port number to set from 0-20
  */
 void vdml_set_port_error(uint8_t port);
 
@@ -102,7 +105,7 @@ void vdml_set_port_error(uint8_t port);
  * Sets the port's bit to 0, effectively resetting it.
  *
  * \param port
- *        The V5 port number to unset from 1-21
+ *        The V5 port number to unset from 0-20
  */
 void vdml_unset_port_error(uint8_t port);
 
@@ -111,7 +114,7 @@ void vdml_unset_port_error(uint8_t port);
  * error on this port.
  *
  * \param port
- *        The V5 port number to check from 1-21
+ *        The V5 port number to check from 0-20
  *
  * \return True if the port's bit is set, false otherwise.
  */
@@ -135,10 +138,10 @@ void vdml_reset_port_error();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EINVAL - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
- *        The V5 port number to claim from 1-21
+ *        The V5 port number to claim from 0-20
  *
  * \return 1 if the mutex was successfully taken, 0 if not, -1 if port is
  * invalid.
@@ -156,10 +159,10 @@ int port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EINVAL - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
- *        The V5 port number to free from 1-21
+ *        The V5 port number to free from 0-20
  */
 int port_mutex_give(uint8_t port);
 
@@ -175,15 +178,15 @@ void port_mutex_give_all();
 
 /**
  * Obtains a port mutex with bounds checking for V5_MAX_PORTS (32) not user
- * exposed device ports (22). Intended for internal usage for protecting
+ * exposed device ports (20). Intended for internal usage for protecting
  * thread-safety on devices such as the controller and battery
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EINVAL - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 0-32
  *
  * \return True if the mutex was successfully taken, false otherwise. If false
  * is returned, then errno is set with a hint about why the the mutex
@@ -193,15 +196,15 @@ int internal_port_mutex_take(uint8_t port);
 
 /**
  * Returns a port mutex with bounds checking for V5_MAX_PORTS (32) not user
- * exposed device ports (22). Intended for internal usage for protecting
+ * exposed device ports (20). Intended for internal usage for protecting
  * thread-safety on devices such as the controller and battery
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * EINVAL - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 0-32
  *
  * \return True if the mutex was successfully returned, false otherwise. If
  * false is returned, then errno is set with a hint about why the mutex

@@ -76,7 +76,7 @@ void port_mutex_init() {
 }
 
 int port_mutex_take(uint8_t port) {
-	if (port >= NUM_V5_PORTS) {
+	if (port >= V5_MAX_DEVICE_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
@@ -98,7 +98,7 @@ static inline char* print_num(char* buff, int num) {
 }
 
 int port_mutex_give(uint8_t port) {
-	if (port >= NUM_V5_PORTS) {
+	if (port >= V5_MAX_DEVICE_PORTS) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}

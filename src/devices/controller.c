@@ -29,34 +29,12 @@ typedef struct controller_data {
 	bool button_pressed[NUM_BUTTONS];
 } controller_data_s_t;
 
-bool get_button_pressed(controller_id_e_t id, int button) {
-	uint8_t port;
-	switch (id) {
-		case E_CONTROLLER_MASTER:
-			port = V5_PORT_CONTROLLER_1;
-			break;
-		case E_CONTROLLER_PARTNER:
-			port = V5_PORT_CONTROLLER_2;
-			break;
-		default:
-			return 0;
-	}
-	return ((controller_data_s_t*)registry_get_device(port)->pad)->button_pressed[button];
+bool get_button_pressed(int port, int button) {
+	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
-void set_button_pressed(controller_id_e_t id, int button, bool state) {
-	uint8_t port;
-	switch (id) {
-		case E_CONTROLLER_MASTER:
-			port = V5_PORT_CONTROLLER_1;
-			break;
-		case E_CONTROLLER_PARTNER:
-			port = V5_PORT_CONTROLLER_2;
-			break;
-		default:
-			return;
-	}
-	controller_data_s_t* data = (controller_data_s_t*)registry_get_device(port)->pad;
+void set_button_pressed(int port, int button, bool state) {
+	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data->button_pressed[button] = state;
 }
 
@@ -191,8 +169,9 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 	}
 	uint8_t button_num = button - E_CONTROLLER_DIGITAL_L1;
 
-	if (!pressed) set_button_pressed(port, button_num, false);
-
+	if (!pressed) {
+		set_button_pressed(port, button_num, false);
+	}
 	if (pressed && !get_button_pressed(port, button_num)) {
 		// button is currently pressed and was not detected as being pressed during
 		// last check
