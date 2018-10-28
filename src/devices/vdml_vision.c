@@ -17,14 +17,14 @@
 #include "vdml/vdml.h"
 
 typedef struct vision_data {
-	bool zero_point;
+	vision_zero_e_t zero_point;
 } vision_data_s_t;
 
-static bool get_zero_point(uint8_t port) {
+static vision_zero_e_t get_zero_point(uint8_t port) {
 	return ((vision_data_s_t*)registry_get_device(port)->pad)->zero_point;
 }
 
-static void set_zero_point(uint8_t port, bool zero_point) {
+static void set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 	vision_data_s_t* data = (vision_data_s_t*)registry_get_device(port)->pad;
 	data->zero_point = zero_point;
 }
@@ -54,7 +54,7 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
 	if (err == PROS_ERR) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
-		goto leave;
+		return rtn;
 	}
 	device = registry_get_device(port - 1);
 	if ((uint32_t)vexDeviceVisionObjectCountGet(device->device_info) <= size_id) {
@@ -75,18 +75,19 @@ leave:
 
 vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id) {
 	vision_object_s_t rtn;
+	rtn.signature = VISION_OBJECT_ERR_SIG;
 	v5_smart_device_s_t* device;
 	uint8_t count = 0;
 	int32_t object_count = 0;
 
-	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (err == PROS_ERR) {
-		errno = EINVAL;
-		goto err_return;
-	}
 	if (sig_id > 7 || sig_id == 0) {
 		errno = EINVAL;
-		goto err_return;
+		return rtn;
+	}
+
+	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
+	if (err == PROS_ERR) {
+		return rtn;
 	}
 	device = registry_get_device(port - 1);
 	object_count = vexDeviceVisionObjectCountGet(device->device_info);
@@ -189,21 +190,18 @@ int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t 
  */
 vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature_id) {
 	vision_signature_s_t sig;
-	int32_t rtn = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (rtn == PROS_ERR) {
-		sig.id = VISION_OBJECT_ERR_SIG;
-
-		return sig;
-	}
+	sig.id = VISION_OBJECT_ERR_SIG;
 	if (signature_id > 7 || signature_id == 0) {
 		errno = EINVAL;
-		sig.id = VISION_OBJECT_ERR_SIG;
 		return sig;
 	}
-
+	int32_t rtn = claim_port_try(port - 1, E_DEVICE_VISION);
+	if (rtn == PROS_ERR) {
+		return sig;
+	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	rtn = vexDeviceVisionSignatureGet(device->device_info, signature_id, (V5_DeviceVisionSignature*)&sig);
-	if (!rtn) {
+	if (!rtn || !sig._pad[0]) {  // sig._pad[0] is flags, will be set to 1 if data is valid and signatures are sent
 		errno = EAGAIN;
 		sig.id = VISION_OBJECT_ERR_SIG;
 	}
@@ -227,11 +225,11 @@ vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature
  * \return 1 if no errors occured, PROS_ERR otherwise
  */
 int32_t vision_write_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr) {
-	claim_port(port - 1, E_DEVICE_VISION);
 	if (signature_id > 8 || signature_id == 0) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
+	claim_port(port - 1, E_DEVICE_VISION);
 	signature_ptr->id = signature_id;
 
 	vexDeviceVisionSignatureSet(device->device_info, (V5_DeviceVisionSignature*)signature_ptr);
@@ -301,6 +299,6 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 		errno = EACCES;
 		return PROS_ERR;
 	}
-	set_zero_point(port - 1, (bool)zero_point);
+	set_zero_point(port - 1, zero_point);
 	return_port(port - 1, 1);
 }
