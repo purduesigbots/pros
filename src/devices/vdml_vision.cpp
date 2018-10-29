@@ -53,6 +53,18 @@ int32_t Vision::read_by_sig(const std::uint32_t size_id, const std::uint32_t sig
 	return vision_read_by_sig(_port, size_id, sig_id, object_count, object_arr);
 }
 
+vision_signature_s_t Vision::get_signature(const std::uint8_t signature_id) const {
+	return vision_get_signature(_port, signature_id);
+}
+
+std::int32_t Vision::print_signature(const vision_signature_s_t sig) {
+	return vision_print_signature(sig);
+}
+
+std::int32_t Vision::set_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const {
+	return vision_set_signature(_port, signature_id, signature_ptr);
+}
+
 std::int32_t Vision::set_auto_white_balance(const std::uint8_t enable) const {
 	return vision_set_auto_white_balance(_port, enable);
 }

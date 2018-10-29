@@ -111,6 +111,16 @@ class Vision {
 	std::int32_t get_object_count(void) const;
 
 	/**
+	 * Gets the object detection signature with the given id number.
+	 *
+	 * \param signature_id
+	 *        The signature id to read
+	 *
+	 * \return A vision_signature_s_t containing information about the signature.
+	 */
+	vision_signature_s_t get_signature(const std::uint8_t signature_id) const;
+
+	/**
 	 * Get the white balance parameter of the Vision Sensor.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -175,6 +185,16 @@ class Vision {
 	                         vision_object_s_t* const object_arr) const;
 
 	/**
+	 * Prints the contents of the signature as an initializer list to the terminal.
+	 *
+	 * \param sig
+	 *        The signature for which the contents will be printed
+	 *
+	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 */
+	static std::int32_t print_signature(const vision_signature_s_t sig);
+
+	/**
 	 * Enables/disables auto white-balancing on the Vision Sensor.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -218,6 +238,21 @@ class Vision {
 	 * failed, setting errno.
 	 */
 	std::int32_t set_led(const std::int32_t rgb) const;
+
+	/**
+	 * Stores the supplied object detection signature onto the vision sensor.
+	 *
+	 * NOTE: This saves the signature in volatile memory, and the signature will be
+	 * lost as soon as the sensor is powered down.
+	 *
+	 * \param signature_id
+	 *        The signature id to store into
+	 * \param[in] signature_ptr
+	 *            A pointer to the signature to save
+	 *
+	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 */
+	std::int32_t set_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const;
 
 	/**
 	 * Sets the white balance parameter of the Vision Sensor.

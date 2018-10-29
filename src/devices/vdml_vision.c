@@ -175,20 +175,7 @@ int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t 
 	return_port(port - 1, count);
 }
 
-/**
- * Loads the object detection signature into the supplied pointer to memory.
- *
- * NOTE: only returns signatures set through the vision_write_signature function,
- * so this is not publicly exposed as a result.
- *
- * \param port
- *        The V5 port number from 1-21
- * \param signature_id
- *        The signature id to read
- *
- * \return 1 if no errors occurred, PROS_ERR otherwise
- */
-vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature_id) {
+vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_id) {
 	vision_signature_s_t sig;
 	sig.id = VISION_OBJECT_ERR_SIG;
 	if (signature_id > 7 || signature_id == 0) {
@@ -209,22 +196,8 @@ vision_signature_s_t vision_read_signature(uint8_t port, const uint8_t signature
 	return sig;
 }
 
-/**
- * Stores the supplied object detection signature onto the vision sensor
- *
- * NOTE: only writes custom created signatures,
- * so this is not publicly exposed as a result.
- *
- * \param port
- *        The V5 port number from 1-21
- * \param signature_id
- *        The signature id to store into
- * \param[in] signature_ptr
- *            A pointer to the signature to save
- *
- * \return 1 if no errors occured, PROS_ERR otherwise
- */
-int32_t vision_write_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr) {
+int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr) {
+	claim_port(port - 1, E_DEVICE_VISION);
 	if (signature_id > 8 || signature_id == 0) {
 		errno = EINVAL;
 		return PROS_ERR;
@@ -301,4 +274,11 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 	}
 	set_zero_point(port - 1, zero_point);
 	return_port(port - 1, 1);
+}
+
+int32_t vision_print_signature(const vision_signature_s_t sig) {
+	printf("\n\npros::vision_signature_s_t SIG_%d = {", sig.id);
+	printf("%d, {%d, %d, %d}, %f, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld};\n\n", sig.id, sig._pad[0], sig._pad[1],
+	       sig._pad[2], sig.range, sig.u_min, sig.u_max, sig.u_mean, sig.v_min, sig.v_max, sig.v_mean, sig.rgb, sig.type);
+	return 1;
 }

@@ -216,6 +216,16 @@ int32_t vision_get_object_count(uint8_t port);
 int32_t vision_get_white_balance(uint8_t port);
 
 /**
+ * Prints the contents of the signature as an initializer list to the terminal.
+ *
+ * \param sig
+ *        The signature for which the contents will be printed
+ *
+ * \return 1 if no errors occured, PROS_ERR otherwise
+ */
+int32_t vision_print_signature(const vision_signature_s_t sig);
+
+/**
  * Reads up to object_count object descriptors into object_arr.
  *
  * This function uses the following values of errno when an error state is
@@ -272,6 +282,35 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
  */
 int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
                            vision_object_s_t* const object_arr);
+
+/**
+ * Gets the object detection signature with the given id number.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param signature_id
+ *        The signature id to read
+ *
+ * \return A vision_signature_s_t containing information about the signature.
+ */
+vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_id);
+
+/**
+ * Stores the supplied object detection signature onto the vision sensor.
+ *
+ * NOTE: This saves the signature in volatile memory, and the signature will be
+ * lost as soon as the sensor is powered down.
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param signature_id
+ *        The signature id to store into
+ * \param[in] signature_ptr
+ *            A pointer to the signature to save
+ *
+ * \return 1 if no errors occured, PROS_ERR otherwise
+ */
+int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr);
 
 /**
  * Enables/disables auto white-balancing on the Vision Sensor.
