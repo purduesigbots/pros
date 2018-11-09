@@ -167,6 +167,8 @@ vision_color_code_t vision_create_color_code(uint8_t port, const uint32_t sig_id
  * reached:
  * EINVAL - The given value is not within the range of V5 ports (1-21).
  * EACCES - Another resource is currently trying to access the port.
+ * EDOM - size_id is greater than the number of available objects.
+ * EHOSTDOWN - Reading the vision sensor failed for an unknown reason.
  *
  * \param port
  *        The V5 port number from 1-21
@@ -186,7 +188,8 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id);
  * reached:
  * EINVAL - The given value is not within the range of V5 ports (1-21).
  * EACCES - Another resource is currently trying to access the port.
- * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
+ * EDOM - size_id is greater than the number of available objects.
+ * EHOSTDOWN - Reading the vision sensor failed for an unknown reason.
  *
  * \param port
  *        The V5 port number from 1-21
@@ -288,6 +291,7 @@ int32_t vision_print_signature(const vision_signature_s_t sig);
  * EINVAL - The given value is not within the range of V5 ports (1-21), or
  *          fewer than object_count number of objects were found.
  * EACCES - Another resource is currently trying to access the port.
+ * EDOM - size_id is greater than the number of available objects.
  *
  * \param port
  *        The V5 port number from 1-21
@@ -316,6 +320,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
  * EINVAL - The given value is not within the range of V5 ports (1-21), or
  *          fewer than object_count number of objects were found.
  * EACCES - Another resource is currently trying to access the port.
+ * EDOM - size_id is greater than the number of available objects.
  *
  * \param port
  *        The V5 port number from 1-21

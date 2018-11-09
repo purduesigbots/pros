@@ -58,13 +58,13 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	}
 	device = registry_get_device(port - 1);
 	if ((uint32_t)vexDeviceVisionObjectCountGet(device->device_info) <= size_id) {
-		errno = EINVAL;
+		errno = EDOM;
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		goto leave;
 	}
 	err = vexDeviceVisionObjectGet(device->device_info, size_id, (V5_DeviceVisionObject*)&rtn);
 	if (err == 0) {
-		errno = EINVAL;
+		errno = EHOSTDOWN;
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		goto leave;
 	}
@@ -91,7 +91,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 	device = registry_get_device(port - 1);
 	object_count = vexDeviceVisionObjectCountGet(device->device_info);
 	if ((uint32_t)object_count <= size_id) {
-		errno = EINVAL;
+		errno = EDOM;
 		goto err_return;
 	}
 
@@ -99,7 +99,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 		vision_object_s_t check;
 		err = vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)&check);
 		if (err == PROS_ERR) {
-			errno = EAGAIN;
+			errno = EHOSTDOWN;
 			rtn = check;
 			goto err_return;
 		}
@@ -143,7 +143,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
 	if (c <= size_id) {
 		port_mutex_give(port - 1);
-		errno = EINVAL;
+		errno = EDOM;
 		return PROS_ERR;
 	} else if (c > object_count) {
 		c = object_count;
@@ -166,7 +166,7 @@ int32_t _vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t
 	}
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
 	if (c <= size_id) {
-		errno = EINVAL;
+		errno = EDOM;
 		port_mutex_give(port - 1);
 		return PROS_ERR;
 	}
@@ -227,13 +227,13 @@ vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_
 }
 
 int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr) {
-	claim_port(port - 1, E_DEVICE_VISION);
 	if (signature_id > 8 || signature_id == 0) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
 	signature_ptr->id = signature_id;
 
+	claim_port(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionSignatureSet(device->device_info, (V5_DeviceVisionSignature*)signature_ptr);
 	return_port(port - 1, 1);
 }

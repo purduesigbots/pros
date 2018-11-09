@@ -82,6 +82,8 @@ class Vision {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
+	 * EDOM - size_id is greater than the number of available objects.
+	 * EHOSTDOWN - Reading the vision sensor failed for an unknown reason.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -98,7 +100,8 @@ class Vision {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
-	 * EAGAIN - Reading the Vision Sensor failed for an unknown reason.
+	 * EDOM - size_id is greater than the number of available objects.
+	 * EHOSTDOWN - Reading the vision sensor failed for an unknown reason.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -181,8 +184,8 @@ class Vision {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - Fewer than object_count number of objects were found.
 	 * EACCES - Another resource is currently trying to access the port.
+	 * EDOM - size_id is greater than the number of available objects.
 	 *
 	 * \param size_id
 	 *        The object to read from a list roughly ordered by object size
@@ -206,8 +209,9 @@ class Vision {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - Fewer than object_count number of objects were found.
 	 * EACCES - Another resource is currently trying to access the port.
+	 * EDOM - size_id is greater than the number of available objects.
+	 * EHOSTDOWN - Reading the vision sensor failed for an unknown reason.
 	 *
 	 * \param object_count
 	 *        The number of objects to read
