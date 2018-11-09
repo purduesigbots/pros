@@ -23,12 +23,22 @@ std::int32_t Vision::clear_led(void) const {
 	return vision_clear_led(_port);
 }
 
+vision_color_code_t Vision::create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
+                                              const std::uint32_t sig_id3, const std::uint32_t sig_id4,
+                                              const std::uint32_t sig_id5) const {
+	return vision_create_color_code(_port, sig_id1, sig_id2, sig_id3, sig_id4, sig_id5);
+}
+
 vision_object_s_t Vision::get_by_size(const std::uint32_t size_id) const {
 	return vision_get_by_size(_port, size_id);
 }
 
 vision_object_s_t Vision::get_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id) const {
 	return vision_get_by_sig(_port, size_id, sig_id);
+}
+
+vision_object_s_t Vision::get_by_code(const std::uint32_t size_id, const vision_color_code_t color_code) const {
+	return vision_get_by_code(_port, size_id, color_code);
 }
 
 int32_t Vision::get_exposure(void) const {
@@ -51,6 +61,11 @@ int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t ob
 int32_t Vision::read_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id, const std::uint32_t object_count,
                             vision_object_s_t* const object_arr) const {
 	return vision_read_by_sig(_port, size_id, sig_id, object_count, object_arr);
+}
+
+int32_t Vision::read_by_code(const std::uint32_t size_id, const vision_color_code_t color_code,
+                             const std::uint32_t object_count, vision_object_s_t* const object_arr) const {
+	return vision_read_by_code(_port, size_id, color_code, object_count, object_arr);
 }
 
 vision_signature_s_t Vision::get_signature(const std::uint8_t signature_id) const {
