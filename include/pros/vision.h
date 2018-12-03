@@ -133,6 +133,34 @@ namespace c {
 int32_t vision_clear_led(uint8_t port);
 
 /**
+ * Creates a signature from the vision sensor utility
+ *
+ * \param id
+ *        The signature ID
+ * \param u_min
+ *        Minimum value on U axis
+ * \param u_max
+ *        Maximum value on U axis
+ * \param u_mean
+ *        Mean value on U axis
+ * \param v_min
+ *        Minimum value on V axis
+ * \param v_max
+ *        Maximum value on V axis
+ * \param v_mean
+ *        Mean value on V axis
+ * \param range
+ *        Scale factor
+ * \param type
+ *        Signature type
+ *
+ * \return A vision_signature_s_t that can be set using vision_set_signature
+ */
+vision_signature_s_t vision_signature_from_utility(const int32_t id, const int32_t u_min, const int32_t u_max,
+                                                   const int32_t u_mean, const int32_t v_min, const int32_t v_max,
+                                                   const int32_t v_mean, const float range, const int32_t type);
+
+/**
  * Creates a color code that represents a combination of the given signature
  * IDs. If fewer than 5 signatures are to be a part of the color code, pass 0
  * for the additional function parameters.

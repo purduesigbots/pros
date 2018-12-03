@@ -51,6 +51,36 @@ class Vision {
 	std::int32_t clear_led(void) const;
 
 	/**
+	 * Creates a signature from the vision sensor utility
+	 *
+	 * \param id
+	 *        The signature ID
+	 * \param u_min
+	 *        Minimum value on U axis
+	 * \param u_max
+	 *        Maximum value on U axis
+	 * \param u_mean
+	 *        Mean value on U axis
+	 * \param v_min
+	 *        Minimum value on V axis
+	 * \param v_max
+	 *        Maximum value on V axis
+	 * \param v_mean
+	 *        Mean value on V axis
+	 * \param rgb
+	 *        Scale factor
+	 * \param type
+	 *        Signature type
+	 *
+	 * \return A vision_signature_s_t that can be set using Vision::set_signature
+	 */
+	static vision_signature_s_t signature_from_utility(const std::int32_t id, const std::int32_t u_min,
+	                                                   const std::int32_t u_max, const std::int32_t u_mean,
+	                                                   const std::int32_t v_min, const std::int32_t v_max,
+	                                                   const std::int32_t v_mean, const float range,
+	                                                   const std::int32_t type);
+
+	/**
 	 * Creates a color code that represents a combination of the given signature
 	 * IDs.
 	 *

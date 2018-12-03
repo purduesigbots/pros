@@ -23,6 +23,14 @@ std::int32_t Vision::clear_led(void) const {
 	return vision_clear_led(_port);
 }
 
+vision_signature_s_t Vision::signature_from_utility(const std::int32_t id, const std::int32_t u_min,
+                                                    const std::int32_t u_max, const std::int32_t u_mean,
+                                                    const std::int32_t v_min, const std::int32_t v_max,
+                                                    const std::int32_t v_mean, const float range,
+                                                    const std::int32_t type) {
+	return c::vision_signature_from_utility(id, u_min, u_max, u_mean, v_min, v_max, v_mean, range, type);
+}
+
 vision_color_code_t Vision::create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
                                               const std::uint32_t sig_id3, const std::uint32_t sig_id4,
                                               const std::uint32_t sig_id5) const {

@@ -238,6 +238,22 @@ int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_si
 	return_port(port - 1, 1);
 }
 
+vision_signature_s_t vision_signature_from_utility(const int32_t id, const int32_t u_min, const int32_t u_max,
+                                                   const int32_t u_mean, const int32_t v_min, const int32_t v_max,
+                                                   const int32_t v_mean, const float range, const int32_t type) {
+	vision_signature_s_t sig = {0};
+	sig.id = id;
+	sig.range = range;
+	sig.u_min = u_min;
+	sig.u_max = u_max;
+	sig.u_mean = u_mean;
+	sig.v_min = v_min;
+	sig.v_max = v_max;
+	sig.v_mean = v_mean;
+	sig.type = type;
+	return sig;
+}
+
 vision_color_code_t vision_create_color_code(uint8_t port, const uint32_t sig_id1, const uint32_t sig_id2,
                                              const uint32_t sig_id3, const uint32_t sig_id4, const uint32_t sig_id5) {
 	uint16_t id = 0;
