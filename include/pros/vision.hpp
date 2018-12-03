@@ -394,6 +394,22 @@ class Vision {
 	 */
 	std::int32_t set_zero_point(vision_zero_e_t zero_point) const;
 
+	/**
+	 * Sets the Wi-Fi mode of the Vision sensor
+	 *
+	 * This functions uses the following values of errno when an error state is
+	 * reached:
+	 * EINVAL - The given port is not within the range of V5 ports (1-21)
+	 * EACCESS - Anothe resources is currently trying to access the port
+	 *
+	 * \param enable
+	 *        Disable Wi-Fi on the Vision sensor if 0, enable otherwise (e.g. 1)
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
+
 	private:
 	std::uint8_t _port;
 };

@@ -347,6 +347,12 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 	return_port(port - 1, 1);
 }
 
+int32_t vision_set_wifi_mode(uint8_t port, const uint8_t enable) {
+	claim_port(port - 1, E_DEVICE_VISION);
+	vexDeviceVisionWifiModeSet(device->device_info, !!enable);
+	return_port(port - 1, 1);
+}
+
 int32_t vision_print_signature(const vision_signature_s_t sig) {
 	printf("\n\npros::vision_signature_s_t SIG_%d = {", sig.id);
 	printf("%d, {%d, %d, %d}, %f, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld};\n\n", sig.id, sig._pad[0], sig._pad[1],

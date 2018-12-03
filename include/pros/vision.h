@@ -524,6 +524,24 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb);
  */
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point);
 
+/**
+ * Sets the Wi-Fi mode of the Vision sensor
+ *
+ * This functions uses the following values of errno when an error state is
+ * reached:
+ * EINVAL - The given port is not within the range of V5 ports (1-21)
+ * EACCESS - Anothe resources is currently trying to access the port
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param enable
+ *        Disable Wi-Fi on the Vision sensor if 0, enable otherwise (e.g. 1)
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t vision_set_wifi_mode(uint8_t port, const uint8_t enable);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros
