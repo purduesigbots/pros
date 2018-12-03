@@ -255,7 +255,9 @@ vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const 
 vision_object_s_t vision_get_by_code(uint8_t port, const uint32_t size_id, const vision_color_code_t color_code);
 
 /**
- * Gets the exposure parameter of the Vision Sensor.
+ * Gets the exposure parameter of the Vision Sensor. See
+ * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
+ * for more detials.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -265,8 +267,8 @@ vision_object_s_t vision_get_by_code(uint8_t port, const uint32_t size_id, const
  * \param port
  *        The V5 port number from 1-21
  *
- * \return The current exposure percentage parameter from [0,100], PROS_ERR if
- * an error occurred
+ * \return The current exposure setting from [0,150], PROS_ERR if an error
+ * occurred
  */
 int32_t vision_get_exposure(uint8_t port);
 
@@ -449,7 +451,9 @@ int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_si
 int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable);
 
 /**
- * Sets the exposure parameter of the Vision Sensor.
+ * Sets the exposure parameter of the Vision Sensor. See
+ * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
+ * for more detials.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -459,12 +463,12 @@ int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable);
  * \param port
  *        The V5 port number from 1-21
  * \param percent
- *        The new exposure percentage from [0,100]
+ *        The new exposure setting from [0,150]
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t vision_set_exposure(uint8_t port, const uint8_t percent);
+int32_t vision_set_exposure(uint8_t port, const uint8_t exposure);
 
 /**
  * Sets the vision sensor LED color, overriding the automatic behavior.

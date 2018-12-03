@@ -92,8 +92,8 @@ std::int32_t Vision::set_auto_white_balance(const std::uint8_t enable) const {
 	return vision_set_auto_white_balance(_port, enable);
 }
 
-std::int32_t Vision::set_exposure(const std::uint8_t percent) const {
-	return vision_set_exposure(_port, percent);
+std::int32_t Vision::set_exposure(const std::uint8_t exposure) const {
+	return vision_set_exposure(_port, exposure);
 }
 
 std::int32_t Vision::set_led(const std::int32_t rgb) const {

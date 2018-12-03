@@ -296,13 +296,15 @@ int32_t vision_clear_led(uint8_t port) {
 
 int32_t vision_set_exposure(uint8_t port, const uint8_t percent) {
 	claim_port(port - 1, E_DEVICE_VISION);
-	vexDeviceVisionBrightnessSet(device->device_info, percent);
+	// This translation comes from VEX to match the brightness represented in vision utility
+	vexDeviceVisionBrightnessSet(device->device_info, (((int)((percent * 100) + 50)) / 255));
 	return_port(port - 1, 1);
 }
 
 int32_t vision_get_exposure(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_VISION);
-	int32_t rtn = vexDeviceVisionBrightnessGet(device->device_info);
+	// This translation comes from VEX to match the brightness represented in vision utility
+	int32_t rtn = ((vexDeviceVisionBrightnessGet(device->device_info) * 255) + 50) / 100;
 	return_port(port - 1, rtn);
 }
 
