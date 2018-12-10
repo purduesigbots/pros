@@ -38,14 +38,16 @@ static bool vex_read_touch(lv_indev_data_t* data) {
 	switch (v5_touch_status.lastEvent) {
 		case kTouchEventPress:
 		case kTouchEventPressAuto:
-			data->point.x = v5_touch_status.lastXpos;
-			data->point.y = v5_touch_status.lastYpos;
 			data->state = LV_INDEV_STATE_PR;
 			break;
 		case kTouchEventRelease:
 			data->state = LV_INDEV_STATE_REL;
 			break;
 	}
+	// return last (x,y) pos in all cases https://doc.littlevgl.com/#Porting and
+	// purduesigbots/pros#79
+	data->point.x = v5_touch_status.lastXpos;
+	data->point.y = v5_touch_status.lastYpos;
 	return false;
 }
 
