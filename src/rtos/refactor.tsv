@@ -55,6 +55,7 @@ xTaskGenericNotify		task_notify_ext
 ulTaskNotifyTake		task_notify_take
 xTaskNotifyWait			task_notify_wait
 xTaskNotifyStateClear	task_notify_clear
+xTaskGetCurrentTaskHandle			task_get_current
 xQueueCreate			queue_create
 xQueueSendToFront		queue_prepend
 xQueueSendToBack		queue_append

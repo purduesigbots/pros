@@ -3536,7 +3536,7 @@ TCB_t *pxTCB;
 
 #if ( ( INCLUDE_xTaskGetCurrentTaskHandle == 1 ) || ( configUSE_MUTEXES == 1 ) )
 
-	task_t xTaskGetCurrentTaskHandle( void )
+	task_t task_get_current( void )
 	{
 	task_t xReturn;
 

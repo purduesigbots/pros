@@ -57,13 +57,18 @@ class Task {
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 	/**
-	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 * Create a C++ task object from a task handle
 	 *
 	 * \param task
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
 	 */
 	Task(task_t task);
+
+	/**
+	 * Get the currently running Task
+	 */
+	static Task current();
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -128,6 +133,13 @@ class Task {
 	 * \return A pointer to the name of the task
 	 */
 	const char* get_name(void);
+
+	/**
+	 * Convert this object to a C task_t handle
+	 */
+	operator task_t() {
+		return task;
+	}
 
 	/**
 	 * Sends a simple notification to task and increments the notification

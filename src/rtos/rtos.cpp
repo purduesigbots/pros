@@ -31,6 +31,10 @@ using namespace pros::c;
     task = in;
   }
 
+  Task Task::current() {
+    return Task(task_get_current());
+  }
+
   void Task::remove() {
     return task_delete(task);
   }

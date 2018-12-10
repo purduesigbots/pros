@@ -279,6 +279,14 @@ char* task_get_name(task_t task);
 task_t task_get_by_name(const char* name);
 
 /**
+ * Get the currently running task handle. This could be useful if a task
+ * wants to tell another task about itself.
+ *
+ * \return The currently running task handle.
+ */
+task_t task_get_current();
+
+/**
  * Sends a simple notification to task and increments the notification counter.
  *
  * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
