@@ -30,8 +30,8 @@
 #pragma GCC diagnostic pop
 
 #ifdef __cplusplus
+namespace pros::c {
 extern "C" {
-using namespace pros;
 #endif
 
 /******************************************************************************/
@@ -519,6 +519,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 #define DEVCTL_SET_BAUDRATE 17
 
 #ifdef __cplusplus
+}
 }
 #endif
 
