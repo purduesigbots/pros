@@ -524,6 +524,12 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB ) ;
 
 		if ((task_buffer != NULL) && (stack_buffer != NULL))
 		{
+      /* Finish task termination if the TCB is awaiting termination by the IDLE
+      task. xTasksWaitingTermination list would then have a pointer to (this)
+      task in an active task list, which would end up destroying that list in
+      unexpected ways */
+			void task_finish_termination(TCB_t*);
+			task_finish_termination((TCB_t*)task_buffer);
 			/* The memory used for the task's TCB and stack are passed into this
 			function - use them. */
 			pxNewTCB = (TCB_t*)task_buffer; /*lint !e740 Unusual cast is ok as the structures are designed to have the same alignment, and the size is checked by an assert. */
@@ -989,6 +995,33 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 		}
 	}
 
+  // Check if a task is awaiting termination and finish termination if it is
+	void task_finish_termination(TCB_t* pxTCB)
+	{
+			uint8_t doCleanup = 0;
+
+			taskENTER_CRITICAL();
+			{
+			list_item_t* pxStateListItem = &( pxTCB->xStateListItem );
+			if (pxStateListItem != NULL)
+			{
+				List_t* pxStateList = ( List_t * ) listLIST_ITEM_CONTAINER( pxStateListItem );
+				if (pxStateList == &xTasksWaitingTermination && listGET_NEXT( pxStateListItem )->pxPrevious == pxStateListItem)
+				{
+					( void ) uxListRemove( &( pxTCB->xStateListItem ) );
+					--uxCurrentNumberOfTasks;
+					--uxDeletedTasksWaitingCleanUp;
+					doCleanup = 1;
+				}
+			}
+			}
+			taskEXIT_CRITICAL();
+
+			if (doCleanup == 1)
+			{
+				prvDeleteTCB(pxTCB);
+			}
+	}
 #endif /* INCLUDE_vTaskDelete */
 /*-----------------------------------------------------------*/
 

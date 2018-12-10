@@ -89,10 +89,11 @@ static task_stack_t ser_daemon_stack[TASK_STACK_DEPTH_MIN];
 static static_task_s_t ser_daemon_task_buffer;
 
 static inline uint8_t vex_read_char() {
-	int32_t b;
-	do {
+	int32_t b = vexSerialReadChar(1);
+	while (b == -1L) {
+		task_delay(1);
 		b = vexSerialReadChar(1);
-	} while (b == -1L);
+	}
 	// Don't get rid of the literal type suffix, it ensures optimiziations don't
 	// break this condition
 	return (uint8_t)b;
@@ -153,12 +154,14 @@ static void ser_daemon_task(void* ign) {
 						break;
 					case 'c':
 						serctl(SERCTL_ENABLE_COBS, NULL);
+						command_stack_idx = 0;
 						break;
 					case 'r':
 						serctl(SERCTL_DISABLE_COBS, NULL);
+						command_stack_idx = 0;
 						break;
-					case 'i':
-						// TODO: disable kernel parsing for the next n characters
+					default:
+						command_stack_idx = 0;
 						break;
 				}
 			}
