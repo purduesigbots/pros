@@ -144,3 +144,14 @@ void linked_list_foreach(linked_list_s_t* list, linked_list_foreach_fn_t cb, voi
 		it = it->next;
 	}
 }
+
+void linked_list_free(linked_list_s_t* list) {
+	if (list == NULL || list->head == NULL) return;
+
+	while (list->head != NULL) {
+		ll_node_s_t* node = list->head;
+		list->head = node->next;
+		kfree(node);
+	}
+	kfree(list);
+}

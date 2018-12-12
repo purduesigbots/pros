@@ -140,3 +140,12 @@ typedef void (*linked_list_foreach_fn_t)(ll_node_s_t*, void*);
  *        Extra data to pass to the callback function
  */
 void linked_list_foreach(linked_list_s_t* list, linked_list_foreach_fn_t, void* extra_data);
+
+/**
+ * Frees a linked_list_s_t, making it no longer a valid list. This does not free any
+ * internal data, only the linekd_list structure.
+ *
+ * \param list
+ *				List to free
+ */
+void linked_list_free(linked_list_s_t* list);

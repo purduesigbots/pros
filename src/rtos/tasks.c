@@ -912,6 +912,9 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 	{
 	TCB_t *pxTCB;
 
+		void task_notify_when_deleting_hook(task_t);
+		task_notify_when_deleting_hook(task);
+
 		taskENTER_CRITICAL();
 		{
 			/* If null is passed in here then it is the calling task that is

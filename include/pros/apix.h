@@ -54,6 +54,28 @@ typedef void* sem_t;
 bool task_abort_delay(task_t task);
 
 /**
+ * Notify a task when a target task is being deleted.
+ *
+ * This function will configure the PROS kernel to call
+ * task_notify_ext(task_to_notify, value, action, NULL) when target_task is
+ * deleted.
+ *
+ * NOTE: This facility does not support the case when task_to_notify
+ *       dies before target_task
+ *
+ * \param target_task
+ *				The task being watched for deletion
+ * \param task_to_notify
+ *        The task to notify when target_task is deleted
+ * \param value
+ *				The value to supply to task_notify_ext
+ * \param notify_action
+ * 				The action to supply to task_notify_ext
+ */
+void task_notify_when_deleting(task_t target_task, task_t task_to_notify, uint32_t value,
+                               notify_action_e_t notify_action);
+
+/**
  * Creates a recursive mutex which can be locked recursively by the owner.
  *
  * See
