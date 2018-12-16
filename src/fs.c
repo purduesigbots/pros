@@ -224,7 +224,7 @@ static void openForWriting(const char *file, uint32_t idx, uint32_t page) {
  *
  * @param fd the descriptor to close
  */
-void fclose(FILE *fd) {
+void fclose(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		// Index in bounds
@@ -293,7 +293,7 @@ int fdelete(const char *file) {
  * @param fd the channel to check
  * @return 0 if the file is not at EOF, or 1 otherwise.
  */
-int fsEof(FILE *fd) {
+int fsEof(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		// Index in bounds
@@ -312,7 +312,7 @@ int fsEof(FILE *fd) {
  * @return 0 if the data was successfully written out to Flash, EOF otherwise
  *     The file data is still invalid until properly closed!
  */
-int fflush(FILE *fd) {
+int fflush(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		// Index in bounds
@@ -365,7 +365,7 @@ int fflush(FILE *fd) {
  * @param fd the file channel to check
  * @return the number of bytes left, or 0 if this value could not be determined
  */
-uint32_t fsLeft(FILE *fd) {
+uint32_t fsLeft(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		// Index in bounds
@@ -384,7 +384,7 @@ uint32_t fsLeft(FILE *fd) {
  * @param mode the file mode
  * @return a pointer to file data, or NULL if the file could not be opened
  */
-FILE * fopen(const char *file, const char *mode) {
+PROS_FILE * fopen(const char *file, const char *mode) {
 	uint32_t i, page;
 	if (strcmp(mode, "r") == 0) {
 		// READ
@@ -397,7 +397,7 @@ FILE * fopen(const char *file, const char *mode) {
 				if (fs.files[i].flags == 0U) {
 					// Mine mine mine!
 					openForReading(i, page, len);
-					return (FILE *)(FILE_CHANNEL_1 + i);
+					return (PROS_FILE *)(FILE_CHANNEL_1 + i);
 				}
 			// Maximum file limit exceeded!
 		}
@@ -414,7 +414,7 @@ FILE * fopen(const char *file, const char *mode) {
 				if (flags == 0U) {
 					// Mine mine mine!
 					openForWriting(file, i, page);
-					return (FILE *)(FILE_CHANNEL_1 + i);
+					return (PROS_FILE *)(FILE_CHANNEL_1 + i);
 				} else if (flags & FILE_FLAG_WR)
 					// Only one write buffer
 					break;
@@ -431,7 +431,7 @@ FILE * fopen(const char *file, const char *mode) {
  * @return the next byte in the file, or EOF if no byte can be read (end of file, in write
  * mode...)
  */
-int fsRead(FILE *fd) {
+int fsRead(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		if (fs.files[idx].flags & FILE_FLAG_RD) {
@@ -525,7 +525,7 @@ void fsScan(bool trim) {
  * @param origin the reference location for offset: SEEK_CUR, SEEK_SET, or SEEK_END
  * @return 0 if the seek was successful, or 1 otherwise
  */
-int fseek(FILE *fd, long int offset, int origin) {
+int fseek(PROS_FILE *fd, long int offset, int origin) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		if (fs.files[idx].flags & FILE_FLAG_RD) {
@@ -560,7 +560,7 @@ int fseek(FILE *fd, long int offset, int origin) {
  * @param fd the channel to check
  * @return the offset of the stream, or -1 if the offset could not be determined
  */
-long int ftell(FILE *fd) {
+long int ftell(PROS_FILE *fd) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		if (fs.files[idx].flags != 0)
@@ -577,7 +577,7 @@ long int ftell(FILE *fd) {
  * @param value the byte to write
  * @return value if the byte was successfully written and EOF otherwise
  */
-int fsWrite(FILE *fd, int value) {
+int fsWrite(PROS_FILE *fd, int value) {
 	uint32_t idx = (uint32_t)fd - FILE_CHANNEL_1;
 	if (idx < MAX_FILES) {
 		if (fs.files[idx].flags & FILE_FLAG_WR) {
@@ -601,26 +601,26 @@ int fsWrite(FILE *fd, int value) {
 
 // Stub versions of important functions
 
-void fclose(FILE *fd) {
+void fclose(PROS_FILE *fd) {
 }
 
 int fdelete(const char *file) {
 	return 1;
 }
 
-int fflush(FILE *fd) {
+int fflush(PROS_FILE *fd) {
 	return EOF;
 }
 
-FILE * fopen(const char *file, const char *mode) {
+PROS_FILE * fopen(const char *file, const char *mode) {
 	return NULL;
 }
 
-int fseek(FILE *fd, long int offset, int origin) {
+int fseek(PROS_FILE *fd, long int offset, int origin) {
 	return 1;
 }
 
-long int ftell(FILE *fd) {
+long int ftell(PROS_FILE *fd) {
 	return -1L;
 }
 

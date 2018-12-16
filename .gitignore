@@ -7,3 +7,7 @@ include/*.h.gch
 .gcc-flags.json
 .project
 .cproject
+template/
+.vscode/
+compile_commands.json
+*.zip

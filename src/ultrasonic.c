@@ -22,6 +22,8 @@
 // Set if and only if ping process is waiting for a ping to return; false if simply waiting out
 // the pulse duration
 #define ULTRA_WAITING 0x2
+// Ultrasonic's default value if a ping is not properly returned
+#define ULTRA_BAD_RESPONSE -1
 
 // Ultrasonic flags
 typedef struct {
@@ -36,7 +38,7 @@ static UltrasonicData ultraFlags;
 static void fireUltrasonic(uint8_t port) {
 	Sensor_TypeDef *ultra = &_sensorState[port];
 	// Begin pulse
-	ultra->value = 0;
+	ultra->value = ULTRA_BAD_RESPONSE;
 	digitalWrite((uint32_t)(ultra->portBottom) + 1, true);
 	// Schedule 128 us later on high-res timer
 	ultraFlags.flags &= ~ULTRA_WAITING;
@@ -148,10 +150,12 @@ Ultrasonic ultrasonicInit(unsigned char portEcho, unsigned char portPing) {
 // ultrasonicGet - Gets the current ultrasonic sensor value in cm
 int ultrasonicGet(Ultrasonic ult) {
 	Sensor_TypeDef *ultra = (Sensor_TypeDef*)ult;
-	uint32_t value = (uint32_t)(ultra->value);
+	int32_t value = ultra->value;
+	if (value == ULTRA_BAD_RESPONSE)
+		return (int)(value);
 	if (value > 306 && value < 11877)
 		return (int)((value - 277) / 58);
-	return 0;
+	return ULTRA_BAD_RESPONSE;
 }
 
 // ultrasonicShutdown - Stops and disables the ultrasonic sensor
