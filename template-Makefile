@@ -102,7 +102,7 @@ $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@) $$(dir $(DEPDIR)/$$*)
 	$D$(CC) $(DEPFLAGS) $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) $$<
-	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
 	@mv -f $(DEPDIR)/$$*.tmp.mk $(DEPDIR)/$$*.mk
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
