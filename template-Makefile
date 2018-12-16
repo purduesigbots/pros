@@ -11,10 +11,12 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
+DEPDIR=$(ROOT)/dep
 
 WARNFLAGS+=
 EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
+DEPFLAGS=-M -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.tmp.mk
 
 # Set this to 1 to add additional rules to compile your project as a PROS library template
 IS_LIBRARY:=0
@@ -35,7 +37,7 @@ TEMPLATE_FILES=$(INCDIR)/**/*.h $(INCDIR)/**/*.hpp
 ################################################################################
 ################################################################################
 ########## Nothing below this line should be edited by typical users ###########
--include ./common.mk
+include ./common.mk
 
 INCLUDE=-isystem$(INCDIR)
 
@@ -43,8 +45,10 @@ ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
 CSRC=$(foreach cext,$(CEXTS),$(call rwildcard, $(SRCDIR),*.$(cext), $1))
 COBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CSRC, $1)))
+CMKDEPS=$(addprefix $(DEPDIR)/,$(patsubst $(SRCDIR)/%.c,%.mk,$(call CSRC,$1)))
 CXXSRC=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext), $1))
 CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
+CXXMKDEPS=$(addprefix $(DEPDIR)/,$(patsubst $(SRCDIR)/%.cpp,%.mk,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
@@ -66,6 +70,7 @@ all: clean $(OUTBIN)
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
+	-$Drm -rf $(DEPDIR)
 
 upload-legacy:
 	@java -jar firmware/uniflash.jar vex $(BINDIR)/$(OUTBIN)
@@ -86,28 +91,31 @@ $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 
 define asm_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
+	$(VV)mkdir -p $$(dir $$@)
 	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
-	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	$(VV)mkdir -p $$(dir $$@) $$(dir $(DEPDIR)/$$*)
+	$D$(CC) $(DEPFLAGS) $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) $$<
+	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	@mv -f $(DEPDIR)/$$*.tmp.mk $(DEPDIR)/$$*.mk
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
+	$(VV)mkdir -p $$(dir $$@) $$(dir $(DEPDIR)/$$*)
+	$D$(CXX) $(DEPFLAGS) $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) $$<
 	$$(call test_output,$D$(CXX) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
+	@mv -f $(DEPDIR)/$$*.tmp.mk $(DEPDIR)/$$*.mk
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
-
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
@@ -132,3 +140,6 @@ library: $(LIBAR)
 template: clean-template $(LIBAR)
 	$Dprosv5 c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5
 endif
+
+-include $(CMKDEPS)
+-include $(CXXMKDEPS)

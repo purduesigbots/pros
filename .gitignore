@@ -1,4 +1,5 @@
 bin/
+dep/
 doc/
 libpros.a
 libpros_sym.a

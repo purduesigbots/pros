@@ -3,6 +3,7 @@ ASMEXTS:=s S
 CXXEXTS:=cpp c++ cc
 
 WARNFLAGS=-Wall -Wpedantic
+DEPFLAGS=-M -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.tmp.mk
 
 LIBNAME=libpros
 LIBAR=$(BINDIR)/$(LIBNAME).a
@@ -12,10 +13,11 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
+DEPDIR=$(ROOT)/dep
 
 .DEFAULT_GOAL:=quick
 
--include ./common.mk
+include ./common.mk
 
 EXCLUDE_SRCDIRS=$(SRCDIR)/tests
 EXCLUDE_FROM_LIB=$(SRCDIR)/opcontrol.c $(SRCDIR)/init.c $(SRCDIR)/auto.c
@@ -30,10 +32,13 @@ ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
 CSRC=$(foreach cext,$(CEXTS),$(call rwildcard, $(SRCDIR),*.$(cext), $1))
 COBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CSRC,$1)))
+CMKDEPS=$(addprefix $(DEPDIR)/,$(patsubst $(SRCDIR)/%.c,%.mk,$(call CSRC,$1)))
 CXXSRC=$(foreach cxxext,$(CXXEXTS),$(call rwildcard, $(SRCDIR),*.$(cxxext), $1))
 CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
+CXXMKDEPS=$(addprefix $(DEPDIR)/,$(patsubst $(SRCDIR)/%.cpp,%.mk,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
+GETALLSRC=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
 LIBRARIES=-Wl,--start-group $(wildcard $(FWDIR)/*.a) -lm -lgcc -Wl,--end-group
 ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
@@ -53,6 +58,7 @@ all: version clean $(OUTBIN)
 clean: clean-library
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
+	-$Drm -rf $(DEPDIR)
 
 clean-library:
 	@echo Cleaning libpros
@@ -105,7 +111,6 @@ $(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 
 define asm_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
 	$(VV)mkdir -p $$(dir $$@)
 	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
@@ -114,18 +119,26 @@ $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
-	$(VV)mkdir -p $$(dir $$@)
-	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	$(VV)mkdir -p $$(dir $$@) $$(dir $(DEPDIR)/$$*)
+	$D$(CC) $(DEPFLAGS) $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) $$<
+	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote$(INCDITdR)/$$(dir $$*) $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	@mv -f $(DEPDIR)/$$*.tmp.mk $(DEPDIR)/$$*.mk
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-	$(VV)mkdir -p $$(dir $$@)
 	@echo -n "Compiling $$< "
-	$(VV)mkdir -p $$(dir $$@)
+	$(VV)mkdir -p $$(dir $$@) $$(dir $(DEPDIR)/$$*)
+	$D$(CXX) $(DEPFLAGS) $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) $$<
 	$$(call test_output,$D$(CXX) -c $(INCLUDE) -iquote$(INCDIR)/$$(dir $$*) $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
+	@mv -f $(DEPDIR)/$$*.tmp.mk $(DEPDIR)/$$*.mk
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
+
+$(DEPDIR)/%.d: ;
+.PRECIOUS: $(DEPDIR)/%.d
+
+-include $(CMKDEPS)
+-include $(CXXMKDEPS)
