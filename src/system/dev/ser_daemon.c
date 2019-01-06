@@ -17,10 +17,10 @@
 
 #include <errno.h>
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/dev/banners.h"
 #include "system/optimizers.h"
+#include "v5_api.h"
 
 #define MAX_COMMAND_LENGTH 32
 

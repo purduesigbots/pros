@@ -11,9 +11,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/optimizers.h"
+#include "v5_api.h"
 
 extern void vdml_background_processing();
 

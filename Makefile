@@ -12,6 +12,8 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
+IFI_INC=$(FWDIR)/libv5rts/sdk/vexv5/include
+SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 
 .DEFAULT_GOAL:=quick
 
@@ -24,7 +26,7 @@ LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 TEMPLATE_DIR=$(ROOT)/template
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.cpp $(SRCDIR)/initialize.cpp $(SRCDIR)/autonomous.cpp $(INCDIR)/display
 
-INCLUDE=-iquote$(INCDIR)
+INCLUDE=-iquote$(INCDIR) -iquote$(IFI_INC)
 
 ASMSRC=$(foreach asmext,$(ASMEXTS),$(call rwildcard, $(SRCDIR),*.$(asmext), $1))
 ASMOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call ASMSRC,$1)))
@@ -35,8 +37,8 @@ CXXOBJ=$(addprefix $(BINDIR)/,$(patsubst $(SRCDIR)/%,%.o,$(call CXXSRC,$1)))
 
 GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
-LIBRARIES=-L$(FWDIR) -Wl,--start-group $(wildcard $(FWDIR)/*.a) -lc -lm -lgcc -lstdc++ -lsupc++ -Wl,--end-group
-ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a))))
+LIBRARIES=-L$(FWDIR) -Wl,--start-group $(wildcard $(FWDIR)/*.a) $(SDK) -lc -lm -lgcc -lstdc++ -lsupc++ -Wl,--end-group
+ARCHIVE_TEXT_LIST:=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(wildcard $(FWDIR)/*.a) $(SDK))))
 
 ifndef OUTBIN
 OUTNAME:=output
@@ -79,27 +81,27 @@ clean-template:
 
 fix-libv5rts:
 	@echo -n "Stripping unwanted symbols from libv5rts.a "
-	$(call test_output,$D$(STRIP) $(FWDIR)/libv5rts.a @libv5rts-strip-options.txt,$(DONE_STRING))
+	$(call test_output,$D$(STRIP) $(SDK) @libv5rts-strip-options.txt,$(DONE_STRING))
 
-$(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(EXCLUDE_FROM_LIB))
+$(LIBAR): fix-libv5rts $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(EXCLUDE_FROM_LIB))
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)
 	@echo -n "Extracting libv5rts "
-	$(call test_output,$Dcd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(FWDIR)/libv5rts.a,$(DONE_STRING))
-	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(FWDIR)/libv5rts.a))
+	$(call test_output,$Dcd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(SDK),$(DONE_STRING))
+	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(SDK)))
 	@echo -n "Creating $@ "
-	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $^,$(DONE_STRING))
-	# @echo -n "Stripping non-public symbols "
-	# $(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
+	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(filter-out fix-libv5rts,$^),$(DONE_STRING))
+# @echo -n "Stripping non-public symbols "
+# $(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
 
 $(OUTBIN): $(OUTELF)
 	$(VV)mkdir -p $(dir $@)
 	@echo -n "Creating $@ for $(DEVICE) "
 	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
-$(OUTELF): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
+$(OUTELF): fix-libv5rts $(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 	$(call _pros_ld_timestamp)
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $^ $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
+	$(call test_output,$D$(LD) $(LDFLAGS) $(filter-out fix-libv5rts,$^) $(LDTIMEOBJ) $(LIBRARIES) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 

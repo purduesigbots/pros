@@ -19,11 +19,11 @@
 #include "common/cobs.h"
 #include "common/set.h"
 #include "common/string.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/dev/ser.h"
 #include "system/dev/vfs.h"
 #include "system/optimizers.h"
+#include "v5_api.h"
 
 #define VEX_SERIAL_BUFFER_SIZE 2047
 

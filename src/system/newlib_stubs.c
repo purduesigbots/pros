@@ -18,8 +18,8 @@
 #include <stdint.h>
 #include <unistd.h>
 
-#include "ifi/v5_api.h"
 #include "rtos/task.h"
+#include "v5_api.h"
 
 void _exit(int status) {
 	// TODO: print status code, maybe backtrace as well

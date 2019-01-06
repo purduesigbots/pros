@@ -16,8 +16,8 @@
 #include <stdio.h>  // vasprintf (GNU extension)
 #undef _GNU_SOURCE
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "v5_api.h"
 #include "vdml/vdml.h"
 
 #define CONTROLLER_MAX_COLS 15

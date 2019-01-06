@@ -18,7 +18,7 @@
 #include "rtos/semphr.h"
 #include "rtos/task.h"
 
-#include "ifi/v5_api.h"
+#include "v5_api.h"
 
 // Fast interrupt handler
 void FIQInterrupt() {

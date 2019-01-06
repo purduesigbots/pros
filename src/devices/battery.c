@@ -11,8 +11,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "v5_api.h"
 #include "vdml/vdml.h"
 
 int32_t battery_get_voltage(void) {

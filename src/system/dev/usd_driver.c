@@ -19,11 +19,11 @@
 
 #include "common/set.h"
 #include "common/string.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/dev/usd.h"
 #include "system/dev/vfs.h"
 #include "system/optimizers.h"
+#include "v5_api.h"
 
 typedef struct usd_file_arg {
 	FIL* ifi_fptr;

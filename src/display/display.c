@@ -11,8 +11,8 @@
  */
 
 #include "display/lvgl.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "v5_api.h"
 
 static task_stack_t disp_daemon_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t disp_daemon_task_buffer;
