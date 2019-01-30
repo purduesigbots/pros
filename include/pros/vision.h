@@ -36,9 +36,9 @@ namespace pros {
  * that can be detected by the Vision Sensor
  */
 typedef enum vision_object_type {
-	E_VISION_OBJECT_NORMAL = 0,
-	E_VISION_OBJECT_COLOR_CODE = 1,
-	E_VISION_OBJECT_LINE = 2
+  E_VISION_OBJECT_NORMAL = 0,
+  E_VISION_OBJECT_COLOR_CODE = 1,
+  E_VISION_OBJECT_LINE = 2
 } vision_object_type_e_t;
 
 /**
@@ -46,17 +46,17 @@ typedef enum vision_object_type {
  * to detect objects.
  */
 typedef struct __attribute__((__packed__)) vision_signature {
-	uint8_t id;
-	uint8_t _pad[3];
-	float range;
-	int32_t u_min;
-	int32_t u_max;
-	int32_t u_mean;
-	int32_t v_min;
-	int32_t v_max;
-	int32_t v_mean;
-	uint32_t rgb;
-	uint32_t type;
+  uint8_t id;
+  uint8_t _pad[3];
+  float range;
+  int32_t u_min;
+  int32_t u_max;
+  int32_t u_mean;
+  int32_t v_min;
+  int32_t v_max;
+  int32_t v_mean;
+  uint32_t rgb;
+  uint32_t type;
 } vision_signature_s_t;
 
 /**
@@ -69,30 +69,30 @@ typedef uint16_t vision_color_code_t;
  * by the Vision Sensor
  */
 typedef struct __attribute__((__packed__)) vision_object {
-	// Object signature
-	uint16_t signature;
-	// Object type, e.g. normal, color code, or line detection
-	vision_object_type_e_t type;
-	// left boundary coordinate of the object
-	int16_t left_coord;
-	// top boundary coordinate of the object
-	int16_t top_coord;
-	// width of the object
-	int16_t width;
-	// height of the object
-	int16_t height;
-	// Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155
-	// -> 15.5 degrees)
-	uint16_t angle;
+  // Object signature
+  uint16_t signature;
+  // Object type, e.g. normal, color code, or line detection
+  vision_object_type_e_t type;
+  // left boundary coordinate of the object
+  int16_t left_coord;
+  // top boundary coordinate of the object
+  int16_t top_coord;
+  // width of the object
+  int16_t width;
+  // height of the object
+  int16_t height;
+  // Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155
+  // -> 15.5 degrees)
+  uint16_t angle;
 
-	// coordinates of the middle of the object (computed from the values above)
-	int16_t x_middle_coord;
-	int16_t y_middle_coord;
+  // coordinates of the middle of the object (computed from the values above)
+  int16_t x_middle_coord;
+  int16_t y_middle_coord;
 } vision_object_s_t;
 
 typedef enum vision_zero {
-	E_VISION_ZERO_TOPLEFT = 0,  // (0,0) coordinate is the top left of the FOV
-	E_VISION_ZERO_CENTER = 1    // (0,0) coordinate is the center of the FOV
+  E_VISION_ZERO_TOPLEFT = 0, // (0,0) coordinate is the top left of the FOV
+  E_VISION_ZERO_CENTER = 1   // (0,0) coordinate is the center of the FOV
 } vision_zero_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -231,7 +231,8 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id);
  * \return The vision_object_s_t object corresponding to the given signature and
  * size_id, or PROS_ERR if an error occurred.
  */
-vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id);
+vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id,
+                                    const uint32_t sig_id);
 
 /**
  * Gets the nth largest object of the given color code according to size_id.
@@ -340,8 +341,9 @@ int32_t vision_print_signature(const vision_signature_s_t sig);
  * than size_id were found. All objects in object_arr that were not found are
  * given VISION_OBJECT_ERR_SIG as their signature.
  */
-int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t object_count,
-                            vision_object_s_t* const object_arr);
+int32_t vision_read_by_size(uint8_t port, const uint32_t size_id,
+                            const uint32_t object_count,
+                            vision_object_s_t *const object_arr);
 
 /**
  * Reads up to object_count object descriptors into object_arr.
@@ -371,8 +373,9 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
  * than size_id were found. All objects in object_arr that were not found are
  * given VISION_OBJECT_ERR_SIG as their signature.
  */
-int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
-                           vision_object_s_t* const object_arr);
+int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id,
+                           const uint32_t sig_id, const uint32_t object_count,
+                           vision_object_s_t *const object_arr);
 
 /**
  * Reads up to object_count object descriptors into object_arr.

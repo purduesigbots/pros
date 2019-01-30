@@ -29,38 +29,40 @@ static task_stack_t system_daemon_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t system_daemon_task_buffer;
 static task_t system_daemon_task;
 
-static void _disabled_task(void* ign);
-static void _autonomous_task(void* ign);
-static void _opcontrol_task(void* ign);
-static void _competition_initialize_task(void* ign);
+static void _disabled_task(void *ign);
+static void _autonomous_task(void *ign);
+static void _opcontrol_task(void *ign);
+static void _competition_initialize_task(void *ign);
 
-static void _initialize_task(void* ign);
-static void _system_daemon_task(void* ign);
+static void _initialize_task(void *ign);
+static void _system_daemon_task(void *ign);
 
 enum state_task { E_OPCONTROL_TASK = 0, E_AUTON_TASK, E_DISABLED_TASK, E_COMP_INIT_TASK };
 
-char task_names[4][32] = {"User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
+char task_names[4][32] = {"User Operator Control (PROS)",
+                          "User Autonomous (PROS)", "User Disabled (PROS)",
                           "User Comp. Init. (PROS)"};
-task_fn_t task_fns[4] = {_opcontrol_task, _autonomous_task, _disabled_task, _competition_initialize_task};
+task_fn_t task_fns[4] = {_opcontrol_task, _autonomous_task, _disabled_task,
+                         _competition_initialize_task};
 
 extern void ser_output_flush(void);
 
 // does the basic background operations that need to occur every 2ms
 static inline void do_background_operations() {
-	port_mutex_take_all();
-	ser_output_flush();
-	rtos_suspend_all();
-	vexBackgroundProcessing();
-	rtos_resume_all();
-	vdml_background_processing();
-	port_mutex_give_all();
+  port_mutex_take_all();
+  ser_output_flush();
+  rtos_suspend_all();
+  vexBackgroundProcessing();
+  rtos_resume_all();
+  vdml_background_processing();
+  port_mutex_give_all();
 }
 
-static void _system_daemon_task(void* ign) {
-	uint32_t time = millis();
-	// Initialize status to an invalid state to force an update the first loop
-	uint32_t status = (uint32_t)(1 << 8);
-	uint32_t task_state;
+static void _system_daemon_task(void *ign) {
+  uint32_t time = millis();
+  // Initialize status to an invalid state to force an update the first loop
+  uint32_t status = (uint32_t)(1 << 8);
+  uint32_t task_state;
 
 	// XXX: Delay likely necessary for shared memory to get copied over
 	// (discovered b/c VDML would crash and burn)
@@ -70,6 +72,7 @@ static void _system_daemon_task(void* ign) {
 	task_delay(2);
 	port_mutex_give_all();
 
+  jinx_init();
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition
 	// monitoring mode
@@ -118,13 +121,15 @@ static void _system_daemon_task(void* ign) {
 			                                      task_names[state], competition_task_stack, &competition_task_buffer);
 		}
 
-		task_delay_until(&time, 2);
-	}
+    task_delay_until(&time, 2);
+  }
 }
 
 void system_daemon_initialize() {
-	system_daemon_task = task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2, TASK_STACK_DEPTH_DEFAULT,
-	                                        "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
+  system_daemon_task =
+      task_create_static(_system_daemon_task, NULL, TASK_PRIORITY_MAX - 2,
+                         TASK_STACK_DEPTH_DEFAULT, "PROS System Daemon",
+                         system_daemon_task_stack, &system_daemon_task_buffer);
 }
 
 // these functions are what actually get called by the system daemon, which
