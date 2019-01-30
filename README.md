@@ -13,6 +13,15 @@ You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and 
 
 The PROS team develops a plugin for Atom to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
 
+### What's the difference between PROS 2 and PROS 3?
+PROS 2 refers to the kernel that runs on the [VEX Arm Cortex-based Microcontroller](https://www.vexrobotics.com/276-2194.html). The source for this kernel is still available on the `cortex-master` branch. The future development for this version of the PROS kernel will be focused on maintenance and critical bugfixes.
+
+PROS 3 refers to the kernel that runs on the [VEX V5](https://www.vexrobotics.com/vexedr/v5) microcontroller platform. The majority of our development focus will be on this version of the PROS kernel.
+
+### Does PROS support C++?
+- PROS 3.x (V5) officially supports C++. We're still working on enabling all of the features of C++ (particularly in the I/O area).
+- PROS 2.x (Cortex) does not officially support C++. Some users have found ways around this, but be warned: we will not be able to help if you run into issues doing this.
+
 ### Cool, how do I get it?
 Pay a visit to our website, [pros.cs.purdue.edu](https://pros.cs.purdue.edu), to download our latest installer or view installation instructions for your preferred platform.
 
@@ -21,10 +30,6 @@ We have a number of resources available on our website, including
 - [A basic tutorial to get you acquainted with the PROS ecosystem](https://pros.cs.purdue.edu/v5/getting-started/new-users.html)
 - [A series of tutorials on how to use some of the more advanced features of PROS](https://pros.cs.purdue.edu/v5/tutorials/index.html)
 - [Extensive documentation on the kernel's API](https://pros.cs.purdue.edu/v5/api/index.html)
-
-### Does PROS support C++?
-- PROS 3.x (V5) officially supports C++. We're still working on enabling all of the features of C++ (particularly in the I/O area).
-- PROS 2.x (Cortex) does not officially support C++. Some users have found ways around this, but be warned: we will not be able to help if you run into issues doing this.
 
 ### I still have questions!
 Drop us a line
@@ -38,4 +43,7 @@ We maintain GitHub repositories for the three major components of the PROS ecosy
 - The Atom plugin at [purduesigbots/pros-atom3](https://github.com/purduesigbots/pros-atom3)
 - The kernel [here](https://github.com/purduesigbots/pros)
 
-If you find a problem with our documentation or tutorials, we have a repository for that, too, at purduesigbots/pros-docs.
+If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](https://github.com/purduesigbots/pros-docs).
+
+### Hey! Why can't I build the PROS 3 kernel?
+The PROS 3 kernel depends on VEX's proprietary Software Development Kit (SDK), which is not available for public consumption.
