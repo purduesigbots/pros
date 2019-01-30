@@ -1,7 +1,7 @@
 # PROS Kernel for the VEX V5 Brain
 
 ### What is PROS?
-PROS is a lightweight and fast alternative open source operating system for the VEX Cortex Microcontroller. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
+PROS is a lightweight and fast alternative open source operating system for the VEX V5 Brain. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
 
 Primary maintenance of PROS is done by students at Purdue University through [Purdue ACM SIGBots](http://purduesigbots.com). Inspiration for this project came from several computer science and engineering students itching to write code for the extended autonomous period. We created PROS to leverage this opportunity.
 
