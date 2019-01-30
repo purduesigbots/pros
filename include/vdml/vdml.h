@@ -40,11 +40,11 @@
  */
 #define claim_port(port, device_type)                      \
 	if (!VALIDATE_PORT_NO(port)) {                           \
-		errno = EINVAL;                                        \
+		errno = ENXIO;                                         \
 		return PROS_ERR;                                       \
 	}                                                        \
 	if (registry_validate_binding(port, device_type) != 0) { \
-		errno = EINVAL;                                        \
+		errno = ENODEV;                                        \
 		return PROS_ERR;                                       \
 	}                                                        \
 	v5_smart_device_s_t* device = registry_get_device(port); \

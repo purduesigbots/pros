@@ -133,13 +133,13 @@ static void set_gyro_tare(uint8_t port, double tare) {
 #define validate_motor(port)                                        \
 	adi_port_config_e_t config = _adi_port_get_config(port);          \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
-		errno = EINVAL;                                                 \
+		errno = ENODEV;                                                 \
 		return PROS_ERR;                                                \
 	}
 
 #define validate_twowire(port_top, port_bottom) \
 	if (abs(port_top - port_bottom) > 1) {        \
-		errno = EINVAL;                             \
+		errno = ENXIO;                              \
 		return PROS_ERR;                            \
 	}                                             \
 	int port;                                     \
