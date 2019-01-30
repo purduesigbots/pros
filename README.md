@@ -3,7 +3,7 @@
 ### What is PROS?
 PROS is a lightweight and fast alternative open source operating system for the VEX Cortex Microcontroller. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
 
-Primary maintenance of PROS is done by students at Purdue University through Purdue ACM SIGBots. Inspiration for this project came from several computer science and engineering students itching to write code for the extended autonomous period. We created PROS to leverage this opportunity.
+Primary maintenance of PROS is done by students at Purdue University through [Purdue ACM SIGBots](http://purduesigbots.com). Inspiration for this project came from several computer science and engineering students itching to write code for the extended autonomous period. We created PROS to leverage this opportunity.
 
 All PROS development is open sourced and available for the community to inspect. We believe that sharing source improves PROS through community contributions and allows students to learn by example.
 
