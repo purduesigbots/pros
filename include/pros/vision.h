@@ -35,9 +35,9 @@ namespace c {
  * that can be detected by the Vision Sensor
  */
 typedef enum vision_object_type {
-	E_VISION_OBJECT_NORMAL = 0,
-	E_VISION_OBJECT_COLOR_CODE = 1,
-	E_VISION_OBJECT_LINE = 2
+  E_VISION_OBJECT_NORMAL = 0,
+  E_VISION_OBJECT_COLOR_CODE = 1,
+  E_VISION_OBJECT_LINE = 2
 } vision_object_type_e_t;
 
 /**
@@ -45,17 +45,17 @@ typedef enum vision_object_type {
  * to detect objects.
  */
 typedef struct __attribute__((__packed__)) vision_signature {
-	uint8_t id;
-	uint8_t _pad[3];
-	float range;
-	int32_t u_min;
-	int32_t u_max;
-	int32_t u_mean;
-	int32_t v_min;
-	int32_t v_max;
-	int32_t v_mean;
-	uint32_t rgb;
-	uint32_t type;
+  uint8_t id;
+  uint8_t _pad[3];
+  float range;
+  int32_t u_min;
+  int32_t u_max;
+  int32_t u_mean;
+  int32_t v_min;
+  int32_t v_max;
+  int32_t v_mean;
+  uint32_t rgb;
+  uint32_t type;
 } vision_signature_s_t;
 
 /**
@@ -63,30 +63,30 @@ typedef struct __attribute__((__packed__)) vision_signature {
  * by the Vision Sensor
  */
 typedef struct __attribute__((__packed__)) vision_object {
-	// Object signature
-	uint16_t signature;
-	// Object type, e.g. normal, color code, or line detection
-	vision_object_type_e_t type;
-	// left boundary coordinate of the object
-	int16_t left_coord;
-	// top boundary coordinate of the object
-	int16_t top_coord;
-	// width of the object
-	int16_t width;
-	// height of the object
-	int16_t height;
-	// Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155
-	// -> 15.5 degrees)
-	uint16_t angle;
+  // Object signature
+  uint16_t signature;
+  // Object type, e.g. normal, color code, or line detection
+  vision_object_type_e_t type;
+  // left boundary coordinate of the object
+  int16_t left_coord;
+  // top boundary coordinate of the object
+  int16_t top_coord;
+  // width of the object
+  int16_t width;
+  // height of the object
+  int16_t height;
+  // Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155
+  // -> 15.5 degrees)
+  uint16_t angle;
 
-	// coordinates of the middle of the object (computed from the values above)
-	int16_t x_middle_coord;
-	int16_t y_middle_coord;
+  // coordinates of the middle of the object (computed from the values above)
+  int16_t x_middle_coord;
+  int16_t y_middle_coord;
 } vision_object_s_t;
 
 typedef enum vision_zero {
-	E_VISION_ZERO_TOPLEFT = 0,  // (0,0) coordinate is the top left of the FOV
-	E_VISION_ZERO_CENTER = 1    // (0,0) coordinate is the center of the FOV
+  E_VISION_ZERO_TOPLEFT = 0, // (0,0) coordinate is the top left of the FOV
+  E_VISION_ZERO_CENTER = 1   // (0,0) coordinate is the center of the FOV
 } vision_zero_e_t;
 
 /**
@@ -145,7 +145,8 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id);
  * \return The vision_object_s_t object corresponding to the given signature and
  *         size_id, or PROS_ERR if an error occurred.
  */
-vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id);
+vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id,
+                                    const uint32_t sig_id);
 
 /**
  * Gets the exposure parameter of the Vision Sensor.
@@ -214,8 +215,9 @@ int32_t vision_get_white_balance(uint8_t port);
  * sensor.
  *         Returns PROS_ERR if the port was invalid or an error occurred.
  */
-int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t object_count,
-                            vision_object_s_t* const object_arr);
+int32_t vision_read_by_size(uint8_t port, const uint32_t size_id,
+                            const uint32_t object_count,
+                            vision_object_s_t *const object_arr);
 
 /**
  * Reads up to object_count object descriptors into object_arr.
@@ -243,8 +245,9 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
  * sensor.
  *         Returns PROS_ERR if the port was invalid or an error occurred.
  */
-int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
-                           vision_object_s_t* const object_arr);
+int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id,
+                           const uint32_t sig_id, const uint32_t object_count,
+                           vision_object_s_t *const object_arr);
 
 /**
  * Enables/disables auto white-balancing on the Vision Sensor.
@@ -334,6 +337,24 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb);
  * \return 1 if the operation was successful, or PROS_ERR if an error occurred
  */
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point);
+
+/**
+ * Gets the zero point of the gitven point
+ *
+ * This will return the zero point (either top left or center) for the vision
+ * sensor in the given port
+ *
+ * This function uses the following values of errno when an error state is
+ *reached:
+ * EINVAL - the given value is not within the range of V5 ports (1-21)
+ * EACCES - Another resource is currently trying to access the port
+ *
+ * \param port
+ *			The V5 port number from 1-21
+ * \return The enum value indicating which location is currently referenced as
+ *the center
+ */
+vision_zero_e_t vision_get_zero_point(uint8_t port);
 
 #ifdef __cplusplus
 }

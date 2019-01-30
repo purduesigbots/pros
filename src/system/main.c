@@ -25,6 +25,7 @@ extern void system_daemon_initialize();
 // extern void graphical_context_daemon_initialize(void);
 extern void display_initialize(void);
 extern void rtos_sched_start();
+extern void jinx_init(void);
 
 int main() {
   rtos_initialize();

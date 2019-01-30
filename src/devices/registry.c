@@ -20,6 +20,8 @@
 #include <stdio.h>
 
 #include "ifi/v5_api.h"
+#include "jinx/jinx_vdml.h"
+#include "pros/jinx.h"
 #include "pros/misc.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
@@ -127,6 +129,15 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
   if (registered_t == E_DEVICE_NONE && actual_t != E_DEVICE_NONE) {
     registry_bind_port(port, actual_t);
     registered_t = registry_get_bound_type(port);
+    // Track device via JINX
+    switch (registered_t) {
+    case E_DEVICE_MOTOR:
+      track_motor_vars(port);
+      break;
+    case E_DEVICE_VISION:
+      track_vision_vars(port);
+      break;
+    }
   }
 
   if ((expected_t == registered_t || expected_t == E_DEVICE_NONE) &&
