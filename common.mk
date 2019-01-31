@@ -118,22 +118,33 @@ GETALLOBJ=$(sort $(call ASMOBJ,$1) $(call COBJ,$1) $(call CXXOBJ,$1))
 
 ARCHIVE_TEXT_LIST=$(subst $(SPACE),$(COMMA),$(notdir $(basename $(LIBRARIES))))
 
-ifndef OUTBIN
-OUTNAME:=output
-endif
-OUTBIN:=$(BINDIR)/$(OUTNAME).bin
-OUTELF:=$(BINDIR)/$(OUTNAME).elf
 LDTIMEOBJ:=$(BINDIR)/_pros_ld_timestamp.o
+
+MONOLITH_BIN:=$(BINDIR)/monolith.bin
+MONOLITH_ELF:=$(basename $(MONOLITH_BIN)).elf
+
+HOT_BIN:=$(BINDIR)/hot.package.bin
+HOT_ELF:=$(basename $(HOT_BIN)).elf
+COLD_BIN:=$(BINDIR)/cold.package.bin
+COLD_ELF:=$(basename $(COLD_BIN)).elf
+
+DEFAULT_BIN=$(MONOLITH_BIN)
+ifeq ($(USE_PACKAGE),1)
+DEFAULT_BIN=$(HOT_BIN)
+endif
 
 .PHONY: all clean quick
 
-quick: $(OUTBIN)
+quick: $(DEFAULT_BIN)
 
-all: clean $(OUTBIN)
+all: clean $(DEFAULT_BIN)
 
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
+
+test:
+	@echo $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB))
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
@@ -161,20 +172,46 @@ endif
 
 # if project is a library source, compile the archive and link output.elf against the archive rather than source objects
 ifeq ($(IS_LIBRARY),1)
-OUTELF_DEPS=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
+ELF_DEPS=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
 else
-OUTELF_DEPS=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
+ELF_DEPS=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
 
-$(OUTBIN): $(OUTELF) $(BINDIR)
+$(MONOLITH_BIN): $(MONOLITH_ELF) $(BINDIR)
 	@echo -n "Creating $@ for $(DEVICE) "
 	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
-$(OUTELF): $(OUTELF_DEPS) $(LIBRARIES)
+$(MONOLITH_ELF): $(ELF_DEPS) $(LIBRARIES)
 	$(call _pros_ld_timestamp)
 	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $(OUTELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS)) -o $@,$(OK_STRING))
+	$(call test_output,$D$(LD) $(LDFLAGS) $(ELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS)) -o $@,$(OK_STRING))
+	@echo -n "Stripping unnecessary sections "
+	$(call test_output,$D$(OBJCOPY) $@ -R .hot_init,$(DONE_STRING))
+	@echo Section sizes:
+	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
+
+$(COLD_BIN): $(COLD_ELF)
+	@echo -n "Creating cold package binary for $(DEVICE) "
+	$(call test_output,$D$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
+
+$(COLD_ELF): $(LIBRARIES)
+	$(call _pros_ld_timestamp)
+	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
+	$(call test_output,$D$(LD) $(LDFLAGS) $(LDTIMEOBJ) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
+	@echo -n "Stripping cold package "
+	$(call test_output,$D$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array $@ $@, $(DONE_STRING))
+	@echo Section sizes:
+	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
+
+$(HOT_BIN): $(HOT_ELF) $(COLD_BIN)
+	@echo -n "Creating $@ for $(DEVICE) "
+	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
+
+$(HOT_ELF): $(COLD_ELF) $(ELF_DEPS)
+	$(call _pros_ld_timestamp)
+	@echo -n "Linking hot project with $(COLD_ELF) and $(ARCHIVE_TEXT_LIST) "
+	$(call test_output,$D$(LD) $(LDFLAGS) $(call wlprefix,-nostartfiles -R $<) $(filter-out $<,$^) $(LDTIMEOBJ) $(LIBRARIES) $(call wlprefix,-T$(FWDIR)/v5-hot.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 

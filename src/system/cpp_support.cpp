@@ -19,22 +19,6 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
-void* operator new(size_t size) {
-	return malloc(size);
-}
-
-void* operator new[](size_t size) {
-	return malloc(size);
-}
-
-void operator delete(void* p) {
-	free(p);
-}
-
-void operator delete[](void* p) {
-	free(p);
-}
-
 extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #ifdef __cpp_exceptions
 	try {
