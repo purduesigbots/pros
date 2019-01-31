@@ -1,0 +1,7 @@
+jobs:
+- job: StyleChecks
+  displayName: Style Checks
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: clang-format --version
