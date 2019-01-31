@@ -11,9 +11,9 @@ SPACE :=
 SPACE +=
 COMMA := ,
 
-LIBRARIES+=$(strip $(wildcard $(FWDIR)/*.a))
+LIBRARIES+=$(wildcard $(FWDIR)/*.a)
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
-LNK_FLAGS=--gc-sections --start-group $(LIBRARIES) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
+LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
 CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11

@@ -14,9 +14,8 @@ INCDIR=$(ROOT)/include
 EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 
 PATCHED_SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.patched.a
-LIBRARIES+=$(PATCHED_SDK)
 
-EXTRA_LIB_DEPS=$(INCDIR)/api.h
+EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
@@ -61,7 +60,7 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRCDIRS) $(EXCLUDE_FROM_LIB)) $(EXTRA_LIB_D
 	$(call test_output,$Dcd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(PATCHED_SDK),$(DONE_STRING))
 	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(PATCHED_SDK)))
 	@echo -n "Creating $@ "
-	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(filter-out fix-libv5rts,$^),$(DONE_STRING))
+	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(filter-out $(EXTRA_LIB_DEPS),$^),$(DONE_STRING))
 # @echo -n "Stripping non-public symbols "
 # $(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
 
