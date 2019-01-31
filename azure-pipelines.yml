@@ -11,8 +11,7 @@ jobs:
       sudo apt-get install -y clang-format-6.0
       clang-format-6.0 --version
       curl -Ls "https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/git-clang-format" -o $AGENT_TOOLSDIRECTORY/git-clang-format
-      export PATH=$AGENT_TOOLSDIRECTORY:$PATH
     displayName: Install clang-format-6.0
   - bash: |
-      git clang-format $BUILD_SOURCEVERSION
+      PATH=$AGENT_TOOLSDIRECTORY:$PATH git clang-format $BUILD_SOURCEVERSION
     displayName: Check format on changed files
