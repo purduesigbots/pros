@@ -240,6 +240,7 @@ endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 
 define _pros_ld_timestamp
+$(VV)mkdir -p $(dir $(LDTIMEOBJ))
 @echo -n "Adding timestamp "
 @# Pipe a line of code defining _PROS_COMPILE_TOOLSTAMP and _PROS_COMPILE_DIRECTORY into GCC,
 @# which allows compilation from stdin. We define _PROS_COMPILE_DIRECTORY using a command line-defined macro
