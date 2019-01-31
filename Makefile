@@ -13,10 +13,6 @@ SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 
-PATCHED_SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.patched.a
-
-EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
-
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
@@ -39,6 +35,10 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/opcontrol $(SRCDIR)/initialize $
 # whatever files you want here. This line is configured to add all header files
 # that are in the the include directory get exported
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(SRCDIR)/opcontrol.cpp $(SRCDIR)/initialize.cpp $(SRCDIR)/autonomous.cpp $(INCDIR)/display
+
+PATCHED_SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.patched.a
+
+EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 
 ################################################################################
 ################################################################################

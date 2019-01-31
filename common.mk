@@ -159,6 +159,7 @@ template: clean-template $(LIBAR)
 	$Dprosv5 c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5 $(CREATE_TEMPLATE_FLAGS)
 endif
 
+# if project is a library source, compile the archive and link output.elf against the archive rather than source objects
 ifeq ($(IS_LIBRARY),1)
 OUTELF_DEPS=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
