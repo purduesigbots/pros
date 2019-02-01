@@ -6,7 +6,10 @@
 struct hot_table __HOT_TABLE = { 0 };
 struct hot_table* const HOT_TABLE = &__HOT_TABLE;
 
-__attribute__((section (".hot_magic"))) uint32_t MAGIC[] = {0x52616368, 0x8CEF7310};
+#define MAGIC0 0x52616368
+#define MAGIC1 0x8CEF7310
+
+__attribute__((section (".hot_magic"))) uint32_t MAGIC[] = {MAGIC0, MAGIC1};
 uint32_t const volatile * const MAGIC_ADDR = MAGIC;
 
 // The linker decides on these symbols in each section just as normal
@@ -67,7 +70,7 @@ void install_hot_table(struct hot_table* const tbl) {
 
 void invoke_install_hot_table() {
   printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
-  if(MAGIC_ADDR[0] == 0x52616368 && MAGIC_ADDR[1] == 0x8CEF7310) {
+  if(MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
     install_hot_table(HOT_TABLE);
   } else {
     memset(HOT_TABLE, 0, sizeof(*HOT_TABLE));
