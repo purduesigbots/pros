@@ -20,6 +20,10 @@ extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
 
 void __libc_init_array();
+uint8_t* __sbss_start;
+uint8_t* __sbss_end;
+uint8_t* __bss_start;
+uint8_t* __bss_end;
 
 // this expands to a bunch of:
 // extern void autonomous();
@@ -39,31 +43,9 @@ void install_hot_table(struct hot_table* const tbl) {
   #include "system/user_functions/list.h"
   #undef FUNC
 
-  // extern uint8_t __sbss_start[];
-  // printf("%s %p %p\n", __FUNCTION__, (void*)__libc_init_array, (void*)__sbss_start);
-
-  // Zero fill the sbss segment.
-  asm volatile("    ldr     r0, =__sbss_start\n"
-          "    ldr     r1, =__sbss_end\n"
-          "    mov     r2, #0\n"
-          "zero_loop1:\n"
-          "    cmp     r0, r1\n"
-          "    it      lt\n"
-          "    strlt   r2, [r0], #4\n"
-          "    blt     zero_loop1"
-          :
-          :
-          : "r0", "r1", "r2");
-
-    // Zero fill the bss segment.
-  asm volatile("    ldr     r0, =__bss_start\n"
-          "    ldr     r1, =__bss_end\n"
-          "    mov     r2, #0\n"
-          "zero_loop2:\n"
-          "    cmp     r0, r1\n"
-          "    it      lt\n"
-          "    strlt   r2, [r0], #4\n"
-          "    blt     zero_loop2");
+  // Zero fill the sbss and bss segments.
+  memset(__sbss_start, 0, __sbss_end - __sbss_start);
+  memset(__bss_start, 0, __bss_end - __bss_end);
 
   __libc_init_array();
 }
