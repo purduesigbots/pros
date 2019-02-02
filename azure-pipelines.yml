@@ -9,8 +9,6 @@ jobs:
       hostName: $(gh.knownhosts)
       sshPublicKey: $(gh.publickey)
   - checkout: self
-  - bash: echo "##vso[build.UpdateBuildNumber]`cat version`"
-    displayName: Update Build Number
   - bash: |
       sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
       sudo apt-get update
@@ -30,6 +28,8 @@ jobs:
       mkdir -p artifacts
       cp template/*.zip artifacts
     displayName: Build template
+  - bash: echo "##vso[build.UpdateBuildNumber]`cat version`"
+    displayName: Update Build Number
   - task: PublishPipelineArtifact@0
     inputs:
       targetPath: artifacts
