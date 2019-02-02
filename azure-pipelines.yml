@@ -37,12 +37,13 @@ jobs:
       targetPath: artifacts
       artifactName: template
     condition: succeeded()
-  - task: UniversalPackages@0
-    inputs:
-      command: publish
-      publishDirectory: artifacts
-      vstsFeedPublish: 'pros-depot-nightly'
-      vstsFeedPackagePublish: 'kernel'
-      versionOption: custom
-      versionPublish: $(KernelVersion)
-    # condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop')))
+  # - task: UniversalPackages@0
+  #   inputs:
+  #     command: publish
+  #     publishDirectory: artifacts
+  #     vstsFeedPublish: 'pros-depot-nightly'
+  #     vstsFeedPackagePublish: 'kernel'
+  #     versionOption: custom
+  #     versionPublish: $(KernelVersion)
+  #     packagePublishDescription: 'CI Build of Kernel'
+  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop')))
