@@ -3,6 +3,12 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - task: InstallSSHKey@0
+    inputs:
+      sshKeySecureFile: id_sigbot_github_azure_devops
+      hostName: $gh.knownhosts
+      sshPublicKey: $gh.pubkey
+  - checkout: self
   - bash: |
       sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
       sudo apt-get update
