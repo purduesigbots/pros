@@ -1,6 +1,3 @@
-variables:
-- group: GitHub SSH Key
-
 jobs:
 - job: BuildTemplate
   pool:
@@ -12,6 +9,8 @@ jobs:
       hostName: $(gh.knownhosts)
       sshPublicKey: $(gh.publickey)
   - checkout: self
+  - bash: echo "##vso[build.UpdateBuildNumber]`cat version`"
+    displayName: Update Build Number
   - bash: |
       sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
       sudo apt-get update
