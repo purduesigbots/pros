@@ -41,7 +41,7 @@ jobs:
     inputs:
       command: publish
       publishDirectory: artifacts
-      vstsFeedPublish: 'pros-depot-beta'
+      vstsFeedPublish: 'pros-depot-nightly'
       vstsFeedPackagePublish: 'kernel'
       versionOption: custom
       versionPublish: $(KernelVersion)
