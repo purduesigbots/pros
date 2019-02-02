@@ -33,7 +33,7 @@ uint8_t* __bss_end;
 
 __attribute__((section (".hot_init")))
 void install_hot_table(struct hot_table* const tbl) {
-  printf("Hot initializing\n");
+  // printf("Hot initializing\n");
   tbl->compile_timestamp = _PROS_COMPILE_TIMESTAMP;
   tbl->compile_directory = _PROS_COMPILE_DIRECTORY;
 
@@ -51,7 +51,7 @@ void install_hot_table(struct hot_table* const tbl) {
 }
 
 void invoke_install_hot_table() {
-  printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
+  // printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
   if(MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
     install_hot_table(HOT_TABLE);
   } else {
