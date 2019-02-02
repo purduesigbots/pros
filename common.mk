@@ -133,6 +133,11 @@ ifeq ($(USE_PACKAGE),1)
 DEFAULT_BIN=$(HOT_BIN)
 endif
 
+# Check if USE_PACKAGE is defined to check for migration steps from purduesigbots/pros#87
+ifndef USE_PACKAGE
+$(error Your Makefile must be migrated! Visit https://pros.cs.purdue.edu/v5/releases/kernel3.1.6.html to learn how)
+endif
+
 .PHONY: all clean quick
 
 quick: $(DEFAULT_BIN)
