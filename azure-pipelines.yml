@@ -1,3 +1,6 @@
+variables:
+- group: GitHub SSH Key
+
 jobs:
 - job: BuildTemplate
   pool:
@@ -6,8 +9,8 @@ jobs:
   - task: InstallSSHKey@0
     inputs:
       sshKeySecureFile: id_sigbot_github_azure_devops
-      hostName: $gh.knownhosts
-      sshPublicKey: $gh.pubkey
+      hostName: $2048 SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8 github.com (RSA)
+      sshPublicKey: 
   - checkout: self
   - bash: |
       sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
