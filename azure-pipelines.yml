@@ -1,17 +1,29 @@
 jobs:
-- job: StyleChecks
-  displayName: Style Checks
+- job: BuildTemplate
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
   - bash: |
-      wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-      sudo apt-add-repository "deb http://apt.llvm.org/xenial/ llvm-toolchain-xenial-6.0 main"
+      sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
       sudo apt-get update
-      sudo apt-get install -y clang-format-6.0
-      clang-format-6.0 --version
-      curl -Ls "https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/git-clang-format" -o $AGENT_TOOLSDIRECTORY/git-clang-format
-    displayName: Install clang-format-6.0
+      sudo apt-get install gcc-arm-embedded
+    displayName: Install gcc-arm-embedded
+  - task: UsePythonVersion@0
+    inputs:
+      addToPath: true
+      versionSpec: '3.6'
+  - task: PipAuthenticate@0
+    inputs:
+      artifactFeeds: 'pros-cli'
+  - bash: pip install pros-cli-v5
+    displayName: Install CLI
   - bash: |
-      PATH=$AGENT_TOOLSDIRECTORY:$PATH git clang-format $BUILD_SOURCEVERSION
-    displayName: Check format on changed files
+      make template
+      mkdir -p artifacts
+      cp template/*.zip artifacts
+    displayName: Build template
+  - task: PublishPipelineArtifact@0
+    inputs:
+      targetPath: artifacts
+      artifactName: template
+    condition: succeeded()
