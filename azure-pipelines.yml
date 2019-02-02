@@ -3,6 +3,8 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
+  - checkout: self
+    submodules: true
   - bash: |
       sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
       sudo apt-get update
