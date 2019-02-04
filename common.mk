@@ -164,6 +164,7 @@ clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
+	-$Drm -f $@
 	@echo -n "Creating $@ "
 	$(call test_output,$D$(AR) rcs $@ $^, $(DONE_STRING))
 
