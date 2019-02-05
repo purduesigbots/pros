@@ -208,8 +208,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 		col++;
 
 	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	strcpy(buf, str);
-	buf[CONTROLLER_MAX_COLS] = '\0';
+	strlcpy(buf, str, CONTROLLER_MAX_COLS + 1);
 
 	vexControllerTextSet(id, line, col, buf);
 	free(buf);
@@ -242,10 +241,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 	va_list args;
 	va_start(args, fmt);
-	char* buf;
-	vasprintf(&buf, fmt, args);
-
-	buf[CONTROLLER_MAX_COLS] = '\0';
+	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
+	vsnprintf(&buf, CONTROLLER_MAX_COLS + 1, fmt, args);
 
 	vexControllerTextSet(id, line, col, buf);
 	free(buf);
