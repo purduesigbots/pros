@@ -25,6 +25,7 @@ jobs:
     displayName: Install CLI
   - bash: |
       make template
+      make
       mkdir -p artifacts
       cp template/*.zip artifacts
     displayName: Build template
