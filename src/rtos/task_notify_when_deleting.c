@@ -2,7 +2,10 @@
 #include "rtos/task.h"
 #include "rtos/tcb.h"
 
-// This increments configNUM_THREAD_LOCAL_STORAGE_POINTERS by 1
+// This increments configNUM_THREAD_LOCAL_STORAGE_POINTERS by 2
+
+#define SUBSCRIBERS_TLSP_IDX 0
+#define SUBSCRIPTIONS_TLSP_IDX 1
 
 #define TLSP_IDX 0
 
@@ -41,15 +44,39 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
   task_to_notify = (task_to_notify == NULL) ? pxCurrentTCB : task_to_notify;
   target_task = (target_task == NULL) ? pxCurrentTCB : target_task;
 
-  // It doesn't make sense for a task to notify itself, and make sure that neither task is NULL (implying that scheduler hasn't started yet)
+  // It doesn't make sense for a task to notify itself, and make sure that
+  // neither task is NULL (implying that scheduler hasn't started yet)
   if (task_to_notify == target_task || !task_to_notify || !target_task) {
     return;
   }
 
-  linked_list_s_t* target_ll = pvTaskGetThreadLocalStoragePointer(target_task, TLSP_IDX);
+  // task_to_notify maintains a list of the tasks whose deletion it cares about.
+  // This will allow us to unsubscribe from notification if/when task_to_notify
+  // is deleted
+  linked_list_s_t* subscriptions_ll = pvTaskGetThreadLocalStoragePointer(task_to_notify, SUBSCRIPTIONS_TLSP_IDX);
+  if (subscriptions_ll == NULL) {
+    subscriptions_ll = linked_list_init();
+    vTaskSetThreadLocalStoragePointer(task_to_notify, SUBSCRIPTIONS_TLSP_IDX, subscriptions_ll);
+  }
+  if (subscriptions_ll != NULL) {
+    // check whether task_to_notify is already subscribed. if so, do nothing
+    ll_node_s_t* it = subscriptions_ll->head;
+    bool found = false;
+    while (it != NULL && !found) {
+      found = it->payload.data == task_to_notify;
+      it = it->next;
+    }
+    if (!found) {
+      linked_list_prepend_data(subscriptions_ll, target_task);
+    }
+  }
+
+  // similarly, target_task maintains a list of the tasks it needs to notify
+  // when being deleted
+  linked_list_s_t* target_ll = pvTaskGetThreadLocalStoragePointer(target_task, SUBSCRIBERS_TLSP_IDX);
   if (target_ll == NULL) {
     target_ll = linked_list_init();
-    vTaskSetThreadLocalStoragePointer(target_task, TLSP_IDX, target_ll);
+    vTaskSetThreadLocalStoragePointer(target_task, SUBSCRIBERS_TLSP_IDX, target_ll);
   }
 
   if (target_ll != NULL) {
@@ -93,6 +120,19 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
 //   }
 // }
 
+static void unsubscribe_hook_cb(ll_node_s_t* node, void* task_to_remove) {
+  task_t subscription = node->payload.data;
+
+  linked_list_s_t* subscriptions_list = pvTaskGetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX);
+  linked_list_remove_data(subscriptions_list, task_to_remove);
+
+  // cleanup the list if we've removed its last member
+  if (subscriptions_list->head == NULL) {
+    linked_list_free(subscriptions_list);
+    vTaskSetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX, NULL);
+  }
+}
+
 static void delete_hook_cb(ll_node_s_t* node, void* ignore) {
   struct notify_delete_action* action = node->payload.data;
   if (action != NULL) {
@@ -103,10 +143,16 @@ static void delete_hook_cb(ll_node_s_t* node, void* ignore) {
 }
 
 void task_notify_when_deleting_hook(task_t task) {
-  linked_list_s_t* ll = pvTaskGetThreadLocalStoragePointer(task, TLSP_IDX);
+  // if this task was subscribed to any other task deletion events, unsubscribe
+  linked_list_s_t* ll = pvTaskGetThreadLocalStoragePointer(task, SUBSCRIPTIONS_TLSP_IDX);
+  if (ll != NULL) {
+    linked_list_foreach(ll, unsubscribe_hook_cb, task);
+  }
+  // notify subscribed tasks of this task's deletion
+  ll = pvTaskGetThreadLocalStoragePointer(task, SUBSCRIBERS_TLSP_IDX);
   if (ll != NULL) {
     linked_list_foreach(ll, delete_hook_cb, NULL);
     linked_list_free(ll);
-    vTaskSetThreadLocalStoragePointer(task, TLSP_IDX, NULL); // for good measure
+    vTaskSetThreadLocalStoragePointer(task, SUBSCRIBERS_TLSP_IDX, NULL); // for good measure
   }
 }
