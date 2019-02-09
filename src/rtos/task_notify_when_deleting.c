@@ -126,11 +126,6 @@ static void unsubscribe_hook_cb(ll_node_s_t* node, void* task_to_remove) {
   linked_list_s_t* subscriptions_list = pvTaskGetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX);
   if (subscriptions_list != NULL) {
     linked_list_remove_data(subscriptions_list, task_to_remove);
-    // cleanup the list if we've removed its last member
-    if (subscriptions_list->head == NULL) {
-      linked_list_free(subscriptions_list);
-      vTaskSetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX, NULL);
-    }
   }
 }
 
@@ -148,6 +143,8 @@ void task_notify_when_deleting_hook(task_t task) {
   linked_list_s_t* ll = pvTaskGetThreadLocalStoragePointer(task, SUBSCRIPTIONS_TLSP_IDX);
   if (ll != NULL) {
     linked_list_foreach(ll, unsubscribe_hook_cb, task);
+    linked_list_free(ll);
+    vTaskSetThreadLocalStoragePointer(task, SUBSCRIPTIONS_TLSP_IDX, NULL);
   }
   // notify subscribed tasks of this task's deletion
   ll = pvTaskGetThreadLocalStoragePointer(task, SUBSCRIBERS_TLSP_IDX);
