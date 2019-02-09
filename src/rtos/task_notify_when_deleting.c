@@ -63,7 +63,7 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
     ll_node_s_t* it = subscriptions_ll->head;
     bool found = false;
     while (it != NULL && !found) {
-      found = it->payload.data == task_to_notify;
+      found = it->payload.data == target_task;
       it = it->next;
     }
     if (!found) {
