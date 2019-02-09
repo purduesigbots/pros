@@ -1,5 +1,11 @@
+#include "kapi.h"
 #include "common/linkedlist.h"
-#include "rtos/task.h"
+
+// NOTE: can't just include task.h because of redefinition that goes on in kapi
+//       include chain, so we just prototype what we need here
+void *pvTaskGetThreadLocalStoragePointer( task_t xTaskToQuery, int32_t xIndex );
+void vTaskSetThreadLocalStoragePointer( task_t xTaskToSet, int32_t xIndex, void *pvValue );
+
 #include "rtos/tcb.h"
 
 // This increments configNUM_THREAD_LOCAL_STORAGE_POINTERS by 2
@@ -7,7 +13,8 @@
 #define SUBSCRIBERS_TLSP_IDX 0
 #define SUBSCRIPTIONS_TLSP_IDX 1
 
-#define TLSP_IDX 0
+static static_sem_s_t task_notify_when_deleting_mutex_buf;
+static mutex_t task_notify_when_deleting_mutex;
 
 struct notify_delete_action {
   task_t task_to_notify;
@@ -39,6 +46,10 @@ static struct notify_delete_action* _find_task(linked_list_s_t* ll, task_t task)
   return args.found_action;
 }
 
+void task_notify_when_deleting_init() {
+  task_notify_when_deleting_mutex = mutex_create_static(&task_notify_when_deleting_mutex_buf);
+}
+
 void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
                                uint32_t value, notify_action_e_t notify_action) {
   task_to_notify = (task_to_notify == NULL) ? pxCurrentTCB : task_to_notify;
@@ -50,6 +61,11 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
     return;
   }
 
+  if (task_notify_when_deleting_mutex == NULL) {
+    task_notify_when_deleting_mutex = mutex_create();
+  }
+  mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
+
   // task_to_notify maintains a list of the tasks whose deletion it cares about.
   // This will allow us to unsubscribe from notification if/when task_to_notify
   // is deleted
@@ -59,7 +75,8 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
     vTaskSetThreadLocalStoragePointer(task_to_notify, SUBSCRIPTIONS_TLSP_IDX, subscriptions_ll);
   }
   if (subscriptions_ll != NULL) {
-    // check whether task_to_notify is already subscribed. if so, do nothing
+    // check whether task_to_notify is already subscribed to target_task. if so,
+    // do nothing
     ll_node_s_t* it = subscriptions_ll->head;
     bool found = false;
     while (it != NULL && !found) {
@@ -99,6 +116,7 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
       action->value = value;
     }
   }
+  mutex_give(task_notify_when_deleting_mutex);
 }
 
 // NOTE: this code is untested, probably works, but also has a terrible name (task_notify_when_deleting_unsubscribe)
@@ -139,6 +157,7 @@ static void delete_hook_cb(ll_node_s_t* node, void* ignore) {
 }
 
 void task_notify_when_deleting_hook(task_t task) {
+  mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
   // if this task was subscribed to any other task deletion events, unsubscribe
   linked_list_s_t* ll = pvTaskGetThreadLocalStoragePointer(task, SUBSCRIPTIONS_TLSP_IDX);
   if (ll != NULL) {
@@ -153,4 +172,5 @@ void task_notify_when_deleting_hook(task_t task) {
     linked_list_free(ll);
     vTaskSetThreadLocalStoragePointer(task, SUBSCRIBERS_TLSP_IDX, NULL); // for good measure
   }
+  mutex_give(task_notify_when_deleting_mutex);
 }
