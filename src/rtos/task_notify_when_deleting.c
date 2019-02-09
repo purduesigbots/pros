@@ -124,12 +124,13 @@ static void unsubscribe_hook_cb(ll_node_s_t* node, void* task_to_remove) {
   task_t subscription = node->payload.data;
 
   linked_list_s_t* subscriptions_list = pvTaskGetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX);
-  linked_list_remove_data(subscriptions_list, task_to_remove);
-
-  // cleanup the list if we've removed its last member
-  if (subscriptions_list->head == NULL) {
-    linked_list_free(subscriptions_list);
-    vTaskSetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX, NULL);
+  if (subscriptions_list != NULL) {
+    linked_list_remove_data(subscriptions_list, task_to_remove);
+    // cleanup the list if we've removed its last member
+    if (subscriptions_list->head == NULL) {
+      linked_list_free(subscriptions_list);
+      vTaskSetThreadLocalStoragePointer(subscription, SUBSCRIBERS_TLSP_IDX, NULL);
+    }
   }
 }
 
