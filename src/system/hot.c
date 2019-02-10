@@ -1,5 +1,6 @@
 #include "kapi.h"
 #include "system/hot.h"
+#include "v5_api.h"
 
 
 // stored only in cold
@@ -60,7 +61,7 @@ void install_hot_table(struct hot_table* const tbl) {
 
 void invoke_install_hot_table() {
   // printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
-  if(MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
+  if(vexSystemLinkAddrGet() == (uint32_t)MAGIC_ADDR && MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
     install_hot_table(HOT_TABLE);
   } else {
     memset(HOT_TABLE, 0, sizeof(*HOT_TABLE));
