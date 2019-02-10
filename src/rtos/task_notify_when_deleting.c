@@ -46,6 +46,10 @@ static struct notify_delete_action* _find_task(linked_list_s_t* ll, task_t task)
   return args.found_action;
 }
 
+void task_notify_when_deleting_init() {
+  task_notify_when_deleting_mutex = mutex_create_static(&task_notify_when_deleting_mutex_buf);
+}
+
 void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
                                uint32_t value, notify_action_e_t notify_action) {
   task_to_notify = (task_to_notify == NULL) ? pxCurrentTCB : task_to_notify;
@@ -57,9 +61,8 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
     return;
   }
 
-  // lazily initialize mutex
   if (task_notify_when_deleting_mutex == NULL) {
-    task_notify_when_deleting_mutex = mutex_create_static(&task_notify_when_deleting_mutex_buf);
+    task_notify_when_deleting_mutex = mutex_create();
   }
   mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
 
