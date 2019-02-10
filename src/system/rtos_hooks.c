@@ -44,9 +44,6 @@ void rtos_initialize() {
 	portDISABLE_INTERRUPTS();
 
 	vPortInstallFreeRTOSVectorTable();
-
-	void task_notify_when_deleting_init();
-	task_notify_when_deleting_init();
 }
 
 extern void FreeRTOS_Tick_Handler(void);
