@@ -1,5 +1,7 @@
 # PROS Kernel for the VEX V5 Brain
 
+[![Build Status](https://dev.azure.com/purdue-acm-sigbots/Kernel/_apis/build/status/purduesigbots.pros?branchName=develop)](https://dev.azure.com/purdue-acm-sigbots/Kernel/_build/latest?definitionId=5&branchName=develop)
+
 ### What is PROS?
 PROS is a lightweight and fast alternative open source operating system for the VEX V5 Brain. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
 
