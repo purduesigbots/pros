@@ -61,9 +61,6 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
     return;
   }
 
-  if (task_notify_when_deleting_mutex == NULL) {
-    task_notify_when_deleting_mutex = mutex_create();
-  }
   mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
 
   // task_to_notify maintains a list of the tasks whose deletion it cares about.
