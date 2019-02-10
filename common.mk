@@ -204,7 +204,7 @@ $(COLD_ELF): $(LIBRARIES)
 	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
 	$(call test_output,$D$(LD) $(LDFLAGS) $(LDTIMEOBJ) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
 	@echo -n "Stripping cold package "
-	$(call test_output,$D$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array $@ $@, $(DONE_STRING))
+	$(call test_output,$D$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array --strip-symbol=_PROS_COMPILE_DIRECTORY --strip-symbol=_PROS_COMPILE_TIMESTAMP $@ $@, $(DONE_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
@@ -249,7 +249,7 @@ $(VV)mkdir -p $(dir $(LDTIMEOBJ))
 @# Pipe a line of code defining _PROS_COMPILE_TOOLSTAMP and _PROS_COMPILE_DIRECTORY into GCC,
 @# which allows compilation from stdin. We define _PROS_COMPILE_DIRECTORY using a command line-defined macro
 @# which is the pwd | tail bit, which will truncate the path to the last 23 characters
-$(call test_output, $(VV)echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = PCD;' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -DPCD="\"`pwd | tail -c 23`\"" -o $(LDTIMEOBJ) -,$(OK_STRING))
+$(call test_output, $(VV)echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = "$(shell pwd | tail -c 23)";' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -o $(LDTIMEOBJ) -,$(OK_STRING))
 endef
 
 # these rules are for build-compile-commands, which just print out sysroot information
