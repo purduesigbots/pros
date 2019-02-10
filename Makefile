@@ -81,5 +81,5 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	-$Drm -f $@
 	@echo -n "Creating $@ "
 	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)),$(DONE_STRING))
-	@echo -n "Stripping non-public symbols "
-	$(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
+# @echo -n "Stripping non-public symbols "
+# $(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
