@@ -60,7 +60,7 @@ $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 CREATE_TEMPLATE_ARGS=--system "./**/*"
 CREATE_TEMPLATE_ARGS+=--user "src/opcontrol.{c,cpp,cc}" --user "src/initialize.{cpp,c,cc}" --user "src/autonomous.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --user "Makefile"
 CREATE_TEMPLATE_ARGS+=--target v5
-CREATE_TEMPALTE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
+CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
