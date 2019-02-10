@@ -20,10 +20,6 @@ extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
 
 void __libc_init_array();
-uint8_t* __sbss_start;
-uint8_t* __sbss_end;
-uint8_t* __bss_start;
-uint8_t* __bss_end;
 
 // this expands to a bunch of:
 // extern void autonomous();
@@ -43,11 +39,23 @@ void install_hot_table(struct hot_table* const tbl) {
   #include "system/user_functions/list.h"
   #undef FUNC
 
-  // Zero fill the sbss and bss segments.
-  memset(__sbss_start, 0, __sbss_end - __sbss_start);
-  memset(__bss_start, 0, __bss_end - __bss_end);
-
-  __libc_init_array();
+  // Zero fill the sbss and bss segments. Called with assembly because
+  // C compiler liked to optimize these calls in unanticipated ways I couldn't
+  // figure out how to make correct
+  asm volatile (
+    "ldr r0, =__sbss_start\n"
+    "mov r1, #0\n"
+    "ldr r2,=__sbss_end\n"
+    "sub r2,r2,r0\n"
+    "bl memset\n"
+    "ldr r0, =__bss_start\n"
+    "mov r1, #0\n"
+    "ldr r2,=__bss_end\n"
+    "sub r2,r2,r0\n"
+    "bl memset\n"
+    "bl __libc_init_array"
+    : : : "r0", "r1", "r2"
+  );
 }
 
 void invoke_install_hot_table() {
