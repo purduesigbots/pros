@@ -20,8 +20,6 @@ uint32_t const volatile * const MAGIC_ADDR = MAGIC;
 extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
 
-void __libc_init_array();
-
 // this expands to a bunch of:
 // extern void autonomous();
 #define FUNC(F) void F();
@@ -40,23 +38,28 @@ void install_hot_table(struct hot_table* const tbl) {
   #include "system/user_functions/list.h"
   #undef FUNC
 
-  // Zero fill the sbss and bss segments. Called with assembly because
-  // C compiler liked to optimize these calls in unanticipated ways I couldn't
-  // figure out how to make correct
-  asm volatile (
-    "ldr r0, =__sbss_start\n"
-    "mov r1, #0\n"
-    "ldr r2,=__sbss_end\n"
-    "sub r2,r2,r0\n"
-    "bl memset\n"
-    "ldr r0, =__bss_start\n"
-    "mov r1, #0\n"
-    "ldr r2,=__bss_end\n"
-    "sub r2,r2,r0\n"
-    "bl memset\n"
-    "bl __libc_init_array"
-    : : : "r0", "r1", "r2"
-  );
+  // all of these weak symbols are given to us by the linker
+  // These values should come from the hot region, since that's where this
+  // function is linked
+  extern __attribute__((weak)) uint8_t* __sbss_start[];
+  extern __attribute__((weak)) uint8_t* __sbss_end[];
+  memset(__sbss_start, 0, (size_t)__sbss_end - (size_t)__sbss_start);
+
+  extern __attribute__((weak)) uint8_t* __bss_start[];
+  extern __attribute__((weak)) uint8_t* __bss_end[];
+  memset(__bss_start, 0, (size_t)__bss_end - (size_t)__bss_start);
+
+  extern __attribute__((weak)) void (* const __preinit_array_start[])(void);
+  extern __attribute__((weak)) void (* const __preinit_array_end[])(void);
+  for(void (* const *ctor)() = __preinit_array_start; ctor < __preinit_array_end; ctor++) {
+    (*ctor)();
+  }
+
+  extern __attribute__((weak)) void (* const __init_array_start[])(void);
+  extern __attribute__((weak)) void (* const __init_array_end[])(void);
+  for(void (* const *ctor)() = __init_array_start; ctor < __init_array_end; ctor++) {
+    (*ctor)();
+  }
 }
 
 void invoke_install_hot_table() {
