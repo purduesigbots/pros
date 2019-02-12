@@ -128,14 +128,14 @@ HOT_ELF:=$(basename $(HOT_BIN)).elf
 COLD_BIN:=$(BINDIR)/cold.package.bin
 COLD_ELF:=$(basename $(COLD_BIN)).elf
 
-DEFAULT_BIN=$(MONOLITH_BIN)
-ifeq ($(USE_PACKAGE),1)
-DEFAULT_BIN=$(HOT_BIN)
-endif
-
 # Check if USE_PACKAGE is defined to check for migration steps from purduesigbots/pros#87
 ifndef USE_PACKAGE
 $(error Your Makefile must be migrated! Visit https://pros.cs.purdue.edu/v5/releases/kernel3.1.6.html to learn how)
+endif
+
+DEFAULT_BIN=$(MONOLITH_BIN)
+ifeq ($(USE_PACKAGE),1)
+DEFAULT_BIN=$(HOT_BIN)
 endif
 
 .PHONY: all clean quick
