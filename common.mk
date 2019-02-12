@@ -148,9 +148,6 @@ clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
 
-test:
-	@echo $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB))
-
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
 $(errror "You should rename your library! libbest is the default library name and should be changed")

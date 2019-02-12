@@ -62,7 +62,12 @@ void install_hot_table(struct hot_table* const tbl) {
   }
 }
 
+// this function really exists on the cold section! Called by pros_init
+// this does the check if we're running with hot/cold and invokes the hot table
+// installer (install_hot_table) located in hot memory
 void invoke_install_hot_table() {
+  // install_hot_table is at 0x07800008
+  // MAGIC_ADDR is at 0x0780000
   // printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
   if(vexSystemLinkAddrGet() == (uint32_t)0x03800000 && MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
     install_hot_table(HOT_TABLE);
