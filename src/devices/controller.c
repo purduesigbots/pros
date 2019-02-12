@@ -242,7 +242,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 	va_list args;
 	va_start(args, fmt);
 	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	vsnprintf(&buf, CONTROLLER_MAX_COLS + 1, fmt, args);
+	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
 
 	vexControllerTextSet(id, line, col, buf);
 	free(buf);
