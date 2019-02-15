@@ -141,7 +141,7 @@
 #define configUSE_NEWLIB_REENTRANT              1
 #define configSTACK_DEPTH_TYPE                  size_t
 
-#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 1
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 2
 
 /* Include the query-heap CLI command to query the free heap space. */
 #define configINCLUDE_QUERY_HEAP_COMMAND        1
