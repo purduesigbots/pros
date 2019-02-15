@@ -58,9 +58,15 @@ typedef enum lcd_text_align_e {
 	E_LCD_TEXT_ALIGN_RIGHT = 2
 } lcd_text_align_e_t;
 
+#ifdef __cplusplus
 #define ALIGN_LEFT pros::E_LCD_TEXT_ALIGN_LEFT 
 #define ALIGN_CENTER pros::E_LCD_TEXT_ALIGN_CENTER
 #define ALIGN_RIGHT pros::E_LCD_TEXT_ALIGN_RIGHT
+#else
+#define ALIGN_LEFT E_LCD_TEXT_ALIGN_LEFT 
+#define ALIGN_CENTER E_LCD_TEXT_ALIGN_CENTER
+#define ALIGN_RIGHT E_LCD_TEXT_ALIGN_RIGHT
+#endif
 
 #ifdef __cplusplus
 namespace c {
