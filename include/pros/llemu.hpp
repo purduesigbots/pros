@@ -115,6 +115,24 @@ bool print(std::int16_t line, const char* fmt, Params... args) {
 bool set_text(std::int16_t line, std::string text);
 
 /**
+ * Set text align type on the emulated three-button LCD screen.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
+ * EINVAL - The line number specified is not in the range [0-7]
+ *
+ * \param line
+ *        The line on which to set align type [0-7]
+ * \param align
+ *        The align type
+ *
+ * \return True if the operation was successful, or false otherwise, setting
+ * errno values as specified above.
+ */
+bool set_text_align(std::int16_t line, lcd_text_align_e_t align);
+
+/**
  * Clears the contents of the emulated three-button LCD screen.
  *
  * This function uses the following values of errno when an error state is

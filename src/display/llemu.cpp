@@ -31,6 +31,9 @@ bool shutdown(void) {
 bool set_text(std::int16_t line, std::string text) {
 	return lcd_set_text(line, text.c_str());
 }
+bool set_text_align(std::int16_t line, lcd_text_align_e_t align) {
+	return lcd_set_text_align(line, align);
+}
 bool clear(void) {
 	return lcd_clear();
 }

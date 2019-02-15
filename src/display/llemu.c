@@ -172,6 +172,21 @@ bool _lcd_set_text(lv_obj_t* lcd_dummy, int16_t line, const char* text) {
 	return _lcd_print(lcd_dummy, line, "%s", text);
 }
 
+bool _lcd_set_text_align(lv_obj_t* lcd_dummy, int16_t line, lcd_text_align_e_t align) {
+	if (line < 0 || line > 7) {
+		errno = EINVAL;
+		return false;
+	}
+	//0 = left, 1 = center, 2 = right(supported in LVGL 5.2)
+	if (align < 0 || align > 2) {
+		errno = EINVAL;
+		return false;
+	}
+	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
+	lv_label_set_align(lcd->lcd_text[line], (lv_label_align_t)align);
+	return true;
+}
+
 void _lcd_clear(lv_obj_t* lcd_dummy) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
 	// delete children of screen (this is fine because when we print, we just
@@ -253,6 +268,14 @@ bool lcd_set_text(int16_t line, const char* text) {
 		return false;
 	}
 	return _lcd_set_text(_llemu_lcd, line, text);
+}
+
+bool lcd_set_text_align(int16_t line, lcd_text_align_e_t align) {
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return false;
+	}
+	return _lcd_set_text_align(_llemu_lcd, line, align);
 }
 
 bool lcd_clear(void) {
