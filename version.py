@@ -8,6 +8,7 @@ try:
     if '-' in v:
         bv = v[:v.index('-')]
         bv = bv[:bv.rindex('.') + 1] + str(int(bv[bv.rindex('.') + 1:]) + 1)
+        print(os.environ)
         if os.environ.get('System.PullRequest.PullRequestId', None):
             sempre = 'pr'
             build = os.environ.get('System.PullRequest.PullRequestId')
