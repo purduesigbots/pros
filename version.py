@@ -1,16 +1,21 @@
 from __future__ import print_function
 import subprocess
 import io
+import os
 
 try:
     v = subprocess.check_output(['git', 'describe', '--dirty', '--abbrev']).decode().strip()
     if '-' in v:
         bv = v[:v.index('-')]
         bv = bv[:bv.rindex('.') + 1] + str(int(bv[bv.rindex('.') + 1:]) + 1)
-        sempre = 'dirty' if v.endswith('-dirty') else 'commit'
-        pippre = 'alpha' if v.endswith('-dirty') else 'pre'
-        build = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
-        number_since = subprocess.check_output(['git', 'rev-list', v[:v.index('-')] + '..HEAD', '--count']).decode().strip()
+        if os.environ.get('System.PullRequest.PullRequestId', None):
+            sempre = 'pr'
+            build = os.environ.get('System.PullRequest.PullRequestId')
+        else:
+            sempre = 'dirty' if v.endswith('-dirty') else 'commit'
+            # pippre = 'alpha' if v.endswith('-dirty') else 'pre'
+            build = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
+            # number_since = subprocess.check_output(['git', 'rev-list', v[:v.index('-')] + '..HEAD', '--count']).decode().strip()
         semver = bv + '-' + sempre + '+' + build
     else:
         semver = v
