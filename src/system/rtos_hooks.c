@@ -17,8 +17,10 @@
 #include "rtos/FreeRTOS.h"
 #include "rtos/semphr.h"
 #include "rtos/task.h"
+#include "rtos/tcb.h"
 
 #include "v5_api.h"
+#include "v5_color.h"
 
 // Fast interrupt handler
 void FIQInterrupt() {
@@ -26,7 +28,19 @@ void FIQInterrupt() {
 }
 // Replacement for DataAbortInterrupt
 void DataAbortInterrupt() {
-	vexSystemDataAbortInterrupt();
+	register int cause_pc;
+	asm("ldr %0,[sp,#(7*4)]\nsubs %0,#8\n" : "=r"(cause_pc));
+	vexDisplayForegroundColor(ClrWhite);
+	vexDisplayBackgroundColor(ClrRed);
+	vexDisplayRectClear(0, 25, 480, 125);
+	vexDisplayString(2, "DATA ABORT");
+	vexDisplayString(3, "pc: %x", cause_pc);
+	if(pxCurrentTCB) {
+		vexDisplayString(4, "task name: %.32s\n", pxCurrentTCB->pcTaskName);
+	}
+
+	taskDISABLE_INTERRUPTS();
+	for (;;) vexBackgroundProcessing();
 }
 // Replacement for PrefetchAbortInterrupt
 void PrefetchAbortInterrupt() {
