@@ -19,6 +19,8 @@
 #include "rtos/task.h"
 #include "rtos/tcb.h"
 
+#include "system/unwind.h"
+
 #include "v5_api.h"
 #include "v5_color.h"
 
@@ -39,8 +41,16 @@ void DataAbortInterrupt() {
 		vexDisplayString(4, "task name: %.32s\n", pxCurrentTCB->pcTaskName);
 	}
 
+	register int sp;
+	asm("add %0,sp,#8\n" : "=r"(sp));
+	backtrace_from_data_abort((void*)sp);
+
 	taskDISABLE_INTERRUPTS();
-	for (;;) vexBackgroundProcessing();
+	for (;;) {
+		vexBackgroundProcessing();
+		extern void ser_output_flush();
+		ser_output_flush();
+	}
 }
 // Replacement for PrefetchAbortInterrupt
 void PrefetchAbortInterrupt() {

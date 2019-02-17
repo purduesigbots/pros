@@ -213,7 +213,7 @@ __attribute__(( used )) const uint32_t ulMaxAPIPriorityMask = ( configMAX_API_CA
 
 /*-----------------------------------------------------------*/
 
-static void task_clean_up() {
+void task_clean_up() {
 	// TODO: Make this a kernel debugging statement
 	// vexDisplayString(1, "Reaping dying task: %s", task_get_name(NULL));
 	task_delete(NULL);
