@@ -16,8 +16,8 @@ try:
             # pippre = 'alpha' if v.endswith('-dirty') else 'pre'
             build = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
             number_since = subprocess.check_output(['git', 'rev-list', v[:v.index('-')] + '..HEAD', '--count']).decode().strip()
-            build = "{}+{}".format(number_since, build)
-        semver = bv + '-' + sempre + '+' + build
+            build = "{}.{}".format(number_since, build)
+        semver = bv + '-' + sempre + '.' + build
     else:
         semver = v
 
