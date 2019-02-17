@@ -25,7 +25,6 @@ jobs:
     displayName: Install CLI
   - bash: |
       make template
-      make
       mkdir -p artifacts
       cp template/*.zip artifacts
     displayName: Build template
@@ -33,6 +32,9 @@ jobs:
       echo "##vso[build.UpdateBuildNumber]`cat version`"
       echo "##vso[task.setvariable variable=KernelVersion]`cat version`"
     displayName: Update Build Number
+  - bash: |
+      make
+    displayName: Build binaries
   - task: PublishPipelineArtifact@0
     inputs:
       targetPath: artifacts
