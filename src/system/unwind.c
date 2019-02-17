@@ -5,7 +5,7 @@
  * be arbitrarily stopped, requiring us to call all the destructors of the task
  * to be killed.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -24,138 +24,154 @@
 
 #include "v5_api.h"
 
+/******************************************************************************/
+/**                            Unwind Definitions                            **/
+/**                                                                          **/
+/** These structs and extern'd functions come from unwind-arm-common.inc     **/
+/** or nearby files that are technically internal but we need them           **/
+/******************************************************************************/
+#define R_SP 12
+#define R_LR 13
+#define R_PC 15
 
-typedef struct __EIT_entry
-{
-  _uw fnoffset;
-  _uw content;
-} __EIT_entry;
+struct core_regs {
+	_uw r[16];
+};
 
-extern __EIT_entry __exidx_start;
-extern __EIT_entry __exidx_end;
+struct phase2_vrs {
+	_uw demand_save_flags;
+	struct core_regs core;
+};
 
-// _Unwind_Ptr __gnu_Unwind_Find_exidx (_Unwind_Ptr pc, int * nrec) {
-// 	// TODO: support hot/cold here
-// 	printf("\t0x%08lx\n", pc);
-// 	*nrec = &__exidx_end - &__exidx_start;
-// 	return &__exidx_start;
-// }
+extern _Unwind_Reason_Code __gnu_Unwind_Backtrace(_Unwind_Trace_Fn, void*, struct phase2_vrs*);
 
-extern void task_clean_up();
+/******************************************************************************/
+/**                              Unwind Helpers                              **/
+/**                                                                          **/
+/** These functions and definitions are helpers for supporting PROS's usage  **/
+/** of unwinding                                                             **/
+/******************************************************************************/
+static inline void print_phase2_vrs(struct phase2_vrs* vrs) {
+	static const char registers[16][4] = {"r0", "r1", "r2",  "r3",  "r4",  "r5", "r6", "r7",
+	                                      "r8", "r9", "r10", "r11", "r12", "sp", "lr", "pc"};
+	for (size_t i = 0; i < 16; i++) {
+		fprintf(stderr, "%3s: 0x%08x ", registers[i], vrs->core.r[i]);
+		if (i % 8 == 7) printf("\n");
+	}
+	fputs("\n", stderr);
+}
+
+// exidx is the table that tells the unwinder how to unwind a stack frame
+// for a PC. Under hot/cold, there's two tables and the unwinder was kind
+// enough to let us implement a function to give it a table for a PC so
+// support for hot/cold is as easy as it gets
+struct __EIT_entry {
+	_uw fnoffset;
+	_uw content;
+};
+extern struct __EIT_entry __exidx_start;
+extern struct __EIT_entry __exidx_end;
+_Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
+	// TODO: support hot/cold here
+	printf("\t0x%08lx\n", pc);
+	*nrec = &__exidx_end - &__exidx_start;
+	return &__exidx_start;
+}
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t0x%08lx\n", pc);
+	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
 	}
 	return _URC_NO_REASON;
 }
 
-#define R_SP 12
-#define R_LR 13
-#define R_PC 15
-
-struct core_regs
-{
-  _uw r[16];
-};
-
-/* This must match the structure created by the assembly wrappers.  */
-typedef struct
-{
-  _uw demand_save_flags;
-  struct core_regs core;
-} phase2_vrs;
-
-
-static inline void print_phase2_vrs(phase2_vrs* vrs) {
-	static const char registers[16][4] = {
-		"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "sp", "lr", "pc"
-	};
-	for(size_t i = 0; i < 16; i++) {
-		fprintf(stderr, "%3s: 0x%08x ", registers[i], vrs->core.r[i]);
-    if(i % 8 == 7) printf("\n");
-	}
-  fputs("\n", stderr);
-}
-
+/******************************************************************************/
+/**                            Data Abort Handler                            **/
+/**                                                                          **/
+/** These functions use the __gnu_Unwind_* functions providing our helper    **/
+/** functions and phase2_vrs structure based on a target task                **/
+/******************************************************************************/
 // recover registers from a data abort. Specific knowledge about callee stack
 // used from FreeRTOS_DataAbortHandler and it calling DataAbortInterrupt
-void p2vrs_from_data_abort(_uw* sp, phase2_vrs* vrs) {
-  // sp is stack pointer when FreeRTOS_DataAbortHandler invokes DataAbortInterrupt
+void p2vrs_from_data_abort(_uw* sp, struct phase2_vrs* vrs) {
+	// sp is stack pointer when FreeRTOS_DataAbortHandler invokes DataAbortInterrupt
 	vrs->demand_save_flags = 0;
-  // start pulling these registers off the stack
-  // see xilinx_vectors.s:114 stmdb	sp!,{r0-r3,r12,lr}
-  vrs->core.r[0] = sp[0];
-  vrs->core.r[1] = sp[1];
-  vrs->core.r[2] = sp[2];
-  vrs->core.r[3] = sp[3];
-  vrs->core.r[4] = sp[-1]; // DataAbortInterrupt pushes this onto stack, so grab it back
-  asm("stm %0!, {r5-r11}\n" : : "r"(vrs->core.r + 5)); // r5-r11 were never touched
-  vrs->core.r[12] = sp[4];
-  // sp/lr are in (banked) user registers. recover them from there. ref B9.3.17 of AARM for v7-a/r
-  asm("stm %0, {r13,r14}^" :  : "r"(vrs->core.r + 13));
-  vrs->core.r[15] = sp[5] - 8;
+	// start pulling these registers off the stack
+	// see xilinx_vectors.s:114 stmdb	sp!,{r0-r3,r12,lr}
+	vrs->core.r[0] = sp[0];
+	vrs->core.r[1] = sp[1];
+	vrs->core.r[2] = sp[2];
+	vrs->core.r[3] = sp[3];
+	vrs->core.r[4] = sp[-1];  // DataAbortInterrupt pushes this onto stack, so grab it back
+	// r5-r11 were never touched, so we can just plop them in
+	asm("stm %0!, {r5-r11}\n" : : "r"(vrs->core.r + 5));
+	vrs->core.r[12] = sp[4];
+	// sp/lr are in (banked) user registers. recover them from there. ref B9.3.17 of AARM for v7-a/r
+	asm("stm %0, {r13,r14}^" : : "r"(vrs->core.r + 13));
+	vrs->core.r[15] = sp[5] - 8;
 }
 
+// called by DataAbortInterrupt in rtos_hooks.c
 void report_data_abort(uint32_t _sp) {
-  phase2_vrs vrs;
-  p2vrs_from_data_abort((_uw*)_sp, &vrs);
+	struct phase2_vrs vrs;
+	p2vrs_from_data_abort((_uw*)_sp, &vrs);
 
-  fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
-  vexDisplayForegroundColor(ClrWhite);
-  vexDisplayBackgroundColor(ClrRed);
-  vexDisplayRectClear(0, 25, 480, 125);
-  vexDisplayString(2, "DATA ABORT EXCEPTION");
-  vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
-  if(pxCurrentTCB) {
-    vexDisplayString(4, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
-    fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
-  }
+	fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
+	vexDisplayForegroundColor(ClrWhite);
+	vexDisplayBackgroundColor(ClrRed);
+	vexDisplayRectClear(0, 25, 480, 125);
+	vexDisplayString(2, "DATA ABORT EXCEPTION");
+	vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
+	if (pxCurrentTCB) {
+		vexDisplayString(4, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+		fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+	}
 
-  fputs("REGISTERS AT ABORT\n", stderr);
+	fputs("REGISTERS AT ABORT\n", stderr);
 	print_phase2_vrs(&vrs);
 
-  fputs("BEGIN STACK TRACE\n", stderr);
-  __gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
+	fputs("BEGIN STACK TRACE\n", stderr);
+	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	fputs("END OF TRACE\n", stderr);
 
 	struct mallinfo info = mallinfo();
-  fprintf(stderr, "HEAP USED BYTES: %d\n", info.uordblks);
-  if(pxCurrentTCB) {
-    fprintf(stderr, "STACK REMAINING AT ABORT: %lu\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
-  }
+	fprintf(stderr, "HEAP USED BYTES: %d\n", info.uordblks);
+	if (pxCurrentTCB) {
+		fprintf(stderr, "STACK REMAINING AT ABORT: %lu\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
+	}
 }
 
-// /******************************************************************************/
-// /**               Modified RTOS-Task Target Unwinder Functions               **/
-// /**                                                                          **/
-// /** These functions use the __gnu_Unwind_* functions providing our helper    **/
-// /** functions and phase2_vrs structure based on a target task                **/
-// /******************************************************************************/
-#define REGISTER_BASE		67
-static inline phase2_vrs p2vrs_from_task(task_t task) {
+/******************************************************************************/
+/**               Modified RTOS-Task Target Unwinder Functions               **/
+/**                                                                          **/
+/** These functions use the __gnu_Unwind_* functions providing our helper    **/
+/** functions and phase2_vrs structure based on a target task                **/
+/******************************************************************************/
+#define REGISTER_BASE 67
+static inline struct phase2_vrs p2vrs_from_task(task_t task) {
 	// should be called with the task scheduler suspended
 	taskENTER_CRITICAL();
 
 	TCB_t* tcb = (TCB_t*)task;
 	size_t i;
 
-	phase2_vrs vrs;
-	if(tcb == NULL) {
+	struct phase2_vrs vrs;
+	if (tcb == NULL) {
 		tcb = pxCurrentTCB;
 	}
 
 	vrs.demand_save_flags = 0;
-	switch(task_get_state(task)) {
+	switch (task_get_state(task)) {
 		case E_TASK_STATE_READY:
-			for(i = 0; i < 12; i++) {
+			for (i = 0; i < 12; i++) {
 				vrs.core.r[i] = tcb->pxTopOfStack[REGISTER_BASE + i];
 			}
-			vrs.core.r[13] = (_uw)(tcb->pxTopOfStack + REGISTER_BASE + 16); // r13 is sp
-			vrs.core.r[14] = tcb->pxTopOfStack[REGISTER_BASE + 13]; // r14 is lr
-			vrs.core.r[15] = tcb->pxTopOfStack[REGISTER_BASE + 14]; // r15 is pc
+			vrs.core.r[13] = (_uw)(tcb->pxTopOfStack + REGISTER_BASE + 16);  // r13 is sp
+			vrs.core.r[14] = tcb->pxTopOfStack[REGISTER_BASE + 13];          // r14 is lr
+			vrs.core.r[15] = tcb->pxTopOfStack[REGISTER_BASE + 14];          // r15 is pc
 			break;
 		case E_TASK_STATE_BLOCKED:
 			// for(i = 0; i < 12; i++) {
@@ -168,7 +184,7 @@ static inline phase2_vrs p2vrs_from_task(task_t task) {
 			break;
 		case E_TASK_STATE_SUSPENDED:
 			break;
-		case E_TASK_STATE_DELETED: // will never happen
+		case E_TASK_STATE_DELETED:  // will never happen
 		case E_TASK_STATE_INVALID:
 		default:
 			break;
@@ -178,8 +194,8 @@ static inline phase2_vrs p2vrs_from_task(task_t task) {
 }
 
 void backtrace_task(task_t task) {
-	phase2_vrs vrs = p2vrs_from_task(task);
-  printf("Trace:\n");
+	struct phase2_vrs vrs = p2vrs_from_task(task);
+	printf("Trace:\n");
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	printf("finished trace\n");
 }

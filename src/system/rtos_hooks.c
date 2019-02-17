@@ -30,12 +30,12 @@ void FIQInterrupt() {
 }
 // Replacement for DataAbortInterrupt
 void DataAbortInterrupt() {
+	taskDISABLE_INTERRUPTS();
+
 	register int sp;
 	asm("add %0,sp,#8\n" : "=r"(sp));
 	extern void report_data_abort(uint32_t);
 	report_data_abort(sp);
-
-	taskDISABLE_INTERRUPTS();
 	for (;;) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
