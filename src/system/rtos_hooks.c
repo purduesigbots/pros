@@ -30,20 +30,10 @@ void FIQInterrupt() {
 }
 // Replacement for DataAbortInterrupt
 void DataAbortInterrupt() {
-	register int cause_pc;
-	asm("ldr %0,[sp,#(7*4)]\nsubs %0,#8\n" : "=r"(cause_pc));
-	vexDisplayForegroundColor(ClrWhite);
-	vexDisplayBackgroundColor(ClrRed);
-	vexDisplayRectClear(0, 25, 480, 125);
-	vexDisplayString(2, "DATA ABORT");
-	vexDisplayString(3, "pc: %x", cause_pc);
-	if(pxCurrentTCB) {
-		vexDisplayString(4, "task name: %.32s\n", pxCurrentTCB->pcTaskName);
-	}
-
 	register int sp;
 	asm("add %0,sp,#8\n" : "=r"(sp));
-	backtrace_from_data_abort((void*)sp);
+	extern void report_data_abort(uint32_t);
+	report_data_abort(sp);
 
 	taskDISABLE_INTERRUPTS();
 	for (;;) {

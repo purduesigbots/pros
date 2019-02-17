@@ -13,13 +13,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <unwind.h>
 #include <malloc.h>
+#include <stdio.h>
+#include <unwind.h>
+
+#include "unwind-arm-common.h"
 
 #include "rtos/task.h"
 #include "rtos/tcb.h"
 
-#include "unwind-arm-common.h"
+#include "v5_api.h"
+
 
 typedef struct __EIT_entry
 {
@@ -41,16 +45,16 @@ extern void task_clean_up();
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
-	printf("\t0x%08lx\n", pc);
+	fprintf(stderr, "\t0x%08lx\n", pc);
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
 	}
 	return _URC_NO_REASON;
 }
 
-#define VRS_PC(vrs) ((vrs)->core.r[R_PC])
-#define VRS_SP(vrs) ((vrs)->core.r[R_SP])
-#define VRS_RETURN(vrs) ((vrs)->core.r[R_LR])
+#define R_SP 12
+#define R_LR 13
+#define R_PC 15
 
 struct core_regs
 {
@@ -70,10 +74,10 @@ static inline void print_phase2_vrs(phase2_vrs* vrs) {
 		"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "sp", "lr", "pc"
 	};
 	for(size_t i = 0; i < 16; i++) {
-		printf("%3s: 0x%08x ", registers[i], vrs->core.r[i]);
+		fprintf(stderr, "%3s: 0x%08x ", registers[i], vrs->core.r[i]);
     if(i % 8 == 7) printf("\n");
 	}
-  printf("\n");
+  fputs("\n", stderr);
 }
 
 // recover registers from a data abort. Specific knowledge about callee stack
@@ -95,20 +99,33 @@ void p2vrs_from_data_abort(_uw* sp, phase2_vrs* vrs) {
   vrs->core.r[15] = sp[5] - 8;
 }
 
-void backtrace_from_data_abort(void* _sp) {
+void report_data_abort(uint32_t _sp) {
   phase2_vrs vrs;
   p2vrs_from_data_abort((_uw*)_sp, &vrs);
-  puts("DATA ABORT EXCEPTION\n");
-  puts("REGISTERS AT ABORT");
+
+  fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
+  vexDisplayForegroundColor(ClrWhite);
+  vexDisplayBackgroundColor(ClrRed);
+  vexDisplayRectClear(0, 25, 480, 125);
+  vexDisplayString(2, "DATA ABORT EXCEPTION");
+  vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
+  if(pxCurrentTCB) {
+    vexDisplayString(4, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+    fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+  }
+
+  fputs("REGISTERS AT ABORT\n", stderr);
 	print_phase2_vrs(&vrs);
 
-  puts("BEGIN STACK TRACE");
+  fputs("BEGIN STACK TRACE\n", stderr);
   __gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
-	puts("END OF TRACE");
+	fputs("END OF TRACE\n", stderr);
 
-  puts("HEAP USAGE");
 	struct mallinfo info = mallinfo();
-  printf("Used bytes: %d\tFree bytes: %d\n", info.uordblks, info.fordblks);
+  fprintf(stderr, "HEAP USED BYTES: %d\n", info.uordblks);
+  if(pxCurrentTCB) {
+    fprintf(stderr, "STACK REMAINING AT ABORT: %lu\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
+  }
 }
 
 // /******************************************************************************/
@@ -163,7 +180,6 @@ static inline phase2_vrs p2vrs_from_task(task_t task) {
 void backtrace_task(task_t task) {
 	phase2_vrs vrs = p2vrs_from_task(task);
   printf("Trace:\n");
-  _Unwind_Control_Block ucbp;
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	printf("finished trace\n");
 }
