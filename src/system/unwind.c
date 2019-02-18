@@ -25,10 +25,18 @@
 #include "v5_api.h"
 
 /******************************************************************************/
+/**                           Helpful Unwind Files                           **/
+/*******************************************************************************
+https://github.com/gcc-mirror/gcc/blob/master/libgcc/unwind-arm-common.inc
+https://github.com/gcc-mirror/gcc/blob/master/libgcc/config/arm/unwind-arm.c
+https://github.com/gcc-mirror/gcc/blob/master/libgcc/config/arm/unwind-arm.h
+http://infocenter.arm.com/help/topic/com.arm.doc.ihi0038b/IHI0038B_ehabi.pdf
+*******************************************************************************/
+
+/******************************************************************************/
 /**                            Unwind Definitions                            **/
 /**                                                                          **/
-/** These structs and extern'd functions come from unwind-arm-common.inc     **/
-/** or nearby files that are technically internal but we need them           **/
+/** These structs and extern'd functions come from unwind-arm.c              **/
 /******************************************************************************/
 #define R_SP 12
 #define R_LR 13
@@ -43,6 +51,7 @@ struct phase2_vrs {
 	struct core_regs core;
 };
 
+// from unwind-arm-common.inc
 extern _Unwind_Reason_Code __gnu_Unwind_Backtrace(_Unwind_Trace_Fn, void*, struct phase2_vrs*);
 
 /******************************************************************************/
@@ -73,14 +82,14 @@ extern struct __EIT_entry __exidx_start;
 extern struct __EIT_entry __exidx_end;
 _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 	// TODO: support hot/cold here
-	printf("\t0x%08lx\n", pc);
+	// printf("\t%p\n", (void*)pc);
 	*nrec = &__exidx_end - &__exidx_start;
-	return &__exidx_start;
+	return (_Unwind_Ptr)&__exidx_start;
 }
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
-	fprintf(stderr, "\t0x%08lx\n", pc);
+	fprintf(stderr, "\t%p\n", (void*)pc);
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
