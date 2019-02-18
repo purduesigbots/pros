@@ -1,0 +1,52 @@
+jobs:
+- job: BuildTemplate
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - task: InstallSSHKey@0
+    inputs:
+      sshKeySecureFile: id_sigbot_github_azure_devops
+      hostName: $(gh.knownhosts)
+      sshPublicKey: $(gh.publickey)
+  - checkout: self
+  - bash: |
+      sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
+      sudo apt-get update
+      sudo apt-get install gcc-arm-embedded
+    displayName: Install gcc-arm-embedded
+  - task: UsePythonVersion@0
+    inputs:
+      addToPath: true
+      versionSpec: '3.6'
+  - task: PipAuthenticate@0
+    inputs:
+      artifactFeeds: 'pros-cli'
+  - bash: pip install pros-cli-v5
+    displayName: Install CLI
+  - bash: |
+      make template
+      mkdir -p artifacts
+      cp template/*.zip artifacts
+    displayName: Build template
+  - bash: |
+      echo "##vso[build.UpdateBuildNumber]`cat version`"
+      echo "##vso[task.setvariable variable=KernelVersion]`cat version`"
+    displayName: Update Build Number
+  - bash: |
+      make
+    displayName: Build binaries
+  - task: PublishPipelineArtifact@0
+    inputs:
+      targetPath: artifacts
+      artifactName: template
+    condition: succeeded()
+  # - task: UniversalPackages@0
+  #   inputs:
+  #     command: publish
+  #     publishDirectory: artifacts
+  #     vstsFeedPublish: 'pros-depot-nightly'
+  #     vstsFeedPackagePublish: 'kernel'
+  #     versionOption: custom
+  #     versionPublish: $(KernelVersion)
+  #     packagePublishDescription: 'CI Build of Kernel'
+  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.SourceBranch'], 'refs/heads/develop')))

@@ -300,5 +300,9 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb) {
 }
 
 uint8_t lcd_read_buttons(void) {
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return 0;
+	}
 	return _lcd_read_buttons(_llemu_lcd);
 }
