@@ -197,6 +197,7 @@ $(COLD_BIN): $(COLD_ELF)
 	$(call test_output,$D$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
 
 $(COLD_ELF): $(LIBRARIES)
+	$(VV)mkdir -p $(dir $@)
 	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
 	$(call test_output,$D$(LD) $(LDFLAGS) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
 	@echo -n "Stripping cold package "
