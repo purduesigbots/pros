@@ -267,7 +267,7 @@ vision_object_s_t vision_get_by_code(uint8_t port, const uint32_t size_id, const
  * \param port
  *        The V5 port number from 1-21
  *
- * \return The current exposure setting from [0,150], PROS_ERR if an error
+ * \return The current exposure setting from [0,100], PROS_ERR if an error
  * occurred
  */
 int32_t vision_get_exposure(uint8_t port);
@@ -463,7 +463,7 @@ int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable);
  * \param port
  *        The V5 port number from 1-21
  * \param percent
- *        The new exposure setting from [0,150]
+ *        The new exposure setting from [0,100]
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.

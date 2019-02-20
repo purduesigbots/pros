@@ -173,7 +173,7 @@ class Vision {
 	 * reached:
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
-	 * \return The current exposure parameter from [0,150],
+	 * \return The current exposure parameter from [0,100],
 	 * PROS_ERR if an error occurred
 	 */
 	std::int32_t get_exposure(void) const;
@@ -327,7 +327,7 @@ class Vision {
 	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param percent
-	 *        The new exposure setting from [0,150].
+	 *        The new exposure setting from [0,100].
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
