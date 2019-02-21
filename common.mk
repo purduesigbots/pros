@@ -67,11 +67,9 @@ echo=@$(ECHO) "$2$1$(NO_COLOR)"
 echon=@$(ECHO) -n "$2$1$(NO_COLOR)"
 
 define test_output
-@rm -f temp.log temp.errors
 $1 2> temp.log || touch temp.errors
-@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && cat temp.log; elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && cat temp.log; else $(ECHO) "$2"; fi;
-@if test -e temp.errors; then rm -f temp.log temp.errors && false; fi;
-@rm -f temp.log temp.errors
+@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && cat temp.log && rm -f temp.log temp.errors && false; fi;
+@if test -s temp.log; then $(ECHO) "$(WARN_STRING)" && cat temp.log && rm -f temp.log; else $(ECHO) "$2"; fi;
 endef
 
 # Makefile Verbosity
@@ -141,8 +139,10 @@ endif
 .PHONY: all clean quick
 
 quick: $(DEFAULT_BIN)
+	@if test -e $(DEFAULT_BIN); then $(ECHO) "Build done"; fi;
+	@rm -f temp.log temp.errors
 
-all: clean $(DEFAULT_BIN)
+all: clean quick
 
 clean:
 	@echo Cleaning project
