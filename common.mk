@@ -200,9 +200,9 @@ $(COLD_BIN): $(COLD_ELF)
 	$(call test_output,$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
 
 $(COLD_ELF): $(LIBRARIES)
-	$(call _pros_ld_timestamp)
+	$(VV)mkdir -p $(dir $@)
 	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$(LD) $(LDFLAGS) $(LDTIMEOBJ) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
+	$(call test_output,$(LD) $(LDFLAGS) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
 	@echo -n "Stripping cold package "
 	$(call test_output,$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array --strip-symbol=_PROS_COMPILE_DIRECTORY --strip-symbol=_PROS_COMPILE_TIMESTAMP $@ $@, $(DONE_STRING))
 	@echo Section sizes:
