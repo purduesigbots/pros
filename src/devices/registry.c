@@ -16,9 +16,9 @@
 #include <stdio.h>
 
 #include "api.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "pros/misc.h"
+#include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 

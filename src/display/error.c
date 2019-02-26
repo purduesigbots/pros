@@ -12,8 +12,8 @@
  */
 
 #include "display/lvgl.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "v5_api.h"
 
 void display_fatal_error(const char* text) {
 	// in fatal error state, cannot rely on integrity of the RTOS

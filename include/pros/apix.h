@@ -60,8 +60,6 @@ bool task_abort_delay(task_t task);
  * task_notify_ext(task_to_notify, value, action, NULL) when target_task is
  * deleted.
  *
- * NOTE: This facility does not support the case when task_to_notify
- *       dies before target_task
  *
  * \param target_task
  *				The task being watched for deletion

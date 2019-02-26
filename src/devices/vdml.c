@@ -14,8 +14,8 @@
  */
 
 #include "vdml/vdml.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "v5_api.h"
 #include "vdml/registry.h"
 
 #include <errno.h>

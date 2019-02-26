@@ -11,9 +11,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "system/optimizers.h"
+#include "system/user_functions.h"
+#include "v5_api.h"
 
 extern void vdml_background_processing();
 
@@ -126,54 +127,8 @@ void system_daemon_initialize() {
 	                                        "PROS System Daemon", system_daemon_task_stack, &system_daemon_task_buffer);
 }
 
-// description of some cases for implementing autonomous:
-// user implements autonomous w/C linkage: system daemon starts _autonomous_task
-// which calls the user's autonomous() implement w/C++ linkage: sysd starts
-// _autonomous_task calls autonomous() defined here which calls cpp_autonomous
-// which calls the user's C++ linkage autonomous() implement no autonomous: see
-// above, but cpp_autonomous implements a stub C++ autonomous()
-
-// Our weak functions call C++ links of these functions, allowing users to only optionally extern "C" the task functions
-extern void cpp_autonomous();
-extern void cpp_initialize();
-extern void cpp_opcontrol();
-extern void cpp_disabled();
-extern void cpp_competition_initialize();
-
-// default implementations of the different competition modes attempt to call
-// the C++ linkage version of the function
-__attribute__((weak)) void autonomous() {
-	cpp_autonomous();
-}
-__attribute__((weak)) void initialize() {
-	cpp_initialize();
-}
-__attribute__((weak)) void opcontrol() {
-	cpp_opcontrol();
-}
-__attribute__((weak)) void disabled() {
-	cpp_disabled();
-}
-__attribute__((weak)) void competition_initialize() {
-	cpp_competition_initialize();
-}
-
 // these functions are what actually get called by the system daemon, which
 // attempt to call whatever the user declares
-static void _competition_initialize_task(void* ign) {
-	competition_initialize();
-}
-
-static void _initialize_task(void* ign) {
-	initialize();
-	task_notify(system_daemon_task);
-}
-static void _autonomous_task(void* ign) {
-	autonomous();
-}
-static void _opcontrol_task(void* ign) {
-	opcontrol();
-}
-static void _disabled_task(void* ign) {
-	disabled();
-}
+#define FUNC(NAME) static void _##NAME##_task(void* ign) { user_##NAME(); task_notify(system_daemon_task); }
+#include "system/user_functions/c_list.h"
+#undef FUNC

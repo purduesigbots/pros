@@ -10,9 +10,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "ifi/v5_api.h"
-#include "ifi/v5_apitypes.h"
 #include "kapi.h"
+#include "v5_api.h"
+#include "v5_apitypes.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 

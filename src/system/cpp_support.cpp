@@ -15,25 +15,9 @@
 #include <cstdlib>
 #include <stdexcept>
 
-#include "ifi/v5_api.h"
 #include "rtos/FreeRTOS.h"
 #include "rtos/task.h"
-
-void* operator new(size_t size) {
-	return malloc(size);
-}
-
-void* operator new[](size_t size) {
-	return malloc(size);
-}
-
-void operator delete(void* p) {
-	free(p);
-}
-
-void operator delete[](void* p) {
-	free(p);
-}
+#include "v5_api.h"
 
 extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #ifdef __cpp_exceptions
