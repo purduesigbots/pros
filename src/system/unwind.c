@@ -144,13 +144,14 @@ void report_data_abort(uint32_t _sp) {
 	print_phase2_vrs(&vrs);
 
 	fputs("BEGIN STACK TRACE\n", stderr);
+	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	fputs("END OF TRACE\n", stderr);
 
 	struct mallinfo info = mallinfo();
-	fprintf(stderr, "HEAP USED BYTES: %d\n", info.uordblks);
+	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
 	if (pxCurrentTCB) {
-		fprintf(stderr, "STACK REMAINING AT ABORT: %lu\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
+		fprintf(stderr, "STACK REMAINING AT ABORT: %lu bytes\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
 	}
 }
 
