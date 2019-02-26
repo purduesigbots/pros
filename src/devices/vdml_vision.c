@@ -93,8 +93,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 
 	for (uint8_t i = 0; i <= object_count; i++) {
 		vision_object_s_t check;
-		err = vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)&check);
-		if (err == PROS_ERR) {
+		if (vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)&check) == PROS_ERR) {
 			errno = EAGAIN;
 			rtn = check;
 			goto err_return;
