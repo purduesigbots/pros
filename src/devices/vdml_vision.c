@@ -145,8 +145,8 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 		port_mutex_give(port - 1);
 		errno = EDOM;
 		return PROS_ERR;
-	} else if (c > object_count) {
-		c = object_count;
+	} else if (c > object_count + size_id) {
+		c = object_count + size_id;
 	}
 
 	for (uint32_t i = size_id; i < c; i++) {
