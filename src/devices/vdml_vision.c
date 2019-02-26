@@ -61,7 +61,7 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		goto leave;
 	}
-	err = vexDeviceVisionObjectGet(device->device_info, size_id, (V5_DeviceVisionObject*)&rtn);
+	int err = vexDeviceVisionObjectGet(device->device_info, size_id, (V5_DeviceVisionObject*)&rtn);
 	if (err == 0) {
 		errno = EAGAIN;
 		rtn.signature = VISION_OBJECT_ERR_SIG;
