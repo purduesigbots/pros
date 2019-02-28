@@ -26,6 +26,7 @@
 #define LV_MEM_CUSTOM_ALLOC kmalloc /*Wrapper to malloc*/
 #define LV_MEM_CUSTOM_FREE kfree    /*Wrapper to free*/
 #endif                              /*LV_MEM_CUSTOM*/
+#define LV_ENABLE_GC 0
 
 /*===================
    Graphical settings
@@ -87,6 +88,9 @@
 /*Text settings*/
 #define LV_TXT_UTF8 1 /*Enable UTF-8 coded Unicode character usage */
 #define LV_TXT_BREAK_CHARS " ,.;:-_" /*Can break texts on these chars*/
+#define LV_TXT_LINE_BREAK_LONG_LEN 12
+#define LV_TXT_LINE_BREAK_LONG_PRE_MIN_LEN 3
+#define LV_TXT_LINE_BREAK_LONG_POST_MIN_LEN 1
 
 /*Graphics feature usage*/
 #define USE_LV_ANIMATION 1 /*1: Enable all animations*/
@@ -97,24 +101,28 @@
   1 /*1: Enable function which draw directly to the frame buffer instead of    \
        VDB (required if LV_VDB_SIZE = 0)*/
 #define USE_LV_FILESYSTEM 1 /*1: Enable file system (required by images*/
+#define USE_LV_MULTI_LANG 1
 
 /*Compiler attributes*/
 #define LV_ATTRIBUTE_TICK_INC /* Define a custom attribute to tick increment   \
                                  function */
 #define LV_ATTRIBUTE_TASK_HANDLER
+#define LV_ATTRIBUTE_MEM_ALIGN
+#define LV_COMPILER_VLA_SUPPORTED 1
+#define LV_COMPILER_NON_CONST_INIT_SUPPORTED 1
 
+#define USE_LV_LOG 0
 /*================
  *  THEME USAGE
  *================*/
+#define LV_THEME_LIVE_UPDATE 1
 #define USE_LV_THEME_TEMPL 0 /*Just for test*/
-#define USE_LV_THEME_DEFAULT                                                   \
-  0 /*Built mainly from the built-in styles. Consumes very few RAM*/
+#define USE_LV_THEME_DEFAULT 0 /*Built mainly from the built-in styles. Consumes very few RAM*/
 #define USE_LV_THEME_ALIEN 1 /*Dark futuristic theme*/
-#define USE_LV_THEME_NIGHT 0 /*Dark elegant theme*/
-#define USE_LV_THEME_MONO 0  /*Mono color theme for monochrome displays*/
-#define USE_LV_THEME_MATERIAL                                                  \
-  0                        /*Flat theme with bold colors and light shadows*/
-#define USE_LV_THEME_ZEN 0 /*Peaceful, mainly light theme */
+#define USE_LV_THEME_NIGHT 1 /*Dark elegant theme*/
+#define USE_LV_THEME_MONO 1 /*Mono color theme for monochrome displays*/
+#define USE_LV_THEME_MATERIAL 1 /*Flat theme with bold colors and light shadows*/
+#define USE_LV_THEME_ZEN 1 /*Peaceful, mainly light theme */
 
 /*==================
  *    FONT USAGE
@@ -187,9 +195,14 @@
 
 /*Image (dependencies: lv_label*/
 #define USE_LV_IMG 1
+#if USE_LV_IMG != 0
+#  define LV_IMG_CF_INDEXED 1
+#  define LV_IMG_CF_ALPHA 1
+#endif
 
 /*Line (dependencies: -*/
 #define USE_LV_LINE 1
+#define USE_LV_ARC 1
 
 /*******************
  * Container objects
@@ -210,6 +223,11 @@
 #define LV_TABVIEW_ANIM_TIME                                                   \
   300 /*Time of slide animation [ms] (0: no animation)*/
 #endif
+#define USE_LV_TILEVIEW 1
+#if USE_LV_TILEVIEW
+#  define LV_TILEVIEW_ANIM_TIME 300
+#endif
+
 
 /*************************
  * Data visualizer objects
@@ -227,6 +245,11 @@
 /*Chart (dependencies: -)*/
 #define USE_LV_CHART 1
 
+#define USE_LV_TABLE 1
+#if USE_LV_TABLE
+#  define LV_TABLE_COL_MAX 12
+#endif
+
 /*LED (dependencies: -)*/
 #define USE_LV_LED 1
 
@@ -240,12 +263,31 @@
 #define LV_TA_PWD_SHOW_TIME 1500    /*ms*/
 #endif
 
+#define USE_LV_SPINBOX 1
+#define USE_LV_CALENDAR 1
+
+#define USE_PRELOAD 1
+#if USE_LV_PRELOAD != 0
+#  define LV_PRELOAD_DEF_ARC_LENGTH 60
+#  define LV_PRELOAD_DEF_SPIN_TIME 1000
+#  define LV_PRELOAD_DEF_ANIM LV_PRELOAD_TYPE_SPINNING_ARC
+#endif
+
+#define USE_LV_CANVAS 1
 /*************************
  * User input objects
  *************************/
 
 /*Button (dependencies: lv_cont*/
 #define USE_LV_BTN 1
+#if USE_LV_BTN != 0
+#  define LV_BTN_INK_EFFECT 1
+#endif
+
+#define USE_LV_IMGBTN 1
+#if USE_LV_IMGBTN
+#  define LV_IMGBTN_TILED 0
+#endif
 
 /*Button matrix (dependencies: -)*/
 #define USE_LV_BTNM 1
@@ -286,4 +328,14 @@
 /*Switch (dependencies: lv_slider)*/
 #define USE_LV_SW 1
 
+#if LV_INDEV_DRAG_THROW <= 0
+#warning "LV_INDEV_DRAG_THROW must be greater than 0"
+#undef LV_INDEV_DRAG_THROW
+#define LV_INDEV_DRAG_THROW 1
+#endif
+
+#if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
+#  define _CRT_SECURE_NO_WARNINGS
+#endif
+#include "display/lv_conf_checker.h"
 #endif /*LV_CONF_H*/
