@@ -150,6 +150,21 @@ failed to connect or an invalid id is given.
 		errno = EACCES;						\
 		return PROS_ERR;					\
 	}										\
+/******************************************************************************/
+/**                              Date and Time                               **/
+/******************************************************************************/
+typedef struct {
+	uint16_t year; // Year - 1980
+	uint8_t day;
+	uint8_t month; // 1 = January
+} date_s_t;
+
+typedef struct {
+	uint8_t hour;
+	uint8_t min;
+	uint8_t sec;
+	uint8_t sec_hund; // hundredths of a second
+} time_s_t;
 
 #ifdef __cplusplus
 namespace c {
@@ -449,11 +464,26 @@ double battery_get_temperature(void);
 double battery_get_capacity(void);
 
 /**
+<<<<<<< HEAD
  * Checks if the SD card is installed.
  *
  * \return 1 if the SD card is installed, 0 otherwise
  */
 int32_t usd_is_installed(void);
+=======
+ * Gets the current date, as reported by VEXos.
+ *
+ * \return A data_s_t containing the Year, Month, and Day of the date.
+ */
+date_s_t get_date(void);
+
+/**
+ * Gets the current time, as reported by VEXos.
+ *
+ * \return A time_s_t containing the Hour, Minute, Second, and Hundredth of Second.
+ */
+time_s_t get_time(void);
+>>>>>>> 8dde9b7... Expose VEXos' get time and date functions
 
 #ifdef __cplusplus
 }
