@@ -5,7 +5,7 @@
  *
  * See system/dev/ser_driver.c and system/dev/ser_daemon.c for discussion
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
