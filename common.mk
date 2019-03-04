@@ -12,7 +12,7 @@ SPACE +=
 COMMA := ,
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
-COLD_LIBRARIES:= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
+COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
