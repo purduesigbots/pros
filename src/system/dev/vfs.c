@@ -89,7 +89,8 @@ int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) 
 	return 0;
 }
 
-int _open_r(struct _reent* r, const char* file, int flags, int mode) {
+int _open(const char* file, int flags, int mode) {
+  struct _reent* r = _REENT;
 	// Check if the filename is too long or not NULL terminated
 	size_t i = 0;
 	for (i = 0; i < MAX_FILELEN; i++) {
@@ -114,7 +115,8 @@ int _open_r(struct _reent* r, const char* file, int flags, int mode) {
 	return -1;
 }
 
-ssize_t _write_r(struct _reent* r, int file, const void* buf, size_t len) {
+ssize_t _write(int file, const void* buf, size_t len) {
+  struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD write %d", file);
@@ -123,7 +125,8 @@ ssize_t _write_r(struct _reent* r, int file, const void* buf, size_t len) {
 	return file_table[file].driver->write_r(r, file_table[file].arg, buf, len);
 }
 
-ssize_t _read_r(struct _reent* r, int file, void* buf, size_t len) {
+ssize_t _read(int file, void* buf, size_t len) {
+  struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD read %d", file);
@@ -132,7 +135,8 @@ ssize_t _read_r(struct _reent* r, int file, void* buf, size_t len) {
 	return file_table[file].driver->read_r(r, file_table[file].arg, buf, len);
 }
 
-int _close_r(struct _reent* r, int file) {
+int _close(int file) {
+  struct _reent* r = _REENT;
 	// NOTE: newlib automatically closes all open files for a given task when
 	// the task is deleted.
 	if (file > 0 && file < RESERVED_FILENOS) {
@@ -151,7 +155,8 @@ int _close_r(struct _reent* r, int file) {
 	return ret;
 }
 
-int _fstat_r(struct _reent* r, int file, struct stat* st) {
+int _fstat(int file, struct stat* st) {
+  struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD fstat %d", file);
@@ -160,7 +165,8 @@ int _fstat_r(struct _reent* r, int file, struct stat* st) {
 	return file_table[file].driver->fstat_r(r, file_table[file].arg, st);
 }
 
-off_t _lseek_r(struct _reent* r, int file, off_t ptr, int dir) {
+off_t _lseek(int file, off_t ptr, int dir) {
+  struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD lseek %d", file);
@@ -169,7 +175,8 @@ off_t _lseek_r(struct _reent* r, int file, off_t ptr, int dir) {
 	return file_table[file].driver->lseek_r(r, file_table[file].arg, ptr, dir);
 }
 
-int _isatty_r(struct _reent* r, int file) {
+int _isatty(int file) {
+  struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD isatty %d", file);
