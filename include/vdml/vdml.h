@@ -39,19 +39,19 @@
  *        The v5_device_e_t that the port is configured as
  */
 #define claim_port(port, device_type)                      \
-	if (!VALIDATE_PORT_NO(port)) {                           \
-		errno = ENXIO;                                         \
-		return PROS_ERR;                                       \
-	}                                                        \
-	if (registry_validate_binding(port, device_type) != 0) { \
-		errno = ENODEV;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	v5_smart_device_s_t* device = registry_get_device(port); \
-	if (!port_mutex_take(port)) {                            \
-		errno = EACCES;                                        \
-		return PROS_ERR;                                       \
-	}
+  if (!VALIDATE_PORT_NO(port)) {                           \
+    errno = ENXIO;                                         \
+    return PROS_ERR;                                       \
+  }                                                        \
+  if (registry_validate_binding(port, device_type) != 0) { \
+    errno = ENODEV;                                        \
+    return PROS_ERR;                                       \
+  }                                                        \
+  v5_smart_device_s_t* device = registry_get_device(port); \
+  if (!port_mutex_take(port)) {                            \
+    errno = EACCES;                                        \
+    return PROS_ERR;                                       \
+  }
 
 /**
  * A function that executes claim_port for functions that do not return an
@@ -84,8 +84,8 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * \return The rtn parameter
  */
 #define return_port(port, rtn) \
-	port_mutex_give(port);       \
-	return rtn;
+  port_mutex_give(port);       \
+  return rtn;
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.
