@@ -120,10 +120,6 @@ static void set_gyro_tare(uint8_t port, double tare) {
 
 #define validate_type(port, type)                          \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
-	if (config == E_ADI_TYPE_UNDEFINED) {                    \
-		errno = ENODEV;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
 	if (config != type) {                                    \
 		errno = EADDRINUSE;                                    \
 		return PROS_ERR;                                       \
@@ -131,10 +127,6 @@ static void set_gyro_tare(uint8_t port, double tare) {
 
 #define validate_type_f(port, type)                        \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
-	if (config == E_ADI_TYPE_UNDEFINED) {                    \
-		errno = ENODEV;                                        \
-		return PROS_ERR_F;                                     \
-	}                                                        \
 	if (config != type) {                                    \
 		errno = EADDRINUSE;                                    \
 		return PROS_ERR_F;                                     \
@@ -170,7 +162,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 
 static inline int32_t _adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	vexDeviceAdiPortConfigSet(device->device_info, port, type);
+	vexDeviceAdiPortConfigSet(device->device_info, port, (V5_AdiPortConfiguration)type);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
