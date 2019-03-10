@@ -11,10 +11,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#define _GNU_SOURCE
-// NOTE: this would normally be in the C file, but it won't compile that way
-#include <stdio.h>  // vasprintf (GNU extension)
-#undef _GNU_SOURCE
+#include <stdio.h>
 
 #include "kapi.h"
 #include "v5_api.h"
@@ -207,9 +204,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 	else
 		col++;
 
-	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	strcpy(buf, str);
-	buf[CONTROLLER_MAX_COLS] = '\0';
+	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
 
 	vexControllerTextSet(id, line, col, buf);
 	free(buf);
@@ -242,10 +237,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 	va_list args;
 	va_start(args, fmt);
-	char* buf;
-	vasprintf(&buf, fmt, args);
-
-	buf[CONTROLLER_MAX_COLS] = '\0';
+	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
+	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
 
 	vexControllerTextSet(id, line, col, buf);
 	free(buf);
