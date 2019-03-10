@@ -133,7 +133,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 #define validate_motor(port)                                        \
 	adi_port_config_e_t config = _adi_port_get_config(port);          \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
-		errno = ENODEV;                                                 \
+		errno = EADDRINUSE;                                             \
 		return PROS_ERR;                                                \
 	}
 
@@ -148,6 +148,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 	else if (port_bottom < port_top)              \
 		port = port_bottom;                         \
 	else                                          \
+	  errno = EINVAL;                             \
 		return PROS_ERR;                            \
 	if (port % 2 == 1) {                          \
 		return PROS_ERR;                            \
