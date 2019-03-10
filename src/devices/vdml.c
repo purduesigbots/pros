@@ -31,11 +31,10 @@ extern void port_mutex_init();
 
 int32_t claim_port_try(uint8_t port, v5_device_e_t type) {
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	if (registry_validate_binding(port, type) != 0) {
-		errno = EINVAL;
 		return PROS_ERR;
 	}
 	if (!port_mutex_take(port)) {
@@ -77,7 +76,7 @@ void port_mutex_init() {
 
 int port_mutex_take(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_take(port_mutexes[port], TIMEOUT_MAX);
@@ -85,7 +84,7 @@ int port_mutex_take(uint8_t port) {
 
 int internal_port_mutex_take(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	return mutex_take(port_mutexes[port], TIMEOUT_MAX);
@@ -99,7 +98,7 @@ static inline char* print_num(char* buff, int num) {
 
 int port_mutex_give(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_give(port_mutexes[port]);
@@ -107,7 +106,7 @@ int port_mutex_give(uint8_t port) {
 
 int internal_port_mutex_give(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	return mutex_give(port_mutexes[port]);

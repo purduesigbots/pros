@@ -382,7 +382,7 @@ typedef enum v5_device_e {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21), or a
+ * ENXIO - The given value is not within the range of V5 ports (1-21), or a
  * a different device than specified is plugged in.
  * EADDRINUSE - The port is already registered to another device.
  *
@@ -402,7 +402,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The port number to deregister

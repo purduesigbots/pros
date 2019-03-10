@@ -44,7 +44,6 @@
     return PROS_ERR;                                       \
   }                                                        \
   if (registry_validate_binding(port, device_type) != 0) { \
-    errno = ENODEV;                                        \
     return PROS_ERR;                                       \
   }                                                        \
   v5_smart_device_s_t* device = registry_get_device(port); \
@@ -59,7 +58,7 @@
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  * EACCES - Another resource is currently trying to access the port.
  *
  * \param port
@@ -138,7 +137,7 @@ void vdml_reset_port_error();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to claim from 0-20
@@ -159,7 +158,7 @@ int port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to free from 0-20
@@ -183,7 +182,7 @@ void port_mutex_give_all();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32
@@ -201,7 +200,7 @@ int internal_port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32

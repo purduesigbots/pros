@@ -30,7 +30,7 @@ class Motor {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of V5 ports (1-21).
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param port

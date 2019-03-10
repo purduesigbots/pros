@@ -40,7 +40,7 @@ void registry_update_types();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The V5 port number from 1-21
@@ -55,7 +55,7 @@ v5_smart_device_s_t* registry_get_device(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The V5 port number from 0-32
@@ -70,7 +70,7 @@ v5_smart_device_s_t* registry_get_device_internal(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The V5 port number from 1-21
@@ -85,7 +85,7 @@ v5_device_e_t registry_get_bound_type(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The V5 port number from 1-21
@@ -105,7 +105,7 @@ v5_device_e_t registry_get_plugged_type(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  *
  * \param port
  *        The V5 port number from 1-21

@@ -81,7 +81,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 	int32_t object_count = 0;
 
 	if (claim_port_try(port - 1, E_DEVICE_VISION) == PROS_ERR) {
-		goto err_return;
+		goto err_return_no_mutex;
 	}
 
 	device = registry_get_device(port - 1);
@@ -112,6 +112,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 
 err_return:
 	port_mutex_give(port - 1);
+err_return_no_mutex:
 	rtn.signature = VISION_OBJECT_ERR_SIG;
 	return rtn;
 }

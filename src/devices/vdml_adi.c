@@ -114,7 +114,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 	else                                 \
 		port--;                            \
 	if (port > 7 || port < 0) {          \
-		errno = EINVAL;                    \
+		errno = ENXIO;                     \
 		return PROS_ERR;                   \
 	}
 
