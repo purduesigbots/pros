@@ -258,6 +258,7 @@ int32_t adi_analog_calibrate(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an analog input
+ * EADDRINUSE - The port is configured as something other than an analog input
  *
  * \param port
  *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
@@ -280,6 +281,7 @@ int32_t adi_analog_read(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an analog input
+ * EADDRINUSE - The port is configured as something other than an analog input
  *
  * \param port
  *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
@@ -307,6 +309,7 @@ int32_t adi_analog_read_calibrated(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an analog input
+ * EADDRINUSE - The port is configured as something other than an analog input
  *
  * \param port
  *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
@@ -329,6 +332,7 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a digital input
+ * EADDRINUSE - The port is configured as something other than a digital input
  *
  * \param port
  *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
@@ -352,6 +356,7 @@ int32_t adi_digital_read(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a digital input
+ * EADDRINUSE - The port is configured as something other than a digital input
  *
  * \param port
  *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
@@ -370,6 +375,7 @@ int32_t adi_digital_get_new_press(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a digital output
+ * EADDRINUSE - The port is configured as something other than a digital output
  *
  * \param port
  *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
@@ -406,6 +412,7 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an motor
+ * EADDRINUSE - The port is configured as something other than a motor
  *
  * \param port
  *        The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
@@ -425,6 +432,7 @@ int32_t adi_motor_set(uint8_t port, int8_t speed);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an motor
+ * EADDRINUSE - The port is configured as something other than a motor
  *
  * \param port
  *        The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
@@ -440,6 +448,7 @@ int32_t adi_motor_get(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an motor
+ * EADDRINUSE - The port is configured as something other than a motor
  *
  * \param port
  *        The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
@@ -466,6 +475,7 @@ typedef int32_t adi_encoder_t;
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an encoder
+ * EADDRINUSE - The port is configured as something other than an encoder
  *
  * \param enc
  *        The adi_encoder_t object from adi_encoder_init() to read
@@ -482,6 +492,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an encoder
+ * EADDRINUSE - The port is configured as something other than an encoder
  *
  * \param port_top
  *        The "top" wire from the encoder sensor with the removable cover side
@@ -506,6 +517,7 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an encoder
+ * EADDRINUSE - The port is configured as something other than an encoder
  *
  * \param enc
  *        The adi_encoder_t object from adi_encoder_init() to reset
@@ -522,6 +534,7 @@ int32_t adi_encoder_reset(adi_encoder_t enc);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an encoder
+ * EADDRINUSE - The port is configured as something other than an encoder
  *
  * \param enc
  *        The adi_encoder_t object from adi_encoder_init() to stop
@@ -550,6 +563,7 @@ typedef int32_t adi_ultrasonic_t;
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an ultrasonic
+ * EADDRINUSE - The port is configured as something other than an ultrasonic
  *
  * \param ult
  *        The adi_ultrasonic_t object from adi_ultrasonic_init() to read
@@ -566,6 +580,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an ultrasonic
+ * EADDRINUSE - The port is configured as something other than an ultrasonic
  *
  * \param port_ping
  *        The port connected to the orange OUTPUT cable. This should be in the
@@ -586,6 +601,7 @@ adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as an ultrasonic
+ * EADDRINUSE - The port is configured as something other than an ultrasonic
  *
  * \param ult
  *        The adi_ultrasonic_t object from adi_ultrasonic_init() to stop
@@ -615,6 +631,7 @@ typedef int32_t adi_gyro_t;
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a gyro
+ * EADDRINUSE - The port is configured as something other than a gyro
  *
  * \param gyro
  *        The adi_gyro_t object for which the angle will be returned
@@ -635,6 +652,7 @@ double adi_gyro_get(adi_gyro_t gyro);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a gyro
+ * EADDRINUSE - The port is configured as something other than a gyro
  *
  * \param port
  *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
@@ -654,6 +672,7 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a gyro
+ * EADDRINUSE - The port is configured as something other than a gyro
  *
  * \param gyro
  *        The adi_gyro_t object for which the angle will be returned
@@ -670,6 +689,7 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * ENODEV - The port is not configured as a gyro
+ * EADDRINUSE - The port is configured as something other than a gyro
  *
  * \param gyro
  *        The adi_gyro_t object to be shut down

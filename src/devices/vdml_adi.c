@@ -120,18 +120,32 @@ static void set_gyro_tare(uint8_t port, double tare) {
 
 #define validate_type(port, type)                          \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
+	if (config == E_ADI_TYPE_UNDEFINED) {                    \
+		errno = ENODEV;                                        \
+		return PROS_ERR;                                       \
+	}                                                        \
 	if (config != type) {                                    \
+		errno = EADDRINUSE;                                    \
 		return PROS_ERR;                                       \
 	}
 
 #define validate_type_f(port, type)                        \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
+	if (config == E_ADI_TYPE_UNDEFINED) {                    \
+		errno = ENODEV;                                        \
+		return PROS_ERR_F;                                     \
+	}                                                        \
 	if (config != type) {                                    \
+		errno = EADDRINUSE;                                    \
 		return PROS_ERR_F;                                     \
 	}
 
 #define validate_motor(port)                                        \
 	adi_port_config_e_t config = _adi_port_get_config(port);          \
+	if (config == E_ADI_TYPE_UNDEFINED) {                             \
+		errno = ENODEV;                                                 \
+		return PROS_ERR;                                                \
+	}                                                                 \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
 		errno = EADDRINUSE;                                             \
 		return PROS_ERR;                                                \
