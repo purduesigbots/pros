@@ -148,7 +148,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 	for (uint32_t i = size_id; i < c; i++) {
 		if (!vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + i))) {
 			errno = EAGAIN;
-			object_arr[i] = VISION_OBJECT_ERR_SIG;
+			object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 			break;
 		}
 		_vision_transform_coords(port - 1, &object_arr[i]);
@@ -176,7 +176,7 @@ int32_t _vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t
 	for (uint8_t i = 0; i < c; i++) {
 		if (!vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + count))) {
 			errno = EAGAIN;
-			object_arr[i] = VISION_OBJECT_ERR_SIG;
+			object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 			goto rtn;
 		}
 		if (object_arr[i].signature == sig_id) {
