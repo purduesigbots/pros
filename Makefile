@@ -54,8 +54,7 @@ $(INCDIR)/api.h: version.py
 	$(VV)python version.py
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
-	@echo -n "Stripping unwanted symbols from libv5rts.a "
-	$(call test_output,$D$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
+	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
 
 
 CREATE_TEMPLATE_ARGS=--system "./**/*"
@@ -76,11 +75,9 @@ template: clean-template library
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)
-	@echo -n "Extracting libv5rts "
-	$(call test_output,$Dcd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(PATCHED_SDK),$(DONE_STRING))
+	$(call test_output_2,Extracting libv5rts ,cd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(PATCHED_SDK),$(DONE_STRING))
 	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(PATCHED_SDK)))
 	-$Drm -f $@
-	@echo -n "Creating $@ "
-	$(call test_output,$D$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)),$(DONE_STRING))
+	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $(addprefix $(LIBV5RTS_EXTRACTION_DIR)/, $(LIBV5RTS_OBJECTS)) $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)),$(DONE_STRING))
 # @echo -n "Stripping non-public symbols "
 # $(call test_output,$D$(OBJCOPY) -S -D -g --strip-unneeded --keep-symbols public_symbols.txt $@,$(DONE_STRING))
