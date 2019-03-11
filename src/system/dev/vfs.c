@@ -13,7 +13,7 @@
  * fileno. A file number maps to a driver and driver argument, which would be
  * whatever metadata the driver needs to open the file
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public

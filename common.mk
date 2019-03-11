@@ -12,6 +12,7 @@ SPACE +=
 COMMA := ,
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
+COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
@@ -196,7 +197,7 @@ $(COLD_BIN): $(COLD_ELF)
 	@echo -n "Creating cold package binary for $(DEVICE) "
 	$(call test_output,$D$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
 
-$(COLD_ELF): $(LIBRARIES)
+$(COLD_ELF): $(COLD_LIBRARIES)
 	$(VV)mkdir -p $(dir $@)
 	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
 	$(call test_output,$D$(LD) $(LDFLAGS) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))

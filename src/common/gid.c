@@ -6,7 +6,7 @@
  * Contains an implementation to efficiently assign globally unique IDs
  * e.g. to assign entries in a global table
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
