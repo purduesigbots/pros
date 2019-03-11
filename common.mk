@@ -12,7 +12,9 @@ SPACE +=
 COMMA := ,
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
-COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
+# Cannot include newlib and libc because not all of the req'd stubs are implemented
+EXCLUDE_COLD_LIBRARIES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
+COLD_LIBRARIES=$(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
