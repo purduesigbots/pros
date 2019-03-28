@@ -118,6 +118,31 @@ LV_FONT_DECLARE(lv_font_symbol_40);
 LV_FONT_DECLARE(lv_font_monospace_8);
 #endif
 
+#if USE_PROS_FONT_DEJAVU_MONO_10
+LV_FONT_DECLARE(pros_font_dejavu_mono_10);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_10_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_20
+LV_FONT_DECLARE(pros_font_dejavu_mono_20);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_20_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_20_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_30
+LV_FONT_DECLARE(pros_font_dejavu_mono_30);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_30_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_30_latin_sup);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_40
+LV_FONT_DECLARE(pros_font_dejavu_mono_40);
+#endif
+#if USE_PROS_FONT_DEJAVU_MONO_40_LATIN_SUP
+LV_FONT_DECLARE(pros_font_dejavu_mono_40_latin_sup);
+#endif
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

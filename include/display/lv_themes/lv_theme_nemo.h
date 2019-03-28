@@ -16,7 +16,7 @@ extern "C" {
 #ifdef LV_CONF_INCLUDE_SIMPLE
 #include "lv_conf.h"
 #else
-#include "../../lv_conf.h"
+#include "display/lv_conf.h"
 #endif
 
 #if USE_LV_THEME_NEMO

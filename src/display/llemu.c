@@ -138,7 +138,8 @@ static lv_obj_t* _create_lcd(void) {
 		lv_obj_set_width(lcd->lcd_text[i], 426);
 		lv_obj_align(lcd->lcd_text[i], NULL, LV_ALIGN_IN_TOP_LEFT, 5, 20 * i);
 		lv_label_set_align(lcd->lcd_text[i], LV_LABEL_ALIGN_LEFT);
-		lv_label_set_no_break(lcd->lcd_text[i], true);
+		lv_label_set_long_mode(lcd->lcd_text[i], LV_LABEL_LONG_CROP);
+		// lv_label_set_no_break(lcd->lcd_text[i], true);
 		lv_label_set_text(lcd->lcd_text[i], "");
 	}
 

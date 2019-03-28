@@ -80,7 +80,7 @@
   100 /*Repeated trigger period in long press [ms] */
 
 /*Color settings*/
-#define LV_COLOR_DEPTH 24 /*Color depth: 1/8/16/24*/
+#define LV_COLOR_DEPTH 32 /*Color depth: 1/8/16/24*/
 #define LV_COLOR_TRANSP                                                        \
   LV_COLOR_LIME /*Images pixels with this color will not be drawn (with chroma \
                    keying)*/
@@ -132,12 +132,12 @@
  * To enable a built-in font use 1,2,4 or 8 values
  * which will determine the bit-per-pixel */
 #define LV_FONT_DEFAULT                                                        \
-  &lv_font_dejavu_20 /*Always set a default font from the built-in fonts*/
+  &pros_font_dejavu_mono_20 /*Always set a default font from the built-in fonts*/
 
-#define USE_LV_FONT_DEJAVU_10 0
-#define USE_LV_FONT_DEJAVU_10_LATIN_SUP 0
-#define USE_LV_FONT_DEJAVU_10_CYRILLIC 0
-#define USE_LV_FONT_SYMBOL_10 0
+#define USE_LV_FONT_DEJAVU_10 4
+#define USE_LV_FONT_DEJAVU_10_LATIN_SUP 4
+#define USE_LV_FONT_DEJAVU_10_CYRILLIC 4
+#define USE_LV_FONT_SYMBOL_10 4
 
 #define USE_LV_FONT_DEJAVU_20 4
 #define USE_LV_FONT_DEJAVU_20_LATIN_SUP 4
@@ -155,8 +155,8 @@
 #define USE_LV_FONT_SYMBOL_40 0
 
 /* PROS adds the mono variant of DejaVu sans */
-#define USE_PROS_FONT_DEJAVU_MONO_10 0
-#define USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP 0
+#define USE_PROS_FONT_DEJAVU_MONO_10 4
+#define USE_PROS_FONT_DEJAVU_MONO_10_LATIN_SUP 4
 
 #define USE_PROS_FONT_DEJAVU_MONO_20 4
 #define USE_PROS_FONT_DEJAVU_MONO_LATIN_SUP_20 4
