@@ -43,3 +43,9 @@ void __env_lock(void) {
 void __env_unlock(void) {
 	rtos_resume_all();
 }
+void __sync_synchronize() {
+	/* Perform a memory barrier to workaround malfunctional lock */
+	asm volatile("dmb" : : : "memory");
+}
+
+// FIXME: Shoud we also implement atomic operations? Zynq is a SMP SoC.
