@@ -141,7 +141,7 @@ int32_t motor_is_over_temp(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_is_stopped(uint32_t port) {
+int32_t motor_is_stopped(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);
@@ -149,7 +149,7 @@ int32_t motor_is_stopped(uint32_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_get_zero_position_flag(uint32_t port) {
+int32_t motor_get_zero_position_flag(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);
