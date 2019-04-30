@@ -43,9 +43,16 @@ int dev_read_r(struct _reent* r, void* const arg, uint8_t* buffer, const size_t 
 	dev_file_arg_t* file_arg = (dev_file_arg_t*)arg;
 	uint32_t port = file_arg->port;
 	int32_t recv = 0;
-	do {
+	while (true) {
 		recv = serial_read(port, (uint8_t*)(buffer + recv), len - recv);
-	} while (!(file_arg->flags & O_NONBLOCK) && recv < 1);
+		if (recv == PROS_ERR) {
+			return 0;
+		}
+		if (file_arg->flags & O_NONBLOCK || recv >= 1) {
+			break;
+		}
+		task_delay(1);
+	}
 	if (recv == 0) {
 		errno = EAGAIN;
 		return 0;
@@ -57,9 +64,17 @@ int dev_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 	dev_file_arg_t* file_arg = (dev_file_arg_t*)arg;
 	uint32_t port = file_arg->port;
 	int32_t wrtn = 0;
-	do {
-		wrtn = serial_write(port, (uint8_t*)(buf + wrtn), len - wrtn);
-	} while (!(file_arg->flags & O_NONBLOCK) && wrtn < len);
+	while (true) {
+		int32_t w = serial_write(port, (uint8_t*)(buf + wrtn), len - wrtn);
+		if (w == PROS_ERR) {
+			return wrtn;
+		}
+		wrtn += w;
+		if (file_arg->flags & O_NONBLOCK || wrtn >= len) {
+			break;
+		}
+		task_delay(1);
+	}
 	if (wrtn == 0) {
 		errno = EAGAIN;
 		return 0;
