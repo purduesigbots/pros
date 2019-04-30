@@ -51,7 +51,7 @@ int dev_read_r(struct _reent* r, void* const arg, uint8_t* buffer, const size_t 
 		if (file_arg->flags & O_NONBLOCK || recv >= 1) {
 			break;
 		}
-		task_delay(1);
+		task_delay(2);
 	}
 	if (recv == 0) {
 		errno = EAGAIN;
@@ -73,7 +73,7 @@ int dev_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 		if (file_arg->flags & O_NONBLOCK || wrtn >= len) {
 			break;
 		}
-		task_delay(1);
+		task_delay(2);
 	}
 	if (wrtn == 0) {
 		errno = EAGAIN;
