@@ -33,6 +33,7 @@
 
 typedef struct dev_file_arg {
 	uint32_t port;
+	int flags;
 } dev_file_arg_t;
 
 /******************************************************************************/
@@ -41,19 +42,29 @@ typedef struct dev_file_arg {
 int dev_read_r(struct _reent* r, void* const arg, uint8_t* buffer, const size_t len) {
 	dev_file_arg_t* file_arg = (dev_file_arg_t*)arg;
 	uint32_t port = file_arg->port;
-	claim_port(port - 1, E_DEVICE_GENERIC);
-	// check flags
-	int32_t result = vexDeviceGenericSerialReceive(device->device_info, buffer, len);
-	return_port(port - 1, result);
+	int32_t recv = 0;
+	do {
+		recv = serial_read(port, (uint8_t*)(buffer + recv), len - recv);
+	} while (!(file_arg->flags & O_NONBLOCK) && recv < 1);
+	if (recv == 0) {
+		errno = EAGAIN;
+		return 0;
+	}
+	return recv;
 }
 
 int dev_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const size_t len) {
 	dev_file_arg_t* file_arg = (dev_file_arg_t*)arg;
 	uint32_t port = file_arg->port;
-	claim_port(port - 1, E_DEVICE_GENERIC);
-	int32_t result = vexDeviceGenericSerialTransmit(device->device_info, (uint8_t*)buf, (int32_t)len);
-	vexDeviceGenericSerialFlush(device->device_info);
-	return_port(port - 1, result);
+	int32_t wrtn = 0;
+	do {
+		wrtn = serial_write(port, (uint8_t*)(buf + wrtn), len - wrtn);
+	} while (!(file_arg->flags & O_NONBLOCK) && wrtn < len);
+	if (wrtn == 0) {
+		errno = EAGAIN;
+		return 0;
+	}
+	return wrtn;
 }
 
 int dev_close_r(struct _reent* r, void* const arg) {
@@ -80,15 +91,13 @@ off_t dev_lseek_r(struct _reent* r, void* const arg, off_t ptr, int dir) {
 int dev_ctl(void* const arg, const uint32_t cmd, void* const extra_arg) {
 	dev_file_arg_t* file_arg = (dev_file_arg_t*)arg;
 	uint32_t port = file_arg->port;
-	claim_port(port - 1, E_DEVICE_GENERIC);
-	int rtn;
 	switch (cmd) {
 		case DEVCTL_FIONREAD:
-			rtn = vexDeviceGenericSerialReceiveAvail(device->device_info);
-			return_port(port - 1, rtn);
+			return serial_read_avail(port);
+		case DEVCTL_FIONWRITE:
+			return serial_write_free(port);
 		case DEVCTL_SET_BAUDRATE:
-			vexDeviceGenericSerialBaudrate(device->device_info, (int32_t)extra_arg);
-			return_port(port - 1, 0);
+			return serial_set_baudrate(port, (int32_t)extra_arg);
 		default:
 			errno = EINVAL;
 			return PROS_ERR;
@@ -135,12 +144,10 @@ int dev_open_r(struct _reent* r, const char* path, int flags, int mode) {
 	} else {
 		port = path[0] - ASCII_ZERO;
 	}
-	claim_port(port - 1, E_DEVICE_GENERIC);
-	// the options param is for VEX internal use
-	vexDeviceGenericSerialEnable(device->device_info, 0);
-	port_mutex_give(port - 1);
+	serial_enable(port);
 
 	dev_file_arg_t* arg = (dev_file_arg_t*)kmalloc(sizeof(dev_file_arg_t));
 	arg->port = port;
+	arg->flags = flags;
 	return vfs_add_entry_r(r, dev_driver, arg);
 }

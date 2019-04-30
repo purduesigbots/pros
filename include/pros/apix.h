@@ -532,11 +532,20 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 #define DEVCTL_FIONREAD 16
 
 /**
+ * Action macro to check if there is space available in the Generic Serial
+ * Device's output buffer
+ *
+ * The extra argument is not used with this action, provide any value (e.g.
+ * NULL) instead
+ */
+#define DEVCTL_FIONWRITE 17
+
+/**
  * Action macro to set the Generic Serial Device's baudrate.
  *
  * The extra argument is the baudrate.
  */
-#define DEVCTL_SET_BAUDRATE 17
+#define DEVCTL_SET_BAUDRATE 18
 
 #ifdef __cplusplus
 }
