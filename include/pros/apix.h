@@ -538,14 +538,14 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * The extra argument is not used with this action, provide any value (e.g.
  * NULL) instead
  */
-#define DEVCTL_FIONWRITE 17
+#define DEVCTL_FIONWRITE 18
 
 /**
  * Action macro to set the Generic Serial Device's baudrate.
  *
  * The extra argument is the baudrate.
  */
-#define DEVCTL_SET_BAUDRATE 18
+#define DEVCTL_SET_BAUDRATE 17
 
 #ifdef __cplusplus
 }
