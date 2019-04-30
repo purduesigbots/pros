@@ -49,11 +49,9 @@ bool test_send_recv_byte(const uint32_t interval, const uint32_t bytes) {
 			int32_t w = fputc(count, serial_w);
 			fflush(serial_w);
 			if (w == EOF) {
-				if (ferror(serial_w)) {
-					pass = false;
-					printf("%07d Write failed with error %d\n", cur_time, errno);
-					break;
-				}
+				pass = false;
+				printf("%07d Write failed with error %d\n", cur_time, errno);
+				break;
 			}
 			else if (w == count) {
 				count++;
@@ -63,11 +61,9 @@ bool test_send_recv_byte(const uint32_t interval, const uint32_t bytes) {
 
 		int32_t read = fgetc(serial_r);
 		if (read == EOF) {
-			if (ferror(serial_r)) {
-				pass = false;
-				printf("%07d Read failed with error %d\n", cur_time, ferror(serial_r));
-				break;
-			}
+			pass = false;
+			printf("%07d Read failed with error %d\n", cur_time, errno);
+			break;
 		}
 		else {
 			if (read != expected) {
@@ -120,11 +116,9 @@ bool test_send_recv_block() {
 		int32_t avail = pros::c::fdctl(fileno(serial_r), DEVCTL_FIONREAD, NULL);
 		int32_t r = fread(in_buf + read, 1, BUF_SIZE - read > avail ? avail : BUF_SIZE - read, serial_r);
 		if (r == EOF) {
-			if (ferror(serial_r)) {
-				pass = false;
-				printf("%07d Read failed with error %d\n", cur_time, errno);
-				break;
-			}
+			pass = false;
+			printf("%07d Read failed with error %d\n", cur_time, errno);
+			break;
 		}
 		else if (r) {
 			verbose_printf("%07d R %d [", cur_time, r);
