@@ -28,8 +28,10 @@
 #pragma GCC diagnostic ignored "-Wall"
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
+#include "pros/serial.h"
 
 #ifdef __cplusplus
+#include "pros/serial.hpp"
 namespace pros::c {
 extern "C" {
 #endif

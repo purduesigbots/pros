@@ -54,7 +54,6 @@
 #include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/vision.h"
-#include "pros/serial.h"
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
@@ -63,7 +62,6 @@
 #include "pros/motors.hpp"
 #include "pros/rtos.hpp"
 #include "pros/vision.hpp"
-#include "pros/serial.hpp"
 #endif
 
 #endif  // _PROS_API_H_

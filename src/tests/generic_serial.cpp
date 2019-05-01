@@ -15,6 +15,7 @@
  */
 #include "main.h"
 #include <stdarg.h>
+#include "pros/apix.h"
 
 pros::Serial *serial_w = nullptr, *serial_r = nullptr;
 
