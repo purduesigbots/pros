@@ -12,13 +12,14 @@ SPACE +=
 COMMA := ,
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
+COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
 CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11
 CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -funwind-tables $(GCCFLAGS) --std=gnu++17
-LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib
+LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
 
@@ -53,25 +54,46 @@ endif
 rwildcard=$(foreach d,$(filter-out $3,$(wildcard $1*)),$(call rwildcard,$d/,$2,$3)$(filter $(subst *,%,$2),$d))
 
 # Colors
-NO_COLOR=\x1b[0m
-OK_COLOR=\x1b[32;01m
-ERROR_COLOR=\x1b[31;01m
-WARN_COLOR=\x1b[33;01m
-STEP_COLOR=\x1b[37;01m
+NO_COLOR=$(shell printf "%b" "\033[0m")
+OK_COLOR=$(shell printf "%b" "\033[32;01m")
+ERROR_COLOR=$(shell printf "%b" "\033[31;01m")
+WARN_COLOR=$(shell printf "%b" "\033[33;01m")
+STEP_COLOR=$(shell printf "%b" "\033[37;01m")
 OK_STRING=$(OK_COLOR)[OK]$(NO_COLOR)
 DONE_STRING=$(OK_COLOR)[DONE]$(NO_COLOR)
 ERROR_STRING=$(ERROR_COLOR)[ERRORS]$(NO_COLOR)
 WARN_STRING=$(WARN_COLOR)[WARNINGS]$(NO_COLOR)
-ECHO=/bin/echo -e
+ECHO=/bin/printf "%s\n"
 echo=@$(ECHO) "$2$1$(NO_COLOR)"
-echon=@$(ECHO) -n "$2$1$(NO_COLOR)"
+echon=@/bin/printf "%s" "$2$1$(NO_COLOR)"
+
+define test_output_2
+@if test $(BUILD_VERBOSE) -eq $(or $4,1); then printf "%s\n" "$2"; fi;
+@output="$$($2 2>&1)"; exit=$$?;           \
+if test 0 -ne $$exit; then                 \
+  printf "%s%s\n" "$1" "$(ERROR_STRING)";  \
+  printf "%s\n" "$$output";                \
+  exit $$exit;                             \
+elif test -n "$$output"; then              \
+  printf "%s%s\n" "$1" "$(WARN_STRING)";   \
+  printf "%s\n" "$$output";                \
+else                                       \
+  printf "%s%s\n" "$1" "$3";               \
+fi;
+endef
 
 define test_output
-@rm -f temp.log temp.errors
-$1 2> temp.log || touch temp.errors
-@if test -e temp.errors; then $(ECHO) "$(ERROR_STRING)" && cat temp.log; elif test -s temp.log; then $(ECHO) "$(WARN_STRING)" && cat temp.log; else $(ECHO) "$2"; fi;
-@if test -e temp.errors; then rm -f temp.log temp.errors && false; fi;
-@rm -f temp.log temp.errors
+@output=$$($1 2>&1); exit=$$?;            \
+if test 0 -ne $$exit; then                \
+  printf "%s\n" "$(ERROR_STRING)" $$?;    \
+  printf "%s\n" $$output;                 \
+  exit $$exit;                            \
+elif test -n "$$output"; then             \
+  printf "%s\n" "$(WARN_STRING)";         \
+  printf "%s" $$output;                   \
+else                                      \
+  printf "%s\n" "$2";                     \
+fi;
 endef
 
 # Makefile Verbosity
@@ -162,8 +184,7 @@ clean-template:
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	-$Drm -f $@
-	@echo -n "Creating $@ "
-	$(call test_output,$D$(AR) rcs $@ $^, $(DONE_STRING))
+	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $^, $(DONE_STRING))
 
 .PHONY: library
 library: $(LIBAR)
@@ -182,71 +203,60 @@ ELF_DEPS=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
 
 $(MONOLITH_BIN): $(MONOLITH_ELF) $(BINDIR)
-	@echo -n "Creating $@ for $(DEVICE) "
-	$(call test_output,$D$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
+	$(call test_output_2,Creating $@ for $(DEVICE) ,$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
 
 $(MONOLITH_ELF): $(ELF_DEPS) $(LIBRARIES)
 	$(call _pros_ld_timestamp)
-	@echo -n "Linking project with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $(ELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS)) -o $@,$(OK_STRING))
+	$(call test_output_2,Linking project with $(ARCHIVE_TEXT_LIST) ,$(LD) $(LDFLAGS) $(ELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS)) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
 $(COLD_BIN): $(COLD_ELF)
-	@echo -n "Creating cold package binary for $(DEVICE) "
-	$(call test_output,$D$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
+	$(call test_output_2,Creating cold package binary for $(DEVICE) ,$(OBJCOPY) $< -O binary -R .hot_init $@,$(DONE_STRING))
 
-$(COLD_ELF): $(LIBRARIES)
-	$(call _pros_ld_timestamp)
-	@echo -n "Creating cold package with $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $(LDTIMEOBJ) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
-	@echo -n "Stripping cold package "
-	$(call test_output,$D$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array --strip-symbol=_PROS_COMPILE_DIRECTORY --strip-symbol=_PROS_COMPILE_TIMESTAMP $@ $@, $(DONE_STRING))
+$(COLD_ELF): $(COLD_LIBRARIES)
+	$(VV)mkdir -p $(dir $@)
+	$(call test_output_2,Creating cold package with $(ARCHIVE_TEXT_LIST) ,$(LD) $(LDFLAGS) $(call wlprefix,--gc-keep-exported --whole-archive $^ -lstdc++ --no-whole-archive) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
+	$(call test_output_2,Stripping cold package ,$(OBJCOPY) --strip-symbol=install_hot_table --strip-symbol=__libc_init_array --strip-symbol=_PROS_COMPILE_DIRECTORY --strip-symbol=_PROS_COMPILE_TIMESTAMP $@ $@, $(DONE_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
 $(HOT_BIN): $(HOT_ELF) $(COLD_BIN)
-	@echo -n "Creating $@ for $(DEVICE) "
-	$(call test_output,$D$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
+	$(call test_output_2,Creating $@ for $(DEVICE) ,$(OBJCOPY) $< -O binary $@,$(DONE_STRING))
 
 $(HOT_ELF): $(COLD_ELF) $(ELF_DEPS)
 	$(call _pros_ld_timestamp)
-	@echo -n "Linking hot project with $(COLD_ELF) and $(ARCHIVE_TEXT_LIST) "
-	$(call test_output,$D$(LD) $(LDFLAGS) $(call wlprefix,-nostartfiles -R $<) $(filter-out $<,$^) $(LDTIMEOBJ) $(LIBRARIES) $(call wlprefix,-T$(FWDIR)/v5-hot.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
-	@echo Section sizes:
+	$(call test_output_2,Linking hot project with $(COLD_ELF) and $(ARCHIVE_TEXT_LIST) ,$(LD) $(LDFLAGS) $(call wlprefix,-nostartfiles -R $<) $(filter-out $<,$^) $(LDTIMEOBJ) $(LIBRARIES) $(call wlprefix,-T$(FWDIR)/v5-hot.ld $(LNK_FLAGS) -o $@),$(OK_STRING))
+	@printf "%s\n" "Section sizes:"
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
 define asm_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 	$(VV)mkdir -p $$(dir $$@)
-	@echo -n "Compiling $$< "
-	$$(call test_output,$D$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
+	$$(call test_output_2,Compiled $$< ,$(AS) -c $(ASMFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 	$(VV)mkdir -p $$(dir $$@)
-	@echo -n "Compiling $$< "
-	$$(call test_output,$D$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 	$(VV)mkdir -p $$(dir $$@)
-	@echo -n "Compiling $$< "
-	$$(call test_output,$D$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
+	$$(call test_output_2,Compiled $$< ,$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 
 define _pros_ld_timestamp
 $(VV)mkdir -p $(dir $(LDTIMEOBJ))
-@echo -n "Adding timestamp "
 @# Pipe a line of code defining _PROS_COMPILE_TOOLSTAMP and _PROS_COMPILE_DIRECTORY into GCC,
 @# which allows compilation from stdin. We define _PROS_COMPILE_DIRECTORY using a command line-defined macro
 @# which is the pwd | tail bit, which will truncate the path to the last 23 characters
-$(call test_output, $(VV)echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = "$(shell pwd | tail -c 23)";' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -o $(LDTIMEOBJ) -,$(OK_STRING))
+$(call test_output_2,Adding timestamp ,echo 'char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = "$(shell pwd | tail -c 23)";' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -o $(LDTIMEOBJ) -,$(OK_STRING))
 endef
 
 # these rules are for build-compile-commands, which just print out sysroot information

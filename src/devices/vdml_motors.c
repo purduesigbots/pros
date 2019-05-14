@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -141,7 +141,7 @@ int32_t motor_is_over_temp(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_is_stopped(uint32_t port) {
+int32_t motor_is_stopped(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);
@@ -149,7 +149,7 @@ int32_t motor_is_stopped(uint32_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_get_zero_position_flag(uint32_t port) {
+int32_t motor_get_zero_position_flag(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);

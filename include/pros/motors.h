@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -325,7 +325,7 @@ int32_t motor_is_over_temp(uint8_t port);
  * \return 1 if the motor is not moving, 0 if the motor is moving, or PROS_ERR
  * if the operation failed, setting errno
  */
-int32_t motor_is_stopped(uint32_t port);
+int32_t motor_is_stopped(uint8_t port);
 
 /**
  * Checks if the motor is at its zero position.
@@ -341,7 +341,7 @@ int32_t motor_is_stopped(uint32_t port);
  * moved from its absolute zero, or PROS_ERR if the operation failed,
  * setting errno
  */
-int32_t motor_get_zero_position_flag(uint32_t port);
+int32_t motor_get_zero_position_flag(uint8_t port);
 
 #ifdef __cplusplus
 }  // namespace c
