@@ -532,8 +532,7 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb);
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point);
 
 /**
-<<<<<<< HEAD
- * Gets the zero point of the gitven point
+ * Gets the zero point of the given point
  *
  * This will return the zero point (either top left or center) for the vision
  * sensor in the given port
@@ -549,7 +548,8 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point);
  *the center
  */
 vision_zero_e_t vision_get_zero_point(uint8_t port);
-=======
+
+/*
  * Sets the Wi-Fi mode of the Vision sensor
  *
  * This functions uses the following values of errno when an error state is
@@ -566,7 +566,6 @@ vision_zero_e_t vision_get_zero_point(uint8_t port);
  * failed, setting errno.
  */
 int32_t vision_set_wifi_mode(uint8_t port, const uint8_t enable);
->>>>>>> develop
 
 #ifdef __cplusplus
 }  // namespace c

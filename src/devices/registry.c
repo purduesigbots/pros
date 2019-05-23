@@ -15,14 +15,8 @@
 #include <errno.h>
 #include <stdio.h>
 
-<<<<<<< HEAD
-#include "ifi/v5_api.h"
-#include "jinx/jinx_vdml.h"
-#include "pros/jinx.h"
-=======
 #include "api.h"
 #include "kapi.h"
->>>>>>> develop
 #include "pros/misc.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
@@ -126,7 +120,6 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 	v5_device_e_t registered_t = registry_get_bound_type(port);
 	v5_device_e_t actual_t = registry_get_plugged_type(port);
 
-<<<<<<< HEAD
   // Auto register the port if needed
   if (registered_t == E_DEVICE_NONE && actual_t != E_DEVICE_NONE) {
     registry_bind_port(port, actual_t);
@@ -141,13 +134,6 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
       break;
     }
   }
-=======
-	// Auto register the port if needed
-	if (registered_t == E_DEVICE_NONE && actual_t != E_DEVICE_NONE) {
-		registry_bind_port(port, actual_t);
-		registered_t = registry_get_bound_type(port);
-	}
->>>>>>> develop
 
 	if ((expected_t == registered_t || expected_t == E_DEVICE_NONE) && registered_t == actual_t) {
 		// All are same OR expected is none (bgp) AND reg = act.
