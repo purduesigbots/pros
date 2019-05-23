@@ -14,6 +14,7 @@
 #include "v5_api.h"
 #include "v5_apitypes.h"
 #include "vdml/registry.h"
+#include "vdml/vdml.h"
 
 typedef struct vision_data {
 	vision_zero_e_t zero_point;
@@ -68,8 +69,8 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	_vision_transform_coords(port - 1, &rtn);
 
 leave:
-  port_mutex_give(port - 1);
-  return rtn;
+	port_mutex_give(port - 1);
+	return rtn;
 }
 
 vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id) {
