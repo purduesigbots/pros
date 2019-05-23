@@ -1,18 +1,19 @@
 /**
- * pros/rtos.cpp
+ * \file rtos/rtos.cpp
  *
  * Contains functions for the PROS RTOS kernel for use by typical
  * VEX programmers.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking to learn more.
+ * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html to learn more.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 #include "pros/rtos.hpp"
 
@@ -28,6 +29,14 @@ using namespace pros::c;
   Task::Task(task_t task) : task(task) { }
   void Task::operator = (const task_t in) {
     task = in;
+  }
+
+  Task Task::current() {
+    return Task(task_get_current());
+  }
+
+  void Task::remove() {
+    return task_delete(task);
   }
 
   std::uint32_t Task::get_priority(void) {

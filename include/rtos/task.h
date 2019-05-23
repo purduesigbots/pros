@@ -580,7 +580,7 @@ void task_delay_until( uint32_t * const pxPreviousWakeTime, const uint32_t xTime
 
 /**
  * task. h
- * <pre>int32_t xTaskAbortDelay( task_t xTask );</pre>
+ * <pre>int32_t task_abort_delay( task_t xTask );</pre>
  *
  * INCLUDE_xTaskAbortDelay must be defined as 1 in FreeRTOSConfig.h for this
  * function to be available.
@@ -589,7 +589,7 @@ void task_delay_until( uint32_t * const pxPreviousWakeTime, const uint32_t xTime
  * event it is waiting for can be a temporal event (waiting for a time), such
  * as when task_delay() is called, or an event on an object, such as when
  * queue_recv() or task_notify_take() is called.  If the handle of a task
- * that is in the Blocked state is used in a call to xTaskAbortDelay() then the
+ * that is in the Blocked state is used in a call to task_abort_delay() then the
  * task will leave the Blocked state, and return from whichever function call
  * placed the task into the Blocked state.
  *
@@ -598,10 +598,10 @@ void task_delay_until( uint32_t * const pxPreviousWakeTime, const uint32_t xTime
  * @return If the task referenced by xTask was not in the Blocked state then
  * pdFAIL is returned.  Otherwise pdPASS is returned.
  *
- * \defgroup xTaskAbortDelay xTaskAbortDelay
+ * \defgroup task_abort_delay task_abort_delay
  * \ingroup TaskCtrl
  */
-int32_t xTaskAbortDelay( task_t xTask ) ;
+int32_t task_abort_delay( task_t xTask ) ;
 
 /**
  * task. h
@@ -1490,7 +1490,7 @@ void vTaskGetRunTimeStats( char *pcWriteBuffer ) ; /*lint !e971 Unqualified char
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
  * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
- * xTaskGetCurrentTaskHandle().
+ * task_get_current().
  *
  * @param ulValue Data that can be sent with the notification.  How the data is
  * used depends on the value of the eAction parameter.
@@ -1576,7 +1576,7 @@ int32_t task_notify_ext( task_t xTaskToNotify, uint32_t ulValue, notify_action_e
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
  * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
- * xTaskGetCurrentTaskHandle().
+ * task_get_current().
  *
  * @param ulValue Data that can be sent with the notification.  How the data is
  * used depends on the value of the eAction parameter.
@@ -1739,7 +1739,7 @@ int32_t task_notify_wait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearO
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
  * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
- * xTaskGetCurrentTaskHandle().
+ * task_get_current().
  *
  * @return xTaskNotifyGive() is a macro that calls xTaskNotify() with the
  * eAction parameter set to E_NOTIFY_ACTION_INCR - so pdPASS is always returned.
@@ -1788,7 +1788,7 @@ int32_t task_notify(task_t xTaskToNotify);
  * @param xTaskToNotify The handle of the task being notified.  The handle to a
  * task can be returned from the task_create() API function used to create the
  * task, and the handle of the currently running task can be obtained by calling
- * xTaskGetCurrentTaskHandle().
+ * task_get_current().
  *
  * @param pxHigherPriorityTaskWoken  vTaskNotifyGiveFromISR() will set
  * *pxHigherPriorityTaskWoken to pdTRUE if sending the notification caused the
@@ -2003,7 +2003,7 @@ uint32_t uxTaskResetEventItemValue( void ) ;
 /*
  * Return the handle of the calling task.
  */
-task_t xTaskGetCurrentTaskHandle( void ) ;
+task_t task_get_current( void ) ;
 
 /*
  * Capture the current time status for future reference.

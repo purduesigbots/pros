@@ -1,10 +1,12 @@
 /**
- * rtos_function_linking.c - Test that all the FreeRTOS functions link correctly.
+ * \file tests/rtos_function_linking.c
+ *
+ * Test that all the FreeRTOS functions link correctly.
  *
  * Do not actually run this test - just make sure it compiles
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

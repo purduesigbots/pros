@@ -1,12 +1,12 @@
 /*
  * \file pros/colors.h
  *
- * \brief This file contains macro definitions of colors (as `uint32_t`)
+ * Contains macro definitions of colors (as `uint32_t`)
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018 Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019 Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License v. 2.0. If a copy of the MPL was not distributed with this
@@ -160,9 +160,6 @@
 #define COLOR_WHITE_SMOKE 0x00F5F5F5
 #define COLOR_YELLOW 0x00FFFF00
 #define COLOR_YELLOW_GREEN 0x009ACD32
-
-// i18n
-// TODO: colour -> color
 #define COLOR_DARK_GREY COLOR_DARK_GRAY
 #define COLOR_DARK_SLATE_GREY COLOR_DARK_SLATE_GRAY
 #define COLOR_DIM_GREY COLOR_DIM_GRAY

@@ -1,26 +1,30 @@
 /**
  * \file pros/rtos.hpp
  *
- * \brief Contains declarations for the PROS RTOS kernel for use by typical
- * VEX programmers in C++.
+ * Contains declarations for the PROS RTOS kernel for use by typical VEX
+ * programmers.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html to
+ * learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking to learn more.
- *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #ifndef _PROS_RTOS_HPP_
 #define _PROS_RTOS_HPP_
 
 #include "pros/rtos.h"
 #undef delay
+#include <cstdint>
+#include <cstdlib>
 
 namespace pros {
 class Task {
@@ -28,12 +32,17 @@ class Task {
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
 	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENOMEM - The stack cannot be used as the TCB was not created.
+	 *
 	 * \param function
 	 *        Pointer to the task entry function
 	 * \param parameters
-	 *        Pointer to memory that will be used as a parameter for the task being
-	 *        created. This memory should not typically come from stack, but rather
-	 *        from dynamically (i.e., malloc'd) or statically allocated memory.
+	 *        Pointer to memory that will be used as a parameter for the task
+	 *        being created. This memory should not typically come from stack,
+	 *        but rather from dynamically (i.e., malloc'd) or statically
+	 *        allocated memory.
 	 * \param prio
 	 *        The priority at which the task should run.
 	 *        TASK_PRIO_DEFAULT plus/minus 1 or 2 is typically used.
@@ -44,27 +53,40 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENOMEM - The stack cannot be used as the TCB was not created.
 	 */
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 	/**
-	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 * Create a C++ task object from a task handle
 	 *
 	 * \param task
-	 *        A task handle from task_create() for which to create a pros::Task object.
+	 *        A task handle from task_create() for which to create a pros::Task
+	 *        object.
 	 */
 	Task(task_t task);
+
+	/**
+	 * Get the currently running Task
+	 */
+	static Task current();
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
 	 *
 	 * \param in
-	 *        A task handle from task_create() for which to create a pros::Task object.
+	 *        A task handle from task_create() for which to create a pros::Task
+	 *        object.
 	 */
 	void operator=(const task_t in);
+
+	/**
+	 * Removes the Task from the RTOS real time kernel's management. This task
+	 * will be removed from all ready, blocked, suspended and event lists.
+	 *
+	 * Memory dynamically allocated by the task is not automatically freed, and
+	 * should be freed before the task is deleted.
+	 */
+	void remove();
 
 	/**
 	 * Gets the priority of the specified task.
@@ -76,9 +98,9 @@ class Task {
 	/**
 	 * Sets the priority of the specified task.
 	 *
-	 * If the specified task's state is available to be scheduled (e.g. not blocked)
-	 * and new priority is higher than the currently running task, a context switch
-	 * may occur.
+	 * If the specified task's state is available to be scheduled (e.g. not
+	 * blocked) and new priority is higher than the currently running task,
+	 * a context switch may occur.
 	 *
 	 * \param prio
 	 *        The new priority of the task
@@ -113,20 +135,30 @@ class Task {
 	const char* get_name(void);
 
 	/**
-	 * Sends a simple notification to task and increments the notification counter.
+	 * Convert this object to a C task_t handle
+	 */
+	operator task_t() {
+		return task;
+	}
+
+	/**
+	 * Sends a simple notification to task and increments the notification
+	 * counter.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
 	 *
 	 * \return Always returns true.
 	 */
 	std::uint32_t notify(void);
 
 	/**
-	 * Sends a notification to a task, optionally performing some action. Will also
-	 * retrieve the value of the notification in the target task before modifying
-	 * the notification value.
+	 * Sends a notification to a task, optionally performing some action. Will
+	 * also retrieve the value of the notification in the target task before
+	 * modifying the notification value.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
 	 *
 	 * \param value
 	 *        The value used in performing the action
@@ -134,19 +166,21 @@ class Task {
 	 *        An action to optionally perform on the receiving task's notification
 	 *        value
 	 * \param prev_value
-	 *        A pointer to store the previous value of the target task's notification, may be NULL
+	 *        A pointer to store the previous value of the target task's
+	 *        notification, may be NULL
 	 *
 	 * \return Dependent on the notification action.
-	 *         For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written
-	 *         without needing to overwrite, 1 otherwise.
-	 *         For all other NOTIFY_ACTION values: always return 0
+	 * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
+	 * needing to overwrite, 1 otherwise.
+	 * For all other NOTIFY_ACTION values: always return 0
 	 */
 	std::uint32_t notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value);
 
 	/**
 	 * Waits for a notification to be nonzero.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
 	 *
 	 * \param clear_on_exit
 	 *        If true (1), then the notification value is cleared.
@@ -156,14 +190,15 @@ class Task {
 	 *        to occur.
 	 *
 	 * \return The value of the task's notification value before it is decremented
-	 *         or cleared
+	 * or cleared
 	 */
 	std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
 
 	/**
 	 * Clears the notification for a task.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
 	 *
 	 * \return False if there was not a notification waiting, true if there was
 	 */
@@ -182,14 +217,15 @@ class Task {
 	static void delay(const std::uint32_t milliseconds);
 
 	/**
-	 * Delays a task until a specified time.  This function can be used by periodic
-	 * tasks to ensure a constant execution frequency.
+	 * Delays a task until a specified time.  This function can be used by
+	 * periodic tasks to ensure a constant execution frequency.
 	 *
-	 * The task will be woken up at the time *prev_time + delta, and *prev_time will
-	 * be updated to reflect the time at which the task will unblock.
+	 * The task will be woken up at the time *prev_time + delta, and *prev_time
+	 * will be updated to reflect the time at which the task will unblock.
 	 *
 	 * \param prev_time
-	 *        A pointer to the location storing the setpoint time
+	 *        A pointer to the location storing the setpoint time. This should
+	 *        typically be initialized to the return value from pros::millis().
 	 * \param delta
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
 	 */
@@ -197,9 +233,9 @@ class Task {
 
 	/**
 	 * Gets the number of tasks the kernel is currently managing, including all
-	 * ready, blocked, or suspended tasks. A task that has been deleted, but not yet
-	 * reaped by the idle task will also be included in the count. Tasks recently
-	 * created may take one context switch to be counted.
+	 * ready, blocked, or suspended tasks. A task that has been deleted, but not
+	 * yet reaped by the idle task will also be included in the count.
+	 * Tasks recently created may take one context switch to be counted.
 	 *
 	 * \return The number of tasks that are currently being managed by the kernel.
 	 */
@@ -217,26 +253,31 @@ class Mutex {
 	 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
 	 * before timing out.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
+	 * See
+	 * https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+	 * for details.
 	 *
 	 * \param timeout
 	 *        Time to wait before the mutex becomes available. A timeout of 0 can
-	 *        be used to poll the mutex. TIMEOUT_MAX can be used to block indefinitely.
+	 *        be used to poll the mutex. TIMEOUT_MAX can be used to block
+	 *        indefinitely.
 	 *
 	 * \return True if the mutex was successfully taken, false otherwise. If false
-	 *         is returned, then errno is set with a hint about why the the mutex
-	 *         couldn't be taken.
+	 * is returned, then errno is set with a hint about why the the mutex
+	 * couldn't be taken.
 	 */
 	bool take(std::uint32_t timeout);
 
 	/**
 	 * Unlocks a mutex.
 	 *
-	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
+	 * See
+	 * https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+	 * for details.
 	 *
-	 * \return True if the mutex was successfully returned, false otherwise. If false
-	 *         is returned, then errno is set with a hint about why the mutex couldn't
-	 *         be returned.
+	 * \return True if the mutex was successfully returned, false otherwise. If
+	 * false is returned, then errno is set with a hint about why the mutex
+	 * couldn't be returned.
 	 */
 	bool give(void);
 
@@ -264,4 +305,4 @@ using pros::c::millis;
 using pros::c::delay;
 }  // namespace pros
 
-#endif
+#endif  // _PROS_RTOS_HPP_s

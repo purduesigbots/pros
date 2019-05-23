@@ -1,11 +1,14 @@
 /**
- * ser_daemon.c - Serial Input Daemon
+ * \file system/dev/ser_daemon.c
  *
- * The serial input daemon is responsible for polling the serial line for characters
- * and responding to any kernel commands (like printing the banner or enabling COBS)
+ * Serial Input Daemon
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * The serial input daemon is responsible for polling the serial line for
+ * characters and responding to any kernel commands (like printing the banner or
+ * enabling COBS)
+ *
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,11 +18,10 @@
 #include <errno.h>
 
 #include "kapi.h"
-#include "system/optimizers.h"
-
-#include "ifi/v5_api.h"
-
 #include "system/dev/banners.h"
+#include "system/hot.h"
+#include "system/optimizers.h"
+#include "v5_api.h"
 
 #define MAX_COMMAND_LENGTH 32
 
@@ -28,8 +30,10 @@ __attribute__((weak)) char const* const _PROS_COMPILE_DIRECTORY = "Unknown";
 
 void print_small_banner(void) {
 	uint32_t uptime = millis();
-	iprintf(short_banner, PROS_VERSION_STRING, uptime / 1000, uptime % 1000, _PROS_COMPILE_TIMESTAMP,
-	        _PROS_COMPILE_DIRECTORY);
+	char const * const timestamp = (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
+	char const * const directory = (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
+	iprintf(short_banner, PROS_VERSION_STRING, uptime / 1000, uptime % 1000, timestamp,
+	        directory);
 }
 
 void print_large_banner(void) {
@@ -37,8 +41,10 @@ void print_large_banner(void) {
 	uint32_t* sys_ver = (uint32_t*)version;
 	*sys_ver = vexSystemVersion();
 	uint32_t uptime = millis();
+	char const * const timestamp = (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
+	char const * const directory = (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
 	iprintf(large_banner, PROS_VERSION_STRING, version[3], version[2], version[1], version[0], uptime / 1000,
-	        uptime % 1000, _PROS_COMPILE_TIMESTAMP, _PROS_COMPILE_DIRECTORY);
+	        uptime % 1000, timestamp, directory);
 }
 
 /******************************************************************************/
@@ -57,13 +63,15 @@ static inline void inp_buffer_initialize() {
 	inp_stream = stream_buf_create_static(INP_BUFFER_SIZE, 1, inp_buffer, &inp_stream_buf);
 }
 
-// if you extern this function you can place characters on the rest of the system's input buffer
+// if you extern this function you can place characters on the rest of the
+// system's input buffer
 bool inp_buffer_post(uint8_t b) {
 	return stream_buf_send(inp_stream, &b, 1, TIMEOUT_MAX);
 }
 
 int32_t inp_buffer_read(uint32_t timeout) {
-	// polling the semaphore from a higher priority task (as would be normal) will starve the ser_daemon_task
+	// polling the semaphore from a higher priority task (as would be normal) will
+	// starve the ser_daemon_task
 	if (timeout == 0) {
 		timeout = 1;
 	}
@@ -86,11 +94,13 @@ static task_stack_t ser_daemon_stack[TASK_STACK_DEPTH_MIN];
 static static_task_s_t ser_daemon_task_buffer;
 
 static inline uint8_t vex_read_char() {
-	int32_t b;
-	do {
+	int32_t b = vexSerialReadChar(1);
+	while (b == -1L) {
+		task_delay(1);
 		b = vexSerialReadChar(1);
-	} while (b == -1L);
-	// Don't get rid of the literal type suffix, it ensures optimiziations don't break this condition
+	}
+	// Don't get rid of the literal type suffix, it ensures optimiziations don't
+	// break this condition
 	return (uint8_t)b;
 }
 
@@ -129,7 +139,8 @@ static void ser_daemon_task(void* ign) {
 						command_stack[command_stack_idx++] = vex_read_char();
 						command_stack[command_stack_idx++] = vex_read_char();
 						command_stack[command_stack_idx++] = vex_read_char();
-						// the parameter expected to serctl is the stream id (a uint32_t), so we
+						// the parameter expected to serctl is the stream id (a uint32_t), so
+						// we
 						// need to cast to a uint32_t pointer, dereference it, and cast to a
 						// void* to make the compiler happy
 						serctl(SERCTL_ACTIVATE, (void*)(*(uint32_t*)(command_stack + 3)));
@@ -148,12 +159,14 @@ static void ser_daemon_task(void* ign) {
 						break;
 					case 'c':
 						serctl(SERCTL_ENABLE_COBS, NULL);
+						command_stack_idx = 0;
 						break;
 					case 'r':
 						serctl(SERCTL_DISABLE_COBS, NULL);
+						command_stack_idx = 0;
 						break;
-					case 'i':
-						// TODO: disable kernel parsing for the next n characters
+					default:
+						command_stack_idx = 0;
 						break;
 				}
 			}

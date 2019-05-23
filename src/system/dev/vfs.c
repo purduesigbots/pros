@@ -1,16 +1,19 @@
 /**
- * vfs.c - Virtual File System
+ * \file system/dev/vfs.c
  *
- * VFS is responsible for maintaining the global file table and routing all basic
- * I/O to the appropriate driver. There are two drivers implemented, ser and usd
- * which correspond to the serial driver and microSD card, respectively.
+ * Virtual File System
+ *
+ * VFS is responsible for maintaining the global file table and routing all
+ * basic I/O to the appropriate driver. There are three drivers implemented,
+ * ser, dev, and usd which correspond to the serial driver, generic smart port
+ * communication, and microSD card, respectively.
  *
  * VFS implements all of the I/O newlib stubs like open/read/write and delegates
  * them to the file's driver. Drivers don't actually have any knowledge of the
  * fileno. A file number maps to a driver and driver argument, which would be
  * whatever metadata the driver needs to open the file
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -24,10 +27,12 @@
 
 #include "common/gid.h"
 #include "common/string.h"
-#include "ifi/v5_api.h"
 #include "kapi.h"
+#include "system/dev/dev.h"
 #include "system/dev/ser.h"
+#include "system/dev/usd.h"
 #include "system/dev/vfs.h"
+#include "v5_api.h"
 
 #define MAX_FILELEN 128
 #define MAX_FILES_OPEN 31
@@ -68,7 +73,8 @@ int vfs_add_entry_r(struct _reent* r, struct fs_driver const* const driver, void
 	return gid;
 }
 
-// update a given fileno driver and arg. Used by ser_driver_initialize to initialize stdout, stdin, stderr, and kdbg
+// update a given fileno driver and arg. Used by ser_driver_initialize to
+// initialize stdout, stdin, stderr, and kdbg
 int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) {
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		kprintf("BAD vfs update %d", file);
@@ -99,8 +105,9 @@ int _open_r(struct _reent* r, const char* file, int flags, int mode) {
 		// is a serial pseudofile
 		return ser_open_r(r, file + strlen("/ser"), flags, mode);
 	} else if (strstr(file, "/usd") == file) {
-		r->_errno = ENOSYS;  // not yet implemented
-		return -1;
+		return usd_open_r(r, file + strlen("/usd"), flags, mode);
+	} else if (strstr(file, "/dev") == file) {
+		return dev_open_r(r, file + strlen("/dev"), flags, mode);
 	}
 
 	r->_errno = ENOENT;

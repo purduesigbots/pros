@@ -141,6 +141,8 @@
 #define configUSE_NEWLIB_REENTRANT              1
 #define configSTACK_DEPTH_TYPE                  size_t
 
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 2
+
 /* Include the query-heap CLI command to query the free heap space. */
 #define configINCLUDE_QUERY_HEAP_COMMAND        1
 
@@ -171,6 +173,8 @@ to exclude the API function. */
 #define INCLUDE_xTaskAbortDelay                 1
 #define INCLUDE_xTaskGetTaskHandle              1
 #define INCLUDE_xTaskGetHandle                  1
+#define INCLUDE_xTaskGetSchedulerState          1
+#define INCLUDE_xQueueGetMutexHolder            1
 
 /* This demo makes use of one or more example stats formatting functions.  These
 format the raw data provided by the uxTaskGetSystemState() function in to human

@@ -1,11 +1,11 @@
 /**
- * string.c - Extra string functions
+ * \file common/string.c
  *
  * Contains extra string functions useful for PROS and kstrdup/kstrndup which
  * use the kernel heap instead of the user heap
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,9 +16,6 @@
 
 #include "kapi.h"
 
-/**
- * strndup but uses the kernel heap
- */
 char* kstrndup(const char* s, size_t n) {
 	size_t copy_len = strnlen(s, n);  // strlen max'd out at n
 	char* dupstr = kmalloc(n + 1);
@@ -30,9 +27,6 @@ char* kstrndup(const char* s, size_t n) {
 	return dupstr;
 }
 
-/**
- * strdup but uses the kernel heap
- */
 char* kstrdup(const char* s) {
 	return kstrndup(s, strlen(s));
 }

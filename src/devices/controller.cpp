@@ -1,36 +1,62 @@
 /**
- * \file controller.cpp
+ * \file devices/controller.cpp
  *
- * Contains functions for interacting with the V5 Controller.
+ * Contains functions for interacting with the V5 Controller, as well as the
+ * competition control functions.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 
 namespace pros {
 using namespace pros::c;
 
-Controller::Controller(controller_id_e_t id) : _id(id) {}
+Controller::Controller(pros::controller_id_e_t id) : _id(id) {}
 
 std::int32_t Controller::is_connected(void) {
 	return controller_is_connected(_id);
 }
 
-std::int32_t Controller::get_analog(controller_analog_e_t channel) {
+std::int32_t Controller::get_analog(pros::controller_analog_e_t channel) {
 	return controller_get_analog(_id, channel);
 }
 
-std::int32_t Controller::get_digital(controller_digital_e_t button) {
+std::int32_t Controller::get_battery_capacity(void) {
+	return controller_get_battery_capacity(_id);
+}
+
+std::int32_t Controller::get_battery_level(void) {
+	return controller_get_battery_level(_id);
+}
+
+std::int32_t Controller::get_digital(pros::controller_digital_e_t button) {
 	return controller_get_digital(_id, button);
 }
 
-std::int32_t Controller::get_digital_new_press(controller_digital_e_t button) {
+std::int32_t Controller::get_digital_new_press(pros::controller_digital_e_t button) {
 	return controller_get_digital_new_press(_id, button);
+}
+
+std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {
+	return controller_set_text(_id, line, col, str);
+}
+
+std::int32_t Controller::clear_line(std::uint8_t line) {
+	return controller_clear_line(_id, line);
+}
+
+std::int32_t Controller::clear(void) {
+	return controller_clear(_id);
+}
+
+std::int32_t Controller::rumble(const char* rumble_pattern) {
+	return controller_rumble(_id, rumble_pattern);
 }
 
 namespace competition {

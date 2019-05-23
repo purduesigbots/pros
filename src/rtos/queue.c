@@ -584,7 +584,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 		this is the only condition we are interested in it does not matter if
 		pxMutexHolder is accessed simultaneously by another task.  Therefore no
 		mutual exclusion is required to test the pxMutexHolder variable. */
-		if( pxMutex->pxMutexHolder == ( void * ) xTaskGetCurrentTaskHandle() ) /*lint !e961 Not a redundant cast as task_t is a typedef. */
+		if( pxMutex->pxMutexHolder == ( void * ) task_get_current() ) /*lint !e961 Not a redundant cast as task_t is a typedef. */
 		{
 			traceGIVE_MUTEX_RECURSIVE( pxMutex );
 
@@ -638,7 +638,7 @@ static void prvInitialiseNewQueue( const uint32_t uxQueueLength, const uint32_t 
 
 		traceTAKE_MUTEX_RECURSIVE( pxMutex );
 
-		if( pxMutex->pxMutexHolder == ( void * ) xTaskGetCurrentTaskHandle() ) /*lint !e961 Cast is not redundant as task_t is a typedef. */
+		if( pxMutex->pxMutexHolder == ( void * ) task_get_current() ) /*lint !e961 Cast is not redundant as task_t is a typedef. */
 		{
 			( pxMutex->u.uxRecursiveCallCount )++;
 			xReturn = pdPASS;

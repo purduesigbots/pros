@@ -1,10 +1,12 @@
 /**
- * system/dev/vfs.h - virtual file system header
+ * \file system/dev/vfs.h
+ *
+ * Virtual File System header
  *
  * See system/dev/vfs.c for discussion
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -37,5 +39,6 @@ struct file_entry {
 int vfs_add_entry_r(struct _reent* r, struct fs_driver const* const driver, void* arg);
 
 // update an entry to the file table. Returns -1 if there was an error.
-// If driver is NULL, then the driver isn't updated. If arg is (void*)-1, then the arg isn't updated.
+// If driver is NULL, then the driver isn't updated. If arg is (void*)-1, then
+// the arg isn't updated.
 int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg);

@@ -1,16 +1,17 @@
 /**
  * \file pros/rtos.h
  *
- * \brief Contains declarations for the PROS RTOS kernel for use by typical
- * VEX programmers.
+ * Contains declarations for the PROS RTOS kernel for use by typical VEX
+ * programmers.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html to
+ * learn more.
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking to learn more.
- *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -19,6 +20,13 @@
 
 #ifndef _PROS_RTOS_H_
 #define _PROS_RTOS_H_
+
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+#endif
 
 // The highest priority that can be assigned to a task. Beware of deadlock.
 #define TASK_PRIORITY_MAX 16
@@ -66,16 +74,46 @@ typedef enum {
 	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
 
+#ifdef PROS_USE_SIMPLE_NAMES
+#ifdef __cplusplus
+#define TASK_STATE_RUNNING pros::E_TASK_STATE_RUNNING
+#define TASK_STATE_READY pros::E_TASK_STATE_READY
+#define TASK_STATE_BLOCKED pros::E_TASK_STATE_BLOCKED
+#define TASK_STATE_SUSPENDED pros::E_TASK_STATE_SUSPENDED
+#define TASK_STATE_DELETED pros::E_TASK_STATE_DELETED
+#define TASK_STATE_INVALID pros::E_TASK_STATE_INVALID
+#define NOTIFY_ACTION_NONE pros::E_NOTIFY_ACTION_NONE
+#define NOTIFY_ACTION_BITS pros::E_NOTIFY_ACTION_BITS
+#define NOTIFY_ACTION_INCR pros::E_NOTIFY_ACTION_INCR
+#define NOTIFY_ACTION_OWRITE pros::E_NOTIFY_ACTION_OWRITE
+#define NOTIFY_ACTION_NO_OWRITE pros::E_NOTIFY_ACTION_NO_OWRITE
+#else
+#define TASK_STATE_RUNNING E_TASK_STATE_RUNNING
+#define TASK_STATE_READY E_TASK_STATE_READY
+#define TASK_STATE_BLOCKED E_TASK_STATE_BLOCKED
+#define TASK_STATE_SUSPENDED E_TASK_STATE_SUSPENDED
+#define TASK_STATE_DELETED E_TASK_STATE_DELETED
+#define TASK_STATE_INVALID E_TASK_STATE_INVALID
+#define NOTIFY_ACTION_NONE E_NOTIFY_ACTION_NONE
+#define NOTIFY_ACTION_BITS E_NOTIFY_ACTION_BITS
+#define NOTIFY_ACTION_INCR E_NOTIFY_ACTION_INCR
+#define NOTIFY_ACTION_OWRITE E_NOTIFY_ACTION_OWRITE
+#define NOTIFY_ACTION_NO_OWRITE E_NOTIFY_ACTION_NO_OWRITE
+#endif
+#endif
+
 typedef void* mutex_t;
 
 /**
  * Refers to the current task handle
  */
+#ifdef __cplusplus
+#define CURRENT_TASK ((pros::task_t)NULL)
+#else
 #define CURRENT_TASK ((task_t)NULL)
+#endif
 
 #ifdef __cplusplus
-extern "C" {
-namespace pros {
 namespace c {
 #endif
 
@@ -88,6 +126,10 @@ uint32_t millis(void);
 
 /**
  * Creates a new task and add it to the list of tasks that are ready to run.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENOMEM - The stack cannot be used as the TCB was not created.
  *
  * \param function
  *        Pointer to the task entry function
@@ -105,19 +147,15 @@ uint32_t millis(void);
  *        A descriptive name for the task.  This is mainly used to facilitate
  *        debugging. The name may be up to 32 characters long.
  *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENOMEM - The stack cannot be used as the TCB was not created.
- *
- * \return A handle by which the newly created task can be
- *         referenced. If an error occurred, NULL will be returned and errno
- *         can be checked for hints as to why task_create failed.
+ * \return A handle by which the newly created task can be referenced. If an
+ * error occurred, NULL will be returned and errno can be checked for hints as
+ * to why task_create failed.
  */
 task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, const uint16_t stack_depth,
                    const char* const name);
 
 /**
- * Removes a task from the RTOS real time kernel's management.  The task being
+ * Removes a task from the RTOS real time kernel's management. The task being
  * deleted will be removed from all ready, blocked, suspended and event lists.
  *
  * Memory dynamically allocated by the task is not automatically freed, and
@@ -151,7 +189,8 @@ void delay(const uint32_t milliseconds);
  * be updated to reflect the time at which the task will unblock.
  *
  * \param prev_time
- *        A pointer to the location storing the setpoint time
+ *        A pointer to the location storing the setpoint time. This should
+ *        typically be initialized to the return value of millis().
  * \param delta
  *        The number of milliseconds to wait (1000 milliseconds per second)
  */
@@ -240,9 +279,18 @@ char* task_get_name(task_t task);
 task_t task_get_by_name(const char* name);
 
 /**
+ * Get the currently running task handle. This could be useful if a task
+ * wants to tell another task about itself.
+ *
+ * \return The currently running task handle.
+ */
+task_t task_get_current();
+
+/**
  * Sends a simple notification to task and increments the notification counter.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+ * details.
  *
  * \param task
  *        The task to notify
@@ -256,7 +304,8 @@ uint32_t task_notify(task_t task);
  * retrieve the value of the notification in the target task before modifying
  * the notification value.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+ * details.
  *
  * \param task
  *        The task to notify
@@ -266,19 +315,21 @@ uint32_t task_notify(task_t task);
  *        An action to optionally perform on the receiving task's notification
  *        value
  * \param prev_value
- *        A pointer to store the previous value of the target task's notification, may be NULL
+ *        A pointer to store the previous value of the target task's
+ *        notification, may be NULL
  *
  * \return Dependent on the notification action.
- *         For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written
- *         without needing to overwrite, 1 otherwise.
- *         For all other NOTIFY_ACTION values: always return 0
+ * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
+ * needing to overwrite, 1 otherwise.
+ * For all other NOTIFY_ACTION values: always return 0
  */
 uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
 /**
  * Waits for a notification to be nonzero.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+ * details.
  *
  * \param clear_on_exit
  *        If true (1), then the notification value is cleared.
@@ -288,14 +339,15 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  *        to occur.
  *
  * \return The value of the task's notification value before it is decremented
- *         or cleared
+ * or cleared
  */
 uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
 
 /**
  * Clears the notification for a task.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+ * details.
  *
  * \param task
  *        The task to clear
@@ -307,11 +359,11 @@ bool task_notify_clear(task_t task);
 /**
  * Creates a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \return A handle to a newly created mutex. If an error occurred, NULL will be
- *			   returned and errno can be checked for hints as to
- *         why mutex_create failed.
+ * returned and errno can be checked for hints as to why mutex_create failed.
  */
 mutex_t mutex_create(void);
 
@@ -319,38 +371,41 @@ mutex_t mutex_create(void);
  * Takes and locks a mutex, waiting for up to a certain number of milliseconds
  * before timing out.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \param mutex
  *        Mutex to attempt to lock.
  * \param timeout
  *        Time to wait before the mutex becomes available. A timeout of 0 can
- *        be used to poll the mutex. TIMEOUT_MAX can be used to block indefinitely.
+ *        be used to poll the mutex. TIMEOUT_MAX can be used to block
+ *        indefinitely.
  *
  * \return True if the mutex was successfully taken, false otherwise. If false
- *         is returned, then errno is set with a hint about why the the mutex
- *         couldn't be taken.
+ * is returned, then errno is set with a hint about why the the mutex
+ * couldn't be taken.
  */
 bool mutex_take(mutex_t mutex, uint32_t timeout);
 
 /**
  * Unlocks a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking#mutexes for details.
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
  *
  * \param mutex
  *        Mutex to unlock.
  *
- * \return True if the mutex was successfully returned, false otherwise. If false
- *         is returned, then errno is set with a hint about why the mutex couldn't
- *         be returned.
+ * \return True if the mutex was successfully returned, false otherwise. If
+ * false is returned, then errno is set with a hint about why the mutex
+ * couldn't be returned.
  */
 bool mutex_give(mutex_t mutex);
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 
-#endif
+#endif  // _PROS_RTOS_H_

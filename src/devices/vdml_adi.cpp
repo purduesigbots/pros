@@ -1,14 +1,15 @@
 /**
- * \file vdml_adi.cpp
+ * \file devices/vdml_adi.cpp
  *
- * \brief VDML ADI functionality.
+ * Contains functions for interacting with the V5 ADI.
  *
- * \copyright (c) 2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
 #include "kapi.h"
 #include "pros/adi.hpp"
 
@@ -93,7 +94,28 @@ std::int32_t ADIEncoder::reset(void) const {
 	return adi_encoder_reset(_port);
 }
 
-ADIUltrasonic::ADIUltrasonic(std::uint8_t port_echo, std::uint8_t port_ping) {
-	_port = adi_ultrasonic_init(port_echo, port_ping);
+std::int32_t ADIEncoder::get_value(void) const {
+	return adi_encoder_get(_port);
+}
+
+ADIUltrasonic::ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
+	_port = adi_ultrasonic_init(port_ping, port_echo) + 1;
+	// Add 1 to ensure that the ADIPort::get_value can be used
+}
+
+ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
+	_port = adi_gyro_init(port, multiplier);
+}
+
+ADIGyro::~ADIGyro(void) {
+	// Don't change the port configuration so we don't have to recalibrate
+}
+
+double ADIGyro::get_value(void) const {
+	return adi_gyro_get(_port);
+}
+
+std::int32_t ADIGyro::reset(void) const {
+	return adi_gyro_reset(_port);
 }
 }  // namespace pros

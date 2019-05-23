@@ -1,22 +1,21 @@
 /*
- * \file linkedlist.c
+ * \file common/linkedlist.c
  *
- * \brief linked list implementation for internal use
+ * Linked list implementation for internal use
  *
  * This file defines a linked list implementation that operates on the FreeRTOS
  * heap, and is able to generically store function pointers and data
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "common/linkedlist.h"
-
 #include <stddef.h>  // NULL
 
+#include "common/linkedlist.h"
 #include "kapi.h"
 
 ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
@@ -144,4 +143,15 @@ void linked_list_foreach(linked_list_s_t* list, linked_list_foreach_fn_t cb, voi
 		cb(it, extra_data);
 		it = it->next;
 	}
+}
+
+void linked_list_free(linked_list_s_t* list) {
+	if (list == NULL || list->head == NULL) return;
+
+	while (list->head != NULL) {
+		ll_node_s_t* node = list->head;
+		list->head = node->next;
+		kfree(node);
+	}
+	kfree(list);
 }

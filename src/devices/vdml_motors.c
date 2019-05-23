@@ -1,12 +1,9 @@
 /**
- * \file vdml.c
+ * \file devices/vdml_motors.c
  *
- * \brief VDML Devices Mutex Management.
+ * Contains functions for interacting with the V5 Motors.
  *
- * This file ensure thread saftey for operations on motors by maintaining
- * an array of RTOS Mutexes and implementing functions to take and give them.
- *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -17,22 +14,50 @@
 #include <math.h>
 #include <stdio.h>
 
-#include "ifi/v5_api.h"
 #include "kapi.h"
 #include "pros/motors.h"
+#include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
 #define MOTOR_MOVE_RANGE 127
 #define MOTOR_VOLTAGE_RANGE 12000
 
-// Motor functions
+typedef struct motor_data {
+	V5_DeviceMotorPid pos_pid, vel_pid;
+} motor_data_s_t;
 
-int32_t motor_move(uint8_t port, const int8_t voltage) {
+static V5_DeviceMotorPid get_pos_pid(uint8_t port) {
+	return ((motor_data_s_t*)registry_get_device(port)->pad)->pos_pid;
+}
+
+static void set_pos_pid(uint8_t port, V5_DeviceMotorPid pos) {
+	motor_data_s_t* data = (motor_data_s_t*)registry_get_device(port)->pad;
+	data->pos_pid = pos;
+}
+
+static V5_DeviceMotorPid get_vel_pid(uint8_t port) {
+	return ((motor_data_s_t*)registry_get_device(port)->pad)->vel_pid;
+}
+
+static void set_vel_pid(uint8_t port, V5_DeviceMotorPid vel) {
+	motor_data_s_t* data = (motor_data_s_t*)registry_get_device(port)->pad;
+	data->vel_pid = vel;
+}
+
+// Movement functions
+
+int32_t motor_move(uint8_t port, int32_t voltage) {
+	if (voltage > 127) {
+		voltage = 127;
+	} else if (voltage < -127) {
+		voltage = -127;
+	}
+
 	// Remap the input voltage range to the motor voltage
-	// scale to [0, 256] -> [0, 24000] -> [-100, 100]
+	// scale to [-127, 127] -> [-12000, 12000]
 	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
-	command -= MOTOR_VOLTAGE_RANGE;  // readjust back to [-100, 100]
+	command -= MOTOR_VOLTAGE_RANGE;
 	return motor_move_voltage(port, command);
 }
 
@@ -57,6 +82,12 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity) {
 int32_t motor_move_voltage(uint8_t port, const int32_t voltage) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
+	return_port(port - 1, 1);
+}
+
+int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity) {
+	claim_port(port - 1, E_DEVICE_MOTOR);
+	vexDeviceMotorVelocityUpdate(device->device_info, velocity);
 	return_port(port - 1, 1);
 }
 
@@ -110,7 +141,7 @@ int32_t motor_is_over_temp(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_is_stopped(uint32_t port) {
+int32_t motor_is_stopped(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);
@@ -118,7 +149,7 @@ int32_t motor_is_stopped(uint32_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_get_zero_position_flag(uint32_t port) {
+int32_t motor_get_zero_position_flag(uint8_t port) {
 	errno = ENOSYS;
 	return PROS_ERR;
 	claim_port(port - 1, E_DEVICE_MOTOR);
@@ -212,6 +243,85 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset) {
 	return_port(port - 1, 1);
 }
 
+motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
+                                          double threshold, double loopspeed) {
+	motor_pid_full_s_t rtn;
+	rtn.kf = roundf(kf * 16);
+	rtn.kp = roundf(kp * 16);
+	rtn.ki = roundf(ki * 16);
+	rtn.kd = roundf(kd * 16);
+	rtn.filter = roundf(filter * 16);
+	rtn.limit = roundf(limit * 16);
+	rtn.threshold = roundf(threshold * 16);
+	rtn.loopspeed = roundf(loopspeed * 16);
+	return rtn;
+}
+
+motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd) {
+	motor_pid_s_t rtn;
+	rtn.kf = roundf(kf * 16);
+	rtn.kp = roundf(kp * 16);
+	rtn.ki = roundf(ki * 16);
+	rtn.kd = roundf(kd * 16);
+	return rtn;
+}
+
+int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid) {
+	claim_port(port - 1, E_DEVICE_MOTOR);
+	V5_DeviceMotorPid out;
+	out.kf = pid.kf;
+	out.kp = pid.kp;
+	out.ki = pid.ki;
+	out.kd = pid.kd;
+	set_pos_pid(port, out);
+	vexDeviceMotorPositionPidSet(device->device_info, &out);
+	return_port(port - 1, 1);
+}
+
+int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
+	claim_port(port - 1, E_DEVICE_MOTOR);
+	V5_DeviceMotorPid out;
+	out.kf = pid.kf;
+	out.kp = pid.kp;
+	out.ki = pid.ki;
+	out.kd = pid.kd;
+	out.filter = pid.filter;
+	out.limit = pid.limit;
+	out.threshold = pid.threshold;
+	out.loopspeed = pid.loopspeed;
+	set_pos_pid(port, out);
+	vexDeviceMotorPositionPidSet(device->device_info, &out);
+	return_port(port - 1, 1);
+}
+
+int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid) {
+	claim_port(port - 1, E_DEVICE_MOTOR);
+	V5_DeviceMotorPid out;
+	out.kf = pid.kf;
+	out.kp = pid.kp;
+	out.ki = pid.ki;
+	out.kd = pid.kd;
+	set_vel_pid(port, out);
+	vexDeviceMotorPositionPidSet(device->device_info, &out);
+	return_port(port - 1, 1);
+}
+
+int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
+	claim_port(port - 1, E_DEVICE_MOTOR);
+	V5_DeviceMotorPid out;
+	out.kf = pid.kf;
+	out.kp = pid.kp;
+	out.ki = pid.ki;
+	out.kd = pid.kd;
+	out.filter = pid.filter;
+	out.limit = pid.limit;
+	out.threshold = pid.threshold;
+	out.loopspeed = pid.loopspeed;
+	set_vel_pid(port, out);
+	vexDeviceMotorPositionPidSet(device->device_info, &out);
+	return_port(port - 1, 1);
+}
+
 int32_t motor_set_reversed(uint8_t port, const bool reverse) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorReverseFlagSet(device->device_info, reverse);
@@ -246,6 +356,62 @@ motor_gearset_e_t motor_get_gearing(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_MOTOR);
 	V5MotorGearset rtn = vexDeviceMotorGearingGet(device->device_info);
 	return_port(port - 1, (motor_gearset_e_t)rtn);
+}
+
+motor_pid_full_s_t motor_get_pos_pid(uint8_t port) {
+	motor_pid_full_s_t rtn;
+	int32_t err = claim_port_try(port - 1, E_DEVICE_MOTOR);
+	if (err == PROS_ERR) {
+		// Set all fields to lowest
+		rtn.kf = 0;
+		rtn.kp = 0;
+		rtn.ki = 0;
+		rtn.kd = 0;
+		rtn.filter = 0;
+		rtn.limit = 0;
+		rtn.threshold = 0;
+		rtn.loopspeed = 0;
+		return rtn;
+	}
+	V5_DeviceMotorPid pid = get_pos_pid(port);
+	rtn.kf = pid.kf;
+	rtn.kp = pid.kp;
+	rtn.ki = pid.ki;
+	rtn.kd = pid.kd;
+	rtn.filter = pid.filter;
+	rtn.limit = pid.limit;
+	rtn.threshold = pid.threshold;
+	rtn.loopspeed = pid.loopspeed;
+	port_mutex_give(port - 1);
+	return rtn;
+}
+
+motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
+	motor_pid_full_s_t rtn;
+	int32_t err = claim_port_try(port - 1, E_DEVICE_MOTOR);
+	if (err == PROS_ERR) {
+		// Set all fields to lowest
+		rtn.kf = 0;
+		rtn.kp = 0;
+		rtn.ki = 0;
+		rtn.kd = 0;
+		rtn.filter = 0;
+		rtn.limit = 0;
+		rtn.threshold = 0;
+		rtn.loopspeed = 0;
+		return rtn;
+	}
+	V5_DeviceMotorPid pid = get_vel_pid(port);
+	rtn.kf = pid.kf;
+	rtn.kp = pid.kp;
+	rtn.ki = pid.ki;
+	rtn.kd = pid.kd;
+	rtn.filter = pid.filter;
+	rtn.limit = pid.limit;
+	rtn.threshold = pid.threshold;
+	rtn.loopspeed = pid.loopspeed;
+	port_mutex_give(port - 1);
+	return rtn;
 }
 
 int32_t motor_is_reversed(uint8_t port) {

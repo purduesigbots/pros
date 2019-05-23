@@ -529,7 +529,7 @@ TimeOut_t xTimeOut;
 
 					/* Should only be one writer. */
 					configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
-					pxStreamBuffer->xTaskWaitingToSend = xTaskGetCurrentTaskHandle();
+					pxStreamBuffer->xTaskWaitingToSend = task_get_current();
 				}
 				else
 				{
@@ -733,7 +733,7 @@ size_t xReceivedLength = 0, xBytesAvailable, xBytesToStoreMessageLength;
 
 				/* Should only be one reader. */
 				configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
-				pxStreamBuffer->xTaskWaitingToReceive = xTaskGetCurrentTaskHandle();
+				pxStreamBuffer->xTaskWaitingToReceive = task_get_current();
 			}
 			else
 			{

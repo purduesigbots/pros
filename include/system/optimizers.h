@@ -1,10 +1,12 @@
 /**
- * system/optimizers.h - optimizers for the kernel
+ * \file system/optimizers.h
+ *
+ * Optimizers for the kernel
  *
  * Probably shouldn't use anything from this header
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
- * All rights reservered.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
