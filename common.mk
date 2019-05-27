@@ -11,6 +11,11 @@ SPACE :=
 SPACE +=
 COMMA := ,
 
+DEPDIR := .d
+$(shell mkdir -p $(DEPDIR))
+DEPFLAGS = -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.Td
+POSTCOMPILE = $(VV)mv -f $(DEPDIR)/$$*.Td $(DEPDIR)/$$*.d && touch $$@
+
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
 COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
@@ -169,6 +174,7 @@ all: clean $(DEFAULT_BIN)
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
+	$Drm -rf $(DEPDIR)
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
@@ -239,15 +245,20 @@ $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename $1).d
 	$(VV)mkdir -p $$(dir $$@)
-	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) -o $$@ $$<,$(OK_STRING))
+	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
+	$(POSTCOMPILE)
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
 define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename %).d
 	$(VV)mkdir -p $$(dir $$@)
-	$$(call test_output_2,Compiled $$< ,$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) -o $$@ $$<,$(OK_STRING))
+	$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst bin/%, %, $$@))
+	$$(call test_output_2,Compiled $$< ,$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
+	$(POSTCOMPILE)
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 
@@ -264,3 +275,8 @@ cc-sysroot:
 	@echo | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) --verbose -o /dev/null -
 cxx-sysroot:
 	@echo | $(CXX) -c -x c++ $(CXXFLAGS) $(EXTRA_CXXFLAGS) --verbose -o /dev/null -
+
+$(DEPDIR)/%.d: ;
+.PRECIOUS: $(DEPDIR)/%.d
+
+include $(wildcard $(patsubst ./src/%,$(DEPDIR)/%.d,$(basename $(CSRC) $(CXXSRC))))
