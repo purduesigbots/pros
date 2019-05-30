@@ -114,7 +114,7 @@ int32_t serial_flush(uint8_t port);
  * \return The number of bytes avaliable to be read or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t serial_read_avail(uint8_t port);
+int32_t serial_get_read_avail(uint8_t port);
 
 /**
  * Returns the number of bytes free in the port's FIFO output buffer.
@@ -133,7 +133,7 @@ int32_t serial_read_avail(uint8_t port);
  * \return The number of bytes free or PROS_ERR if the operation failed,
  * setting errno.
  */
-int32_t serial_write_free(uint8_t port);
+int32_t serial_get_write_free(uint8_t port);
 
 /**
  * Reads the next byte avaliable in the port's input buffer without removing it.

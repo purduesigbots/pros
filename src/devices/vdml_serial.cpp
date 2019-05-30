@@ -33,12 +33,12 @@ std::int32_t Serial::flush() const {
 	return serial_flush(_port);
 }
 
-std::int32_t Serial::read_avail() const {
-	return serial_read_avail(_port);
+std::int32_t Serial::get_read_avail() const {
+	return serial_get_read_avail(_port);
 }
 
-std::int32_t Serial::write_free() const {
-	return serial_write_free(_port);
+std::int32_t Serial::get_write_free() const {
+	return serial_get_write_free(_port);
 }
 
 std::int32_t Serial::peek_byte() const {

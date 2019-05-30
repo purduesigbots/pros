@@ -108,9 +108,9 @@ int dev_ctl(void* const arg, const uint32_t cmd, void* const extra_arg) {
 	uint32_t port = file_arg->port;
 	switch (cmd) {
 		case DEVCTL_FIONREAD:
-			return serial_read_avail(port);
+			return serial_get_read_avail(port);
 		case DEVCTL_FIONWRITE:
-			return serial_write_free(port);
+			return serial_get_write_free(port);
 		case DEVCTL_SET_BAUDRATE:
 			return serial_set_baudrate(port, (int32_t)extra_arg);
 		default:

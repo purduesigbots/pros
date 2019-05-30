@@ -101,7 +101,7 @@ class Serial {
 	 * \return The number of bytes avaliable to be read or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t read_avail() const;
+	virtual std::int32_t get_read_avail() const;
 
 	/**
 	 * Returns the number of bytes free in the port's FIFO output buffer.
@@ -117,7 +117,7 @@ class Serial {
 	 * \return The number of bytes free or PROS_ERR if the operation failed,
 	 * setting errno.
 	 */
-	virtual std::int32_t write_free() const;
+	virtual std::int32_t get_write_free() const;
 
 	/**
 	 * Reads the next byte avaliable in the port's input buffer without removing it.

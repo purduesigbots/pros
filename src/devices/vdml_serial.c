@@ -56,13 +56,13 @@ int32_t serial_flush(uint8_t port) {
 
 // Telemetry functions
 
-int32_t serial_read_avail(uint8_t port) {
+int32_t serial_get_read_avail(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_GENERIC);
 	int32_t rtn = vexDeviceGenericSerialReceiveAvail(device->device_info);
 	return_port(port - 1, rtn);
 }
 
-int32_t serial_write_free(uint8_t port) {
+int32_t serial_get_write_free(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_GENERIC);
 	int32_t rtn = vexDeviceGenericSerialWriteFree(device->device_info);
 	return_port(port - 1, rtn);
