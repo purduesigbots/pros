@@ -152,11 +152,10 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 		return false;
 	}
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
-	char* buf;
-	vasprintf(&buf, fmt, args);
+	char buf[33];
+	vsnprintf(buf, 33, fmt, args);
 
 	lv_label_set_text(lcd->lcd_text[line], buf);
-	free(buf);
 	lv_obj_set_width(lcd->lcd_text[line], 426);
 	return true;
 }
