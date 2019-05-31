@@ -132,7 +132,7 @@
  * To enable a built-in font use 1,2,4 or 8 values
  * which will determine the bit-per-pixel */
 #define LV_FONT_DEFAULT                                                        \
-  &pros_font_dejavu_mono_20 /*Always set a default font from the built-in fonts*/
+  &lv_font_dejavu_20 /*Always set a default font from the built-in fonts*/
 
 #define USE_LV_FONT_DEJAVU_10 4
 #define USE_LV_FONT_DEJAVU_10_LATIN_SUP 4
