@@ -40,9 +40,9 @@ __attribute__((constructor(101))) static void pros_init(void) {
 
 	vdml_initialize();
 
-	system_daemon_initialize();
-
 	display_initialize();
+
+	system_daemon_initialize();
 
 	invoke_install_hot_table();
 }
