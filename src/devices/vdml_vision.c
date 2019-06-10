@@ -145,8 +145,8 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 		port_mutex_give(port - 1);
 		errno = EDOM;
 		return PROS_ERR;
-	} else if (c > object_count) {
-		c = object_count;
+	} else if (c > object_count + size_id) {
+		c = object_count + size_id;
 	}
 
 	for (uint32_t i = size_id; i < c; i++) {
@@ -174,18 +174,29 @@ int32_t _vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t
 		c = object_count;
 	}
 
-	uint8_t count = 0;
-	for (uint8_t i = 0; i < c; i++) {
-		vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + i));
-		if (object_arr[i].signature == sig_id) {
-			if (count > size_id) {
-				_vision_transform_coords(port - 1, &object_arr[i]);
-			}
-			count++;
+	uint32_t j = 0;                    // track how many objects we've placed into object_arr
+	uint32_t seen = 0;                 // track how many objects we've seen matching sig_id
+	for (uint8_t i = 0; i < c; i++) {  // loop through all objects on sensor
+		// place i-th object on vision sensor on j-th position in object_arr
+		if (!vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + j))) {
+			errno = EAGAIN;
+			object_arr[i].signature = VISION_OBJECT_ERR_SIG;
+			goto rtn;
 		}
-		if (count == object_count) break;
+		// check if this (j-th) object matches sig_id
+		if (object_arr[j].signature == sig_id) {
+			seen++;
+			if (seen >= size_id) {  // have we seen enough objects to start adding to object_arr?
+				// if so, transform the coords and "commit" it by incrementing j
+				_vision_transform_coords(port - 1, &object_arr[j]);
+				j++;
+				if (j == object_count) goto rtn;
+			}
+		}
 	}
-	return_port(port - 1, count);
+	errno = EDOM;  // read through all objects and couldn't find enough objects matching filter parameters
+rtn:
+	return_port(port - 1, j);
 }
 
 int32_t vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
