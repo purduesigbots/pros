@@ -114,32 +114,38 @@ static void set_gyro_tare(uint8_t port, double tare) {
 	else                                 \
 		port--;                            \
 	if (port > 7 || port < 0) {          \
-		errno = EINVAL;                    \
+		errno = ENXIO;                     \
 		return PROS_ERR;                   \
 	}
 
 #define validate_type(port, type)                          \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
 	if (config != type) {                                    \
+		errno = EADDRINUSE;                                    \
 		return PROS_ERR;                                       \
 	}
 
 #define validate_type_f(port, type)                        \
 	adi_port_config_e_t config = _adi_port_get_config(port); \
 	if (config != type) {                                    \
+		errno = EADDRINUSE;                                    \
 		return PROS_ERR_F;                                     \
 	}
 
 #define validate_motor(port)                                        \
 	adi_port_config_e_t config = _adi_port_get_config(port);          \
+	if (config == E_ADI_TYPE_UNDEFINED) {                             \
+		errno = ENODEV;                                                 \
+		return PROS_ERR;                                                \
+	}                                                                 \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) { \
-		errno = EINVAL;                                                 \
+		errno = EADDRINUSE;                                             \
 		return PROS_ERR;                                                \
 	}
 
 #define validate_twowire(port_top, port_bottom) \
 	if (abs(port_top - port_bottom) > 1) {        \
-		errno = EINVAL;                             \
+		errno = ENXIO;                              \
 		return PROS_ERR;                            \
 	}                                             \
 	int port;                                     \
@@ -148,6 +154,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 	else if (port_bottom < port_top)              \
 		port = port_bottom;                         \
 	else                                          \
+	  errno = EINVAL;                             \
 		return PROS_ERR;                            \
 	if (port % 2 == 1) {                          \
 		return PROS_ERR;                            \
@@ -155,7 +162,7 @@ static void set_gyro_tare(uint8_t port, double tare) {
 
 static inline int32_t _adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
 	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
-	vexDeviceAdiPortConfigSet(device->device_info, port, type);
+	vexDeviceAdiPortConfigSet(device->device_info, port, (V5_AdiPortConfiguration)type);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 

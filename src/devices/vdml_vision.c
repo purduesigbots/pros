@@ -51,8 +51,7 @@ int32_t vision_get_object_count(uint8_t port) {
 vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	vision_object_s_t rtn;
 	v5_smart_device_s_t* device;
-	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (err == PROS_ERR) {
+	if (claim_port_try(port - 1, E_DEVICE_VISION) == PROS_ERR) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		return rtn;
 	}
@@ -62,9 +61,8 @@ vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		goto leave;
 	}
-	err = vexDeviceVisionObjectGet(device->device_info, size_id, (V5_DeviceVisionObject*)&rtn);
-	if (err == 0) {
-		errno = EHOSTDOWN;
+	if (vexDeviceVisionObjectGet(device->device_info, size_id, (V5_DeviceVisionObject*)&rtn) == 0) {
+		errno = EAGAIN;
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		goto leave;
 	}
@@ -82,10 +80,8 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 	uint8_t count = 0;
 	int32_t object_count = 0;
 
-	int32_t err = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (err == PROS_ERR) {
-		errno = EINVAL;
-		goto err_return;
+	if (claim_port_try(port - 1, E_DEVICE_VISION) == PROS_ERR) {
+		goto err_return_no_mutex;
 	}
 
 	device = registry_get_device(port - 1);
@@ -97,9 +93,8 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 
 	for (uint8_t i = 0; i <= object_count; i++) {
 		vision_object_s_t check;
-		err = vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)&check);
-		if (err == PROS_ERR) {
-			errno = EHOSTDOWN;
+		if (vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)&check) == PROS_ERR) {
+			errno = EAGAIN;
 			rtn = check;
 			goto err_return;
 		}
@@ -113,9 +108,11 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 			count++;
 		}
 	}
+	errno = EDOM;  // we read through all the objects and none matched sig_id and size_id
 
 err_return:
 	port_mutex_give(port - 1);
+err_return_no_mutex:
 	rtn.signature = VISION_OBJECT_ERR_SIG;
 	return rtn;
 }
@@ -151,6 +148,8 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 
 	for (uint32_t i = size_id; i < c; i++) {
 		if (!vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + i))) {
+			errno = EAGAIN;
+			object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 			break;
 		}
 		_vision_transform_coords(port - 1, &object_arr[i]);
@@ -238,7 +237,7 @@ vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_
 }
 
 int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_signature_s_t* const signature_ptr) {
-	if (signature_id > 8 || signature_id == 0) {
+	if (signature_id > 7 || signature_id == 0) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
@@ -345,11 +344,11 @@ int32_t vision_get_white_balance(uint8_t port) {
 
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 	if (!VALIDATE_PORT_NO(port - 1)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	if (registry_validate_binding(port - 1, E_DEVICE_VISION) != 0) {
-		errno = EINVAL;
+		errno = ENODEV;
 		return PROS_ERR;
 	}
 	if (!port_mutex_take(port - 1)) {
