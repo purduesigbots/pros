@@ -79,11 +79,27 @@ struct __EIT_entry {
 	_uw fnoffset;
 	_uw content;
 };
+// these are all defined by the linker
+extern struct __EIT_entry __attribute__((weak)) __hot_exidx_start;
+extern struct __EIT_entry __attribute__((weak)) __hot_exidx_end;
+
 extern struct __EIT_entry __exidx_start;
 extern struct __EIT_entry __exidx_end;
+
+// these too
+extern uint8_t start_of_cold_mem, end_of_cold_mem, start_of_hot_mem, end_of_hot_mem;
 _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 	// TODO: support hot/cold here
-	// printf("\t%p\n", (void*)pc);
+	// fprintf(stderr, "\t%p", (void*)pc);
+
+	// check if pc is in the hot region
+	if ((void*)&start_of_hot_mem < (void*)pc && (void*)pc < (void*)&end_of_hot_mem) {
+		fprintf(stderr, "hot\n");
+		*nrec = &__hot_exidx_end - &__hot_exidx_start;
+		return (_Unwind_Ptr)&__hot_exidx_start;
+	}
+	fprintf(stderr, "not hot\n");
+	// otherwise, we're in a monolith build or the cold region of a hot/cold build
 	*nrec = &__exidx_end - &__exidx_start;
 	return (_Unwind_Ptr)&__exidx_start;
 }
