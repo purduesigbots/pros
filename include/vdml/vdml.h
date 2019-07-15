@@ -32,6 +32,8 @@
  * If a port isn't yet registered, it registered as a motor automatically.
  * If a mutex cannot be taken, errno is set to EACCES (access denied) and
  * returns.
+ * 
+ * FIXME: If this is used in a function that returns a double, PROS_ERR_F should be returned
  *
  * \param port
  *        The V5 port number from 0-20
