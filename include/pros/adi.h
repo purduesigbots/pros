@@ -37,8 +37,13 @@ typedef enum adi_port_config_e {
 	E_ADI_DIGITAL_IN = 2,
 	E_ADI_DIGITAL_OUT = 3,
 
+#ifdef _INTELLISENSE
+#define _DEPRECATE_DIGITAL_IN = E_ADI_DIGITAL_IN
+#define _DEPRECATE_ANALOG_IN = E_ADI_ANALOG_IN
+#else
 #define _DEPRECATE_DIGITAL_IN __attribute__((deprecated("use E_ADI_DIGITAL_IN instead"))) = E_ADI_DIGITAL_IN
 #define _DEPRECATE_ANALOG_IN __attribute__((deprecated("use E_ADI_ANALOG_IN instead"))) = E_ADI_ANALOG_IN
+#endif
 
 	E_ADI_SMART_BUTTON _DEPRECATE_DIGITAL_IN,
 	E_ADI_SMART_POT _DEPRECATE_ANALOG_IN,
