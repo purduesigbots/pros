@@ -24,10 +24,6 @@ ADIPort::ADIPort(void) {
 	// for use by derived classes like ADIEncoder
 }
 
-ADIPort::~ADIPort(void) {
-	adi_port_set_config(_port, E_ADI_TYPE_UNDEFINED);
-}
-
 std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
 	return adi_port_set_config(_port, type);
 }
@@ -105,10 +101,6 @@ ADIUltrasonic::ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
 
 ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
 	_port = adi_gyro_init(port, multiplier);
-}
-
-ADIGyro::~ADIGyro(void) {
-	// Don't change the port configuration so we don't have to recalibrate
 }
 
 double ADIGyro::get_value(void) const {
