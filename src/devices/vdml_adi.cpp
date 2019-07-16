@@ -24,6 +24,8 @@ ADIPort::ADIPort(void) {
 	// for use by derived classes like ADIEncoder
 }
 
+ADIPort::~ADIPort(void) {}
+
 std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
 	return adi_port_set_config(_port, type);
 }
