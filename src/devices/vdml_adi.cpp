@@ -40,13 +40,9 @@ std::int32_t ADIPort::get_value(void) const {
 	return adi_port_get_value(_port);
 }
 
-ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_ANALOG_IN);
-}
+ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_IN) {}
 
-ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_ANALOG_OUT);
-}
+ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
 
 std::int32_t ADIAnalogIn::calibrate(void) const {
 	return adi_analog_calibrate(_port);
@@ -60,21 +56,17 @@ std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
 	return adi_analog_read_calibrated_HR(_port);
 }
 
-ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port) {
-	set_config(E_ADI_DIGITAL_OUT);
+ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_DIGITAL_IN);
-}
+ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port, E_ADI_DIGITAL_IN) {}
 
 std::int32_t ADIDigitalIn::get_new_press(void) const {
 	return adi_digital_get_new_press(_port);
 }
 
-ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_LEGACY_PWM);
+ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port, E_ADI_LEGACY_PWM) {
 	stop();
 }
 
