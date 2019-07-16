@@ -39,7 +39,7 @@ class ADIPort {
 	 */
 	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
-	virtual ~ADIPort(void);
+	virtual ~ADIPort(void) = default;
 
 	/**
 	 * Gets the configuration for the given ADI port.
