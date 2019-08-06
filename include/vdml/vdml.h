@@ -33,7 +33,8 @@
  * If a mutex cannot be taken, errno is set to EACCES (access denied) and
  * returns.
  * 
- * FIXME: If this is used in a function that returns a double, PROS_ERR_F should be returned
+ * This and other similar macros should only be used in functions that return
+ * int32_t as PROS_ERR could be returned.
  *
  * \param port
  *        The V5 port number from 0-20
