@@ -34,6 +34,8 @@ namespace pros::c {
 extern "C" {
 #endif
 
+void bt_step_test(void);
+
 /******************************************************************************/
 /**                             RTOS FACILITIES                              **/
 /**                                                                          **/

@@ -1,5 +1,11 @@
 #include "main.h"
 
+#include "pros/apix.h"
+
+void commit_segfault() {
+	pros::c::bt_step_test();
+}
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -17,6 +23,7 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
+	commit_segfault();
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,

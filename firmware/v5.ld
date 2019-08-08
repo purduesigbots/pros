@@ -173,9 +173,11 @@ SECTIONS
 
 .ARM.exidx : {
    __exidx_start = .;
+   __cold_exidx_start = .;
    *(.ARM.exidx*)
    *(.gnu.linkonce.armexidix.*.*)
    __exidx_end = .;
+   __cold_exidx_end = .;
 } > COLD_MEMORY
 
 .preinit_array : {
