@@ -28,14 +28,6 @@ void _exit(int status) {
 	}
 }
 
-void __malloc_lock(void) {
-	rtos_suspend_all();
-}
-
-void __malloc_unlock(void) {
-	rtos_resume_all();
-}
-
 void __env_lock(void) {
 	rtos_suspend_all();
 }
