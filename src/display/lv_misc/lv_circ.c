@@ -8,7 +8,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "display/lv_misc/lv_area.h"
+#include "lv_circ.h"
 
 /*********************
  *      DEFINES
@@ -40,10 +40,11 @@
  * @param tmp point to a variable. It will store temporary data
  * @param radius radius of the circle
  */
-void lv_circ_init(lv_point_t *c, lv_coord_t *tmp, lv_coord_t radius) {
-  c->x = radius;
-  c->y = 0;
-  *tmp = 1 - radius;
+void lv_circ_init(lv_point_t * c, lv_coord_t * tmp, lv_coord_t radius)
+{
+    c->x = radius;
+    c->y = 0;
+    *tmp = 1 - radius;
 }
 
 /**
@@ -51,22 +52,26 @@ void lv_circ_init(lv_point_t *c, lv_coord_t *tmp, lv_coord_t radius) {
  * @param c same as in circ_init
  * @return true if the circle is not ready yet
  */
-bool lv_circ_cont(lv_point_t *c) { return c->y <= c->x ? true : false; }
+bool lv_circ_cont(lv_point_t * c)
+{
+    return c->y <= c->x ? true : false;
+}
 
 /**
  * Get the next point from the circle
  * @param c same as in circ_init. The next point stored here.
  * @param tmp same as in circ_init.
  */
-void lv_circ_next(lv_point_t *c, lv_coord_t *tmp) {
-  c->y++;
+void lv_circ_next(lv_point_t * c, lv_coord_t * tmp)
+{
+    c->y++;
 
-  if (*tmp <= 0) {
-    (*tmp) += 2 * c->y + 1; // Change in decision criterion for y -> y+1
-  } else {
-    c->x--;
-    (*tmp) += 2 * (c->y - c->x) + 1; // Change for y -> y+1, x -> x-1
-  }
+    if(*tmp <= 0) {
+        (*tmp) += 2 * c->y + 1;   // Change in decision criterion for y -> y+1
+    } else {
+        c->x--;
+        (*tmp) += 2 * (c->y - c->x) + 1;   // Change for y -> y+1, x -> x-1
+    }
 }
 
 /**********************
