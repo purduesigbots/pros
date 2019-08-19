@@ -39,19 +39,18 @@
  *        The v5_device_e_t that the port is configured as
  */
 #define claim_port(port, device_type)                      \
-	if (!VALIDATE_PORT_NO(port)) {                           \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	if (registry_validate_binding(port, device_type) != 0) { \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	v5_smart_device_s_t* device = registry_get_device(port); \
-	if (!port_mutex_take(port)) {                            \
-		errno = EACCES;                                        \
-		return PROS_ERR;                                       \
-	}
+  if (!VALIDATE_PORT_NO(port)) {                           \
+    errno = ENXIO;                                         \
+    return PROS_ERR;                                       \
+  }                                                        \
+  if (registry_validate_binding(port, device_type) != 0) { \
+    return PROS_ERR;                                       \
+  }                                                        \
+  v5_smart_device_s_t* device = registry_get_device(port); \
+  if (!port_mutex_take(port)) {                            \
+    errno = EACCES;                                        \
+    return PROS_ERR;                                       \
+  }
 
 /**
  * A function that executes claim_port for functions that do not return an
@@ -59,7 +58,7 @@
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  * EACCES - Another resource is currently trying to access the port.
  *
  * \param port
@@ -84,8 +83,8 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * \return The rtn parameter
  */
 #define return_port(port, rtn) \
-	port_mutex_give(port);       \
-	return rtn;
+  port_mutex_give(port);       \
+  return rtn;
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.
@@ -138,7 +137,7 @@ void vdml_reset_port_error();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to claim from 0-20
@@ -159,7 +158,7 @@ int port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to free from 0-20
@@ -183,7 +182,7 @@ void port_mutex_give_all();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32
@@ -201,7 +200,7 @@ int internal_port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32

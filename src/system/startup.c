@@ -1,5 +1,5 @@
 /**
- * \file system/main.c
+ * \file system/startup.c
  *
  * Contains the main startup code for PROS 3.0. main is called from vexStartup
  * code. Our main() initializes data structures and starts the FreeRTOS
