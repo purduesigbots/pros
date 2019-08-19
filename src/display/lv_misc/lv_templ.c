@@ -2,8 +2,7 @@
  * @file lv_templ.c
  *
  */
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpedantic"
+
 /*********************
  *      INCLUDES
  *********************/
@@ -35,4 +34,3 @@
 /**********************
  *   STATIC FUNCTIONS
  **********************/
-#pragma GCC diagnostic pop
