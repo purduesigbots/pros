@@ -39,7 +39,7 @@ class ADIPort {
 	 */
 	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
-	virtual ~ADIPort(void);
+	virtual ~ADIPort(void) = default;
 
 	/**
 	 * Gets the configuration for the given ADI port.
@@ -473,8 +473,6 @@ class ADIGyro : private ADIPort {
 	 *        supplied by the ADI
 	 */
 	ADIGyro(std::uint8_t port, double multiplier = 1);
-
-	~ADIGyro(void) override;
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is

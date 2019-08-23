@@ -9,10 +9,11 @@ CSRCS += lv_ll.c
 CSRCS += lv_color.c
 CSRCS += lv_txt.c
 CSRCS += lv_ufs.c
-CSRCS += lv_trigo.c
 CSRCS += lv_math.c
+CSRCS += lv_log.c
+CSRCS += lv_gc.c
 
-DEPPATH += --dep-path lvgl/lv_misc
-VPATH += :lvgl/lv_misc
+DEPPATH += --dep-path $(LVGL_DIR)/lvgl/lv_misc
+VPATH += :$(LVGL_DIR)/lvgl/lv_misc
 
 CFLAGS += "-I$(LVGL_DIR)/lvgl/lv_misc"

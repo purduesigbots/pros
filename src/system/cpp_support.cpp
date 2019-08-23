@@ -25,7 +25,7 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #endif
 		fn(args);
 #ifdef __cpp_exceptions
-	} catch (std::runtime_error re) {
+	} catch (std::runtime_error& re) {
 		vexDisplayString(7, "caught runtime error: %s", re.what());
 	} catch (...) {
 		vexDisplayString(7, "caught an unknown error");
