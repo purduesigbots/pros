@@ -14,7 +14,7 @@ COMMA := ,
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR))
 DEPFLAGS = -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.Td
-POSTCOMPILE = $(VV)mv -f $(DEPDIR)/$$*.Td $(DEPDIR)/$$*.d && touch $$@
+RENAMEDEPENDENCYFILE = $(VV)mv -f $(DEPDIR)/$$*.Td $(DEPDIR)/$$*.d && touch $$@
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
 COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
@@ -249,7 +249,7 @@ $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename $1).d
 	$(VV)mkdir -p $$(dir $$@)
 	$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst bin/%, %, $$@))
 	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
-	$(POSTCOMPILE)
+	$(RENAMEDEPENDENCYFILE)
 endef
 $(foreach cext,$(CEXTS),$(eval $(call c_rule,$(cext))))
 
@@ -259,7 +259,7 @@ $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename %).d
 	$(VV)mkdir -p $$(dir $$@)
 	$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst bin/%, %, $$@))
 	$$(call test_output_2,Compiled $$< ,$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
-	$(POSTCOMPILE)
+	$(RENAMEDEPENDENCYFILE)
 endef
 $(foreach cxxext,$(CXXEXTS),$(eval $(call cxx_rule,$(cxxext))))
 
