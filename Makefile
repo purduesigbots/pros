@@ -38,6 +38,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(FWDIR)/v5-common.ld $(FWDIR)/v5-hot.ld
 TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(INCDIR)/display
 TEMPLATE_FILES+= $(SRCDIR)/main.cpp
+TEMPLATE_FILES+= $(ROOT)/template-gitignore
 
 PATCHED_SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.patched.a
 
@@ -57,7 +58,7 @@ $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 
 
 CREATE_TEMPLATE_ARGS=--system "./**/*"
-CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --user "Makefile"
+CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --user "Makefile" --user ".gitignore"
 CREATE_TEMPLATE_ARGS+=--target v5
 CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
@@ -68,6 +69,7 @@ template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
+	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
 	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
