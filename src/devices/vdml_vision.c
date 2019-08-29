@@ -43,7 +43,7 @@ static void _vision_transform_coords(uint8_t port, vision_object_s_t* object_ptr
 }
 
 int32_t vision_get_object_count(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	int32_t rtn = vexDeviceVisionObjectCountGet(device->device_info);
 	return_port(port - 1, rtn);
 }
@@ -51,7 +51,7 @@ int32_t vision_get_object_count(uint8_t port) {
 vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	vision_object_s_t rtn;
 	v5_smart_device_s_t* device;
-	if (claim_port_try(port - 1, E_DEVICE_VISION) == false) {
+	if (!claim_port_try(port - 1, E_DEVICE_VISION)) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		return rtn;
 	}
@@ -80,7 +80,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 	uint8_t count = 0;
 	int32_t object_count = 0;
 
-	if (claim_port_try(port - 1, E_DEVICE_VISION) == false) {
+	if (!claim_port_try(port - 1, E_DEVICE_VISION)) {
 		goto err_return_no_mutex;
 	}
 
@@ -133,7 +133,7 @@ vision_object_s_t vision_get_by_code(uint8_t port, const uint32_t size_id, const
 
 int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t object_count,
                             vision_object_s_t* const object_arr) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	for (uint8_t i = 0; i < object_count; i++) {
 		object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 	}
@@ -159,7 +159,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 
 int32_t _vision_read_by_sig(uint8_t port, const uint32_t size_id, const uint32_t sig_id, const uint32_t object_count,
                             vision_object_s_t* const object_arr) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	for (uint8_t i = 0; i < object_count; i++) {
 		object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 	}
@@ -223,7 +223,7 @@ vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_
 		return sig;
 	}
 	int32_t rtn = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (rtn == false) {
+	if (!rtn) {
 		return sig;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -243,7 +243,7 @@ int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_si
 	}
 	signature_ptr->id = signature_id;
 
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionSignatureSet(device->device_info, (V5_DeviceVisionSignature*)signature_ptr);
 	return_port(port - 1, 1);
 }
@@ -291,7 +291,7 @@ vision_color_code_t vision_create_color_code(uint8_t port, const uint32_t sig_id
 }
 
 int32_t vision_set_led(uint8_t port, const int32_t rgb) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionLedModeSet(device->device_info, 1);
 	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionLedColorSet(device->device_info, _rgb);
@@ -299,20 +299,20 @@ int32_t vision_set_led(uint8_t port, const int32_t rgb) {
 }
 
 int32_t vision_clear_led(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionLedModeSet(device->device_info, 0);
 	return_port(port - 1, 1);
 }
 
 int32_t vision_set_exposure(uint8_t port, const uint8_t percent) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	// This translation comes from VEX to match the brightness represented in vision utility
 	vexDeviceVisionBrightnessSet(device->device_info, (((int)((percent * 100) + 50)) / 255));
 	return_port(port - 1, 1);
 }
 
 int32_t vision_get_exposure(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	// This translation comes from VEX to match the brightness represented in vision utility
 	int32_t rtn = ((vexDeviceVisionBrightnessGet(device->device_info) * 255) + 50) / 100;
 	return_port(port - 1, rtn);
@@ -323,13 +323,13 @@ int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWhiteBalanceModeSet(device->device_info, enable + 1);
 	return_port(port - 1, 1);
 }
 
 int32_t vision_set_white_balance(uint8_t port, const int32_t rgb) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWhiteBalanceModeSet(device->device_info, 2);
 	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionWhiteBalanceSet(device->device_info, _rgb);
@@ -337,7 +337,7 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb) {
 }
 
 int32_t vision_get_white_balance(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	V5_DeviceVisionRgb rgb = vexDeviceVisionWhiteBalanceGet(device->device_info);
 	return_port(port - 1, RGB2COLOR(rgb.red, rgb.green, rgb.blue));
 }
@@ -360,7 +360,7 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 }
 
 int32_t vision_set_wifi_mode(uint8_t port, const uint8_t enable) {
-	claim_port(port - 1, E_DEVICE_VISION);
+	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWifiModeSet(device->device_info, !!enable);
 	return_port(port - 1, 1);
 }

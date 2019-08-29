@@ -360,8 +360,7 @@ motor_gearset_e_t motor_get_gearing(uint8_t port) {
 
 motor_pid_full_s_t motor_get_pos_pid(uint8_t port) {
 	motor_pid_full_s_t rtn;
-	int32_t success = claim_port_try(port - 1, E_DEVICE_MOTOR);
-	if (success == false) {
+	if (!claim_port_try(port - 1, E_DEVICE_MOTOR)) {
 		// Set all fields to lowest
 		rtn.kf = 0;
 		rtn.kp = 0;
@@ -388,8 +387,7 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port) {
 
 motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
 	motor_pid_full_s_t rtn;
-	int32_t success = claim_port_try(port - 1, E_DEVICE_MOTOR);
-	if (success == false) {
+	if (!claim_port_try(port - 1, E_DEVICE_MOTOR)) {
 		// Set all fields to lowest
 		rtn.kf = 0;
 		rtn.kp = 0;
@@ -415,13 +413,13 @@ motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
 }
 
 int32_t motor_is_reversed(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_MOTOR);
+	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int rtn = vexDeviceMotorReverseFlagGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t motor_get_voltage_limit(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_MOTOR);
+	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVoltageLimitGet(device->device_info);
 	return_port(rtn, port - 1);
 }

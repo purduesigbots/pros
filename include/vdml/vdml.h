@@ -56,7 +56,7 @@
 
 /**
  * Function like claim_port. This macro should only be used in functions 
- * that return int32_t as PROS_ERR could be returned.
+ * that return int32_t or enums as PROS_ERR could be returned.
  *
  * \param port
  *        The V5 port number from 0-20
@@ -77,8 +77,8 @@
 #define claim_port_f(port, device_type) claim_port(port, device_type, PROS_ERR_F)
 
 /**
- * A function that executes claim_port for functions that do not return an
- * int32_t
+ * A function that executes claim_port and allows you to execute a block of 
+ * code if an error occurs.
  *
  * This function uses the following values of errno when an error state is
  * reached:
