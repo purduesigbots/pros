@@ -93,35 +93,35 @@ typedef union adi_data {
 
 adi_port_config_e_t adi_port_get_config(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	adi_port_config_e_t rtn = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
 int32_t adi_port_get_value(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
 int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, port, (V5_AdiPortConfiguration)type);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
 int32_t adi_port_set_value(uint8_t port, int32_t value) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	vexDeviceAdiValueSet(device->device_info, port, value);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
 
 int32_t adi_analog_calibrate(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_ANALOG_IN);
 	uint32_t total = 0;
 	for (uint32_t i = 0; i < 512; i++) {
@@ -135,7 +135,7 @@ int32_t adi_analog_calibrate(uint8_t port) {
 
 int32_t adi_analog_read(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_ANALOG_IN);
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
@@ -143,7 +143,7 @@ int32_t adi_analog_read(uint8_t port) {
 
 int32_t adi_analog_read_calibrated(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_ANALOG_IN);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
 	int32_t rtn = (vexDeviceAdiValueGet(device->device_info, port) - (adi_data->analog_data.calib >> 4));
@@ -152,7 +152,7 @@ int32_t adi_analog_read_calibrated(uint8_t port) {
 
 int32_t adi_analog_read_calibrated_HR(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_ANALOG_IN);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
 	int32_t rtn = ((vexDeviceAdiValueGet(device->device_info, port) << 4) - adi_data->analog_data.calib);
@@ -161,7 +161,7 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port) {
 
 int32_t adi_digital_read(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_DIGITAL_IN);
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, port);
 	return_port(INTERNAL_ADI_PORT, rtn);
@@ -169,7 +169,7 @@ int32_t adi_digital_read(uint8_t port) {
 
 int32_t adi_digital_get_new_press(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_DIGITAL_IN);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
@@ -189,7 +189,7 @@ int32_t adi_digital_get_new_press(uint8_t port) {
 
 int32_t adi_digital_write(uint8_t port, const bool value) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, port, E_ADI_DIGITAL_OUT);
 	vexDeviceAdiValueSet(device->device_info, port, (int32_t)value);
 	return_port(INTERNAL_ADI_PORT, 1);
@@ -218,7 +218,7 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode) {
 
 int32_t adi_motor_set(uint8_t port, int8_t speed) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_motor(device, port);
 	if (speed > ADI_MOTOR_MAX_SPEED)
 		speed = ADI_MOTOR_MAX_SPEED;
@@ -230,7 +230,7 @@ int32_t adi_motor_set(uint8_t port, int8_t speed) {
 
 int32_t adi_motor_get(uint8_t port) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_motor(device, port);
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, port) - ADI_MOTOR_MAX_SPEED;
 	return_port(INTERNAL_ADI_PORT, rtn);
@@ -243,7 +243,7 @@ int32_t adi_motor_stop(uint8_t port) {
 adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool reverse) {
 	transform_adi_port(port_top);
 	transform_adi_port(port_bottom);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_twowire(port_top, port_bottom);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
@@ -254,7 +254,7 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool
 
 int32_t adi_encoder_get(adi_encoder_t enc) {
 	transform_adi_port(enc);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
 	
 	int32_t rtn;
@@ -266,7 +266,7 @@ int32_t adi_encoder_get(adi_encoder_t enc) {
 
 int32_t adi_encoder_reset(adi_encoder_t enc) {
 	transform_adi_port(enc);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
 	
 	vexDeviceAdiValueSet(device->device_info, enc, 0);
@@ -275,7 +275,7 @@ int32_t adi_encoder_reset(adi_encoder_t enc) {
 
 int32_t adi_encoder_shutdown(adi_encoder_t enc) {
 	transform_adi_port(enc);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
 
 	vexDeviceAdiPortConfigSet(device->device_info, enc, E_ADI_TYPE_UNDEFINED);
@@ -291,14 +291,14 @@ adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo) {
 		return PROS_ERR;
 	}
 
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, port, E_ADI_LEGACY_ULTRASONIC);
 	return_port(INTERNAL_ADI_PORT, port + 1);
 }
 
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	transform_adi_port(ult);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
 	
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, ult);
@@ -307,7 +307,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 	transform_adi_port(ult);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
 
 	vexDeviceAdiPortConfigSet(device->device_info, ult, E_ADI_TYPE_UNDEFINED);
@@ -316,7 +316,7 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 
 adi_gyro_t adi_gyro_init(uint8_t port, double multiplier) {
 	transform_adi_port(port);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 
 	if (multiplier == 0) multiplier = 1;
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
@@ -340,10 +340,10 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier) {
 	return_port(INTERNAL_ADI_PORT, port + 1);
 }
 
-// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
+// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
 int32_t _adi_gyro_get(adi_gyro_t gyro, double* out) {
 	transform_adi_port(gyro);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, gyro, E_ADI_LEGACY_GYRO);
 
 	double rtn = (double)vexDeviceAdiValueGet(device->device_info, gyro);
@@ -362,7 +362,7 @@ double adi_gyro_get(adi_gyro_t gyro) {
 
 int32_t adi_gyro_reset(adi_gyro_t gyro) {
 	transform_adi_port(gyro);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, gyro, E_ADI_LEGACY_GYRO);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[gyro];
@@ -372,7 +372,7 @@ int32_t adi_gyro_reset(adi_gyro_t gyro) {
 
 int32_t adi_gyro_shutdown(adi_gyro_t gyro) {
 	transform_adi_port(gyro);
-	claim_port(INTERNAL_ADI_PORT, E_DEVICE_ADI);
+	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, gyro, E_ADI_LEGACY_GYRO);
 
 	vexDeviceAdiPortConfigSet(device->device_info, gyro, E_ADI_TYPE_UNDEFINED);

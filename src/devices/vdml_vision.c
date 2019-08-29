@@ -51,7 +51,7 @@ int32_t vision_get_object_count(uint8_t port) {
 vision_object_s_t vision_get_by_size(uint8_t port, const uint32_t size_id) {
 	vision_object_s_t rtn;
 	v5_smart_device_s_t* device;
-	if (claim_port_try(port - 1, E_DEVICE_VISION) == PROS_ERR) {
+	if (claim_port_try(port - 1, E_DEVICE_VISION) == false) {
 		rtn.signature = VISION_OBJECT_ERR_SIG;
 		return rtn;
 	}
@@ -80,7 +80,7 @@ vision_object_s_t _vision_get_by_sig(uint8_t port, const uint32_t size_id, const
 	uint8_t count = 0;
 	int32_t object_count = 0;
 
-	if (claim_port_try(port - 1, E_DEVICE_VISION) == PROS_ERR) {
+	if (claim_port_try(port - 1, E_DEVICE_VISION) == false) {
 		goto err_return_no_mutex;
 	}
 
@@ -223,7 +223,7 @@ vision_signature_s_t vision_get_signature(uint8_t port, const uint8_t signature_
 		return sig;
 	}
 	int32_t rtn = claim_port_try(port - 1, E_DEVICE_VISION);
-	if (rtn == PROS_ERR) {
+	if (rtn == false) {
 		return sig;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
