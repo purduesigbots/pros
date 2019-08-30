@@ -273,7 +273,7 @@ int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid) {
 	out.kp = pid.kp;
 	out.ki = pid.ki;
 	out.kd = pid.kd;
-	set_pos_pid(port, out);
+	set_pos_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
 	return_port(port - 1, 1);
 }
@@ -289,7 +289,7 @@ int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
 	out.limit = pid.limit;
 	out.threshold = pid.threshold;
 	out.loopspeed = pid.loopspeed;
-	set_pos_pid(port, out);
+	set_pos_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
 	return_port(port - 1, 1);
 }
@@ -301,7 +301,7 @@ int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid) {
 	out.kp = pid.kp;
 	out.ki = pid.ki;
 	out.kd = pid.kd;
-	set_vel_pid(port, out);
+	set_vel_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
 	return_port(port - 1, 1);
 }
@@ -317,7 +317,7 @@ int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
 	out.limit = pid.limit;
 	out.threshold = pid.threshold;
 	out.loopspeed = pid.loopspeed;
-	set_vel_pid(port, out);
+	set_vel_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
 	return_port(port - 1, 1);
 }
@@ -373,7 +373,7 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port) {
 		rtn.loopspeed = 0;
 		return rtn;
 	}
-	V5_DeviceMotorPid pid = get_pos_pid(port);
+	V5_DeviceMotorPid pid = get_pos_pid(port - 1);
 	rtn.kf = pid.kf;
 	rtn.kp = pid.kp;
 	rtn.ki = pid.ki;
@@ -401,7 +401,7 @@ motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
 		rtn.loopspeed = 0;
 		return rtn;
 	}
-	V5_DeviceMotorPid pid = get_vel_pid(port);
+	V5_DeviceMotorPid pid = get_vel_pid(port - 1);
 	rtn.kf = pid.kf;
 	rtn.kp = pid.kp;
 	rtn.ki = pid.ki;
