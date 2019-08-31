@@ -154,11 +154,9 @@ SECTIONS
 
 .ARM.exidx : {
    __exidx_start = .;
-   __hot_exidx_start = .;
    *(.ARM.exidx*)
    *(.gnu.linkonce.armexidix.*.*)
    __exidx_end = .;
-   __hot_exidx_end = .;
 } > HOT_MEMORY
 
 .preinit_array : {

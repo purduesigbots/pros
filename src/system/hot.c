@@ -20,6 +20,9 @@ uint32_t const volatile * const MAGIC_ADDR = MAGIC;
 extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
 
+extern unsigned __exidx_start;
+extern unsigned __exidx_end;
+
 // this expands to a bunch of:
 // extern void autonomous();
 #define FUNC(F) void F();
@@ -31,6 +34,8 @@ void install_hot_table(struct hot_table* const tbl) {
   // printf("Hot initializing\n");
   tbl->compile_timestamp = _PROS_COMPILE_TIMESTAMP;
   tbl->compile_directory = _PROS_COMPILE_DIRECTORY;
+  tbl->__exidx_start = &__exidx_start;
+  tbl->__exidx_end = &__exidx_end;
 
   // this expands to a bunch of:
   // tbl->functions.autonomous = autonomous;
@@ -71,6 +76,7 @@ void invoke_install_hot_table() {
   // printf("%s %p %p %x %x\n", __FUNCTION__, (void*)install_hot_table, (void*)HOT_TABLE, MAGIC_ADDR[0], MAGIC_ADDR[1]);
   if(vexSystemLinkAddrGet() == (uint32_t)0x03800000 && MAGIC_ADDR[0] == MAGIC0 && MAGIC_ADDR[1] == MAGIC1) {
     install_hot_table(HOT_TABLE);
+
   } else {
     memset(HOT_TABLE, 0, sizeof(*HOT_TABLE));
   }
