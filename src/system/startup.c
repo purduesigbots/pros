@@ -27,12 +27,6 @@ extern void rtos_sched_start();
 extern void vdml_initialize();
 extern void invoke_install_hot_table();
 
-void bt_step_test() {
-	printf("made it\n");
-	extern void bt_step_test2(void);
-	bt_step_test2();
-}
-
 // XXX: pros_init happens inside __libc_init_array, and before any global
 // C++ constructors are invoked. This is accomplished by instructing
 // GCC to include this function in the __init_array. The 101 argument

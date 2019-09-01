@@ -39,12 +39,6 @@
 
 #define RESERVED_FILENOS 4  // reserve stdin, stdout, stderr, kdbg
 
-void bt_step_test2() {
-  printf("made it to step 2, segfaulting now\n");
-  int x = *(int*)0;
-	printf("%d\n", x);
-}
-
 // gids bitmap buffer
 static uint32_t file_table_bmp[gid_size_to_words(MAX_FILES_OPEN)];
 // the gid structure itself

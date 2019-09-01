@@ -23,7 +23,7 @@ extern void port_mutex_give_all();
 
 static task_stack_t competition_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t competition_task_buffer;
-task_t competition_task;
+static task_t competition_task;
 
 static task_stack_t system_daemon_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t system_daemon_task_buffer;
