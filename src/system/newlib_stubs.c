@@ -28,14 +28,6 @@ void _exit(int status) {
 	}
 }
 
-void __env_lock(void) {
-	rtos_suspend_all();
-}
-
-void __env_unlock(void) {
-	rtos_resume_all();
-}
-
 // HACK: this helps confused libc++ functions call the right instruction. for
 // info see https://github.com/purduesigbots/pros/issues/153#issuecomment-519335375
 void __sync_synchronize(void) {
