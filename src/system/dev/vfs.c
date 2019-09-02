@@ -90,7 +90,7 @@ int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) 
 }
 
 int _open(const char* file, int flags, int mode) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	// Check if the filename is too long or not NULL terminated
 	size_t i = 0;
 	for (i = 0; i < MAX_FILELEN; i++) {
@@ -116,7 +116,7 @@ int _open(const char* file, int flags, int mode) {
 }
 
 ssize_t _write(int file, const void* buf, size_t len) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD write %d", file);
@@ -126,7 +126,7 @@ ssize_t _write(int file, const void* buf, size_t len) {
 }
 
 ssize_t _read(int file, void* buf, size_t len) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD read %d", file);
@@ -136,7 +136,7 @@ ssize_t _read(int file, void* buf, size_t len) {
 }
 
 int _close(int file) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	// NOTE: newlib automatically closes all open files for a given task when
 	// the task is deleted.
 	if (file > 0 && file < RESERVED_FILENOS) {
@@ -156,7 +156,7 @@ int _close(int file) {
 }
 
 int _fstat(int file, struct stat* st) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD fstat %d", file);
@@ -166,7 +166,7 @@ int _fstat(int file, struct stat* st) {
 }
 
 off_t _lseek(int file, off_t ptr, int dir) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD lseek %d", file);
@@ -176,7 +176,7 @@ off_t _lseek(int file, off_t ptr, int dir) {
 }
 
 int _isatty(int file) {
-  struct _reent* r = _REENT;
+	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
 		kprintf("BAD isatty %d", file);

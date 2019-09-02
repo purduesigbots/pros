@@ -19,9 +19,9 @@
 
 #include "unwind-arm-common.h"
 
-#include "system/hot.h"
 #include "rtos/task.h"
 #include "rtos/tcb.h"
+#include "system/hot.h"
 
 #include "v5_api.h"
 
