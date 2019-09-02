@@ -19,8 +19,6 @@
 #include "rtos/task.h"
 #include "rtos/tcb.h"
 
-#include "system/unwind.h"
-
 #include "v5_api.h"
 #include "v5_color.h"
 
