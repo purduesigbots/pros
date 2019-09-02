@@ -8,7 +8,7 @@
 		"spelling": {
 			"type": "spelling",
 			"include": "(.*)",
-            "exclude": "(^(src|include)|(rtos/|display/lv_.*))"
+			"exclude": "(^(src|include)|(rtos/|display/lv_.*))"
 		},
 		"text": {
 			"type": "text",
