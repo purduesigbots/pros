@@ -42,10 +42,10 @@ __attribute__((constructor(101))) static void pros_init(void) {
 
 	display_initialize();
 
-    // NOTE: this function should be called after all other initialize
-    // functions. for an example of what could happen if this is not
-    // the case, see
-    // https://github.com/purduesigbots/pros/pull/144/#issuecomment-496901942
+	// NOTE: this function should be called after all other initialize
+	// functions. for an example of what could happen if this is not
+	// the case, see
+	// https://github.com/purduesigbots/pros/pull/144/#issuecomment-496901942
 	system_daemon_initialize();
 
 	invoke_install_hot_table();
