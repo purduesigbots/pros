@@ -30,7 +30,17 @@ extern void registry_init();
 extern void port_mutex_init();
 
 int32_t claim_port_try(uint8_t port, v5_device_e_t type) {
-	claim_port(port, type, 0);
+	if (!VALIDATE_PORT_NO(port)) {
+		errno = ENXIO;
+		return 0;
+	}
+	if (registry_validate_binding(port, type) != 0) {
+		return 0;
+	}
+	if (!port_mutex_take(port)) {
+		errno = EACCES;
+		return 0;
+	}
 	return 1;
 }
 
