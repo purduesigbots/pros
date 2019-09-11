@@ -176,7 +176,7 @@ all: clean $(DEFAULT_BIN)
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
-	$Drm -rf $(DEPDIR)
+	-$Drm -rf $(DEPDIR)
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
