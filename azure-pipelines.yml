@@ -1,5 +1,9 @@
 jobs:
 - job: BuildTemplate
+  variables:
+    toolchain_update_short: 8-2019q3
+    toolchain_update: 8-2019-q3
+    toolchain: https://developer.arm.com/-/media/Files/downloads/gnu-rm/$(toolchain_update_short)/RC1.1/gcc-arm-none-eabi-$(toolchain_update)-update-linux.tar.bz2
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
@@ -10,9 +14,9 @@ jobs:
       sshPublicKey: $(gh.publickey)
   - checkout: self
   - bash: |
-      sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
-      sudo apt-get update
-      sudo apt-get install gcc-arm-embedded
+      curl -LSso toolchain.tar.bz2 $(toolchain)
+      tar -xjvf toolchain.tar.bz2
+      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)-update/bin"
     displayName: Install gcc-arm-embedded
   - task: UsePythonVersion@0
     inputs:

@@ -129,6 +129,10 @@ void system_daemon_initialize() {
 
 // these functions are what actually get called by the system daemon, which
 // attempt to call whatever the user declares
-#define FUNC(NAME) static void _##NAME##_task(void* ign) { user_##NAME(); task_notify(system_daemon_task); }
+#define FUNC(NAME)                        \
+	static void _##NAME##_task(void* ign) { \
+		user_##NAME();                        \
+		task_notify(system_daemon_task);      \
+	}
 #include "system/user_functions/c_list.h"
 #undef FUNC

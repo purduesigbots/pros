@@ -27,6 +27,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
 

@@ -1,9 +1,9 @@
 ARCHTUPLE=arm-none-eabi-
 DEVICE=VEX EDR V5
 
-MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp
-CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -Os
-GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color
+MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
+CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
+GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
 
 WARNFLAGS+=
 
@@ -17,13 +17,15 @@ DEPFLAGS = -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.Td
 RENAMEDEPENDENCYFILE = $(VV)mv -f $(DEPDIR)/$$*.Td $(DEPDIR)/$$*.d && touch $$@
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
-COLD_LIBRARIES= $(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
+# Cannot include newlib and libc because not all of the req'd stubs are implemented
+EXCLUDE_COLD_LIBRARIES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
+COLD_LIBRARIES=$(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lc -lm -lgcc -lstdc++ -lsupc++ --end-group
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
 CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11
-CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) -funwind-tables $(GCCFLAGS) --std=gnu++17
+CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu++17
 LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
