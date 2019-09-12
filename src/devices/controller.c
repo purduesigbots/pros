@@ -274,7 +274,13 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 }
 
 int32_t controller_clear(controller_id_e_t id) {
-	for (int i = 0; i < 3; i++) controller_clear_line(id, i);
+	for (int i = 0; i < 3; i++) {
+		int32_t rtn = controller_clear_line(id, i);
+		if (rtn == PROS_ERR)
+			return PROS_ERR;
+		if (i != 2)
+			delay(55);
+	}
 	return 1;
 }
 

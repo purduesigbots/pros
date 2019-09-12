@@ -337,7 +337,8 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
  * Clears all of the lines on the controller screen.
  *
  * \note Controller text setting is currently in beta, so continuous, fast
- * updates will not work well.
+ * updates will not work well. To be able to clear all 3 lines, the function
+ * blocks for a total of 110ms.
  *
  * This function uses the following values of errno when an error state is
  * reached:
