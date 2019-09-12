@@ -206,9 +206,14 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 
 	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
 
-	vexControllerTextSet(id, line, col, buf);
+	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
@@ -240,11 +245,16 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
 	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
 
-	vexControllerTextSet(id, line, col, buf);
+	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
 	va_end(args);
 
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
@@ -268,8 +278,13 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	line++;
 
 	const char* const blank = "                 ";
-	vexControllerTextSet(port, line, 0, blank);
+	uint32_t rtn_val = vexControllerTextSet(port, line, 0, blank);
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
