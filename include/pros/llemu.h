@@ -13,7 +13,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -27,6 +27,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
 

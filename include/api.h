@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -40,9 +40,9 @@
 #endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 3
-#define PROS_VERSION_MINOR 1
-#define PROS_VERSION_PATCH 6
-#define PROS_VERSION_STRING "3.1.6"
+#define PROS_VERSION_MINOR 2
+#define PROS_VERSION_PATCH 0
+#define PROS_VERSION_STRING "3.2.0"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)

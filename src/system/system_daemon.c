@@ -3,7 +3,7 @@
  *
  * Competition control daemon responsible for invoking the user tasks.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -129,6 +129,10 @@ void system_daemon_initialize() {
 
 // these functions are what actually get called by the system daemon, which
 // attempt to call whatever the user declares
-#define FUNC(NAME) static void _##NAME##_task(void* ign) { user_##NAME(); task_notify(system_daemon_task); }
+#define FUNC(NAME)                        \
+	static void _##NAME##_task(void* ign) { \
+		user_##NAME();                        \
+		task_notify(system_daemon_task);      \
+	}
 #include "system/user_functions/c_list.h"
 #undef FUNC

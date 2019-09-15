@@ -3,7 +3,7 @@
  *
  * C++ support hooks
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -25,7 +25,7 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #endif
 		fn(args);
 #ifdef __cpp_exceptions
-	} catch (std::runtime_error re) {
+	} catch (std::runtime_error& re) {
 		vexDisplayString(7, "caught runtime error: %s", re.what());
 	} catch (...) {
 		vexDisplayString(7, "caught an unknown error");

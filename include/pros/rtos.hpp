@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -56,6 +56,28 @@ class Task {
 	 */
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+
+	/**
+	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENOMEM - The stack cannot be used as the TCB was not created.
+	 *
+	 * \param function
+	 *        Pointer to the task entry function
+	 * \param parameters
+	 *        Pointer to memory that will be used as a parameter for the task
+	 *        being created. This memory should not typically come from stack,
+	 *        but rather from dynamically (i.e., malloc'd) or statically
+	 *        allocated memory.
+	 * \param name
+	 *        A descriptive name for the task.  This is mainly used to facilitate
+	 *        debugging. The name may be up to 32 characters long.
+	 *
+	 */
+	Task(task_fn_t function, void* parameters = NULL, const char* name = "");
+
 	/**
 	 * Create a C++ task object from a task handle
 	 *

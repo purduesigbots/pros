@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -43,8 +43,8 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -67,8 +67,8 @@ int32_t motor_move(uint8_t port, int32_t voltage);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -95,8 +95,8 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -121,8 +121,8 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -140,8 +140,8 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -160,8 +160,8 @@ int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -179,8 +179,8 @@ int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -195,8 +195,8 @@ double motor_get_target_position(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -217,8 +217,8 @@ int32_t motor_get_target_velocity(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -233,8 +233,8 @@ double motor_get_actual_velocity(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -249,8 +249,8 @@ int32_t motor_get_current_draw(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -269,8 +269,8 @@ int32_t motor_get_direction(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -285,8 +285,8 @@ double motor_get_efficiency(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -301,8 +301,8 @@ int32_t motor_is_over_current(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -325,7 +325,7 @@ int32_t motor_is_over_temp(uint8_t port);
  * \return 1 if the motor is not moving, 0 if the motor is moving, or PROS_ERR
  * if the operation failed, setting errno
  */
-int32_t motor_is_stopped(uint32_t port);
+int32_t motor_is_stopped(uint8_t port);
 
 /**
  * Checks if the motor is at its zero position.
@@ -341,7 +341,7 @@ int32_t motor_is_stopped(uint32_t port);
  * moved from its absolute zero, or PROS_ERR if the operation failed,
  * setting errno
  */
-int32_t motor_get_zero_position_flag(uint32_t port);
+int32_t motor_get_zero_position_flag(uint8_t port);
 
 #ifdef __cplusplus
 }  // namespace c
@@ -382,8 +382,8 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -428,8 +428,8 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -443,8 +443,8 @@ uint32_t motor_get_flags(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -463,8 +463,8 @@ int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -479,8 +479,8 @@ double motor_get_position(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -495,8 +495,8 @@ double motor_get_power(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -511,8 +511,8 @@ double motor_get_temperature(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -527,8 +527,8 @@ double motor_get_torque(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -656,8 +656,8 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -674,8 +674,8 @@ int32_t motor_set_zero_position(uint8_t port, const double position);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -690,8 +690,8 @@ int32_t motor_tare_position(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -708,8 +708,8 @@ int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -726,8 +726,8 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -744,8 +744,8 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -766,8 +766,8 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param kf
  *        The feedforward constant
@@ -791,8 +791,8 @@ motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param kf
  *        The feedforward constant
@@ -828,8 +828,8 @@ motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, doubl
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -851,8 +851,8 @@ int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -875,8 +875,8 @@ int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -898,8 +898,8 @@ int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -918,8 +918,8 @@ int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -936,8 +936,8 @@ int32_t motor_set_reversed(uint8_t port, const bool reverse);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -954,8 +954,8 @@ int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -972,8 +972,8 @@ motor_brake_mode_e_t motor_get_brake_mode(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -988,8 +988,8 @@ int32_t motor_get_current_limit(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -1004,8 +1004,8 @@ motor_encoder_units_e_t motor_get_encoder_units(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -1022,8 +1022,8 @@ motor_gearset_e_t motor_get_gearing(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * Additionally, in an error state all values of the returned struct are set
  * to their negative maximum values.
@@ -1043,8 +1043,8 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * Additionally, in an error state all values of the returned struct are set
  * to their negative maximum values.
@@ -1062,8 +1062,8 @@ motor_pid_full_s_t motor_get_vel_pid(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21
@@ -1081,8 +1081,8 @@ int32_t motor_is_reversed(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
- * EACCES - Another resource is currently trying to access the port.
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
  *
  * \param port
  *        The V5 port number from 1-21

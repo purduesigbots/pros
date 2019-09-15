@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -30,8 +30,7 @@ class ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -40,14 +39,10 @@ class ADIPort {
 	 */
 	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
-	virtual ~ADIPort(void);
+	virtual ~ADIPort(void) = default;
 
 	/**
 	 * Gets the configuration for the given ADI port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
 	 * \return The ADI configuration for the given port
 	 */
@@ -56,20 +51,12 @@ class ADIPort {
 	/**
 	 * Gets the value for the given ADI port.
 	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
-	 *
 	 * \return The value stored for the given port
 	 */
 	std::int32_t get_value(void) const;
 
 	/**
 	 * Configures an ADI port to act as a given sensor type.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
 	 * \param type
 	 *        The configuration type for the port
@@ -84,10 +71,6 @@ class ADIPort {
 	 *
 	 * This only works on ports configured as outputs, and the behavior will
 	 * change depending on the configuration of the port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
 	 * \param value
 	 *        The value to set the ADI port to
@@ -109,8 +92,7 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -140,7 +122,7 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The average sensor value computed by this function
 	 */
@@ -156,7 +138,7 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
 	 * -4095 to 4095
@@ -178,7 +160,7 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
 	 * -16384 to 16384
@@ -193,7 +175,7 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The analog sensor value, where a value of 0 reflects an input
 	 * voltage of nearly 0 V and a value of 4095 reflects an input voltage of
@@ -214,8 +196,7 @@ class ADIAnalogOut : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -232,7 +213,7 @@ class ADIAnalogOut : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an analog output
 	 *
 	 * \param value
 	 *        The value to set the ADI port to
@@ -250,8 +231,7 @@ class ADIDigitalOut : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -268,7 +248,7 @@ class ADIDigitalOut : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a digital output
 	 *
 	 * \param value
 	 *        The value to set the ADI port to
@@ -286,8 +266,7 @@ class ADIDigitalIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -309,7 +288,7 @@ class ADIDigitalIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a digital input
 	 *
 	 * \return 1 if the button is pressed and had not been pressed the last time
 	 * this function was called, 0 otherwise.
@@ -321,7 +300,7 @@ class ADIDigitalIn : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a digital input
 	 *
 	 * \return The value stored for the given port
 	 */
@@ -337,8 +316,7 @@ class ADIMotor : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -352,7 +330,7 @@ class ADIMotor : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -364,7 +342,7 @@ class ADIMotor : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \param value
 	 *        The new signed speed; -127 is full reverse and 127 is full forward,
@@ -380,7 +358,7 @@ class ADIMotor : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \return The last set speed of the motor on the given port
 	 */
@@ -394,8 +372,7 @@ class ADIEncoder : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port_top
 	 *        The "top" wire from the encoder sensor with the removable cover side
@@ -415,7 +392,7 @@ class ADIEncoder : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -429,7 +406,7 @@ class ADIEncoder : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \return The signed and cumulative number of counts since the last start or
 	 * reset
@@ -444,8 +421,7 @@ class ADIUltrasonic : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports.
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param port_ping
 	 *        The port connected to the orange OUTPUT cable. This should be in the
@@ -465,7 +441,7 @@ class ADIUltrasonic : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as an ultrasonic
 	 *
 	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
 	 * meter), measured from the sensor's mounting points.
@@ -488,8 +464,7 @@ class ADIGyro : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EINVAL - The given value is not within the range of ADI Ports
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
 	 * \param port
 	 *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
@@ -498,8 +473,6 @@ class ADIGyro : private ADIPort {
 	 *        supplied by the ADI
 	 */
 	ADIGyro(std::uint8_t port, double multiplier = 1);
-
-	~ADIGyro(void) override;
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
@@ -511,7 +484,7 @@ class ADIGyro : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a gyro
 	 *
 	 * \return The gyro angle in degrees.
 	 */
@@ -522,7 +495,7 @@ class ADIGyro : private ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * EACCES - Another resource is currently trying to access the ADI.
+	 * ENODEV - The port is not configured as a gyro
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.

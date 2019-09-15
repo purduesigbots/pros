@@ -6,7 +6,7 @@
  *
  * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html to learn more.
  *
- * Copyright (c) 2017-2018, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -26,6 +26,11 @@ using namespace pros::c;
             const char* name) {
     task = task_create(function, parameters, prio, stack_depth, name);
   }
+
+  Task::Task(task_fn_t function, void* parameters,
+            const char* name)
+      : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
+
   Task::Task(task_t task) : task(task) { }
   void Task::operator = (const task_t in) {
     task = in;
