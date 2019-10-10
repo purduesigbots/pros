@@ -289,7 +289,16 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 }
 
 int32_t controller_clear(controller_id_e_t id) {
-	return controller_print(id, 0, 0, "");
+	if (vexSystemVersion() > 0x01000000) {
+		return controller_print(id, 0, 0, "");
+	} else {
+		for (int i = 0; i < 3; i++) {
+			int32_t rtn = controller_clear_line(id, i);
+			if (rtn == PROS_ERR) return PROS_ERR;
+			if (i != 2) delay(55);
+		}
+		return 1;
+	}
 }
 
 int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern) {
