@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
+#include <type_traits>
 
 namespace pros {
 class Task {
@@ -102,11 +103,14 @@ class Task {
 	template <class F>
 	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "")
-	     : Task(&[] (void* parameters) {
-		auto ptr = std::static_cast<std::function<void()>*>(parameters);
+	     : Task([] (void* parameters) {
+		auto ptr = static_cast<std::function<void()>*>(parameters);
 		(*ptr)();
 		delete ptr;
-	     }, new std::function<void()>(std::forward<F>(function))) {}
+	     }, new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
+		static_assert(std::is_invocable_v<F>);
+	     }
+	}
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
