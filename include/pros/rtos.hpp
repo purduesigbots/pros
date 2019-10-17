@@ -108,7 +108,7 @@ class Task {
 		(*ptr)();
 		delete ptr;
 	     }, new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
-		static_assert(std::is_invocable_v<F>);
+		static_assert(std::is_invocable_r_v<void, F>);
 	     }
 	}
 
