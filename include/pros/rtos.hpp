@@ -109,7 +109,6 @@ class Task {
 		delete ptr;
 	     }, new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
 		static_assert(std::is_invocable_r_v<void, F>);
-	     }
 	}
 
 	/**
@@ -127,7 +126,7 @@ class Task {
 	 *
 	 */
 	template <class F>
-	Task(F&& function, const char* name = "") : Task(std::forward<F>(function),
+	Task(F&& function, const char* name) : Task(std::forward<F>(function),
 	     TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
 	/**
