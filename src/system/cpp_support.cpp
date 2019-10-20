@@ -13,7 +13,6 @@
 
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
 #include <stdexcept>
 
 #include "rtos/FreeRTOS.h"
@@ -27,17 +26,17 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 		fn(args);
 #ifdef __cpp_exceptions
 	} catch (const std::runtime_error& re) {
-		std::cerr << "Runtime error: " << re.what() << std::endl;
+		fprintf(stderr, "Runtime error: %s", re.what(), "\n");
 		vexDisplayString(5, "an runtime error occured:");
 		vexDisplayString(6, "%s", re.what());
 		vexDisplayString(7, "open terminal to see full error message");
 	} catch (const std::exception& ex) {
-		std::cerr << "Exception occurred: " << ex.what() << std::endl;
+		fprintf(stderr, "Exception occurred: %s", ex.what(), "\n");
 		vexDisplayString(5, "an exception occured:");
 		vexDisplayString(6, "%s", ex.what());
 		vexDisplayString(7, "open terminal to see full error message");
 	} catch (...) {
-		std::cerr << "Unknown error occurred. Possible memory corruption" << std::endl;
+		fprintf(stderr, "Unknown error occurred. Possible memory corruption");
 		vexDisplayString(5, "an unknown error occurred");
 	}
 #endif
