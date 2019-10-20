@@ -28,15 +28,17 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #ifdef __cpp_exceptions
 	} catch (const std::runtime_error& re) {
 		std::cerr << "Runtime error: " << re.what() << std::endl;
-		vexDisplayString(7, "an runtime error occured:");
-		vexDisplayString(8, "%s", re.what());
+		vexDisplayString(5, "an runtime error occured:");
+		vexDisplayString(6, "%s", re.what());
+		vexDisplayString(7, "open terminal to see full error message");
 	} catch (const std::exception& ex) {
 		std::cerr << "Exception occurred: " << ex.what() << std::endl;
-		vexDisplayString(7, "an exception occured:");
-		vexDisplayString(8, "%s", ex.what());
+		vexDisplayString(5, "an exception occured:");
+		vexDisplayString(6, "%s", ex.what());
+		vexDisplayString(7, "open terminal to see full error message");
 	} catch (...) {
 		std::cerr << "Unknown error occurred. Possible memory corruption" << std::endl;
-		vexDisplayString(7, "an unknown error occurred");
+		vexDisplayString(5, "an unknown error occurred");
 	}
 #endif
 }
