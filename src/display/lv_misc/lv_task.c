@@ -66,14 +66,21 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     /*Avoid concurrent running of the task handler*/
     static bool task_handler_mutex = false;
-    if(task_handler_mutex) return;
-    task_handler_mutex = true;
+
+    bool expected = false;
+    bool toSet = true;
+    bool taken = __atomic_compare_exchange(&task_handler_mutex, &expected, &toSet,/* strong*/ false, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+
+    if (taken) return;
 
     static uint32_t idle_period_start = 0;
     static uint32_t handler_start = 0;
     static uint32_t busy_time = 0;
 
-    if(lv_task_run == false) return;
+    if(lv_task_run == false)
+    {
+        goto cleanup;
+    }
 
     handler_start = lv_tick_get();
 
@@ -148,7 +155,8 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     }
 
-    task_handler_mutex = false;     /*Release the mutex*/
+  cleanup:
+    __atomic_store_n(&task_handler_mutex, false, __ATOMIC_RELAXED);
 
     LV_LOG_TRACE("lv_task_handler ready");
 }
