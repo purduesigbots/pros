@@ -33,7 +33,7 @@ static bool lv_task_exec(lv_task_t * lv_task_p);
 /**********************
  *  STATIC VARIABLES
  **********************/
-static  bool lv_task_run = false;
+static bool lv_task_run = false;
 static uint8_t idle_last = 0;
 static bool task_deleted;
 static bool task_created;
