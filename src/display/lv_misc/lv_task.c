@@ -33,7 +33,7 @@ static bool lv_task_exec(lv_task_t * lv_task_p);
 /**********************
  *  STATIC VARIABLES
  **********************/
-static volatile bool lv_task_run = false;
+static  bool lv_task_run = false;
 static uint8_t idle_last = 0;
 static bool task_deleted;
 static bool task_created;
@@ -63,8 +63,9 @@ void lv_task_init(void)
 LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 {
     LV_LOG_TRACE("lv_task_handler started");
+    bool task_run = __atomic_load_n(&lv_task_run, __ATOMIC_RELEASE);
 
-    if(lv_task_run == false)
+    if(task_run == false)
     {
         LV_LOG_TRACE("lv_task_handler bailed early, task run false");
         return;
@@ -75,7 +76,7 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     bool expected = false;
     bool toSet = true;
-    bool alreadyTaken = __atomic_compare_exchange(&task_handler_mutex, &expected, &toSet,/* weak*/ false, __ATOMIC_RELAXED, __ATOMIC_RELAXED);
+    bool alreadyTaken = __atomic_compare_exchange(&task_handler_mutex, &expected, &toSet,/* weak*/ false, __ATOMIC_ACQ_REL, __ATOMIC_ACQ_REL);
 
     if (alreadyTaken) return;
 
@@ -157,7 +158,7 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     }
 
-    __atomic_store_n(&task_handler_mutex, false, __ATOMIC_RELAXED);
+    __atomic_store_n(&task_handler_mutex, false, __ATOMIC_RELEASE);
 
     LV_LOG_TRACE("lv_task_handler ready");
 }
@@ -293,7 +294,7 @@ void lv_task_reset(lv_task_t * lv_task_p)
  */
 void lv_task_enable(bool en)
 {
-    lv_task_run = en;
+    __atomic_store_n(&lv_task_run, en, __ATOMIC_RELAXED);
 }
 
 /**
