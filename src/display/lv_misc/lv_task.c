@@ -66,7 +66,7 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     if(lv_task_run == false)
     {
-		LV_LOG_TRACE("lv_task_handler bailed early, task run false");
+        LV_LOG_TRACE("lv_task_handler bailed early, task run false");
         return;
     }
 
