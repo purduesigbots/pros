@@ -1,6 +1,7 @@
 project(PROS)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+enable_language(ASM)
 
 include_directories(../firmware/libv5rts/sdk/vexv5/include)
 
@@ -48,5 +49,5 @@ add_subdirectory(display)
 add_subdirectory(rtos)
 
 target_link_libraries(PROS
-INTERFACE LVGL
-INTERFACE RTOS)
+LVGL
+RTOS)

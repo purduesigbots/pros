@@ -1,5 +1,6 @@
 project(RTOS)
 
+enable_language(ASM)
 include_directories(../../include/rtos)
 
 add_library(RTOS
@@ -12,4 +13,5 @@ port.c
 queue.c
 tasks.c
 timers.c
+portASM.S
 )
