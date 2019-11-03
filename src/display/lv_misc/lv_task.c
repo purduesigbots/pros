@@ -63,7 +63,7 @@ void lv_task_init(void)
 LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 {
     LV_LOG_TRACE("lv_task_handler started");
-    bool task_run = __atomic_load_n(&lv_task_run, __ATOMIC_RELEASE);
+    bool task_run = __atomic_load_n(&lv_task_run, __ATOMIC_ACQUIRE);
 
     if(task_run == false)
     {
