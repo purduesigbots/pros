@@ -25,10 +25,19 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 #endif
 		fn(args);
 #ifdef __cpp_exceptions
-	} catch (std::runtime_error& re) {
-		vexDisplayString(7, "caught runtime error: %s", re.what());
+	} catch (const std::runtime_error& re) {
+		fprintf(stderr, "Runtime error: %s \n", re.what());
+		vexDisplayString(5, "A runtime error occurred:");
+		vexDisplayString(6, "%s", re.what());
+		vexDisplayString(7, "Note: open terminal for error message");
+	} catch (const std::exception& ex) {
+		fprintf(stderr, "Exception occurred: %s \n", ex.what());
+		vexDisplayString(5, "An exception occurred:");
+		vexDisplayString(6, "%s", ex.what());
+		vexDisplayString(7, "Note: open terminal for error message");
 	} catch (...) {
-		vexDisplayString(7, "caught an unknown error");
+		fprintf(stderr, "Unknown error occurred. \n");
+		vexDisplayString(5, "An unknown error occurred");
 	}
 #endif
 }

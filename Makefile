@@ -36,6 +36,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 # whatever files you want here. This line is configured to add all header files
 # that are in the the include directory get exported
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(FWDIR)/v5-common.ld $(FWDIR)/v5-hot.ld
+TEMPLATE_FILES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
 TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(INCDIR)/display
 TEMPLATE_FILES+= $(SRCDIR)/main.cpp
 TEMPLATE_FILES+= $(ROOT)/template-gitignore

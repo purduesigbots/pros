@@ -1,9 +1,9 @@
 /**
- * \file system/mlock.c
+ * \file system/envlock.c
  *
- * memory lock newlib stubs
+ * environment lock newlib stubs
  *
- * Contains implementations of memory-locking functions for newlib.
+ * Contains implementations of environment-locking functions for newlib.
  *
  * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  * All rights reserved.
@@ -15,10 +15,10 @@
 
 #include "rtos/task.h"
 
- void __malloc_lock(void) {
- 	rtos_suspend_all();
- }
+void __env_lock(void) {
+	rtos_suspend_all();
+}
 
- void __malloc_unlock(void) {
- 	rtos_resume_all();
- }
+void __env_unlock(void) {
+	rtos_resume_all();
+}
