@@ -76,7 +76,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	Task(task_fn_t function, void* parameters = NULL, const char* name = "");
+	Task(task_fn_t function, void* parameters, const char* name);
 
 	/**
 	 * Create a C++ task object from a task handle
