@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 
-#TODO: template, libv5rts, hot/cold?
+#TODO: template, hot/cold?, timestamp?
 
 set(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
@@ -8,6 +8,8 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 set(tools /usr/bin)
 set(CMAKE_C_COMPILER ${tools}/arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER ${tools}/arm-none-eabi-g++)
+set(STRIP ${tools}/arm-none-eabi-strip)
+set(ROOT ${PROSPROJECT_SOURCE_DIR})
 
 project(PROSPROJECT)
 
@@ -20,11 +22,14 @@ set(GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-ta
 
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=gnu++17")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=gnu11")
 
 set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
 set(LINKERSCRIPT ./firmware/v5.ld)
+
+set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
+set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
 add_executable(PROSPROJECT
 src/main.cpp
@@ -38,9 +43,16 @@ add_custom_command(TARGET PROSPROJECT
 						  BYPRODUCTS v5-common.ld v5-hot.ld v5.ld
 )
 
+add_custom_command(TARGET PROSPROJECT
+						  PRE_LINK
+						  COMMAND ${STRIP} libv5rts.a @${PROJECT_SOURCE_DIR}/libv5rts-strip-options.txt -o ${PATCHED_SDK}
+						  DEPENDS ${SDK_PATH}/libv5rts.a
+						  WORKING_DIRECTORY ${SDK_PATH}
+						  )
+
 add_custom_target(update_version
 						  COMMAND python version.py
-						  WORKING_DIRECTORY ..
+						  WORKING_DIRECTORY ${ROOT}
 						  )
 
 add_dependencies(PROS
@@ -51,4 +63,6 @@ add_dependencies(PROSPROJECT
 PROS
 )
 
-target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,./src/libPROS.a,src/rtos/libRTOS.a,src/display/libLVGL.a,${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
+set(BUILTLIBRARIES ./src/libPROS.a,./src/rtos/libRTOS.a,./src/display/libLVGL.a)
+
+target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILTLIBRARIES},${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
