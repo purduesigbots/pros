@@ -76,7 +76,7 @@ LV_ATTRIBUTE_TASK_HANDLER void lv_task_handler(void)
 
     bool expected = false;
     bool toSet = true;
-    bool alreadyTaken = __atomic_compare_exchange(&task_handler_mutex, &expected, &toSet,/* weak*/ false, __ATOMIC_ACQ_REL, __ATOMIC_ACQ_REL);
+    bool alreadyTaken = __atomic_compare_exchange(&task_handler_mutex, &expected, &toSet,/* weak*/ false, __ATOMIC_ACQUIRE, __ATOMIC_ACQUIRE);
 
     if (alreadyTaken) return;
 
