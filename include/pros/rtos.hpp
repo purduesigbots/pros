@@ -102,12 +102,14 @@ class Task {
 	 *
 	 */
 	template <class F>
-	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "")
-	     : Task([] (void* parameters) {
-		std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
-		(*ptr)();
-	     }, new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
+	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
+	     const char* name = "")
+	    : Task(
+	          [](void* parameters) {
+		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
+		          (*ptr)();
+	          },
+	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
 		static_assert(std::is_invocable_r_v<void, F>);
 	}
 
