@@ -128,8 +128,8 @@ class Task {
 	 *
 	 */
 	template <class F>
-	Task(F&& function, const char* name) : Task(std::forward<F>(function),
-	     TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
+	Task(F&& function, const char* name)
+	    : Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
 	/**
 	 * Create a C++ task object from a task handle
