@@ -98,8 +98,58 @@ const struct fs_driver _usd_driver = {.close_r = usd_close_r,
                                       .lseek_r = usd_lseek_r,
                                       .read_r = usd_read_r,
                                       .write_r = usd_write_r,
+                                      .mkdir_r = usd_mkdir_r,
+                                      .link_r = usd_link_r,
+                                      .unlink_r = usd_unlink_r,
+                                      .chdir_r = usd_chdir_r,
+                                      .chmod_r = usd_chmod_r,
+                                      .pathconf_r = usd_pathconf_r,
+                                      .getcwd_r = usd_getcwd_r,
+                                      .stat_r = usd_stat_r,
                                       .ctl = usd_ctl};
+
 const struct fs_driver* const usd_driver = &_usd_driver;
+
+int usd_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
+    r = ENOSYS;
+    return -1;
+}
+
+int usd_link_r(struct _reent* r,void* const arg, char* new, char* old) {
+    r = ENOSYS;
+    return -1;
+}
+
+int usd_unlink_r(struct _reent* r,void* const arg, char* path) {
+    r = ENOSYS;
+    return -1;
+}
+
+int usd_chdir_r(struct _reent* r, void* const arg, char* path) {
+    r = ENOSYS;
+    return -1;
+}
+
+int usd_chmod_r(struct _reent* r, void* const arg, char* path) {
+    r = ENOSYS;
+    return -1;
+}
+
+long usd_pathconf_r(struct _reent* r, void* const arg, char* path, int name) {
+    r = ENOSYS;
+    return -1;
+}
+
+char* usd_getcwd_r(struct _reent* r, void* const arg, char* buf, size_t size) {
+    r = ENOSYS;
+    // Returns a char * to the current directory's null terminated buffer
+    return NULL;
+}
+
+int usd_stat_r(struct _reent* r, void* const arg, const char *restrict path, struct stat *restrict buf) {
+    r = ENOSYS;
+    return -1;
+}
 
 int usd_open_r(struct _reent* r, const char* path, int flags, int mode) {
 	FRESULT result = vexFileMountSD();

@@ -115,6 +115,8 @@ int _open(const char* file, int flags, int mode) {
 	return -1;
 }
 
+
+
 ssize_t _write(int file, const void* buf, size_t len) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
@@ -155,6 +157,83 @@ int _close(int file) {
 	return ret;
 }
 
+int _mkdir(const char* path){
+    struct _reent* r = _REENT;
+    size_t i;
+
+    for(i = 0; i < MAX_FILELEN; i++) {
+        if (path[i] == '\0') break;
+    }
+
+    if(i >= MAX_FILELEN) {
+        r->_errno = ENAMETOOLONG;
+        return -1;
+    }
+    else {
+        return file_table[file].driver->mkdir(r, file_table[file].arg, path);
+    }
+}
+
+
+
+
+int _unlink(char *name) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->mkdir(r, file_table[file].arg, path);
+
+}
+
+int _link(char* old, char* new) {
+    
+    struct _reent* r = _REENT;
+    size_t i = 0;
+	for (i; i < MAX_FILELEN; i++) {
+		if (new[i] == '\0') {
+			break;
+		}
+	}
+
+    if(i >= MAX_FILELEN) {
+        r->_errno = ENAMETOOLONG;
+        return -1;
+    }
+    else {
+        return file_table[file].driver->link(r, file_table[file].arg, new, old);
+    } 
+
+
+}
+
+
+int _stat(const char *restrict path, struct stat* st) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->stat(r, file_table[file].arg, path, st);
+}
+
+
+int _chdir(const char* path) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->chdir(r, file_table[file].arg, path);
+}
+
+int _chmod(const char* path, mode_t mode) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->chdir(r, file_table[file].arg, path, mode);
+}
+
+int _pathconf(const char* path, int name) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->pathconf(r, file_table[file].arg, path, name);
+}
+
+int _getcwd(char* buf, size_t size) {
+    struct _reent* r = _REENT;
+    return file_table[file].driver->getcwd(r, file_table[file].arg, buf, size);
+}
+
+
+
+
 int _fstat(int file, struct stat* st) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
@@ -164,7 +243,6 @@ int _fstat(int file, struct stat* st) {
 	}
 	return file_table[file].driver->fstat_r(r, file_table[file].arg, st);
 }
-
 off_t _lseek(int file, off_t ptr, int dir) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {

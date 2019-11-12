@@ -28,6 +28,13 @@ struct fs_driver {
 	int (*isatty_r)(struct _reent*, void* const);
 	off_t (*lseek_r)(struct _reent*, void* const, off_t, int);
 	int (*ctl)(void* const, const uint32_t, void* const);
+    int (*mkdir_r)(struct _reent*, void* const);
+    int (*usd_link_r)(struct _reent*, void* const, char*, char*);
+    int (*usd_unlink_r)(struct _reent*, void* const, char*);
+    int (*usd_chdir_r)(struct _reent*, void* const, char*);
+    int (*usd_chmod_r)(struct _reent*, void* const, char*);
+    long (*usd_pathconf_r)(struct _reent*, void* const, char*, int);
+    char* (*usd_getcwd_r)(struct _reent*, void* const, char*, size_t);
 };
 
 struct file_entry {
