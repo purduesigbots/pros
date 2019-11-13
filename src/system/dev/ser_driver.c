@@ -251,9 +251,58 @@ const struct fs_driver _ser_driver = {.close_r = ser_close_r,
                                       .lseek_r = ser_lseek_r,
                                       .read_r = ser_read_r,
                                       .write_r = ser_write_r,
+                                      .mkdir_r = ser_mkdir_r,
+                                      .link_r = ser_link_r,
+                                      .unlink_r = ser_unlink_r,
+                                      .chdir_r = ser_chdir_r,
+                                      .chmod_r = ser_chmod_r,
+                                      .pathconf_r = ser_pathconf_r,
+                                      .getcwd_r = ser_getcwd_r,
+                                      .stat_r = ser_stat_r,
                                       .ctl = ser_ctl};
 
 const struct fs_driver* const ser_driver = &_ser_driver;
+
+int ser_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_link_r(struct _reent* r,void* const arg, char* new, char* o
+    r = ENOSYS;
+    return -1;
+}
+
+int ser_unlink_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_chdir_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_chmod_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+long ser_pathconf_r(struct _reent* r, void* const arg, char* path,
+    r = ENOSYS;
+    return -1;
+}
+
+char* ser_getcwd_r(struct _reent* r, void* const arg, char* buf, si
+    r = ENOSYS;
+    // Returns a char * to the current directory's null terminated
+    return NULL;
+}
+
+int ser_stat_r(struct _reent* r, void* const arg, const char *restr
+    r = ENOSYS;
+    return -1;
+}
 
 int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
 	if (*path == '\0') {
