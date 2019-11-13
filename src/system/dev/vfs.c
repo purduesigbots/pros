@@ -89,9 +89,8 @@ int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) 
 	return 0;
 }
 
-int _open(const char* file, int flags, int mode) {
-	struct _reent* r = _REENT;
-	// Check if the filename is too long or not NULL terminated
+bool file_size(const char* file) {
+	// Returns true if is under size constraint
 	size_t i = 0;
 	for (i = 0; i < MAX_FILELEN; i++) {
 		if (file[i] == '\0') {
@@ -99,9 +98,20 @@ int _open(const char* file, int flags, int mode) {
 		}
 	}
 	if (i == MAX_FILELEN) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+int _open(const char* file, int flags, int mode) {
+	struct _reent* r = _REENT;
+	// Check if the filename is too long or not NULL terminated
+	if (!file_size(file)) {
 		r->_errno = ENAMETOOLONG;
 		return -1;
 	}
+
 	if (strstr(file, "/ser") == file) {
 		// is a serial pseudofile
 		return ser_open_r(r, file + strlen("/ser"), flags, mode);
@@ -114,8 +124,6 @@ int _open(const char* file, int flags, int mode) {
 	r->_errno = ENOENT;
 	return -1;
 }
-
-
 
 ssize_t _write(int file, const void* buf, size_t len) {
 	struct _reent* r = _REENT;
@@ -159,19 +167,11 @@ int _close(int file) {
 
 int _mkdir(const char* path){
     struct _reent* r = _REENT;
-    size_t i;
-
-    for(i = 0; i < MAX_FILELEN; i++) {
-        if (path[i] == '\0') break;
-    }
-
-    if(i >= MAX_FILELEN) {
-        r->_errno = ENAMETOOLONG;
-        return -1;
-    }
-    else {
-        return file_table[file].driver->mkdir(r, file_table[file].arg, path);
-    }
+	  if (!file_size(file)) {
+		  r->_errno = ENAMETOOLONG;
+		  return -1;
+	  }
+	  return file_table[file].driver->mkdir(r, file_table[file].arg, path);
 }
 
 
@@ -186,22 +186,11 @@ int _unlink(char *name) {
 int _link(char* old, char* new) {
     
     struct _reent* r = _REENT;
-    size_t i = 0;
-	for (i; i < MAX_FILELEN; i++) {
-		if (new[i] == '\0') {
-			break;
-		}
-	}
-
-    if(i >= MAX_FILELEN) {
-        r->_errno = ENAMETOOLONG;
-        return -1;
-    }
-    else {
-        return file_table[file].driver->link(r, file_table[file].arg, new, old);
-    } 
-
-
+	  if (!file_size(file)) {
+		  r->_errno = ENAMETOOLONG;
+		  return -1;
+	  }
+	  return file_table[file].driver->link(r, file_table[file].arg, new, old);
 }
 
 
