@@ -31,10 +31,10 @@ struct fs_driver {
     int (*mkdir_r)(struct _reent*, void* const);
 	  int (*link_r)(struct _reent*, void* const, char*, char*);
 	  int (*unlink_r)(struct _reent*, void* const, char*);
-	  int (*chdir_r)(struct _reent*, void* const, char*);
-	  int (*chmod_r)(struct _reent*, void* const, char*);
-	  long (*pathconf_r)(struct _reent*, void* const, char*, int);
-	  char* (*getcwd_r)(struct _reent*, void* const, char*, size_t);
+	  int (*chdir_r)(struct _reent*, void* const, const char*);
+	  int (*chmod_r)(struct _reent*, void* const, const char*);
+	  long (*pathconf_r)(struct _reent*, void* const, const char*, int);
+	  char* (*getcwd_r)(struct _reent*, void* const, const char*, size_t);
 };
 
 struct file_entry {

@@ -98,7 +98,7 @@ bool file_size(const char* file) {
 		}
 	}
 	if (i == MAX_FILELEN) {
-		return false;
+		return i != MAX_FILELEN;
 	} else {
 		return true;
 	}

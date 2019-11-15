@@ -141,44 +141,44 @@ const struct fs_driver _dev_driver = {.close_r = dev_close_r,
 const struct fs_driver* const dev_driver = &_dev_driver;
 
 int dev_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
-	r = ENOSYS;
+	r->_errno = ENOSYS;
 	return -1;
 }
 
-int dev_link_r(struct _reent* r,void* const arg, char* new, char* o
-    r = ENOSYS;
-    return -1;
+int dev_link_r(struct _reent* r, void* const arg, char* new, char* old) {
+	r->_errno = ENOSYS;
+	return -1;
 }
 
 int dev_unlink_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
+	r->_errno = ENOSYS;
 	return -1;
 }
 
 int dev_chdir_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
+	r->_errno = ENOSYS;
 	return -1;
 }
 
 int dev_chmod_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
+	r->_errno = ENOSYS;
 	return -1;
 }
 
-long dev_pathconf_r(struct _reent* r, void* const arg, char* path,
-    r = ENOSYS;
-    return -1;
+long dev_pathconf_r(struct _reent* r, void* const arg, char* path, int name) {
+	r->_errno = ENOSYS;
+	return -1;
 }
 
-char* dev_getcwd_r(struct _reent* r, void* const arg, char* buf, si
-    r = ENOSYS;
-    // Returns a char * to the current directory's null terminated
-    return NULL;
+char* dev_getcwd_r(struct _reent* r, void* const arg, char* buf, size_t size) {
+	r->_errno = ENOSYS;
+	// Returns a char * to the current directory's null terminated
+	return NULL;
 }
 
-int dev_stat_r(struct _reent* r, void* const arg, const char *restr
-    r = ENOSYS;
-    return -1;
+int dev_stat_r(struct _reent* r, void* const arg, const char* path, struct stat* buf) {
+	r->_errno = ENOSYS;
+	return -1;
 }
 
 int dev_open_r(struct _reent* r, const char* path, int flags, int mode) {
