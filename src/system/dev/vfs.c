@@ -89,7 +89,7 @@ int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) 
 	return 0;
 }
 
-bool file_size(const char* file) {
+int file_size(const char* file) {
 	// Returns true if is under size constraint
 	size_t i = 0;
 	for (i = 0; i < MAX_FILELEN; i++) {
@@ -99,8 +99,6 @@ bool file_size(const char* file) {
 	}
 	if (i == MAX_FILELEN) {
 		return i != MAX_FILELEN;
-	} else {
-		return true;
 	}
 }
 
