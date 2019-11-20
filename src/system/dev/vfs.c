@@ -97,9 +97,7 @@ int file_size(const char* file) {
 			break;
 		}
 	}
-	if (i == MAX_FILELEN) {
-		return i != MAX_FILELEN;
-	}
+	return i != MAX_FILELEN;
 }
 
 int _open(const char* file, int flags, int mode) {

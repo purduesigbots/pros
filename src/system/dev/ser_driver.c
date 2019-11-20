@@ -268,9 +268,9 @@ int ser_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
 	return -1;
 }
 
-int ser_link_r(struct _reent* r,void* const arg, char* new, char* o
-    r = ENOSYS;
-    return -1;
+int ser_link_r(struct _reent* r, void* const arg, char* new, char* old) {
+	r = ENOSYS;
+	return -1;
 }
 
 int ser_unlink_r(struct _reent* r, void* const arg, char* path) {
@@ -288,20 +288,20 @@ int ser_chmod_r(struct _reent* r, void* const arg, char* path) {
 	return -1;
 }
 
-long ser_pathconf_r(struct _reent* r, void* const arg, char* path,
-    r = ENOSYS;
-    return -1;
+long ser_pathconf_r(struct _reent* r, void* const arg, char* path, int name) {
+	r = ENOSYS;
+	return -1;
 }
 
-char* ser_getcwd_r(struct _reent* r, void* const arg, char* buf, si
-    r = ENOSYS;
-    // Returns a char * to the current directory's null terminated
-    return NULL;
+char* ser_getcwd_r(struct _reent* r, void* const arg, char* buf, size_t size) {
+	r = ENOSYS;
+	// Returns a char * to the current directory's null terminated
+	return NULL;
 }
 
-int ser_stat_r(struct _reent* r, void* const arg, const char *restr
-    r = ENOSYS;
-    return -1;
+int ser_stat_r(struct _reent* r, void* const arg, const char* path, struct stat* buf) {
+	r = ENOSYS;
+	return -1;
 }
 
 int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
