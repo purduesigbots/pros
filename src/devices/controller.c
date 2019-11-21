@@ -206,9 +206,14 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 
 	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
 
-	vexControllerTextSet(id, line, col, buf);
+	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
@@ -240,11 +245,16 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
 	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
 
-	vexControllerTextSet(id, line, col, buf);
+	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
 	va_end(args);
 
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
@@ -268,14 +278,27 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	line++;
 
 	const char* const blank = "                 ";
-	vexControllerTextSet(port, line, 0, blank);
+	uint32_t rtn_val = vexControllerTextSet(port, line, 0, blank);
 	internal_port_mutex_give(port);
+
+	if (!rtn_val) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
 	return 1;
 }
 
 int32_t controller_clear(controller_id_e_t id) {
-	for (int i = 0; i < 3; i++) controller_clear_line(id, i);
-	return 1;
+	if (vexSystemVersion() > 0x01000000) {
+		return controller_print(id, 0, 0, "");
+	} else {
+		for (int i = 0; i < 3; i++) {
+			int32_t rtn = controller_clear_line(id, i);
+			if (rtn == PROS_ERR) return PROS_ERR;
+			if (i != 2) delay(55);
+		}
+		return 1;
+	}
 }
 
 int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern) {
