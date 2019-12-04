@@ -30,10 +30,11 @@ __attribute__((weak)) char const* const _PROS_COMPILE_DIRECTORY = "Unknown";
 
 void print_small_banner(void) {
 	uint32_t uptime = millis();
-	char const * const timestamp = (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
-	char const * const directory = (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
-	iprintf(short_banner, PROS_VERSION_STRING, uptime / 1000, uptime % 1000, timestamp,
-	        directory);
+	char const* const timestamp =
+	    (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
+	char const* const directory =
+	    (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
+	iprintf(short_banner, PROS_VERSION_STRING, uptime / 1000, uptime % 1000, timestamp, directory);
 }
 
 void print_large_banner(void) {
@@ -41,8 +42,10 @@ void print_large_banner(void) {
 	uint32_t* sys_ver = (uint32_t*)version;
 	*sys_ver = vexSystemVersion();
 	uint32_t uptime = millis();
-	char const * const timestamp = (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
-	char const * const directory = (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
+	char const* const timestamp =
+	    (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
+	char const* const directory =
+	    (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
 	iprintf(large_banner, PROS_VERSION_STRING, version[3], version[2], version[1], version[0], uptime / 1000,
 	        uptime % 1000, timestamp, directory);
 }

@@ -115,12 +115,12 @@ int usd_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
 	return -1;
 }
 
-int usd_link_r(struct _reent* r,void* const arg, char* new, char* old) {
+int usd_link_r(struct _reent* r, void* const arg, char* new, char* old) {
 	r->_errno = ENOSYS;
 	return -1;
 }
 
-int usd_unlink_r(struct _reent* r,void* const arg, char* path) {
+int usd_unlink_r(struct _reent* r, void* const arg, char* path) {
 	r->_errno = ENOSYS;
 	return -1;
 }

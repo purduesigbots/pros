@@ -21,6 +21,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "system/dev/vfs.h"
+
 #include <errno.h>
 #include <stdint.h>
 #include <unistd.h>
@@ -31,7 +33,6 @@
 #include "system/dev/dev.h"
 #include "system/dev/ser.h"
 #include "system/dev/usd.h"
-#include "system/dev/vfs.h"
 #include "v5_api.h"
 
 #define MAX_FILELEN 128
@@ -161,63 +162,53 @@ int _close(int file) {
 	return ret;
 }
 
-int _mkdir(const char* path){
-    struct _reent* r = _REENT;
-	  if (!file_size(file)) {
-		  r->_errno = ENAMETOOLONG;
-		  return -1;
-	  }
-	  return file_table[file].driver->mkdir(r, file_table[file].arg, path);
+int _mkdir(const char* path) {
+	struct _reent* r = _REENT;
+	if (!file_size(file)) {
+		r->_errno = ENAMETOOLONG;
+		return -1;
+	}
+	return file_table[file].driver->mkdir(r, file_table[file].arg, path);
 }
 
-
-
-
-int _unlink(char *name) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->mkdir(r, file_table[file].arg, path);
-
+int _unlink(char* name) {
+	struct _reent* r = _REENT;
+	return file_table[file].driver->mkdir(r, file_table[file].arg, path);
 }
 
 int _link(char* old, char* new) {
-    
-    struct _reent* r = _REENT;
-	  if (!file_size(file)) {
-		  r->_errno = ENAMETOOLONG;
-		  return -1;
-	  }
-	  return file_table[file].driver->link(r, file_table[file].arg, new, old);
+	struct _reent* r = _REENT;
+	if (!file_size(file)) {
+		r->_errno = ENAMETOOLONG;
+		return -1;
+	}
+	return file_table[file].driver->link(r, file_table[file].arg, new, old);
 }
 
-
-int _stat(const char *restrict path, struct stat* st) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->stat(r, file_table[file].arg, path, st);
+int _stat(const char* restrict path, struct stat* st) {
+	struct _reent* r = _REENT;
+	return file_table[file].driver->stat(r, file_table[file].arg, path, st);
 }
-
 
 int _chdir(const char* path) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->chdir(r, file_table[file].arg, path);
+	struct _reent* r = _REENT;
+	return file_table[file].driver->chdir(r, file_table[file].arg, path);
 }
 
 int _chmod(const char* path, mode_t mode) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->chdir(r, file_table[file].arg, path, mode);
+	struct _reent* r = _REENT;
+	return file_table[file].driver->chdir(r, file_table[file].arg, path, mode);
 }
 
 int _pathconf(const char* path, int name) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->pathconf(r, file_table[file].arg, path, name);
+	struct _reent* r = _REENT;
+	return file_table[file].driver->pathconf(r, file_table[file].arg, path, name);
 }
 
 int _getcwd(char* buf, size_t size) {
-    struct _reent* r = _REENT;
-    return file_table[file].driver->getcwd(r, file_table[file].arg, buf, size);
+	struct _reent* r = _REENT;
+	return file_table[file].driver->getcwd(r, file_table[file].arg, buf, size);
 }
-
-
-
 
 int _fstat(int file, struct stat* st) {
 	struct _reent* r = _REENT;

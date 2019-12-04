@@ -114,6 +114,82 @@ bool ser_output_write(const uint8_t* buffer, size_t size, bool noblock) {
 /******************************************************************************/
 /**                         newlib driver functions                          **/
 /******************************************************************************/
+int ser_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_link_r(struct _reent* r, void* const arg, char* new, char* old) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_unlink_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_chdir_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_chmod_r(struct _reent* r, void* const arg, char* path) {
+	r = ENOSYS;
+	return -1;
+}
+
+long ser_pathconf_r(struct _reent* r, void* const arg, char* path, int name) {
+	r = ENOSYS;
+	return -1;
+}
+
+char* ser_getcwd_r(struct _reent* r, void* const arg, char* buf, size_t size) {
+	r = ENOSYS;
+	// Returns a char * to the current directory's null terminated
+	return NULL;
+}
+
+int ser_stat_r(struct _reent* r, void* const arg, const char* path, struct stat* buf) {
+	r = ENOSYS;
+	return -1;
+}
+
+int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
+	if (*path == '\0') {
+		return STDOUT_FILENO;
+	}
+
+	if (*path == '/') {
+		path++;
+	}
+
+	// check length of path - it MUST be at most 4 characters
+	size_t i;
+	for (i = 0; i < 4; i++) {
+		if (path[i] == '\0') {
+			break;
+		}
+	}
+	if (path[i] != '\0') {  // i will the length of the path or the fifth character
+		r->_errno = ENAMETOOLONG;
+		return -1;
+	}
+
+	if (!strcmp(path, "sout")) {
+		return STDOUT_FILENO;
+	}
+	if (!strcmp(path, "sin")) {
+		return STDIN_FILENO;
+	}
+	if (!strcmp(path, "serr")) {
+		return STDERR_FILENO;
+	}
+
+	ser_file_s_t* arg = kmalloc(sizeof(*arg));
+	memcpy(arg->stream, path, strlen(path));
+	return vfs_add_entry_r(r, ser_driver, arg);
+}
 int ser_read_r(struct _reent* r, void* const arg, uint8_t* buffer, const size_t len) {
 	// arg isn't used since serial reads aren't stream-based
 	size_t read = 0;
@@ -262,83 +338,6 @@ const struct fs_driver _ser_driver = {.close_r = ser_close_r,
                                       .ctl = ser_ctl};
 
 const struct fs_driver* const ser_driver = &_ser_driver;
-
-int ser_mkdir_r(struct _reent* r, const char* path, mode_t mode) {
-	r = ENOSYS;
-	return -1;
-}
-
-int ser_link_r(struct _reent* r, void* const arg, char* new, char* old) {
-	r = ENOSYS;
-	return -1;
-}
-
-int ser_unlink_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
-	return -1;
-}
-
-int ser_chdir_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
-	return -1;
-}
-
-int ser_chmod_r(struct _reent* r, void* const arg, char* path) {
-	r = ENOSYS;
-	return -1;
-}
-
-long ser_pathconf_r(struct _reent* r, void* const arg, char* path, int name) {
-	r = ENOSYS;
-	return -1;
-}
-
-char* ser_getcwd_r(struct _reent* r, void* const arg, char* buf, size_t size) {
-	r = ENOSYS;
-	// Returns a char * to the current directory's null terminated
-	return NULL;
-}
-
-int ser_stat_r(struct _reent* r, void* const arg, const char* path, struct stat* buf) {
-	r = ENOSYS;
-	return -1;
-}
-
-int ser_open_r(struct _reent* r, const char* path, int flags, int mode) {
-	if (*path == '\0') {
-		return STDOUT_FILENO;
-	}
-
-	if (*path == '/') {
-		path++;
-	}
-
-	// check length of path - it MUST be at most 4 characters
-	size_t i;
-	for (i = 0; i < 4; i++) {
-		if (path[i] == '\0') {
-			break;
-		}
-	}
-	if (path[i] != '\0') {  // i will the length of the path or the fifth character
-		r->_errno = ENAMETOOLONG;
-		return -1;
-	}
-
-	if (!strcmp(path, "sout")) {
-		return STDOUT_FILENO;
-	}
-	if (!strcmp(path, "sin")) {
-		return STDIN_FILENO;
-	}
-	if (!strcmp(path, "serr")) {
-		return STDERR_FILENO;
-	}
-
-	ser_file_s_t* arg = kmalloc(sizeof(*arg));
-	memcpy(arg->stream, path, strlen(path));
-	return vfs_add_entry_r(r, ser_driver, arg);
-}
 
 // control various components of the serial driver or a file
 int32_t serctl(const uint32_t action, void* const extra_arg) {
