@@ -259,7 +259,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 }
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
-	const char* clear = "               ";
+	static const char* clear = "               ";
 	return controller_print(id, line, 0, clear);
 }
 
