@@ -90,21 +90,10 @@ int vfs_update_entry(int file, struct fs_driver const* const driver, void* arg) 
 	return 0;
 }
 
-int file_size(const char* file) {
-	// Returns true if is under size constraint
-	size_t i = 0;
-	for (i = 0; i < MAX_FILELEN; i++) {
-		if (file[i] == '\0') {
-			break;
-		}
-	}
-	return i != MAX_FILELEN;
-}
-
 int _open(const char* file, int flags, int mode) {
 	struct _reent* r = _REENT;
 	// Check if the filename is too long or not NULL terminated
-	if (!file_size(file)) {
+	if (strnlen(file), MAX_FILELEN) {
 		r->_errno = ENAMETOOLONG;
 		return -1;
 	}
@@ -162,55 +151,55 @@ int _close(int file) {
 	return ret;
 }
 
-int _mkdir(const char* path) {
+int mkdir(const char* path) {
 	struct _reent* r = _REENT;
-	if (!file_size(file)) {
+	if (strnlen(file), MAX_FILELEN) {
 		r->_errno = ENAMETOOLONG;
 		return -1;
 	}
 	return file_table[file].driver->mkdir(r, file_table[file].arg, path);
 }
 
-int _unlink(char* name) {
+int unlink(char* name) {
 	struct _reent* r = _REENT;
-	return file_table[file].driver->mkdir(r, file_table[file].arg, path);
+	return file_table[file].driver->unlink(r, file_table[file].arg, path);
 }
 
-int _link(char* old, char* new) {
+int link(char* old, char* new) {
 	struct _reent* r = _REENT;
-	if (!file_size(file)) {
+	if (strnlen(file), MAX_FILELEN) {
 		r->_errno = ENAMETOOLONG;
 		return -1;
 	}
 	return file_table[file].driver->link(r, file_table[file].arg, new, old);
 }
 
-int _stat(const char* restrict path, struct stat* st) {
+int stat(const char* restrict path, struct stat* st) {
 	struct _reent* r = _REENT;
 	return file_table[file].driver->stat(r, file_table[file].arg, path, st);
 }
 
-int _chdir(const char* path) {
+int chdir(const char* path) {
 	struct _reent* r = _REENT;
 	return file_table[file].driver->chdir(r, file_table[file].arg, path);
 }
 
-int _chmod(const char* path, mode_t mode) {
+int chmod(const char* path, mode_t mode) {
 	struct _reent* r = _REENT;
-	return file_table[file].driver->chdir(r, file_table[file].arg, path, mode);
+	return file_table[file].driver->chmod(r, file_table[file].arg, path, mode);
 }
 
-int _pathconf(const char* path, int name) {
+int pathconf(const char* path, int name) {
 	struct _reent* r = _REENT;
 	return file_table[file].driver->pathconf(r, file_table[file].arg, path, name);
 }
 
-int _getcwd(char* buf, size_t size) {
+int getcwd(char* buf, size_t size) {
 	struct _reent* r = _REENT;
 	return file_table[file].driver->getcwd(r, file_table[file].arg, buf, size);
 }
 
-int _fstat(int file, struct stat* st) {
+int fstat(int file, struct stat* st) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
@@ -219,7 +208,7 @@ int _fstat(int file, struct stat* st) {
 	}
 	return file_table[file].driver->fstat_r(r, file_table[file].arg, st);
 }
-off_t _lseek(int file, off_t ptr, int dir) {
+off_t lseek(int file, off_t ptr, int dir) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;
@@ -229,7 +218,7 @@ off_t _lseek(int file, off_t ptr, int dir) {
 	return file_table[file].driver->lseek_r(r, file_table[file].arg, ptr, dir);
 }
 
-int _isatty(int file) {
+int isatty(int file) {
 	struct _reent* r = _REENT;
 	if (file < 0 || !gid_check(&file_table_gids, file)) {
 		r->_errno = EBADF;

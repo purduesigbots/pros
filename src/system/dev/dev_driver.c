@@ -127,40 +127,6 @@ int dev_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 int dev_close_r(struct _reent* r, void* const arg) {
 	return 0;
 }
-int dev_open_r(struct _reent* r, const char* path, int flags, int mode) {
-	if (*path == '\0') {
-		return STDOUT_FILENO;
-	}
-
-	if (*path == '/') {
-		path++;
-	}
-
-	// check length of path - it MUST be at most 2 characters
-	size_t i;
-	for (i = 0; i < 3; i++) {
-		if (path[i] == '\0') {
-			break;
-		}
-	}
-	int32_t port;
-	if (path[i] != '\0') {  // i will the length of the path or the third character
-		r->_errno = ENAMETOOLONG;
-		return -1;
-	}
-	if (i == 2) {
-		// Port number is two characters
-		port = 10 * (path[0] - ASCII_ZERO) + (path[1] - ASCII_ZERO);
-	} else {
-		port = path[0] - ASCII_ZERO;
-	}
-	serial_enable(port);
-
-	dev_file_arg_t* arg = (dev_file_arg_t*)kmalloc(sizeof(dev_file_arg_t));
-	arg->port = port;
-	arg->flags = flags;
-	return vfs_add_entry_r(r, dev_driver, arg);
-}
 
 int dev_fstat_r(struct _reent* r, void* const arg, struct stat* st) {
 	// this is a complete implementation
@@ -215,3 +181,38 @@ const struct fs_driver _dev_driver = {.close_r = dev_close_r,
                                       .ctl = dev_ctl};
 
 const struct fs_driver* const dev_driver = &_dev_driver;
+
+int dev_open_r(struct _reent* r, const char* path, int flags, int mode) {
+	if (*path == '\0') {
+		return STDOUT_FILENO;
+	}
+
+	if (*path == '/') {
+		path++;
+	}
+
+	// check length of path - it MUST be at most 2 characters
+	size_t i;
+	for (i = 0; i < 3; i++) {
+		if (path[i] == '\0') {
+			break;
+		}
+	}
+	int32_t port;
+	if (path[i] != '\0') {  // i will the length of the path or the third character
+		r->_errno = ENAMETOOLONG;
+		return -1;
+	}
+	if (i == 2) {
+		// Port number is two characters
+		port = 10 * (path[0] - ASCII_ZERO) + (path[1] - ASCII_ZERO);
+	} else {
+		port = path[0] - ASCII_ZERO;
+	}
+	serial_enable(port);
+
+	dev_file_arg_t* arg = (dev_file_arg_t*)kmalloc(sizeof(dev_file_arg_t));
+	arg->port = port;
+	arg->flags = flags;
+	return vfs_add_entry_r(r, dev_driver, arg);
+}
