@@ -1,0 +1,40 @@
+/**
+ * \file pros/imu.hpp
+ *
+ * Contains prototypes for functions related to the VEX Inertial sensor.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
+ * more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+#ifndef _PROS_IMU_HPP_
+#define _PROS_IMU_HPP_
+
+#include <cstdint>
+#include "pros/imu.h"
+
+namespace pros {
+class Imu {
+  const std::uint8_t _port;
+  public:
+  Imu(const std::uint8_t port) : _port(port) {};
+
+  virtual void reset() const;
+  virtual double get_heading() const;
+  virtual double get_degrees() const;
+  virtual pros::c::quaternion_s_t get_quaternion() const;
+  virtual pros::c::attitude_s_t get_attitude() const;
+  virtual pros::c::imu_s_t get_raw_gyro() const;
+  virtual pros::c::imu_s_t get_raw_accel() const;
+  virtual pros::c::imu_status_e_t get_status() const;
+  virtual bool is_calibrating() const; // note: `return status & pros::c::E_IMU_STATUS_CALIBRATING`
+};
+}
