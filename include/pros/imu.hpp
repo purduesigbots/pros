@@ -23,18 +23,21 @@
 
 namespace pros {
 class Imu {
-  const std::uint8_t _port;
-  public:
-  Imu(const std::uint8_t port) : _port(port) {};
+	const std::uint8_t _port;
 
-  virtual void reset() const;
-  virtual double get_heading() const;
-  virtual double get_degrees() const;
-  virtual pros::c::quaternion_s_t get_quaternion() const;
-  virtual pros::c::attitude_s_t get_attitude() const;
-  virtual pros::c::imu_s_t get_raw_gyro() const;
-  virtual pros::c::imu_s_t get_raw_accel() const;
-  virtual pros::c::imu_status_e_t get_status() const;
-  virtual bool is_calibrating() const; // note: `return status & pros::c::E_IMU_STATUS_CALIBRATING`
+	public:
+	Imu(const std::uint8_t port) : _port(port){};
+
+	virtual std::int32_t reset() const;
+	virtual double get_heading() const;
+	virtual double get_degrees() const;
+	virtual pros::c::quaternion_s_t get_quaternion() const;
+	virtual pros::c::attitude_s_t get_attitude() const;
+	virtual pros::c::imu_s_t get_raw_gyro() const;
+	virtual pros::c::imu_s_t get_raw_accel() const;
+	virtual pros::c::imu_status_e_t get_status() const;
+	virtual bool is_calibrating() const;
 };
-}
+}  // namespace pros
+
+#endif

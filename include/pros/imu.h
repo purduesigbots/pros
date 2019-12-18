@@ -29,27 +29,29 @@ namespace c {
 #endif
 
 typedef enum imu_status_e {
-  E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
+	                            // necessarily in an error state
 } imu_status_e_t;
 
 typedef struct __attribute__((__packed__)) quaternion_s {
-  double w;
-  double x;
-  double y;
-  double z;
+	double a;
+	double b;
+	double c;
+	double d;
 } quaternion_s_t;
 
 typedef struct __attribute__((__packed__)) attitude_s {
-  double pitch;
-  double roll;
-  double yaw;
+	double pitch;
+	double roll;
+	double yaw;
 } attitude_s_t;
 
 typedef struct __attribute__((__packed__)) imu_s {
-  double x;
-  double y;
-  double x;
-  double w;
+	double x;
+	double y;
+	double z;
+	double w;
 } imu_s_t;
 
 /**
@@ -67,7 +69,6 @@ double imu_get_heading(uint8_t port);
 double imu_get_degrees(uint8_t port);
 // TODO: figure out whether these need to have an i/o parameter instead
 quaternion_s_t imu_get_quaternion(uint8_t port);
-angles_s_t imu_get_angles(uint8_t port);
 attitude_s_t imu_get_attitude(uint8_t port);
 imu_s_t imu_get_raw_gyro(uint8_t port);
 imu_s_t imu_get_raw_accel(uint8_t port);
