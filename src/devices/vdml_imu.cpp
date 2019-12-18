@@ -29,16 +29,16 @@ pros::c::quaternion_s_t Imu::get_quaternion() const {
 	return pros::c::imu_get_quaternion(_port);
 }
 
-pros::c::attitude_s_t Imu::get_attitude() const {
-	return pros::c::imu_get_attitude(_port);
+pros::c::euler_s_t Imu::get_euler() const {
+	return pros::c::imu_get_euler(_port);
 }
 
-pros::c::imu_s_t Imu::get_raw_gyro() const {
-	return pros::c::imu_get_raw_gyro(_port);
+pros::c::imu_gyro_s_t Imu::get_gyro_rate() const {
+	return pros::c::imu_get_gyro_rate(_port);
 }
 
-pros::c::imu_s_t Imu::get_raw_accel() const {
-	return pros::c::imu_get_raw_accel(_port);
+pros::c::imu_accel_s_t Imu::get_accel() const {
+	return pros::c::imu_get_accel(_port);
 }
 
 pros::c::imu_status_e_t Imu::get_status() const {

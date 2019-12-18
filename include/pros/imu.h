@@ -35,24 +35,26 @@ typedef enum imu_status_e {
 } imu_status_e_t;
 
 typedef struct __attribute__((__packed__)) quaternion_s {
-	double a;
-	double b;
-	double c;
-	double d;
-} quaternion_s_t;
-
-typedef struct __attribute__((__packed__)) attitude_s {
-	double pitch;
-	double roll;
-	double yaw;
-} attitude_s_t;
-
-typedef struct __attribute__((__packed__)) imu_s {
 	double x;
 	double y;
 	double z;
 	double w;
-} imu_s_t;
+} quaternion_s_t;
+
+struct imu_raw_s {
+	double x;
+	double y;
+	double z;
+};
+
+typedef struct imu_raw_s imu_gyro_s_t;
+typedef struct imu_raw_s imu_accel_s_t;
+
+typedef struct __attribute__((__packed__)) euler_s {
+	double pitch;
+	double roll;
+	double yaw;
+} euler_s_t;
 
 /**
  * Calibrate IMU
@@ -69,9 +71,9 @@ double imu_get_heading(uint8_t port);
 double imu_get_degrees(uint8_t port);
 // TODO: figure out whether these need to have an i/o parameter instead
 quaternion_s_t imu_get_quaternion(uint8_t port);
-attitude_s_t imu_get_attitude(uint8_t port);
-imu_s_t imu_get_raw_gyro(uint8_t port);
-imu_s_t imu_get_raw_accel(uint8_t port);
+euler_s_t imu_get_euler(uint8_t port);
+imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
+imu_accel_s_t imu_get_accel(uint8_t port);
 imu_status_e_t imu_get_status(uint8_t port);
 // NB: not used
 // void imu_set_mode(uint8_t port, uint32_t mode);

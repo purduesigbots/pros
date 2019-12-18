@@ -32,9 +32,9 @@ class Imu {
 	virtual double get_heading() const;
 	virtual double get_degrees() const;
 	virtual pros::c::quaternion_s_t get_quaternion() const;
-	virtual pros::c::attitude_s_t get_attitude() const;
-	virtual pros::c::imu_s_t get_raw_gyro() const;
-	virtual pros::c::imu_s_t get_raw_accel() const;
+	virtual pros::c::euler_s_t get_euler() const;
+	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
+	virtual pros::c::imu_accel_s_t get_accel() const;
 	virtual pros::c::imu_status_e_t get_status() const;
 	virtual bool is_calibrating() const;
 };
