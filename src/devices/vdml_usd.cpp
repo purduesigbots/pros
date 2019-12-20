@@ -17,7 +17,7 @@ namespace pros {
 namespace usd {
 using namespace pros::c;
 
-double is_installed(void) {
+std::int32_t is_installed(void) {
 	return usd_is_installed();
 }
 
