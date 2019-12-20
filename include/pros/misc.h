@@ -424,6 +424,13 @@ double battery_get_temperature(void);
  */
 double battery_get_capacity(void);
 
+/**
+ * Checks if the SD card is installed.
+ *
+ * \return 1 if the SD card is installed, 0 otherwise
+ */
+int32_t usd_is_installed(void);
+
 #ifdef __cplusplus
 }
 }
