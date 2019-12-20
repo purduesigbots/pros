@@ -41,6 +41,10 @@ std::int32_t Serial::get_write_free() const {
 	return serial_get_write_free(_port);
 }
 
+std::uint8_t Serial::get_port() const {
+	return _port;
+}
+
 std::int32_t Serial::peek_byte() const {
 	return serial_peek_byte(_port);
 }
