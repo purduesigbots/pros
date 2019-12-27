@@ -29,7 +29,7 @@ int32_t imu_reset(uint8_t port) {
 	return_port(port - 1, 1);
 }
 
-double imu_get_absolute_degrees(uint8_t port) {
+double imu_get_rotation(uint8_t port) {
 	return imu_get_vex_heading(port);
 }
 
