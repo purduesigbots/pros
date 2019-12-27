@@ -18,11 +18,11 @@ std::int32_t Imu::reset() const {
 }
 
 double Imu::get_heading() const {
-	return pros::c::imu_get_heading(_port);
+	return pros::c::imu_get_vex_heading(_port);
 }
 
 double Imu::get_degrees() const {
-	return pros::c::imu_get_degrees(_port);
+	return pros::c::imu_get_vex_degrees(_port);
 }
 
 pros::c::quaternion_s_t Imu::get_quaternion() const {
