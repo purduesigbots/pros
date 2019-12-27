@@ -67,11 +67,15 @@ typedef struct __attribute__((__packed__)) euler_s {
  * failed, setting errno.
  */
 int32_t imu_reset(uint8_t port);
+
 double imu_get_heading(uint8_t port);
 double imu_get_degrees(uint8_t port);
 // TODO: figure out whether these need to have an i/o parameter instead
 quaternion_s_t imu_get_quaternion(uint8_t port);
 euler_s_t imu_get_euler(uint8_t port);
+double imu_get_pitch(uint8_t port);
+double imu_get_roll(uint8_t port);
+double imu_get_yaw(uint8_t port);
 imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
 imu_accel_s_t imu_get_accel(uint8_t port);
 imu_status_e_t imu_get_status(uint8_t port);

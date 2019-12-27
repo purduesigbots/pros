@@ -81,6 +81,18 @@ euler_s_t imu_get_euler(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
+double imu_get_pitch(uint8_t port) {
+	return imu_get_euler(port).pitch;
+}
+
+double imu_get_roll(uint8_t port) {
+	return imu_get_euler(port).roll;
+}
+
+double imu_get_yaw(uint8_t port) {
+	return imu_get_euler(port).yaw;
+}
+
 #define RAW_IMU_ERR_INIT {.x = PROS_ERR_F, .y = PROS_ERR_F, .z = PROS_ERR_F};
 
 imu_gyro_s_t imu_get_gyro_rate(uint8_t port) {

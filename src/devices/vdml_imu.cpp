@@ -33,6 +33,18 @@ pros::c::euler_s_t Imu::get_euler() const {
 	return pros::c::imu_get_euler(_port);
 }
 
+double Imu::get_pitch() const {
+	return get_euler().pitch;
+}
+
+double Imu::get_roll() const {
+	return get_euler().roll;
+}
+
+double Imu::get_yaw() const {
+	return get_euler().yaw;
+}
+
 pros::c::imu_gyro_s_t Imu::get_gyro_rate() const {
 	return pros::c::imu_get_gyro_rate(_port);
 }
