@@ -29,8 +29,10 @@ class Imu {
 	Imu(const std::uint8_t port) : _port(port){};
 
 	virtual std::int32_t reset() const;
-	virtual double get_heading() const;
-	virtual double get_degrees() const;
+    virtual double get_rotation() const;
+	virtual double get_vex_heading() const;
+    virtual double get_heading() const;
+	virtual double get_vex_degrees() const;
 	virtual pros::c::quaternion_s_t get_quaternion() const;
 	virtual pros::c::euler_s_t get_euler() const;
 	virtual double get_pitch() const;

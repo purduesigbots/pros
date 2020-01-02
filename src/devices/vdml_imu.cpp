@@ -17,12 +17,20 @@ std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }
 
-double Imu::get_heading() const {
-	return pros::c::imu_get_vex_heading(_port);
+double Imu::get_rotation() const {
+    return pros::c::imu_get_rotation(_port);
 }
 
-double Imu::get_degrees() const {
+double Imu::get_heading() const {
+	return pros::c::imu_get_heading(_port);
+}
+
+double Imu::get_vex_degrees() const {
 	return pros::c::imu_get_vex_degrees(_port);
+}
+
+double Imu::get_vex_heading() const {
+    return pros::c::imu_get_vex_heading(_port);
 }
 
 pros::c::quaternion_s_t Imu::get_quaternion() const {
