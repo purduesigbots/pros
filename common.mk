@@ -167,6 +167,8 @@ ifeq ($(USE_PACKAGE),1)
 DEFAULT_BIN=$(HOT_BIN)
 endif
 
+-include $(wildcard $(FWDIR)/*.mk)
+
 .PHONY: all clean quick
 
 quick: $(DEFAULT_BIN)
@@ -204,10 +206,10 @@ endif
 
 # if project is a library source, compile the archive and link output.elf against the archive rather than source objects
 ifeq ($(IS_LIBRARY),1)
-ELF_DEPS=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
+ELF_DEPS+=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
 else
-ELF_DEPS=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
+ELF_DEPS+=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
 
 $(MONOLITH_BIN): $(MONOLITH_ELF) $(BINDIR)
