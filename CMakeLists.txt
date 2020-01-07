@@ -1,39 +1,33 @@
 cmake_minimum_required(VERSION 3.6)
 
-set(CMAKE_SYSTEM_PROCESSOR arm)
-set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+option(V5_COMPILE "Compile for the V5 BRAIN" ON)
 
-set(tools /usr/bin)
-set(CMAKE_C_COMPILER ${tools}/arm-none-eabi-gcc)
-set(CMAKE_CXX_COMPILER ${tools}/arm-none-eabi-g++)
-set(STRIP ${tools}/arm-none-eabi-strip)
-set(ROOT ${PROSPROJECT_SOURCE_DIR})
+if(V5_COMPILE)
+	set(CMAKE_SYSTEM_PROCESSOR arm)
+   	set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+
+   	set(tools /usr/bin)
+   	set(CMAKE_C_COMPILER ${tools}/arm-none-eabi-gcc)
+   	set(CMAKE_CXX_COMPILER ${tools}/arm-none-eabi-g++)
+   	set(STRIP ${tools}/arm-none-eabi-strip)
+endif()
 
 project(PROSPROJECT)
+
+# Platform neutral 
+set(ROOT ${PROSPROJECT_SOURCE_DIR})
 
 include_directories(include
 					firmware/libv5rts/sdk/vexv5/include
 					tests/include)
 
 
-set(WARNFLAGS -Wall -Wpedantic)
-set(MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g)
-set(CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
-set(GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
+list(APPEND WARNFLAGS -Wall -Wpedantic)
+list(APPEND MFLAGS -Os -g)
+list(APPEND CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+list(APPEND GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
 
-add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=gnu++17")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=gnu11")
-
-set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
-set(LINKERSCRIPT ./firmware/v5.ld)
-
-set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
-set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
-
-enable_language(ASM)
-
-add_executable(PROSPROJECT
+list(APPEND SRC_FILES
 src/common/cobs.c
 src/common/gid.c
 src/common/linkedlist.c
@@ -70,34 +64,57 @@ src/system/cpp_support.cpp
 src/system/startup.c
 src/system/rtos_hooks.c
 src/system/unwind.c
-src/system/xilinx_vectors.s
-
 tests/testhost.cpp
 )
 
+if(V5_COMPILE)
+   list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
+   
+   set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
+   set(LINKERSCRIPT ./firmware/v5.ld)
+   
+   set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
+   set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
+
+   list(APPEND SRC_FILES
+   src/system/xilinx_vectors.s
+   )
+endif()
+
+add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
+list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
+list(APPEND CMAKE_C_FLAGS --std=gnu11)
+
 add_subdirectory(src/display)
-add_subdirectory(src/rtos)
+set(BUILT_LIBRARIES ./src/display/libLVGL.a)
 
-add_custom_command(TARGET PROSPROJECT
-						  PRE_LINK
-						  COMMAND mkdir -p ./firmware
-						  COMMAND cp ../firmware/*.ld ./firmware/
-						  BYPRODUCTS v5-common.ld v5-hot.ld v5.ld
+enable_language(ASM)
+
+add_executable(PROSPROJECT
+${SRC_FILES}
 )
 
-add_custom_command(TARGET PROSPROJECT
-						  PRE_LINK
-						  COMMAND ${STRIP} libv5rts.a @${PROJECT_SOURCE_DIR}/libv5rts-strip-options.txt -o ${PATCHED_SDK}
-						  DEPENDS ${SDK_PATH}/libv5rts.a
-						  WORKING_DIRECTORY ${SDK_PATH}
-						  )
+add_dependencies(PROSPROJECT LVGL)
 
-add_dependencies(PROSPROJECT
-LVGL
-RTOS
-)
+if(V5_COMPILE)
+   add_dependencies(PROSPROJECT RTOS)
+   set(BUILT_LIBRARIES "${BUILT_LIBRARIES},./src/rtos/libRTOS.a")
+   add_subdirectory(src/rtos)
 
 
-set(BUILTLIBRARIES ./src/rtos/libRTOS.a,./src/display/libLVGL.a)
+   add_custom_command(TARGET PROSPROJECT
+							 PRE_LINK
+						  	 COMMAND mkdir -p ./firmware
+						  	 COMMAND cp ../firmware/*.ld ./firmware/
+						  	 BYPRODUCTS v5-common.ld v5-hot.ld v5.ld
+							 )
 
-target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILTLIBRARIES},${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
+   add_custom_command(TARGET PROSPROJECT
+						  	 PRE_LINK
+						  	 COMMAND ${STRIP} libv5rts.a @${PROJECT_SOURCE_DIR}/libv5rts-strip-options.txt -o ${PATCHED_SDK}
+						  	 DEPENDS ${SDK_PATH}/libv5rts.a
+						  	 WORKING_DIRECTORY ${SDK_PATH}
+						  	 )
+
+   target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
+endif()
