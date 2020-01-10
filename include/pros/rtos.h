@@ -21,6 +21,7 @@
 #ifndef _PROS_RTOS_H_
 #define _PROS_RTOS_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
