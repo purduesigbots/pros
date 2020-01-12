@@ -18,6 +18,7 @@
 #ifndef _PROS_ADI_H_
 #define _PROS_ADI_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 #ifndef PROS_ERR
 #define PROS_ERR (INT32_MAX)

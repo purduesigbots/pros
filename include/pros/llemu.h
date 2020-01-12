@@ -24,6 +24,7 @@
 #define _PROS_LLEMU_H_
 
 #include <errno.h>
+#include <stdbool.h>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
