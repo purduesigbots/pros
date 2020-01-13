@@ -6,15 +6,12 @@ if(V5_COMPILE)
 	set(CMAKE_SYSTEM_PROCESSOR arm)
    	set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-   	set(tools /usr/bin)
-   	set(CMAKE_C_COMPILER ${tools}/arm-none-eabi-gcc)
-   	set(CMAKE_CXX_COMPILER ${tools}/arm-none-eabi-g++)
-   	set(STRIP ${tools}/arm-none-eabi-strip)
+   	set(CMAKE_C_COMPILER arm-none-eabi-gcc)
+   	set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
+   	set(STRIP arm-none-eabi-strip)
 endif()
 
 project(PROSPROJECT)
-
-set(ROOT ${PROSPROJECT_SOURCE_DIR})
 
 include_directories(include
 					firmware/libv5rts/sdk/vexv5/include
@@ -72,14 +69,12 @@ if(V5_COMPILE)
 	set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
    	set(LINKERSCRIPT ./firmware/v5.ld)
    
-	set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
+	set(SDK_PATH ${PROSPROJECT_SOURCE_DIR}/firmware/libv5rts/sdk/vexv5)
    	set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
    	list(APPEND SRC_FILES
    		src/system/xilinx_vectors.s
    	)
-else()
-	#list(APPEND MFLAGS 
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
