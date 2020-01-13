@@ -14,7 +14,6 @@ endif()
 
 project(PROSPROJECT)
 
-# Platform neutral 
 set(ROOT ${PROSPROJECT_SOURCE_DIR})
 
 include_directories(include
@@ -28,57 +27,59 @@ list(APPEND CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 list(APPEND GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
 
 list(APPEND SRC_FILES
-src/common/cobs.c
-src/common/gid.c
-src/common/linkedlist.c
-src/common/set.c
-src/common/string.c
-src/devices/battery.c
-src/devices/controller.c
-src/devices/registry.c
-src/devices/vdml.c
-src/devices/vdml_adi.c
-src/devices/vdml_motors.c
-src/devices/vdml_serial.c
-src/devices/vdml_vision.c
-src/system/dev/dev_driver.c
-src/system/dev/ser_daemon.c
-src/system/dev/ser_driver.c
-src/system/dev/usd_driver.c
-src/system/dev/vfs.c
-src/system/envlock.c
-src/system/hot.c
-src/system/mlock.c
-src/system/newlib_stubs.c
-src/system/system_daemon.c
-src/system/user_functions.c
-src/devices/battery.cpp
-src/devices/controller.cpp
-src/devices/vdml_adi.cpp
-src/devices/vdml_motors.cpp
-src/devices/vdml_serial.cpp
-src/devices/vdml_vision.cpp
-src/display/llemu.cpp
-src/rtos/rtos.cpp
-src/system/cpp_support.cpp
-src/system/startup.c
-src/system/rtos_hooks.c
-src/system/unwind.c
-tests/testhost.cpp
+	src/common/cobs.c
+	src/common/gid.c
+	src/common/linkedlist.c
+	src/common/set.c
+	src/common/string.c
+	src/devices/battery.c
+	src/devices/controller.c
+	src/devices/registry.c
+	src/devices/vdml.c
+	src/devices/vdml_adi.c
+	src/devices/vdml_motors.c
+	src/devices/vdml_serial.c
+	src/devices/vdml_vision.c
+	src/system/dev/dev_driver.c
+	src/system/dev/ser_daemon.c
+	src/system/dev/ser_driver.c
+	src/system/dev/usd_driver.c
+	src/system/dev/vfs.c
+	src/system/envlock.c
+	src/system/hot.c
+	src/system/mlock.c
+	src/system/newlib_stubs.c
+	src/system/system_daemon.c
+	src/system/user_functions.c
+	src/devices/battery.cpp
+	src/devices/controller.cpp
+	src/devices/vdml_adi.cpp
+	src/devices/vdml_motors.cpp
+	src/devices/vdml_serial.cpp
+	src/devices/vdml_vision.cpp
+	src/display/llemu.cpp
+	src/rtos/rtos.cpp
+	src/system/cpp_support.cpp
+	src/system/startup.c
+	src/system/rtos_hooks.c
+	src/system/unwind.c
+	tests/testhost.cpp
 )
 
 if(V5_COMPILE)
-   list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
+	list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
    
-   set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
-   set(LINKERSCRIPT ./firmware/v5.ld)
+	set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
+   	set(LINKERSCRIPT ./firmware/v5.ld)
    
-   set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
-   set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
+	set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
+   	set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
-   list(APPEND SRC_FILES
-   src/system/xilinx_vectors.s
-   )
+   	list(APPEND SRC_FILES
+   		src/system/xilinx_vectors.s
+   	)
+else()
+	#list(APPEND MFLAGS 
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
@@ -91,7 +92,7 @@ set(BUILT_LIBRARIES ./src/display/libLVGL.a)
 enable_language(ASM)
 
 add_executable(PROSPROJECT
-${SRC_FILES}
+	${SRC_FILES}
 )
 
 add_dependencies(PROSPROJECT LVGL)
