@@ -64,14 +64,15 @@ list(APPEND SRC_FILES
 	src/system/rtos_hooks.c
 	src/system/unwind.c
 	tests/testhost.cpp
+	tests/src/basicTest.cpp
 )
 
 if(V5_COMPILE)
 	list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
-   
+
 	set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
    	set(LINKERSCRIPT ./firmware/v5.ld)
-   
+
 	set(SDK_PATH ${ROOT}/firmware/libv5rts/sdk/vexv5)
    	set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
@@ -79,15 +80,19 @@ if(V5_COMPILE)
    		src/system/xilinx_vectors.s
    	)
 else()
-	#list(APPEND MFLAGS 
+	#list(APPEND MFLAGS
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
 list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
 list(APPEND CMAKE_C_FLAGS --std=gnu11)
 
+
 add_subdirectory(src/display)
 set(BUILT_LIBRARIES ./src/display/libLVGL.a)
+set(SDK_PATH ${PROSPROJECT_SOURCE_DIR}/firmware/libv5rts/sdk/vexv5)
+set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
+
 
 enable_language(ASM)
 
