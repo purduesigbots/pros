@@ -9,13 +9,14 @@ if(V5_COMPILE)
    	set(CMAKE_C_COMPILER arm-none-eabi-gcc)
    	set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
    	set(STRIP arm-none-eabi-strip)
+else()
+	include_directories(tests/freeRTOSLinux/include tests/freeRTOSLinux/include/rtos)
 endif()
 
 project(PROSPROJECT)
 
 include_directories(include
-					firmware/libv5rts/sdk/vexv5/include
-					tests/include)
+					firmware/libv5rts/sdk/vexv5/include)
 
 
 list(APPEND WARNFLAGS -Wall -Wpedantic)
@@ -75,14 +76,16 @@ if(V5_COMPILE)
    	list(APPEND SRC_FILES
    		src/system/xilinx_vectors.s
    	)
+else()
+	list(APPEND MFLAGS -DNO_RTOS -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0)
+
+	include_directories(/mnt/d/Code/newlib/newlib/libc/include/)
+	set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
-list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
-list(APPEND CMAKE_C_FLAGS --std=gnu11)
-
-add_subdirectory(src/display)
-set(BUILT_LIBRARIES ./src/display/libLVGL.a)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=gnu++17")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=gnu11")
 
 enable_language(ASM)
 
@@ -90,13 +93,14 @@ add_executable(PROSPROJECT
 	${SRC_FILES}
 )
 
-add_dependencies(PROSPROJECT LVGL)
-
 if(V5_COMPILE)
    add_dependencies(PROSPROJECT RTOS)
    set(BUILT_LIBRARIES "${BUILT_LIBRARIES},./src/rtos/libRTOS.a")
    add_subdirectory(src/rtos)
 
+   add_dependencies(PROSPROJECT LVGL)
+   set(BUILT_LIBRARIES "${BUILt_LIBRARIES},./src/display/libLVGL.a")
+   add_subdirectory(src/display)
 
    add_custom_command(TARGET PROSPROJECT
 							 PRE_LINK
