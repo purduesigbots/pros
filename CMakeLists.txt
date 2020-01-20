@@ -62,11 +62,13 @@ list(APPEND SRC_FILES
 	src/system/rtos_hooks.c
 	src/system/unwind.c
 	tests/testhost.cpp
+	tests/src/basicTest.cpp
+	#src/main.cpp
 )
 
 if(V5_COMPILE)
 	list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
-   
+
 	set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
    	set(LINKERSCRIPT ./firmware/v5.ld)
    
@@ -84,8 +86,14 @@ else()
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=gnu++17")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=gnu11")
+list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
+list(APPEND CMAKE_C_FLAGS --std=gnu11)
+
+
+add_subdirectory(src/display)
+set(BUILT_LIBRARIES ./src/display/libLVGL.a)
+set(SDK_PATH ${PROSPROJECT_SOURCE_DIR}/firmware/libv5rts/sdk/vexv5)
+set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
 enable_language(ASM)
 
@@ -97,10 +105,6 @@ if(V5_COMPILE)
    add_dependencies(PROSPROJECT RTOS)
    set(BUILT_LIBRARIES "${BUILT_LIBRARIES},./src/rtos/libRTOS.a")
    add_subdirectory(src/rtos)
-
-   add_dependencies(PROSPROJECT LVGL)
-   set(BUILT_LIBRARIES "${BUILt_LIBRARIES},./src/display/libLVGL.a")
-   add_subdirectory(src/display)
 
    add_custom_command(TARGET PROSPROJECT
 							 PRE_LINK
@@ -116,5 +120,11 @@ if(V5_COMPILE)
 						  	 WORKING_DIRECTORY ${SDK_PATH}
 						  	 )
 
-   target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
+   add_custom_command(TARGET PROSPROJECT
+			                 POST_BUILD
+							 COMMAND arm-none-eabi-objcopy PROSPROJECT -O binary -R .hot_init TESTMONOLITH.bin
+							 DEPENDS PROSPROJECT
+							 BYPRODUCTS TESTMONOLITH.bin)
+
+   target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lgcc,-lstdc++,--end-group)
 endif()
