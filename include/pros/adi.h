@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,6 +18,7 @@
 #ifndef _PROS_ADI_H_
 #define _PROS_ADI_H_
 
+#include <stdbool.h>
 #include <stdint.h>
 #ifndef PROS_ERR
 #define PROS_ERR (INT32_MAX)
