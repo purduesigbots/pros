@@ -65,6 +65,7 @@ list(APPEND SRC_FILES
 	src/system/unwind.c
 	tests/testhost.cpp
 	tests/src/basicTest.cpp
+	#src/main.cpp
 )
 
 if(V5_COMPILE)
@@ -80,7 +81,7 @@ if(V5_COMPILE)
    		src/system/xilinx_vectors.s
    	)
 else()
-	#list(APPEND MFLAGS
+
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
@@ -122,5 +123,11 @@ if(V5_COMPILE)
 						  	 WORKING_DIRECTORY ${SDK_PATH}
 						  	 )
 
-   target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lc,-lm,-lgcc,-lstdc++,-lsupc++,--end-group)
+   add_custom_command(TARGET PROSPROJECT
+			                 POST_BUILD
+							 COMMAND arm-none-eabi-objcopy PROSPROJECT -O binary -R .hot_init TESTMONOLITH.bin
+							 DEPENDS PROSPROJECT
+							 BYPRODUCTS TESTMONOLITH.bin)
+
+   target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lgcc,-lstdc++,--end-group)
 endif()
