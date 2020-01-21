@@ -25,14 +25,6 @@ double Imu::get_heading() const {
 	return pros::c::imu_get_heading(_port);
 }
 
-double Imu::get_vex_degrees() const {
-	return pros::c::imu_get_vex_degrees(_port);
-}
-
-double Imu::get_vex_heading() const {
-    return pros::c::imu_get_vex_heading(_port);
-}
-
 pros::c::quaternion_s_t Imu::get_quaternion() const {
 	return pros::c::imu_get_quaternion(_port);
 }
