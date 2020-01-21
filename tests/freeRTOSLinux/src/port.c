@@ -316,14 +316,14 @@ static void TickSignalHandler( int sig )
              */
             xTaskIncrementTick();
 
-            success = LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToSuspend);
+            success = LookupThread(task_get_current(), &ThreadToSuspend);
             assert(success);
 
             /* Select Next Task. */
 #if ( configUSE_PREEMPTION == 1 )
             vTaskSwitchContext();
 #endif
-            success = LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToResume);
+            success = LookupThread(task_get_current(), &ThreadToResume);
             assert(success);
 
             /* The only thread that can process this tick is the running thread. */
@@ -588,7 +588,7 @@ portBASE_TYPE xPortStartScheduler( void )
 
     vPortEnableInterrupts();
 
-    success = LookupThread( xTaskGetCurrentTaskHandle(), &FirstThread);
+    success = LookupThread( task_get_current(), &FirstThread);
     assert(success);
 
     /* Start the first task. */
@@ -737,12 +737,12 @@ void vPortYield( void )
     rc = pthread_mutex_lock(&xSingleThreadMutex);
     assert(rc == 0);
 
-    success = LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToSuspend);
+    success = LookupThread(task_get_current(), &ThreadToSuspend);
     assert(success);
 
     vTaskSwitchContext();
 
-    success = LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToResume);
+    success = LookupThread(task_get_current(), &ThreadToResume);
     assert(success);
 
     if ( !pthread_equal(ThreadToSuspend, ThreadToResume) )
@@ -803,13 +803,13 @@ void vPortForciblyEndThread( void *pxTaskToDelete )
     success = LookupThread(hTaskToDelete, &ThreadToDelete);
     (void)success;
 
-    LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToResume);
+    LookupThread(task_get_current(), &ThreadToResume);
 
     if ( pthread_equal(ThreadToResume, ThreadToDelete) )
     {
         /* This is a suicidal thread, need to select a different task to run. */
         vTaskSwitchContext();
-        LookupThread(xTaskGetCurrentTaskHandle(), &ThreadToResume);
+        LookupThread(task_get_current(), &ThreadToResume);
     }
 
     if ( !pthread_equal(pthread_self(), ThreadToDelete) )

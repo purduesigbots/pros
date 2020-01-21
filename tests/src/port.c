@@ -142,7 +142,7 @@ void vPortStartFirstTask( void );
 portSTACK_TYPE *pxPortInitialiseStack( portSTACK_TYPE *pxTopOfStack, pdTASK_CODE pxCode, void *pvParameters )
 {
 /* Should actually keep this struct on the stack. */
-xParams *pxThisThreadParams = pvPortMalloc( sizeof( xParams ) );
+xParams *pxThisThreadParams = kmalloc( sizeof( xParams ) );
 
 	(void)pthread_once( &hSigSetupThread, prvSetupSignalsAndSchedulerPolicy );
 
@@ -192,7 +192,7 @@ void vPortStartFirstTask( void )
 	vPortEnableInterrupts();
 
 	/* Start the first task. */
-	prvResumeThread( prvGetThreadHandle( xTaskGetCurrentTaskHandle() ) );
+	prvResumeThread( prvGetThreadHandle( task_get_current() ) );
 }
 /*-----------------------------------------------------------*/
 
@@ -242,7 +242,7 @@ portLONG lIndex;
 	/* Cleanup the mutexes */
 	xResult = pthread_mutex_destroy( &xSuspendResumeThreadMutex );
 	xResult = pthread_mutex_destroy( &xSingleThreadMutex );
-	vPortFree( (void *)pxThreads );
+	kfree( (void *)pxThreads );
 
 	/* Should not get here! */
 	return 0;
@@ -314,11 +314,11 @@ pthread_t xTaskToResume;
 
 	if ( 0 == pthread_mutex_lock( &xSingleThreadMutex ) )
 	{
-		xTaskToSuspend = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+		xTaskToSuspend = prvGetThreadHandle( task_get_current() );
 
 		vTaskSwitchContext();
 
-		xTaskToResume = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+		xTaskToResume = prvGetThreadHandle( task_get_current() );
 		if ( xTaskToSuspend != xTaskToResume )
 		{
 			/* Remember and switch the critical nesting. */
@@ -407,7 +407,7 @@ pthread_t xTaskToResume;
 		{
 			xServicingTick = pdTRUE;
 
-			xTaskToSuspend = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+			xTaskToSuspend = prvGetThreadHandle( task_get_current() );
 			/* Tick Increment. */
 			vTaskIncrementTick();
 
@@ -415,7 +415,7 @@ pthread_t xTaskToResume;
 #if ( configUSE_PREEMPTION == 1 )
 			vTaskSwitchContext();
 #endif
-			xTaskToResume = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+			xTaskToResume = prvGetThreadHandle( task_get_current() );
 
 			/* The only thread that can process this tick is the running thread. */
 			if ( xTaskToSuspend != xTaskToResume )
@@ -457,13 +457,13 @@ portBASE_TYPE xResult;
 	if ( 0 == pthread_mutex_lock( &xSingleThreadMutex ) )
 	{
 		xTaskToDelete = prvGetThreadHandle( hTaskToDelete );
-		xTaskToResume = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+		xTaskToResume = prvGetThreadHandle( task_get_current() );
 
 		if ( xTaskToResume == xTaskToDelete )
 		{
 			/* This is a suicidal thread, need to select a different task to run. */
 			vTaskSwitchContext();
-			xTaskToResume = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
+			xTaskToResume = prvGetThreadHandle( task_get_current() );
 		}
 
 		if ( pthread_self() != xTaskToDelete )
@@ -499,7 +499,7 @@ void *prvWaitForStart( void * pvParams )
 xParams * pxParams = ( xParams * )pvParams;
 pdTASK_CODE pvCode = pxParams->pxCode;
 void * pParams = pxParams->pvParams;
-	vPortFree( pvParams );
+	kfree( pvParams );
 
 	pthread_cleanup_push( prvDeleteThread, (void *)pthread_self() );
 
@@ -605,7 +605,7 @@ int iSchedulerPriority;
 struct sigaction sigsuspendself, sigresume, sigtick;
 portLONG lIndex;
 
-	pxThreads = ( xThreadState *)pvPortMalloc( sizeof( xThreadState ) * MAX_NUMBER_OF_TASKS );
+	pxThreads = ( xThreadState *)kmalloc( sizeof( xThreadState ) * MAX_NUMBER_OF_TASKS );
 	for ( lIndex = 0; lIndex < MAX_NUMBER_OF_TASKS; lIndex++ )
 	{
 		pxThreads[ lIndex ].hThread = ( pthread_t )NULL;

@@ -9,8 +9,6 @@ if(V5_COMPILE)
    	set(CMAKE_C_COMPILER arm-none-eabi-gcc)
    	set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
    	set(STRIP arm-none-eabi-strip)
-else()
-	include_directories(tests/freeRTOSLinux/include tests/freeRTOSLinux/include/rtos)
 endif()
 
 project(PROSPROJECT)
@@ -63,7 +61,6 @@ list(APPEND SRC_FILES
 	src/system/unwind.c
 	tests/testhost.cpp
 	tests/src/basicTest.cpp
-	#src/main.cpp
 )
 
 if(V5_COMPILE)
@@ -79,10 +76,21 @@ if(V5_COMPILE)
    		src/system/xilinx_vectors.s
    	)
 else()
-	list(APPEND MFLAGS -DNO_RTOS -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0)
+	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -nostdinc)
 
-	include_directories(/mnt/d/Code/newlib/newlib/libc/include/)
+	include_directories(/mnt/d/Code/newlib/newlib/libc/include/ 
+		                /usr/lib/gcc/x86_64-linux-gnu/7/include/)
 	set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
+
+	list(APPEND SRC_FILES
+		src/rtos/list.c
+		src/rtos/queue.c
+		src/rtos/semphr.c
+		src/rtos/stream_buffer.c
+		src/rtos/task_notify_when_deleting
+		src/rtos/tasks.c
+		src/rtos/timers.c
+		tests/freeRTOSLinux/src/port.c)
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
