@@ -41,7 +41,7 @@ typedef struct __attribute__((__packed__)) quaternion_s {
 	double w;
 } quaternion_s_t;
 
-struct __attribute__((__packed__)) imu_raw_s {
+struct imu_raw_s {
 	double x;
 	double y;
 	double z;
@@ -95,25 +95,6 @@ int32_t imu_reset(uint8_t port);
 double imu_get_rotation(uint8_t port);
 
 /**
- * Get the total number of degrees the Inertial Sensor has spun about the z-axis
- *
- * This function is an alias for imu_get_rotation. It is preserved for use by
- * those familiar with the vexOS API.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
- * errno.
- */
-double imu_get_vex_heading(uint8_t port);
-
-/**
  * Get the Inertial Sensor's heading relative to the initial direction of its
  * x-axis
  *
@@ -133,26 +114,6 @@ double imu_get_vex_heading(uint8_t port);
  * errno.
  */
 double imu_get_heading(uint8_t port);
-
-/**
- * Get the Inertial Sensor's heading relative to the initial direction of its
- * x-axis
- *
- * This function is an alias for imu_get_heading. It is preserved for use by
- * those familiar with the vexOS API.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
- * errno.
- */
-double imu_get_vex_degrees(uint8_t port);
 
 /**
  * Get a quaternion representing the Inertial Sensor's orientation

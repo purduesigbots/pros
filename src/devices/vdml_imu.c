@@ -30,10 +30,6 @@ int32_t imu_reset(uint8_t port) {
 }
 
 double imu_get_rotation(uint8_t port) {
-	return imu_get_vex_heading(port);
-}
-
-double imu_get_vex_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
 	double rtn = vexDeviceImuHeadingGet(device->device_info);
@@ -41,10 +37,6 @@ double imu_get_vex_heading(uint8_t port) {
 }
 
 double imu_get_heading(uint8_t port) {
-	return imu_get_vex_degrees(port);
-}
-
-double imu_get_vex_degrees(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
 	double rtn = vexDeviceImuDegreesGet(device->device_info);
