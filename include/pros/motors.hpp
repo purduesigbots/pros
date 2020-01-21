@@ -814,6 +814,13 @@ class Motor {
 	 */
 	virtual std::int32_t get_voltage_limit(void) const;
 
+	/**
+	 * Gets the port number of the motor.
+	 *
+	 * \return The motor's port number.
+	 */
+	virtual std::uint8_t get_port(void) const;
+
 	private:
 	const std::uint8_t _port;
 };
