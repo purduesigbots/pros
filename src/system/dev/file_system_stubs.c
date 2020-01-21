@@ -14,53 +14,45 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <sys/stat.h>
 #include <errno.h>
+#include <sys/stat.h>
 
-int chdir(const char* path)
-{
-  errno = ENOSYS;
-  return -1;
+int chdir(const char* path) {
+	errno = ENOSYS;
+	return -1;
 }
 
-int mkdir(const char* pathname, mode_t mode)
-{
-  errno = ENOSYS;
-  return -1;
+int mkdir(const char* pathname, mode_t mode) {
+	errno = ENOSYS;
+	return -1;
 }
 
-int chmod(const char* pathname, mode_t mode)
-{
-  errno = ENOSYS;
-  return -1;
+int chmod(const char* pathname, mode_t mode) {
+	errno = ENOSYS;
+	return -1;
 }
 
-long pathconf(const char* path, int name)
-{
-  errno = ENOSYS;
-  return -1;
+long pathconf(const char* path, int name) {
+	errno = ENOSYS;
+	return -1;
 }
 
-char* getcwd(char* buf, size_t size)
-{
-  errno = ENOSYS;
-  return NULL;
+char* getcwd(char* buf, size_t size) {
+	errno = ENOSYS;
+	return NULL;
 }
 
-int _unlink(const char* name)
-{
-  errno = ENOSYS;
-  return -1;
+int _unlink(const char* name) {
+	errno = ENOSYS;
+	return -1;
 }
 
-int _link(const char* old, const char* new)
-{
-  errno = ENOSYS;
-  return -1;
+int _link(const char* old, const char* new) {
+	errno = ENOSYS;
+	return -1;
 }
 
-int _stat(const char* file, struct stat* st)
-{
-  errno = ENOSYS;
-  return -1;
+int _stat(const char* file, struct stat* st) {
+	errno = ENOSYS;
+	return -1;
 }
