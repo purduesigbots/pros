@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -241,7 +241,8 @@ class Controller {
 	 * Clears all of the lines on the controller screen.
 	 *
 	 * \note Controller text setting is currently in beta, so continuous, fast
-	 * updates will not work well.
+	 * updates will not work well. On vexOS version 1.0.0 this function will
+	 * block for 110ms.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -315,6 +316,15 @@ std::uint8_t is_autonomous(void);
 std::uint8_t is_connected(void);
 std::uint8_t is_disabled(void);
 }  // namespace competition
+
+namespace usd {
+/**
+ * Checks if the SD card is installed.
+ *
+ * \return 1 if the SD card is installed, 0 otherwise
+ */
+std::int32_t is_installed(void);
+}  // namespace usd
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_

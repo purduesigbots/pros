@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Vision Sensor.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -59,6 +59,10 @@ int32_t Vision::get_object_count(void) const {
 
 std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
+}
+
+std::uint8_t Vision::get_port(void) const {
+	return _port;
 }
 
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,

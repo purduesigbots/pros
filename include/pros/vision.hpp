@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -220,6 +220,13 @@ class Vision {
 	 * \return The current RGB white balance setting of the sensor
 	 */
 	std::int32_t get_white_balance(void) const;
+
+	/**
+	 * Gets the port number of the Vision Sensor.
+	 *
+	 * \return The vision sensor's port number.
+	 */
+	std::uint8_t get_port(void) const;
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.

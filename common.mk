@@ -5,7 +5,7 @@ MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
 
-WARNFLAGS+=
+WARNFLAGS+=-Wno-psabi
 
 SPACE :=
 SPACE +=
@@ -14,7 +14,8 @@ COMMA := ,
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR))
 DEPFLAGS = -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.Td
-RENAMEDEPENDENCYFILE = $(VV)mv -f $(DEPDIR)/$$*.Td $(DEPDIR)/$$*.d && touch $$@
+MAKEDEPFOLDER = -$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst $(BINDIR)/%, %, $(ROOT)/$$@))
+RENAMEDEPENDENCYFILE = -$(VV)mv -f $(DEPDIR)/$$*.Td $$(patsubst $(SRCDIR)/%, $(DEPDIR)/%.d, $(ROOT)/$$<) && touch $$@
 
 LIBRARIES+=$(wildcard $(FWDIR)/*.a)
 # Cannot include newlib and libc because not all of the req'd stubs are implemented
@@ -167,6 +168,8 @@ ifeq ($(USE_PACKAGE),1)
 DEFAULT_BIN=$(HOT_BIN)
 endif
 
+-include $(wildcard $(FWDIR)/*.mk)
+
 .PHONY: all clean quick
 
 quick: $(DEFAULT_BIN)
@@ -204,10 +207,10 @@ endif
 
 # if project is a library source, compile the archive and link output.elf against the archive rather than source objects
 ifeq ($(IS_LIBRARY),1)
-ELF_DEPS=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
+ELF_DEPS+=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
 else
-ELF_DEPS=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
+ELF_DEPS+=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
 
 $(MONOLITH_BIN): $(MONOLITH_ELF) $(BINDIR)
@@ -249,7 +252,7 @@ define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename $1).d
 	$(VV)mkdir -p $$(dir $$@)
-	$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst bin/%, %, $$@))
+	$(MAKEDEPFOLDER)
 	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
 	$(RENAMEDEPENDENCYFILE)
 endef
@@ -259,7 +262,7 @@ define cxx_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename %).d
 	$(VV)mkdir -p $$(dir $$@)
-	$(VV)mkdir -p $(DEPDIR)/$$(dir $$(patsubst bin/%, %, $$@))
+	$(MAKEDEPFOLDER)
 	$$(call test_output_2,Compiled $$< ,$(CXX) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CXXFLAGS) $(EXTRA_CXXFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
 	$(RENAMEDEPENDENCYFILE)
 endef
@@ -282,4 +285,4 @@ cxx-sysroot:
 $(DEPDIR)/%.d: ;
 .PRECIOUS: $(DEPDIR)/%.d
 
-include $(wildcard $(patsubst ./src/%,$(DEPDIR)/%.d,$(basename $(CSRC) $(CXXSRC))))
+include $(wildcard $(patsubst $(SRCDIR)/%,$(DEPDIR)/%.d,$(CSRC) $(CXXSRC)))

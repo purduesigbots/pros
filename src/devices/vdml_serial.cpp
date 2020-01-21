@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with V5 Generic Serial devices.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -39,6 +39,10 @@ std::int32_t Serial::get_read_avail() const {
 
 std::int32_t Serial::get_write_free() const {
 	return serial_get_write_free(_port);
+}
+
+std::uint8_t Serial::get_port() const {
+	return _port;
 }
 
 std::int32_t Serial::peek_byte() const {

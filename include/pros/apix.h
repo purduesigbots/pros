@@ -12,7 +12,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -369,6 +369,7 @@ void queue_reset(queue_t queue);
 typedef enum v5_device_e {
 	E_DEVICE_NONE = 0,
 	E_DEVICE_MOTOR = 2,
+	E_DEVICE_IMU = 6,
 	E_DEVICE_RADIO = 8,
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,
