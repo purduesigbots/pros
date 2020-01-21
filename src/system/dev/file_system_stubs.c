@@ -35,7 +35,7 @@ int chmod(const char* pathname, mode_t mode)
   return -1;
 }
 
-long pathconf(char* path, int name)
+long pathconf(const char* path, int name)
 {
   errno = ENOSYS;
   return -1;
@@ -47,20 +47,20 @@ char* getcwd(char* buf, size_t size)
   return NULL;
 }
 
-int _unlink(char* name)
+int _unlink(const char* name)
 {
-  errno = ENOENT;
+  errno = ENOSYS;
   return -1;
 }
 
-int _link(char* old, char* new)
+int _link(const char* old, const char* new)
 {
-  errno = EMLINK;
+  errno = ENOSYS;
   return -1;
 }
 
-int _stat(char* file, struct stat* st)
+int _stat(const char* file, struct stat* st)
 {
-  st->st_mode = S_IFCHR;
-  return 0;
+  errno = ENOSYS;
+  return -1;
 }
