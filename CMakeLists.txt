@@ -76,7 +76,7 @@ if(V5_COMPILE)
    		src/system/xilinx_vectors.s
    	)
 else()
-	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 -nostdinc)
+	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 )
 
 	include_directories(/mnt/d/Code/newlib/newlib/libc/include/ 
 		                /usr/lib/gcc/x86_64-linux-gnu/7/include/)

@@ -50,8 +50,12 @@ extern "C" {
 #else
 #define kassert(cond)
 #endif
-
+ 
+#ifdef LINUX_COMPILE
+typedef unsigned long task_stack_t;
+#else
 typedef uint32_t task_stack_t;
+#endif
 
 /**
  * Suspends the scheduler without disabling interrupts. context switches will
