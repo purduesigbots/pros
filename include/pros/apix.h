@@ -29,6 +29,7 @@
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
 #include "pros/serial.h"
+#include "rtos/FreeRTOS.h"
 
 #ifdef __cplusplus
 #include "pros/serial.hpp"
@@ -551,6 +552,109 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 #define DEVCTL_SET_BAUDRATE 17
 
 #ifdef __cplusplus
+}
+}
+#endif
+
+#ifdef __cplusplus
+namespace pros {
+extern "C" {
+#define task_t pros::task_t
+#define task_fn_t pros::task_fn_t
+#define mutex_t pros::mutex_t
+#define sem_t pros::c::sem_t
+#define queue_t pros::c::queue_t
+#endif
+
+typedef uint32_t task_stack_t;
+
+/**
+ * Creates a task using statically allocated buffers. All tasks used by the PROS
+ * system must use statically allocated buffers.
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENOMEM - The stack cannot be used as the TCB was not created.
+ *
+ * \param function
+ *        Pointer to the task entry function
+ * \param parameters
+ *        Pointer to memory that will be used as a parameter for the task being
+ *        created. This memory should not typically come from stack, but rather
+ *        from dynamically (i.e., malloc'd) or statically allocated memory.
+ * \param prio
+ *        The priority at which the task should run.
+ *        TASK_PRIO_DEFAULT plus/minus 1 or 2 is typically used.
+ * \param stack_depth
+ *        The number of words (i.e. 4 * stack_depth) available on the task's
+ *        stack. TASK_STACK_DEPTH_DEFAULT is typically sufficienct.
+ * \param name
+ *        A descriptive name for the task.  This is mainly used to facilitate
+ *        debugging. The name may be up to 32 characters long.
+ *
+ * \return A handle by which the newly created task can be referenced. If an
+ * error occurred, NULL will be returned and errno can be checked for hints as
+ * to why task_create failed.
+ */
+task_t task_create_static(task_fn_t task_code, void* const param, uint32_t priority, const size_t stack_size,
+                          const char* const name, task_stack_t* const stack_buffer, static_task_s_t* const task_buffer);
+
+/**
+ * Creates a statically allocated mutex.
+ *
+ * All FreeRTOS primitives must be created statically if they are required for
+ * operation of the kernel.
+ *
+ * \param[out] mutex_buffer
+ *             A buffer to store the mutex in
+ *
+ * \return A handle to a newly created mutex. If an error occurred, NULL will be
+ * returned and errno can be checked for hints as to why mutex_create failed.
+ */
+mutex_t mutex_create_static(static_sem_s_t* mutex_buffer);
+
+/**
+ * Creates a statically allocated semaphore.
+ *
+ * All FreeRTOS primitives must be created statically if they are required for
+ * operation of the kernel.
+ *
+ * \param max_count
+ *        The maximum count value that can be reached.
+ * \param init_count
+ *        The initial count value assigned to the new semaphore.
+ * \param[out] semaphore_buffer
+ *             A buffer to store the semaphore in
+ *
+ * \return A newly created semaphore. If an error occurred, NULL will be
+ * returned and errno can be checked for hints as to why sem_create failed.
+ */
+sem_t sem_create_static(uint32_t max_count, uint32_t init_count, static_sem_s_t* semaphore_buffer);
+
+/**
+ * Creates a statically allocated queue.
+ *
+ * All FreeRTOS primitives must be created statically if they are required for
+ * operation of the kernel.
+ *
+ * \param length
+ *        The maximum number of items that the queue can contain.
+ * \param item_size
+ *        The number of bytes each item in the queue will require.
+ * \param[out] storage_buffer
+ *             A memory location for data storage
+ * \param[out] queue_buffer
+ *             A buffer to store the queue in
+ *
+ * \return A handle to a newly created queue, or NULL if the queue cannot be
+ * created.
+ */
+queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer,
+                            static_queue_s_t* queue_buffer);
+
+#ifdef __cplusplus
+#undef task_t
+#undef task_fn_t
+#undef mutex_t
 }
 }
 #endif
