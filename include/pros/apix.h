@@ -552,13 +552,6 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 #define DEVCTL_SET_BAUDRATE 17
 
 #ifdef __cplusplus
-}
-}
-#endif
-
-#ifdef __cplusplus
-namespace pros {
-extern "C" {
 #define task_t pros::task_t
 #define task_fn_t pros::task_fn_t
 #define mutex_t pros::mutex_t
@@ -655,6 +648,8 @@ queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storag
 #undef task_t
 #undef task_fn_t
 #undef mutex_t
+#undef sem_t
+#undef queue_t
 }
 }
 #endif
