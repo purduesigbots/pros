@@ -77,9 +77,10 @@ if(V5_COMPILE)
    	)
 else()
 	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 )
+	#add_compile_options(-nostdinc)
 
-	include_directories(/mnt/d/Code/newlib/newlib/libc/include/ 
-		                /usr/lib/gcc/x86_64-linux-gnu/7/include/)
+	include_directories(tests/include)
+	#include_directories(/mnt/d/Code/newlib_obj/einstall/x86_64-elf/include)
 	set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
 
 	list(APPEND SRC_FILES

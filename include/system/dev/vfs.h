@@ -20,6 +20,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#ifdef LINUX_COMPILE
+#include "reent.h"
+#endif
+
 struct fs_driver {
 	ssize_t (*read_r)(struct _reent*, void* const, uint8_t*, const size_t);
 	int (*write_r)(struct _reent*, void* const, const uint8_t*, const size_t);
