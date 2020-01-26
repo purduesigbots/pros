@@ -29,7 +29,122 @@
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
 #include "pros/serial.h"
-#include "rtos/FreeRTOS.h"
+
+
+/******************************************************************************/
+/**                            RTOS CONFIGURATION                            **/
+/******************************************************************************/
+
+struct xSTATIC_LIST_ITEM {
+	uint32_t xDummy1;
+	void *pvDummy2[ 4 ];
+};
+typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
+
+struct xSTATIC_MINI_LIST_ITEM {
+	uint32_t xDummy1;
+	void *pvDummy2[ 2 ];
+};
+typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
+
+typedef struct xSTATIC_LIST {
+	uint32_t uxDummy1;
+	void *pvDummy2;
+	StaticMiniListItem_t xDummy3;
+} StaticList_t;
+
+#define portUSING_MPU_WRAPPERS                  0
+#define configMAX_TASK_NAME_LEN                 ( 32 )
+#define portSTACK_GROWTH                        ( -1 )
+#define configRECORD_STACK_HIGH_ADDRESS         0
+#define portCRITICAL_NESTING_IN_TCB             0
+#define configUSE_TRACE_FACILITY                1
+#define configUSE_MUTEXES                       1
+#define configUSE_APPLICATION_TASK_TAG          0
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 2
+#define configGENERATE_RUN_TIME_STATS           1
+#define configUSE_NEWLIB_REENTRANT              1
+#define configUSE_TASK_NOTIFICATIONS            1
+#define configSUPPORT_STATIC_ALLOCATION         1
+#define configSUPPORT_DYNAMIC_ALLOCATION        1
+#define INCLUDE_xTaskAbortDelay                 1
+#define configUSE_QUEUE_SETS                    0
+
+typedef struct xSTATIC_TCB {
+	void				*pxDummy1;
+	#if ( portUSING_MPU_WRAPPERS == 1 )
+		xMPU_SETTINGS	xDummy2;
+	#endif
+	StaticListItem_t	xDummy3[ 2 ];
+	uint32_t			uxDummy5;
+	void				*pxDummy6;
+	uint8_t				ucDummy7[ configMAX_TASK_NAME_LEN ];
+	#if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
+		void			*pxDummy8;
+	#endif
+	#if ( portCRITICAL_NESTING_IN_TCB == 1 )
+		uint32_t		uxDummy9;
+	#endif
+	#if ( configUSE_TRACE_FACILITY == 1 )
+		uint32_t		uxDummy10[ 2 ];
+	#endif
+	#if ( configUSE_MUTEXES == 1 )
+		uint32_t		uxDummy12[ 2 ];
+	#endif
+	#if ( configUSE_APPLICATION_TASK_TAG == 1 )
+		void			*pxDummy14;
+	#endif
+	#if( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
+		void			*pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
+	#endif
+	#if ( configGENERATE_RUN_TIME_STATS == 1 )
+		uint32_t		ulDummy16;
+	#endif
+	#if ( configUSE_NEWLIB_REENTRANT == 1 )
+		struct	_reent	xDummy17;
+	#endif
+	#if ( configUSE_TASK_NOTIFICATIONS == 1 )
+		uint32_t 		ulDummy18;
+		uint8_t 		ucDummy19;
+	#endif
+	#if( ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) || ( portUSING_MPU_WRAPPERS == 1 ) )
+		uint8_t			uxDummy20;
+	#endif
+
+	#if( INCLUDE_xTaskAbortDelay == 1 )
+		uint8_t ucDummy21;
+	#endif
+
+} static_task_s_t;
+
+typedef struct xSTATIC_QUEUE {
+	void *pvDummy1[ 3 ];
+
+	union {
+		void *pvDummy2;
+		uint32_t uxDummy2;
+	} u;
+
+	StaticList_t xDummy3[ 2 ];
+	uint32_t uxDummy4[ 3 ];
+	uint8_t ucDummy5[ 2 ];
+
+	#if( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+		uint8_t ucDummy6;
+	#endif
+
+	#if ( configUSE_QUEUE_SETS == 1 )
+		void *pvDummy7;
+	#endif
+
+	#if ( configUSE_TRACE_FACILITY == 1 )
+		uint32_t uxDummy8;
+		uint8_t ucDummy9;
+	#endif
+
+} static_queue_s_t;
+typedef static_queue_s_t static_sem_s_t;
+
 
 #ifdef __cplusplus
 #include "pros/serial.hpp"
@@ -550,6 +665,11 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * The extra argument is the baudrate.
  */
 #define DEVCTL_SET_BAUDRATE 17
+
+
+/******************************************************************************/
+/**                       RTOS STATIC TASK FACILITIES                        **/
+/******************************************************************************/
 
 #ifdef __cplusplus
 #define task_t pros::task_t
