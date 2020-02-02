@@ -39,55 +39,55 @@
 #ifndef INC_FREERTOS_H
 
 struct xSTATIC_LIST_ITEM {
-	uint32_t xDummy1;
-	void *pvDummy2[ 4 ];
+    uint32_t xDummy1;
+    void *pvDummy2[ 4 ];
 };
 typedef struct xSTATIC_LIST_ITEM StaticListItem_t;
 
 struct xSTATIC_MINI_LIST_ITEM {
-	uint32_t xDummy1;
-	void *pvDummy2[ 2 ];
+    uint32_t xDummy1;
+    void *pvDummy2[ 2 ];
 };
 typedef struct xSTATIC_MINI_LIST_ITEM StaticMiniListItem_t;
 
 typedef struct xSTATIC_LIST {
-	uint32_t uxDummy1;
-	void *pvDummy2;
-	StaticMiniListItem_t xDummy3;
+    uint32_t uxDummy1;
+    void *pvDummy2;
+    StaticMiniListItem_t xDummy3;
 } StaticList_t;
 
 typedef struct xSTATIC_TCB {
-	void				*pxDummy1;
-	StaticListItem_t	 xDummy3[ 2 ];
-	uint32_t			 uxDummy5;
-	void				*pxDummy6;
-	uint8_t				 ucDummy7[ 32 ];
-	uint32_t		     uxDummy10[ 2 ];
-	uint32_t		     uxDummy12[ 2 ];
-	void			    *pvDummy15[ 2 ];
-	uint32_t		     ulDummy16;
-	struct	_reent	     xDummy17;
-	uint32_t 		     ulDummy18;
-	uint8_t 		     ucDummy19;
-	uint8_t			     uxDummy20;
-	uint8_t              ucDummy21;
+    void                *pxDummy1;
+    StaticListItem_t     xDummy3[ 2 ];
+    uint32_t             uxDummy5;
+    void                *pxDummy6;
+    uint8_t              ucDummy7[ 32 ];
+    uint32_t             uxDummy10[ 2 ];
+    uint32_t             uxDummy12[ 2 ];
+    void                *pvDummy15[ 2 ];
+    uint32_t             ulDummy16;
+    struct _reent        xDummy17;
+    uint32_t             ulDummy18;
+    uint8_t              ucDummy19;
+    uint8_t              uxDummy20;
+    uint8_t              ucDummy21;
 
 } static_task_s_t;
 
 typedef struct xSTATIC_QUEUE {
-	void *pvDummy1[ 3 ];
+    void *pvDummy1[ 3 ];
 
-	union {
-		void     *pvDummy2;
-		uint32_t  uxDummy2;
-	} u;
+    union {
+        void     *pvDummy2;
+        uint32_t  uxDummy2;
+    } u;
 
-	StaticList_t xDummy3[ 2 ];
-	uint32_t     uxDummy4[ 3 ];
-	uint8_t      ucDummy5[ 2 ];
-	uint8_t      ucDummy6;
-	uint32_t     uxDummy8;
-	uint8_t      ucDummy9;
+    StaticList_t xDummy3[ 2 ];
+    uint32_t     uxDummy4[ 3 ];
+    uint8_t      ucDummy5[ 2 ];
+    uint8_t      ucDummy6;
+    uint32_t     uxDummy8;
+    uint8_t      ucDummy9;
 } static_queue_s_t;
 typedef static_queue_s_t static_sem_s_t;
 
@@ -652,7 +652,7 @@ typedef uint32_t task_stack_t;
  *        debugging. The name may be up to 32 characters long.
  * \param stack_buffer
  *        Pointer to memory that will be used as the task’s stack. The pointer
- * 		  must point to a task_stack_t array that has at least stack_depth
+ *        must point to a task_stack_t array that has at least stack_depth
  *        indexes. This memory should not typically come from stack, but rather
  *        from dynamically (i.e., malloc'd) or statically allocated memory.
  * \param task_buffer
