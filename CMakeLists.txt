@@ -17,7 +17,7 @@ include_directories(include
 					firmware/libv5rts/sdk/vexv5/include)
 
 
-list(APPEND WARNFLAGS -Wall -Wpedantic)
+list(APPEND WARNFLAGS -Wall)
 list(APPEND MFLAGS -Os -g)
 list(APPEND CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 list(APPEND GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
@@ -58,7 +58,6 @@ list(APPEND SRC_FILES
 	src/system/cpp_support.cpp
 	src/system/startup.c
 	src/system/rtos_hooks.c
-	src/system/unwind.c
 	tests/testhost.cpp
 	tests/src/basicTest.cpp
 )
@@ -72,49 +71,47 @@ if(V5_COMPILE)
 	set(SDK_PATH ${PROSPROJECT_SOURCE_DIR}/firmware/libv5rts/sdk/vexv5)
    	set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
 
+	enable_language(ASM)
+
    	list(APPEND SRC_FILES
    		src/system/xilinx_vectors.s
+		src/system/unwind.c
    	)
+
+#	add_compile_options(-wpedantic)
 else()
 	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 )
 	#add_compile_options(-nostdinc)
 
 	include_directories(tests/include)
+	#include_directories(/usr/include/x86_64-linux-gnu)
+	#include_directories(/usr/include/x86_64-linux-gnu/c++/9)
+	#include_directories(/usr/include/c++/9/)
 	#include_directories(/mnt/d/Code/newlib_obj/einstall/x86_64-elf/include)
-	set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
-
+	#set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
 	list(APPEND SRC_FILES
-		src/rtos/list.c
-		src/rtos/queue.c
-		src/rtos/semphr.c
-		src/rtos/stream_buffer.c
-		src/rtos/task_notify_when_deleting
-		src/rtos/tasks.c
-		src/rtos/timers.c
-		tests/freeRTOSLinux/src/port.c)
+		tests/LinuxStubs/vexOSStubs.c)
 endif()
 
 add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
 list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
 list(APPEND CMAKE_C_FLAGS --std=gnu11)
 
+add_executable(PROSPROJECT
+	${SRC_FILES}
+)
 
 add_subdirectory(src/display)
 set(BUILT_LIBRARIES ./src/display/libLVGL.a)
 set(SDK_PATH ${PROSPROJECT_SOURCE_DIR}/firmware/libv5rts/sdk/vexv5)
 set(PATCHED_SDK ${SDK_PATH}/libv5rts.patched.a)
+add_dependencies(PROSPROJECT LVGL)
 
-enable_language(ASM)
-
-add_executable(PROSPROJECT
-	${SRC_FILES}
-)
+add_dependencies(PROSPROJECT RTOS)
+set(BUILT_LIBRARIES "${BUILT_LIBRARIES},./src/rtos/libRTOS.a")
+add_subdirectory(src/rtos)
 
 if(V5_COMPILE)
-   add_dependencies(PROSPROJECT RTOS)
-   set(BUILT_LIBRARIES "${BUILT_LIBRARIES},./src/rtos/libRTOS.a")
-   add_subdirectory(src/rtos)
-
    add_custom_command(TARGET PROSPROJECT
 							 PRE_LINK
 						  	 COMMAND mkdir -p ./firmware
@@ -136,4 +133,6 @@ if(V5_COMPILE)
 							 BYPRODUCTS TESTMONOLITH.bin)
 
    target_link_libraries(PROSPROJECT ${MFLAGS} ${WARNFLAGS} -nostdlib ${GCCFLAGS} -Wl,-T${LINKERSCRIPT},--gc-sections,--start-group,${BUILT_LIBRARIES},${LIBRARIES},-lgcc,-lstdc++,--end-group)
+else()
+	target_link_libraries(PROSPROJECT RTOS LVGL pthread)
 endif()

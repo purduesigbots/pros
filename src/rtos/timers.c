@@ -247,21 +247,21 @@ int32_t xReturn = pdFAIL;
 													pxTimerTaskStackBuffer,
 													pxTimerTaskTCBBuffer );
 
-			if( xTimerTaskHandle != NULL )
-			{
-				xReturn = pdPASS;
-			}
 		}
 		#else
 		{
-			xReturn = task_create(	prvTimerTask,
+			xTimerTaskHandle = task_create(prvTimerTask, 
+									NULL, 
+									((uint32_t)configTIMER_TASK_PRIORITY) | portPRIVILEGE_BIT,
 									configTIMER_SERVICE_TASK_NAME,
-									configTIMER_TASK_STACK_DEPTH,
-									NULL,
-									( ( uint32_t ) configTIMER_TASK_PRIORITY ) | portPRIVILEGE_BIT,
-									&xTimerTaskHandle );
+									configTIMER_TASK_STACK_DEPTH );
 		}
 		#endif /* configSUPPORT_STATIC_ALLOCATION */
+
+		if (xTimerTaskHandle != NULL) {
+			xReturn = pdPASS;
+		}
+
 	}
 	else
 	{

@@ -109,6 +109,11 @@ typedef portSTACK_TYPE task_stack_t;
 #define portREMOVE_STATIC_QUALIFIER
 /*-----------------------------------------------------------*/
 
+//TODO: FIXME and document
+#define portLOWEST_INTERRUPT_PRIORITY 30
+#define portLOWEST_USABLE_INTERRUPT_PRIORITY 29
+#define portPRIORITY_SHIFT 1
+
 
 /* Scheduler utilities. */
 extern void vPortYieldFromISR( void );

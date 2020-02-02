@@ -22,6 +22,8 @@
 #include "v5_api.h"
 #include "v5_color.h"
 
+#ifndef LINUX_COMPILE
+
 // Fast interrupt handler
 void FIQInterrupt() {
 	vexSystemFIQInterrupt();
@@ -48,6 +50,9 @@ void PrefetchAbortInterrupt() {
 void _boot() {
 	vexSystemBoot();
 }
+
+#endif  // !LINUX_COMPILE
+
 
 extern void vPortInstallFreeRTOSVectorTable(void);
 void rtos_initialize() {

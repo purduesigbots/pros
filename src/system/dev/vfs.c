@@ -55,9 +55,11 @@ void vfs_initialize(void) {
 
 	ser_initialize();
 
+#ifndef LINUX_COMPILE
 	// Force _GLOBAL_REENT initialization for C++ stdio to work. See D97
 	extern void __sinit(struct _reent * s);
 	if (!_GLOBAL_REENT->__sdidinit) __sinit(_GLOBAL_REENT);
+#endif  // !LINUX_COMPILE
 }
 
 // adds an entry to the the file system

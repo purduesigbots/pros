@@ -554,12 +554,11 @@ static void prvSetupTimerInterrupt( void )
     assert(rc == 0);
 }
 
-
+//TODO: CHanges?
 /*
  * See header file for description.
  */
-portBASE_TYPE xPortStartScheduler( void )
-{
+int32_t xPortStartScheduler(void) {
     int iSignal;
     sigset_t xSignals;
     sigset_t xSignalToBlock;
