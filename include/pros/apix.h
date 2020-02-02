@@ -35,6 +35,9 @@
 /**                            RTOS CONFIGURATION                            **/
 /******************************************************************************/
 
+// if not included rtos/FreeRTOS.h
+#ifndef INC_FREERTOS_H
+
 struct xSTATIC_LIST_ITEM {
 	uint32_t xDummy1;
 	void *pvDummy2[ 4 ];
@@ -88,6 +91,7 @@ typedef struct xSTATIC_QUEUE {
 } static_queue_s_t;
 typedef static_queue_s_t static_sem_s_t;
 
+#endif // !INC_FREERTOS_H
 
 #ifdef __cplusplus
 #include "pros/serial.hpp"

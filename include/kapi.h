@@ -19,9 +19,9 @@
 #pragma once
 
 #include "api.h"
-#include "pros/apix.h"
 #include "rtos/FreeRTOS.h"
 #include "rtos/stream_buffer.h"
+#include "pros/apix.h"
 
 #ifdef __cplusplus
 extern "C" {
