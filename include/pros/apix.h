@@ -53,67 +53,21 @@ typedef struct xSTATIC_LIST {
 	StaticMiniListItem_t xDummy3;
 } StaticList_t;
 
-#define portUSING_MPU_WRAPPERS                  0
-#define configMAX_TASK_NAME_LEN                 ( 32 )
-#define portSTACK_GROWTH                        ( -1 )
-#define configRECORD_STACK_HIGH_ADDRESS         0
-#define portCRITICAL_NESTING_IN_TCB             0
-#define configUSE_TRACE_FACILITY                1
-#define configUSE_MUTEXES                       1
-#define configUSE_APPLICATION_TASK_TAG          0
-#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 2
-#define configGENERATE_RUN_TIME_STATS           1
-#define configUSE_NEWLIB_REENTRANT              1
-#define configUSE_TASK_NOTIFICATIONS            1
-#define configSUPPORT_STATIC_ALLOCATION         1
-#define configSUPPORT_DYNAMIC_ALLOCATION        1
-#define INCLUDE_xTaskAbortDelay                 1
-#define configUSE_QUEUE_SETS                    0
-
 typedef struct xSTATIC_TCB {
 	void				*pxDummy1;
-	#if ( portUSING_MPU_WRAPPERS == 1 )
-		xMPU_SETTINGS	xDummy2;
-	#endif
-	StaticListItem_t	xDummy3[ 2 ];
-	uint32_t			uxDummy5;
+	StaticListItem_t	 xDummy3[ 2 ];
+	uint32_t			 uxDummy5;
 	void				*pxDummy6;
-	uint8_t				ucDummy7[ configMAX_TASK_NAME_LEN ];
-	#if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
-		void			*pxDummy8;
-	#endif
-	#if ( portCRITICAL_NESTING_IN_TCB == 1 )
-		uint32_t		uxDummy9;
-	#endif
-	#if ( configUSE_TRACE_FACILITY == 1 )
-		uint32_t		uxDummy10[ 2 ];
-	#endif
-	#if ( configUSE_MUTEXES == 1 )
-		uint32_t		uxDummy12[ 2 ];
-	#endif
-	#if ( configUSE_APPLICATION_TASK_TAG == 1 )
-		void			*pxDummy14;
-	#endif
-	#if( configNUM_THREAD_LOCAL_STORAGE_POINTERS > 0 )
-		void			*pvDummy15[ configNUM_THREAD_LOCAL_STORAGE_POINTERS ];
-	#endif
-	#if ( configGENERATE_RUN_TIME_STATS == 1 )
-		uint32_t		ulDummy16;
-	#endif
-	#if ( configUSE_NEWLIB_REENTRANT == 1 )
-		struct	_reent	xDummy17;
-	#endif
-	#if ( configUSE_TASK_NOTIFICATIONS == 1 )
-		uint32_t 		ulDummy18;
-		uint8_t 		ucDummy19;
-	#endif
-	#if( ( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) ) || ( portUSING_MPU_WRAPPERS == 1 ) )
-		uint8_t			uxDummy20;
-	#endif
-
-	#if( INCLUDE_xTaskAbortDelay == 1 )
-		uint8_t ucDummy21;
-	#endif
+	uint8_t				 ucDummy7[ 32 ];
+	uint32_t		     uxDummy10[ 2 ];
+	uint32_t		     uxDummy12[ 2 ];
+	void			    *pvDummy15[ 2 ];
+	uint32_t		     ulDummy16;
+	struct	_reent	     xDummy17;
+	uint32_t 		     ulDummy18;
+	uint8_t 		     ucDummy19;
+	uint8_t			     uxDummy20;
+	uint8_t              ucDummy21;
 
 } static_task_s_t;
 
@@ -121,27 +75,16 @@ typedef struct xSTATIC_QUEUE {
 	void *pvDummy1[ 3 ];
 
 	union {
-		void *pvDummy2;
-		uint32_t uxDummy2;
+		void     *pvDummy2;
+		uint32_t  uxDummy2;
 	} u;
 
 	StaticList_t xDummy3[ 2 ];
-	uint32_t uxDummy4[ 3 ];
-	uint8_t ucDummy5[ 2 ];
-
-	#if( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
-		uint8_t ucDummy6;
-	#endif
-
-	#if ( configUSE_QUEUE_SETS == 1 )
-		void *pvDummy7;
-	#endif
-
-	#if ( configUSE_TRACE_FACILITY == 1 )
-		uint32_t uxDummy8;
-		uint8_t ucDummy9;
-	#endif
-
+	uint32_t     uxDummy4[ 3 ];
+	uint8_t      ucDummy5[ 2 ];
+	uint8_t      ucDummy6;
+	uint32_t     uxDummy8;
+	uint8_t      ucDummy9;
 } static_queue_s_t;
 typedef static_queue_s_t static_sem_s_t;
 
@@ -682,11 +625,11 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 typedef uint32_t task_stack_t;
 
 /**
- * Creates a task using statically allocated buffers. All tasks used by the PROS
- * system must use statically allocated buffers.
+ * Creates a task using statically allocated buffers. It allows the RAM to be 
+ * statically allocated at compile time.
  * This function uses the following values of errno when an error state is
  * reached:
- * ENOMEM - The stack cannot be used as the TCB was not created.
+ * EINVAL - The stack cannot be used as the TCB was not created.
  *
  * \param function
  *        Pointer to the task entry function
@@ -703,12 +646,23 @@ typedef uint32_t task_stack_t;
  * \param name
  *        A descriptive name for the task.  This is mainly used to facilitate
  *        debugging. The name may be up to 32 characters long.
+ * \param stack_buffer
+ *        Pointer to memory that will be used as the task’s stack. The pointer
+ * 		  must point to a task_stack_t array that has at least stack_depth
+ *        indexes. This memory should not typically come from stack, but rather
+ *        from dynamically (i.e., malloc'd) or statically allocated memory.
+ * \param task_buffer
+ *        Pointer to memory that will be used to hold the new task’s data
+ *        structures (TCB). The pointer must point to a variable of type
+ *        static_task_s_t. This memory should not typically come from stack,
+ *        but rather from dynamically (i.e., malloc'd) or statically allocated
+ *        memory.
  *
  * \return A handle by which the newly created task can be referenced. If an
  * error occurred, NULL will be returned and errno can be checked for hints as
  * to why task_create failed.
  */
-task_t task_create_static(task_fn_t task_code, void* const param, uint32_t priority, const size_t stack_size,
+task_t task_create_static(task_fn_t function, void* const parameters, uint32_t prio, const size_t stack_depth,
                           const char* const name, task_stack_t* const stack_buffer, static_task_s_t* const task_buffer);
 
 /**
@@ -717,8 +671,8 @@ task_t task_create_static(task_fn_t task_code, void* const param, uint32_t prior
  * All FreeRTOS primitives must be created statically if they are required for
  * operation of the kernel.
  *
- * \param[out] mutex_buffer
- *             A buffer to store the mutex in
+ * \param mutex_buffer
+ *        A buffer to store the mutex in
  *
  * \return A handle to a newly created mutex. If an error occurred, NULL will be
  * returned and errno can be checked for hints as to why mutex_create failed.
@@ -735,8 +689,8 @@ mutex_t mutex_create_static(static_sem_s_t* mutex_buffer);
  *        The maximum count value that can be reached.
  * \param init_count
  *        The initial count value assigned to the new semaphore.
- * \param[out] semaphore_buffer
- *             A buffer to store the semaphore in
+ * \param semaphore_buffer
+ *        A buffer to store the semaphore in
  *
  * \return A newly created semaphore. If an error occurred, NULL will be
  * returned and errno can be checked for hints as to why sem_create failed.
@@ -753,10 +707,10 @@ sem_t sem_create_static(uint32_t max_count, uint32_t init_count, static_sem_s_t*
  *        The maximum number of items that the queue can contain.
  * \param item_size
  *        The number of bytes each item in the queue will require.
- * \param[out] storage_buffer
- *             A memory location for data storage
- * \param[out] queue_buffer
- *             A buffer to store the queue in
+ * \param storage_buffer
+ *        A memory location for data storage
+ * \param queue_buffer
+ *        A buffer to store the queue in
  *
  * \return A handle to a newly created queue, or NULL if the queue cannot be
  * created.
