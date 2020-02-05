@@ -51,7 +51,9 @@ static bool vex_read_touch(lv_indev_data_t* data) {
 	return false;
 }
 
-void display_initialize(void) {
+// HACK: this function should be called after pros_pre_init and before
+// pros_init function.
+__attribute__((constructor(115))) static void display_init(void) {
 	lv_init();
 
 	lv_disp_drv_t disp_drv;
