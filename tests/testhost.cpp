@@ -13,4 +13,5 @@ void initialize()
 	std::cout << "Hello from initialize" << std::flush;
 	const char* args[] = {"./pros"};
 	Catch::Session().run(sizeof(args) / sizeof(char*), args);
+	exit(0);
 }

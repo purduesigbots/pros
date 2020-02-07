@@ -5,6 +5,7 @@
 #include "kapi.h"
 #include "v5_api.h"
 
+
 // TODO: not vexStub
 __thread struct _reent* _REENT;
 
@@ -406,8 +407,6 @@ task_t task_create_static(task_fn_t task_code, void* const param, uint32_t prior
 	return task_create(task_code, param, priority, stack_size, name);
 }
 
-void vexSystemTimerStop() {}
-
 uint32_t vexSystemLinkAddrGet(void) {
 	return 0;
 }
@@ -415,6 +414,9 @@ uint32_t vexSystemLinkAddrGet(void) {
 void vAssertCalled(const char* pcFile, unsigned long ulLine) {
 	assert(false);
 }
+
+queue_t xQueueCreateMutex( const uint8_t ucQueueType ) ;
+queue_t xQueueCreateCountingSemaphore( const uint32_t uxMaxCount, const uint32_t uxInitialCount ) ;
 
 queue_t xQueueCreateMutexStatic(const uint8_t ucQueueType, static_queue_s_t* pxStaticQueue) 
 {
