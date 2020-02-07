@@ -18,7 +18,7 @@ include_directories(include
 
 
 list(APPEND WARNFLAGS -Wall)
-list(APPEND MFLAGS -Os -g)
+list(APPEND MFLAGS -g) # -Os
 list(APPEND CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
 list(APPEND GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
 
@@ -57,7 +57,6 @@ list(APPEND SRC_FILES
 	src/rtos/rtos.cpp
 	src/system/cpp_support.cpp
 	src/system/startup.c
-	src/system/rtos_hooks.c
 	tests/testhost.cpp
 	tests/src/basicTest.cpp
 )
@@ -76,19 +75,14 @@ if(V5_COMPILE)
    	list(APPEND SRC_FILES
    		src/system/xilinx_vectors.s
 		src/system/unwind.c
+		src/system/rtos_hooks.c
    	)
 
-#	add_compile_options(-wpedantic)
+	add_compile_options(-wpedantic)
 else()
-	list(APPEND MFLAGS -DLINUX_COMPILE -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 )
-	#add_compile_options(-nostdinc)
+	list(APPEND MFLAGS -DLINUX_COMPILE)
 
 	include_directories(tests/include)
-	#include_directories(/usr/include/x86_64-linux-gnu)
-	#include_directories(/usr/include/x86_64-linux-gnu/c++/9)
-	#include_directories(/usr/include/c++/9/)
-	#include_directories(/mnt/d/Code/newlib_obj/einstall/x86_64-elf/include)
-	#set(LIBRARIES /mnt/d/Code/newlib_obj/x86_64-elf/newlib/libc.a)
 	list(APPEND SRC_FILES
 		tests/LinuxStubs/vexOSStubs.c)
 endif()

@@ -84,11 +84,11 @@ extern "C" {
  * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
  * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *----------------------------------------------------------*/
-
+//TODO: USE_TICK_HOOK?
 #define configUSE_PREEMPTION					1
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION	0
 #define configUSE_IDLE_HOOK						0
-#define configUSE_TICK_HOOK						1
+#define configUSE_TICK_HOOK						0
 #define configTICK_RATE_HZ						( 1000 ) 
 #define configMINIMAL_STACK_SIZE				( ( unsigned short ) 50 ) /* In this simulated case, the stack only has to hold one small structure as the real stack is part of the win32 thread. */
 #define configTOTAL_HEAP_SIZE					( ( size_t ) ( 23 * 1024 ) )
@@ -124,7 +124,7 @@ extern unsigned long ulPortGetTimerValue( void );
 #define portGET_RUN_TIME_COUNTER_VALUE() ulPortGetTimerValue()
 
 /* Co-routine related configuration options. */
-#define configUSE_CO_ROUTINES 					1
+#define configUSE_CO_ROUTINES 					0
 #define configMAX_CO_ROUTINE_PRIORITIES			( 2 )
 
 /* This demo makes use of one or more example stats formatting functions.  These
@@ -157,6 +157,8 @@ functions anyway. */
 uses the same semantics as the standard C assert() macro. */
 extern void vAssertCalled(const char* const pcFileName, unsigned long ulLine );
 #define configASSERT( x ) if( ( x ) == 0 ) vAssertCalled( __FILE__ , __LINE__ )
+//TODO: Doc?
+#define configNUM_THREAD_LOCAL_STORAGE_POINTERS 2
 
 /* Include the FreeRTOS+Trace FreeRTOS trace macro definitions. */
 #define TRACE_ENTER_CRITICAL_SECTION() portENTER_CRITICAL()

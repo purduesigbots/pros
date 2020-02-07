@@ -253,8 +253,8 @@ int32_t xReturn = pdFAIL;
 			xTimerTaskHandle = task_create(prvTimerTask, 
 									NULL, 
 									((uint32_t)configTIMER_TASK_PRIORITY) | portPRIVILEGE_BIT,
-									configTIMER_SERVICE_TASK_NAME,
-									configTIMER_TASK_STACK_DEPTH );
+			                        configTIMER_TASK_STACK_DEPTH,
+									configTIMER_SERVICE_TASK_NAME);
 		}
 		#endif /* configSUPPORT_STATIC_ALLOCATION */
 

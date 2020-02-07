@@ -1,6 +1,8 @@
-#include <stdlib.h>
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+#include "kapi.h"
 #include "v5_api.h"
 
 // TODO: not vexStub
@@ -317,7 +319,7 @@ int32_t vexSerialReadChar(uint32_t channel) {
 	return 0;
 }
 
-//TODO: newlib stub
+// TODO: newlib stub
 int iprintf(const char* format, ...) {
 	va_list args;
 	va_start(args, format);
@@ -363,3 +365,73 @@ int32_t vexFileTell(FIL* fdp) {
 	return 0;
 }
 
+FRESULT vexFileMountSD(void) {
+	FRESULT empty = {0};
+	return empty;
+}
+
+FIL* vexFileOpen(const char* filename, const char* mode) {
+	return NULL;
+}
+
+FIL* vexFileOpenWrite(const char* filename) {
+	return NULL;
+}
+
+FIL* vexFileOpenCreate(const char* filename) {
+	return NULL;
+}
+
+void vexBackgroundProcessing(void) {
+	return;
+}
+
+void vexDisplayString(const int32_t nLineNumber, const char* format, ...) {
+	return;
+}
+
+bool vexTouchDataGet(V5_TouchStatus* status) {
+	return false;
+}
+
+stream_buf_t xStreamBufferGenericCreateStatic(size_t xBufferSizeBytes, size_t xTriggerLevelBytes,
+                                              int32_t xIsMessageBuffer, uint8_t* const pucStreamBufferStorageArea,
+                                              static_stream_buf_s_t* const pxStaticStreamBuffer) {
+	return xStreamBufferGenericCreate(xBufferSizeBytes, xTriggerLevelBytes, xIsMessageBuffer);
+}
+
+task_t task_create_static(task_fn_t task_code, void* const param, uint32_t priority, const size_t stack_size,
+                          const char* const name, task_stack_t* const stack_buffer,
+                          static_task_s_t* const task_buffer) {
+	return task_create(task_code, param, priority, stack_size, name);
+}
+
+void vexSystemTimerStop() {}
+
+uint32_t vexSystemLinkAddrGet(void) {
+	return 0;
+}
+
+void vAssertCalled(const char* pcFile, unsigned long ulLine) {
+	assert(false);
+}
+
+queue_t xQueueCreateMutexStatic(const uint8_t ucQueueType, static_queue_s_t* pxStaticQueue) 
+{
+	return xQueueCreateMutex(ucQueueType);
+}
+
+queue_t xQueueCreateCountingSemaphoreStatic(const uint32_t uxMaxCount, const uint32_t uxInitialCount,
+                                           static_queue_s_t* pxStaticQueue) 
+{
+	return xQueueCreateCountingSemaphore(uxMaxCount, uxInitialCount);
+}
+
+//TODO: fix this duplicated code
+void rtos_initialize() {
+	void task_notify_when_deleting_init();
+	task_notify_when_deleting_init();
+}
+
+unsigned __exidx_start;
+unsigned __exidx_end;

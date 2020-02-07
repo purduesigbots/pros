@@ -1755,15 +1755,6 @@ int32_t xReturn;
 												configIDLE_TASK_NAME,
 												pxIdleTaskStackBuffer,
 												pxIdleTaskTCBBuffer); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
-
-		if( xIdleTaskHandle != NULL )
-		{
-			xReturn = pdPASS;
-		}
-		else
-		{
-			xReturn = pdFAIL;
-		}
 	}
 	#else
 	{
@@ -1775,6 +1766,12 @@ int32_t xReturn;
 								configIDLE_TASK_NAME); /*lint !e961 MISRA exception, justified as it is not a redundant explicit cast to all supported compilers. */
 	}
 	#endif /* configSUPPORT_STATIC_ALLOCATION */
+
+	if (xIdleTaskHandle != NULL) {
+		xReturn = pdPASS;
+	} else {
+		xReturn = pdFAIL;
+	}
 
 	#if ( configUSE_TIMERS == 1 )
 	{
