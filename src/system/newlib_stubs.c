@@ -33,3 +33,9 @@ void _exit(int status) {
 void __sync_synchronize(void) {
 	__sync_synchronize();
 }
+void __sync_synchronize(void) {
+	/* Perform a memory barrier to workaround malfunctional lock */
+	asm volatile("dmb" : : : "memory");
+}
+
+// FIXME: Shoud we also implement atomic operations? Zynq is a SMP SoC.
