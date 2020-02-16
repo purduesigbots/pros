@@ -198,36 +198,36 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
 /******************************************************************************/
 
 /**
- * Used for adi_digital_write() to specify a logic HIGH state to output.
+ * Used for adi_digital_write() to specify a logic PROS_HIGH state to output.
  *
  * In reality, using any non-zero expression or "true" will work to set a pin to
- * HIGH.
+ * PROS_HIGH.
  */
-#define HIGH 1
+#define PROS_HIGH 1
 /**
- * Used for adi_digital_write() to specify a logic LOW state to output.
+ * Used for adi_digital_write() to specify a logic PROS_LOW state to output.
  *
- * In reality, using a zero expression or "false" will work to set a pin to LOW.
+ * In reality, using a zero expression or "false" will work to set a pin to PROS_LOW.
  */
-#define LOW 0
+#define PROS_LOW 0
 
 /**
  * adi_pin_mode() state for a digital input.
  */
-#define INPUT 0x00
+#define PROS_INPUT 0x00
 /**
  * adi_pin_mode() state for a digital output.
  */
-#define OUTPUT 0x01
+#define PROS_OUTPUT 0x01
 /**
  * adi_pin_mode() state for an analog input.
  */
-#define INPUT_ANALOG 0x02
+#define PROS_INPUT_ANALOG 0x02
 
 /**
  * adi_pin_mode() state for an analog output.
  */
-#define OUTPUT_ANALOG 0x03
+#define PROS_OUTPUT_ANALOG 0x03
 
 /**
  * Calibrates the analog sensor on the specified port and returns the new

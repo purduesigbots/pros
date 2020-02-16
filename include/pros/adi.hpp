@@ -18,9 +18,10 @@
 #ifndef _PROS_ADI_HPP_
 #define _PROS_ADI_HPP_
 
+#include <cstdint>
+
 #include "pros/adi.h"
 
-#include <cstdint>
 
 namespace pros {
 class ADIPort {
@@ -238,7 +239,7 @@ class ADIDigitalOut : private ADIPort {
 	 * \param type
 	 *        The configuration type for the port
 	 */
-	ADIDigitalOut(std::uint8_t port, bool init_state = LOW);
+	ADIDigitalOut(std::uint8_t port, bool init_state = PROS_LOW);
 
 	/**
 	 * Sets the value for the given ADI port.

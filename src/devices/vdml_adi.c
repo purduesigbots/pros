@@ -19,6 +19,7 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
+
 #define INTERNAL_ADI_PORT (22 - 1)
 
 #define ADI_MOTOR_MAX_SPEED 127
@@ -126,7 +127,8 @@ int32_t adi_analog_calibrate(uint8_t port) {
 	uint32_t total = 0;
 	for (uint32_t i = 0; i < 512; i++) {
 		total += vexDeviceAdiValueGet(device->device_info, port);
-		task_delay(1); // TODO: If smart ports (and the ADI) only update every 10ms, this really only reads 56 samples, maybe change to a 10ms
+		task_delay(1);  // TODO: If smart ports (and the ADI) only update every 10ms, this really only reads 56 samples,
+		                // maybe change to a 10ms
 	}
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
 	adi_data->analog_data.calib = (int32_t)((total + 16) >> 5);
@@ -197,16 +199,16 @@ int32_t adi_digital_write(uint8_t port, const bool value) {
 
 int32_t adi_pin_mode(uint8_t port, uint8_t mode) {
 	switch (mode) {
-		case INPUT:
+		case PROS_INPUT:
 			adi_port_set_config(port, E_ADI_DIGITAL_IN);
 			break;
-		case OUTPUT:
+		case PROS_OUTPUT:
 			adi_port_set_config(port, E_ADI_DIGITAL_OUT);
 			break;
-		case INPUT_ANALOG:
+		case PROS_INPUT_ANALOG:
 			adi_port_set_config(port, E_ADI_ANALOG_IN);
 			break;
-		case OUTPUT_ANALOG:
+		case PROS_OUTPUT_ANALOG:
 			adi_port_set_config(port, E_ADI_ANALOG_OUT);
 			break;
 		default:
@@ -256,11 +258,13 @@ int32_t adi_encoder_get(adi_encoder_t enc) {
 	transform_adi_port(enc);
 	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
-	
+
 	int32_t rtn;
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[enc];
-	if (adi_data->encoder_data.reversed) rtn = -vexDeviceAdiValueGet(device->device_info, enc);
-	else rtn = vexDeviceAdiValueGet(device->device_info, enc);
+	if (adi_data->encoder_data.reversed)
+		rtn = -vexDeviceAdiValueGet(device->device_info, enc);
+	else
+		rtn = vexDeviceAdiValueGet(device->device_info, enc);
 	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
@@ -268,7 +272,7 @@ int32_t adi_encoder_reset(adi_encoder_t enc) {
 	transform_adi_port(enc);
 	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
-	
+
 	vexDeviceAdiValueSet(device->device_info, enc, 0);
 	return_port(INTERNAL_ADI_PORT, 1);
 }
@@ -300,7 +304,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	transform_adi_port(ult);
 	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
-	
+
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, ult);
 	return_port(ult, rtn);
 }
@@ -340,7 +344,8 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier) {
 	return_port(INTERNAL_ADI_PORT, port + 1);
 }
 
-// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
+// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port
+// possibly returning PROS_ERR, not PROS_ERR_F
 int32_t _adi_gyro_get(adi_gyro_t gyro, double* out) {
 	transform_adi_port(gyro);
 	claim_port_i(INTERNAL_ADI_PORT, E_DEVICE_ADI);
@@ -356,8 +361,10 @@ int32_t _adi_gyro_get(adi_gyro_t gyro, double* out) {
 
 double adi_gyro_get(adi_gyro_t gyro) {
 	double rtn;
-	if (_adi_gyro_get(gyro, &rtn) == PROS_ERR) return PROS_ERR_F;
-	else return rtn;
+	if (_adi_gyro_get(gyro, &rtn) == PROS_ERR)
+		return PROS_ERR_F;
+	else
+		return rtn;
 }
 
 int32_t adi_gyro_reset(adi_gyro_t gyro) {
