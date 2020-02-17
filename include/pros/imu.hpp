@@ -19,15 +19,32 @@
 #define _PROS_IMU_HPP_
 
 #include <cstdint>
+
 #include "pros/imu.h"
+
 
 namespace pros {
 class Imu {
 	const std::uint8_t _port;
 
 	public:
+	/**
+	 * Calibrate IMU
+	 *
+	 * This takes approximately 2 seconds, and is a non-blocking operation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is already calibrating
+	 *
+	 * \param port
+	 *        The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
 	Imu(const std::uint8_t port) : _port(port){};
-
 	/**
 	 * Calibrate IMU
 	 *
@@ -211,6 +228,12 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+	/**
+	 * Gets the port number of the Imu.
+	 *
+	 * \return The Imu's port number.
+	 */
+	virtual std::uint8_t get_port() const;
 };
 }  // namespace pros
 
