@@ -18,7 +18,7 @@ std::int32_t Imu::reset() const {
 }
 
 double Imu::get_rotation() const {
-    return pros::c::imu_get_rotation(_port);
+	return pros::c::imu_get_rotation(_port);
 }
 
 double Imu::get_heading() const {
@@ -59,5 +59,8 @@ pros::c::imu_status_e_t Imu::get_status() const {
 
 bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
+}
+std::uint8_t Imu::get_port() {
+	return _port;
 }
 }  // namespace pros
