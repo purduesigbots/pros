@@ -17,10 +17,10 @@ include_directories(include
 					firmware/libv5rts/sdk/vexv5/include)
 
 
-list(APPEND WARNFLAGS -Wall)
-list(APPEND MFLAGS -g) # -Os
-list(APPEND CPPFLAGS -D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
-list(APPEND GCCFLAGS -ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
+add_compile_options(-Wall --pedantic -Wno-psabi)
+add_compile_options(-g) # -Os
+add_compile_options(-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES)
+add_compile_options(-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables)
 
 list(APPEND SRC_FILES
 	src/common/cobs.c
@@ -62,7 +62,7 @@ list(APPEND SRC_FILES
 )
 
 if(V5_COMPILE)
-	list(APPEND MFLAGS -mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
+	add_compile_options(-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp)
 
 	set(LIBRARIES ../firmware/libc.a,../firmware/libm.a,../firmware/libv5rts/sdk/vexv5/libv5rts.patched.a)
    	set(LINKERSCRIPT ./firmware/v5.ld)
@@ -77,23 +77,22 @@ if(V5_COMPILE)
 		src/system/unwind.c
 		src/system/rtos_hooks.c
    	)
-
-	add_compile_options(-wpedantic)
 else()
-	list(APPEND MFLAGS -DLINUX_COMPILE)
+	add_compile_options(-DLINUX_COMPILE)
 
 	include_directories(tests/include)
 	list(APPEND SRC_FILES
 		tests/LinuxStubs/vexOSStubs.c)
 endif()
 
-add_compile_options(${MFLAGS} ${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
-list(APPEND CMAKE_CXX_FLAGS --std=gnu++17)
-list(APPEND CMAKE_C_FLAGS --std=gnu11)
+add_compile_options(${CPPFLAGS} ${WARNFLAGS} ${GCCFLAGS})
 
 add_executable(PROSPROJECT
 	${SRC_FILES}
 )
+
+set_property(TARGET PROSPROJECT PROPERTY CXX_STANDARD 17)
+set_property(TARGET PROSPROJECT PROPERTY C_STANDARD 11)
 
 add_subdirectory(src/display)
 set(BUILT_LIBRARIES ./src/display/libLVGL.a)
