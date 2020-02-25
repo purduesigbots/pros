@@ -171,6 +171,10 @@ std::int32_t Motor::get_voltage_limit(void) const {
 	return motor_get_voltage_limit(_port);
 }
 
+std::uint8_t Motor::get_port(void) const {
+	return _port;
+}
+
 std::int32_t Motor::tare_position(void) const {
 	return motor_tare_position(_port);
 }

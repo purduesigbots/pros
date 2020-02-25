@@ -61,6 +61,10 @@ std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
 
+std::uint8_t Vision::get_port(void) const {
+	return _port;
+}
+
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
                              vision_object_s_t* const object_arr) const {
 	return vision_read_by_size(_port, size_id, object_count, object_arr);

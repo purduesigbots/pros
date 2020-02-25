@@ -2055,7 +2055,7 @@ uint32_t xTicks;
 	}
 	portTICK_TYPE_EXIT_CRITICAL();
 
-	return xTicks * configTICK_RATE_HZ / 1000;
+	return xTicks * (configTICK_RATE_HZ / 1000);
 }
 /*-----------------------------------------------------------*/
 
