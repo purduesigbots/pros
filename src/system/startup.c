@@ -27,13 +27,10 @@ extern void invoke_install_hot_table();
 
 // XXX: pros_pre_init and pros_init happen inside __libc_init_array, and
 // before any globalC++ constructors are invoked. This is accomplished by
-// instructing GCC to include this function in the __init_array. These
-// arguments give the compiler instructions on the priority of the constructor,
-// from 0-~65k. The first 0-100 priorities are reserved for language
-// implementation.
-
-#define PROS_KERNEL_PRE_INIT 110
-#define PROS_KERNEL_INIT     120
+// instructing GCC to include this function in the __init_array. The macros
+// defined in pros/apix.h give the compiler instructions on the priority of the
+// constructor, from 0-~65k. The first 0-100 priorities are reserved for
+// language implementation.
 
 __attribute__((constructor(PROS_KERNEL_PRE_INIT))) static void pros_pre_init(void) {
 	rtos_initialize();
@@ -45,7 +42,7 @@ __attribute__((constructor(PROS_KERNEL_PRE_INIT))) static void pros_pre_init(voi
 
 // HACK: External templates can hook into initialization process by setting
 // their priority between PROS_KERNEL_PRE_INIT and PROS_KERNEL_INIT. For
-// exmaple the priority of display initialization is 115. All other initialize
+// exmaple the priority of display initialization is 119. All other initialize
 // functions should be called before pros_init function. For an exmaple of
 // what could happen if this is not the case, see
 // https://github.com/purduesigbots/pros/pull/144/#issuecomment-496901942
