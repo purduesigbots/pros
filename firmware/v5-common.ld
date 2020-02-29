@@ -1,9 +1,4 @@
-/* Specify the default entry point to the program */
-
-ENTRY(vexStartup)
-
 /* Define the sections, and where they are mapped in memory */
-
 SECTIONS
 {
 /* This will get stripped out before uploading, but we need to place code

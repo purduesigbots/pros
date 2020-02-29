@@ -29,3 +29,5 @@ MEMORY
 }
 
 REGION_ALIAS("MEMORY", HOT_MEMORY);
+
+ENTRY(install_hot_table)
