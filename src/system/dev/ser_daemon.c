@@ -114,9 +114,8 @@ static void ser_daemon_task(void* ign) {
 		uint8_t b = vex_read_char();
 		if (b == 'p') {  // TODO: make the command prefix not typeable
 			command_stack[command_stack_idx++] = b;
-			b = vex_read_char();
+			b = command_stack[command_stack_idx++] = vex_read_char();
 			if (b == 'R') {
-				command_stack[command_stack_idx++] = b;
 				b = command_stack[command_stack_idx++] = vex_read_char();
 				switch (b) {
 					case 'a':
