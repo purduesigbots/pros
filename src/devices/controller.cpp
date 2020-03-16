@@ -13,7 +13,6 @@
  */
 
 #include "kapi.h"
-#include <string>
 
 namespace pros {
 using namespace pros::c;
