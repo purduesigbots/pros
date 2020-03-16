@@ -13,6 +13,7 @@
  */
 
 #include "kapi.h"
+#include <string>
 
 namespace pros {
 using namespace pros::c;
@@ -45,6 +46,10 @@ std::int32_t Controller::get_digital_new_press(pros::controller_digital_e_t butt
 
 std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {
 	return controller_set_text(_id, line, col, str);
+}
+
+std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, std::string str) {
+	return controller_set_text(_id, line, col, str.c_str());
 }
 
 std::int32_t Controller::clear_line(std::uint8_t line) {
