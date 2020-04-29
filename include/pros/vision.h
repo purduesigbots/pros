@@ -534,6 +534,24 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb);
 int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point);
 
 /**
+ * Gets the zero point of the given point
+ *
+ * This will return the zero point (either top left or center) for the vision
+ * sensor in the given port
+ *
+ * This function uses the following values of errno when an error state is
+ *reached:
+ * EINVAL - the given value is not within the range of V5 ports (1-21)
+ * EACCES - Another resource is currently trying to access the port
+ *
+ * \param port
+ *			The V5 port number from 1-21
+ * \return The enum value indicating which location is currently referenced as
+ *the center
+ */
+vision_zero_e_t vision_get_zero_point(uint8_t port);
+
+/*
  * Sets the Wi-Fi mode of the Vision sensor
  *
  * This functions uses the following values of errno when an error state is
