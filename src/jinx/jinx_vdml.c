@@ -37,7 +37,7 @@ struct vision_sensor_obj {
 struct vision_track_var {
   struct vision_sensor_obj *objects;
   uint16_t num_objects;
-  uint8_t vision_zero;
+  // uint8_t vision_zero;
 };
 
 static jinx_track_s_t *adi_track_var;
@@ -95,8 +95,8 @@ bool fill_vision_data(void *buff, void *args) {
   }
   ((struct vision_track_var *)(buff))->num_objects =
       vision_get_object_count(port + 1);
-  ((struct vision_track_var *)(buff))->vision_zero =
-      vision_get_zero_point(port + 1);
+  // ((struct vision_track_var *)(buff))->vision_zero =
+      // vision_get_zero_point(port + 1);
   return true;
 }
 
