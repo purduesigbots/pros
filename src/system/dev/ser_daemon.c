@@ -7,7 +7,7 @@
  * characters and responding to any kernel commands (like printing the banner or
  * enabling COBS)
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -114,9 +114,8 @@ static void ser_daemon_task(void* ign) {
 		uint8_t b = vex_read_char();
 		if (b == 'p') {  // TODO: make the command prefix not typeable
 			command_stack[command_stack_idx++] = b;
-			b = vex_read_char();
+			b = command_stack[command_stack_idx++] = vex_read_char();
 			if (b == 'R') {
-				command_stack[command_stack_idx++] = b;
 				b = command_stack[command_stack_idx++] = vex_read_char();
 				switch (b) {
 					case 'a':

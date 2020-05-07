@@ -7,7 +7,7 @@
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -138,7 +138,8 @@ static lv_obj_t* _create_lcd(void) {
 		lv_obj_set_width(lcd->lcd_text[i], 426);
 		lv_obj_align(lcd->lcd_text[i], NULL, LV_ALIGN_IN_TOP_LEFT, 5, 20 * i);
 		lv_label_set_align(lcd->lcd_text[i], LV_LABEL_ALIGN_LEFT);
-		lv_label_set_no_break(lcd->lcd_text[i], true);
+		lv_label_set_long_mode(lcd->lcd_text[i], LV_LABEL_LONG_CROP);
+		// lv_label_set_no_break(lcd->lcd_text[i], true);
 		lv_label_set_text(lcd->lcd_text[i], "");
 	}
 
@@ -151,11 +152,10 @@ bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list arg
 		return false;
 	}
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
-	char* buf;
-	vasprintf(&buf, fmt, args);
+	char buf[33];
+	vsnprintf(buf, 33, fmt, args);
 
 	lv_label_set_text(lcd->lcd_text[line], buf);
-	free(buf);
 	lv_obj_set_width(lcd->lcd_text[line], 426);
 	return true;
 }

@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -169,6 +169,10 @@ std::int32_t Motor::get_voltage(void) const {
 
 std::int32_t Motor::get_voltage_limit(void) const {
 	return motor_get_voltage_limit(_port);
+}
+
+std::uint8_t Motor::get_port(void) const {
+	return _port;
 }
 
 std::int32_t Motor::tare_position(void) const {

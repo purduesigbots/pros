@@ -4,7 +4,7 @@
  * This file contains all types and functions used throughout multiple VDML
  * (Vex Data Management Layer) files.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -37,29 +37,52 @@
  *        The V5 port number from 0-20
  * \param device_type
  *        The v5_device_e_t that the port is configured as
+ * \param error_code
+ *        The error code that return if error checking failed
  */
-#define claim_port(port, device_type)                      \
-	if (!VALIDATE_PORT_NO(port)) {                           \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	if (registry_validate_binding(port, device_type) != 0) { \
-		errno = EINVAL;                                        \
-		return PROS_ERR;                                       \
-	}                                                        \
-	v5_smart_device_s_t* device = registry_get_device(port); \
-	if (!port_mutex_take(port)) {                            \
-		errno = EACCES;                                        \
-		return PROS_ERR;                                       \
-	}
+#define claim_port(port, device_type, error_code)          \
+  if (!VALIDATE_PORT_NO(port)) {                           \
+    errno = ENXIO;                                         \
+    return error_code;                                     \
+  }                                                        \
+  if (registry_validate_binding(port, device_type) != 0) { \
+    return error_code;                                     \
+  }                                                        \
+  v5_smart_device_s_t* device = registry_get_device(port); \
+  if (!port_mutex_take(port)) {                            \
+    errno = EACCES;                                        \
+    return error_code;                                     \
+  }
 
 /**
- * A function that executes claim_port for functions that do not return an
- * int32_t
+ * Function like claim_port. This macro should only be used in functions 
+ * that return int32_t or enums as PROS_ERR could be returned.
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ * \param device_type
+ *        The v5_device_e_t that the port is configured as
+ */
+#define claim_port_i(port, device_type) claim_port(port, device_type, PROS_ERR)
+
+/**
+ * Function like claim_port. This macro should only be used in functions 
+ * that return double or float as PROS_ERR_F could be returned.
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ * \param device_type
+ *        The v5_device_e_t that the port is configured as
+ */
+#define claim_port_f(port, device_type) claim_port(port, device_type, PROS_ERR_F)
+
+/**
+ * A function that executes claim_port and allows you to execute a block of 
+ * code if an error occurs.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
  * EACCES - Another resource is currently trying to access the port.
  *
  * \param port
@@ -67,7 +90,7 @@
  * \param device_type
  *        The v5_device_e_t that the port is configured as
  *
- * \return 1 if the operation was successful or PROS_ERR if the operation
+ * \return 1 if the operation was successful or 0 if the operation
  * failed, setting errno.
  */
 int32_t claim_port_try(uint8_t port, v5_device_e_t type);
@@ -84,8 +107,8 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * \return The rtn parameter
  */
 #define return_port(port, rtn) \
-	port_mutex_give(port);       \
-	return rtn;
+  port_mutex_give(port);       \
+  return rtn;
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.
@@ -138,7 +161,7 @@ void vdml_reset_port_error();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to claim from 0-20
@@ -159,7 +182,7 @@ int port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-20).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The V5 port number to free from 0-20
@@ -183,7 +206,7 @@ void port_mutex_give_all();
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32
@@ -201,7 +224,7 @@ int internal_port_mutex_take(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * EINVAL - The given value is not within the range of V5 ports (0-32).
+ * ENXIO - The given value is not within the range of V5 ports (0-32).
  *
  * \param port
  *        The V5 port number from 0-32

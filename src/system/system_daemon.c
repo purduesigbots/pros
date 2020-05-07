@@ -3,7 +3,7 @@
  *
  * Competition control daemon responsible for invoking the user tasks.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -58,11 +58,11 @@ static inline void do_background_operations() {
   port_mutex_give_all();
 }
 
-static void _system_daemon_task(void* ign) {
-	uint32_t time = millis();
-	// Initialize status to an invalid state to force an update the first loop
-	uint32_t status = (uint32_t)(1 << 8);
-	uint32_t task_state;
+static void _system_daemon_task(void *ign) {
+  uint32_t time = millis();
+  // Initialize status to an invalid state to force an update the first loop
+  uint32_t status = (uint32_t)(1 << 8);
+  uint32_t task_state;
 
 	// XXX: Delay likely necessary for shared memory to get copied over
 	// (discovered b/c VDML would crash and burn)
@@ -72,6 +72,7 @@ static void _system_daemon_task(void* ign) {
 	task_delay(2);
 	port_mutex_give_all();
 
+  jinx_init();
 	// start up user initialize task. once the user initialize function completes,
 	// the _initialize_task will notify us and we can go into normal competition
 	// monitoring mode
@@ -120,8 +121,8 @@ static void _system_daemon_task(void* ign) {
 			                                      task_names[state], competition_task_stack, &competition_task_buffer);
 		}
 
-		task_delay_until(&time, 2);
-	}
+    task_delay_until(&time, 2);
+  }
 }
 
 void system_daemon_initialize() {
@@ -133,6 +134,10 @@ void system_daemon_initialize() {
 
 // these functions are what actually get called by the system daemon, which
 // attempt to call whatever the user declares
-#define FUNC(NAME) static void _##NAME##_task(void* ign) { user_##NAME(); task_notify(system_daemon_task); }
+#define FUNC(NAME)                        \
+	static void _##NAME##_task(void* ign) { \
+		user_##NAME();                        \
+		task_notify(system_daemon_task);      \
+	}
 #include "system/user_functions/c_list.h"
 #undef FUNC

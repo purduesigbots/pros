@@ -5,7 +5,7 @@
  * what devices are in use on the V5. Therefore, in order to use V5 devices with
  * PROS, they must be registered and deregistered using the registry.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -17,6 +17,8 @@
 
 #include "api.h"
 #include "kapi.h"
+#include "jinx/jinx_vdml.h"
+#include "pros/jinx.h"
 #include "pros/misc.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
@@ -46,7 +48,7 @@ void registry_update_types() {
 int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 	if (!VALIDATE_PORT_NO(port)) {
 		kprintf("[VDML][ERROR]Registration: Invalid port number %d\n", port + 1);
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	if (registry[port].device_type != E_DEVICE_NONE) {
@@ -56,7 +58,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 	}
 	if ((v5_device_e_t)registry_types[port] != device_type && (v5_device_e_t)registry_types[port] != E_DEVICE_NONE) {
 		kprintf("[VDML][ERROR]Registration: Device mismatch in port %d\n", port + 1);
-		errno = EINVAL;
+		errno = EADDRINUSE;
 		return PROS_ERR;
 	}
 	kprintf("[VDML][INFO]Registering device in port %d\n", port + 1);
@@ -70,7 +72,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 int registry_unbind_port(uint8_t port) {
 	port--;
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 	registry[port].device_type = E_DEVICE_NONE;
@@ -80,7 +82,7 @@ int registry_unbind_port(uint8_t port) {
 
 v5_smart_device_s_t* registry_get_device(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return NULL;
 	}
 	return &registry[port];
@@ -88,7 +90,7 @@ v5_smart_device_s_t* registry_get_device(uint8_t port) {
 
 v5_smart_device_s_t* registry_get_device_internal(uint8_t port) {
 	if (!VALIDATE_PORT_NO_INTERNAL(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return NULL;
 	}
 	return &registry[port];
@@ -96,7 +98,7 @@ v5_smart_device_s_t* registry_get_device_internal(uint8_t port) {
 
 v5_device_e_t registry_get_bound_type(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return E_DEVICE_UNDEFINED;
 	}
 	return registry[port].device_type;
@@ -104,7 +106,7 @@ v5_device_e_t registry_get_bound_type(uint8_t port) {
 
 v5_device_e_t registry_get_plugged_type(uint8_t port) {
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return -1;
 	}
 	return registry_types[port];
@@ -112,7 +114,7 @@ v5_device_e_t registry_get_plugged_type(uint8_t port) {
 
 int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 	if (!VALIDATE_PORT_NO(port)) {
-		errno = EINVAL;
+		errno = ENXIO;
 		return PROS_ERR;
 	}
 
@@ -146,6 +148,7 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 			kprintf("[VDML][WARNING] No device in port %d. Is it plugged in?\n", port + 1);
 			vdml_set_port_error(port);
 		}
+		errno = ENODEV;
 		return 1;
 	} else {
 		// Warn about a mismatch
@@ -153,6 +156,7 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 			kprintf("[VDML][WARNING] Device mistmatch in port %d.\n", port + 1);
 			vdml_set_port_error(port);
 		}
+		errno = EADDRINUSE;
 		return 2;
 	}
 }

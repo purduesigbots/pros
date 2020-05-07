@@ -1,6 +1,6 @@
+#include "system/user_functions.h"
 #include "kapi.h"
 #include "system/hot.h"
-#include "system/user_functions.h"
 
 // how this all works...
 // system daemon starts an autonomous task which calls user_autonomous()
@@ -20,7 +20,10 @@
 // the C++ linkage version of the function
 // FUNC(autonomous) exapnds to:
 // __attribute__((weak)) void autonomous() { user_cpp_autonomous(); }
-#define FUNC(NAME) __attribute__((weak)) void NAME() { user_cpp_##NAME(); }
+#define FUNC(NAME)                    \
+	__attribute__((weak)) void NAME() { \
+		user_cpp_##NAME();                \
+	}
 #include "system/user_functions/c_list.h"
 #undef FUNC
 
@@ -32,13 +35,13 @@
 //     cpp_autonomous();
 //   }
 // }
-#define FUNC(NAME) \
-  void user_##NAME() { \
-    if (HOT_TABLE && HOT_TABLE->functions.NAME) { \
-      HOT_TABLE->functions.NAME(); \
-    } else { \
-      NAME(); \
-    } \
-  }
+#define FUNC(NAME)                                \
+	void user_##NAME() {                            \
+		if (HOT_TABLE && HOT_TABLE->functions.NAME) { \
+			HOT_TABLE->functions.NAME();                \
+		} else {                                      \
+			NAME();                                     \
+		}                                             \
+	}
 #include "system/user_functions/list.h"
 #undef FUNC

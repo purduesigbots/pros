@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -24,10 +24,6 @@ ADIPort::ADIPort(void) {
 	// for use by derived classes like ADIEncoder
 }
 
-ADIPort::~ADIPort(void) {
-	adi_port_set_config(_port, E_ADI_TYPE_UNDEFINED);
-}
-
 std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
 	return adi_port_set_config(_port, type);
 }
@@ -44,13 +40,9 @@ std::int32_t ADIPort::get_value(void) const {
 	return adi_port_get_value(_port);
 }
 
-ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_ANALOG_IN);
-}
+ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_IN) {}
 
-ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_ANALOG_OUT);
-}
+ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
 
 std::int32_t ADIAnalogIn::calibrate(void) const {
 	return adi_analog_calibrate(_port);
@@ -64,21 +56,17 @@ std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
 	return adi_analog_read_calibrated_HR(_port);
 }
 
-ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port) {
-	set_config(E_ADI_DIGITAL_OUT);
+ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_DIGITAL_IN);
-}
+ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port, E_ADI_DIGITAL_IN) {}
 
 std::int32_t ADIDigitalIn::get_new_press(void) const {
 	return adi_digital_get_new_press(_port);
 }
 
-ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port) {
-	set_config(E_ADI_LEGACY_PWM);
+ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port, E_ADI_LEGACY_PWM) {
 	stop();
 }
 
@@ -99,16 +87,11 @@ std::int32_t ADIEncoder::get_value(void) const {
 }
 
 ADIUltrasonic::ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
-	_port = adi_ultrasonic_init(port_ping, port_echo) + 1;
-	// Add 1 to ensure that the ADIPort::get_value can be used
+	_port = adi_ultrasonic_init(port_ping, port_echo);
 }
 
 ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
 	_port = adi_gyro_init(port, multiplier);
-}
-
-ADIGyro::~ADIGyro(void) {
-	// Don't change the port configuration so we don't have to recalibrate
 }
 
 double ADIGyro::get_value(void) const {
