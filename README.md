@@ -36,7 +36,7 @@ We have a number of resources available on our website, including
 ### I still have questions!
 Drop us a line
 - at pros_development@cs.purdue.edu
-- on the [VEX Forum](https://www.vexforum.com/index.php/)
+- on the [VEX Forum](https://www.vexforum.com/)
 - on [VEX Teams of the World Discord](https://discord.gg/xddjWGj)
 
 ### I think I found a bug!
