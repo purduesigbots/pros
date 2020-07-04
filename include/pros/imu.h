@@ -56,6 +56,8 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
+#define IMU_MINIMUM_DATA_RATE 5
+
 /**
  * Calibrate IMU
  *

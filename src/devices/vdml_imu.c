@@ -34,7 +34,11 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 
 	// rate is not less than 5ms, and rounded down to nearest increment of 5
-	rate -= rate == 0 ? 5 : (rate - 5) % 5;
+	if (rate < IMU_MINIMUM_DATA_RATE) {
+		rate = IMU_MINIMUM_DATA_RATE;
+	} else {
+		rate -= rate % IMU_MINIMUM_DATA_RATE;
+	}
 
 	vexDeviceImuDataRateSet(device->device_info, rate);
 	return_port(port - 1, 1);
