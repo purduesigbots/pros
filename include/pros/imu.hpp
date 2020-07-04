@@ -47,7 +47,13 @@ class Imu {
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
 	* The rate may be specified in increments of 5ms, and will be rounded down to
-	* the nearest increment. The minimum allowable refresh rate is 5ms.
+	* the nearest increment. The minimum allowable refresh rate is 5ms. The default
+	* rate is 10ms.
+	*
+	* As values are copied into the shared memory buffer only at 10ms intervals,
+	* setting this value to less than 10ms does not mean that you can poll the
+	* sensor's values any faster. However, it will guarantee that the data is as
+	* recent as possible.
 	*
 	* This function uses the following values of errno when an error state is
 	* reached:
