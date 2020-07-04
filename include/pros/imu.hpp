@@ -39,12 +39,27 @@ class Imu {
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
 	 * EAGAIN - The sensor is already calibrating
 	 *
-	 * \param port
-	 *        The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
 	virtual std::int32_t reset() const;
+	/**
+	* Set the Inertial Sensor's refresh interval in milliseconds.
+	*
+	* The rate may be specified in increments of 5ms, and will be rounded down to
+	* the nearest increment. The minimum allowable refresh rate is 5ms.
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* ENXIO - The given value is not within the range of V5 ports (1-21).
+	* ENODEV - The port cannot be configured as an Inertial Sensor
+	* EAGAIN - The sensor is still calibrating
+	*
+	* \param rate The data refresh interval in milliseconds
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*/
+	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 	/**
 	 * Get the total number of degrees the Inertial Sensor has spun about the z-axis
 	 *
