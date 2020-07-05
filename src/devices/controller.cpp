@@ -47,6 +47,10 @@ std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const cha
 	return controller_set_text(_id, line, col, str);
 }
 
+std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const std::string& str) {
+	return controller_set_text(_id, line, col, str.c_str());
+}
+
 std::int32_t Controller::clear_line(std::uint8_t line) {
 	return controller_clear_line(_id, line);
 }
