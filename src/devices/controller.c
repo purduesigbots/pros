@@ -17,7 +17,7 @@
 #include "v5_api.h"
 #include "vdml/vdml.h"
 
-#define CONTROLLER_MAX_COLS 15
+#define CONTROLLER_MAX_COLS 19
 
 // From enum in misc.h
 #define NUM_BUTTONS 12
