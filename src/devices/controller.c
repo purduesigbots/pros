@@ -12,6 +12,8 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#include <assert.h>
 
 #include "kapi.h"
 #include "v5_api.h"
@@ -260,6 +262,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	static const char* clear = "                   ";
+	kassert(strlen(clear) == CONTROLLER_MAX_COLS);
 	return controller_print(id, line, 0, clear);
 }
 
