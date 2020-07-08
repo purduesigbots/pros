@@ -13,7 +13,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
 
 #include "kapi.h"
 #include "v5_api.h"
