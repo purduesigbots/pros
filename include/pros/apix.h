@@ -23,6 +23,10 @@
 #ifndef _PROS_API_EXTENDED_H_
 #define _PROS_API_EXTENDED_H_
 
+#define PROS_KERNEL_PRE_INIT 110
+
+#define PROS_KERNEL_INIT     120
+
 #include "api.h"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
