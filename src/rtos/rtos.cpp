@@ -18,6 +18,7 @@
 #include "pros/rtos.hpp"
 
 namespace pros {
+inline namespace rtos {
 using namespace pros::c;
 
   Task::Task(task_fn_t function, void* parameters,
@@ -105,4 +106,5 @@ using namespace pros::c;
   bool Mutex::give(void) {
     return mutex_give(mutex);
   }
-}
+} //namespace rtos
+} //namespace pros

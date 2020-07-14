@@ -27,6 +27,7 @@
 #include <string>
 
 namespace pros {
+inline namespace device {
 class Controller {
 	public:
 	/**
@@ -258,6 +259,7 @@ class Controller {
 	private:
 	controller_id_e_t _id;
 };
+} //  namespace device
 
 namespace battery {
 /**

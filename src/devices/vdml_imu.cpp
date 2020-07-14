@@ -13,6 +13,7 @@
 #include "pros/imu.hpp"
 
 namespace pros {
+inline namespace device{
 std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }
@@ -60,4 +61,5 @@ pros::c::imu_status_e_t Imu::get_status() const {
 bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
+}  // namespace device
 }  // namespace pros

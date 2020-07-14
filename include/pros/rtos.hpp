@@ -30,6 +30,7 @@
 #include <type_traits>
 
 namespace pros {
+inline namespace rtos {
 class Task {
 	public:
 	/**
@@ -359,7 +360,7 @@ class Mutex {
 	private:
 	mutex_t mutex;
 };
-
+}
 /**
  * Gets the number of milliseconds since PROS initialized.
  *

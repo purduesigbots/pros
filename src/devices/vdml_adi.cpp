@@ -14,6 +14,7 @@
 #include "pros/adi.hpp"
 
 namespace pros {
+inline namespace adi{
 using namespace pros::c;
 
 ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
@@ -101,4 +102,5 @@ double ADIGyro::get_value(void) const {
 std::int32_t ADIGyro::reset(void) const {
 	return adi_gyro_reset(_port);
 }
+}  // namespace adi
 }  // namespace pros

@@ -23,6 +23,7 @@
 #include <cstdint>
 
 namespace pros {
+inline namespace adi {
 class ADIPort {
 	public:
 	/**
@@ -502,6 +503,7 @@ class ADIGyro : private ADIPort {
 	 */
 	std::int32_t reset(void) const;
 };
+}  // namespace adi
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_

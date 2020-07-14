@@ -15,6 +15,7 @@
 #include "kapi.h"
 
 namespace pros {
+inline namespace device {
 using namespace pros::c;
 
 Controller::Controller(pros::controller_id_e_t id) : _id(id) {}
@@ -80,4 +81,5 @@ std::uint8_t is_disabled(void) {
 	return competition_is_disabled();
 }
 }  // namespace competition
+}  // namespace device
 }  // namespace pros
