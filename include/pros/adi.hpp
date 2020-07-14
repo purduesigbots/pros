@@ -224,7 +224,7 @@ class AnalogOut : private Port {
 	 * \param type
 	 *        The configuration type for the port
 	 */
-	ADIAnalogOut(std::uint8_t port);
+	AnalogOut(std::uint8_t port);
 
 	/**
 	 * Sets the value for the given ADI port.
