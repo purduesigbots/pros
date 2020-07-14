@@ -27,7 +27,7 @@
 #include <string>
 
 namespace pros {
-inline namespace device {
+inline namespace v5 {
 class Controller {
 	public:
 	/**

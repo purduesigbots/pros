@@ -22,7 +22,7 @@
 #include "pros/imu.h"
 
 namespace pros {
-inline namespace device{
+inline namespace v5{
 class Imu {
 	const std::uint8_t _port;
 
@@ -213,7 +213,7 @@ class Imu {
 	 */
 	virtual bool is_calibrating() const;
 };
-}  //namespace device
+}  //namespace v5
 }  // namespace pros
 
 #endif

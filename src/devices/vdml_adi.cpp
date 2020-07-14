@@ -14,92 +14,92 @@
 #include "pros/adi.hpp"
 
 namespace pros {
-inline namespace adi{
+namespace adi{
 using namespace pros::c;
 
-ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
+Port::Port(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
 	adi_port_set_config(_port, type);
 }
 
-ADIPort::ADIPort(void) {
-	// for use by derived classes like ADIEncoder
+Port::Port(void) {
+	// for use by derived classes like Encoder
 }
 
-std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
+std::int32_t Port::set_config(adi_port_config_e_t type) const {
 	return adi_port_set_config(_port, type);
 }
 
-std::int32_t ADIPort::get_config(void) const {
+std::int32_t Port::get_config(void) const {
 	return adi_port_get_config(_port);
 }
 
-std::int32_t ADIPort::set_value(std::int32_t value) const {
+std::int32_t Port::set_value(std::int32_t value) const {
 	return adi_port_set_value(_port, value);
 }
 
-std::int32_t ADIPort::get_value(void) const {
+std::int32_t Port::get_value(void) const {
 	return adi_port_get_value(_port);
 }
 
-ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_IN) {}
+AnalogIn::AnalogIn(std::uint8_t port) : Port(port, E_ADI_ANALOG_IN) {}
 
-ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
+AnalogOut::AnalogOut(std::uint8_t port) : Port(port, E_ADI_ANALOG_OUT) {}
 
-std::int32_t ADIAnalogIn::calibrate(void) const {
+std::int32_t AnalogIn::calibrate(void) const {
 	return adi_analog_calibrate(_port);
 }
 
-std::int32_t ADIAnalogIn::get_value_calibrated(void) const {
+std::int32_t AnalogIn::get_value_calibrated(void) const {
 	return adi_analog_read_calibrated(_port);
 }
 
-std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
+std::int32_t AnalogIn::get_value_calibrated_HR(void) const {
 	return adi_analog_read_calibrated_HR(_port);
 }
 
-ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port, E_ADI_DIGITAL_OUT) {
+DigitalOut::DigitalOut(std::uint8_t port, bool init_state) : Port(port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port, E_ADI_DIGITAL_IN) {}
+DigitalIn::DigitalIn(std::uint8_t port) : Port(port, E_ADI_DIGITAL_IN) {}
 
-std::int32_t ADIDigitalIn::get_new_press(void) const {
+std::int32_t DigitalIn::get_new_press(void) const {
 	return adi_digital_get_new_press(_port);
 }
 
-ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port, E_ADI_LEGACY_PWM) {
+Motor::Motor(std::uint8_t port) : Port(port, E_ADI_LEGACY_PWM) {
 	stop();
 }
 
-std::int32_t ADIMotor::stop(void) const {
+std::int32_t Motor::stop(void) const {
 	return adi_motor_stop(_port);
 }
 
-ADIEncoder::ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed) {
+Encoder::Encoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed) {
 	_port = adi_encoder_init(port_top, port_bottom, reversed);
 }
 
-std::int32_t ADIEncoder::reset(void) const {
+std::int32_t Encoder::reset(void) const {
 	return adi_encoder_reset(_port);
 }
 
-std::int32_t ADIEncoder::get_value(void) const {
+std::int32_t Encoder::get_value(void) const {
 	return adi_encoder_get(_port);
 }
 
-ADIUltrasonic::ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
+Ultrasonic::Ultrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
 	_port = adi_ultrasonic_init(port_ping, port_echo);
 }
 
-ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
+Gyro::Gyro(std::uint8_t port, double multiplier) {
 	_port = adi_gyro_init(port, multiplier);
 }
 
-double ADIGyro::get_value(void) const {
+double Gyro::get_value(void) const {
 	return adi_gyro_get(_port);
 }
 
-std::int32_t ADIGyro::reset(void) const {
+std::int32_t Gyro::reset(void) const {
 	return adi_gyro_reset(_port);
 }
 }  // namespace adi
