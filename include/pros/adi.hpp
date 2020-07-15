@@ -26,23 +26,6 @@
     using old_name [[deprecated("use " #new_name " instead")]] = new_name
 
 namespace pros {
-//pros4 upgrade backwards compatibility for ADI api.
-LEGACY_TYPEDEF(ADIPort, pros::adi::Port);
-LEGACY_TYPEDEF(ADIAnalogIn, pros::adi::AnalogIn);
-LEGACY_TYPEDEF(ADIAnalogOut, pros::adi::AnalogOut);
-LEGACY_TYPEDEF(ADIDigitalIn, pros::adi::DigitalIn);
-LEGACY_TYPEDEF(ADIDigitalOut, pros::adi::DigitalOut);
-LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
-LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
-LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
-LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
-//Derived Classes
-LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);
-LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
-LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
-LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
-LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
-
 namespace adi {
 class Port {
 	public:
@@ -524,6 +507,22 @@ class Gyro : private Port {
 	std::int32_t reset(void) const;
 };
 }  // namespace adi
+//pros4 upgrade backwards compatibility for ADI api.
+LEGACY_TYPEDEF(ADIPort, pros::adi::Port);
+LEGACY_TYPEDEF(ADIAnalogIn, pros::adi::AnalogIn);
+LEGACY_TYPEDEF(ADIAnalogOut, pros::adi::AnalogOut);
+LEGACY_TYPEDEF(ADIDigitalIn, pros::adi::DigitalIn);
+LEGACY_TYPEDEF(ADIDigitalOut, pros::adi::DigitalOut);
+LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
+LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
+LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
+LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
+//Derived Classes
+LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);
+LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
+LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
+LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
+LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_
