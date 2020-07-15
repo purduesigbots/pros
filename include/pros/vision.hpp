@@ -25,7 +25,7 @@
 #include <cstdint>
 
 namespace pros {
-inline namespace device{
+inline namespace v5{
 class Vision {
 	public:
 	/**
@@ -442,6 +442,6 @@ class Vision {
 	private:
 	std::uint8_t _port;
 };
-}  // namespace device
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_

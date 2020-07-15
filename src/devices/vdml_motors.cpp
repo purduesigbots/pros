@@ -14,7 +14,7 @@
 #include "pros/motors.hpp"
 
 namespace pros {
-inline namespace device{
+inline namespace v5{
 using namespace pros::c;
 
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
@@ -241,5 +241,5 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m) {
 	return pros::Motor(m, true);
 }
 }  // namespace literals
-}  // namespace device
+}  // namespace v5
 }  // namespace pros

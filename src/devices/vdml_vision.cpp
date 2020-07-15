@@ -13,7 +13,7 @@
 #include "kapi.h"
 
 namespace pros {
-inline namespace device{
+inline namespace v5{
 using namespace pros::c;
 
 Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port) {
@@ -116,5 +116,5 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
 }
-}  // namespace device 
+}  // namespace v5 
 }  // namespace pros
