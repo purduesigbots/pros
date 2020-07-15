@@ -18,7 +18,7 @@
 #include "v5_api.h"
 #include "vdml/vdml.h"
 
-#define CONTROLLER_MAX_COLS 19
+#define CONTROLLER_MAX_COLS 15
 
 // From enum in misc.h
 #define NUM_BUTTONS 12
@@ -260,8 +260,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 }
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
-	static const char* clear = "                   ";
-	kassert(strlen(clear) == CONTROLLER_MAX_COLS);
+	static const char* clear = "               ";
 	return controller_print(id, line, 0, clear);
 }
 
