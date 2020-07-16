@@ -188,6 +188,7 @@ class AnalogIn : private Port {
 	using Port::get_value;
 };
 
+//Derived Classes from AnalogIn
 using Potentiometer = AnalogIn;
 using LineSensor = AnalogIn;
 using LightSensor = AnalogIn;
@@ -311,6 +312,7 @@ class DigitalIn : private Port {
 	using Port::get_value;
 };
 
+//Derived Class(es) from DigitalIn
 using Button = DigitalIn;
 
 class Motor : private Port {
@@ -507,7 +509,13 @@ class Gyro : private Port {
 	std::int32_t reset(void) const;
 };
 }  // namespace adi
-//pros4 upgrade backwards compatibility for ADI api.
+
+/*
+Pros4 upgrade backwards compatibility for ADI api.
+
+Prints a deprecated warning when user uses old pros::ADIDevice style API. 
+Remove when and if fully removing old API.
+*/
 LEGACY_TYPEDEF(ADIPort, pros::adi::Port);
 LEGACY_TYPEDEF(ADIAnalogIn, pros::adi::AnalogIn);
 LEGACY_TYPEDEF(ADIAnalogOut, pros::adi::AnalogOut);
@@ -517,12 +525,14 @@ LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
 LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
 LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
 LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
-//Derived Classes
+
+// Backwards Compatibility for Derived Classes
 LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);
 LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
 LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
 LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
 LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
+
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_
