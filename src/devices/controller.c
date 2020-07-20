@@ -149,19 +149,10 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
-
-	va_list args;
-	va_start(args, fmt);
-	static const char* clear = "";
-	vsnprintf(buf, 0, fmt, args);
-
+	CONTROLLER_PORT_MUTEX_TAKE(id,port);
+	static char* clear = "";
 	uint32_t rtn_val = vexControllerTextSet(id, ++line, 1, clear);
-	free(clear);
-	va_end(args);
-
 	internal_port_mutex_give(port);
-
 	if (!rtn_val) {
 		errno = EAGAIN;
 		return PROS_ERR;
