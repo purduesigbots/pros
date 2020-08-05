@@ -168,8 +168,9 @@ queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storag
  *
  * \param[in] text
  *            The text string to display to the screen
- */
+ 
 void display_error(const char* text);
+*/
 
 /**
  * Display a fatal error to the built-in LCD/touch screen.

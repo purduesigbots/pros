@@ -20,11 +20,6 @@ void opcontrol() {
 	pros::ADIEncoder enc (5, 6, true);
 	uint32_t now = pros::millis();
  	while (true) {
- 		if (dig.get_new_press())
-			pros::lcd::print(4, "here");
-		pros::lcd::print(2, "%d", enc.get_value());
-		pros::lcd::print(1, "%f", gyro.get_value());
-
  		if (pros::millis() - now > 5000) {
  			gyro.reset();
  			now = pros::millis();

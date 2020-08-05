@@ -57,6 +57,7 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 /**
  * From llemu.h
  */
+/*
 #define lcdInit lcd_initialize
 #define lcdReadButtons lcd_read_buttons
 #define lcdClear lcd_clear
@@ -64,6 +65,7 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 #define lcdShutdown lcd_shutdown
 #define lcdPrint(line, fmt, ...) lcd_print(line, fmt, __VA_ARGS__)
 #define lcdSetText(line, text) lcd_set_text(line, text)
+*/
 
 /**
  * From misc.h

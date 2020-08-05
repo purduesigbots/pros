@@ -30,7 +30,7 @@
 #include "api.h"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
-#include "display/lvgl.h"
+//#include "display/lvgl.h"
 #pragma GCC diagnostic pop
 #include "pros/serial.h"
 
