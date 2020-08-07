@@ -55,6 +55,7 @@
 #include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/vision.h"
+#include "display/graphics.h"
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
