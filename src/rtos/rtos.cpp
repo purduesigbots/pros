@@ -105,4 +105,8 @@ using namespace pros::c;
   bool Mutex::give(void) {
     return mutex_give(mutex);
   }
+
+  void Mutex::free(void) {
+	  mutex_delete(mutex);
+  }
 }

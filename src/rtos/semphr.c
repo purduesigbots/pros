@@ -202,6 +202,10 @@ uint8_t mutex_take(mutex_t mutex, uint32_t timeout) {
 	return xQueueSemaphoreTake( ( mutex ), ( timeout ) );
 }
 
+void mutex_delete(mutex_t mutex){
+  queue_delete((queue_t)(mutex));
+}
+
 /**
  * semphr. h
  * <pre>sem_t sem_binary_create( void )</pre>
