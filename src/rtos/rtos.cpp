@@ -96,10 +96,6 @@ using namespace pros::c;
     return task_get_count();
   }
 
-  class MutexDeleter{
-
-  };
-
   Mutex::Mutex(void) : mutex(std::shared_ptr<std::remove_pointer_t<mutex_t>>{mutex_create(), mutex_delete}) { }
 
   bool Mutex::take(std::uint32_t timeout) {
