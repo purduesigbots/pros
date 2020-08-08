@@ -96,17 +96,17 @@ using namespace pros::c;
     return task_get_count();
   }
 
-  Mutex::Mutex(void) : mutex(mutex_create()) { }
+  class MutexDeleter{
+
+  };
+
+  Mutex::Mutex(void) : mutex(std::shared_ptr<std::remove_pointer_t<mutex_t>>{mutex_create(), mutex_delete}) { }
 
   bool Mutex::take(std::uint32_t timeout) {
-    return mutex_take(mutex, timeout);
+    return mutex_take(mutex.get(), timeout);
   }
 
   bool Mutex::give(void) {
-    return mutex_give(mutex);
-  }
-
-  void Mutex::free(void) {
-	  mutex_delete(mutex);
+    return mutex_give(mutex.get());
   }
 }

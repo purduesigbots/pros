@@ -356,13 +356,8 @@ class Mutex {
 	 */
 	bool give(void);
 
-	/**
-	 * Should be called only on the last instance to free the memory the mutex takes up.
-	 */
-	void free(void);
-
 	private:
-	mutex_t mutex;
+	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
 };
 
 /**
