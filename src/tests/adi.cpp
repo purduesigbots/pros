@@ -20,6 +20,8 @@ void opcontrol() {
 	pros::ADIEncoder enc (5, 6, true);
 	uint32_t now = pros::millis();
  	while (true) {
+			//todo add code for test display
+
  		if (pros::millis() - now > 5000) {
  			gyro.reset();
  			now = pros::millis();

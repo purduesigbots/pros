@@ -253,7 +253,7 @@ void vdml_background_processing() {
 		}
 		// Null terminate the string
 		*line_ptr = '\0';
-		//display_error(line);
+		//display_error(line);  //Uncomment when reimplemented
 	end_render_errors:
 		last_port_errors = port_errors;
 	}

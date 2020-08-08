@@ -17,11 +17,15 @@
 void opcontrol() {
 	pros::Motor left_mtr(1);
 	pros::motor_pid_s_t pid = pros::Motor::convert_pid(1.0, 0.0001, 1.0, 2.0);
+	//todo add kp, ki, kd, and kf test displays
 	left_mtr.set_vel_pid(pid);
 	pros::ADIGyro gyro('c', 1 / 1.8);
 	pros::motor_pid_full_s_t pidf = left_mtr.get_vel_pid();
+	//todo add kp, ki, kd, and kf test displays
 	uint32_t now = pros::millis();
 	while (true) {
+		//todo add gyro display value here
+
 		if (pros::millis() - now > 5000) {
 			gyro.reset();
 			now = pros::millis();

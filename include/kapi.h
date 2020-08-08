@@ -23,6 +23,11 @@
 #include "rtos/FreeRTOS.h"
 #include "rtos/stream_buffer.h"
 
+//TODO: Remove this and figure out why it won't compile without this (apix is included and yet it does this :/)
+typedef void* queue_t;
+typedef void* sem_t;
+//eh they're both void pointer anyways so I'll figure it out later... shouldn't effect functionality.
+
 #ifdef __cplusplus
 extern "C" {
 #define task_t pros::task_t
@@ -159,6 +164,7 @@ sem_t sem_create_static(uint32_t max_count, uint32_t init_count, static_sem_s_t*
 queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer,
                             static_queue_s_t* queue_buffer);
 
+
 /**
  * Display a non-fatal error to the built-in LCD/touch screen.
  *
@@ -168,9 +174,8 @@ queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storag
  *
  * \param[in] text
  *            The text string to display to the screen
- 
-void display_error(const char* text);
-*/
+ */
+//void display_error(const char* text); (Temporarily disabled)
 
 /**
  * Display a fatal error to the built-in LCD/touch screen.
@@ -183,7 +188,6 @@ void display_error(const char* text);
  *            The text string to display to the screen
  */
 void display_fatal_error(const char* text);
-
 /**
  * Prints hex characters to the terminal.
  *

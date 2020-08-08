@@ -103,7 +103,7 @@ void ser_output_flush(void) {
 	size_t len = stream_buf_recv(write_stream, write_scratch_buf, vexSerialWriteFree(1), 0);
 	uint32_t ret = vexSerialWriteBuffer(1, write_scratch_buf, len);
 	if (ret != len) {
-		//display_error("WARNING: some serial data has been dropped");
+		//display_error("WARNING: some serial data has been dropped");  //Uncomment when reimplemented
 	}
 }
 
