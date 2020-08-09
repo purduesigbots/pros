@@ -111,7 +111,9 @@ using namespace pros::c;
   }
 
   void Mutex::lock(void) {
-	  take(TIMEOUT_MAX);
+	  if(!take(TIMEOUT_MAX)){
+		  throw std::runtime_error{"Cannot obtain lock!"};
+	  }
   }
 
   void Mutex::unlock(void) {

@@ -321,10 +321,10 @@ class Task {
 	task_t task;
 };
 
-//STL Clock compliant clock
-class ProsClock{
-public:
-  typedef uint32_t rep;
+// STL Clock compliant clock
+class ProsClock {
+	public:
+	typedef uint32_t rep;
 	typedef std::milli period;
 	typedef std::chrono::duration<rep, period> duration;
 	typedef std::chrono::time_point<ProsClock> time_point;
@@ -373,20 +373,39 @@ class Mutex {
 	 */
 	bool give(void);
 
-	//BasicLockable compliance https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	/**
+	 * BasicLockable compliance lock function https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 * Do not use directly, use pros::Mutex::take instead
+	 */
 	void lock(void);
+
+	/**
+	 * BasicLockable compliance unlock function https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 * Do not use directly, use pros::Mutex::give instead
+	 */
 	void unlock(void);
 
-  //Lockable compliance https://en.cppreference.com/w/cpp/named_req/Lockable
+	/**
+	 * Lockable compliance try_lock function https://en.cppreference.com/w/cpp/named_req/Lockable
+	 * Do not use directly, use pros::Mutex::take instead
+	 */
 	bool try_lock(void);
 
-	//TimedLockable compliance https://en.cppreference.com/w/cpp/named_req/TimedLockable
-	template<typename Rep, typename Period>
-	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time){
+	/**
+	 * TimedLockable compliance try_unlock_for function https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	 * Do not use directly, use pros::Mutex::take instead
+	 */
+	template <typename Rep, typename Period>
+	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
 		return take(std::chrono::duration_cast<ProsClock::duration>(rel_time).count());
 	}
-	template<typename Duration>
-  bool try_lock_until(const std::chrono::time_point<ProsClock, Duration>& abs_time){
+
+  /**
+   * TimedLockable compliance try_unlock_until function https://en.cppreference.com/w/cpp/named_req/TimedLockable
+   * Do not use directly, use pros::Mutex::take instead
+   */
+	template <typename Duration>
+	bool try_lock_until(const std::chrono::time_point<ProsClock, Duration>& abs_time) {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - ProsClock::now()).count()));
 	}
 
