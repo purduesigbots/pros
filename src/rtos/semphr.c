@@ -203,7 +203,7 @@ uint8_t mutex_take(mutex_t mutex, uint32_t timeout) {
 }
 
 void mutex_delete(mutex_t mutex){
-  queue_delete((queue_t)(mutex));
+  sem_delete((sem_t)(mutex));
 }
 
 /**
