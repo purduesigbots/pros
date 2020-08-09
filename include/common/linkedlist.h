@@ -14,7 +14,7 @@
  */
 
 #pragma once
-
+#include <stdbool.h>
 typedef void (*generic_fn_t)(void);
 
 typedef struct ll_node_s {
@@ -22,6 +22,7 @@ typedef struct ll_node_s {
 		generic_fn_t func;
 		void* data;
 	} payload;
+	bool isFunc;
 	struct ll_node_s* next;
 } ll_node_s_t;
 

@@ -22,7 +22,7 @@ ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.func = func;
 	node->next = NULL;
-
+	node->isFunc = true;
 	return node;
 }
 
@@ -30,7 +30,7 @@ ll_node_s_t* linked_list_init_data_node(void* data) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.data = data;
 	node->next = NULL;
-
+	node->isFunc = false;
 	return node;
 }
 
@@ -75,23 +75,22 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func) {
 	it->next = n;
 }
 
-// NOTE: this will likely break if the list has intermixed data and function ptrs
-// TODO: add tag field to ll_node_s_t to easily check what is present
 void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 	if (list == NULL || list->head == NULL) return;
 
 	ll_node_s_t* it = list->head;
 	ll_node_s_t* p = NULL;
 	while (it != NULL) {
-		if (it->payload.func == func) {
-			if (p == NULL)
-				list->head = it->next;
-			else
-				p->next = it->next;
-			kfree(it);
+		if(it->isFunc) { //Outer if loop for protective wrapping
+			if (it->payload.func == func) {
+				if (p == NULL)
+					list->head = it->next;
+				else
+					p->next = it->next;
+				kfree(it);
 			break;
+			}
 		}
-
 		p = it;
 		it = it->next;
 	}
@@ -113,23 +112,22 @@ void linked_list_append_data(linked_list_s_t* list, void* data) {
 	it->next = n;
 }
 
-// NOTE: this will likely break if the list has intermixed data and function ptrs
-// TODO: add tag field to ll_node_s_t to easily check what is present
 void linked_list_remove_data(linked_list_s_t* list, void* data) {
 	if (list == NULL || list->head == NULL) return;
 
 	ll_node_s_t* it = list->head;
 	ll_node_s_t* p = NULL;
 	while (it != NULL) {
-		if (it->payload.data == data) {
-			if (p == NULL)
-				list->head = it->next;
-			else
-				p->next = it->next;
-			kfree(it);
-			break;
+		if(!it->isFunc) { //Outer if loop for protective wrapping
+			if (it->payload.data == data) {
+				if (p == NULL)
+					list->head = it->next;
+				else
+					p->next = it->next;
+				kfree(it);
+				break;
+			}
 		}
-
 		p = it;
 		it = it->next;
 	}
