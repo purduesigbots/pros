@@ -153,7 +153,6 @@ imu_status_e_t imu_get_status(uint8_t port) {
 		return rtn;
 	}
 	device = registry_get_device(port - 1);
-	ERROR_IMU_STILL_CALIBRATING(port, device, E_IMU_STATUS_ERROR);
 	rtn = vexDeviceImuStatusGet(device->device_info);
 	return_port(port - 1, rtn);
 }
