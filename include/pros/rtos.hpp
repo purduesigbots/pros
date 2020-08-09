@@ -23,6 +23,7 @@
 
 #include "pros/rtos.h"
 #undef delay
+#include <chrono>
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
@@ -320,6 +321,22 @@ class Task {
 	task_t task;
 };
 
+//STL Clock compliant clock
+class ProsClock{
+public:
+  typedef uint32_t rep;
+	typedef std::milli period;
+	typedef std::chrono::duration<rep, period> duration;
+	typedef std::chrono::time_point<ProsClock> time_point;
+	const bool is_steady = true;
+
+	/**
+	 * Returns the current time from pros::c::milis()
+	 * \return
+	 */
+	static time_point now();
+};
+
 class Mutex {
 	public:
 	Mutex(void);
@@ -355,6 +372,23 @@ class Mutex {
 	 * couldn't be returned.
 	 */
 	bool give(void);
+
+	//BasicLockable compliance https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	void lock(void);
+	void unlock(void);
+
+  //Lockable compliance https://en.cppreference.com/w/cpp/named_req/Lockable
+	bool try_lock(void);
+
+	//TimedLockable compliance https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	template<typename Rep, typename Period>
+	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time){
+		return take(std::chrono::duration_cast<ProsClock::duration>(rel_time).count());
+	}
+	template<typename Duration>
+  bool try_lock_until(const std::chrono::time_point<ProsClock, Duration>& abs_time){
+		return take(std::max(static_cast<uint32_t>(0), (abs_time - ProsClock::now()).count()));
+	}
 
 	private:
 	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;

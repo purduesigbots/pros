@@ -96,6 +96,10 @@ using namespace pros::c;
     return task_get_count();
   }
 
+  ProsClock::time_point ProsClock::now() {
+    return ProsClock::time_point{ProsClock::duration{millis()}};
+  }
+
   Mutex::Mutex(void) : mutex(std::shared_ptr<std::remove_pointer_t<mutex_t>>{mutex_create(), mutex_delete}) { }
 
   bool Mutex::take(std::uint32_t timeout) {
@@ -105,4 +109,19 @@ using namespace pros::c;
   bool Mutex::give(void) {
     return mutex_give(mutex.get());
   }
-}
+
+  void Mutex::lock(void) {
+	  take(TIMEOUT_MAX);
+  }
+
+  void Mutex::unlock(void) {
+	  give();
+  }
+
+  bool Mutex::try_lock(void) {
+	  try_lock_for(std::chrono::duration<long, std::ratio<1>>{1});
+	  try_lock_until(ProsClock::time_point{std::chrono::duration<long, std::ratio<1>>{1}});
+	  return take(0);
+  }
+
+  }
