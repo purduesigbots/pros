@@ -20,16 +20,23 @@
 namespace pros {
 using namespace pros::c;
 
-  Task::Task(task_fn_t function, void* parameters,
-            std::uint32_t prio,
-            std::uint16_t stack_depth,
-            const char* name) {
-    task = task_create(function, parameters, prio, stack_depth, name);
-  }
+  TaskStartData::TaskStartData()
+    : function(nullptr),
+      parameters(nullptr),
+      prio(TASK_PRIORITY_DEFAULT),
+      stack_depth(TASK_STACK_DEPTH_DEFAULT),
+      name() {}
+  TaskStartData::TaskStartData(task_fn_t function, void* parameters, uint32_t prio, uint16_t stack_depth,
+                             const char* name)
+    : function(function), parameters(parameters), prio(prio), stack_depth(stack_depth), name(name) {}
 
-  Task::Task(task_fn_t function, void* parameters,
-            const char* name)
-      : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
+  Task::Task(task_fn_t function, void* parameters, std::uint32_t prio, std::uint16_t stack_depth, const char* name,
+           bool delay)
+    : task(delay ? nullptr : task_create(function, parameters, prio, stack_depth, name)),
+      start_data(function, parameters, prio, stack_depth, name) {}
+
+  Task::Task(task_fn_t function, void* parameters, const char* name, bool delay)
+    : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name, delay) {}
 
   Task::Task(task_t task) : task(task) { }
   void Task::operator = (const task_t in) {
@@ -82,6 +89,26 @@ using namespace pros::c;
 
   bool Task::notify_clear(void) {
     return task_notify_clear(task);
+  }
+
+  struct TaskDelayedData{
+	  std::function<void(void*)> function;
+	  void* parameters;
+  };
+
+  bool Task::start() {
+	  if (task == nullptr) {
+		  task = task_create(
+		      [](void* parameters) {
+			      std::unique_ptr<TaskDelayedData> delayed_data{static_cast<TaskDelayedData*>(parameters)};
+			      delayed_data->function(parameters);
+		      },
+		      new TaskDelayedData{start_data.function, start_data.parameters}, start_data.prio, start_data.stack_depth,
+		      start_data.name.c_str());
+		  return true;
+	  } else {
+		  return false;
+	  }
   }
 
   void Task::delay(const std::uint32_t milliseconds) {

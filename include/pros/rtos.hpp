@@ -30,6 +30,18 @@
 #include <type_traits>
 
 namespace pros {
+//Internal task start data storage class
+struct TaskStartData{
+	std::function<void(void*)> function;
+  void* parameters;
+	std::uint32_t prio;
+	std::uint16_t stack_depth;
+	std::string name;
+
+	TaskStartData();
+  TaskStartData(task_fn_t function, void* parameters, uint32_t prio, uint16_t stack_depth, const char* name);
+};
+
 class Task {
 	public:
 	/**
@@ -56,9 +68,13 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \param delay
+	 *        True if task should not start until the start function is called.
+	 *        All other function calls to a delayed task will result in errors
+	 *        until start is called.
 	 */
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "", bool delay = false);
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -78,8 +94,12 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \param delay
+	 *        True if task should not start until the start function is called.
+	 *        All other function calls to a delayed task will result in errors
+	 *        until start is called.
 	 */
-	Task(task_fn_t function, void* parameters, const char* name);
+	Task(task_fn_t function, void* parameters, const char* name, bool delay = false);
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -100,16 +120,20 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \param delay
+	 *        True if task should not start until the start function is called.
+	 *        All other function calls to a delayed task will result in errors
+	 *        until start is called.
 	 */
 	template <class F>
 	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "")
+	     const char* name = "", bool delay = false)
 	    : Task(
 	          [](void* parameters) {
 		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
 		          (*ptr)();
 	          },
-	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
+	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name, delay) {
 		static_assert(std::is_invocable_r_v<void, F>);
 	}
 
@@ -128,8 +152,8 @@ class Task {
 	 *
 	 */
 	template <class F>
-	Task(F&& function, const char* name)
-	    : Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
+	Task(F&& function, const char* name, bool delay = false)
+	    : Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name, delay) {}
 
 	/**
 	 * Create a C++ task object from a task handle
@@ -280,6 +304,13 @@ class Task {
 	bool notify_clear(void);
 
 	/**
+	 * Starts this task if delayed or does nothing if started.
+	 *
+	 * @return True if task started, false if task had previously been started
+	 */
+	bool start(void);
+
+	/**
 	 * Delays a task for a given number of milliseconds.
 	 *
 	 * This is not the best method to have a task execute code at predefined
@@ -318,6 +349,7 @@ class Task {
 
 	private:
 	task_t task;
+	TaskStartData start_data;
 };
 
 class Mutex {
