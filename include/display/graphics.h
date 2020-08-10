@@ -40,6 +40,7 @@ extern "C" {
  * 					from the enum defined in colors.h)
  */
 void display_set_color_fg(uint32_t color);
+
 /**
  * \brief Set the background color for subsequent graphics operations
  *
@@ -60,6 +61,7 @@ void display_erase(void);
  * \param[in] lines			The number of lines to scroll
  */
 void display_scroll(int16_t start_line, int16_t lines);
+
 /**
  * \brief Scroll lines within a region on the display
  *
@@ -94,6 +96,7 @@ void display_copy_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t*
  * \param[in] x, y 	The (x,y) coordinates of the pixel
  */
 void display_draw_pixel(int16_t x, int16_t y);
+
 /**
  * \brief Draw a pixel on the screen using the current background color
  *
@@ -108,6 +111,7 @@ void display_clear_pixel(int16_t x, int16_t y);
  * \param[in] x1, y1 	The (x, y) coordinates of the second point of the line
  */
 void display_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 /**
  * \brief Draw a line on the screen using the current background color
  *
@@ -123,6 +127,7 @@ void display_clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param[in] x1, y1 	The (x,y) coordinates of the second point of the rectangle
  */
 void display_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 /**
  * \brief Draw a rectangle on the screen using the current background color
  *
@@ -130,6 +135,7 @@ void display_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param[in] x1, y1 	The (x,y) coordinates of the second point of the rectangle
  */
 void display_clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+
 /**
  * \brief Fill a rectangular region of the screen using the current foreground
  * 		  color
@@ -146,6 +152,7 @@ void display_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param[in] r 	The radius of the circle
  */
 void display_draw_circle(int16_t x, int16_t y, int16_t r);
+
 /**
  * \brief Draw a circle on the screen using the current background color
  *
@@ -153,6 +160,7 @@ void display_draw_circle(int16_t x, int16_t y, int16_t r);
  * \param[in] r 	The radius of the circle
  */
 void display_clear_circle(int16_t x, int16_t y, int16_t r);
+
 /**
  * \brief Fill a circular region of the screen using the current foreground
  * 		  color
@@ -170,6 +178,7 @@ void display_fill_circle(int16_t x, int16_t y, int16_t r);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_printf(const int16_t line, const char* fmt, ...);
+
 /**
  * \brief Print a formatted string to the screen at the specified coordinates
  *
@@ -178,6 +187,7 @@ void display_printf(const int16_t line, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 /**
  * \brief Print a large, formatted string to the screen on the specified line
  *
@@ -186,6 +196,7 @@ void display_printf_at(int16_t x, int16_t y, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_big_printf(const int16_t line, const char* fmt, ...);
+
 /**
  * \brief Print a large, formatted string to the screen at the specified
  * 		  coordinates
@@ -195,6 +206,7 @@ void display_big_printf(const int16_t line, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_big_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 /**
  * \brief Print a small, formatted string to the screen at the specified
  * 		  coordinates
@@ -204,6 +216,7 @@ void display_big_printf_at(int16_t x, int16_t y, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_small_printf_at(int16_t x, int16_t y, const char* fmt, ...);
+
 /**
  * \brief Print a centered, formatted string to the screen on the specified line
  *
@@ -212,6 +225,7 @@ void display_small_printf_at(int16_t x, int16_t y, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_center_printf(const int16_t line, const char* fmt, ...);
+
 /**
  * \brief Print a large, centered, formatted string to the screen on the specified
  * 		  line
@@ -221,6 +235,7 @@ void display_center_printf(const int16_t line, const char* fmt, ...);
  * \param[in] ...  Optional list of arguments for the format string
  */
 void display_center_big_printf(const int16_t line, const char* fmt, ...);
+
 /**
  * \brief Print a string to the screen on the specified line
  *
@@ -228,6 +243,7 @@ void display_center_big_printf(const int16_t line, const char* fmt, ...);
  * \param[in] text The text to display
  */
 void display_puts(const int16_t line, const char* text);
+
 /**
  * \brief Print a string to the screen at the specified coordinates
  *
@@ -235,6 +251,7 @@ void display_puts(const int16_t line, const char* text);
  * \param[in] text The text to display
  */
 void display_puts_at(int16_t x, int16_t y, const char* text);
+
 /**
  * \brief Print a large string to the screen on the specified line
  *
@@ -242,6 +259,7 @@ void display_puts_at(int16_t x, int16_t y, const char* text);
  * \param[in] text The text to display
  */
 void display_big_puts(const int16_t line, const char* text);
+
 /**
  * \brief Print a large string to the screen at the specified coordinates
  *
@@ -249,6 +267,7 @@ void display_big_puts(const int16_t line, const char* text);
  * \param[in] text The text to display
  */
 void display_big_puts_at(int16_t x, int16_t y, const char* text);
+
 /**
  * \brief Print a small string to the screen at the specified coordinates
  *
@@ -256,6 +275,7 @@ void display_big_puts_at(int16_t x, int16_t y, const char* text);
  * \param[in] text The text to display
  */
 void display_small_puts_at(int16_t x, int16_t y, const char* text);
+
 /**
  * \brief Print a centered string on the specified line
  *
@@ -263,6 +283,7 @@ void display_small_puts_at(int16_t x, int16_t y, const char* text);
  * \param[in] text The text to display
  */
 void display_center_puts(const int16_t line, const char* text);
+
 /**
  * \brief Print a large, centered string on the specified line
  *
@@ -270,6 +291,7 @@ void display_center_puts(const int16_t line, const char* text);
  * \param[in] text The text to display
  */
 void display_center_big_puts(const int16_t line, const char* text);
+
 /**
  * \brief Print a formatted string to the screen on the specified line
  *
@@ -281,6 +303,7 @@ void display_center_big_puts(const int16_t line, const char* text);
  * \param[in] args List of arguments for the format string
  */
 void display_vprintf(const int16_t line, const char* fmt, va_list args);
+
 /**
  * \brief Print a formatted string to the screen at the specified coordinates
  *
@@ -292,6 +315,7 @@ void display_vprintf(const int16_t line, const char* fmt, va_list args);
  * \param[in] args List of arguments for the format string
  */
 void display_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 /**
  * \brief Print a large, formatted string to the screen on the specified line
  *
@@ -303,6 +327,7 @@ void display_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
  * \param[in] args List of arguments for the format string
  */
 void display_big_vprintf(const int16_t line, const char* fmt, va_list args);
+
 /**
  * \brief Print a large, formatted string to the screen at the specified coordinates
  *
@@ -314,6 +339,7 @@ void display_big_vprintf(const int16_t line, const char* fmt, va_list args);
  * \param[in] args List of arguments for the format string
  */
 void display_big_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 /**
  * \brief Print a small, formatted string to the screen at the specified coordinates
  *
@@ -325,6 +351,7 @@ void display_big_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args)
  * \param[in] args List of arguments for the format string
  */
 void display_small_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list args);
+
 /**
  * \brief Print a centered, formatted string to the screen on the specified line
  *
@@ -336,6 +363,7 @@ void display_small_vprintf_at(int16_t x, int16_t y, const char* fmt, va_list arg
  * \param[in] args List of arguments for the format string
  */
 void display_center_vprintf(const int16_t line, const char* fmt, va_list args);
+
 /**
  * \brief Print a large, centered, formatted string to the screen on the specified line
  *
@@ -348,14 +376,43 @@ void display_center_vprintf(const int16_t line, const char* fmt, va_list args);
  */
 void display_center_big_vprintf(const int16_t line, const char* fmt, va_list args);
 
-typedef enum touch_event_e { E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, E_TOUCH_EVENT_PRESS_AND_HOLD } touch_event_e_t;
+typedef enum touch_event_e { 
+	E_TOUCH_EVENT_RELEASE, 
+	E_TOUCH_EVENT_PRESS, 
+	E_TOUCH_EVENT_PRESS_AND_HOLD 
+} touch_event_e_t;
 
 typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
+
 typedef struct touch_event_position_data_s {
 	int16_t x;
 	int16_t y;
 } touch_event_position_data_s_t;
 
+/**
+ * \brief Gets the x coordinate of the last touch.
+ * 
+ * \return The x coordinate of the last touch.
+ */
+int16_t touch_last_x(void);
+
+/**
+ * \brief Gets the y coordinate of the last touch.
+ * 
+ * \return The y coordinate of the last touch.
+ */
+int16_t touch_last_y(void);
+
+/**
+ * \brief Gets the touch status of the last touch of the screen.
+ * 
+ * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
+ */
+touch_event_e_t touch_event(void);
+
+/**
+ * \brief Initializes the touch callback linked lists for different touch statuses.
+ */
 void _set_up_touch_callback_storage();
 
 /**
@@ -369,6 +426,11 @@ void _set_up_touch_callback_storage();
  * \param[in] event_type 	The desired type of event to listen for
  */
 void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type);
+
+/**
+ * \brief Touch event handler, loop for handling the screen's
+ * linked list touch detection.
+ */
 void _handle_touch_events(V5_TouchEvent event, int16_t x, int16_t y);
 
 #ifdef __cplusplus

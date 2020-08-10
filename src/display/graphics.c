@@ -285,6 +285,24 @@ static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t touch_handle_task_buffer;
 static task_t touch_handle_task;
 
+int16_t touch_last_x(void) {
+	static V5_TouchStatus v5_touch_status;
+	vexTouchDataGet(&v5_touch_status);
+	return v5_touch_status.lastXpos;
+}	
+
+int16_t touch_last_y(void) {
+	static V5_TouchStatus v5_touch_status;
+	vexTouchDataGet(&v5_touch_status);
+	return v5_touch_status.lastYpos;
+}	
+
+touch_event_e_t touch_event(void) {
+	static V5_TouchStatus v5_touch_status;
+	vexTouchDataGet(&v5_touch_status);
+	return v5_touch_status.lastEvent;
+}
+
 void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,
 	                                               ((touch_event_position_data_s_t*)(data))->y);
