@@ -334,7 +334,7 @@ void _touch_handle_task(void* ignore) {
 	}
 }
 
-void graphical_context_daemon_initialize(void) {
+__attribute__((constructor(PROS_KERNEL_INIT-1))) void graphical_context_daemon_initialize(void) {
 	_graphics_mutex = mutex_create();
 	_set_up_touch_callback_storage();
 	touch_handle_task =

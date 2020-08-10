@@ -429,7 +429,7 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 
 /**
  * \brief Touch event handler, loop for handling the screen's
- * linked list touch detection.
+ *  touch detection linked list.
  */
 void _handle_touch_events(V5_TouchEvent event, int16_t x, int16_t y);
 
