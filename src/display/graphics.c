@@ -297,7 +297,7 @@ int16_t touch_last_y(void) {
 	return v5_touch_status.lastYpos;
 }	
 
-touch_event_e_t touch_get_event(void) {
+touch_event_e_t touch_last_event(void) {
 	static V5_TouchStatus v5_touch_status;
 	vexTouchDataGet(&v5_touch_status);
 	return v5_touch_status.lastEvent;

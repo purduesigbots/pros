@@ -408,7 +408,7 @@ int16_t touch_last_y(void);
  * 
  * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
  */
-touch_event_e_t touch_get_event(void);
+touch_event_e_t touch_last_event(void);
 
 /**
  * \brief Initializes the touch callback linked lists for different touch statuses.
