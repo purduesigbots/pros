@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 2
 #define PROS_VERSION_PATCH 1
-#define PROS_VERSION_STRING "3.2.1-dirty.83.7f5a186"
+#define PROS_VERSION_STRING "3.2.1-dirty.84.335fb87"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
@@ -53,8 +53,8 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
+#include "pros/screen.h"
 #include "pros/vision.h"
-#include "display/graphics.h"
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"

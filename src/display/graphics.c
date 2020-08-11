@@ -171,7 +171,7 @@ void display_big_puts_at(int16_t x, int16_t y, const char* text) {
 	vexDisplayBigStringAt(x, y, text);
 	mutex_give(_graphics_mutex);
 }
-// void display_small_puts(const int16_t line, const char* fmt, ...) {
+//void display_small_puts(const int16_t line, const char* fmt, ...) {
 //     va_list args;
 //     va_start(args, fmt);
 //     display_small_vputs(line, fmt, args);
@@ -303,6 +303,9 @@ touch_event_e_t touch_last_event(void) {
 	return v5_touch_status.lastEvent;
 }
 
+
+//Damon functions below
+
 void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,
 	                                               ((touch_event_position_data_s_t*)(data))->y);
@@ -339,5 +342,5 @@ __attribute__((constructor(PROS_KERNEL_INIT-1))) void graphical_context_daemon_i
 	_set_up_touch_callback_storage();
 	touch_handle_task =
 	    task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MAX - 3, TASK_STACK_DEPTH_DEFAULT,
-	                       "PROS GRAPHICS Touch Handler", touch_handle_task_stack, &touch_handle_task_buffer);
+	                       "PROS Touch Handler", touch_handle_task_stack, &touch_handle_task_buffer);
 }
