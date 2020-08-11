@@ -13,7 +13,7 @@
  */
 
 #include "pros/screen.h"
-#include "graphics.c"
+#include "display/graphics.h"
 
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/

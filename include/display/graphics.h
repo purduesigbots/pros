@@ -109,14 +109,14 @@ void display_copy_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t*
  *
  * \param[in] x, y 	The (x,y) coordinates of the pixel
  */
-void display_draw_pixel(int16_t x, int16_t y);
+void display_set_pixel_fg(int16_t x, int16_t y);
 
 /**
  * \brief Draw a pixel on the screen using the current background color
  *
  * \param[in] x, y 	The (x,y) coordinates of the pixel
  */
-void display_clear_pixel(int16_t x, int16_t y);
+void display_set_pixel_bg(int16_t x, int16_t y);
 
 /**
  * \brief Draw a line on the screen using the current foreground color
