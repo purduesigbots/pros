@@ -33,6 +33,20 @@ void display_set_color_bg(uint32_t color) {
 	mutex_give(_graphics_mutex);
 }
 
+uint32_t display_get_color_fg(void){
+	mutex_take(_graphics_mutex, TIMEOUT_MAX);
+	int32_t rtn = vexDisplayForegroundColorGet();
+	mutex_give(_graphics_mutex);
+	return rtn;
+}
+
+uint32_t display_get_color_bg(void){
+	mutex_take(_graphics_mutex, TIMEOUT_MAX);
+	int32_t rtn = vexDisplayBackgroundColorGet();
+	mutex_give(_graphics_mutex);
+	return rtn;
+}
+
 void display_erase(void) {
 	mutex_take(_graphics_mutex, TIMEOUT_MAX);
 	vexDisplayErase();
@@ -287,19 +301,25 @@ static task_t touch_handle_task;
 
 int16_t touch_last_x(void) {
 	static V5_TouchStatus v5_touch_status;
+	mutex_take(_graphics_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
+	mutex_give(_graphics_mutex);
 	return v5_touch_status.lastXpos;
 }	
 
 int16_t touch_last_y(void) {
 	static V5_TouchStatus v5_touch_status;
+	mutex_take(_graphics_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
+	mutex_give(_graphics_mutex);
 	return v5_touch_status.lastYpos;
 }	
 
 touch_event_e_t touch_last_event(void) {
 	static V5_TouchStatus v5_touch_status;
+	mutex_take(_graphics_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
+	mutex_give(_graphics_mutex);
 	return v5_touch_status.lastEvent;
 }
 

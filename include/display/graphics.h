@@ -50,6 +50,20 @@ void display_set_color_fg(uint32_t color);
 void display_set_color_bg(uint32_t color);
 
 /**
+ * \brief Get the foreground color for subsequent graphics operations
+ *
+ * \return color	The foreground color to set (it is recommended to us
+ */
+uint32_t display_get_color_fg(void);
+
+/**
+ * \brief Get the background color for subsequent graphics operations
+ *
+ * \return color	The background color that the background color is set to.
+ */
+uint32_t display_get_color_bg(void);
+
+/**
  * \brief Reset the display to the default black screen
  */
 void display_erase(void);
