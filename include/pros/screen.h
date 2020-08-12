@@ -87,6 +87,20 @@ void screen_set_pen(uint32_t color);
 void screen_set_eraser(uint32_t color);
 
 /**
+ * \brief  Get the current pen color.
+ * 
+ * \return The current pen color in the form of a value from the enum defined in colors.h.
+ */
+uint32_t screen_get_pen(void);
+
+/**
+ * \brief Get the current eraser color.
+ *
+ * \return The current eraser color in the form of a value from the enum defined in colors.h.
+ */
+uint32_t screen_get_eraser(void);
+
+/**
  * \brief Reset the display to the default black screen
  */
 void screen_clear(void);

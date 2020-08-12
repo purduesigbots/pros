@@ -22,27 +22,19 @@ class screen {
     public:
 
     /**
-	 * Creates a Motor object for the given port and specifications.
+	 * Creates a screen object with its own pen color and eraser color.
 	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param port
-	 *        The V5 port number from 1-21
-	 * \param gearset
-	 *        The motor's gearset
-	 * \param reverse
-	 *        True reverses the motor, false is default
-	 * \param encoder_units
-	 *        The motor's encoder units
+	 * \param pen_color
+	 *        Initial pen color
+	 * \param eraser_color
+	 *        Initial eraser color.
 	 */
+
 	screen(void);
 
-	screen(uint32_t pen_color);
+	screen(std::uint32_t pen_color);
 
-    screen(uint32_t pen_color, uint32_t eraser_color);
+    screen(std::uint32_t pen_color, std::uint32_t eraser_color);
 
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
@@ -56,7 +48,7 @@ class screen {
      * \param[in] color	The pen color to set (it is recommended to use values
      * 		 from the enum defined in colors.h)
      */
-    void set_pen(uint32_t color);
+    void set_pen(std::uint32_t color);
 
     /**
      * \brief Set the eraser color for clearing and the current background.
@@ -64,7 +56,21 @@ class screen {
      * \param[in] color	The background color to set (it is recommended to use values
      * 					from the enum defined in colors.h)
      */
-    void set_eraser(uint32_t color);
+    void set_eraser(std::uint32_t color);
+
+    /**
+     * \brief  Get the current pen color.
+     * 
+     * \return The current pen color of the screen object in the form of a value from the enum defined in colors.h.
+     */
+    std::uint32_t screen_get_pen(void);
+
+    /**
+     * \brief Get the current eraser color.
+     *
+     * \return The current eraser color of the screen object in the form of a value from the enum defined in colors.h.
+     */
+    std::uint32_t screen_get_eraser(void);
 
     /**
      * \brief Reset the display to the default black screen
@@ -77,7 +83,7 @@ class screen {
      * \param[in] start_line	The line from which scrolling will start
      * \param[in] lines			The number of lines to scroll up
      */
-    void scroll(int16_t start_line, int16_t lines);
+    void scroll(std::int16_t start_line, std::int16_t lines);
 
     /**
      * \brief Scroll lines within a region on the display
@@ -92,7 +98,7 @@ class screen {
      * 						rectangular region
      * \param[in] lines 	The number of lines to scroll upwards
      */
-    void scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines);
+    void scroll_area(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1, std::int16_t lines);
 
     /**
      * \brief Copy a screen region (designated by a rectangle) from an off-screen buffer 
@@ -106,21 +112,21 @@ class screen {
      * \param[in] stride	Off-screen buffer width in pixels, such that image size
      * 						is stride-padding
      */
-    void copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* buf, int32_t stride);
+    void copy_area(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1, uint32_t* buf, std::int32_t stride);
 
     /**
      * \brief Draw a single pixel on the screen using the current pen color
      *
      * \param[in] x, y 	The (x,y) coordinates of the pixel
      */
-    void draw_pixel(int16_t x, int16_t y);
+    void draw_pixel(std::int16_t x, std::int16_t y);
 
     /**
      * \brief Clear a pixel from the screen (Sets the location)
      *
      * \param[in] x, y 	The (x,y) coordinates of the cleared
      */
-    void clear_pixel(int16_t x, int16_t y);
+    void clear_pixel(std::int16_t x, std::int16_t y);
 
     /**
      * \brief Draw a line on the screen using the current pen color
@@ -128,7 +134,7 @@ class screen {
      * \param[in] x0, y0	The (x, y) coordinates of the first point of the line
      * \param[in] x1, y1 	The (x, y) coordinates of the second point of the line
      */
-    void draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    void draw_line(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1);
 
     /**
      * \brief Draw a line on the screen using the current background color
@@ -136,7 +142,7 @@ class screen {
      * \param[in] x0, y0	The (x, y) coordinates of the first point of the line
      * \param[in] x1, y1 	The (x, y) coordinates of the second point of the line
      */
-    void clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    void clear_line(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1);
 
     /**
      * \brief Draw a rectangle on the screen using the current pen color
@@ -144,7 +150,7 @@ class screen {
      * \param[in] x0, y0 	The (x,y) coordinates of the first point of the rectangle
      * \param[in] x1, y1 	The (x,y) coordinates of the second point of the rectangle
      */
-    void draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    void draw_rect(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1);
 
     /**
      * \brief Draw a rectangle on the screen using the current eraser color
@@ -152,7 +158,7 @@ class screen {
      * \param[in] x0, y0 	The (x,y) coordinates of the first point of the rectangle
      * \param[in] x1, y1 	The (x,y) coordinates of the second point of the rectangle
      */
-    void clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    void clear_rect(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1);
 
     /**
      * \brief Fill a rectangular region of the screen using the current pen
@@ -161,7 +167,7 @@ class screen {
      * \param[in] x0, y0 	The (x,y) coordinates of the first point of the rectangle
      * \param[in] x1, y1 	The (x,y) coordinates of the second point of the rectangle
      */
-    void fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+    void fill_rect(std::int16_t x0, std::int16_t y0, std::int16_t x1, std::int16_t y1);
 
     /**
      * \brief Draw a circle on the screen using the current pen color
@@ -169,7 +175,7 @@ class screen {
      * \param[in] x, y 	The (x,y) coordinates of the center of the circle
      * \param[in] r 	The radius of the circle
      */
-    void draw_circle(int16_t x, int16_t y, int16_t radius);
+    void draw_circle(std::int16_t x, std::int16_t y, std::int16_t radius);
 
     /**
      * \brief Draw a circle on the screen using the current eraser color
@@ -177,7 +183,7 @@ class screen {
      * \param[in] x, y 	The (x,y) coordinates of the center of the circle
      * \param[in] r 	The radius of the circle
      */
-    void clear_circle(int16_t x, int16_t y, int16_t radius);
+    void clear_circle(std::int16_t x, std::int16_t y, std::int16_t radius);
 
     /**
      * \brief Fill a circular region of the screen using the current pen
@@ -186,7 +192,7 @@ class screen {
      * \param[in] x, y 	The (x,y) coordinates of the center of the circle
      * \param[in] r 	The radius of the circle
      */
-    void fill_circle(int16_t x, int16_t y, int16_t radius);
+    void fill_circle(std::int16_t x, std::int16_t y, std::int16_t radius);
 
     /******************************************************************************/
     /**                       Screen Text Display Functions                      **/
@@ -203,7 +209,7 @@ class screen {
      * \param[in] line The line number on which to print
      * \param[in] text The text to display
      */
-    void print(text_format txt_fmt, const int16_t line, const char* text);
+    void print(text_format txt_fmt, const std::int16_t line, const char* text);
 
     /**
      * \brief Print a normal unformatted string to the screen at the specified coordinates
@@ -216,7 +222,7 @@ class screen {
      * \param[in] x, y The (x,y) coordinates of the top left corner of the string
      * \param[in] text The text to display
      */
-    void print_at(text_format txt_fmt, int16_t x, int16_t y, const char* text);
+    void print_at(text_format txt_fmt, std::int16_t x, std::int16_t y, const char* text);
 
     /**
      * \brief Print a formatted string to the screen on the specified line
@@ -228,7 +234,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] ...  Optional list of arguments for the format string
      */
-    void print_formatted(text_format txt_fmt, const int16_t line, const char* text, ...);
+    void print_formatted(text_format txt_fmt, const std::int16_t line, const char* text, ...);
 
     /**
      * \brief Print a formatted string to the screen at the specified point
@@ -242,7 +248,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] ...  Optional list of arguments for the format string
      */
-    void print_formatted_at(text_format txt_fmt, int16_t x, int16_t y, const char* text, ...);
+    void print_formatted_at(text_format txt_fmt, std::int16_t x, std::int16_t y, const char* text, ...);
 
     /**
      * \brief Print a formatted string to the screen on the specified line
@@ -258,7 +264,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] args List of arguments for the format string
      */
-    void screen_vprintf(text_format txt_fmt, const int16_t line, const char* fmt, va_list args);
+    void screen_vprintf(text_format txt_fmt, const std::int16_t line, const char* fmt, va_list args);
 
     /**
      * \brief Print a formatted string to the screen at the specified coordinates
@@ -276,7 +282,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] args List of arguments for the format string
      */
-    void screen_vprintf_at(text_format txt_fmt, int16_t x, int16_t y, const char* fmt, va_list args);
+    void screen_vprintf_at(text_format txt_fmt, std::int16_t x, std::int16_t y, const char* fmt, va_list args);
 
     /******************************************************************************/
     /**                         Screen Touch Functions                           **/
@@ -290,14 +296,14 @@ class screen {
      * 
      * \return The x coordinate of the last touch.
      */
-    int16_t last_x(void);
+    std::int16_t last_x(void);
 
     /**
      * \brief Gets the y coordinate of the last touch.
      * 
      * \return The y coordinate of the last touch.
      */
-    int16_t last_y(void);
+    std::int16_t last_y(void);
 
     /**
      * \brief Gets the touch status of the last touch of the screen.
@@ -305,6 +311,9 @@ class screen {
      * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */
     touch_last_status last_touch_status(void);
+private: 
+    std::uint32_t eraser_color;
+    std::uint32_t pen_color;
 
 }; //class screen
 } //namespace pros
