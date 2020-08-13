@@ -253,9 +253,9 @@ int32_t adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t value);
  * ENXIO - The given value is not within the range of ADI Ports
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return The average sensor value computed by this function
  */
@@ -273,9 +273,9 @@ int32_t adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
@@ -296,9 +296,9 @@ int32_t adi_analog_read(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
@@ -324,9 +324,9 @@ int32_t adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
@@ -347,9 +347,9 @@ int32_t adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as a digital input
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return True if the pin is HIGH, or false if it is LOW
  */
@@ -372,9 +372,9 @@ int32_t adi_digital_read(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as a digital input
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
@@ -392,9 +392,9 @@ int32_t adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as a digital output
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param value
  *        An expression evaluating to "true" or "false" to set the output to
  *        HIGH or LOW respectively, or the constants HIGH or LOW themselves
@@ -410,11 +410,11 @@ int32_t adi_digital_write(uint8_t smart_port, uint8_t adi_port, const bool value
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
- * 
+ *
  *\param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param mode
  *        One of INPUT, INPUT_ANALOG, INPUT_FLOATING, OUTPUT, or OUTPUT_OD
  *
@@ -430,11 +430,11 @@ int32_t adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * EADDRINUSE - The port is not configured as an motor
- * 
+ *
  *\param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param speed
  *        The new signed speed; -127 is full reverse and 127 is full forward,
  *        with 0 being off
@@ -453,9 +453,9 @@ int32_t adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
  * EADDRINUSE - The port is not configured as an motor
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return The last set speed of the motor on the given port
  */
@@ -470,9 +470,9 @@ int32_t adi_motor_get(uint8_t smart_port, uint8_t adi_port);
  * EADDRINUSE - The port is not configured as an motor
  *
  * \param smart_port
-	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ * \param adi_port
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
@@ -519,7 +519,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param smart_port
-*        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
+ *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
  * \param adi_port_top
  *        The "top" wire from the encoder sensor with the removable cover side
  *        UP
@@ -608,7 +608,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
  * EADDRINUSE - The port is not configured as an ultrasonic
- * 
+ *
  * \param smart_port
  *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
  * \param adi_port_ping

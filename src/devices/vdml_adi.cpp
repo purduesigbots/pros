@@ -16,7 +16,8 @@
 namespace pros {
 using namespace pros::c;
 
-ADIPort::ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type) : _smart_port(smart_port), _adi_port(adi_port) {
+ADIPort::ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type)
+    : _smart_port(smart_port), _adi_port(adi_port) {
 	adi_port_set_config(_smart_port, _adi_port, type);
 }
 
@@ -40,9 +41,11 @@ std::int32_t ADIPort::get_value(void) const {
 	return adi_port_get_value(_smart_port, _adi_port);
 }
 
-ADIAnalogIn::ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_ANALOG_IN) {}
+ADIAnalogIn::ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port)
+    : ADIPort(smart_port, adi_port, E_ADI_ANALOG_IN) {}
 
-ADIAnalogOut::ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_ANALOG_OUT) {}
+ADIAnalogOut::ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port)
+    : ADIPort(smart_port, adi_port, E_ADI_ANALOG_OUT) {}
 
 std::int32_t ADIAnalogIn::calibrate(void) const {
 	return adi_analog_calibrate(_smart_port, _adi_port);
@@ -56,11 +59,13 @@ std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
 	return adi_analog_read_calibrated_HR(_smart_port, _adi_port);
 }
 
-ADIDigitalOut::ADIDigitalOut(std::uint8_t smart_port, std::uint8_t adi_port, bool init_state) : ADIPort(smart_port, adi_port, E_ADI_DIGITAL_OUT) {
+ADIDigitalOut::ADIDigitalOut(std::uint8_t smart_port, std::uint8_t adi_port, bool init_state)
+    : ADIPort(smart_port, adi_port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_DIGITAL_IN) {}
+ADIDigitalIn::ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port)
+    : ADIPort(smart_port, adi_port, E_ADI_DIGITAL_IN) {}
 
 std::int32_t ADIDigitalIn::get_new_press(void) const {
 	return adi_digital_get_new_press(_smart_port, _adi_port);
@@ -74,7 +79,8 @@ std::int32_t ADIMotor::stop(void) const {
 	return adi_motor_stop(_smart_port, _adi_port);
 }
 
-ADIEncoder::ADIEncoder(std::uint8_t smart_port, std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) {
+ADIEncoder::ADIEncoder(std::uint8_t smart_port, std::uint8_t adi_port_top, std::uint8_t adi_port_bottom,
+                       bool reversed) {
 	_port = adi_encoder_init(smart_port, adi_port_top, adi_port_bottom, reversed);
 }
 

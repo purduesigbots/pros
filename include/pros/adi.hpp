@@ -18,9 +18,9 @@
 #ifndef _PROS_ADI_HPP_
 #define _PROS_ADI_HPP_
 
-#include "pros/adi.h"
-
 #include <cstdint>
+
+#include "pros/adi.h"
 
 namespace pros {
 class ADIPort {
@@ -31,7 +31,7 @@ class ADIPort {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
-	 * 
+	 *
 	 * \param smart_port
 	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
 	 * \param adi_port
@@ -386,7 +386,7 @@ class ADIEncoder : private ADIPort {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
-	 * 
+	 *
 	 * \param smart_port
 	 *        The smart port number that the ADI Expander is on (INTERNAL_ADI_PORT for ADI ports on the brain)
 	 * \param adi_port_top

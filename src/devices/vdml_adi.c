@@ -37,7 +37,8 @@ typedef union adi_data {
 	struct {
 		bool was_pressed;
 	} digital_data;
-	struct {;
+	struct {
+		;
 		bool reversed;
 	} encoder_data;
 	struct __attribute__((packed)) {
@@ -126,7 +127,8 @@ int32_t adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port) {
 	uint32_t total = 0;
 	for (uint32_t i = 0; i < 512; i++) {
 		total += vexDeviceAdiValueGet(device->device_info, adi_port);
-		task_delay(1); // TODO: If smart ports (and the ADI) only update every 10ms, this really only reads 56 samples, maybe change to a 10ms
+		task_delay(1);  // TODO: If smart ports (and the ADI) only update every 10ms, this really only reads 56 samples,
+		                // maybe change to a 10ms
 	}
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->analog_data.calib = (int32_t)((total + 16) >> 5);
@@ -256,11 +258,13 @@ int32_t adi_encoder_get(adi_encoder_t enc) {
 	transform_adi_port(enc.adi_port);
 	claim_port_i(enc.smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, enc.adi_port, E_ADI_LEGACY_ENCODER);
-	
+
 	int32_t rtn;
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[enc.adi_port];
-	if (adi_data->encoder_data.reversed) rtn = -vexDeviceAdiValueGet(device->device_info, enc.adi_port);
-	else rtn = vexDeviceAdiValueGet(device->device_info, enc.adi_port);
+	if (adi_data->encoder_data.reversed)
+		rtn = -vexDeviceAdiValueGet(device->device_info, enc.adi_port);
+	else
+		rtn = vexDeviceAdiValueGet(device->device_info, enc.adi_port);
 	return_port(enc.smart_port - 1, rtn);
 }
 
@@ -268,7 +272,7 @@ int32_t adi_encoder_reset(adi_encoder_t enc) {
 	transform_adi_port(enc.adi_port);
 	claim_port_i(enc.smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, enc.adi_port, E_ADI_LEGACY_ENCODER);
-	
+
 	vexDeviceAdiValueSet(device->device_info, enc.adi_port, 0);
 	return_port(enc.smart_port - 1, 1);
 }
@@ -300,7 +304,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	transform_adi_port(ult.adi_port);
 	claim_port_i(ult.smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, ult.adi_port, E_ADI_LEGACY_ULTRASONIC);
-	
+
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, ult.adi_port);
 	return_port(ult.smart_port - 1, rtn);
 }
@@ -340,7 +344,8 @@ adi_gyro_t adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double multiplier
 	return_port(smart_port - 1, (adi_gyro_t){smart_port - 1, adi_port + 1});
 }
 
-// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
+// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port
+// possibly returning PROS_ERR, not PROS_ERR_F
 int32_t _adi_gyro_get(adi_gyro_t gyro, double* out) {
 	transform_adi_port(gyro.adi_port);
 	claim_port_i(gyro.smart_port - 1, E_DEVICE_ADI);
@@ -356,8 +361,10 @@ int32_t _adi_gyro_get(adi_gyro_t gyro, double* out) {
 
 double adi_gyro_get(adi_gyro_t gyro) {
 	double rtn;
-	if (_adi_gyro_get(gyro, &rtn) == PROS_ERR) return PROS_ERR_F;
-	else return rtn;
+	if (_adi_gyro_get(gyro, &rtn) == PROS_ERR)
+		return PROS_ERR_F;
+	else
+		return rtn;
 }
 
 int32_t adi_gyro_reset(adi_gyro_t gyro) {
