@@ -656,7 +656,7 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro);
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
  */
-ext_adi_gyro_t adi_gyro_init(uint8_t smart_port, uint8_t port, double multiplier);
+ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t port, double multiplier);
 
 /**
  * Resets the gyroscope value to zero.
