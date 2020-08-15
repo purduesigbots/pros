@@ -482,10 +482,14 @@ int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder, unlike its use as an
+ * This merely contains the port number for the encoder and the
+ * smart port number for the 3-wire expander, unlike its use as an
  * object to store encoder data in PROS 2.
  */
-typedef int32_t adi_encoder_t;
+typedef struct {
+ 	int32_t smart_port;
+ 	int32_t adi_port;
+ } ext_adi_encoder_t;
 
 /**
  * Gets the number of ticks recorded by the encoder.
@@ -504,7 +508,7 @@ typedef int32_t adi_encoder_t;
  * \return The signed and cumulative number of counts since the last start or
  * reset
  */
-int32_t ext_adi_encoder_get(adi_encoder_t enc);
+int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
 
 /**
  * Creates an encoder object and configures the specified ports accordingly.
@@ -528,7 +532,7 @@ int32_t ext_adi_encoder_get(adi_encoder_t enc);
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
  */
-adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, const bool reverse);
+ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, const bool reverse);
 
 /**
  * Sets the encoder value to zero.
@@ -548,7 +552,7 @@ adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uin
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_encoder_reset(adi_encoder_t enc);
+int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc);
 
 /**
  * Disables the encoder and voids the configuration on its ports.
@@ -564,15 +568,19 @@ int32_t ext_adi_encoder_reset(adi_encoder_t enc);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_encoder_shutdown(adi_encoder_t enc);
+int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc);
 
 /**
  * Reference type for an initialized ultrasonic.
  *
- * This merely contains the port number for the ultrasonic, unlike its use as an
- * object to store ultrasonic data in PROS 2.
+ * This merely contains the port number for the ultrasonic and the
+ * smart port number for the 3-wire expander, unlike its use as an
+ * object to store encoder data in PROS 2.
  */
-typedef int32_t adi_ultrasonic_t;
+typedef struct {
+ 	int32_t smart_port;
+ 	int32_t adi_port;
+ } ext_adi_ultrasonic_t;
 
 /**
  * Gets the current ultrasonic sensor value in centimeters.
@@ -592,7 +600,7 @@ typedef int32_t adi_ultrasonic_t;
  * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
  * measured from the sensor's mounting points.
  */
-int32_t ext_adi_ultrasonic_get(adi_ultrasonic_t ult);
+int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
 
 /**
  * Creates an ultrasonic object and configures the specified ports accordingly.
@@ -614,7 +622,7 @@ int32_t ext_adi_ultrasonic_get(adi_ultrasonic_t ult);
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
  */
-adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo);
+ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo);
 
 /**
  * Disables the ultrasonic sensor and voids the configuration on its ports.
@@ -630,15 +638,19 @@ adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_pi
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
+int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
 
 /**
  * Reference type for an initialized gyroscope.
  *
- * This merely contains the port number for the gyroscope, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the gyroscope and the
+ * smart port number for the 3-wire expander, unlike its use as an
+ * object to store encoder data in PROS 2.
  */
-typedef int32_t adi_gyro_t;
+typedef struct {
+ 	int32_t smart_port;
+ 	int32_t adi_port;
+ } ext_adi_gyro_t;
 
 /**
  * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
@@ -658,7 +670,7 @@ typedef int32_t adi_gyro_t;
  *
  * \return The gyro angle in degrees.
  */
-double ext_adi_gyro_get(adi_gyro_t gyro);
+double ext_adi_gyro_get(ext_adi_gyro_t gyro);
 
 /**
  * Initializes a gyroscope on the given port. If the given port has not
@@ -684,7 +696,7 @@ double ext_adi_gyro_get(adi_gyro_t gyro);
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
  */
-adi_gyro_t adi_gyro_init(uint8_t smart_port, uint8_t port, double multiplier);
+ext_adi_gyro_t adi_gyro_init(uint8_t smart_port, uint8_t port, double multiplier);
 
 /**
  * Resets the gyroscope value to zero.
@@ -700,7 +712,7 @@ adi_gyro_t adi_gyro_init(uint8_t smart_port, uint8_t port, double multiplier);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_reset(adi_gyro_t gyro);
+int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
 
 /**
  * Disables the gyro and voids the configuration on its port.
@@ -716,7 +728,7 @@ int32_t ext_adi_gyro_reset(adi_gyro_t gyro);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_shutdown(adi_gyro_t gyro);
+int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
 #ifdef __cplusplus
 }  // namespace c

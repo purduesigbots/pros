@@ -14,6 +14,7 @@
 #include <math.h>
 #include <stdio.h>
 
+#include "pros/ext_adi.h"
 #include "kapi.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
@@ -252,7 +253,7 @@ adi_encoder_t ext_adi_encoder_init(int8_t smart_port, uint8_t adi_port_top, uint
 	return_port(smart_port, port + 1);
 }
 
-int32_t ext_adi_encoder_get(adi_encoder_t enc) {
+int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
 	transform_adi_port(enc);
 	claim_port_i(enc.smart_port, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
@@ -264,7 +265,7 @@ int32_t ext_adi_encoder_get(adi_encoder_t enc) {
 	return_port(enc.smart_port, rtn);
 }
 
-int32_t ext_adi_encoder_reset(adi_encoder_t enc) {
+int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc) {
 	transform_adi_port(enc);
 	claim_port_i(enc.smart_port, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
@@ -273,7 +274,7 @@ int32_t ext_adi_encoder_reset(adi_encoder_t enc) {
 	return_port(enc.smart_port, 1);
 }
 
-int32_t ext_adi_encoder_shutdown(adi_encoder_t enc) {
+int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc) {
 	transform_adi_port(enc);
 	claim_port_i(enc.smart_port, E_DEVICE_ADI);
 	validate_type(device, enc, E_ADI_LEGACY_ENCODER);
@@ -282,7 +283,7 @@ int32_t ext_adi_encoder_shutdown(adi_encoder_t enc) {
 	return_port(enc.smart_port, 1);
 }
 
-adi_ultrasonic_t ext_adi_ultrasonic_init(int8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo) {
+ext_adi_ultrasonic_t ext_adi_ultrasonic_init(int8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo) {
 	transform_adi_port(adi_port_ping);
 	transform_adi_port(adi_port_echo);
 	validate_twowire(adi_port_ping, adi_port_echo);
@@ -296,7 +297,7 @@ adi_ultrasonic_t ext_adi_ultrasonic_init(int8_t smart_port, uint8_t adi_port_pin
 	return_port(smart_port, port + 1);
 }
 
-int32_t ext_adi_ultrasonic_get(adi_ultrasonic_t ult) {
+int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult) {
 	transform_adi_port(ult);
 	claim_port_i(ult.smart_port, E_DEVICE_ADI);
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
@@ -305,7 +306,7 @@ int32_t ext_adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	return_port(ult, rtn);
 }
 
-int32_t ext_adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
+int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult) {
 	transform_adi_port(ult);
 	claim_port_i(ult.smart_port, E_DEVICE_ADI);
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
@@ -314,7 +315,7 @@ int32_t ext_adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 	return_port(ult.smart_port, 1);
 }
 
-adi_gyro_t ext_adi_gyro_init(int8_t smart_port, uint8_t adi_port, double multiplier) {
+ext_adi_gyro_t ext_adi_gyro_init(int8_t smart_port, uint8_t adi_port, double multiplier) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 
@@ -341,7 +342,7 @@ adi_gyro_t ext_adi_gyro_init(int8_t smart_port, uint8_t adi_port, double multipl
 }
 
 // Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
-int32_t ext_adi_gyro_get(adi_gyro_t gyro, double* out) {
+int32_t ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
 	transform_adi_port(gyro);
 	claim_port_i(gyro.smart_port, E_DEVICE_ADI);
 	validate_type(device, gyro.smart_port, E_ADI_LEGACY_GYRO);
@@ -354,13 +355,13 @@ int32_t ext_adi_gyro_get(adi_gyro_t gyro, double* out) {
 	return_port(gyro.smart_port, 1);
 }
 
-double ext_adi_gyro_get(adi_gyro_t gyro) {
+double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	double rtn;
 	if (_adi_gyro_get(gyro, &rtn) == PROS_ERR) return PROS_ERR_F;
 	else return rtn;
 }
 
-int32_t ext_adi_gyro_reset(adi_gyro_t gyro) {
+int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
 	transform_adi_port(gyro);
 	claim_port_i(gyro.smart_port, E_DEVICE_ADI);
 	validate_type(device, gyro, E_ADI_LEGACY_GYRO);
@@ -370,7 +371,7 @@ int32_t ext_adi_gyro_reset(adi_gyro_t gyro) {
 	return_port(gyro.smart_port, 1);
 }
 
-int32_t ext_adi_gyro_shutdown(adi_gyro_t gyro) {
+int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	transform_adi_port(gyro);
 	claim_port_i(gyro.smart_port, E_DEVICE_ADI);
 	validate_type(device, gyro, E_ADI_LEGACY_GYRO);
