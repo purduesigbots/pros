@@ -20,6 +20,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "pros/adi.h"
 #ifndef PROS_ERR
 #define PROS_ERR (INT32_MAX)
 #endif

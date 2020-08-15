@@ -241,7 +241,7 @@ int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port) {
 	return adi_motor_set(adi_port, 0);
 }
 
-adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, const bool reverse) {
+ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, const bool reverse) {
 	transform_adi_port(adi_port_top);
 	transform_adi_port(adi_port_bottom);
 	claim_port_i(smart_port, E_DEVICE_ADI);
