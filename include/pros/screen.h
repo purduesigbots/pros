@@ -53,7 +53,7 @@ typedef enum {
 
 /**
  * \brief Can be used to determine what the current touch status is for the touchscreen.
- * (Seems redundant, but exists for the sake of )
+ * (Seems redundant, but exists for the sake of user ease)
  *  
  *  pressed - Last interaction with screen was a quick press (not released yet)
  *  released - Last interaction with screen was a release
