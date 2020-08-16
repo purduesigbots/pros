@@ -323,8 +323,7 @@ touch_event_e_t touch_last_event(void) {
 	return v5_touch_status.lastEvent;
 }
 
-
-//Damon functions below
+//Daemon functions below
 
 void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,

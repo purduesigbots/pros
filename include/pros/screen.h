@@ -12,15 +12,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_IMU_H_
-#define _PROS_IMU_H_
+#ifndef _PROS_SCREEN_H_
+#define _PROS_SCREEN_H_
 
 #include <stdarg.h>   
 #include <stdbool.h>  
 #define _GNU_SOURCE
 #include <stdio.h>  
 #undef _GNU_SOURCE
+#include <stdint.h>
 
+#include "display/graphics.h"
 #include "pros/colors.h"     // c color macros
 
 #ifdef __cplusplus
@@ -47,10 +49,11 @@ typedef enum {
     large,
     medium_center,
     large_center
-} text_format;
+} text_format_e_t;
 
 /**
  * \brief Can be used to determine what the current touch status is for the touchscreen.
+ * (Seems redundant, but exists for the sake of )
  *  
  *  pressed - Last interaction with screen was a quick press (not released yet)
  *  released - Last interaction with screen was a release
@@ -59,10 +62,10 @@ typedef enum {
  */
 
 typedef enum {
-    pressed,
     released,
+    pressed,
     held
-} touch_last_status;
+} last_touch_e_t;
 
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/
@@ -237,7 +240,7 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius);
  * \param[in] line The line number on which to print
  * \param[in] text The text to display
  */
-void screen_print(text_format txt_fmt, const int16_t line, const char* text);
+void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text);
 
 /**
  * \brief Print a normal unformatted string to the screen at the specified coordinates
@@ -250,7 +253,7 @@ void screen_print(text_format txt_fmt, const int16_t line, const char* text);
  * \param[in] x, y The (x,y) coordinates of the top left corner of the string
  * \param[in] text The text to display
  */
-void screen_print_at(text_format txt_fmt, int16_t x, int16_t y, const char* text);
+void screen_print_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* text);
 
 /**
  * \brief Print a formatted string to the screen on the specified line
@@ -262,7 +265,7 @@ void screen_print_at(text_format txt_fmt, int16_t x, int16_t y, const char* text
  * \param[in] fmt  Format string
  * \param[in] ...  Optional list of arguments for the format string
  */
-void screen_printf(text_format txt_fmt, const int16_t line, const char* text, ...);
+void screen_printf(text_format_e_t txt_fmt, const int16_t line, const char* text, ...);
 
 /**
  * \brief Print a formatted string to the screen at the specified point
@@ -276,7 +279,7 @@ void screen_printf(text_format txt_fmt, const int16_t line, const char* text, ..
  * \param[in] fmt  Format string
  * \param[in] ...  Optional list of arguments for the format string
  */
-void screen_printf_at(text_format txt_fmt, int16_t x, int16_t y, const char* text, ...);
+void screen_printf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, ...);
 
 /**
  * \brief Print a formatted string to the screen on the specified line
@@ -292,7 +295,7 @@ void screen_printf_at(text_format txt_fmt, int16_t x, int16_t y, const char* tex
  * \param[in] fmt  Format string
  * \param[in] args List of arguments for the format string
  */
-void screen_vprintf(text_format txt_fmt, const int16_t line, const char* fmt, va_list args);
+void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* fmt, va_list args);
 
 /**
  * \brief Print a formatted string to the screen at the specified coordinates
@@ -310,7 +313,7 @@ void screen_vprintf(text_format txt_fmt, const int16_t line, const char* fmt, va
  * \param[in] fmt  Format string
  * \param[in] args List of arguments for the format string
  */
-void screen_vprintf_at(text_format txt_fmt, int16_t x, int16_t y, const char* fmt, va_list args);
+void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* fmt, va_list args);
 
 /******************************************************************************/
 /**                         Screen Touch Functions                           **/
@@ -338,7 +341,7 @@ int16_t screen_last_y(void);
  * 
  * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
  */
-touch_last_status screen_last_touch_status(void);
+last_touch_e_t screen_last_touch_status(void);
 
 #ifdef __cplusplus
 } //namespace c

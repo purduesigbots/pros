@@ -13,7 +13,6 @@
  */
 
 #include "pros/screen.h"
-#include "display/graphics.h"
 
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/
@@ -99,7 +98,7 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius){
 /**     These functions allow programmers to display text on the v5 screen   **/
 /******************************************************************************/
 
-void screen_print(text_format txt_fmt, const int16_t line, const char* text){
+void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text){
     switch(txt_fmt){
         case medium:
         {
@@ -129,7 +128,7 @@ void screen_print(text_format txt_fmt, const int16_t line, const char* text){
     }
 }
 
-void screen_print_at(text_format txt_fmt, int16_t x, int16_t y, const char* text){
+void screen_print_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* text){
     switch(txt_fmt){
         case small:
         {
@@ -156,7 +155,7 @@ void screen_print_at(text_format txt_fmt, int16_t x, int16_t y, const char* text
     }
 }
 
-void screen_printf(text_format txt_fmt, const int16_t line, const char* text, ...){
+void screen_printf(text_format_e_t txt_fmt, const int16_t line, const char* text, ...){
     va_list args;
 	va_start(args, text);
     switch(txt_fmt){
@@ -188,7 +187,7 @@ void screen_printf(text_format txt_fmt, const int16_t line, const char* text, ..
     }
 }
 
-void screen_printf_at(text_format txt_fmt, int16_t x, int16_t y, const char* text, ...){
+void screen_printf_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* text, ...){
     va_list args;
 	va_start(args, text);
     switch(txt_fmt){
@@ -217,7 +216,7 @@ void screen_printf_at(text_format txt_fmt, int16_t x, int16_t y, const char* tex
     }
 }
 
-void screen_vprintf(text_format txt_fmt, const int16_t line, const char* fmt, va_list args){
+void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* fmt, va_list args){
     switch(txt_fmt){
         case medium:
         {
@@ -247,7 +246,7 @@ void screen_vprintf(text_format txt_fmt, const int16_t line, const char* fmt, va
     }
 }
 
-void screen_vprintf_at(text_format txt_fmt, int16_t x, int16_t y, const char* fmt, va_list args){
+void screen_vprintf_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* fmt, va_list args){
     switch(txt_fmt){
         case small:
         {
@@ -289,6 +288,6 @@ int16_t screen_last_y(void){
     return(touch_last_x());
 }
 
-touch_last_status screen_last_touch_status(void){
+last_touch_e_t screen_last_touch_status(void){
     return(touch_last_event());
 }
