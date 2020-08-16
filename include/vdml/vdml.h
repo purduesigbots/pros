@@ -235,6 +235,25 @@ int internal_port_mutex_take(uint8_t port);
  */
 int internal_port_mutex_give(uint8_t port);
 
+#define SMART_PORT_BITS 16
+#define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
+
+static inline bool get_ports(int32_t ports, uint8_t* smart_port, uint8_t* adi_port) {
+	uint32_t uport = (uint32_t)ports;
+	*smart_port = uport & SMART_PORT_MASK;
+	*adi_port = uport >> SMART_PORT_BITS;
+
+	if (!VALIDATE_PORT_NO(*smart_port)) return true;
+
+	// adi port validation
+
+	return false;
+}
+
+static inline uint32_t merge_adi_ports(uint8_t port, uint8_t smart_port) {
+	return (port << SMART_PORT_BITS) | smart_port;
+}
+
 #define V5_PORT_BATTERY 24
 #define V5_PORT_CONTROLLER_1 25
 #define V5_PORT_CONTROLLER_2 26

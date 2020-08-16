@@ -443,14 +443,10 @@ int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder and the
- * smart port number for the 3-wire expander, unlike its use as an
+ * This merely contains the port number for the encoder, unlike its use as an 
  * object to store encoder data in PROS 2.
  */
-typedef struct {
- 	int32_t smart_port;
- 	int32_t adi_port;
- } ext_adi_encoder_t;
+typedef int32_t ext_adi_encoder_t;
 
 /**
  * Gets the number of ticks recorded by the encoder.
@@ -534,14 +530,11 @@ int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc);
 /**
  * Reference type for an initialized ultrasonic.
  *
- * This merely contains the port number for the ultrasonic and the
- * smart port number for the 3-wire expander, unlike its use as an
+ * This merely contains the port number for the ultrasonic, unlike its use as an
  * object to store encoder data in PROS 2.
  */
-typedef struct {
- 	int32_t smart_port;
- 	int32_t adi_port;
- } ext_adi_ultrasonic_t;
+typedef int32_t ext_adi_ultrasonic_t;
+
 
 /**
  * Gets the current ultrasonic sensor value in centimeters.
@@ -604,14 +597,10 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
 /**
  * Reference type for an initialized gyroscope.
  *
- * This merely contains the port number for the gyroscope and the
- * smart port number for the 3-wire expander, unlike its use as an
+ * This merely contains the port number for the gyroscope, unlike its use as an
  * object to store encoder data in PROS 2.
  */
-typedef struct {
- 	int32_t smart_port;
- 	int32_t adi_port;
- } ext_adi_gyro_t;
+typedef int32_t ext_adi_gyro_t;
 
 /**
  * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
