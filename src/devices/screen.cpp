@@ -144,14 +144,7 @@ using namespace pros::c;
     }
 
     last_touch_e_t screen::last_touch_status(void){
-        switch (touch_last_event()){
-        case E_TOUCH_EVENT_RELEASE:
-            return(released);
-        case E_TOUCH_EVENT_PRESS:
-            return(pressed);
-        case E_TOUCH_EVENT_PRESS_AND_HOLD:
-            return(held);
-        }
+        return screen_last_touch_status();
     }
 
 }  // namespace pros
