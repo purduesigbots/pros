@@ -343,10 +343,10 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 	adi_port_config_e_t config = vexDeviceAdiPortConfigGet(device->device_info, adi_port);
 	if (config == E_ADI_LEGACY_GYRO) {
 		// Port has already been calibrated, no need to do that again
-		return_port(smart_port, port + 1);
+		return_port(smart_port, adi_port + 1);
 	}
 
-	vexDeviceAdiPortConfigSet(device->device_info, port, E_ADI_LEGACY_GYRO);
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_LEGACY_GYRO);
 	if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
 		// If the scheduler is currently running (meaning that this is not called
 		// from a global constructor, for example) then delay for the duration of
@@ -354,7 +354,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 		delay(GYRO_CALIBRATION_TIME);
 	}
 
-	return_port(smart_port, port + 1);
+	return_port(smart_port, adi_port + 1);
 }
 
 // Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F

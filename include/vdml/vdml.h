@@ -238,12 +238,12 @@ int internal_port_mutex_give(uint8_t port);
 #define SMART_PORT_BITS 16
 #define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
 
-static inline bool get_ports(int32_t ports, uint8_t* smart_port, uint8_t* adi_port) {
+static inline bool get_ports(int32_t ports, uint8_t smart_port, uint8_t adi_port) {
 	uint32_t uport = (uint32_t)ports;
-	*smart_port = uport & SMART_PORT_MASK;
-	*adi_port = uport >> SMART_PORT_BITS;
+	smart_port = uport & SMART_PORT_MASK;
+	adi_port = uport >> SMART_PORT_BITS;
 
-	if (!VALIDATE_PORT_NO(*smart_port)) return true;
+	if (!VALIDATE_PORT_NO(smart_port)) return true;
 
 	// adi port validation
 

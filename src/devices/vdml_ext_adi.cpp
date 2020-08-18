@@ -37,7 +37,7 @@ std::int32_t EXT_ADIPort::set_value(std::int32_t value) const {
 }
 
 std::int32_t EXT_ADIPort::get_value(void) const {
-	return adi_port_get_value(_port);
+	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
 
 EXT_ADIAnalogIn::EXT_ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port) : EXT_ADIPort(smart_port, adi_port, E_ADI_ANALOG_IN) {}
