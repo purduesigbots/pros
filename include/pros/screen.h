@@ -22,7 +22,7 @@
 #undef _GNU_SOURCE
 #include <stdint.h>
 
-#include "display/graphics.h"
+#include "tmei/graphics.h"
 #include "pros/colors.h"     // c color macros
 
 #ifdef __cplusplus

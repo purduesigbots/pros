@@ -13,7 +13,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "display/graphics.h"
+#include "tmei/graphics.h"
 
 #include <stdlib.h>
 
