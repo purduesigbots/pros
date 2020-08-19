@@ -285,7 +285,7 @@ int16_t screen_last_x(void){
 }
 
 int16_t screen_last_y(void){
-    return(touch_last_x());
+    return(touch_last_y());
 }
 
 last_touch_e_t screen_last_touch_status(void){

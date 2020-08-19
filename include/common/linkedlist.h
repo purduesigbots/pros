@@ -143,7 +143,7 @@ void linked_list_foreach(linked_list_s_t* list, linked_list_foreach_fn_t, void* 
 
 /**
  * Frees a linked_list_s_t, making it no longer a valid list. This does not free any
- * internal data, only the linekd_list structure.
+ * internal data, only the linked_list structure.
  *
  * \param list
  *				List to free

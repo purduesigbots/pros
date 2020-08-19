@@ -13,7 +13,6 @@
  */
 
 #include "pros/screen.hpp"
-#include "kapi.h"
 
 namespace pros {
 using namespace pros::c;
@@ -136,11 +135,11 @@ using namespace pros::c;
     }
 
     std::int16_t screen::last_x(void){
-        return touch_last_x();
+        return screen_last_x();
     }
 
     std::int16_t screen::last_y(void){
-        return touch_last_y();
+        return screen_last_y();
     }
 
     last_touch_e_t screen::last_touch_status(void){

@@ -267,14 +267,14 @@ class screen {
     std::int16_t last_x(void);
 
     /**
-     * \brief Gets the y coordinate of the last touch.
+     * \brief Gets the y coordinate of the last touch. 0 by default.
      * 
      * \return The y coordinate of the last touch.
      */
     std::int16_t last_y(void);
 
     /**
-     * \brief Gets the touch status of the last touch of the screen.
+     * \brief Gets the touch status of the last touch of the screen. 0 by default.
      * 
      * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */

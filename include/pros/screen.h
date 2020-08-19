@@ -323,14 +323,14 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /******************************************************************************/
 
 /**
- * \brief Gets the x coordinate of the last touch.
+ * \brief Gets the x coordinate of the last touch. 0 by default.
  * 
  * \return The x coordinate of the last touch.
  */
 int16_t screen_last_x(void);
 
 /**
- * \brief Gets the y coordinate of the last touch.
+ * \brief Gets the y coordinate of the last touch. 0 by default.
  * 
  * \return The y coordinate of the last touch.
  */
