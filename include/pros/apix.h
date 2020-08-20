@@ -33,6 +33,7 @@
 #include "tmei/graphics.h"
 #pragma GCC diagnostic pop
 #include "pros/serial.h"
+#include "kapi.h"
 
 #ifdef __cplusplus
 #include "pros/serial.hpp"

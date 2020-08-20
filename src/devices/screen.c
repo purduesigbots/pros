@@ -13,6 +13,7 @@
  */
 
 #include "pros/screen.h"
+#include "tmei/graphics.h"
 
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/

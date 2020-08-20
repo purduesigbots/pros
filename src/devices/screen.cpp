@@ -13,6 +13,8 @@
  */
 
 #include "pros/screen.hpp"
+#include "tmei/graphics.h"
+#include <cstdint>
 
 namespace pros {
 using namespace pros::c;
@@ -116,6 +118,22 @@ using namespace pros::c;
 
     void screen::print(text_format_e_t txt_fmt, const std::int16_t line, const char* text){
         screen_print(txt_fmt, line, text);
+    }
+
+    void screen::print(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text){
+        screen_print_at(txt_fmt, x, y, text);
+    }
+
+    void screen::print(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...){
+	    va_list args;
+	    va_start(args, text);
+	    screen_vprintf(txt_fmt, line, text, args);
+    }
+
+    void screen::print(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...){
+	    va_list args;
+	    va_start(args, text);
+	    screen_vprintf_at(txt_fmt, x, y, text, args);
     }
 
     void screen::print_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text){

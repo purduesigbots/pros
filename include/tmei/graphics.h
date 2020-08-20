@@ -22,8 +22,6 @@
 #include <stdio.h>  // vasprintf (GNU extension)
 #undef _GNU_SOURCE
 
-#include "./kapi.h"
-
 #include "v5_apitypes.h"  // V5_TouchEvent
 
 #include "common/linkedlist.h"  // linked list impl

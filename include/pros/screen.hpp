@@ -1,4 +1,4 @@
-/*
+/**
  * \file screen.hpp
  *
  * \brief Brain screen display and touch functions.
@@ -16,6 +16,7 @@
 #define _PROS_SCREEN_HPP_
 
 #include "pros/screen.h"
+#include <cstdint>
 
 namespace pros {
 using namespace pros::c;
@@ -203,16 +204,22 @@ class screen {
     /******************************************************************************/
 
     /**
-     * \brief Print a normal unformatted string to the screen on the specified line
+     * \brief This print function can act as an alias for all other print functions.
      * 
      * Will default to a medium sized font by default if invalid text_format is given.
      * 
      * \param[in] txt_fmt Text format enum that determines if the text is medium, large, medium_center, large_center. (DOES NOT SUPPORT SMALL)
      * \param[in] line The line number on which to print
      * \param[in] text The text to display
+     * \param[in] x, y The (x,y) coordinates of the top left corner of the string
+     * \param[in] text The text to display, with formatting if needed.
      */
+    
     void print(text_format_e_t txt_fmt, const std::int16_t line, const char* text);
-
+    void print(text_format_e_t txt_fmt, const std::int16_t x, std::int16_t y, const char* text);
+    void print(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...);
+    void print(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...);
+    
     /**
      * \brief Print a normal unformatted string to the screen at the specified coordinates
      * 
@@ -224,7 +231,7 @@ class screen {
      * \param[in] x, y The (x,y) coordinates of the top left corner of the string
      * \param[in] text The text to display
      */
-    void print_at(text_format_e_t txt_fmt, const std::int16_t x, std::int16_t y, const char* text);
+    void print_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text);
 
     /**
      * \brief Print a formatted string to the screen on the specified line
