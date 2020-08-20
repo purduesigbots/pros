@@ -1,4 +1,4 @@
-/*
+/**
  * \file screen.cpp
  *
  * \brief Brain screen display and touch functions.
