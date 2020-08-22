@@ -24,16 +24,11 @@
 
 #include "pros/colors.h"     // c color macros
 
-#ifdef __cplusplus
-extern "C" {
-namespace pros {
-namespace c {
-#endif
-
 /**
  * \brief Different font sizes that can be used in printing text.
  * Also can determine if the medium/large text is centered or not.
- *  
+ * Defined outside of the namespace for ease of usage.
+ * 
  *  small - Small text font size
  *  normal - Normal/Medium text font size
  *  large - Large text font size
@@ -49,6 +44,12 @@ typedef enum {
     medium_center,
     large_center
 } text_format_e_t;
+
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+namespace c {
+#endif
 
 /**
  * \brief Can be used to determine what the current touch status is for the touchscreen.
@@ -341,7 +342,7 @@ int16_t screen_last_y(void);
  * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
  * This will be released by default if no action was taken. 
  */
-last_touch_e_t screen_last_touch_status(void);
+last_touch_e_t screen_touch_status(void);
 
 #ifdef __cplusplus
 } //namespace c

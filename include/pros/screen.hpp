@@ -21,7 +21,7 @@
 namespace pros {
 using namespace pros::c;
 
-class screen {
+class Screen {
     public:
 
     /**
@@ -33,11 +33,11 @@ class screen {
 	 *        Initial eraser color.
 	 */
 
-	screen(void);
+	Screen(void);
 
-	screen(const std::uint32_t pen_color);
+	Screen(const std::uint32_t pen_color);
 
-    screen(const std::uint32_t pen_color, const std::uint32_t eraser_color);
+    Screen(const std::uint32_t pen_color, const std::uint32_t eraser_color);
 
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
@@ -243,7 +243,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] ...  Optional list of arguments for the format string
      */
-    void print_formatted(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...);
+    void printf(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...);
 
     /**
      * \brief Print a formatted string to the screen at the specified point
@@ -257,7 +257,7 @@ class screen {
      * \param[in] fmt  Format string
      * \param[in] ...  Optional list of arguments for the format string
      */
-    void print_formatted_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...);
+    void printf_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...);
 
     /******************************************************************************/
     /**                         Screen Touch Functions                           **/
@@ -285,7 +285,7 @@ class screen {
      * 
      * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */
-    last_touch_e_t last_touch_status(void);
+    last_touch_e_t touch_status(void);
 private: 
     std::uint32_t eraser_color;
     std::uint32_t pen_color;

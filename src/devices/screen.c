@@ -289,7 +289,7 @@ int16_t screen_last_y(void){
     return(touch_last_y());
 }
 
-last_touch_e_t screen_last_touch_status(void){
+last_touch_e_t screen_touch_status(void){
     switch (touch_last_event()){
         case E_TOUCH_EVENT_PRESS:
             return(pressed);
