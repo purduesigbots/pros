@@ -99,11 +99,11 @@ motor_encoder_units_e_t Motor::get_encoder_units(void) const {
 	return motor_get_encoder_units(_port);
 }
 
-ustd::int32_t Motor::get_faults(void) const {
+std::uint32_t Motor::get_faults(void) const {
 	return motor_get_faults(_port);
 }
 
-ustd::int32_t Motor::get_flags(void) const {
+std::uint32_t Motor::get_flags(void) const {
 	return motor_get_flags(_port);
 }
 
@@ -119,7 +119,7 @@ motor_pid_full_s_t Motor::get_vel_pid(void) const {
 	return motor_get_vel_pid(_port);
 }
 
-std::int32_t Motor::get_raw_position(ustd::int32_t* const timestamp) const {
+std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp) const {
 	return motor_get_raw_position(_port, timestamp);
 }
 
