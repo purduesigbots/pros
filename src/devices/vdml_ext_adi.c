@@ -74,6 +74,16 @@ typedef union adi_data {
 		return PROS_ERR;                                                                                      \
 	}
 
+	/*
+	* validate_twowire(port_top,port_bottom)
+	* 
+	* Validates 3 things:
+	* - Ports next to each other
+	* - Both ports are initialized and valid (individually)
+	* 
+	* Returns PROS_ERR if one of these is false.
+	*/
+
 #define validate_twowire(port_top, port_bottom) \
 	if (abs(port_top - port_bottom) > 1) {        \
 		errno = ENXIO;                              \
