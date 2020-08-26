@@ -27,13 +27,14 @@
 /**
  * \brief Different font sizes that can be used in printing text.
  * Also can determine if the medium/large text is centered or not.
- * Defined outside of the namespace for ease of usage.
  * 
  *  small - Small text font size
  *  normal - Normal/Medium text font size
  *  large - Large text font size
  *  medium_center - Medium centered text
  *  large_center - Large centered text
+ * 
+ * Is exposed here not under pros namespace for ease of usage.
  * 
  */
 

@@ -128,22 +128,6 @@ using namespace pros::c;
         screen_print_at(txt_fmt, x, y, text);
     }
 
-    void Screen::print(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...){
-	    va_list args;
-	    va_start(args, text);
-        screen_set_pen(this->pen_color);
-        screen_set_eraser(this->eraser_color);
-	    screen_vprintf(txt_fmt, line, text, args);
-    }
-
-    void Screen::print(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...){
-	    va_list args;
-	    va_start(args, text);
-        screen_set_pen(this->pen_color);
-        screen_set_eraser(this->eraser_color);
-	    screen_vprintf_at(txt_fmt, x, y, text, args);
-    }
-
     void Screen::print_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text){
         screen_set_pen(this->pen_color);
         screen_set_eraser(this->eraser_color);
@@ -153,9 +137,17 @@ using namespace pros::c;
     void Screen::printf(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...){
 	    va_list args;
 	    va_start(args, text);
-	    screen_set_pen(this->pen_color);
+        screen_set_pen(this->pen_color);
         screen_set_eraser(this->eraser_color);
-        screen_vprintf(txt_fmt, line, text, args);
+	    screen_vprintf(txt_fmt, line, text, args);
+    }
+
+    void Screen::printf(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...){
+	    va_list args;
+	    va_start(args, text);
+        screen_set_pen(this->pen_color);
+        screen_set_eraser(this->eraser_color);
+	    screen_vprintf_at(txt_fmt, x, y, text, args);
     }
 
     void Screen::printf_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...){
