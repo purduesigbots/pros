@@ -599,6 +599,8 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
  *
  * This merely contains the port number for the gyroscope, unlike its use as an
  * object to store encoder data in PROS 2.
+ * 
+ * (Might Be useless with the wire expander.)
  */
 typedef int32_t ext_adi_gyro_t;
 
@@ -620,7 +622,7 @@ typedef int32_t ext_adi_gyro_t;
  *
  * \return The gyro angle in degrees.
  */
-double ext_adi_gyro_get(ext_adi_gyro_t gyro);
+double ext_adi_gyro_get(uint8_t smart_port, uint8_t port);
 
 /**
  * Initializes a gyroscope on the given port. If the given port has not
@@ -662,7 +664,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t port, double multip
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
+int32_t ext_adi_gyro_reset(uint8_t smart_port, uint8_t port);
 
 /**
  * Disables the gyro and voids the configuration on its port.
@@ -678,7 +680,7 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
+int32_t ext_adi_gyro_shutdown(uint8_t smart_port, uint8_t port,);
 
 #ifdef __cplusplus
 }  // namespace c
