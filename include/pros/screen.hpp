@@ -204,7 +204,7 @@ class Screen {
     /******************************************************************************/
 
     /**
-     * \brief This print function can act as an alias for all other print functions.
+     * \brief This print function can act as an alias for all other all unformatted print functions.
      * 
      * Will default to a medium sized font by default if invalid text_format is given.
      * 
@@ -212,13 +212,11 @@ class Screen {
      * \param[in] line The line number on which to print
      * \param[in] text The text to display
      * \param[in] x, y The (x,y) coordinates of the top left corner of the string
-     * \param[in] text The text to display, with formatting if needed.
+     * 
      */
     
     void print(text_format_e_t txt_fmt, const std::int16_t line, const char* text);
     void print(text_format_e_t txt_fmt, const std::int16_t x, std::int16_t y, const char* text);
-    void print(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...);
-    void print(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...);
     
     /**
      * \brief Print a normal unformatted string to the screen at the specified coordinates
@@ -234,17 +232,18 @@ class Screen {
     void print_at(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text);
 
     /**
-     * \brief Print a formatted string to the screen on the specified line
+     * \brief Print a formatted string to the screen, acts as alias for printf_at as well.
      * 
      * Will default to a medium sized font by default if invalid text_format is given.
      * 
      * \param[in] txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
      * \param[in] line The line number on which to print
+     * \param[in] x, y The (x,y) coordinates of the top left corner of the string
      * \param[in] fmt  Format string
      * \param[in] ...  Optional list of arguments for the format string
      */
     void printf(text_format_e_t txt_fmt, const std::int16_t line, const char* text, ...);
-
+    void printf(text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, ...);
     /**
      * \brief Print a formatted string to the screen at the specified point
      * 
