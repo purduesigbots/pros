@@ -384,7 +384,7 @@ int32_t _ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
 	return_port(smart_port, 1);
 }
 
-double ext_adi_gyro_get(uint8_t smart_port, uint8_t adi_port) {
+double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	uint8_t smart_port;
 	uint8_t adi_port;
 	get_ports(gyro, smart_port, adi_port);
