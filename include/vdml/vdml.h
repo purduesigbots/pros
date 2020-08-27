@@ -238,10 +238,13 @@ int internal_port_mutex_give(uint8_t port);
 #define SMART_PORT_BITS 16
 #define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
 
-#define get_ports(ports, smart_port, adi_port) \
+  /**
+   * Given a port mask, it sets the smart port and adi port to the values masked inside the int_32. 
+   */
+#define get_ports(ports, smart_port, adi_port) {\
 	uint32_t uport = (uint32_t)ports; \
 	smart_port = uport & SMART_PORT_MASK; \
-	adi_port = uport >> SMART_PORT_BITS;  
+	adi_port = uport >> SMART_PORT_BITS;  }
 
 
 static inline uint32_t merge_adi_ports(uint8_t port, uint8_t smart_port) {
