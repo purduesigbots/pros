@@ -12,7 +12,7 @@
 
 #include "kapi.h"
 #include "pros/ext_adi.hpp"
-
+/*
 namespace pros {
 using namespace pros::c;
 
@@ -106,3 +106,4 @@ std::int32_t EXT_ADIGyro::reset(void) const {
 	return ext_adi_gyro_reset(_smart_port, _adi_port);
 }
 }  // namespace pros
+*/

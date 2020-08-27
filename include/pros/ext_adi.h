@@ -622,7 +622,7 @@ typedef int32_t ext_adi_gyro_t;
  *
  * \return The gyro angle in degrees.
  */
-double ext_adi_gyro_get(uint8_t smart_port, uint8_t port);
+double ext_adi_gyro_get(ext_adi_gyro_t gyro);
 
 /**
  * Initializes a gyroscope on the given port. If the given port has not
@@ -664,7 +664,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t port, double multip
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_reset(uint8_t smart_port, uint8_t port);
+int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
 
 /**
  * Disables the gyro and voids the configuration on its port.
@@ -680,7 +680,7 @@ int32_t ext_adi_gyro_reset(uint8_t smart_port, uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_gyro_shutdown(uint8_t smart_port, uint8_t port,);
+int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
 #ifdef __cplusplus
 }  // namespace c
