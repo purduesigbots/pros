@@ -75,18 +75,15 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
+	pros::Motor left_mtr(11);
+	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+	//pros::c::ext_adi_encoder_t encoder = pros::c::ext_adi_encoder_init(2, 'E', 'F', false);
 
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-		left_mtr = left;
-		right_mtr = right;
+		//if(pros::c::ext_adi_digital_read(2, 'B') || pros::c::adi_digital_read('B'))
+		left_mtr.move(127);
+		//pros::c::lcd_print(0, "Buttons Bitmap: %d\n", pros::c::ext_adi_encoder_get(encoder));
 		pros::delay(20);
 	}
 }
