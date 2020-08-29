@@ -51,7 +51,7 @@ static bool vex_read_touch(lv_indev_data_t* data) {
 	return false;
 }
 
-__attribute__((constructor(PROS_KERNEL_INIT-1))) static void display_init(void) {
+void display_initialize(void) {
 	lv_init();
 
 	lv_disp_drv_t disp_drv;
