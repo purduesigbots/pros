@@ -385,11 +385,8 @@ int32_t _ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
 }
 
 double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
-	uint8_t smart_port;
-	uint8_t adi_port;
-	get_ports(gyro, smart_port, adi_port);
 	double rtn;
-	if (_ext_adi_gyro_get(adi_port, &rtn) == PROS_ERR) return PROS_ERR_F;
+	if (_ext_adi_gyro_get(gyro, &rtn) == PROS_ERR) return PROS_ERR_F;
 	else return rtn;
 }
 
