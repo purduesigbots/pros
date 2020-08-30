@@ -86,7 +86,7 @@ class EXT_ADIPort {
 	EXT_ADIPort(void);
 	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
-	std::uint8_t _port;
+	std::uint32_t _port;
 
 };
 
