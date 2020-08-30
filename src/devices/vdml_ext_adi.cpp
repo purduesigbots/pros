@@ -12,7 +12,7 @@
 
 #include "kapi.h"
 #include "pros/ext_adi.hpp"
-/*
+
 namespace pros {
 using namespace pros::c;
 
@@ -80,30 +80,32 @@ std::int32_t EXT_ADIMotor::stop(void) const {
 EXT_ADIEncoder::EXT_ADIEncoder(std::uint8_t smart_port, std::uint8_t adi_port_top, std::uint8_t adi_port_bottom,
                        bool reversed) {
 	_port = ext_adi_encoder_init(smart_port, adi_port_top, adi_port_bottom, reversed);
+	get_ports(_port,_smart_port,_adi_port);
 }
 
 std::int32_t EXT_ADIEncoder::reset(void) const {
-	return ext_adi_encoder_reset(_smart_port, _adi_port);
+	return ext_adi_encoder_reset(_port);
 }
 
 std::int32_t EXT_ADIEncoder::get_value(void) const {
-	return ext_adi_encoder_get(_smart_port, _adi_port);
+	return ext_adi_encoder_get(_port);
 }
 
 EXT_ADIUltrasonic::EXT_ADIUltrasonic(std::uint8_t smart_port, std::uint8_t adi_port_ping, std::uint8_t adi_port_echo) {
 	_port = ext_adi_ultrasonic_init(smart_port, adi_port_ping, adi_port_echo);
+	get_ports(_port,_smart_port,_adi_port);
 }
 
 EXT_ADIGyro::EXT_ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier) {
 	_port = ext_adi_gyro_init(smart_port, adi_port, multiplier);
+	get_ports(_port,_smart_port,_adi_port);
 }
 
 double EXT_ADIGyro::get_value(void) const {
-	return ext_adi_gyro_get(_smart_port, _adi_port);
+	return ext_adi_gyro_get(_port);
 }
 
 std::int32_t EXT_ADIGyro::reset(void) const {
-	return ext_adi_gyro_reset(_smart_port, _adi_port);
+	return ext_adi_gyro_reset(_port);
 }
 }  // namespace pros
-*/

@@ -84,8 +84,9 @@ class EXT_ADIPort {
 
 	protected:
 	EXT_ADIPort(void);
-	std::uint8_t _adi_port;
 	std::uint8_t _smart_port;
+	std::uint8_t _adi_port;
+	std::uint8_t _port;
 
 };
 
