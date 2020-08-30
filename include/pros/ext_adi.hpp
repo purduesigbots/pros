@@ -465,7 +465,7 @@ class EXT_ADIUltrasonic : private EXT_ADIPort {
 	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
 	 * meter), measured from the sensor's mounting points.
 	 */
-	using EXT_ADIPort::get_value;
+	std::int32_t get_value(void) const;
 };
 
 class EXT_ADIGyro : private EXT_ADIPort {

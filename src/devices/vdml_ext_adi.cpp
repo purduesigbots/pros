@@ -96,6 +96,10 @@ EXT_ADIUltrasonic::EXT_ADIUltrasonic(std::uint8_t smart_port, std::uint8_t adi_p
 	get_ports(_port,_smart_port,_adi_port);
 }
 
+std::int32_t EXT_ADIUltrasonic::get_value(void) const {
+	return ext_adi_ultrasonic_get(_port);
+}
+
 EXT_ADIGyro::EXT_ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier) {
 	_port = ext_adi_gyro_init(smart_port, adi_port, multiplier);
 	get_ports(_port,_smart_port,_adi_port);
