@@ -302,7 +302,7 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
 	validate_type(device, ult, E_ADI_LEGACY_ULTRASONIC);
 	
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, ult);
-	return_port(ult, rtn);
+	return_port(INTERNAL_ADI_PORT, rtn);
 }
 
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
