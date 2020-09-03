@@ -1,7 +1,7 @@
 /**
- * \file devices/vdml_adi.c
+ * \file devices/vdml_ext_adi.c
  *
- * Contains functions for interacting with the V5 ADI.
+ * Contains functions for interacting with the V5 3-Wire Expander.
  *
  * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *

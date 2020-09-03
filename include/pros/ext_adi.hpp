@@ -1,7 +1,7 @@
 /**
- * \file pros/adi.hpp
+ * \file pros/ext_adi.hpp
  *
- * Contains prototypes for interfacing with the ADI.
+ * Contains prototypes for interfacing with the 3-Wire Expander.
  *
  * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
  *
