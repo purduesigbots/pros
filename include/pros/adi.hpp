@@ -82,7 +82,7 @@ class ADIPort {
 
 	protected:
 	ADIPort(void);
-	std::uint8_t _port;
+	std::int32_t _port;
 };
 
 class ADIAnalogIn : private ADIPort {
@@ -446,7 +446,7 @@ class ADIUltrasonic : private ADIPort {
 	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
 	 * meter), measured from the sensor's mounting points.
 	 */
-	using ADIPort::get_value;
+	std::int32_t get_value(void) const;
 };
 
 class ADIGyro : private ADIPort {

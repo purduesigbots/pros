@@ -90,6 +90,10 @@ ADIUltrasonic::ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
 	_port = adi_ultrasonic_init(port_ping, port_echo);
 }
 
+std::int32_t ADIUltrasonic::get_value(void) const {
+	return adi_ultrasonic_get(_port);
+}
+
 ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
 	_port = adi_gyro_init(port, multiplier);
 }
