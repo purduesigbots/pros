@@ -38,7 +38,7 @@ class ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
-
+	ADIPort(std::uint8_t smart_port, std::uint8_t port, adi_port_config_e_t type);
 	virtual ~ADIPort(void) = default;
 
 	/**
@@ -103,7 +103,7 @@ class ADIAnalogIn : private ADIPort {
 	 * failed, setting errno.
 	 */
 	ADIAnalogIn(std::uint8_t port);
-
+	ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port);
 	/**
 	 * Calibrates the analog sensor on the specified port and returns the new
 	 * calibration value.
@@ -200,10 +200,13 @@ class ADIAnalogOut : private ADIPort {
 	 *
 	 * \param port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure on an adi wire expander
 	 * \param type
 	 *        The configuration type for the port
 	 */
 	ADIAnalogOut(std::uint8_t port);
+	ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -239,6 +242,7 @@ class ADIDigitalOut : private ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIDigitalOut(std::uint8_t port, bool init_state = LOW);
+	ADIDigitalOut(std::uint8_t smart_port, std::uint8_t adi_port, bool init_state);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -274,6 +278,7 @@ class ADIDigitalIn : private ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIDigitalIn(std::uint8_t port);
+	ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port);
 
 	/**
 	 * Gets a rising-edge case for a digital button press.
@@ -324,6 +329,7 @@ class ADIMotor : private ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIMotor(std::uint8_t port);
+	ADIMotor(std::uint8_t smart_port, std::uint8_t adi_port);
 
 	/**
 	 * Stops the motor on the given port.
@@ -383,6 +389,7 @@ class ADIEncoder : private ADIPort {
 	 *        If "true", the sensor will count in the opposite direction
 	 */
 	ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed = false);
+	ADIEncoder(std::uint8_t smart_port, std::uint8_t adi_port_top, std::uint8_t adi_port_bottom,bool reversed);
 
 	/**
 	 * Sets the encoder value to zero.
@@ -431,6 +438,7 @@ class ADIUltrasonic : private ADIPort {
 	 *        next highest port following port_ping.
 	 */
 	ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo);
+	ADIUltrasonic(std::uint8_t smart_port, std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -473,6 +481,7 @@ class ADIGyro : private ADIPort {
 	 *        supplied by the ADI
 	 */
 	ADIGyro(std::uint8_t port, double multiplier = 1);
+	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier);
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
