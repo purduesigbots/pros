@@ -21,8 +21,6 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
-#define INTERNAL_ADI_PORT (22 - 1)
-
 #define ADI_MOTOR_MAX_SPEED 127
 #define ADI_MOTOR_MIN_SPEED -128
 
@@ -125,7 +123,7 @@ int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_c
 }
 
 int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t value) {
-	transform_adi_port(adi_port);
+	transform_adi_port(adi_port)
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiValueSet(device->device_info, adi_port, value);
 	return_port(smart_port - 1, 1);
@@ -363,18 +361,16 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 		// the calibration time in VexOS.
 		delay(GYRO_CALIBRATION_TIME);
 	}
-
 	return_port(smart_port - 1, merge_adi_ports(adi_port + 1, smart_port - 1));
 }
 
 // Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port possibly returning PROS_ERR, not PROS_ERR_F
 int32_t _ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
-	uint8_t smart_port;
-	uint8_t adi_port;
+	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, smart_port, E_ADI_LEGACY_GYRO);
+	validate_type(device, adi_port, E_ADI_LEGACY_GYRO);
 
 	double rtn = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
@@ -391,8 +387,7 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 }
 
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
-	uint8_t smart_port;
-	uint8_t adi_port;
+	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
@@ -404,8 +399,7 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
 }
 
 int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
-	uint8_t smart_port;
-	uint8_t adi_port;
+	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);

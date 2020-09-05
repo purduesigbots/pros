@@ -16,12 +16,15 @@
 namespace pros {
 using namespace pros::c;
 
-ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
-	adi_port_set_config(_port, type);
+ADIPort::ADIPort(std::uint8_t port, adi_port_config_e_t type) : _adi_port(port) {
+	_smart_port = INTERNAL_ADI_PORT;
+	adi_port_set_config( _adi_port, type);
+	//_port = merge_adi_ports(_adi_port,_smart_port);
 }
 
-ADIPort::ADIPort(std::uint8_t smart_port, std::uint8_t port, adi_port_config_e_t type) : _port(port) {
-	ext_adi_port_set_config(smart_port, port, type);
+ADIPort::ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type) : _smart_port(smart_port), _adi_port(adi_port) {
+	ext_adi_port_set_config(_smart_port, _adi_port, type);
+	//_port = merge_adi_ports(_adi_port,_smart_port);
 }
 
 ADIPort::ADIPort(void) {
@@ -29,40 +32,38 @@ ADIPort::ADIPort(void) {
 }
 
 std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
-	return adi_port_set_config(_port, type);
+	return ext_adi_port_set_config(_smart_port,_adi_port, type);
 }
 
 std::int32_t ADIPort::get_config(void) const {
-	return adi_port_get_config(_port);
+	return ext_adi_port_get_config(_smart_port,_adi_port);
 }
 
 std::int32_t ADIPort::set_value(std::int32_t value) const {
-	return adi_port_set_value(_port, value);
+	return ext_adi_port_set_value(_smart_port,_adi_port, value);
 }
 
 std::int32_t ADIPort::get_value(void) const {
-	return adi_port_get_value(_port);
+	return ext_adi_port_get_value(_smart_port,_adi_port);
 }
 
 ADIAnalogIn::ADIAnalogIn(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_IN) {}
-
-ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
-
 ADIAnalogIn::ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_ANALOG_IN) {}
  
-ADIAnalogOut::ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_ANALOG_OUT) {}
-
 std::int32_t ADIAnalogIn::calibrate(void) const {
-	return adi_analog_calibrate(_port);
+	return ext_adi_analog_calibrate(_smart_port,_adi_port);
 }
 
 std::int32_t ADIAnalogIn::get_value_calibrated(void) const {
-	return adi_analog_read_calibrated(_port);
+	return ext_adi_analog_read_calibrated(_smart_port,_adi_port);
 }
 
 std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
-	return adi_analog_read_calibrated_HR(_port);
+	return ext_adi_analog_read_calibrated_HR(_smart_port,_adi_port);
 }
+
+ADIAnalogOut::ADIAnalogOut(std::uint8_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
+ADIAnalogOut::ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(smart_port, adi_port, E_ADI_ANALOG_OUT) {}
 
 ADIDigitalOut::ADIDigitalOut(std::uint8_t port, bool init_state) : ADIPort(port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
@@ -74,12 +75,10 @@ ADIDigitalOut::ADIDigitalOut(std::uint8_t smart_port, std::uint8_t adi_port, boo
 }
 
 ADIDigitalIn::ADIDigitalIn(std::uint8_t port) : ADIPort(port, E_ADI_DIGITAL_IN) {}
-
-ADIDigitalIn::ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port)
-    : ADIPort(smart_port, adi_port, E_ADI_DIGITAL_IN) {}
+ADIDigitalIn::ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port): ADIPort(smart_port, adi_port, E_ADI_DIGITAL_IN) {}
 
 std::int32_t ADIDigitalIn::get_new_press(void) const {
-	return adi_digital_get_new_press(_port);
+	return ext_adi_digital_get_new_press(_smart_port,_adi_port);
 }
 
 ADIMotor::ADIMotor(std::uint8_t port) : ADIPort(port, E_ADI_LEGACY_PWM) {
@@ -91,7 +90,7 @@ ADIMotor::ADIMotor(std::uint8_t smart_port, std::uint8_t adi_port) : ADIPort(sma
 }
 
 std::int32_t ADIMotor::stop(void) const {
-	return adi_motor_stop(_port);
+	return ext_adi_motor_stop(_smart_port,_adi_port);
 }
 
 ADIEncoder::ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed) {
@@ -122,8 +121,8 @@ std::int32_t ADIUltrasonic::get_value(void) const {
 	return adi_ultrasonic_get(_port);
 }
 
-ADIGyro::ADIGyro(std::uint8_t port, double multiplier) {
-	_port = adi_gyro_init(port, multiplier);
+ADIGyro::ADIGyro(std::uint8_t adi_port, double multiplier) {
+	_port = adi_gyro_init(adi_port, multiplier);
 }
 
 ADIGyro::ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier) {

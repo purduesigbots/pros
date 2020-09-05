@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 2
 #define PROS_VERSION_PATCH 1
-#define PROS_VERSION_STRING "3.2.1-dirty.102.bc9d9d2"
+#define PROS_VERSION_STRING "3.2.1-dirty.104.9fa3d95"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
@@ -59,7 +59,6 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
-#include "pros/ext_adi.hpp"
 #include "pros/imu.hpp"
 #include "pros/llemu.hpp"
 #include "pros/misc.hpp"

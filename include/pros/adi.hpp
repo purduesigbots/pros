@@ -38,7 +38,7 @@ class ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIPort(std::uint8_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
-	ADIPort(std::uint8_t smart_port, std::uint8_t port, adi_port_config_e_t type);
+	ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type= E_ADI_TYPE_UNDEFINED);
 	virtual ~ADIPort(void) = default;
 
 	/**
@@ -83,6 +83,8 @@ class ADIPort {
 	protected:
 	ADIPort(void);
 	std::int32_t _port;
+	std::int32_t _smart_port;
+	std::int32_t _adi_port;
 };
 
 class ADIAnalogIn : private ADIPort {
@@ -481,7 +483,7 @@ class ADIGyro : private ADIPort {
 	 *        supplied by the ADI
 	 */
 	ADIGyro(std::uint8_t port, double multiplier = 1);
-	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier);
+	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier=1);
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is

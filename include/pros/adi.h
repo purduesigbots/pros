@@ -111,6 +111,7 @@ typedef enum adi_port_config_e {
 #endif
 #endif
 
+#define INTERNAL_ADI_PORT 22
 #define NUM_ADI_PORTS 8
 
 #ifdef __cplusplus
@@ -136,7 +137,7 @@ namespace c {
  *
  * \return The ADI configuration for the given port
  */
-adi_port_config_e_t adi_port_get_config(uint8_t port);
+adi_port_config_e_t adi_port_get_config(int32_t port);
 
 /**
  * Gets the value for the given ADI port.
@@ -151,7 +152,7 @@ adi_port_config_e_t adi_port_get_config(uint8_t port);
  *
  * \return The value stored for the given port
  */
-int32_t adi_port_get_value(uint8_t port);
+int32_t adi_port_get_value(int32_t port);
 
 /**
  * Configures an ADI port to act as a given sensor type.
@@ -168,7 +169,7 @@ int32_t adi_port_get_value(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
+int32_t adi_port_set_config(int32_t port, adi_port_config_e_t type);
 
 /**
  * Sets the value for the given ADI port.
@@ -189,7 +190,7 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_port_set_value(uint8_t port, int32_t value);
+int32_t adi_port_set_value(int32_t port, int32_t value);
 
 /******************************************************************************/
 /**                      PROS 2 Compatibility Functions                      **/
@@ -252,7 +253,7 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  *
  * \return The average sensor value computed by this function
  */
-int32_t adi_analog_calibrate(uint8_t port);
+int32_t adi_analog_calibrate(int32_t port);
 
 /**
  * Gets the 12-bit value of the specified port.
@@ -272,7 +273,7 @@ int32_t adi_analog_calibrate(uint8_t port);
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
  */
-int32_t adi_analog_read(uint8_t port);
+int32_t adi_analog_read(int32_t port);
 
 /**
  * Gets the 12 bit calibrated value of an analog input port.
@@ -294,7 +295,7 @@ int32_t adi_analog_read(uint8_t port);
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
  */
-int32_t adi_analog_read_calibrated(uint8_t port);
+int32_t adi_analog_read_calibrated(int32_t port);
 
 /**
  * Gets the 16 bit calibrated value of an analog input port.
@@ -321,7 +322,7 @@ int32_t adi_analog_read_calibrated(uint8_t port);
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
  */
-int32_t adi_analog_read_calibrated_HR(uint8_t port);
+int32_t adi_analog_read_calibrated_HR(int32_t port);
 
 /**
  * Gets the digital value (1 or 0) of a port configured as a digital input.
@@ -341,7 +342,7 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  *
  * \return True if the pin is HIGH, or false if it is LOW
  */
-int32_t adi_digital_read(uint8_t port);
+int32_t adi_digital_read(int32_t port);
 
 /**
  * Gets a rising-edge case for a digital button press.
@@ -365,7 +366,7 @@ int32_t adi_digital_read(uint8_t port);
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
  */
-int32_t adi_digital_get_new_press(uint8_t port);
+int32_t adi_digital_get_new_press(int32_t port);
 
 /**
  * Sets the digital value (1 or 0) of a port configured as a digital output.
@@ -386,7 +387,7 @@ int32_t adi_digital_get_new_press(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_digital_write(uint8_t port, const bool value);
+int32_t adi_digital_write(int32_t port, const bool value);
 
 /**
  * Configures the port as an input or output with a variety of settings.
@@ -403,7 +404,7 @@ int32_t adi_digital_write(uint8_t port, const bool value);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_pin_mode(uint8_t port, uint8_t mode);
+int32_t adi_pin_mode(int32_t port, uint8_t mode);
 
 /**
  * Sets the speed of the motor on the given port.
@@ -422,7 +423,7 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_motor_set(uint8_t port, int8_t speed);
+int32_t adi_motor_set(int32_t port, int8_t speed);
 
 /**
  * Gets the last set speed of the motor on the given port.
@@ -437,7 +438,7 @@ int32_t adi_motor_set(uint8_t port, int8_t speed);
  *
  * \return The last set speed of the motor on the given port
  */
-int32_t adi_motor_get(uint8_t port);
+int32_t adi_motor_get(int32_t port);
 
 /**
  * Stops the motor on the given port.
@@ -453,7 +454,7 @@ int32_t adi_motor_get(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_motor_stop(uint8_t port);
+int32_t adi_motor_stop(int32_t port);
 
 /**
  * Reference type for an initialized encoder.

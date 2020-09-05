@@ -707,8 +707,8 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 	smart_port = uport & SMART_PORT_MASK; \
 	}
 
-static inline uint32_t merge_adi_ports(uint8_t port, uint8_t smart_port) {
-	return (port << SMART_PORT_BITS) | smart_port;
+static inline uint32_t merge_adi_ports(uint8_t adi_port, uint8_t smart_port) {
+	return (adi_port << SMART_PORT_BITS) | smart_port;
 }
 
 #ifdef __cplusplus

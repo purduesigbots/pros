@@ -74,13 +74,16 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    //pros::c::adi_ultrasonic_t sonic = pros::c::adi_ultrasonic_init(7, 8);
-    //printf("Errno %d:%s\n", errno, strerror(errno));
-	pros::c::ext_adi_gyro_t gyro_test = pros::c::ext_adi_gyro_init(2, 'D', 1);
-	printf("Gyro user init \n");
-  while(true) {
-	std::cout << pros::c::ext_adi_gyro_get(gyro_test) << '\n';
-	printf("Gyro user get call\n");
-    pros::delay(20);
-  }
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Motor left_mtr(11);
+	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Hello PROS User!");
+	//pros::c::ext_adi_encoder_t encoder = pros::c::ext_adi_encoder_init(2, 'E', 'F', false);
+
+	while (true) {
+		//if(pros::c::ext_adi_digital_read(2, 'B') || pros::c::adi_digital_read('B'))
+		left_mtr.move(127);
+		//pros::c::lcd_print(0, "Buttons Bitmap: %d\n", pros::c::ext_adi_encoder_get(encoder));
+		pros::delay(20);
+	}
 }
