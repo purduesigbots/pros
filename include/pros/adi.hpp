@@ -82,7 +82,6 @@ class ADIPort {
 
 	protected:
 	ADIPort(void);
-	std::int32_t _port;
 	std::int32_t _smart_port;
 	std::int32_t _adi_port;
 };
