@@ -165,7 +165,7 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port) 
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-	int32_t rtn = ((vexDeviceAdiValueGet(device->device_info, adi_port) << 4) - adi_data->analog_data.calib);
+	int32_t rtn = (vexDeviceAdiValueGet(device->device_info, adi_port) << 4) - adi_data->analog_data.calib;
 	return_port(smart_port - 1, rtn);
 }
 
