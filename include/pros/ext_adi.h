@@ -31,50 +31,6 @@ extern "C" {
 namespace pros {
 #endif
 
-#ifdef PROS_USE_SIMPLE_NAMES
-#ifdef __cplusplus
-#define ADI_ANALOG_IN pros::E_ADI_ANALOG_IN
-#define ADI_ANALOG_OUT pros::E_ADI_ANALOG_OUT
-#define ADI_DIGITAL_IN pros::E_ADI_DIGITAL_IN
-#define ADI_DIGITAL_OUT pros::E_ADI_DIGITAL_OUT
-#define ADI_SMART_BUTTON pros::E_ADI_SMART_BUTTON
-#define ADI_SMART_POT pros::E_ADI_SMART_POT
-#define ADI_LEGACY_BUTTON pros::E_ADI_LEGACY_BUTTON
-#define ADI_LEGACY_POT pros::E_ADI_LEGACY_POT
-#define ADI_LEGACY_LINE_SENSOR pros::E_ADI_LEGACY_LINE_SENSOR
-#define ADI_LEGACY_LIGHT_SENSOR pros::E_ADI_LEGACY_LIGHT_SENSOR
-#define ADI_LEGACY_GYRO pros::E_ADI_LEGACY_GYRO
-#define ADI_LEGACY_ACCELEROMETER pros::E_ADI_LEGACY_ACCELEROMETER
-#define ADI_LEGACY_SERVO pros::E_ADI_LEGACY_SERVO
-#define ADI_LEGACY_PWM pros::E_ADI_LEGACY_PWM
-#define ADI_LEGACY_ENCODER pros::E_ADI_LEGACY_ENCODER
-#define ADI_LEGACY_ULTRASONIC pros::E_ADI_LEGACY_ULTRASONIC
-#define ADI_TYPE_UNDEFINED pros::E_ADI_TYPE_UNDEFINED
-#define ADI_ERR pros::E_ADI_ERR
-#else
-#define ADI_ANALOG_IN E_ADI_ANALOG_IN
-#define ADI_ANALOG_OUT E_ADI_ANALOG_OUT
-#define ADI_DIGITAL_IN E_ADI_DIGITAL_IN
-#define ADI_DIGITAL_OUT E_ADI_DIGITAL_OUT
-#define ADI_SMART_BUTTON E_ADI_SMART_BUTTON
-#define ADI_SMART_POT E_ADI_SMART_POT
-#define ADI_LEGACY_BUTTON E_ADI_LEGACY_BUTTON
-#define ADI_LEGACY_POT E_ADI_LEGACY_POT
-#define ADI_LEGACY_LINE_SENSOR E_ADI_LEGACY_LINE_SENSOR
-#define ADI_LEGACY_LIGHT_SENSOR E_ADI_LEGACY_LIGHT_SENSOR
-#define ADI_LEGACY_GYRO E_ADI_LEGACY_GYRO
-#define ADI_LEGACY_ACCELEROMETER E_ADI_LEGACY_ACCELEROMETER
-#define ADI_LEGACY_SERVO E_ADI_LEGACY_SERVO
-#define ADI_LEGACY_PWM E_ADI_LEGACY_PWM
-#define ADI_LEGACY_ENCODER E_ADI_LEGACY_ENCODER
-#define ADI_LEGACY_ULTRASONIC E_ADI_LEGACY_ULTRASONIC
-#define ADI_TYPE_UNDEFINED E_ADI_TYPE_UNDEFINED
-#define ADI_ERR E_ADI_ERR
-#endif
-#endif
-
-#define NUM_ADI_PORTS 8
-
 #ifdef __cplusplus
 namespace c {
 #endif
@@ -262,7 +218,7 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  * Gets the digital value (1 or 0) of a port configured as a digital input.
  *
  * If the port is configured as some other mode, the digital value which
- * reflects the current state of the poprt is returned, which may or may not
+ * reflects the current state of the port is returned, which may or may not
  * differ from the currently set value. The return value is undefined for ports
  * configured as any mode other than a Digital Input.
  *
