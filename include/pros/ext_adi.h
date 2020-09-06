@@ -51,7 +51,8 @@ namespace c {
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
+ *        the configuration
  *
  * \return The ADI configuration for the given port
  */
@@ -67,7 +68,8 @@ adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
+ *        the configuration
  *
  * \return The value stored for the given port
  */
@@ -105,7 +107,8 @@ int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_c
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which the value
+ *        will be set
  * \param value
  *        The value to set the ADI port to
  *
@@ -136,7 +139,7 @@ int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t val
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The average sensor value computed by this function
  */
@@ -156,7 +159,8 @@ int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ *        returned
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
@@ -179,7 +183,8 @@ int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ *        returned
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
@@ -207,7 +212,8 @@ int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ *        returned
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
@@ -230,7 +236,7 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return True if the pin is HIGH, or false if it is LOW
  */
@@ -255,7 +261,7 @@ int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
@@ -336,7 +342,7 @@ int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The last set speed of the motor on the given port
  */
@@ -353,7 +359,7 @@ int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port);
  * \param smart_port
  *        The smart port number that the ADI Expander is in
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ *	      The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
