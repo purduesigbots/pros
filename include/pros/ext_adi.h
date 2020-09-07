@@ -611,9 +611,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 #define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
 
   /**
-   * Given a port mask, it sets the smart port and adi port to the values masked inside the int_32. 
-   * 
-   * (For external adi device)
+   * Macro Description: Given a port mask, it sets the smart port and adi port to the values masked inside the int_32. 
    */
 #define get_ports(ports, smart_port, adi_port) {\
 	uint32_t uport = (uint32_t)ports; \
@@ -622,9 +620,8 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
 
   /**
-   * Given a port mask, it sets the smart port to the value masked inside the int_32. 
-   * 
-   * (For external adi device)
+   * Macro description: Given a port mask, it sets the smart port to the value masked inside the int_32. 
+   *
    */
 #define get_smart_port(ports, smart_port) {\
 	uint32_t uport = (uint32_t)ports; \
