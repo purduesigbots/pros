@@ -540,7 +540,7 @@ class ADIUltrasonic : private ADIPort {
 	ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo);
 	
 	/**
-	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic.
+	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
