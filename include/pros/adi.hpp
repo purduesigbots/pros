@@ -622,7 +622,7 @@ class ADIGyro : private ADIPort {
 	 *        A scalar value that will be multiplied by the gyro heading value
 	 *        supplied by the ADI
 	 */
-	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier=1);
+	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier = 1);
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
