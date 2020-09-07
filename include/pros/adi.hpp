@@ -53,7 +53,7 @@ class ADIPort {
 	 * \param type
 	 *        The configuration type for the port
 	 */
-	ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type= E_ADI_TYPE_UNDEFINED);
+	ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 	
 	virtual ~ADIPort(void) = default;
 
