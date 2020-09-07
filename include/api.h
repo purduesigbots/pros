@@ -49,13 +49,13 @@
 
 #include "pros/adi.h"
 #include "pros/colors.h"
+#include "pros/ext_adi.h"
 #include "pros/imu.h"
 #include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
 #include "pros/vision.h"
-#include "pros/ext_adi.h"
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"

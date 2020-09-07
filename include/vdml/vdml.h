@@ -235,8 +235,6 @@ int internal_port_mutex_take(uint8_t port);
  */
 int internal_port_mutex_give(uint8_t port);
 
-
-
 #define V5_PORT_BATTERY 24
 #define V5_PORT_CONTROLLER_1 25
 #define V5_PORT_CONTROLLER_2 26
