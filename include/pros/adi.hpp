@@ -23,6 +23,14 @@
 #include <cstdint>
 
 namespace pros {
+
+//type definition for the pair of smart port and adi port for the basic adi devices
+using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
+
+//type definition for the triplet of smart port and two adi ports for the two wire adi devices
+using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
+
+
 class ADIPort {
 	public:
 	/**
@@ -38,7 +46,7 @@ class ADIPort {
 	 *        The configuration type for the port
 	 */
 	ADIPort(std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
-
+	
 	/**
 	 * Configures an ADI port on an adi expander to act as a given sensor type.
 	 *
@@ -46,15 +54,14 @@ class ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 * \param type
 	 *        The configuration type for the port
 	 */
-	ADIPort(std::uint8_t smart_port, std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
-	
+	ADIPort(ext_adi_port_pair_t port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+
 	virtual ~ADIPort(void) = default;
 
 	/**
@@ -98,8 +105,8 @@ class ADIPort {
 
 	protected:
 	ADIPort(void);
-	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
+	std::uint8_t _smart_port;
 };
 
 class ADIAnalogIn : private ADIPort {
@@ -113,14 +120,12 @@ class ADIAnalogIn : private ADIPort {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param type
-	 *        The configuration type for the port
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
 	ADIAnalogIn(std::uint8_t adi_port);
-
+	
 	/**
 	 * Configures an ADI port on an adi expander to act as an Analog Input.
 	 *
@@ -128,18 +133,15 @@ class ADIAnalogIn : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param type
-	 *        The configuration type for the port
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	ADIAnalogIn(std::uint8_t smart_port, std::uint8_t adi_port);
-	
+	ADIAnalogIn(ext_adi_port_pair_t port);\
+
 	/**
 	 * Calibrates the analog sensor on the specified port and returns the new
 	 * calibration value.
@@ -238,7 +240,7 @@ class ADIAnalogOut : private ADIPort {
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 */
 	ADIAnalogOut(std::uint8_t adi_port);
-
+	
 	/**
 	 * Configures an ADI port on an adi_expander to act as an Analog Output.
 	 *
@@ -246,12 +248,11 @@ class ADIAnalogOut : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 */
-	ADIAnalogOut(std::uint8_t smart_port, std::uint8_t adi_port);
+	ADIAnalogOut(ext_adi_port_pair_t port);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -287,7 +288,7 @@ class ADIDigitalOut : private ADIPort {
 	 *        The initial state for the port
 	 */
 	ADIDigitalOut(std::uint8_t adi_port, bool init_state = LOW);
-	
+
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Digital Output.
 	 *
@@ -295,14 +296,13 @@ class ADIDigitalOut : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 * \param init_state
 	 *        The initial state for the port
 	 */
-	ADIDigitalOut(std::uint8_t smart_port, std::uint8_t adi_port, bool init_state = LOW);
+	ADIDigitalOut(ext_adi_port_pair_t port, bool init_state = LOW);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -344,12 +344,11 @@ class ADIDigitalIn : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 */
-	ADIDigitalIn(std::uint8_t smart_port, std::uint8_t adi_port);
+	ADIDigitalIn(ext_adi_port_pair_t port);
 
 	/**
 	 * Gets a rising-edge case for a digital button press.
@@ -406,13 +405,12 @@ class ADIMotor : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to configure
-	 * \param adi_port
-	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 */
-	ADIMotor(std::uint8_t smart_port, std::uint8_t adi_port);
-
+	ADIMotor(ext_adi_port_pair_t port);
+	
 	/**
 	 * Stops the motor on the given port.
 	 *
@@ -462,15 +460,15 @@ class ADIEncoder : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param port_top
-	 *        The "top" wire from the encoder sensor with the removable cover side
+	 * \param adi_port_top
+	 *        The tuple of the "top" wire from the encoder sensor with the removable cover side
 	 *        UP
-	 * \param port_bottom
-	 *        The "bottom" wire from the encoder sensor
+	 * \param adi_port_bottom
+	 * 		  The "bottom" wire from the encoder sensor
 	 * \param reverse
 	 *        If "true", the sensor will count in the opposite direction
 	 */
-	ADIEncoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed = false);
+	ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
 	
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Encoder.
@@ -479,18 +477,14 @@ class ADIEncoder : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to be configured
-	 * \param port_top
-	 *        The "top" wire from the encoder sensor with the removable cover side
-	 *        UP
-	 * \param port_bottom
-	 *        The "bottom" wire from the encoder sensor
+	 * \param port
+	 *        The tuple of the "top" wire from the encoder sensor with the removable cover side
+	 *        UP, the "bottom" wire from the encoder sensor, and the smart port number
 	 * \param reverse
 	 *        If "true", the sensor will count in the opposite direction
 	 */
-	ADIEncoder(std::uint8_t smart_port, std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
-
+	ADIEncoder(ext_adi_port_tuple_t port, bool reversed = false);
+	
 	/**
 	 * Sets the encoder value to zero.
 	 *
@@ -523,8 +517,8 @@ class ADIEncoder : private ADIPort {
 
 class ADIUltrasonic : private ADIPort {
 	public:
-	/**
-	 * Configures a set of ADI ports to act as an Ultrasonic.
+		/**
+	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -537,7 +531,7 @@ class ADIUltrasonic : private ADIPort {
 	 *        The port connected to the yellow INPUT cable. This should be in the
 	 *        next highest port following port_ping.
 	 */
-	ADIUltrasonic(std::uint8_t port_ping, std::uint8_t port_echo);
+	ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
 	
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
@@ -546,16 +540,12 @@ class ADIUltrasonic : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to be configured
 	 * \param port_ping
-	 *        The port connected to the orange OUTPUT cable. This should be in port
-	 *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
-	 * \param port_echo
-	 *        The port connected to the yellow INPUT cable. This should be in the
-	 *        next highest port following port_ping.
+	 *        The tuple of the port connected to the orange OUTPUT cable (1, 3, 5, 7 or
+	 * 		  'A', 'C', 'E', 'G'), the port connected to the yellow INPUT cable (the next
+	 * 	 	  highest port following port_ping), and the smart port number.
 	 */
-	ADIUltrasonic(std::uint8_t smart_port, std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
+	ADIUltrasonic(ext_adi_port_tuple_t port);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -577,9 +567,9 @@ class ADIUltrasonic : private ADIPort {
 class ADIGyro : private ADIPort {
 	public:
 	/**
-	 * Initializes a gyroscope on the given port. If the given port has not
-	 * previously been configured as a gyro, then this function starts a 1300ms
-	 * calibration period.
+	 * Initializes a gyroscope on the given port pf an adi expander. If the given 
+	 * port has not previously been configured as a gyro, then this function starts 
+	 * a 1300ms calibration period.
 	 *
 	 * It is highly recommended that an ADIGyro object be created in initialize()
 	 * when the robot is stationary to ensure proper calibration. If an ADIGyro
@@ -614,15 +604,14 @@ class ADIGyro : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
 	 *
-	 * \param smart_port
-	 *        The smart port number (from 1-22) to be configured
-	 * \param adi_port
-	 *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
+	 * \param port
+	 *        The pair of the ADI port number (from 1-8, 'a'-'h', 'A'-'H') and the
+	 *  	  smart port number (from 1-22) to configure 
 	 * \param multiplier
 	 *        A scalar value that will be multiplied by the gyro heading value
 	 *        supplied by the ADI
 	 */
-	ADIGyro(std::uint8_t smart_port, std::uint8_t adi_port, double multiplier = 1);
+	ADIGyro(ext_adi_port_pair_t port, double multiplier = 1);
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is

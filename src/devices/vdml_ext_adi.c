@@ -101,35 +101,35 @@ typedef union adi_data {
 		return PROS_ERR;                            \
 	}
 
-adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port) {
+adi_port_config_e_t ext_adi_port_get_config(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	adi_port_config_e_t rtn = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port);
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_port_get_value(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_port_get_value(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, adi_port);
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_config_e_t type) {
+int32_t ext_adi_port_set_config(uint8_t adi_port, uint8_t smart_port, adi_port_config_e_t type) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)type);
 	return_port(smart_port - 1, 1);
 }
 
-int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t value) {
+int32_t ext_adi_port_set_value(uint8_t adi_port, uint8_t smart_port, int32_t value) {
 	transform_adi_port(adi_port)
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiValueSet(device->device_info, adi_port, value);
 	return_port(smart_port - 1, 1);
 }
 
-int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_analog_calibrate(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
@@ -143,7 +143,7 @@ int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, (int32_t)((total + 256) >> 9));
 }
 
-int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_analog_read(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
@@ -151,7 +151,7 @@ int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_analog_read_calibrated(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
@@ -160,7 +160,7 @@ int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_analog_read_calibrated_HR(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
@@ -169,7 +169,7 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port) 
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_digital_read(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_DIGITAL_IN);
@@ -177,7 +177,7 @@ int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_digital_get_new_press(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_DIGITAL_IN);
@@ -197,7 +197,7 @@ int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, false);
 }
 
-int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, const bool value) {
+int32_t ext_adi_digital_write(uint8_t adi_port, uint8_t smart_port, const bool value) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, E_ADI_DIGITAL_OUT);
@@ -205,19 +205,19 @@ int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, const bool v
 	return_port(smart_port - 1, 1);
 }
 
-int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode) {
+int32_t ext_adi_pin_mode(uint8_t adi_port, uint8_t smart_port, uint8_t mode) {
 	switch (mode) {
 		case INPUT:
-			ext_adi_port_set_config(smart_port, adi_port, E_ADI_DIGITAL_IN);
+			ext_adi_port_set_config(adi_port, smart_port, E_ADI_DIGITAL_IN);
 			break;
 		case OUTPUT:
-			ext_adi_port_set_config(smart_port, adi_port, E_ADI_DIGITAL_OUT);
+			ext_adi_port_set_config(adi_port, smart_port, E_ADI_DIGITAL_OUT);
 			break;
 		case INPUT_ANALOG:
-			ext_adi_port_set_config(smart_port, adi_port, E_ADI_ANALOG_IN);
+			ext_adi_port_set_config(adi_port, smart_port, E_ADI_ANALOG_IN);
 			break;
 		case OUTPUT_ANALOG:
-			ext_adi_port_set_config(smart_port, adi_port, E_ADI_ANALOG_OUT);
+			ext_adi_port_set_config(adi_port, smart_port, E_ADI_ANALOG_OUT);
 			break;
 		default:
 			errno = EINVAL;
@@ -226,7 +226,7 @@ int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode) {
 	return 1;
 }
 
-int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed) {
+int32_t ext_adi_motor_set(uint8_t adi_port, uint8_t smart_port, int8_t speed) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_motor(device, adi_port);
@@ -238,7 +238,7 @@ int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed) {
 	return_port(smart_port - 1, 1);
 }
 
-int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port) {
+int32_t ext_adi_motor_get(uint8_t adi_port, uint8_t smart_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_motor(device, adi_port);
@@ -246,11 +246,11 @@ int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, rtn);
 }
 
-int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port) {
-	return ext_adi_motor_set(smart_port, adi_port, 0);
+int32_t ext_adi_motor_stop(uint8_t adi_port, uint8_t smart_port) {
+	return ext_adi_motor_set(adi_port, smart_port, 0);
 }
 
-ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, const bool reverse) {
+ext_adi_encoder_t ext_adi_encoder_init(uint8_t adi_port_top, uint8_t adi_port_bottom, uint8_t smart_port, const bool reverse) {
 	transform_adi_port(adi_port_top);
 	transform_adi_port(adi_port_bottom);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
@@ -298,7 +298,7 @@ int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc) {
 	return_port(smart_port, 1);
 }
 
-ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo) {
+ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t adi_port_ping, uint8_t adi_port_echo, uint8_t smart_port) {
 	transform_adi_port(adi_port_ping);
 	transform_adi_port(adi_port_echo);
 	validate_twowire(adi_port_ping, adi_port_echo);
@@ -334,7 +334,7 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult) {
 	return_port(smart_port, 1);
 }
 
-ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double multiplier) {
+ext_adi_gyro_t ext_adi_gyro_init(uint8_t adi_port, uint8_t smart_port, double multiplier) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 

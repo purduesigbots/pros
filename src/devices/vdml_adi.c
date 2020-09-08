@@ -15,67 +15,67 @@
 #include "vdml/vdml.h"
 
 adi_port_config_e_t adi_port_get_config(uint8_t port) {
-	return ext_adi_port_get_config(INTERNAL_ADI_PORT, port);
+	return ext_adi_port_get_config(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_port_get_value(uint8_t port) {
-	return ext_adi_port_get_value(INTERNAL_ADI_PORT, port);
+	return ext_adi_port_get_value(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type) {
-	return ext_adi_port_set_config(INTERNAL_ADI_PORT, port, type);
+	return ext_adi_port_set_config(port, INTERNAL_ADI_PORT, type);
 }
 
 int32_t adi_port_set_value(uint8_t port, int32_t value) {
-	return ext_adi_port_set_value(INTERNAL_ADI_PORT, port, value);
+	return ext_adi_port_set_value(port, INTERNAL_ADI_PORT, value);
 }
 
 int32_t adi_analog_calibrate(uint8_t port) {
-	return ext_adi_analog_calibrate(INTERNAL_ADI_PORT, port);
+	return ext_adi_analog_calibrate(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_analog_read(uint8_t port) {
-	return ext_adi_analog_read(INTERNAL_ADI_PORT, port);
+	return ext_adi_analog_read(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_analog_read_calibrated(uint8_t port) {
-	return ext_adi_analog_read_calibrated(INTERNAL_ADI_PORT, port);
+	return ext_adi_analog_read_calibrated(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_analog_read_calibrated_HR(uint8_t port) {
-	return ext_adi_analog_read_calibrated_HR(INTERNAL_ADI_PORT, port);
+	return ext_adi_analog_read_calibrated_HR(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_digital_read(uint8_t port) {
-	return ext_adi_digital_read(INTERNAL_ADI_PORT, port);
+	return ext_adi_digital_read(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_digital_get_new_press(uint8_t port) {
-	return ext_adi_digital_get_new_press(INTERNAL_ADI_PORT, port);
+	return ext_adi_digital_get_new_press(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_digital_write(uint8_t port, const bool value) {
-	return ext_adi_digital_write(INTERNAL_ADI_PORT, port, value);
+	return ext_adi_digital_write(port, INTERNAL_ADI_PORT, value);
 }
 
 int32_t adi_pin_mode(uint8_t port, uint8_t mode) {
-	return ext_adi_pin_mode(INTERNAL_ADI_PORT, port, mode);
+	return ext_adi_pin_mode(port, INTERNAL_ADI_PORT, mode);
 }
 
 int32_t adi_motor_set(uint8_t port, int8_t speed) {
-	return ext_adi_motor_set(INTERNAL_ADI_PORT, port, speed);
+	return ext_adi_motor_set(port, INTERNAL_ADI_PORT, speed);
 }
 
 int32_t adi_motor_get(uint8_t port) {
-	return ext_adi_motor_get(INTERNAL_ADI_PORT, port);
+	return ext_adi_motor_get(port, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_motor_stop(uint8_t port) {
-	return ext_adi_motor_stop(INTERNAL_ADI_PORT,port);
+	return ext_adi_motor_stop(port, INTERNAL_ADI_PORT);
 }
 
 adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool reverse) {
-	return (adi_encoder_t) ext_adi_encoder_init(INTERNAL_ADI_PORT, port_top, port_bottom, reverse);
+	return (adi_encoder_t) ext_adi_encoder_init(port_top, port_bottom, INTERNAL_ADI_PORT, reverse);
 }
 
 int32_t adi_encoder_get(adi_encoder_t enc) {
@@ -91,7 +91,7 @@ int32_t adi_encoder_shutdown(adi_encoder_t enc) {
 }
 
 adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo) {
-	return (adi_ultrasonic_t) ext_adi_ultrasonic_init(INTERNAL_ADI_PORT, port_ping, port_echo);
+	return (adi_ultrasonic_t) ext_adi_ultrasonic_init(port_ping, port_echo, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
@@ -103,7 +103,7 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
 }
 
 adi_gyro_t adi_gyro_init(uint8_t adi_port, double multiplier) {
-	return (adi_gyro_t) ext_adi_gyro_init(INTERNAL_ADI_PORT, adi_port, multiplier);
+	return (adi_gyro_t) ext_adi_gyro_init(adi_port, INTERNAL_ADI_PORT, multiplier);
 }
 
 double adi_gyro_get(adi_gyro_t gyro) {
