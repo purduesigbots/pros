@@ -540,7 +540,7 @@ class ADIUltrasonic : private ADIPort {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
-	 * \param port_ping
+	 * \param port
 	 *        The tuple of the port connected to the orange OUTPUT cable (1, 3, 5, 7 or
 	 * 		  'A', 'C', 'E', 'G'), the port connected to the yellow INPUT cable (the next
 	 * 	 	  highest port following port_ping), and the smart port number.
@@ -567,7 +567,7 @@ class ADIUltrasonic : private ADIPort {
 class ADIGyro : private ADIPort {
 	public:
 	/**
-	 * Initializes a gyroscope on the given port pf an adi expander. If the given 
+	 * Initializes a gyroscope on the given port of an adi expander. If the given 
 	 * port has not previously been configured as a gyro, then this function starts 
 	 * a 1300ms calibration period.
 	 *
