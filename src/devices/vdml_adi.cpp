@@ -144,6 +144,6 @@ double ADIGyro::get_value(void) const {
 }
 
 std::int32_t ADIGyro::reset(void) const {
-	return adi_gyro_reset(merge_adi_ports(_adi_port,_smart_port));
+	return adi_gyro_reset(merge_adi_ports(_adi_port, _smart_port));
 }
 }  // namespace pros
