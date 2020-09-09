@@ -32,8 +32,9 @@ using namespace pros::c;
       : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
   Task::Task(task_t task) : task(task) { }
-  void Task::operator = (const task_t in) {
-    task = in;
+  Task& Task::operator=(const task_t in) {
+	  task = in;
+	  return *this;
   }
 
   Task Task::current() {
