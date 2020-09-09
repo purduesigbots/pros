@@ -32,8 +32,9 @@ using namespace pros::c;
       : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
   Task::Task(task_t task) : task(task) { }
-  void Task::operator = (const task_t in) {
-    task = in;
+  Task& Task::operator=(const task_t in) {
+	  task = in;
+	  return *this;
   }
 
   Task Task::current() {
@@ -96,11 +97,11 @@ using namespace pros::c;
     return task_get_count();
   }
 
+  Mutex::Mutex(void) : mutex(mutex_create(), mutex_delete) { }
+
   ProsClock::time_point ProsClock::now() {
     return ProsClock::time_point{ProsClock::duration{millis()}};
   }
-
-  Mutex::Mutex(void) : mutex(std::shared_ptr<std::remove_pointer_t<mutex_t>>{mutex_create(), mutex_delete}) { }
 
   bool Mutex::take(std::uint32_t timeout) {
     return mutex_take(mutex.get(), timeout);
@@ -125,5 +126,4 @@ using namespace pros::c;
 	  try_lock_until(ProsClock::time_point{std::chrono::duration<long, std::ratio<1>>{1}});
 	  return take(0);
   }
-
-  }
+}
