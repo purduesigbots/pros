@@ -38,7 +38,7 @@ void set_button_pressed(int port, int button, bool state) {
 
 int32_t controller_is_connected(controller_id_e_t id) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	int32_t rtn = vexControllerConnectionStatusGet(id);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -46,7 +46,7 @@ int32_t controller_is_connected(controller_id_e_t id) {
 
 int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	int32_t rtn = vexControllerGet(id, channel);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -54,7 +54,7 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
 
 int32_t controller_get_battery_capacity(controller_id_e_t id) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	int32_t rtn = vexControllerGet(id, BatteryCapacity);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -62,7 +62,7 @@ int32_t controller_get_battery_capacity(controller_id_e_t id) {
 
 int32_t controller_get_battery_level(controller_id_e_t id) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	int32_t rtn = vexControllerGet(id, BatteryLevel);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -70,7 +70,7 @@ int32_t controller_get_battery_level(controller_id_e_t id) {
 
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	// the buttons enum starts at 4, the correct place for the libv5rts
 	int32_t rtn = vexControllerGet(id, button);
 	internal_port_mutex_give(port);
@@ -80,7 +80,7 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
 int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button) {
 	int32_t pressed = controller_get_digital(id, button);
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	uint8_t button_num = button - E_CONTROLLER_DIGITAL_L1;
 
 	if (!pressed) {
@@ -100,7 +100,7 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 
 int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	line++;
 	if (col >= CONTROLLER_MAX_COLS)
 		col = CONTROLLER_MAX_COLS;
@@ -122,7 +122,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 
 int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port)
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
 	line++;
 	if (col >= CONTROLLER_MAX_COLS)
 		col = CONTROLLER_MAX_COLS;
@@ -149,7 +149,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	uint8_t port;
-	CONTROLLER_PORT_MUTEX_TAKE(id,port);
+	CONTROLLER_PORT_MUTEX_TAKE(id, port);
 	static char* clear = "";
 	uint32_t rtn_val = vexControllerTextSet(id, ++line, 1, clear);
 	internal_port_mutex_give(port);

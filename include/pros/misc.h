@@ -134,7 +134,7 @@ variable based on the id and allows the mutex to take that port.
 Returns error (in the function/scope it's in) if the controller
 failed to connect or an invalid id is given.
 */
-#define CONTROLLER_PORT_MUTEX_TAKE(id,port) \
+#define CONTROLLER_PORT_MUTEX_TAKE(id, port) \
 	switch (id) {							\
 		case E_CONTROLLER_MASTER:			\
 			port = V5_PORT_CONTROLLER_1;	\
