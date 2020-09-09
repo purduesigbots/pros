@@ -10,11 +10,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "pros/imu.h"
 #include "pros/imu.hpp"
 
 namespace pros {
 std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
+}
+
+std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
+	return pros::c::imu_set_data_rate(_port, rate);
 }
 
 double Imu::get_rotation() const {

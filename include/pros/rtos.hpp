@@ -152,7 +152,7 @@ class Task {
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
 	 */
-	void operator=(const task_t in);
+	Task& operator=(task_t in);
 
 	/**
 	 * Removes the Task from the RTOS real time kernel's management. This task
@@ -267,7 +267,7 @@ class Task {
 	 * \return The value of the task's notification value before it is decremented
 	 * or cleared
 	 */
-	std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
+	static std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
 
 	/**
 	 * Clears the notification for a task.
@@ -357,7 +357,7 @@ class Mutex {
 	bool give(void);
 
 	private:
-	mutex_t mutex;
+	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
 };
 
 /**

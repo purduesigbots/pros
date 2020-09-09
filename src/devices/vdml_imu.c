@@ -29,6 +29,21 @@ int32_t imu_reset(uint8_t port) {
 	return_port(port - 1, 1);
 }
 
+int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
+	claim_port_i(port - 1, E_DEVICE_IMU);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
+
+	// rate is not less than 5ms, and rounded down to nearest increment of 5
+	if (rate < IMU_MINIMUM_DATA_RATE) {
+		rate = IMU_MINIMUM_DATA_RATE;
+	} else {
+		rate -= rate % IMU_MINIMUM_DATA_RATE;
+	}
+
+	vexDeviceImuDataRateSet(device->device_info, rate);
+	return_port(port - 1, 1);
+}
+
 double imu_get_rotation(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
