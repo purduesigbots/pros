@@ -27,7 +27,7 @@ namespace pros {
 /** type definition for the pair of smart port and adi port for the basic adi devices */
 using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
 
-//type definition for the triplet of smart port and two adi ports for the two wire adi devices
+/** type definition for the triplet of smart port and two adi ports for the two wire adi devices*/
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
 
 
