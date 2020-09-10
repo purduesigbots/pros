@@ -136,7 +136,7 @@ ADIGyro::ADIGyro(std::uint8_t adi_port, double multiplier) {
 
 ADIGyro::ADIGyro(ext_adi_port_pair_t port, double multiplier) {
 	std::int32_t _port = ext_adi_gyro_init(port.first, port.second, multiplier);
-	get_ports(_port,_smart_port,_adi_port);
+	get_ports(_port, _smart_port, _adi_port);
 }
 
 double ADIGyro::get_value(void) const {
