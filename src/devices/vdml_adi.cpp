@@ -121,7 +121,7 @@ ADIUltrasonic::ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_e
 
 ADIUltrasonic::ADIUltrasonic(ext_adi_port_tuple_t port) {
 	std::int32_t _port = ext_adi_ultrasonic_init(std::get<0>(port), std::get<1>(port), std::get<2>(port));
-	get_ports(_port,_smart_port,_adi_port);
+	get_ports(_port, _smart_port, _adi_port);
 }
 
 std::int32_t ADIUltrasonic::get_value(void) const {
