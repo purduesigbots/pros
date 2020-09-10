@@ -140,7 +140,7 @@ ADIGyro::ADIGyro(ext_adi_port_pair_t port, double multiplier) {
 }
 
 double ADIGyro::get_value(void) const {
-	return adi_gyro_get(merge_adi_ports(_adi_port,_smart_port));
+	return adi_gyro_get(merge_adi_ports(_adi_port, _smart_port));
 }
 
 std::int32_t ADIGyro::reset(void) const {
