@@ -590,7 +590,7 @@ class ADIGyro : private ADIPort {
 	ADIGyro(std::uint8_t adi_port, double multiplier = 1);
 	
 	/**
-	 * Initializes a gyroscope on the given port pf an adi expander. If the given 
+	 * Initializes a gyroscope on the given port of an adi expander. If the given 
 	 * port has not previously been configured as a gyro, then this function starts 
 	 * a 1300ms calibration period.
 	 *
