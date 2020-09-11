@@ -49,7 +49,7 @@ namespace c {
  * ENXIO - The given value is not within the range of ADI Ports.
  *
  * \param adi_port
- *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
+ *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
  *        the configuration
  * \param smart_port
  *        The smart port number that the ADI Expander is in
