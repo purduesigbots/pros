@@ -464,7 +464,7 @@ class ADIEncoder : private ADIPort {
 	 *        The tuple of the "top" wire from the encoder sensor with the removable cover side
 	 *        UP
 	 * \param adi_port_bottom
-	 * 		  The "bottom" wire from the encoder sensor
+	 *       The "bottom" wire from the encoder sensor
 	 * \param reverse
 	 *        If "true", the sensor will count in the opposite direction
 	 */
