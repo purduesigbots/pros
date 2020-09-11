@@ -621,7 +621,6 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
   /**
    * Macro description: Given a port mask, it sets the smart port to the value masked inside the int_32. 
-   *
    */
 #define get_smart_port(ports, smart_port) {\
 	uint32_t uport = (uint32_t)ports; \
