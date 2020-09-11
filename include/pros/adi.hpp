@@ -461,8 +461,7 @@ class ADIEncoder : private ADIPort {
 	 * ENXIO - The given value is not within the range of ADI Ports.
 	 *
 	 * \param adi_port_top
-	 *        The tuple of the "top" wire from the encoder sensor with the removable cover side
-	 *        UP
+	 *        The  "top" wire from the encoder sensor with the removable cover side UP
 	 * \param adi_port_bottom
 	 *       The "bottom" wire from the encoder sensor
 	 * \param reverse
@@ -517,8 +516,8 @@ class ADIEncoder : private ADIPort {
 
 class ADIUltrasonic : private ADIPort {
 	public:
-		/**
-	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
+	/**
+	 * Configures a set of ADI ports to act as an Ultrasonic sensor.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -567,9 +566,9 @@ class ADIUltrasonic : private ADIPort {
 class ADIGyro : private ADIPort {
 	public:
 	/**
-	 * Initializes a gyroscope on the given port of an adi expander. If the given 
-	 * port has not previously been configured as a gyro, then this function starts 
-	 * a 1300ms calibration period.
+	 * Initializes a gyroscope on the given port. If the given port has not 
+	 * previously been configured as a gyro, then this function starts a 1300ms
+	 * calibration period.
 	 *
 	 * It is highly recommended that an ADIGyro object be created in initialize()
 	 * when the robot is stationary to ensure proper calibration. If an ADIGyro
