@@ -16,7 +16,8 @@
 namespace pros {
 using namespace pros::c;
 
-ADIPort::ADIPort(std::uint8_t adi_port, adi_port_config_e_t type) : _adi_port(adi_port), _smart_port(INTERNAL_ADI_PORT) {
+ADIPort::ADIPort(std::uint8_t adi_port, adi_port_config_e_t type)
+    : _adi_port(adi_port), _smart_port(INTERNAL_ADI_PORT) {
 	ext_adi_port_set_config(_adi_port, _smart_port, type);
 }
 
@@ -24,7 +25,7 @@ ADIPort::ADIPort(ext_adi_port_pair_t port, adi_port_config_e_t type) : _adi_port
 	ext_adi_port_set_config(_adi_port, _smart_port, type);
 }
 
-ADIPort::ADIPort(void) {
+ADIPort::ADIPort() {
 	// for use by derived classes like ADIEncoder
 }
 
@@ -32,7 +33,7 @@ std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
 	return ext_adi_port_set_config(_adi_port, _smart_port, type);
 }
 
-std::int32_t ADIPort::get_config(void) const {
+std::int32_t ADIPort::get_config() const {
 	return ext_adi_port_get_config(_adi_port, _smart_port);
 }
 
@@ -40,46 +41,40 @@ std::int32_t ADIPort::set_value(std::int32_t value) const {
 	return ext_adi_port_set_value(_adi_port, _smart_port, value);
 }
 
-std::int32_t ADIPort::get_value(void) const {
+std::int32_t ADIPort::get_value() const {
 	return ext_adi_port_get_value(_adi_port, _smart_port);
 }
 
-
 ADIAnalogIn::ADIAnalogIn(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_IN) {}
 ADIAnalogIn::ADIAnalogIn(ext_adi_port_pair_t port) : ADIPort(port, E_ADI_ANALOG_IN) {}
- 
-std::int32_t ADIAnalogIn::calibrate(void) const {
+
+std::int32_t ADIAnalogIn::calibrate() const {
 	return ext_adi_analog_calibrate(_adi_port, _smart_port);
 }
 
-std::int32_t ADIAnalogIn::get_value_calibrated(void) const {
+std::int32_t ADIAnalogIn::get_value_calibrated() const {
 	return ext_adi_analog_read_calibrated(_adi_port, _smart_port);
 }
 
-std::int32_t ADIAnalogIn::get_value_calibrated_HR(void) const {
+std::int32_t ADIAnalogIn::get_value_calibrated_HR() const {
 	return ext_adi_analog_read_calibrated_HR(_adi_port, _smart_port);
 }
-
 
 ADIAnalogOut::ADIAnalogOut(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_OUT) {}
 ADIAnalogOut::ADIAnalogOut(ext_adi_port_pair_t port) : ADIPort(port, E_ADI_ANALOG_OUT) {}
 
+ADIDigitalIn::ADIDigitalIn(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_DIGITAL_IN) {}
+ADIDigitalIn::ADIDigitalIn(ext_adi_port_pair_t port) : ADIPort(port, E_ADI_DIGITAL_IN) {}
 
-ADIDigitalIn::ADIDigitalIn(std::uint8_t adi_port): ADIPort(adi_port, E_ADI_DIGITAL_IN) {}
-ADIDigitalIn::ADIDigitalIn(ext_adi_port_pair_t port): ADIPort(port, E_ADI_DIGITAL_IN) {}
-
-std::int32_t ADIDigitalIn::get_new_press(void) const {
+std::int32_t ADIDigitalIn::get_new_press() const {
 	return ext_adi_digital_get_new_press(_adi_port, _smart_port);
 }
 
-
-ADIDigitalOut::ADIDigitalOut(std::uint8_t adi_port, bool init_state)
-    : ADIPort(adi_port, E_ADI_DIGITAL_OUT) {
+ADIDigitalOut::ADIDigitalOut(std::uint8_t adi_port, bool init_state) : ADIPort(adi_port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-ADIDigitalOut::ADIDigitalOut(ext_adi_port_pair_t port, bool init_state)
-    : ADIPort(port, E_ADI_DIGITAL_OUT) {
+ADIDigitalOut::ADIDigitalOut(ext_adi_port_pair_t port, bool init_state) : ADIPort(port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
@@ -91,10 +86,9 @@ ADIMotor::ADIMotor(ext_adi_port_pair_t port) : ADIPort(port, E_ADI_LEGACY_PWM) {
 	stop();
 }
 
-std::int32_t ADIMotor::stop(void) const {
+std::int32_t ADIMotor::stop() const {
 	return ext_adi_motor_stop(_adi_port, _smart_port);
 }
-
 
 ADIEncoder::ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) {
 	std::int32_t _port = ext_adi_encoder_init(adi_port_top, adi_port_bottom, INTERNAL_ADI_PORT, reversed);
@@ -106,11 +100,11 @@ ADIEncoder::ADIEncoder(ext_adi_port_tuple_t port, bool reversed) {
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t ADIEncoder::reset(void) const {
+std::int32_t ADIEncoder::reset() const {
 	return adi_encoder_reset(merge_adi_ports(_adi_port, _smart_port));
 }
 
-std::int32_t ADIEncoder::get_value(void) const {
+std::int32_t ADIEncoder::get_value() const {
 	return adi_encoder_get(merge_adi_ports(_adi_port, _smart_port));
 }
 
@@ -124,10 +118,9 @@ ADIUltrasonic::ADIUltrasonic(ext_adi_port_tuple_t port) {
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t ADIUltrasonic::get_value(void) const {
+std::int32_t ADIUltrasonic::get_value() const {
 	return adi_ultrasonic_get(merge_adi_ports(_adi_port, _smart_port));
 }
-
 
 ADIGyro::ADIGyro(std::uint8_t adi_port, double multiplier) {
 	std::int32_t _port = ext_adi_gyro_init(adi_port, INTERNAL_ADI_PORT, multiplier);
@@ -139,11 +132,11 @@ ADIGyro::ADIGyro(ext_adi_port_pair_t port, double multiplier) {
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-double ADIGyro::get_value(void) const {
+double ADIGyro::get_value() const {
 	return adi_gyro_get(merge_adi_ports(_adi_port, _smart_port));
 }
 
-std::int32_t ADIGyro::reset(void) const {
+std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_adi_port, _smart_port));
 }
 }  // namespace pros

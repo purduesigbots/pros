@@ -494,7 +494,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  *
  * \param port_top
  *        The "top" wire from the encoder sensor with the removable cover side
- *        UP
+ *        up
  * \param port_bottom
  *        The "bottom" wire from the encoder sensor
  * \param reverse

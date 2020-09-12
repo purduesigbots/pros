@@ -20,8 +20,9 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "pros/adi.h"
+
 #include "adi.h"
+#include "pros/adi.h"
 #ifndef PROS_ERR
 #define PROS_ERR (INT32_MAX)
 #endif
@@ -117,7 +118,6 @@ int32_t ext_adi_port_set_config(uint8_t adi_port, uint8_t smart_port, adi_port_c
  */
 int32_t ext_adi_port_set_value(uint8_t adi_port, uint8_t smart_port, int32_t value);
 
-
 /**
  * Calibrates the analog sensor on the specified port and returns the new
  * calibration value.
@@ -134,7 +134,7 @@ int32_t ext_adi_port_set_value(uint8_t adi_port, uint8_t smart_port, int32_t val
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - The given value is not within the range of ADI Ports.
  *
  * \param adi_port
  *	      The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
@@ -153,7 +153,7 @@ int32_t ext_adi_analog_calibrate(uint8_t adi_port, uint8_t smart_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - The given value is not within the range of ADI Ports.
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param adi_port
@@ -289,7 +289,7 @@ int32_t ext_adi_digital_get_new_press(uint8_t adi_port, uint8_t smart_port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t ext_adi_digital_write(uint8_t adi_port, uint8_t smart_port, const bool value);
+int32_t ext_adi_digital_write(uint8_t adi_port, uint8_t smart_port, bool value);
 
 /**
  * Configures the port as an input or output with a variety of settings.
@@ -369,7 +369,7 @@ int32_t ext_adi_motor_stop(uint8_t adi_port, uint8_t smart_port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder, unlike its use as an 
+ * This merely contains the port number for the encoder, unlike its use as an
  * object to store encoder data in PROS 2.
  */
 typedef int32_t ext_adi_encoder_t;
@@ -404,7 +404,7 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
  *
  * \param adi_port_top
  *        The "top" wire from the encoder sensor with the removable cover side
- *        UP
+ *        up
  * \param adi_port_bottom
  *        The "bottom" wire from the encoder sensor
  * \param smart_port
@@ -415,7 +415,7 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
  */
-ext_adi_encoder_t ext_adi_encoder_init(uint8_t adi_port_top, uint8_t adi_port_bottom, uint8_t smart_port, const bool reverse);
+ext_adi_encoder_t ext_adi_encoder_init(uint8_t adi_port_top, uint8_t adi_port_bottom, uint8_t smart_port, bool reverse);
 
 /**
  * Sets the encoder value to zero.
@@ -523,7 +523,7 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
  *
  * This merely contains the port number for the gyroscope, unlike its use as an
  * object to store encoder data in PROS 2.
- * 
+ *
  * (Might Be useless with the wire expander.)
  */
 typedef int32_t ext_adi_gyro_t;
@@ -606,25 +606,27 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
  */
 int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
-
 #define SMART_PORT_BITS 16
 #define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
 
-  /**
-   * Macro Description: Given a port mask, it sets the smart port and adi port to the values masked inside the int_32. 
-   */
-#define get_ports(ports, smart_port, adi_port) {\
-	uint32_t uport = (uint32_t)ports; \
-	smart_port = uport & SMART_PORT_MASK; \
-	adi_port = uport >> SMART_PORT_BITS;  }
+/**
+ * Macro Description: Given a merged ports variable, it sets the smart port and adi port to the values inside the
+ * int32_t.
+ */
+#define get_ports(ports, smart_port, adi_port) \
+	{                                            \
+		uint32_t uport = (uint32_t)ports;          \
+		smart_port = uport & SMART_PORT_MASK;      \
+		adi_port = uport >> SMART_PORT_BITS;       \
+	}
 
-
-  /**
-   * Macro description: Given a port mask, it sets the smart port to the value masked inside the int_32. 
-   */
-#define get_smart_port(ports, smart_port) {\
-	uint32_t uport = (uint32_t)ports; \
-	smart_port = uport & SMART_PORT_MASK; \
+/**
+ * Macro description: Given a port mask, it sets the smart port to the value masked inside the int_32.
+ */
+#define get_smart_port(ports, smart_port) \
+	{                                       \
+		uint32_t uport = (uint32_t)ports;     \
+		smart_port = uport & SMART_PORT_MASK; \
 	}
 
 static inline uint32_t merge_adi_ports(uint8_t adi_port, uint8_t smart_port) {
