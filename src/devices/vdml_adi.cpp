@@ -12,6 +12,7 @@
 
 #include "kapi.h"
 #include "pros/adi.hpp"
+#include "vdml/port.h"
 
 namespace pros {
 using namespace pros::c;

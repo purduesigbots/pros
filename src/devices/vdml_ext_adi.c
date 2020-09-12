@@ -18,6 +18,7 @@
 #include "pros/adi.h"
 #include "pros/ext_adi.h"
 #include "v5_api.h"
+#include "vdml/port.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
