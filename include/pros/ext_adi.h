@@ -520,7 +520,7 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
  * Reference type for an initialized gyroscope.
  *
  * This merely contains the port number for the gyroscope, unlike its use as an
- * object to store encoder data in PROS 2.
+ * object to store gyro data in PROS 2.
  *
  * (Might Be useless with the wire expander.)
  */
