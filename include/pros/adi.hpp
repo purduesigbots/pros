@@ -105,7 +105,6 @@ class ADIPort {
 	std::int32_t set_value(std::int32_t value) const;
 
 	protected:
-	ADIPort();
 	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
 };

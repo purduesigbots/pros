@@ -26,10 +26,6 @@ ADIPort::ADIPort(ext_adi_port_pair_t port_pair, adi_port_config_e_t type)
 	ext_adi_port_set_config(_smart_port, _adi_port, type);
 }
 
-ADIPort::ADIPort() {
-	// for use by derived classes like ADIEncoder
-}
-
 std::int32_t ADIPort::set_config(adi_port_config_e_t type) const {
 	return ext_adi_port_set_config(_smart_port, _adi_port, type);
 }
@@ -75,7 +71,7 @@ ADIDigitalOut::ADIDigitalOut(std::uint8_t adi_port, bool init_state) : ADIPort(a
 	set_value(init_state);
 }
 
-ADIDigitalOut::ADIDigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_OUT) {
+ADIDigitalOut::ADIDigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
 	set_value(init_state);
 }
 
@@ -91,12 +87,14 @@ std::int32_t ADIMotor::stop() const {
 	return ext_adi_motor_stop(_smart_port, _adi_port);
 }
 
-ADIEncoder::ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) {
+ADIEncoder::ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed)
+    : ADIPort(adi_port_top, E_ADI_DIGITAL_OUT) {
 	std::int32_t _port = ext_adi_encoder_init(INTERNAL_ADI_PORT, adi_port_top, adi_port_bottom, reversed);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-ADIEncoder::ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed) {
+ADIEncoder::ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed)
+    : ADIPort(std::get<1>(port_tuple), E_ADI_DIGITAL_IN) {
 	std::int32_t _port =
 	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
 	get_ports(_port, _smart_port, _adi_port);
@@ -110,12 +108,13 @@ std::int32_t ADIEncoder::get_value() const {
 	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIUltrasonic::ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo) {
+ADIUltrasonic::ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo)
+    : ADIPort(adi_port_ping, E_ADI_DIGITAL_OUT) {
 	std::int32_t _port = ext_adi_ultrasonic_init(INTERNAL_ADI_PORT, adi_port_ping, adi_port_echo);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-ADIUltrasonic::ADIUltrasonic(ext_adi_port_tuple_t port_tuple) {
+ADIUltrasonic::ADIUltrasonic(ext_adi_port_tuple_t port_tuple) : ADIPort(std::get<1>(port_tuple), E_ADI_DIGITAL_IN) {
 	std::int32_t _port =
 	    ext_adi_ultrasonic_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple));
 	get_ports(_port, _smart_port, _adi_port);
@@ -125,12 +124,12 @@ std::int32_t ADIUltrasonic::get_value() const {
 	return adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIGyro::ADIGyro(std::uint8_t adi_port, double multiplier) {
+ADIGyro::ADIGyro(std::uint8_t adi_port, double multiplier) : ADIPort(adi_port, E_ADI_DIGITAL_IN) {
 	std::int32_t _port = ext_adi_gyro_init(INTERNAL_ADI_PORT, adi_port, multiplier);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-ADIGyro::ADIGyro(ext_adi_port_pair_t port_pair, double multiplier) {
+ADIGyro::ADIGyro(ext_adi_port_pair_t port_pair, double multiplier) : ADIPort(std::get<1>(port_pair), E_ADI_DIGITAL_IN) {
 	std::int32_t _port = ext_adi_gyro_init(port_pair.first, port_pair.second, multiplier);
 	get_ports(_port, _smart_port, _adi_port);
 }
