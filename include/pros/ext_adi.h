@@ -47,7 +47,8 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -64,7 +65,8 @@ adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -81,7 +83,8 @@ int32_t ext_adi_port_get_value(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -103,7 +106,8 @@ int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_c
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO  - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -134,7 +138,8 @@ int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t val
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -153,7 +158,8 @@ int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
@@ -177,7 +183,8 @@ int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
@@ -206,7 +213,8 @@ int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
  * \param smart_port
@@ -230,7 +238,8 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital input
  *
  * \param smart_port
@@ -255,7 +264,8 @@ int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital input
  *
  * \param smart_port
@@ -275,7 +285,8 @@ int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital output
  *
  * \param smart_port
@@ -296,7 +307,8 @@ int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, bool value);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
  * \param smart_port
  *        The smart port number that the ADI Expander is in
@@ -315,7 +327,8 @@ int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
  * \param smart_port
@@ -336,7 +349,8 @@ int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
  * \param smart_port
@@ -353,7 +367,8 @@ int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
  * \param smart_port
@@ -381,7 +396,8 @@ typedef int32_t ext_adi_encoder_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param enc
@@ -397,7 +413,8 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param smart_port
@@ -423,7 +440,8 @@ ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top,
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param enc
@@ -439,7 +457,8 @@ int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param enc
@@ -467,7 +486,8 @@ typedef int32_t ext_adi_ultrasonic_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
  * \param ult
@@ -483,7 +503,8 @@ int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
  * \param smart_port
@@ -505,7 +526,8 @@ ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_por
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
  * \param ult
@@ -536,7 +558,8 @@ typedef int32_t ext_adi_gyro_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro
@@ -556,7 +579,8 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param smart_port
@@ -577,7 +601,8 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro
@@ -593,7 +618,8 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro

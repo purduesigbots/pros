@@ -97,6 +97,7 @@ ADIEncoder::ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed) : ADIPort
 	std::int32_t _port =
 	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
 	get_ports(_port, _smart_port, _adi_port);
+
 }
 
 std::int32_t ADIEncoder::reset() const {
