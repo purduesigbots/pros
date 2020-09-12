@@ -10,7 +10,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
@@ -54,7 +53,7 @@ int32_t adi_digital_get_new_press(uint8_t port) {
 	return ext_adi_digital_get_new_press(port, INTERNAL_ADI_PORT);
 }
 
-int32_t adi_digital_write(uint8_t port, const bool value) {
+int32_t adi_digital_write(uint8_t port, bool value) {
 	return ext_adi_digital_write(port, INTERNAL_ADI_PORT, value);
 }
 
@@ -74,46 +73,46 @@ int32_t adi_motor_stop(uint8_t port) {
 	return ext_adi_motor_stop(port, INTERNAL_ADI_PORT);
 }
 
-adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool reverse) {
-	return (adi_encoder_t) ext_adi_encoder_init(port_top, port_bottom, INTERNAL_ADI_PORT, reverse);
+adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool reverse) {
+	return (adi_encoder_t)ext_adi_encoder_init(port_top, port_bottom, INTERNAL_ADI_PORT, reverse);
 }
 
 int32_t adi_encoder_get(adi_encoder_t enc) {
-	return ext_adi_encoder_get((ext_adi_encoder_t) enc);
+	return ext_adi_encoder_get((ext_adi_encoder_t)enc);
 }
 
 int32_t adi_encoder_reset(adi_encoder_t enc) {
-	return ext_adi_encoder_reset((ext_adi_encoder_t) enc);
+	return ext_adi_encoder_reset((ext_adi_encoder_t)enc);
 }
 
 int32_t adi_encoder_shutdown(adi_encoder_t enc) {
-	return ext_adi_encoder_shutdown((ext_adi_encoder_t) enc);
+	return ext_adi_encoder_shutdown((ext_adi_encoder_t)enc);
 }
 
 adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo) {
-	return (adi_ultrasonic_t) ext_adi_ultrasonic_init(port_ping, port_echo, INTERNAL_ADI_PORT);
+	return (adi_ultrasonic_t)ext_adi_ultrasonic_init(port_ping, port_echo, INTERNAL_ADI_PORT);
 }
 
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult) {
-	return ext_adi_ultrasonic_get((ext_adi_ultrasonic_t) ult);
+	return ext_adi_ultrasonic_get((ext_adi_ultrasonic_t)ult);
 }
 
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult) {
-	return ext_adi_ultrasonic_shutdown((ext_adi_ultrasonic_t) ult);
+	return ext_adi_ultrasonic_shutdown((ext_adi_ultrasonic_t)ult);
 }
 
 adi_gyro_t adi_gyro_init(uint8_t adi_port, double multiplier) {
-	return (adi_gyro_t) ext_adi_gyro_init(adi_port, INTERNAL_ADI_PORT, multiplier);
+	return (adi_gyro_t)ext_adi_gyro_init(adi_port, INTERNAL_ADI_PORT, multiplier);
 }
 
 double adi_gyro_get(adi_gyro_t gyro) {
-	return ext_adi_gyro_get((ext_adi_gyro_t) gyro);
+	return ext_adi_gyro_get((ext_adi_gyro_t)gyro);
 }
 
 int32_t adi_gyro_reset(adi_gyro_t gyro) {
-	return ext_adi_gyro_reset((ext_adi_gyro_t) gyro);
+	return ext_adi_gyro_reset((ext_adi_gyro_t)gyro);
 }
 
 int32_t adi_gyro_shutdown(adi_gyro_t gyro) {
-	return ext_adi_gyro_shutdown((ext_adi_gyro_t) gyro);
+	return ext_adi_gyro_shutdown((ext_adi_gyro_t)gyro);
 }

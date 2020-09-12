@@ -387,7 +387,7 @@ int32_t adi_digital_get_new_press(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_digital_write(uint8_t port, const bool value);
+int32_t adi_digital_write(uint8_t port, bool value);
 
 /**
  * Configures the port as an input or output with a variety of settings.
@@ -503,7 +503,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
  */
-adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, const bool reverse);
+adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool reverse);
 
 /**
  * Sets the encoder value to zero.
