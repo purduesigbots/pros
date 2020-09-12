@@ -39,7 +39,8 @@ class ADIPort {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * ENXIO - The given value is not within the range of ADI Ports, or the Smart Port is not within the valid range
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+ 		   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
