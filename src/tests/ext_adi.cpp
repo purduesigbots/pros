@@ -12,15 +12,15 @@
  */
 #include "main.h"
 void opcontrol() {
-    pros::ADIUltrasonic ultra ({1, 'a', 'b'});
-	pros::ADIButton button ({1, 'c'});
-	pros::ADIEncoder enc ({1, 5, 6}, true);
+	pros::ADIUltrasonic ultra({1, 'a', 'b'});
+	pros::ADIButton button({1, 'c'});
+	pros::ADIEncoder enc({1, 5, 6}, true);
 	uint32_t now = pros::millis();
- 	while (true) {
-        pros::lcd::print(3, "%d", ultra.get_value());
+	while (true) {
+		pros::lcd::print(3, "%d", ultra.get_value());
 		pros::lcd::print(2, "%d", button.get_value());
 		pros::lcd::print(1, "%d", enc.get_value());
 
- 		pros::delay(20);
- 	}
- }
+		pros::delay(20);
+	}
+}
