@@ -32,8 +32,9 @@ using namespace pros::c;
       : Task(function, parameters, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
   Task::Task(task_t task) : task(task) { }
-  void Task::operator = (const task_t in) {
-    task = in;
+  Task& Task::operator=(const task_t in) {
+	  task = in;
+	  return *this;
   }
 
   Task Task::current() {
@@ -96,13 +97,13 @@ using namespace pros::c;
     return task_get_count();
   }
 
-  Mutex::Mutex(void) : mutex(mutex_create()) { }
+  Mutex::Mutex(void) : mutex(mutex_create(), mutex_delete) { }
 
   bool Mutex::take(std::uint32_t timeout) {
-    return mutex_take(mutex, timeout);
+    return mutex_take(mutex.get(), timeout);
   }
 
   bool Mutex::give(void) {
-    return mutex_give(mutex);
+    return mutex_give(mutex.get());
   }
 }

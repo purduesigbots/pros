@@ -403,6 +403,14 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
  */
 bool mutex_give(mutex_t mutex);
 
+/**
+ * Deletes a mutex
+ *
+ * \param mutex
+ *        Mutex to unlock.
+ */
+void mutex_delete(mutex_t mutex);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros

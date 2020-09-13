@@ -196,6 +196,7 @@ class Controller {
 	 * failed, setting errno.
 	 */
 	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const char* str);
+	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const std::string& str);
 
 	/**
 	 * Clears an individual line of the controller screen.
