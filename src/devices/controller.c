@@ -148,16 +148,20 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 }
 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
-	if (vexSystemVersion() > 0x01000000) {
-		uint8_t port;
-		CONTROLLER_PORT_MUTEX_TAKE(id, port);
+	uint8_t port;
+	CONTROLLER_PORT_MUTEX_TAKE(id, port);
+	static char* clear;
+	int32_t rtn;
+	if (vexSystemVersion() >= 0x1000C38) {
 		static char* clear = "";
-		vexControllerTextSet(id, ++line, 1, clear);
-		internal_port_mutex_give(port);
-		return 1;
+		rtn = vexControllerTextSet(id, ++line, 1, clear);
 	} else {
-		return PROS_ERR;
+		static char* clear = "                   ";
+		kassert(strlen(clear) == CONTROLLER_MAX_COLS);
+		rtn = vexControllerTextSet(id, ++line, 1, clear);
 	}
+	internal_port_mutex_give(port);
+	return rtn;
 }
 
 int32_t controller_clear(controller_id_e_t id) {
