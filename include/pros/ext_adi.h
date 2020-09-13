@@ -1,7 +1,7 @@
 /**
- * \file pros/adi.h
+ * \file pros/ext_adi.h
  *
- * Contains prototypes for interfacing with the ADI.
+ * Contains prototypes for interfacing with the 3-Wire Expander.
  *
  * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
  *
@@ -15,11 +15,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_ADI_H_
-#define _PROS_ADI_H_
+#ifndef _PROS_EXT_ADI_H_
+#define _PROS_EXT_ADI_H_
 
 #include <stdbool.h>
 #include <stdint.h>
+
+#include "adi.h"
+#include "pros/adi.h"
 #ifndef PROS_ERR
 #define PROS_ERR (INT32_MAX)
 #endif
@@ -28,91 +31,6 @@
 extern "C" {
 namespace pros {
 #endif
-
-/**
- * Represents the port type for an ADI port.
- */
-typedef enum adi_port_config_e {
-	E_ADI_ANALOG_IN = 0,
-	E_ADI_ANALOG_OUT = 1,
-	E_ADI_DIGITAL_IN = 2,
-	E_ADI_DIGITAL_OUT = 3,
-
-#ifdef _INTELLISENSE
-#define _DEPRECATE_DIGITAL_IN = E_ADI_DIGITAL_IN
-#define _DEPRECATE_ANALOG_IN = E_ADI_ANALOG_IN
-#else
-#define _DEPRECATE_DIGITAL_IN __attribute__((deprecated("use E_ADI_DIGITAL_IN instead"))) = E_ADI_DIGITAL_IN
-#define _DEPRECATE_ANALOG_IN __attribute__((deprecated("use E_ADI_ANALOG_IN instead"))) = E_ADI_ANALOG_IN
-#endif
-
-	E_ADI_SMART_BUTTON _DEPRECATE_DIGITAL_IN,
-	E_ADI_SMART_POT _DEPRECATE_ANALOG_IN,
-
-	E_ADI_LEGACY_BUTTON _DEPRECATE_DIGITAL_IN,
-	E_ADI_LEGACY_POT _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_LINE_SENSOR _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_LIGHT_SENSOR _DEPRECATE_ANALOG_IN,
-	E_ADI_LEGACY_GYRO = 10,
-	E_ADI_LEGACY_ACCELEROMETER _DEPRECATE_ANALOG_IN,
-
-#undef _DEPRECATE_DIGITAL_IN
-#undef _DEPRECATE_ANALOG_IN
-
-	E_ADI_LEGACY_SERVO = 12,
-	E_ADI_LEGACY_PWM = 13,
-
-	E_ADI_LEGACY_ENCODER = 14,
-	E_ADI_LEGACY_ULTRASONIC = 15,
-
-	E_ADI_TYPE_UNDEFINED = 255,
-	E_ADI_ERR = PROS_ERR
-} adi_port_config_e_t;
-
-#ifdef PROS_USE_SIMPLE_NAMES
-#ifdef __cplusplus
-#define ADI_ANALOG_IN pros::E_ADI_ANALOG_IN
-#define ADI_ANALOG_OUT pros::E_ADI_ANALOG_OUT
-#define ADI_DIGITAL_IN pros::E_ADI_DIGITAL_IN
-#define ADI_DIGITAL_OUT pros::E_ADI_DIGITAL_OUT
-#define ADI_SMART_BUTTON pros::E_ADI_SMART_BUTTON
-#define ADI_SMART_POT pros::E_ADI_SMART_POT
-#define ADI_LEGACY_BUTTON pros::E_ADI_LEGACY_BUTTON
-#define ADI_LEGACY_POT pros::E_ADI_LEGACY_POT
-#define ADI_LEGACY_LINE_SENSOR pros::E_ADI_LEGACY_LINE_SENSOR
-#define ADI_LEGACY_LIGHT_SENSOR pros::E_ADI_LEGACY_LIGHT_SENSOR
-#define ADI_LEGACY_GYRO pros::E_ADI_LEGACY_GYRO
-#define ADI_LEGACY_ACCELEROMETER pros::E_ADI_LEGACY_ACCELEROMETER
-#define ADI_LEGACY_SERVO pros::E_ADI_LEGACY_SERVO
-#define ADI_LEGACY_PWM pros::E_ADI_LEGACY_PWM
-#define ADI_LEGACY_ENCODER pros::E_ADI_LEGACY_ENCODER
-#define ADI_LEGACY_ULTRASONIC pros::E_ADI_LEGACY_ULTRASONIC
-#define ADI_TYPE_UNDEFINED pros::E_ADI_TYPE_UNDEFINED
-#define ADI_ERR pros::E_ADI_ERR
-#else
-#define ADI_ANALOG_IN E_ADI_ANALOG_IN
-#define ADI_ANALOG_OUT E_ADI_ANALOG_OUT
-#define ADI_DIGITAL_IN E_ADI_DIGITAL_IN
-#define ADI_DIGITAL_OUT E_ADI_DIGITAL_OUT
-#define ADI_SMART_BUTTON E_ADI_SMART_BUTTON
-#define ADI_SMART_POT E_ADI_SMART_POT
-#define ADI_LEGACY_BUTTON E_ADI_LEGACY_BUTTON
-#define ADI_LEGACY_POT E_ADI_LEGACY_POT
-#define ADI_LEGACY_LINE_SENSOR E_ADI_LEGACY_LINE_SENSOR
-#define ADI_LEGACY_LIGHT_SENSOR E_ADI_LEGACY_LIGHT_SENSOR
-#define ADI_LEGACY_GYRO E_ADI_LEGACY_GYRO
-#define ADI_LEGACY_ACCELEROMETER E_ADI_LEGACY_ACCELEROMETER
-#define ADI_LEGACY_SERVO E_ADI_LEGACY_SERVO
-#define ADI_LEGACY_PWM E_ADI_LEGACY_PWM
-#define ADI_LEGACY_ENCODER E_ADI_LEGACY_ENCODER
-#define ADI_LEGACY_ULTRASONIC E_ADI_LEGACY_ULTRASONIC
-#define ADI_TYPE_UNDEFINED E_ADI_TYPE_UNDEFINED
-#define ADI_ERR E_ADI_ERR
-#endif
-#endif
-
-#define INTERNAL_ADI_PORT 22
-#define NUM_ADI_PORTS 8
 
 #ifdef __cplusplus
 namespace c {
@@ -129,47 +47,56 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
  *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
  *        the configuration
  *
  * \return The ADI configuration for the given port
  */
-adi_port_config_e_t adi_port_get_config(uint8_t port);
+adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets the value for the given ADI port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
- *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which the value
- *        will be returned
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which to return
+ *        the configuration
  *
  * \return The value stored for the given port
  */
-int32_t adi_port_get_value(uint8_t port);
+int32_t ext_adi_port_get_value(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Configures an ADI port to act as a given sensor type.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
- *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param type
  *        The configuration type for the port
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
+int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_config_e_t type);
 
 /**
  * Sets the value for the given ADI port.
@@ -179,10 +106,13 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO  - The given value is not within the range of ADI Ports.
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
- *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which the value
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') for which the value
  *        will be set
  * \param value
  *        The value to set the ADI port to
@@ -190,45 +120,7 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_port_set_value(uint8_t port, int32_t value);
-
-/******************************************************************************/
-/**                      PROS 2 Compatibility Functions                      **/
-/**                                                                          **/
-/**     These functions provide similar functionality to the PROS 2 API      **/
-/******************************************************************************/
-
-/**
- * Used for adi_digital_write() to specify a logic HIGH state to output.
- *
- * In reality, using any non-zero expression or "true" will work to set a pin to
- * HIGH.
- */
-#define HIGH 1
-/**
- * Used for adi_digital_write() to specify a logic LOW state to output.
- *
- * In reality, using a zero expression or "false" will work to set a pin to LOW.
- */
-#define LOW 0
-
-/**
- * adi_pin_mode() state for a digital input.
- */
-#define INPUT 0x00
-/**
- * adi_pin_mode() state for a digital output.
- */
-#define OUTPUT 0x01
-/**
- * adi_pin_mode() state for an analog input.
- */
-#define INPUT_ANALOG 0x02
-
-/**
- * adi_pin_mode() state for an analog output.
- */
-#define OUTPUT_ANALOG 0x03
+int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t value);
 
 /**
  * Calibrates the analog sensor on the specified port and returns the new
@@ -246,14 +138,17 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
- *        The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The average sensor value computed by this function
  */
-int32_t adi_analog_calibrate(uint8_t port);
+int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets the 12-bit value of the specified port.
@@ -263,17 +158,20 @@ int32_t adi_analog_calibrate(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
- * \param port
- *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
  *        returned
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
  */
-int32_t adi_analog_read(uint8_t port);
+int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets the 12 bit calibrated value of an analog input port.
@@ -285,17 +183,20 @@ int32_t adi_analog_read(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
- * \param port
- *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
  *        returned
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
  */
-int32_t adi_analog_read_calibrated(uint8_t port);
+int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets the 16 bit calibrated value of an analog input port.
@@ -312,17 +213,20 @@ int32_t adi_analog_read_calibrated(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an analog input
  *
- * \param port
- *        The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port (from 1-8, 'a'-'h', 'A'-'H') for which the value will be
  *        returned
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
  */
-int32_t adi_analog_read_calibrated_HR(uint8_t port);
+int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets the digital value (1 or 0) of a port configured as a digital input.
@@ -334,15 +238,18 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital input
  *
- * \param port
- *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return True if the pin is HIGH, or false if it is LOW
  */
-int32_t adi_digital_read(uint8_t port);
+int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Gets a rising-edge case for a digital button press.
@@ -357,16 +264,19 @@ int32_t adi_digital_read(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital input
  *
- * \param port
- *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
  */
-int32_t adi_digital_get_new_press(uint8_t port);
+int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Sets the digital value (1 or 0) of a port configured as a digital output.
@@ -375,11 +285,14 @@ int32_t adi_digital_get_new_press(uint8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a digital output
  *
- * \param port
- *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param value
  *        An expression evaluating to "true" or "false" to set the output to
  *        HIGH or LOW respectively, or the constants HIGH or LOW themselves
@@ -387,35 +300,41 @@ int32_t adi_digital_get_new_press(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_digital_write(uint8_t port, bool value);
+int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, bool value);
 
 /**
  * Configures the port as an input or output with a variety of settings.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  *
- * \param port
- *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param mode
  *        One of INPUT, INPUT_ANALOG, INPUT_FLOATING, OUTPUT, or OUTPUT_OD
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_pin_mode(uint8_t port, uint8_t mode);
+int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode);
 
 /**
  * Sets the speed of the motor on the given port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
- * \param port
- *        The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
  * \param speed
  *        The new signed speed; -127 is full reverse and 127 is full forward,
  *        with 0 being off
@@ -423,38 +342,44 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_motor_set(uint8_t port, int8_t speed);
+int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
 
 /**
  * Gets the last set speed of the motor on the given port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
- * \param port
- *        The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The last set speed of the motor on the given port
  */
-int32_t adi_motor_get(uint8_t port);
+int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Stops the motor on the given port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an motor
  *
- * \param port
- *        The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
+ *	      The ADI port to set (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_motor_stop(uint8_t port);
+int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port);
 
 /**
  * Reference type for an initialized encoder.
@@ -462,7 +387,7 @@ int32_t adi_motor_stop(uint8_t port);
  * This merely contains the port number for the encoder, unlike its use as an
  * object to store encoder data in PROS 2.
  */
-typedef int32_t adi_encoder_t;
+typedef int32_t ext_adi_encoder_t;
 
 /**
  * Gets the number of ticks recorded by the encoder.
@@ -471,9 +396,9 @@ typedef int32_t adi_encoder_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
-
  *
  * \param enc
  *        The adi_encoder_t object from adi_encoder_init() to read
@@ -481,21 +406,23 @@ typedef int32_t adi_encoder_t;
  * \return The signed and cumulative number of counts since the last start or
  * reset
  */
-int32_t adi_encoder_get(adi_encoder_t enc);
+int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
 
 /**
  * Creates an encoder object and configures the specified ports accordingly.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
-
  *
- * \param port_top
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port_top
  *        The "top" wire from the encoder sensor with the removable cover side
  *        up
- * \param port_bottom
+ * \param adi_port_bottom
  *        The "bottom" wire from the encoder sensor
  * \param reverse
  *        If "true", the sensor will count in the opposite direction
@@ -503,7 +430,7 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
  */
-adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool reverse);
+ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, bool reverse);
 
 /**
  * Sets the encoder value to zero.
@@ -513,9 +440,9 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool rever
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
-
  *
  * \param enc
  *        The adi_encoder_t object from adi_encoder_init() to reset
@@ -523,14 +450,15 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool rever
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_encoder_reset(adi_encoder_t enc);
+int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc);
 
 /**
  * Disables the encoder and voids the configuration on its ports.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an encoder
  *
  * \param enc
@@ -539,15 +467,15 @@ int32_t adi_encoder_reset(adi_encoder_t enc);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_encoder_shutdown(adi_encoder_t enc);
+int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc);
 
 /**
  * Reference type for an initialized ultrasonic.
  *
  * This merely contains the port number for the ultrasonic, unlike its use as an
- * object to store ultrasonic data in PROS 2.
+ * object to store encoder data in PROS 2.
  */
-typedef int32_t adi_ultrasonic_t;
+typedef int32_t ext_adi_ultrasonic_t;
 
 /**
  * Gets the current ultrasonic sensor value in centimeters.
@@ -558,7 +486,8 @@ typedef int32_t adi_ultrasonic_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
  * \param ult
@@ -567,34 +496,38 @@ typedef int32_t adi_ultrasonic_t;
  * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
  * measured from the sensor's mounting points.
  */
-int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
+int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
 
 /**
  * Creates an ultrasonic object and configures the specified ports accordingly.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
- * \param port_ping
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port_ping
  *        The port connected to the orange OUTPUT cable. This should be in port
  *        1, 3, 5, or 7 ('A', 'C', 'E', 'G').
- * \param port_echo
+ * \param adi_port_echo
  *        The port connected to the yellow INPUT cable. This should be in the
  *        next highest port following port_ping.
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
  */
-adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
+ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo);
 
 /**
  * Disables the ultrasonic sensor and voids the configuration on its ports.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as an ultrasonic
  *
  * \param ult
@@ -603,15 +536,17 @@ adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
+int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
 
 /**
  * Reference type for an initialized gyroscope.
  *
  * This merely contains the port number for the gyroscope, unlike its use as an
  * object to store gyro data in PROS 2.
+ *
+ * (Might Be useless with the wire expander.)
  */
-typedef int32_t adi_gyro_t;
+typedef int32_t ext_adi_gyro_t;
 
 /**
  * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
@@ -623,7 +558,8 @@ typedef int32_t adi_gyro_t;
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro
@@ -631,7 +567,7 @@ typedef int32_t adi_gyro_t;
  *
  * \return The gyro angle in degrees.
  */
-double adi_gyro_get(adi_gyro_t gyro);
+double ext_adi_gyro_get(ext_adi_gyro_t gyro);
 
 /**
  * Initializes a gyroscope on the given port. If the given port has not
@@ -643,10 +579,13 @@ double adi_gyro_get(adi_gyro_t gyro);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
- * \param port
+ * \param smart_port
+ *        The smart port number that the ADI Expander is in
+ * \param adi_port
  *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
  * \param multiplier
  *        A scalar value that will be multiplied by the gyro heading value
@@ -655,14 +594,15 @@ double adi_gyro_get(adi_gyro_t gyro);
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
  */
-adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
+ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double multiplier);
 
 /**
  * Resets the gyroscope value to zero.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro
@@ -671,14 +611,15 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_gyro_reset(adi_gyro_t gyro);
+int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
 
 /**
  * Disables the gyro and voids the configuration on its port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of ADI Ports
+ * ENXIO - Either the ADI port value or the smart port value is not within its
+ *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
  * EADDRINUSE - The port is not configured as a gyro
  *
  * \param gyro
@@ -687,7 +628,7 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t adi_gyro_shutdown(adi_gyro_t gyro);
+int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
 #ifdef __cplusplus
 }  // namespace c
