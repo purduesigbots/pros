@@ -150,7 +150,6 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line) {
 	uint8_t port;
 	CONTROLLER_PORT_MUTEX_TAKE(id, port);
-	static char* clear;
 	int32_t rtn;
 	if (vexSystemVersion() >= 0x1000C38) {
 		static char* clear = "";
