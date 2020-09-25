@@ -76,7 +76,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port) {
 	{ .clear = PROS_ERR_F, .red = PROS_ERR_F, .green = PROS_ERR_F, .blue = PROS_ERR_F }
 
 optical_raw_s_t optical_get_raw(uint8_t port) {
-	optical_raw_s_t rtn = RGB_ERR_INIT;
+	optical_raw_s_t rtn = RAW_ERR_INIT;
 	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_OPTICAL)) {
 		return rtn;
