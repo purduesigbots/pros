@@ -41,7 +41,7 @@ int32_t optical_get_proximity(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-void optical_set_led_pwm(uint8_t port, uint8_t value) {
+int32_t optical_set_led_pwm(uint8_t port, uint8_t value) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalLedPwmSet(device->device_info, value);
 	return_port(port - 1, 1);
@@ -73,7 +73,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port) {
 }
 
 #define RAW_ERR_INIT \
-	{ .clear = PROS_ERR_F, .red = PROS_ERR_F, .green = PROS_ERR_F, .blue = PROS_ERR_F }
+	{ .clear = PROS_ERR, .red = PROS_ERR, .green = PROS_ERR, .blue = PROS_ERR }
 
 optical_raw_s_t optical_get_raw(uint8_t port) {
 	optical_raw_s_t rtn = RAW_ERR_INIT;
@@ -91,10 +91,10 @@ optical_raw_s_t optical_get_raw(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-#define GESTURE_ERR_INIT                                                                                    \
-	{                                                                                                         \
-		.udata = PROS_ERR_F, .ddata = PROS_ERR_F, .ldata = PROS_ERR_F, .rdata = PROS_ERR_F, .type = PROS_ERR_F, \
-		.pad = PROS_ERR_F, .count = PROS_ERR_F, .time = PROS_ERR_F                                              \
+#define GESTURE_ERR_INIT                                                                                           \
+	{                                                                                                                \
+		.udata = PROS_ERR, .ddata = PROS_ERR, .ldata = PROS_ERR, .rdata = PROS_ERR, .type = PROS_ERR, .pad = PROS_ERR, \
+		.count = PROS_ERR, .time = PROS_ERR                                                                            \
 	}
 
 int32_t optical_get_gesture(uint8_t port) {
@@ -104,13 +104,13 @@ int32_t optical_get_gesture(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-void optical_enable_gesture(uint8_t port) {
+int32_t optical_enable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalGestureEnable(device->device_info);
 	return_port(port - 1, 1);
 }
 
-void optical_disable_gesture(uint8_t port) {
+int32_t optical_disable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalGestureEnable(device->device_info);
 	return_port(port - 1, 1);

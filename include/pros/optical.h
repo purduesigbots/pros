@@ -138,7 +138,7 @@ int32_t optical_get_proximity(uint8_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_set_led_pwm(uint8_t port, uint8_t value);
+int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
 
 /**
  * Get the pwm value of the White LED on the sensor
@@ -220,7 +220,7 @@ int32_t optical_get_gesture(uint8_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_enable_gesture(uint8_t port);
+int32_t optical_enable_gesture(uint8_t port);
 
 /**
  * Disable gesture detection on the sensor
@@ -233,7 +233,7 @@ void optical_enable_gesture(uint8_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_disable_gesture(uint8_t port);
+int32_t optical_disable_gesture(uint8_t port);
 
 #ifdef __cplusplus
 }
