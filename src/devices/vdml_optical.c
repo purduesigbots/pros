@@ -91,16 +91,35 @@ optical_raw_s_t optical_get_raw(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
+optical_direction_e_t optical_get_gesture(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_OPTICAL);
+	optical_direction_e_t rtn = vexOpticalGestureGet(device->device_info, NULL);
+	return_port(port - 1, rtn);
+}
+
 #define GESTURE_ERR_INIT                                                                                           \
 	{                                                                                                                \
 		.udata = PROS_ERR, .ddata = PROS_ERR, .ldata = PROS_ERR, .rdata = PROS_ERR, .type = PROS_ERR, .pad = PROS_ERR, \
 		.count = PROS_ERR, .time = PROS_ERR                                                                            \
 	}
 
-int32_t optical_get_gesture(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_OPTICAL);
-	V5_DeviceOpticalGesture gesture = GESTURE_ERR_INIT;
-	int32_t rtn = vexDeviceOpticalGestureGet(device->device_info, &gesture);
+optical_gesture_s_t optical_get_gesture_raw(uint8_t port) {
+	optical_gesture_s_t rtn = GESTURE_ERR_INIT;
+	v5_smart_device_s_t* device;
+	if (!claim_port_try(port - 1, E_DEVICE_OPTICAL)) {
+		return rtn;
+	}
+	device = registry_get_device(port - 1);
+	V5_DeviceOpticalGesture gesture;
+	vexDeviceOpticalGestureGet(device->device_info, &gesture);
+	rtn.udata = gesture.udata;
+	rtn.ddata = gesture.ddata;
+	rtn.ldata = gesture.ldata;
+	rtn.rdata = gesture.rdata;
+	rtn.type = gesture.type;
+	rtn.pad = gesture.pad;
+	rtn.count = gesture.count;
+	rtn.time = gesture.time;
 	return_port(port - 1, rtn);
 }
 

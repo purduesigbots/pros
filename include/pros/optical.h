@@ -28,6 +28,14 @@ namespace pros {
 namespace c {
 #endif
 
+typedef enum optical_direction_e {
+	NO_GESTURE = 0,
+	UP = 1,
+	DOWN = 2,
+	RIGHT = 3,
+	LEFT = 4,
+} optical_direction_e_t;
+
 typedef struct optical_rgb_s {
 	double red;
 	double green;
@@ -36,10 +44,10 @@ typedef struct optical_rgb_s {
 } optical_rgb_s_t;
 
 typedef struct optical_raw_s {
-	uint16_t clear;
-	uint16_t red;
-	uint16_t green;
-	uint16_t blue;
+	uint32_t clear;
+	uint32_t red;
+	uint32_t green;
+	uint32_t blue;
 } optical_raw_s_t;
 
 typedef struct optical_gesture_s {
@@ -207,7 +215,22 @@ optical_raw_s_t optical_get_raw(uint8_t port);
  * \return gesture value if the operation was successful or PROS_ERR if
  * the operation failed, setting errno.
  */
-int32_t optical_get_gesture(uint8_t port);
+optical_direction_e_t optical_get_gesture(uint8_t port);
+
+/**
+ * Get the most recent raw gesture data from the sensor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Optical Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return gesture value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+optical_gesture_s_t optical_get_gesture_raw(uint8_t port);
 
 /**
  * Enable gesture detection on the sensor
