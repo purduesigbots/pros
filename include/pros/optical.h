@@ -62,11 +62,11 @@ typedef struct optical_gesture_s {
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return hue value if the operation was successful or PROS_ERR if the operation
+ * \return hue value if the operation was successful or PROS_ERR_F if the operation
  * failed, setting errno.
  */
 double optical_get_hue(uint8_t port);
@@ -80,11 +80,11 @@ double optical_get_hue(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return saturation value if the operation was successful or PROS_ERR if
+ * \return saturation value if the operation was successful or PROS_ERR_F if
  * the operation failed, setting errno.
  */
 double optical_get_saturation(uint8_t port);
@@ -98,11 +98,11 @@ double optical_get_saturation(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return brightness value if the operation was successful or PROS_ERR if
+ * \return brightness value if the operation was successful or PROS_ERR_F if
  * the operation failed, setting errno.
  */
 double optical_get_brightness(uint8_t port);
@@ -116,7 +116,7 @@ double optical_get_brightness(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -133,12 +133,12 @@ int32_t optical_get_proximity(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_set_led_pwm(uint8_t port);
+void optical_set_led_pwm(uint8_t port, int32_t value);
 
 /**
  * Get the pwm value of the White LED on the sensor
@@ -148,7 +148,7 @@ void optical_set_led_pwm(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -163,7 +163,7 @@ int32_t optical_get_led_pwm(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -178,7 +178,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -200,7 +200,7 @@ optical_raw_s_t optical_get_raw(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -215,7 +215,7 @@ int32_t optical_get_gesture(uint32_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
@@ -228,12 +228,12 @@ void optical_enable_gesture(uint32_t index);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
+ * ENODEV - The port cannot be configured as an Optical Sensor
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optcial_disable_gesture(uint32_t index);
+void optical_disable_gesture(uint32_t index);
 
 #ifdef __cplusplus
 }
