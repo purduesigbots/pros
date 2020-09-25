@@ -16,8 +16,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_MOTORS_HPP_
-#define _PROS_MOTORS_HPP_
+#ifndef _PROS_DISTANCE_HPP_
+#define _PROS_DISTANCE_HPP_
 
 #include <cstdint>
 #include "pros/distance.h"
