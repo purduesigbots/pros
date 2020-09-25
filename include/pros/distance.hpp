@@ -50,7 +50,7 @@ class Distance {
    * errno.
    */
 
-  int32_t distance_get();
+  int32_t get();
 
   /**
    * Get the confidence in the distance reading
@@ -68,7 +68,7 @@ class Distance {
    * errno.
    */
 
-  int32_t distance_get_confidence();
+  int32_t get_confidence();
 
   /**
    * Get the current guess at relative object size
@@ -86,7 +86,7 @@ class Distance {
    * errno.
    */
 
-  double distance_get_object_size();
+  double get_object_size();
 
   /**
    * Get the object velocity in m/s
@@ -100,12 +100,12 @@ class Distance {
    * errno.
    */
 
-  double distance_get_object_velocity();
+  double get_object_velocity();
 
   /**
-	 * Gets the port number of the motor.
+	 * Gets the port number of the distance sensor.
 	 *
-	 * \return The motor's port number.
+	 * \return The distance sensor's port number.
 	 */
 	std::uint8_t get_port();
 
