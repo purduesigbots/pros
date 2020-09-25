@@ -1,0 +1,244 @@
+/**
+ * \file pros/optical.h
+ *
+ * Contains prototypes for functions related to the VEX Optical sensor.
+ *
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
+ * more.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+#ifndef _PROS_OPTICAL_H_
+#define _PROS_OPTICAL_H_
+
+#include <stdbool.h>
+#include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+namespace c {
+#endif
+
+typedef struct optical_rgb_s {
+	double green;
+	double red;
+	double blue;
+	double brightness;
+} optical_rgb_s_t;
+
+typedef struct optical_raw_s {
+	uint16_t red;
+	uint16_t green;
+	uint16_t blue;
+	uint16_t clear;
+} optical_raw_s_t;
+
+typedef struct optical_gesture_s {
+	uint8_t udata;
+	uint8_t ddata;
+	uint8_t ldata;
+	uint8_t rdata;
+	uint8_t type;
+	uint8_t pad;
+	uint16_t count;
+	uint32_t time;
+} optical_gesture_s_t;
+
+/**
+ * Get the detected color hue
+ *
+ * This is not avaliable if gestures are being detected. Hue has a
+ * range of 0 to 359.999
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return hue value if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+double optical_get_hue(uint8_t port);
+
+/**
+ * Get the detected color saturation
+ *
+ * This is not avaliable if gestures are being detected. Saturation has a
+ * range of 0 to 1.0
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return saturation value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+double optical_get_saturation(uint8_t port);
+
+/**
+ * Get the detected color brightness
+ *
+ * This is not avaliable if gestures are being detected. Brightness has a
+ * range of 0 to 1.0
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return brightness value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+double optical_get_brightness(uint8_t port);
+
+/**
+ * Get the detected proximity value
+ *
+ * This is not avaliable if gestures are being detected. proximity has
+ * a range of 0 to 255.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return poximity value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+int32_t optical_get_proximity(uint8_t port);
+
+/**
+ * Set the pwm value of the White LED on the sensor
+ *
+ * value that ranges from 0 to 100
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ */
+void optical_set_led_pwm(uint8_t port);
+
+/**
+ * Get the pwm value of the White LED on the sensor
+ *
+ * value that ranges from 0 to 100
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return LED pwm value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+int32_t optical_get_led_pwm(uint8_t port);
+
+/**
+ * Get the processed RGBC data from the sensor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return rgb value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+optical_rgb_s_t optical_get_rgb(uint8_t port);
+
+/**
+ * Get the raw un-processed RGBC data from the sensor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return raw rgb value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+optical_raw_s_t optical_get_raw(uint8_t port);
+
+/**
+ * Get the most recent gesture data from the sensor
+ *
+ * Gestures will be cleared after 500mS
+ * 0 = no gesture
+ * 1 = up (towards cable)
+ * 2 = down
+ * 3 = right
+ * 4 = left
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return gesture value if the operation was successful or PROS_ERR if
+ * the operation failed, setting errno.
+ */
+int32_t optical_get_gesture(uint32_t port);
+
+/**
+ * Enable gesture detection on the sensor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ */
+void optical_enable_gesture(uint32_t index);
+
+/**
+ * Disable gesture detection on the sensor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ */
+void optcial_disable_gesture(uint32_t index);
+
+#ifdef __cplusplus
+}
+}
+}
+#endif
+
+#endif
