@@ -29,17 +29,17 @@ namespace c {
 #endif
 
 typedef struct optical_rgb_s {
-	double green;
 	double red;
+	double green;
 	double blue;
 	double brightness;
 } optical_rgb_s_t;
 
 typedef struct optical_raw_s {
+	uint16_t clear;
 	uint16_t red;
 	uint16_t green;
 	uint16_t blue;
-	uint16_t clear;
 } optical_raw_s_t;
 
 typedef struct optical_gesture_s {
@@ -138,7 +138,7 @@ int32_t optical_get_proximity(uint8_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_set_led_pwm(uint8_t port, int32_t value);
+void optical_set_led_pwm(uint8_t port, uint8_t value);
 
 /**
  * Get the pwm value of the White LED on the sensor
@@ -207,7 +207,7 @@ optical_raw_s_t optical_get_raw(uint8_t port);
  * \return gesture value if the operation was successful or PROS_ERR if
  * the operation failed, setting errno.
  */
-int32_t optical_get_gesture(uint32_t port);
+int32_t optical_get_gesture(uint8_t port);
 
 /**
  * Enable gesture detection on the sensor
@@ -220,7 +220,7 @@ int32_t optical_get_gesture(uint32_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_enable_gesture(uint32_t index);
+void optical_enable_gesture(uint8_t port);
 
 /**
  * Disable gesture detection on the sensor
@@ -233,7 +233,7 @@ void optical_enable_gesture(uint32_t index);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  */
-void optical_disable_gesture(uint32_t index);
+void optical_disable_gesture(uint8_t port);
 
 #ifdef __cplusplus
 }
