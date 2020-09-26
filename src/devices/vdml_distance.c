@@ -49,7 +49,3 @@ double distance_get_object_velocity(uint8_t port){
 	int32_t rtn = vexDistanceObjectVelocityGet(port - 1);
 	return_port(port - 1, rtn);
 }
-
-// TODO: Potentially add Error Handling to actual method calls
-// This may not be needed though because claim_port_i might already handle it... 
-// (Will look into this later)
