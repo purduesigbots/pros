@@ -176,8 +176,7 @@ int port_mutex_take(uint8_t port);
  * be used in asserts to ensure macro usage is correct.
  *
  * \param port
- *        The V5 port number to check from 0-20
- *        TODO: this says 20, but it checks 32
+ *        The V5 port number to check from 0-is_port_mutex_taken_by_this_task
  */
 bool is_port_mutex_taken_by_this_task(uint8_t port);
 
