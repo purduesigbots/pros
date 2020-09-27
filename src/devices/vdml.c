@@ -74,6 +74,18 @@ void port_mutex_init() {
 	}
 }
 
+bool is_port_mutex_taken_by_this_task(uint8_t port) {
+	if (port >= V5_MAX_DEVICE_PORTS) {
+		return false;
+	}
+	// The current task is running, so if it says it isn't, then we're before the scheduler has started
+	if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) {
+		return true;
+	}
+
+	return mutex_get_owner(port_mutexes[port]) == task_get_current();
+}
+
 int port_mutex_take(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
 		errno = ENXIO;

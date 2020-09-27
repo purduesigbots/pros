@@ -55,7 +55,7 @@
   }
 
 /**
- * Function like claim_port. This macro should only be used in functions 
+ * Function like claim_port. This macro should only be used in functions
  * that return int32_t or enums as PROS_ERR could be returned.
  *
  * \param port
@@ -66,7 +66,7 @@
 #define claim_port_i(port, device_type) claim_port(port, device_type, PROS_ERR)
 
 /**
- * Function like claim_port. This macro should only be used in functions 
+ * Function like claim_port. This macro should only be used in functions
  * that return double or float as PROS_ERR_F could be returned.
  *
  * \param port
@@ -77,7 +77,7 @@
 #define claim_port_f(port, device_type) claim_port(port, device_type, PROS_ERR_F)
 
 /**
- * A function that executes claim_port and allows you to execute a block of 
+ * A function that executes claim_port and allows you to execute a block of
  * code if an error occurs.
  *
  * This function uses the following values of errno when an error state is
@@ -170,6 +170,16 @@ void vdml_reset_port_error();
  * invalid.
  */
 int port_mutex_take(uint8_t port);
+
+/**
+ * Returns if the port mutex is held by the current task. This is intended to
+ * be used in asserts to ensure macro usage is correct.
+ *
+ * \param port
+ *        The V5 port number to check from 0-20
+ *        TODO: this says 20, but it checks 32
+ */
+bool is_port_mutex_taken_by_this_task(uint8_t port);
 
 /**
  * Returns the mutex for the given port.
