@@ -517,7 +517,7 @@ int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
  *        next highest port following port_ping.
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
- * ultrasonic functions or PROS_ERR if an error occured.
+ * ultrasonic functions
  */
 ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo);
 

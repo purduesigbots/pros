@@ -78,8 +78,8 @@ bool is_port_mutex_taken_by_this_task(uint8_t port) {
 	if (port >= V5_MAX_DEVICE_PORTS) {
 		return false;
 	}
-	// Check if we're before the scheduler starting, as mutex taking doesn't work then
-	// but we're guarenteed to have single threaded access
+	// Check if we're before the scheduler starting, as mutex taking doesn't work
+	// but we're guaranteed to have single threaded access
 	if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) {
 		return true;
 	}
