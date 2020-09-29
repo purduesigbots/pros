@@ -1,7 +1,7 @@
 /**
  * \file devices/vdml_imu.c
  *
- * Contains functions for interacting with the VEX Inertial sensor.
+ * Contains functions for interacting with the VEX Rotation sensor.
  *
  * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
  *
