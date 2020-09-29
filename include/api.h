@@ -54,6 +54,7 @@
 #include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
+#include "pros/optical.h"
 #include "pros/rtos.h"
 #include "pros/vision.h"
 
@@ -63,6 +64,7 @@
 #include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
+#include "pros/optical.hpp"
 #include "pros/rtos.hpp"
 #include "pros/vision.hpp"
 #endif
