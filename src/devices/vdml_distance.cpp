@@ -13,7 +13,6 @@
 #include "pros/distance.hpp"
 
 namespace pros {
-using namespace pros::c;
 
 Distance::Distance(const std::uint8_t port):_port(port){}
 
