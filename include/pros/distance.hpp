@@ -50,7 +50,7 @@ class Distance {
    * errno.
    */
 
-  int32_t get();
+  std::int32_t get();
 
   /**
    * Get the confidence in the distance reading
@@ -68,7 +68,7 @@ class Distance {
    * errno.
    */
 
-  int32_t get_confidence();
+  std::int32_t get_confidence();
 
   /**
    * Get the current guess at relative object size
