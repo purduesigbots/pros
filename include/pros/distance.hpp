@@ -111,7 +111,7 @@ class Distance {
 
   private:
 	const std::uint8_t _port;
-}
+};
 }
 
 #endif
