@@ -17,7 +17,7 @@
 #include "vdml/vdml.h"
 
 #define ERROR_DISTANCE_BAD_PORT(port, err_return)                  \
-	if (vexDistanceStatusGet(port) == &0x82 || vexDistanceStatusGet(port) == &0x82) { \
+	if (vexDistanceStatusGet(port) == 0x82 || vexDistanceStatusGet(port) == 0x82) { \
 		errno = EAGAIN;                                                            \
 		return_port(port - 1, err_return);                                         \
 	}
