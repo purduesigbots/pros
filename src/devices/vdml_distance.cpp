@@ -17,19 +17,19 @@ namespace pros {
 Distance::Distance(const std::uint8_t port):_port(port){}
 
 std::int32_t Distance::get(){
-  return distance_get(_port);
+  return pros::c::distance_get(_port);
 }
 
 std::int32_t Distance::get_confidence(){
-  return distance_get_confidence(_port);
+  return pros::c::distance_get_confidence(_port);
 }
 
 double Distance::get_object_size(){
-  return distance_get_object_size(_port);
+  return pros::c::distance_get_object_size(_port);
 }
 
 double Distance::get_object_velocity(){
-  return distance_get_object_velocity(_port);
+  return pros::c::distance_get_object_velocity(_port);
 }
 
 std::uint8_t Distance::get_port(){
