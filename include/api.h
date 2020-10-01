@@ -55,6 +55,7 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
+#include "pros/rotation.h"
 #include "pros/vision.h"
 
 #ifdef __cplusplus
