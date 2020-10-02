@@ -94,7 +94,7 @@ int32_t distance_get_object_size(uint8_t port);
  *
  * \param  port
  * 				 The V5 Distance Sensor port number from 1-21
- * \return The velocity value or PROS_ERR_F if the operation failed, setting
+ * \return The velocity value or PROS_ERR if the operation failed, setting
  * errno.
  */
 

@@ -74,7 +74,7 @@ class Distance {
    * Get the current guess at relative object size
    *
    * This is a value that has a range of 0 to 400.
-   * A 18” x 30” grey card will return a value of approximately 75
+   * A 18" x 30" grey card will return a value of approximately 75
    * in typical room lighting.
    *
    * This function uses the following values of errno when an error state is
