@@ -46,9 +46,9 @@ int32_t distance_get(uint8_t port);
 
 /**
  * Get the confidence in the distance reading
- * 
- * This is a value that has a range of 0 to 63. 63 means high confidence, 
- * lower values imply less confidence. Confidence is only available 
+ *
+ * This is a value that has a range of 0 to 63. 63 means high confidence,
+ * lower values imply less confidence. Confidence is only available
  * when distance is > 200mm.
  *
  * This function uses the following values of errno when an error state is
