@@ -38,7 +38,7 @@ namespace c {
  *
  * \param  port
  * 				 The V5 Distance Sensor port number from 1-21
- * \return The distance value or PROS_ERR_F if the operation failed, setting
+ * \return The distance value or PROS_ERR if the operation failed, setting
  * errno.
  */
 
