@@ -17,11 +17,11 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
-#define ERROR_DISTANCE_BAD_PORT(device, err_return)                  \
-	if (!(vexDistanceStatusGet(device->device_info) == 0x82 || 		\
-		vexDistanceStatusGet(device->device_info) == 0x86)) { 		\
-		errno = EAGAIN;                                             \
-		return_port(port - 1, err_return);                          \
+#define ERROR_DISTANCE_BAD_PORT(device, err_return)                 \
+	if (!(vexDeviceDistanceStatusGet(device->device_info) == 0x82 ||  \
+	      vexDeviceDistanceStatusGet(device->device_info) == 0x86)) { \
+		errno = EAGAIN;                                                 \
+		return_port(port - 1, err_return);                              \
 	}
 
 int32_t distance_get(uint8_t port) {
