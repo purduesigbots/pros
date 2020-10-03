@@ -41,7 +41,6 @@ namespace c {
  * \return The distance value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
-
 int32_t distance_get(uint8_t port);
 
 /**
