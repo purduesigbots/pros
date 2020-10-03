@@ -36,18 +36,17 @@ namespace c {
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Distance Sensor
  *
- * \param  port
- * 				 The V5 Distance Sensor port number from 1-21
- * \return The distance value or PROS_ERR_F if the operation failed, setting
+ * \param  port The V5 Distance Sensor port number from 1-21
+ * \return The distance value or PROS_ERR if the operation failed, setting
  * errno.
  */
 int32_t distance_get(uint8_t port);
 
 /**
  * Get the confidence in the distance reading
- * 
- * This is a value that has a range of 0 to 63. 63 means high confidence, 
- * lower values imply less confidence. Confidence is only available 
+ *
+ * This is a value that has a range of 0 to 63. 63 means high confidence,
+ * lower values imply less confidence. Confidence is only available
  * when distance is > 200mm.
  *
  * This function uses the following values of errno when an error state is
@@ -55,9 +54,8 @@ int32_t distance_get(uint8_t port);
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Distance Sensor
  *
- * \param  port
- * 				 The V5 Distance Sensor port number from 1-21
- * \return The confidence value or PROS_ERR_F if the operation failed, setting
+ * \param  port The V5 Distance Sensor port number from 1-21
+ * \return The confidence value or PROS_ERR if the operation failed, setting
  * errno.
  */
 
@@ -67,7 +65,7 @@ int32_t distance_get_confidence(uint8_t port);
  * Get the current guess at relative object size
  *
  * This is a value that has a range of 0 to 400.
- * A 18” x 30” grey card will return a value of approximately 75
+ * A 18" x 30" grey card will return a value of approximately 75
  * in typical room lighting.
  *
  * This function uses the following values of errno when an error state is
@@ -75,9 +73,8 @@ int32_t distance_get_confidence(uint8_t port);
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Distance Sensor
  *
- * \param  port
- * 				 The V5 Distance Sensor port number from 1-21
- * \return The size value or PROS_ERR_F if the operation failed, setting
+ * \param  port The V5 Distance Sensor port number from 1-21
+ * \return The size value or PROS_ERR if the operation failed, setting
  * errno.
  */
 
@@ -91,9 +88,8 @@ int32_t distance_get_object_size(uint8_t port);
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Distance Sensor
  *
- * \param  port
- * 				 The V5 Distance Sensor port number from 1-21
- * \return The velocity value or PROS_ERR_F if the operation failed, setting
+ * \param  port The V5 Distance Sensor port number from 1-21
+ * \return The velocity value or PROS_ERR if the operation failed, setting
  * errno.
  */
 

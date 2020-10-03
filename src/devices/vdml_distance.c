@@ -11,41 +11,43 @@
  */
 
 #include <errno.h>
+
 #include "pros/distance.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
 #define ERROR_DISTANCE_BAD_PORT(device, err_return)                  \
-	if (!(vexDistanceStatusGet(device->device_info) == 0x82 || vexDistanceStatusGet(device->device_info) == 0x86)) { \
-		errno = EAGAIN;                                                            \
-		return_port(port - 1, err_return);                                         \
+	if (!(vexDistanceStatusGet(device->device_info) == 0x82 || 		\
+		vexDistanceStatusGet(device->device_info) == 0x86)) { 		\
+		errno = EAGAIN;                                             \
+		return_port(port - 1, err_return);                          \
 	}
 
 int32_t distance_get(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_DISTANCE);
 	ERROR_DISTANCE_BAD_PORT(device, PROS_ERR);
-	int32_t rtn = vexDistanceDistanceGet(port - 1);
+	int32_t rtn = vexDeviceDistanceDistanceGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t distance_get_confidence(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_DISTANCE);
 	ERROR_DISTANCE_BAD_PORT(device, PROS_ERR);
-	int32_t rtn = vexDistanceConfidenceGet(port - 1);
+	int32_t rtn = vexDeviceDistanceConfidenceGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
-int32_t distance_get_object_size(uint8_t port){
+int32_t distance_get_object_size(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_DISTANCE);
 	ERROR_DISTANCE_BAD_PORT(device, PROS_ERR);
-	int32_t rtn = vexDistanceObjectSizeGet(port - 1);
+	int32_t rtn = vexDeviceDistanceObjectSizeGet(device->device_info);
 	return_port(port - 1, rtn);
 }
 
-double distance_get_object_velocity(uint8_t port){
+double distance_get_object_velocity(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_DISTANCE);
 	ERROR_DISTANCE_BAD_PORT(device, PROS_ERR);
-	int32_t rtn = vexDistanceObjectVelocityGet(port - 1);
+	double rtn = vexDeviceDistanceObjectVelocityGet(device->device_info);
 	return_port(port - 1, rtn);
 }
