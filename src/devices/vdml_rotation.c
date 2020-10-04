@@ -18,9 +18,42 @@
 
 int32_t rotation_reset(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_DISTANCE);
-	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	vexDeviceAbsEncReset(device->device_info);
 	return_port(port - 1, 1);
 }
 
+int32_t rotation_set_position(uint8_t port, uint32_t position) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsEncPositionSet(device->device_info, position);
+	return_port(port - 1, 1);
+}
 
+int32_t rotation_get_position(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsEncPositionGet(device->device_info);
+	return_port(port - 1, 1);
+}
+
+int32_t rotation_get_velocity(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsEncVelocityGet(device->device_info);
+	return_port(port - 1, 1);
+}
+
+int32_t rotation_get_angle(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsEncAngleGet(device->device_info);
+	return_port(port - 1, 1);
+}
+
+int32_t rotation_set_reversed(uint8_t port, bool value) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsReverseFlagSet(device->device_info, value);
+	return_port(port - 1, 1);
+}
+
+int32_t rotation_get_reversed(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_DISTANCE);
+	vexDeviceAbsReverseFlagGet(device->device_info);
+	return_port(port - 1, 1);
+}

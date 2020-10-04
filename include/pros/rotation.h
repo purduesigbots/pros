@@ -157,12 +157,10 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  */
 int32_t rotation_get_reversed(uint8_t port);
 
-uint32_t rotational_get_status(uint8_t port);
-
 #ifdef __cplusplus
-}
-}
-}
+} //namespace C
+} //namespace pros
+} //extern "C"
 #endif
 
 #endif
