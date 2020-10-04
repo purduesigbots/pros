@@ -369,8 +369,8 @@ void queue_reset(queue_t queue);
 typedef enum v5_device_e {
 	E_DEVICE_NONE = 0,
 	E_DEVICE_MOTOR = 2,
+	E_DEVICE_ROTATION = 4,
 	E_DEVICE_IMU = 6,
-	E_DEVICE_DISTANCE = 7,
 	E_DEVICE_RADIO = 8,
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,

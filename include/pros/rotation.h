@@ -43,7 +43,6 @@ namespace c {
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is already calibrating
  *
  * \param port
  *        The V5 Rotation Sensor port number from 1-21
@@ -60,7 +59,6 @@ int32_t rotation_reset(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param port
  *		  The V5 Rotation Sensor port number from 1-21
@@ -78,7 +76,6 @@ int32_t rotation_set_position(uint8_t port, uint32_t position);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
@@ -94,7 +91,6 @@ int32_t rotation_get_position(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
@@ -112,7 +108,6 @@ int32_t rotation_get_velocity(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
@@ -128,7 +123,6 @@ int32_t rotation_get_angle(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
@@ -147,7 +141,6 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Rotation Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
@@ -155,7 +148,7 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * \return The degree value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
-int32_t rotation_get_reversed(uint8_t port);
+bool rotation_get_reversed(uint8_t port);
 
 #ifdef __cplusplus
 } //namespace C
