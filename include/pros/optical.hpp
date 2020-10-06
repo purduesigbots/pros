@@ -20,7 +20,7 @@
 #define _PROS_OPTICAL_HPP_
 
 #include <stdbool.h>
-#include <stdint.h>
+#include <cstdint>
 #include "pros/optical.h"
 
 namespace pros {
@@ -102,7 +102,7 @@ class Optical {
 	 * \return poximity value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	int32_t get_proximity();
+	std::int32_t get_proximity();
 
 	/**
 	 * Set the pwm value of the White LED on the sensor
@@ -116,7 +116,7 @@ class Optical {
 	 *
 	 * \return The Error code encountered
 	 */
-	int32_t set_led_pwm(uint8_t value);
+	std::int32_t set_led_pwm(uint8_t value);
 
 	/**
 	 * Get the pwm value of the White LED on the sensor
@@ -131,7 +131,7 @@ class Optical {
 	 * \return LED pwm value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	int32_t get_led_pwm();
+	std::int32_t get_led_pwm();
 
 	/**
 	 * Get the processed RGBC data from the sensor
@@ -144,7 +144,7 @@ class Optical {
 	 * \return rgb value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	optical_rgb_s_t get_rgb();
+	pros::c::optical_rgb_s_t get_rgb();
 
 	/**
 	 * Get the raw un-processed RGBC data from the sensor
@@ -157,7 +157,7 @@ class Optical {
 	 * \return raw rgb value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	optical_raw_s_t get_raw();
+	pros::c::optical_raw_s_t get_raw();
 
 	/**
 	 * Get the most recent gesture data from the sensor
@@ -177,7 +177,7 @@ class Optical {
 	 * \return gesture value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	optical_direction_e_t get_gesture();
+	pros::c::optical_direction_e_t get_gesture();
 
 	/**
 	 * Get the most recent raw gesture data from the sensor
@@ -190,7 +190,7 @@ class Optical {
 	 * \return gesture value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
 	 */
-	optical_gesture_s_t get_gesture_raw();
+	pros::c::optical_gesture_s_t get_gesture_raw();
 
 	/**
 	 * Enable gesture detection on the sensor
@@ -202,7 +202,7 @@ class Optical {
 	 *
 	 * \return The Error code encountered
 	 */
-	int32_t enable_gesture();
+	std::int32_t enable_gesture();
 
 	/**
 	 * Disable gesture detection on the sensor
@@ -214,7 +214,7 @@ class Optical {
 	 *
 	 * \return The Error code encountered
 	 */
-	int32_t disable_gesture();
+	std::int32_t disable_gesture();
 
   /**
 	 * Gets the port number of the Optical Sensor.
@@ -223,8 +223,9 @@ class Optical {
 	 */
 	std::uint8_t get_port();
 
-  private:
+  protected:
 	const std::uint8_t _port;
+};
 }
 
 

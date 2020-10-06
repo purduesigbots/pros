@@ -15,7 +15,7 @@
 namespace pros {
 using namespace pros::c;
 
-Optical::Optical(uint8_t port): _port(port){}
+Optical::Optical(std::uint8_t port): _port(port){}
 
 double Optical::get_hue(){
   return optical_get_hue(_port);
@@ -29,15 +29,15 @@ double Optical::get_brightness(){
   return optical_get_brightness(_port);
 }
 
-int32_t Optical::get_proximity(){
+std::int32_t Optical::get_proximity(){
   return optical_get_proximity(_port);
 }
 
-int32_t Optical::set_led_pwm(uint8_t value){
+std::int32_t Optical::set_led_pwm(std::uint8_t value){
   return optical_set_led_pwm(_port, value);
 }
 
-int32_t Optical::get_led_pwm(){
+std::int32_t Optical::get_led_pwm(){
   return optical_get_led_pwm(_port);
 }
 
@@ -57,11 +57,11 @@ optical_gesture_s_t Optical::get_gesture_raw(){
   return optical_get_gesture_raw(_port);
 }
 
-int32_t Optical::enable_gesture(){
+std::int32_t Optical::enable_gesture(){
   return optical_enable_gesture(_port);
 }
 
-int32_t Optical::disable_gesture(){
+std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
