@@ -1,9 +1,9 @@
 /**
- * \file pros/imu.hpp
+ * \file pros/rotation.hpp
  *
- * Contains prototypes for functions related to the VEX Inertial sensor.
+ * Contains prototypes for functions related to the VEX Rotation sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
+ * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/rotation.html to learn
  * more.
  *
  * This file should not be modified by users, since it gets replaced whenever
@@ -27,11 +27,6 @@ class Rotation {
 
 	public:
 	Rotation(const std::uint8_t port) : _port(port){};
-
-	// NOTE: Descriptions of what each of these methods do may be inaccurate,
-	// as it's just a speculative guess as to what they actually do.
-
-	// TODO: Make revisions when proper documentation is given.
 
 	/**
 	 * Resets Rotational Sensor 
@@ -119,8 +114,8 @@ class Rotation {
 	 * 				 Determines if the direction of the rotational sensor is 
 	 * 				 reversed or not.
 	 * 
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
-	 * errno.
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t set_reversed(bool value);
 	
@@ -132,8 +127,8 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 * 
-	 * \return 1 if operation worked or PROS_ERR_F if the operation failed, setting
-	 * errno.
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
 	std::int32_t reverse();
 
@@ -145,7 +140,7 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 * 
-	 * \return Reversed or PROS_ERR_F if the operation failed, setting
+	 * \return Reversed value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	bool get_reversed();

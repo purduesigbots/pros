@@ -79,7 +79,7 @@ int32_t rotation_set_position(uint8_t port, uint32_t position);
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
+ * \return The position value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_position(uint8_t port);
@@ -94,7 +94,7 @@ int32_t rotation_get_position(uint8_t port);
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
+ * \return The velocity value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_velocity(uint8_t port);
@@ -111,7 +111,7 @@ int32_t rotation_get_velocity(uint8_t port);
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
+ * \return The angle value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_angle(uint8_t port);
@@ -129,7 +129,7 @@ int32_t rotation_get_angle(uint8_t port);
  * \param  value
  * 				 Determines if the direction of the rotational sensor is reversed or not.
  * 
- * \return 1 if operation succeeded or or PROS_ERR_F if the operation failed, setting
+ * \return 1 if operation succeeded or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_set_reversed(uint8_t port, bool value);
@@ -145,7 +145,8 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
  * 
- * \return Boolean value of if the rotation sensor's direction is reversed or not.
+ * \return Boolean value of if the rotation sensor's direction is reversed or not
+ * or PROS_ERR_F if the operation failed, setting errno.
  */
 bool rotation_get_reversed(uint8_t port);
 
