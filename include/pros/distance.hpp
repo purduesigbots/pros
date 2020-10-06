@@ -50,7 +50,6 @@ class Distance {
 	 * \return The distance value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-
 	std::int32_t get();
 
 	/**
@@ -68,7 +67,6 @@ class Distance {
 	 * \return The confidence value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-
 	std::int32_t get_confidence();
 
 	/**
@@ -86,7 +84,6 @@ class Distance {
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-
 	double get_object_size();
 
 	/**
@@ -100,7 +97,6 @@ class Distance {
 	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-
 	double get_object_velocity();
 
 	/**
