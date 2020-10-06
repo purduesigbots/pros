@@ -58,7 +58,6 @@ int32_t distance_get(uint8_t port);
  * \return The confidence value or PROS_ERR if the operation failed, setting
  * errno.
  */
-
 int32_t distance_get_confidence(uint8_t port);
 
 /**
@@ -77,7 +76,6 @@ int32_t distance_get_confidence(uint8_t port);
  * \return The size value or PROS_ERR if the operation failed, setting
  * errno.
  */
-
 int32_t distance_get_object_size(uint8_t port);
 
 /**
@@ -92,7 +90,6 @@ int32_t distance_get_object_size(uint8_t port);
  * \return The velocity value or PROS_ERR if the operation failed, setting
  * errno.
  */
-
 double distance_get_object_velocity(uint8_t port);
 
 #ifdef __cplusplus
