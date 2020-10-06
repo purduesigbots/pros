@@ -24,7 +24,7 @@ std::int32_t Distance::get_confidence() {
 	return pros::c::distance_get_confidence(_port);
 }
 
-double Distance::get_object_size() {
+std::int32_t Distance::get_object_size() {
 	return pros::c::distance_get_object_size(_port);
 }
 

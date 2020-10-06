@@ -84,7 +84,7 @@ class Distance {
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	double get_object_size();
+	std::int32_t get_object_size();
 
 	/**
 	 * Get the object velocity in m/s
