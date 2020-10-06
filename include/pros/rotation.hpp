@@ -72,7 +72,7 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 *
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
+	 * \return The position value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	std::int32_t get_position();
@@ -87,7 +87,7 @@ class Rotation {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
+	 * \return The velocity value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	std::int32_t get_velocity();
@@ -102,7 +102,7 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 *
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
+	 * \return The angle value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	std::int32_t get_angle();
@@ -145,7 +145,7 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 * 
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
+	 * \return Reversed or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	bool get_reversed();

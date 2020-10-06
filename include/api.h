@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 3
 #define PROS_VERSION_PATCH 1
-#define PROS_VERSION_STRING "3.3.1-dirty.4.717a838"
+#define PROS_VERSION_STRING "3.3.1-dirty.6.64614ff"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
@@ -64,6 +64,7 @@
 #include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
+#include "pros/rotation.hpp"
 #include "pros/rtos.hpp"
 #include "pros/vision.hpp"
 #endif

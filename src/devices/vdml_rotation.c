@@ -30,20 +30,20 @@ int32_t rotation_set_position(uint8_t port, uint32_t position) {
 
 int32_t rotation_get_position(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
-	vexDeviceAbsEncPositionGet(device->device_info);
-	return_port(port - 1, 1);
+	int32_t rtn = vexDeviceAbsEncPositionGet(device->device_info);
+	return_port(port - 1, rtn);
 }
 
 int32_t rotation_get_velocity(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
-	vexDeviceAbsEncVelocityGet(device->device_info);
-	return_port(port - 1, 1);
+	int32_t rtn = vexDeviceAbsEncVelocityGet(device->device_info);
+	return_port(port - 1, rtn);
 }
 
 int32_t rotation_get_angle(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
-	vexDeviceAbsEncAngleGet(device->device_info);
-	return_port(port - 1, 1);
+	int32_t rtn = vexDeviceAbsEncAngleGet(device->device_info);
+	return_port(port - 1, rtn);
 }
 
 int32_t rotation_set_reversed(uint8_t port, bool value) {
@@ -54,6 +54,6 @@ int32_t rotation_set_reversed(uint8_t port, bool value) {
 
 bool rotation_get_reversed(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
-	vexDeviceAbsEncReverseFlagGet(device->device_info);
-	return_port(port - 1, 1);
+	int32_t rtn = vexDeviceAbsEncReverseFlagGet(device->device_info);
+	return_port(port - 1, rtn);
 }
