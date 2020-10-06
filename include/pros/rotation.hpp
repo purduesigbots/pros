@@ -132,7 +132,7 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 * 
-	 * \return The degree value or PROS_ERR_F if the operation failed, setting
+	 * \return 1 if operation worked or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	std::int32_t reverse();
