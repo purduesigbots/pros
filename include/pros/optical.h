@@ -22,6 +22,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define OPT_GESTURE_ERR (INT8_MAX)
+#define OPT_COUNT_ERR (INT16_MAX)
+#define OPT_TIME_ERR PROS_ERR
+
 #ifdef __cplusplus
 extern "C" {
 namespace pros {

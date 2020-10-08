@@ -73,7 +73,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port) {
 }
 
 #define RAW_ERR_INIT \
-	{ .clear = PROS_ERR, .red = PROS_ERR, .green = PROS_ERR, .blue = PROS_ERR }
+	{ .clear = OPT_GESTURE_ERR, .red = OPT_GESTURE_ERR, .green = OPT_GESTURE_ERR, .blue = OPT_GESTURE_ERR }
 
 optical_raw_s_t optical_get_raw(uint8_t port) {
 	optical_raw_s_t rtn = RAW_ERR_INIT;
@@ -92,15 +92,15 @@ optical_raw_s_t optical_get_raw(uint8_t port) {
 }
 
 optical_direction_e_t optical_get_gesture(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_OPTICAL);
+	claim_port(port - 1, E_DEVICE_OPTICAL, OPT_GESTURE_ERR);
 	optical_direction_e_t rtn = vexOpticalGestureGet(device->device_info, NULL);
 	return_port(port - 1, rtn);
 }
 
 #define GESTURE_ERR_INIT                                                                                           \
-	{                                                                                                                \
-		.udata = PROS_ERR, .ddata = PROS_ERR, .ldata = PROS_ERR, .rdata = PROS_ERR, .type = PROS_ERR, .pad = PROS_ERR, \
-		.count = PROS_ERR, .time = PROS_ERR                                                                            \
+	{                                                                                                              \
+		.udata = OPT_GESTURE_ERR, .ddata = OPT_GESTURE_ERR, .ldata = OPT_GESTURE_ERR, .rdata = OPT_GESTURE_ERR,    \
+		.type = OPT_GESTURE_ERR, .pad = OPT_GESTURE_ERR, .count = OPT_COUNT_ERR, .time = OPT_TIME_ERR              \
 	}
 
 optical_gesture_s_t optical_get_gesture_raw(uint8_t port) {
