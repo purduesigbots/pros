@@ -73,7 +73,6 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-using namespace pros::c;
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
@@ -85,11 +84,7 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-		printf("Brightness: %d\n",optical_get_brightness(2));
-		printf("LED PWM: %d\n",optical_get_led_pwm(2));
-		printf("Proximity: %d\n",optical_get_proximity(2));
-		printf("Hue: %d\n",optical_get_hue(2));
-		printf("Saturation: %d\n",optical_get_saturation(2));
+
 		left_mtr = left;
 		right_mtr = right;
 		pros::delay(20);
