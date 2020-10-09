@@ -11,6 +11,7 @@
  */
 
 #include <errno.h>
+
 #include "pros/rotation.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
@@ -52,7 +53,7 @@ int32_t rotation_set_reversed(uint8_t port, bool value) {
 	return_port(port - 1, 1);
 }
 
-bool rotation_get_reversed(uint8_t port) {
+int32_t rotation_get_reversed(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	int32_t rtn = vexDeviceAbsEncReverseFlagGet(device->device_info);
 	return_port(port - 1, rtn);

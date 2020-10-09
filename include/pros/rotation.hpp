@@ -142,7 +142,7 @@ class Rotation {
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	bool get_reversed();
+	std::int32_t get_reversed();
 };
 }  // namespace pros
 

@@ -145,9 +145,9 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * 				 The V5 Rotation Sensor port number from 1-21
  * 
  * \return Boolean value of if the rotation sensor's direction is reversed or not
- * or PROS_ERR_F if the operation failed, setting errno.
+ * or PROS_ERR if the operation failed, setting errno.
  */
-bool rotation_get_reversed(uint8_t port);
+int32_t rotation_get_reversed(uint8_t port);
 
 #ifdef __cplusplus
 } //namespace C
