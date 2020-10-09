@@ -73,7 +73,7 @@ optical_rgb_s_t optical_get_rgb(uint8_t port) {
 }
 
 #define RAW_ERR_INIT \
-	{ .clear = OPT_GESTURE_ERR, .red = OPT_GESTURE_ERR, .green = OPT_GESTURE_ERR, .blue = OPT_GESTURE_ERR }
+	{ .clear = PROS_ERR, .red = PROS_ERR, .green = PROS_ERR, .blue = PROS_ERR }
 
 optical_raw_s_t optical_get_raw(uint8_t port) {
 	optical_raw_s_t rtn = RAW_ERR_INIT;
