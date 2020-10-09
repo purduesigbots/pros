@@ -93,7 +93,7 @@ optical_raw_s_t optical_get_raw(uint8_t port) {
 
 optical_direction_e_t optical_get_gesture(uint8_t port) {
 	claim_port(port - 1, E_DEVICE_OPTICAL, OPT_GESTURE_ERR);
-	optical_direction_e_t rtn = vexOpticalGestureGet(device->device_info, NULL);
+	optical_direction_e_t rtn = vexDeviceOpticalGestureGet(device->device_info, NULL);
 	return_port(port - 1, rtn);
 }
 
