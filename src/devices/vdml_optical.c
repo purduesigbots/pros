@@ -97,10 +97,10 @@ optical_direction_e_t optical_get_gesture(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-#define GESTURE_ERR_INIT                                                                                           \
-	{                                                                                                              \
-		.udata = OPT_GESTURE_ERR, .ddata = OPT_GESTURE_ERR, .ldata = OPT_GESTURE_ERR, .rdata = OPT_GESTURE_ERR,    \
-		.type = OPT_GESTURE_ERR, .pad = OPT_GESTURE_ERR, .count = OPT_COUNT_ERR, .time = OPT_TIME_ERR              \
+#define GESTURE_ERR_INIT                                                                                    \
+	{                                                                                                         \
+		.udata = OPT_GESTURE_ERR, .ddata = OPT_GESTURE_ERR, .ldata = OPT_GESTURE_ERR, .rdata = OPT_GESTURE_ERR, \
+		.type = OPT_GESTURE_ERR, .pad = OPT_GESTURE_ERR, .count = OPT_COUNT_ERR, .time = OPT_TIME_ERR           \
 	}
 
 optical_gesture_s_t optical_get_gesture_raw(uint8_t port) {

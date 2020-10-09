@@ -20,13 +20,15 @@
 #define _PROS_OPTICAL_HPP_
 
 #include <stdbool.h>
+
 #include <cstdint>
+
 #include "pros/optical.h"
 
 namespace pros {
 class Optical {
 	public:
-  /**
+	/**
 	 * Creates an Optical Sensor object for the given port.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -37,12 +39,11 @@ class Optical {
 	 * \param port
 	 *        The V5 port number from 1-21
 	 */
-  explicit Optical(const std::uint8_t port);
-
+	explicit Optical(const std::uint8_t port);
 
 	/**
 	 * Get the detected color hue
-   *
+	 *
 	 * This is not avaliable if gestures are being detected. Hue has a
 	 * range of 0 to 359.999
 	 *
@@ -216,17 +217,16 @@ class Optical {
 	 */
 	std::int32_t disable_gesture();
 
-  /**
+	/**
 	 * Gets the port number of the Optical Sensor.
 	 *
 	 * \return The Optical Sensor's port number.
 	 */
 	std::uint8_t get_port();
 
-  protected:
+	protected:
 	const std::uint8_t _port;
 };
-}
-
+}  // namespace pros
 
 #endif
