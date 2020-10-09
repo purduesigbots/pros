@@ -32,7 +32,7 @@ namespace pros {
 namespace c {
 #endif
 
-typedef enum optical_direction_e { no_gesture = 0, up = 1, down = 2, right = 3, left = 4 } optical_direction_e_t;
+typedef enum optical_direction_e { NO_GESTURE = 0, UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4 } optical_direction_e_t;
 
 typedef struct optical_rgb_s {
 	double red;
