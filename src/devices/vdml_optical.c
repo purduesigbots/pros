@@ -131,6 +131,6 @@ int32_t optical_enable_gesture(uint8_t port) {
 
 int32_t optical_disable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
-	vexDeviceOpticalGestureEnable(device->device_info);
+	vexDeviceOpticalGestureDisable(device->device_info);
 	return_port(port - 1, 1);
 }
