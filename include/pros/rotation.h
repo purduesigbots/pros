@@ -37,7 +37,7 @@ namespace c {
 /**
  * Resets Rotational Sensor 
  *
- * Resets rotation presumably to 0.
+ * Resets rotation to 0.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -100,9 +100,8 @@ int32_t rotation_get_position(uint8_t port);
 int32_t rotation_get_velocity(uint8_t port);
 
 /**
- * Get the Rotation sensor's current rotational position in terms of an angle.
- *
- * TODO: Add description for what units this uses.
+ * Get the Rotation sensor's current rotational position in terms of an angle
+ * measured in degrees.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
