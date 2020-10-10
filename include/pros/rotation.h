@@ -28,16 +28,11 @@ namespace pros {
 namespace c {
 #endif
 
-
-// NOTE: Descriptions of what each of these methods do may be inaccurate,
-// as it's just a speculative guess as to what they actually do.
-
-// TODO: Make revisions when proper documentation is given.
-
 /**
  * Resets Rotational Sensor 
  *
- * Resets rotation to 0.
+ * Resets rotation sensor by multiplying it by -1 only if the direction
+ * was recently reversed.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -101,7 +96,7 @@ int32_t rotation_get_velocity(uint8_t port);
 
 /**
  * Get the Rotation sensor's current rotational position in terms of an angle
- * measured in degrees.
+ * measured in degrees. Specifically, in terms of hundreths of degrees.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
