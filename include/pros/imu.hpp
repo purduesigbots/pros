@@ -24,9 +24,14 @@
 namespace pros {
 class Imu {
 	const std::uint8_t _port;
-
 	public:
-	Imu(const std::uint8_t port) : _port(port){};
+	Imu(const std::uint8_t port) : _port(port){
+		this->_heading_offset = 0; 
+		this->_rotation_offset = 0; 
+		this->_pitch_offset = 0; 
+		this->_yaw_offset = 0;
+		this->_roll_offset = 0;
+		};
 
 	/**
 	 * Calibrate IMU
@@ -195,6 +200,28 @@ class Imu {
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
+
+	//TODO: Write documentation for new reset functions:
+	virtual std::int32_t reset_rotation();
+	virtual std::int32_t reset_heading();
+	virtual std::int32_t reset_pitch();
+	virtual std::int32_t reset_yaw();
+	virtual std::int32_t reset_roll();
+	
+	//TODO: Write documentation for setter functions:
+	virtual std::int32_t Imu::set_heading();
+	virtual std::int32_t Imu::set_rotation();
+	virtual std::int32_t Imu::set_yaw();
+	virtual std::int32_t Imu::set_pitch();
+	virtual std::int32_t Imu::set_roll();
+	
+	//TODO: Write documentation for getter functions:
+	virtual std::int32_t Imu::get_rotation_offset() const;
+	virtual std::int32_t Imu::get_heading_offset() const;
+	virtual std::int32_t Imu::get_pitch_offset() const;
+	virtual std::int32_t Imu::get_roll_offset() const;
+	virtual std::int32_t Imu::get_yaw_offset() const;
+
 	/**
 	 * Get the Inertial Sensor's raw acceleroneter values
 	 *
@@ -232,6 +259,13 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+	
+	private:
+	std::int32_t _heading_offset;
+	std::int32_t _rotation_offset;
+	std::int32_t _pitch_offset;
+	std::int32_t _roll_offset;
+	std::int32_t _yaw_offset;
 };
 }  // namespace pros
 
