@@ -19,6 +19,7 @@
 #define _PROS_ROTATION_HPP_
 
 #include <cstdint>
+
 #include "pros/rotation.h"
 
 namespace pros {
@@ -29,7 +30,7 @@ class Rotation {
 	Rotation(const std::uint8_t port) : _port(port){};
 
 	/**
-	 * Resets Rotational Sensor 
+	 * Resets Rotational Sensor
 	 *
 	 * Resets rotation presumably to 0.
 	 *
@@ -41,8 +42,7 @@ class Rotation {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	std::int32_t reset();
-
+	virtual std::int32_t reset();
 
 	/**
 	 * Set the Rotation sensor to a desired rotation value.
@@ -52,12 +52,12 @@ class Rotation {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 *
-	 * \param position 
- 	 * 		  The position in terms of ticks
+	 * \param position
+	 * 		  The position in terms of ticks
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	std::int32_t set_position(std::uint32_t position);
+	virtual std::int32_t set_position(std::uint32_t position);
 
 	/**
 	 * Get the Rotation sensor's current rotational position.
@@ -70,7 +70,7 @@ class Rotation {
 	 * \return The position value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	std::int32_t get_position();
+	virtual std::int32_t get_position();
 
 	/**
 	 * Get the Rotation sensor's current rotational velocity.
@@ -85,12 +85,12 @@ class Rotation {
 	 * \return The velocity value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
-	std::int32_t get_velocity();
+	virtual std::int32_t get_velocity();
 
 	/**
 	 * Get the Rotation sensor's current rotational position in terms of an angle
 	 * measured in degrees.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -99,50 +99,50 @@ class Rotation {
 	 * \return The angle value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	std::int32_t get_angle();
+	virtual std::int32_t get_angle();
 
 	/**
-	 * Sets if the rotational sensor's positive/negative direction is reversed or not. 
-	 * 
+	 * Sets if the rotational sensor's positive/negative direction is reversed or not.
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
 	 *
 	 * \param  value
-	 * 				 Determines if the direction of the rotational sensor is 
+	 * 				 Determines if the direction of the rotational sensor is
 	 * 				 reversed or not.
-	 * 
+	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	std::int32_t set_reversed(bool value);
-	
+	virtual std::int32_t set_reversed(bool value);
+
 	/**
 	 * Reverses the rotational sensor's positive counterclockwise/clockwise direction.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
-	 * 
+	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	std::int32_t reverse();
+	virtual std::int32_t reverse();
 
 	/**
 	 * Gets if the rotational sensor's positive/negative direction is reversed or not.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Rotation Sensor
-	 * 
+	 *
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	std::int32_t get_reversed();
+	virtual std::int32_t get_reversed();
 };
 }  // namespace pros
 
