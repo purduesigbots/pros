@@ -65,7 +65,8 @@ int32_t rotation_reset(uint8_t port);
 int32_t rotation_set_position(uint8_t port, uint32_t position);
 
 /**
- * Get the Rotation sensor's current rotational position.
+ * Get the Rotation sensor's current rotational position.  Specifically, in
+ * terms of hundreths of degrees.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -96,7 +97,7 @@ int32_t rotation_get_velocity(uint8_t port);
 
 /**
  * Get the Rotation sensor's current rotational position in terms of an angle
- * measured in degrees. Specifically, in terms of hundreths of degrees.
+ * measured in hundreths of degrees.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
