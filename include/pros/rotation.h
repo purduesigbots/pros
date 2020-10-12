@@ -46,7 +46,6 @@ namespace c {
  */
 int32_t rotation_reset(uint8_t port);
 
-
 /**
  * Set the Rotation sensor to a desired rotation value.
  *
