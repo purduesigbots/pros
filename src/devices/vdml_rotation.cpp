@@ -38,7 +38,7 @@ std::int32_t Rotation::set_reversed(bool value) {
 }
 
 std::int32_t Rotation::reverse(void) {
-    return pros::c::rotation_set_reversed(_port,!pros::c::rotation_get_position(_port));
+    return pros::c::rotation_set_reversed(_port,!pros::c::rotation_get_reversed(_port));
 }
 
 std::int32_t Rotation::get_reversed(void) {
