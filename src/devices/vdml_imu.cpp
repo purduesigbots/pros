@@ -98,50 +98,50 @@ std::int32_t Imu::reset_yaw() {
 	return 1;
 }
 
-// Current Value Setters: (Not done yet)
+// Current Value Setters: Set Value
 
-std::int32_t Imu::set_heading() {
+std::int32_t Imu::set_heading(std::int32_t target) {
 	std::int32_t current = pros::c::imu_get_heading(_port);
 	if(current == PROS_ERR){
 		return PROS_ERR;
 	}
-	this->_heading_offset = -rtn;
+	this->_heading_offset = target - current;
 	return 1;
 }
 
-std::int32_t Imu::set_rotation() {
-	std::int32_t rtn = pros::c::imu_get_pitch(_port);
-	if(rtn == PROS_ERR){
+std::int32_t Imu::set_rotation(std::int32_t target) {
+	std::int32_t current = pros::c::imu_get_pitch(_port);
+	if(current == PROS_ERR){
 		return PROS_ERR;
 	}
-	this->_pitch_offset = -rtn;
+	this->_pitch_offset = target - current;
 	return 1;
 }
 
-std::int32_t Imu::set_pitch() {
-	std::int32_t rtn = pros::c::imu_get_pitch(_port);
-	if(rtn = PROS_ERR){
+std::int32_t Imu::set_pitch(std::int32_t target) {
+	std::int32_t current = pros::c::imu_get_pitch(_port);
+	if(current = PROS_ERR){
 		return PROS_ERR;
 	}
-	this->_roll_offset = -rtn;
+	this->_roll_offset = target - current;
 	return 1;
 }
 
-std::int32_t Imu::set_roll() {
-	std::int32_t rtn = pros::c::imu_get_pitch(_port);
-	if(rtn = PROS_ERR){
+std::int32_t Imu::set_roll(std::int32_t target) {
+	std::int32_t current = pros::c::imu_get_pitch(_port);
+	if(current = PROS_ERR){
 		return PROS_ERR;
 	}
-	this->_roll_offset = -rtn;
+	this->_roll_offset = target - current;
 	return 1;
 }
 
-std::int32_t Imu::set_yaw() {
-	std::int32_t rtn = pros::c::imu_get_yaw(_port);
-	if(rtn == PROS_ERR){
+std::int32_t Imu::set_yaw(std::int32_t target) {
+	std::int32_t current = pros::c::imu_get_yaw(_port);
+	if(current == PROS_ERR){
 		return PROS_ERR;
 	}
-	this->_yaw_offset = -rtn;
+	this->_yaw_offset = -current;
 	return 1;
 }
 
