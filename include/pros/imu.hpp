@@ -289,7 +289,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t Imu::set_heading(std::int32_t target);
+	virtual std::int32_t set_heading(std::int32_t target);
 	/**
 	 * Sets the current reading of the Inertial Sensor's rotation to target value
 	 *
@@ -304,7 +304,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t Imu::set_rotation(std::int32_t target);
+	virtual std::int32_t set_rotation(std::int32_t target);
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
 	 *
@@ -319,7 +319,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t Imu::set_yaw(std::int32_t target);
+	virtual std::int32_t set_yaw(std::int32_t target);
 	/**
 	 * Sets the current reading of the Inertial Sensor's pitch to target value
 	 *
@@ -334,7 +334,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t Imu::set_pitch(std::int32_t target);
+	virtual std::int32_t set_pitch(std::int32_t target);
 		/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 *
@@ -349,7 +349,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t Imu::set_roll(std::int32_t target);
+	virtual std::int32_t set_roll(std::int32_t target);
 	/**
 	 *  Get the current offset of the IMU's rotation reading from its true value
 	 *
@@ -361,10 +361,10 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The rotation offset or PROS_ERR if the operation failed, setting 
+	 * errno.
 	 */
-	virtual std::int32_t Imu::get_rotation_offset() const;
+	virtual std::int32_t get_rotation_offset() const;
 	/**
 	 *  Get the current offset of the IMU's heading reading from its true value
 	 *
@@ -376,10 +376,10 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The heading offset or PROS_ERR if the operation failed, setting 
+	 * errno.
 	 */
-	virtual std::int32_t Imu::get_heading_offset() const;
+	virtual std::int32_t get_heading_offset() const;
 	/**
 	 *  Get the current offset of the IMU's pitch reading from its true value
 	 *
@@ -391,10 +391,10 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The pitch offset or PROS_ERR if the operation failed, setting 
+	 * errno.
 	 */
-	virtual std::int32_t Imu::get_pitch_offset() const;
+	virtual std::int32_t get_pitch_offset() const;
 	/**
 	 *  Get the current offset of the IMU's roll reading from its true value
 	 *
@@ -406,10 +406,10 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The roll offset or PROS_ERR if the operation failed, setting 
+	 * errno.
 	 */
-	virtual std::int32_t Imu::get_roll_offset() const;
+	virtual std::int32_t get_roll_offset() const;
 	/**
 	 *  Get the current offset of the IMU's yaw reading from its true value
 	 *
@@ -421,12 +421,12 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return The yaw offset or PROS_ERR if the operation failed, setting 
+	 * errno.
 	 */
-	virtual std::int32_t Imu::get_yaw_offset() const;
+	virtual std::int32_t get_yaw_offset() const;
 	/**
-	 * Get the Inertial Sensor's raw acceleroneter values
+	 * Get the Inertial Sensor's raw accelerometer values
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

@@ -120,7 +120,7 @@ std::int32_t Imu::set_rotation(std::int32_t target) {
 
 std::int32_t Imu::set_pitch(std::int32_t target) {
 	std::int32_t current = pros::c::imu_get_pitch(_port);
-	if(current = PROS_ERR){
+	if(current == PROS_ERR){
 		return PROS_ERR;
 	}
 	this->_roll_offset = target - current;
@@ -129,7 +129,7 @@ std::int32_t Imu::set_pitch(std::int32_t target) {
 
 std::int32_t Imu::set_roll(std::int32_t target) {
 	std::int32_t current = pros::c::imu_get_pitch(_port);
-	if(current = PROS_ERR){
+	if(current == PROS_ERR){
 		return PROS_ERR;
 	}
 	this->_roll_offset = target - current;
