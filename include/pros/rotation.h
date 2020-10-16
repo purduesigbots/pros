@@ -31,8 +31,8 @@ namespace c {
 /**
  * Resets Rotational Sensor 
  *
- * Resets rotation sensor by multiplying it by -1 only if the direction
- * was recently reversed.
+ * Resets rotation sensor by multiplying the rotation reading by 
+ * -1 only if the direction was recently reversed.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -123,7 +123,7 @@ int32_t rotation_get_angle(uint8_t port);
  * \param  value
  * 				 Determines if the direction of the rotational sensor is reversed or not.
  * 
- * \return 1 if operation succeeded or PROS_ERR_F if the operation failed, setting
+ * \return 1 if operation succeeded or PROS_ERR if the operation failed, setting
  * errno.
  */
 int32_t rotation_set_reversed(uint8_t port, bool value);
