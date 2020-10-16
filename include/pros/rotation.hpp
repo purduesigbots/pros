@@ -30,9 +30,8 @@ class Rotation {
 	Rotation(const std::uint8_t port) : _port(port){};
 
 	/**
-	 * Resets Rotational Sensor
-	 *
-	 * Resets rotation presumably to 0.
+ 	 * Resets rotation sensor by multiplying the rotation reading by 
+ 	 * -1 only if the direction was recently reversed.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -60,7 +59,8 @@ class Rotation {
 	virtual std::int32_t set_position(std::uint32_t position);
 
 	/**
-	 * Get the Rotation sensor's current rotational position.
+	 * Resets rotation sensor by multiplying the rotation reading by 
+	 * -1 only if the direction was recently reversed.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -73,7 +73,8 @@ class Rotation {
 	virtual std::int32_t get_position();
 
 	/**
-	 * Get the Rotation sensor's current rotational velocity.
+ 	 * Get the Rotation sensor's current rotational velocity in hundreths of
+	 * degrees per second.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -82,7 +83,8 @@ class Rotation {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The velocity value or PROS_ERR_F if the operation failed, setting
+	 * \return The 
+	 value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
 	virtual std::int32_t get_velocity();
