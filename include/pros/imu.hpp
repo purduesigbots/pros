@@ -467,8 +467,8 @@ class Imu {
 	std::int32_t _heading_offset;
 	std::int32_t _rotation_offset;
 	std::int32_t _pitch_offset;
-	std::int32_t _roll_offset;
 	std::int32_t _yaw_offset;
+	std::int32_t _roll_offset;
 };
 }  // namespace pros
 
