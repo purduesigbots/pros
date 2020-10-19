@@ -59,6 +59,12 @@ int32_t rotation_set_reversed(uint8_t port, bool value) {
 	return_port(port - 1, 1);
 }
 
+int32_t rotation_reverse(uint8_t port){
+	claim_port_i(port - 1, E_DEVICE_ROTATION);
+	vexDeviceAbsEncReverseFlagSet(device->device_info, !vexDeviceAbsEncReverseFlagGet(device->device_info));
+	return_port(port - 1, 1);
+}
+
 int32_t rotation_get_reversed(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	int32_t rtn = vexDeviceAbsEncReverseFlagGet(device->device_info);

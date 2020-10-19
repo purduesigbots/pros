@@ -146,6 +146,22 @@ int32_t rotation_get_angle(uint8_t port);
 int32_t rotation_set_reversed(uint8_t port, bool value);
 
 /**
+ * Reverses the rotational sensor's positive counterclockwise/clockwise direction.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Rotation Sensor
+ *
+ * \param  port
+ * 				 The V5 Rotation Sensor port number from 1-21
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t rotation_reverse(uint8_t port);
+
+/**
  * Gets if the rotational sensor's positive/negative direction is reversed or not.
  * 
  * This function uses the following values of errno when an error state is
