@@ -25,13 +25,13 @@ namespace pros {
 class Imu {
 	const std::uint8_t _port;
 	public:
-	Imu(const std::uint8_t port) : _port(port){
-		this->_heading_offset = 0; 
-		this->_rotation_offset = 0; 
-		this->_pitch_offset = 0; 
-		this->_yaw_offset = 0;
-		this->_roll_offset = 0;
-		};
+	Imu(const std::uint8_t port) : _port(port) 
+		,_heading_offset(0)
+		,_rotation_offset(0)
+		,_pitch_offset(0) 
+		,_yaw_offset(0) 
+		,_roll_offset(0)
+		{};
 
 	/**
 	 * Calibrate IMU
