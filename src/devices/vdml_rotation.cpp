@@ -22,7 +22,7 @@ std::int32_t Rotation::set_position(std::uint32_t position) {
 }
 
 std::int32_t Rotation::reset_position(void) {
-	return pros::c::rotation_reset_position();
+	return pros::c::rotation_reset_position(_port);
 }
 
 std::int32_t Rotation::get_position(void) {
