@@ -47,7 +47,7 @@ namespace c {
 int32_t rotation_reset(uint8_t port);
 
 /**
- * Set the Rotation sensor to a desired rotation value.
+ * Set the Rotation sensor position reading to a desired rotation value.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -62,6 +62,22 @@ int32_t rotation_reset(uint8_t port);
  * failed, setting errno.
  */
 int32_t rotation_set_position(uint8_t port, uint32_t position);
+
+/**
+ * Resets the Rotation sensor position to 0.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Rotation Sensor
+ *
+ * \param port
+ *		  The V5 Rotation Sensor port number from 1-21
+
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t rotation_reset_position(uint8_t port);
 
 /**
  * Get the Rotation sensor's current rotational position.  Specifically, in

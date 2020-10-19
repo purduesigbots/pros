@@ -44,7 +44,7 @@ class Rotation {
 	virtual std::int32_t reset();
 
 	/**
-	 * Set the Rotation sensor to a desired rotation value.
+ 	 * Set the Rotation sensor position reading to a desired rotation value.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -57,6 +57,21 @@ class Rotation {
 	 * failed, setting errno.
 	 */
 	virtual std::int32_t set_position(std::uint32_t position);
+
+	/**
+	 * Reset the Rotation sensor to a desired rotation value.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Rotation Sensor
+	 *
+	 * \param position
+	 * 		  The position in terms of ticks
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t reset_position(void);
 
 	/**
 	 * Resets rotation sensor by multiplying the rotation reading by 
