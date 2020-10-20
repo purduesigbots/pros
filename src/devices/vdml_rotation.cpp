@@ -26,7 +26,7 @@ std::int32_t Rotation::reset_position(void) {
 }
 
 std::int32_t Rotation::get_position(void) {
-    return pros::c::rotation_get_angle(_port);
+    return pros::c::rotation_get_position(_port);
 }
 
 std::int32_t Rotation::get_velocity(void) {
