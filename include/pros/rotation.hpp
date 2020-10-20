@@ -30,6 +30,8 @@ class Rotation {
 	Rotation(const std::uint8_t port) : _port(port){};
 
 	/**
+	 * Resets Rotation Sensor 
+	 * 
  	 * Resets rotation sensor by multiplying the rotation reading by 
  	 * -1 only if the direction was recently reversed.
 	 *
@@ -44,7 +46,7 @@ class Rotation {
 	virtual std::int32_t reset();
 
 	/**
- 	 * Set the Rotation sensor position reading to a desired rotation value.
+ 	 * Set the rotation sensor position reading to a desired rotation value.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -59,7 +61,7 @@ class Rotation {
 	virtual std::int32_t set_position(std::uint32_t position);
 
 	/**
-	 * Reset the Rotation sensor to a desired rotation value.
+	 * Reset the rotation sensor to a desired rotation value.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -74,8 +76,8 @@ class Rotation {
 	virtual std::int32_t reset_position(void);
 
 	/**
-	 * Resets rotation sensor by multiplying the rotation reading by 
-	 * -1 only if the direction was recently reversed.
+ 	 * Get the Rotation sensor's current position.  Specifically, in
+ 	 * terms of hundreths of degrees.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -88,8 +90,8 @@ class Rotation {
 	virtual std::int32_t get_position();
 
 	/**
- 	 * Get the Rotation sensor's current rotational velocity in hundreths of
-	 * degrees per second.
+ 	 * Get the Rotation sensor's current velocity in hundreths of
+ 	 * degrees per second.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -105,8 +107,8 @@ class Rotation {
 	virtual std::int32_t get_velocity();
 
 	/**
-	 * Get the Rotation sensor's current rotational position in terms of an angle
-	 * measured in degrees.
+     * Get the Rotation sensor's current position in terms of an angle
+     * measured in hundreths of degrees.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -119,7 +121,7 @@ class Rotation {
 	virtual std::int32_t get_angle();
 
 	/**
-	 * Sets if the rotational sensor's positive/negative direction is reversed or not.
+	 * Sets if the rotation sensor's positive/negative direction is reversed or not.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -136,7 +138,7 @@ class Rotation {
 	virtual std::int32_t set_reversed(bool value);
 
 	/**
-	 * Reverses the rotational sensor's positive counterclockwise/clockwise direction.
+	 * Reverses the rotation sensor's direction.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -149,7 +151,7 @@ class Rotation {
 	virtual std::int32_t reverse();
 
 	/**
-	 * Gets if the rotational sensor's positive/negative direction is reversed or not.
+	 * Check whether the rotation sensor's direction is reversed.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

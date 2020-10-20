@@ -29,7 +29,7 @@ namespace c {
 #endif
 
 /**
- * Resets Rotational Sensor 
+ * Resets Rotation Sensor 
  *
  * Resets rotation sensor by multiplying the rotation reading by 
  * -1 only if the direction was recently reversed.
@@ -47,7 +47,7 @@ namespace c {
 int32_t rotation_reset(uint8_t port);
 
 /**
- * Set the Rotation sensor position reading to a desired rotation value.
+ * Set the rotation sensor position reading to a desired rotation value.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -64,7 +64,7 @@ int32_t rotation_reset(uint8_t port);
 int32_t rotation_set_position(uint8_t port, uint32_t position);
 
 /**
- * Resets the Rotation sensor position to 0.
+ * Resets the rotation sensor position to 0.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -80,7 +80,7 @@ int32_t rotation_set_position(uint8_t port, uint32_t position);
 int32_t rotation_reset_position(uint8_t port);
 
 /**
- * Get the Rotation sensor's current rotational position.  Specifically, in
+ * Get the Rotation sensor's current position.  Specifically, in
  * terms of hundreths of degrees.
  *
  * This function uses the following values of errno when an error state is
@@ -96,7 +96,7 @@ int32_t rotation_reset_position(uint8_t port);
 int32_t rotation_get_position(uint8_t port);
 
 /**
- * Get the Rotation sensor's current rotational velocity in hundreths of
+ * Get the Rotation sensor's current velocity in hundreths of
  * degrees per second.
  *
  * This function uses the following values of errno when an error state is
@@ -112,7 +112,7 @@ int32_t rotation_get_position(uint8_t port);
 int32_t rotation_get_velocity(uint8_t port);
 
 /**
- * Get the Rotation sensor's current rotational position in terms of an angle
+ * Get the Rotation sensor's current position in terms of an angle
  * measured in hundreths of degrees.
  * 
  * This function uses the following values of errno when an error state is
@@ -128,7 +128,7 @@ int32_t rotation_get_velocity(uint8_t port);
 int32_t rotation_get_angle(uint8_t port);
 
 /**
- * Sets if the rotational sensor's positive/negative direction is reversed or not.
+ * Sets if the rotation sensor's positive/negative direction is reversed or not.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -138,7 +138,7 @@ int32_t rotation_get_angle(uint8_t port);
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
  * \param  value
- * 				 Determines if the direction of the rotational sensor is reversed or not.
+ * 				 Determines if the direction of the rotation sensor is reversed or not.
  * 
  * \return 1 if operation succeeded or PROS_ERR if the operation failed, setting
  * errno.
@@ -146,7 +146,7 @@ int32_t rotation_get_angle(uint8_t port);
 int32_t rotation_set_reversed(uint8_t port, bool value);
 
 /**
- * Reverses the rotational sensor's positive counterclockwise/clockwise direction.
+ * Reverses the rotation sensor's direction.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -162,7 +162,7 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
 int32_t rotation_reverse(uint8_t port);
 
 /**
- * Gets if the rotational sensor's positive/negative direction is reversed or not.
+ * Check whether the rotation sensor's direction is reversed.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
