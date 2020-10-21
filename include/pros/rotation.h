@@ -1,7 +1,7 @@
 /**
  * \file pros/rotation.h
  *
- * Contains prototypes for functions related to the VEX Rotation sensor.
+ * Contains prototypes for functions related to the VEX rotation sensor.
  *
  * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/rotation.html to learn
  * more.
@@ -29,34 +29,34 @@ namespace c {
 #endif
 
 /**
- * Resets Rotation Sensor 
+ * Reset rotation sensor 
  *
- * Resets rotation sensor by multiplying the rotation reading by 
+ * Reset rotation sensor by multiplying the rotation reading by 
  * -1 and changes the angle by -180 degrees only if the direction 
- * was recently reversed. 
+ * was recently reversed
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param port
- *        The V5 Rotation Sensor port number from 1-21
+ *        The V5 rotation sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
 int32_t rotation_reset(uint8_t port);
 
 /**
- * Set the rotation sensor position reading to a desired rotation value.
+ * Set the rotation sensor position reading to a desired rotation value
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param port
- *		  The V5 Rotation Sensor port number from 1-21
+ *		  The V5 rotation sensor port number from 1-21
  * \param position 
  * 		  The position in terms of ticks
  * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -65,15 +65,15 @@ int32_t rotation_reset(uint8_t port);
 int32_t rotation_set_position(uint8_t port, uint32_t position);
 
 /**
- * Resets the rotation sensor position to 0.
+ * Reset the rotation sensor position to 0
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param port
- *		  The V5 Rotation Sensor port number from 1-21
+ *		  The V5 rotation sensor port number from 1-21
 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
@@ -81,48 +81,45 @@ int32_t rotation_set_position(uint8_t port, uint32_t position);
 int32_t rotation_reset_position(uint8_t port);
 
 /**
- * Get the Rotation sensor's current position.  Specifically, in
- * terms of hundreths of degrees.
+ * Get the rotation sensor's current position in centidegrees
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  * \return The position value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_position(uint8_t port);
 
 /**
- * Get the Rotation sensor's current velocity in hundreths of
- * degrees per second.
+ * Get the rotation sensor's current velocity in centidegrees per second
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  * \return The velocity value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_velocity(uint8_t port);
 
 /**
- * Get the Rotation sensor's current position in terms of an angle
- * measured in hundreths of degrees.
+ * Get the rotation sensor's current position in centidegrees
  * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  * \return The angle value or PROS_ERR_F if the operation failed, setting
  * errno.
  */
@@ -134,10 +131,10 @@ int32_t rotation_get_angle(uint8_t port);
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  * \param  value
  * 				 Determines if the direction of the rotation sensor is reversed or not.
  * 
@@ -147,15 +144,15 @@ int32_t rotation_get_angle(uint8_t port);
 int32_t rotation_set_reversed(uint8_t port, bool value);
 
 /**
- * Reverses the rotation sensor's direction.
+ * Reverse the rotation sensor's direction
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
@@ -163,15 +160,15 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
 int32_t rotation_reverse(uint8_t port);
 
 /**
- * Check whether the rotation sensor's direction is reversed.
+ * Get the rotation sensor's reversed flag
  * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Rotation Sensor
+ * ENODEV - The port cannot be configured as an rotation sensor
  *
  * \param  port
- * 				 The V5 Rotation Sensor port number from 1-21
+ * 				 The V5 rotation sensor port number from 1-21
  * 
  * \return Boolean value of if the rotation sensor's direction is reversed or not
  * or PROS_ERR if the operation failed, setting errno.
