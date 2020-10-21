@@ -129,7 +129,7 @@ int32_t rotation_get_velocity(uint8_t port);
 int32_t rotation_get_angle(uint8_t port);
 
 /**
- * Sets if the rotation sensor's positive/negative direction is reversed or not.
+ * Set the rotation sensor's direction reversed flag
  * 
  * This function uses the following values of errno when an error state is
  * reached:
