@@ -31,9 +31,8 @@ namespace c {
 /**
  * Reset rotation sensor 
  *
- * Reset rotation sensor by multiplying the rotation reading by 
- * -1 and changes the angle by -180 degrees only if the direction 
- * was recently reversed
+ * Reset the current absolute position to be the same as the
+ * rotation sensor angle.
  *
  * This function uses the following values of errno when an error state is
  * reached:
