@@ -82,7 +82,7 @@ double optical_get_hue(uint8_t port);
 /**
  * Get the detected color saturation
  *
- * This is not avaliable if gestures are being detected. Saturation has a
+ * This is not available if gestures are being detected. Saturation has a
  * range of 0 to 1.0
  *
  * This function uses the following values of errno when an error state is
