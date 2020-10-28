@@ -134,7 +134,7 @@ double optical_get_brightness(uint8_t port);
 int32_t optical_get_proximity(uint8_t port);
 
 /**
- * Set the pwm value of the White LED on the sensor
+ * Set the pwm value of the White LED
  *
  * value that ranges from 0 to 100
  *
@@ -151,9 +151,8 @@ int32_t optical_get_proximity(uint8_t port);
 int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
 
 /**
- * Get the pwm value of the White LED on the sensor
+ * Get the pwm value of the White LED
  *
- * value that ranges from 0 to 100
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -162,8 +161,8 @@ int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
  *
  * \param port
  *        The V5 Optical Sensor port number from 1-21
- * \return LED pwm value if the operation was successful or PROS_ERR if
- * the operation failed, setting errno.
+ * \return LED pwm value that ranges from 0 to 100 if the operation was 
+ * successful or PROS_ERR if the operation failed, setting errno.
  */
 int32_t optical_get_led_pwm(uint8_t port);
 

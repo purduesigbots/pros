@@ -201,7 +201,8 @@ class Optical {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return The Error code encountered
+	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
+ 	 * setting errno.
 	 */
 	virtual std::int32_t enable_gesture();
 
@@ -213,7 +214,8 @@ class Optical {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return The Error code encountered
+	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
+ 	 * setting errno.
 	 */
 	virtual std::int32_t disable_gesture();
 
