@@ -182,7 +182,7 @@ int32_t optical_get_led_pwm(uint8_t port);
 optical_rgb_s_t optical_get_rgb(uint8_t port);
 
 /**
- * Get the raw un-processed RGBC data from the sensor
+ * Get the raw, unprocessed RGBC data from the sensor
  *
  * This function uses the following values of errno when an error state is
  * reached:
