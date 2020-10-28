@@ -64,7 +64,7 @@ typedef struct optical_gesture_s {
 /**
  * Get the detected color hue
  *
- * This is not avaliable if gestures are being detected. Hue has a
+ * This is not available if gestures are being detected. Hue has a
  * range of 0 to 359.999
  *
  * This function uses the following values of errno when an error state is
