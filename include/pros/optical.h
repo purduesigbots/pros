@@ -200,11 +200,6 @@ optical_raw_s_t optical_get_raw(uint8_t port);
  * Get the most recent gesture data from the sensor
  *
  * Gestures will be cleared after 500mS
- * 0 = no gesture
- * 1 = up (towards cable)
- * 2 = down
- * 3 = right
- * 4 = left
  *
  * This function uses the following values of errno when an error state is
  * reached:
