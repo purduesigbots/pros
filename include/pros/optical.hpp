@@ -92,7 +92,7 @@ class Optical {
 	/**
 	 * Get the detected proximity value
 	 *
-	 * This is not avaliable if gestures are being detected. proximity has
+	 * This is not available if gestures are being detected. proximity has
 	 * a range of 0 to 255.
 	 *
 	 * This function uses the following values of errno when an error state is
