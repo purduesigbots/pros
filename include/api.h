@@ -56,6 +56,7 @@
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/rtos.h"
+#include "pros/rotation.h"
 #include "pros/vision.h"
 
 #ifdef __cplusplus
@@ -65,6 +66,7 @@
 #include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
+#include "pros/rotation.hpp"
 #include "pros/rtos.hpp"
 #include "pros/vision.hpp"
 #endif
