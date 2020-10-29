@@ -421,7 +421,7 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
  *        The smart port number that the ADI Expander is in
  * \param adi_port_top
  *        The "top" wire from the encoder sensor with the removable cover side
- *        up
+ *        up. This should be in port 1, 3, 5, or 7 ('A', 'C', 'E', or 'G').
  * \param adi_port_bottom
  *        The "bottom" wire from the encoder sensor
  * \param reverse
