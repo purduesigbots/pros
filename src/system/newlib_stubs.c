@@ -50,4 +50,6 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 		errno = EINVAL;
 		break;
 	}
+
+	return retval;
 }
