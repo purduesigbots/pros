@@ -16,6 +16,7 @@
 
 #include <errno.h>
 #include <stdint.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include "rtos/task.h"
@@ -32,4 +33,21 @@ void _exit(int status) {
 // info see https://github.com/purduesigbots/pros/issues/153#issuecomment-519335375
 void __sync_synchronize(void) {
 	__sync_synchronize();
+}
+
+int clock_gettime(clockid_t clock_id, struct timespec* tp) {
+	struct timeval tv;
+	int retval = -1;
+
+	switch (clock_id)
+	{
+	case CLOCK_REALTIME:
+		retval = gettimeofday(&tv, NULL);
+		if (!retval) TIMEVAL_TO_TIMESPEC(&tv, tp);
+		break;
+	
+	default:
+		errno = EINVAL;
+		break;
+	}
 }
