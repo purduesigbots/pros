@@ -53,3 +53,10 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 
 	return retval;
 }
+
+int _gettimeofday(struct timeval* tp, void* tzvp) {
+	tp->tv_sec = vexSystemTimeGet() * 1000;
+	tp->tv_usec = vexSystemHighResTimeGet();
+
+	return 1;
+}
