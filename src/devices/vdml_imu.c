@@ -22,7 +22,11 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
-int32_t imu_reset(uint8_t port) {
+typedef struct imu_reset_data { 
+	double heading_offset, rotation_offset, pitch_offset, yaw_offset, roll_offset;
+} imu_data_s_t;
+
+int32_t imu_calibrate(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	vexDeviceImuReset(device->device_info);
@@ -47,14 +51,14 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 double imu_get_rotation(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuHeadingGet(device->device_info);
+	double rtn = vexDeviceImuHeadingGet(device->device_info) + imu_get_rotation_offset(port - 1);
 	return_port(port - 1, rtn);
 }
 
 double imu_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuDegreesGet(device->device_info);
+	double rtn = vexDeviceImuDegreesGet(device->device_info) + imu_get_heading_offset(port - 1);
 	return_port(port - 1, rtn);
 }
 
@@ -85,27 +89,39 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	{ .pitch = PROS_ERR_F, .roll = PROS_ERR_F, .yaw = PROS_ERR_F }
 
 euler_s_t imu_get_euler(uint8_t port) {
-	euler_s_t rtn = ATTITUDE_ERR_INIT;
+	euler_s_t rtn;
 	v5_smart_device_s_t* device;
-	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
-		return rtn;
-	}
 	device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
-	return_port(port - 1, rtn);
+	return rtn;
 }
 
 double imu_get_pitch(uint8_t port) {
-	return imu_get_euler(port).pitch;
+	double rtn = PROS_ERR_F;
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return rtn;
+	}
+	rtn = imu_get_euler(port).pitch + imu_get_heading_offset(port - 1);
+	return_port(port - 1, rtn);
 }
 
 double imu_get_roll(uint8_t port) {
-	return imu_get_euler(port).roll;
+	double rtn = PROS_ERR_F;
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return rtn;
+	}
+	rtn = imu_get_euler(port).roll + imu_get_roll_offset(port - 1);
+	return_port(port - 1, rtn);
 }
 
 double imu_get_yaw(uint8_t port) {
-	return imu_get_euler(port).yaw;
+	double rtn = PROS_ERR_F;
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return rtn;
+	}
+	rtn = imu_get_euler(port).yaw + imu_get_yaw_offset(port - 1);
+	return_port(port - 1, rtn);
 }
 
 #define RAW_IMU_ERR_INIT {.x = PROS_ERR_F, .y = PROS_ERR_F, .z = PROS_ERR_F};
@@ -155,4 +171,59 @@ imu_status_e_t imu_get_status(uint8_t port) {
 	device = registry_get_device(port - 1);
 	rtn = vexDeviceImuStatusGet(device->device_info);
 	return_port(port - 1, rtn);
+}
+
+
+//Reset Functions:
+/*
+int32_t imu_reset_rotation(uint8_t port){
+    imu_set_heading_offset
+}
+*/
+
+//Internal functions for getting IMU offsets (Not thread safe)
+double imu_get_heading_offset(uint8_t port){
+    return ((imu_data_s_t*)registry_get_device(port)->pad)->heading_offset;
+}
+
+double imu_get_rotation_offset(uint8_t port){
+    return ((imu_data_s_t*)registry_get_device(port)->pad)->rotation_offset;
+}
+
+double imu_get_pitch_offset(uint8_t port){
+    return ((imu_data_s_t*)registry_get_device(port)->pad)->pitch_offset;
+}
+
+double imu_get_yaw_offset(uint8_t port){
+    return ((imu_data_s_t*)registry_get_device(port)->pad)->yaw_offset;
+}
+
+double imu_get_roll_offset(uint8_t port){
+    return ((imu_data_s_t*)registry_get_device(port)->pad)->roll_offset;
+}
+
+//Internal offset setter functions (Not Thread safe)
+void imu_set_heading_offset(uint8_t port, double current) {
+	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
+	data->heading_offset = -current;
+}
+
+void imu_set_rotation_offset(uint8_t port, double current) {
+	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
+	data->rotation_offset = -current;
+}
+
+void imu_set_pitch_offset(uint8_t port, double current) {
+	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
+	data->pitch_offset = -current;
+}
+
+void imu_set_yaw_offset(uint8_t port, double current) {
+	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
+	data->yaw_offset = -current;
+}
+
+void imu_set_roll_offset(uint8_t port, double current) {
+	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
+	data->roll_offset = -current;
 }

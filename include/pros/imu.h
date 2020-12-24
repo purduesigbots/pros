@@ -74,7 +74,7 @@ typedef struct __attribute__((__packed__)) euler_s {
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset(uint8_t port);
+int32_t imu_calibrate(uint8_t port);
 
 
 /**
@@ -275,6 +275,23 @@ imu_status_e_t imu_get_status(uint8_t port);
 // NOTE: not used
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
+
+//reset functions: (TODO: Finish Documentation)
+int32_t imu_reset_rotation(uint8_t port);
+
+//Offset Getter Functions (TODO: Finish Documentation)
+double imu_get_heading_offset(uint8_t port);
+double imu_get_rotation_offset(uint8_t port);
+double imu_get_pitch_offset(uint8_t port);
+double imu_get_yaw_offset(uint8_t port);
+double imu_get_roll_offset(uint8_t port);
+
+//Setter Functions
+void imu_set_heading_offset(uint8_t port, double current);
+void imu_set_rotation_offset(uint8_t port, double current);
+void imu_set_pitch_offset(uint8_t port, double current);
+void imu_set_yaw_offset(uint8_t port, double current);
+void imu_set_roll_offset(uint8_t port, double current);
 
 #ifdef __cplusplus
 }

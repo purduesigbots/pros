@@ -25,13 +25,7 @@ namespace pros {
 class Imu {
 	const std::uint8_t _port;
 	public:
-	Imu(const std::uint8_t port) : _port(port) 
-		,_heading_offset(0)
-		,_rotation_offset(0)
-		,_pitch_offset(0) 
-		,_yaw_offset(0) 
-		,_roll_offset(0)
-		{};
+	Imu(const std::uint8_t port) : _port(port){};
 
 	/**
 	 * Calibrate IMU
@@ -47,7 +41,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset() const;
+	virtual std::int32_t calibrate() const;
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
