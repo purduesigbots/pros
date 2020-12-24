@@ -72,14 +72,19 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 	while (true) {
-		pros::lcd::print(0, "Rotation: %f", pros::c::imu_get_rotation(4));
-		pros::lcd::print(1, "Heading: %f",
-		                 pros::c::imu_get_heading(4));
+		pros::lcd::print(0, "Pitch: %f", pros::c::imu_get_pitch(4));
+		pros::lcd::print(1, "Roll: %f",
+		                 pros::c::imu_get_roll(4));
+		pros::lcd::print(2, "Yaw: %f",
+		                 pros::c::imu_get_yaw(4));
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)){
-			pros::c::imu_reset_rotation(4);
+			pros::c::imu_reset_pitch(4);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
+			pros::c::imu_reset_roll(4);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)){
-			pros::c::imu_reset_heading(4);
+			pros::c::imu_reset_yaw(4);
 		}
 		pros::delay(20);
 	}
