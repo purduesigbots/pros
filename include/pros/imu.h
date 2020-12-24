@@ -282,6 +282,7 @@ int32_t imu_reset_rotation(uint8_t port);
 int32_t imu_reset_pitch(uint8_t port);
 int32_t imu_reset_roll(uint8_t port);
 int32_t imu_reset_yaw(uint8_t port);
+int32_t imu_reset(uint8_t port);
 
 //Offset Getter Functions (TODO: Finish Documentation)
 double imu_get_heading_offset(uint8_t port);
