@@ -24,6 +24,7 @@
 namespace pros {
 class Imu {
 	const std::uint8_t _port;
+
 	public:
 	Imu(const std::uint8_t port) : _port(port){};
 
@@ -208,7 +209,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_rotation();
+	virtual std::int32_t reset_rotation() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's heading to zero
 	 *
@@ -223,7 +224,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_heading();
+	virtual std::int32_t reset_heading() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's pitch to zero
 	 *
@@ -238,7 +239,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_pitch();
+	virtual std::int32_t reset_pitch() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's pitch to zero
 	 *
@@ -253,7 +254,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_yaw();
+	virtual std::int32_t reset_yaw() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's roll to zero
 	 *
@@ -268,7 +269,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_roll();
+	virtual std::int32_t reset_roll() const;
 	/**
 	 * Resets all 5 values of the Inertial Sensor to 0.
 	 *
@@ -283,7 +284,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset();
+	virtual std::int32_t reset() const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
 	 *

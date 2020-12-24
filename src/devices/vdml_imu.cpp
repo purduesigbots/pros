@@ -65,27 +65,27 @@ bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
 
-std::int32_t reset_heading() {
+std::int32_t Imu::reset_heading() const {
 	return pros::c::imu_reset_heading(_port);
 }
 
-std::int32_t reset_rotation() {
+std::int32_t Imu::reset_rotation() const {
 	return pros::c::imu_reset_rotation(_port);
 }
 
-std::int32_t reset_pitch() {
+std::int32_t Imu::reset_pitch() const {
 	return pros::c::imu_reset_pitch(_port);
 }
 
-std::int32_t reset_yaw() {
+std::int32_t Imu::reset_yaw() const {
 	return pros::c::imu_reset_yaw(_port);
 }
 
-std::int32_t reset_roll() {
+std::int32_t Imu::reset_roll() const {
 	return pros::c::imu_reset_roll(_port);
 }
 
-std::int32_t reset() {
+std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }
 
