@@ -284,6 +284,13 @@ int32_t imu_reset_roll(uint8_t port);
 int32_t imu_reset_yaw(uint8_t port);
 int32_t imu_reset(uint8_t port);
 
+//set value functions: (TODO: Finish Documentation)
+int32_t imu_set_rotation(uint8_t port, double target);
+int32_t imu_set_heading(uint8_t port, double target);
+int32_t imu_set_pitch(uint8_t port, double target);
+int32_t imu_set_roll(uint8_t port, double target);
+int32_t imu_set_yaw(uint8_t port, double target)
+
 //Offset Getter Functions (TODO: Finish Documentation)
 double imu_get_heading_offset(uint8_t port);
 double imu_get_rotation_offset(uint8_t port);
@@ -291,7 +298,7 @@ double imu_get_pitch_offset(uint8_t port);
 double imu_get_yaw_offset(uint8_t port);
 double imu_get_roll_offset(uint8_t port);
 
-//Setter Functions
+//Offset Setter Functions (TODO: Finish Documentation)
 void imu_set_heading_offset(uint8_t port, double target);
 void imu_set_rotation_offset(uint8_t port, double target);
 void imu_set_pitch_offset(uint8_t port, double target);
