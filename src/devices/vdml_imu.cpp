@@ -85,6 +85,26 @@ std::int32_t Imu::reset_roll() const {
 	return pros::c::imu_reset_roll(_port);
 }
 
+std::int32_t Imu::set_heading(double target) const {
+	return pros::c::imu_set_heading(_port, target);
+}
+
+std::int32_t Imu::set_rotation(double target) const {
+	return pros::c::imu_set_rotation(_port, target);
+}
+
+std::int32_t Imu::set_pitch(double target) const {
+	return pros::c::imu_set_pitch(_port, target);
+}
+
+std::int32_t Imu::set_yaw(double target) const {
+	return pros::c::imu_set_yaw(_port, target);
+}
+
+std::int32_t Imu::set_roll(double target) const {
+	return pros::c::imu_set_roll(_port, target);
+}
+
 std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }

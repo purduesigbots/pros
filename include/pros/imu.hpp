@@ -299,7 +299,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_heading(std::int32_t target);
+	virtual std::int32_t set_heading(double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's rotation to target value
 	 *
@@ -314,7 +314,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_rotation(std::int32_t target);
+	virtual std::int32_t set_rotation(double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
 	 *
@@ -329,7 +329,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_yaw(std::int32_t target);
+	virtual std::int32_t set_yaw(double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's pitch to target value
 	 *
@@ -344,7 +344,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_pitch(std::int32_t target);
+	virtual std::int32_t set_pitch(double target) const;
 		/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 *
@@ -359,7 +359,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_roll(std::int32_t target);
+	virtual std::int32_t set_roll(double target) const;
 	/**
 	 *  Get the current offset of the IMU's rotation reading from its true value
 	 *
