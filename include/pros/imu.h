@@ -276,29 +276,192 @@ imu_status_e_t imu_get_status(uint8_t port);
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
 
-//reset functions: (TODO: Finish Documentation)
+//Value reset functions:
+/**
+ * Resets the current reading of the Inertial Sensor's heading to zero
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset_heading(uint8_t port);
+
+/**
+ * Resets the current reading of the Inertial Sensor's rotation to zero
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset_rotation(uint8_t port);
+
+/**
+ * Resets the current reading of the Inertial Sensor's pitch to zero
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset_pitch(uint8_t port);
+
+/**
+ * Resets the current reading of the Inertial Sensor's roll to zero
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset_roll(uint8_t port);
+
+/**
+ * Resets the current reading of the Inertial Sensor's yaw to zero
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset_yaw(uint8_t port);
+
+/**
+ * Resets all 5 values of the Inertial Sensor to 0.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_reset(uint8_t port);
 
-//set value functions: (TODO: Finish Documentation)
+//Value set functions:
+/**
+ * Sets the current reading of the Inertial Sensor's rotation to target value
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_set_rotation(uint8_t port, double target);
+
+/**
+ * Sets the current reading of the Inertial Sensor's set to target value
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_set_heading(uint8_t port, double target);
+
+/**
+ * Sets the current reading of the Inertial Sensor's pitch to target value
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_set_pitch(uint8_t port, double target);
+
+/**
+ * Sets the current reading of the Inertial Sensor's roll to target value
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_set_roll(uint8_t port, double target);
+
+/**
+ * Sets the current reading of the Inertial Sensor's yaw to target value
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t imu_set_yaw(uint8_t port, double target);
 
-//Offset Getter Functions (TODO: Finish Documentation)
+//Offset Getter Functions (Internal Usage, Not Thread Safe)
 double imu_get_heading_offset(uint8_t port);
 double imu_get_rotation_offset(uint8_t port);
 double imu_get_pitch_offset(uint8_t port);
 double imu_get_yaw_offset(uint8_t port);
 double imu_get_roll_offset(uint8_t port);
 
-//Offset Setter Functions (TODO: Finish Documentation)
+//Offset Setter Functions (Internal Usage, Not Thread Safe)
 void imu_set_heading_offset(uint8_t port, double target);
 void imu_set_rotation_offset(uint8_t port, double target);
 void imu_set_pitch_offset(uint8_t port, double target);

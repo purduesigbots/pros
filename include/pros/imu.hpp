@@ -345,7 +345,7 @@ class Imu {
 	 * failed, setting errno.
 	 */
 	virtual std::int32_t set_pitch(double target) const;
-		/**
+	/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 *
 	 * This function uses the following values of errno when an error state is
