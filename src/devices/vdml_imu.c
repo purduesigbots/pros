@@ -173,13 +173,24 @@ imu_status_e_t imu_get_status(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-
 //Reset Functions:
-/*
-int32_t imu_reset_rotation(uint8_t port){
-    imu_set_heading_offset
+int32_t imu_reset_heading(uint8_t port){
+    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return PROS_ERR;
+	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	imu_set_heading_offset(port - 1, vexDeviceImuDegreesGet(device->device_info));
+	return_port(port - 1, 1);
 }
-*/
+
+int32_t imu_reset_rotation(uint8_t port){
+    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return PROS_ERR;
+	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	imu_set_rotation_offset(port - 1, vexDeviceImuHeadingGet(device->device_info));
+	return_port(port - 1, 1);
+}
 
 //Internal functions for getting IMU offsets (Not thread safe)
 double imu_get_heading_offset(uint8_t port){

@@ -277,6 +277,7 @@ imu_status_e_t imu_get_status(uint8_t port);
 // uint32_t imu_get_mode(uint8_t port);
 
 //reset functions: (TODO: Finish Documentation)
+int32_t imu_reset_heading(uint8_t port);
 int32_t imu_reset_rotation(uint8_t port);
 
 //Offset Getter Functions (TODO: Finish Documentation)
