@@ -64,4 +64,29 @@ pros::c::imu_status_e_t Imu::get_status() const {
 bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
+
+virtual std::int32_t reset_heading() {
+	return pros::c::imu_reset_heading(_port);
+}
+
+virtual std::int32_t reset_rotation() {
+	return pros::c::imu_reset_rotation(_port);
+}
+
+virtual std::int32_t reset_pitch() {
+	return pros::c::imu_reset_pitch(_port);
+}
+
+virtual std::int32_t reset_yaw() {
+	return pros::c::imu_reset_yaw(_port);
+}
+
+virtual std::int32_t reset_roll() {
+	return pros::c::imu_reset_roll(_port);
+}
+
+virtual std::int32_t reset() {
+	return pros::c::imu_reset(_port);
+}
+
 }  // namespace pros

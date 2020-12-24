@@ -270,6 +270,21 @@ class Imu {
 	 */
 	virtual std::int32_t reset_roll();
 	/**
+	 * Resets all 5 values of the Inertial Sensor to 0.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t reset();
+	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -357,81 +372,6 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The rotation offset or PROS_ERR if the operation failed, setting 
 	 * errno.
-	 */
-	virtual std::int32_t get_rotation_offset() const;
-	/**
-	 *  Get the current offset of the IMU's heading reading from its true value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  port
-	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The heading offset or PROS_ERR if the operation failed, setting 
-	 * errno.
-	 */
-	virtual std::int32_t get_heading_offset() const;
-	/**
-	 *  Get the current offset of the IMU's pitch reading from its true value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  port
-	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The pitch offset or PROS_ERR if the operation failed, setting 
-	 * errno.
-	 */
-	virtual std::int32_t get_pitch_offset() const;
-	/**
-	 *  Get the current offset of the IMU's roll reading from its true value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  port
-	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The roll offset or PROS_ERR if the operation failed, setting 
-	 * errno.
-	 */
-	virtual std::int32_t get_roll_offset() const;
-	/**
-	 *  Get the current offset of the IMU's yaw reading from its true value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  port
-	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The yaw offset or PROS_ERR if the operation failed, setting 
-	 * errno.
-	 */
-	virtual std::int32_t get_yaw_offset() const;
-	/**
-	 * Get the Inertial Sensor's raw accelerometer values
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  port
-	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The raw accelerometer values. If the operation failed, all the
-	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::c::imu_accel_s_t get_accel() const;
 	/**
