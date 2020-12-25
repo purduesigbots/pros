@@ -12,6 +12,7 @@
 
 #include <errno.h>
 #include "pros/imu.h"
+#include "pros/imubl.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
@@ -89,6 +90,18 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	{ .pitch = PROS_ERR_F, .roll = PROS_ERR_F, .yaw = PROS_ERR_F }
 
 euler_s_t imu_get_euler(uint8_t port) {
+	euler_s_t rtn = ATTITUDE_ERR_INIT;
+	v5_smart_device_s_t* device;
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return rtn;
+	}
+	device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
+	return_port(port - 1, rtn);
+}
+
+euler_s_t imu_get_euler_bl(uint8_t port) {
 	euler_s_t rtn;
 	v5_smart_device_s_t* device;
 	device = registry_get_device(port - 1);
@@ -102,7 +115,7 @@ double imu_get_pitch(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler(port).pitch + imu_get_pitch_offset(port - 1);
+	rtn = imu_get_euler_bl(port).pitch + imu_get_pitch_offset(port - 1);
 	return_port(port - 1, rtn);
 }
 
@@ -111,7 +124,7 @@ double imu_get_roll(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler(port).roll + imu_get_roll_offset(port - 1);
+	rtn = imu_get_euler_bl(port).roll + imu_get_roll_offset(port - 1);
 	return_port(port - 1, rtn);
 }
 
@@ -120,7 +133,7 @@ double imu_get_yaw(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler(port).yaw + imu_get_yaw_offset(port - 1);
+	rtn = imu_get_euler_bl(port).yaw + imu_get_yaw_offset(port - 1);
 	return_port(port - 1, rtn);
 }
 
@@ -181,9 +194,9 @@ int32_t imu_reset(uint8_t port){
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	imu_set_heading_offset(port - 1, -vexDeviceImuDegreesGet(device->device_info));
 	imu_set_rotation_offset(port - 1, -vexDeviceImuHeadingGet(device->device_info));
-	imu_set_pitch_offset(port - 1, -imu_get_euler(port).pitch);
-	imu_set_roll_offset(port - 1, -imu_get_euler(port).roll);
-	imu_set_yaw_offset(port - 1, -imu_get_euler(port).yaw);
+	imu_set_pitch_offset(port - 1, -imu_get_euler_bl(port).pitch);
+	imu_set_roll_offset(port - 1, -imu_get_euler_bl(port).roll);
+	imu_set_yaw_offset(port - 1, -imu_get_euler_bl(port).yaw);
 	return_port(port - 1, 1);
 }
 
@@ -230,7 +243,7 @@ int32_t imu_set_pitch(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
-	imu_set_pitch_offset(port - 1, target - imu_get_euler(port).pitch);
+	imu_set_pitch_offset(port - 1, target - imu_get_euler_bl(port).pitch);
 	return_port(port - 1, 1);
 }
 
@@ -238,7 +251,7 @@ int32_t imu_set_roll(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
-	imu_set_roll_offset(port - 1, target - imu_get_euler(port).roll);
+	imu_set_roll_offset(port - 1, target - imu_get_euler_bl(port).roll);
 	return_port(port - 1, 1);
 }
 
@@ -246,7 +259,7 @@ int32_t imu_set_yaw(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
-	imu_set_yaw_offset(port - 1, target - imu_get_euler(port).yaw);
+	imu_set_yaw_offset(port - 1, target - imu_get_euler_bl(port).yaw);
 	return_port(port - 1, 1);
 }
 

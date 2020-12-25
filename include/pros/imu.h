@@ -454,20 +454,6 @@ int32_t imu_set_roll(uint8_t port, double target);
  */
 int32_t imu_set_yaw(uint8_t port, double target);
 
-//Offset Getter Functions (Internal Usage, Not Thread Safe)
-double imu_get_heading_offset(uint8_t port);
-double imu_get_rotation_offset(uint8_t port);
-double imu_get_pitch_offset(uint8_t port);
-double imu_get_yaw_offset(uint8_t port);
-double imu_get_roll_offset(uint8_t port);
-
-//Offset Setter Functions (Internal Usage, Not Thread Safe)
-void imu_set_heading_offset(uint8_t port, double target);
-void imu_set_rotation_offset(uint8_t port, double target);
-void imu_set_pitch_offset(uint8_t port, double target);
-void imu_set_yaw_offset(uint8_t port, double target);
-void imu_set_roll_offset(uint8_t port, double target);
-
 #ifdef __cplusplus
 }
 }
