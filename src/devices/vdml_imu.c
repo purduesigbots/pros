@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -105,7 +105,6 @@ euler_s_t imu_get_euler_bl(uint8_t port) {
 	euler_s_t rtn;
 	v5_smart_device_s_t* device;
 	device = registry_get_device(port - 1);
-	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
 	return rtn;
 }
@@ -226,6 +225,7 @@ int32_t imu_set_rotation(uint8_t port, double target){
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	imu_set_rotation_offset(port - 1, target - vexDeviceImuHeadingGet(device->device_info));
 	return_port(port - 1, 1);
 }
@@ -235,6 +235,7 @@ int32_t imu_set_heading(uint8_t port, double target){
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	imu_set_heading_offset(port - 1, target - vexDeviceImuDegreesGet(device->device_info));
 	return_port(port - 1, 1);
 }
@@ -243,6 +244,8 @@ int32_t imu_set_pitch(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	imu_set_pitch_offset(port - 1, target - imu_get_euler_bl(port).pitch);
 	return_port(port - 1, 1);
 }
@@ -251,6 +254,8 @@ int32_t imu_set_roll(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	imu_set_roll_offset(port - 1, target - imu_get_euler_bl(port).roll);
 	return_port(port - 1, 1);
 }
@@ -259,6 +264,8 @@ int32_t imu_set_yaw(uint8_t port, double target){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	imu_set_yaw_offset(port - 1, target - imu_get_euler_bl(port).yaw);
 	return_port(port - 1, 1);
 }

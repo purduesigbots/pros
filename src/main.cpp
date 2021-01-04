@@ -70,16 +70,59 @@ void autonomous() {}
 using namespace pros;
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-
+    Imu imutest(4);
 	while (true) {
-		pros::lcd::print(0, "Rotation: %f", pros::c::imu_get_rotation(4));
-		pros::lcd::print(1, "Heading: %f",
-		                 pros::c::imu_get_heading(4));
+		pros::lcd::print(0, "Rotation: %f", imutest.get_rotation());
+		pros::lcd::print(1, "Heading: %f", imutest.get_heading());
+		pros::lcd::print(2, "pitch: %f", pros::c::imu_get_pitch(4));
+		pros::lcd::print(3, "yaw: %f", pros::c::imu_get_yaw(4));
+		pros::lcd::print(4, "roll: %f", pros::c::imu_get_roll(4));
+/*
+		pros::lcd::print(5, "pitch offset: %f", pros::c::imu_get_pitch_offset(4));
+		pros::lcd::print(6, "yaw offset: %f", pros::c::imu_get_yaw_offset(4));
+		pros::lcd::print(7, "roll offset: %f", pros::c::imu_get_roll_offset(4));
+*/
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)){
-			pros::c::imu_set_rotation(4,120);
+			imutest.set_rotation(120);
 		}
 		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)){
-			pros::c::imu_set_heading(4,120);
+			imutest.set_pitch(120);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){
+			imutest.set_heading(120);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
+			imutest.set_yaw(120);
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)){
+			imutest.set_roll(120);
+			//pros::c::imu_set_roll(4,120);
+			//imutest.reset();
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){
+			imutest.reset();
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A
+		)){
+			imutest.reset();
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)){
+			imutest.reset_rotation();
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)){
+			imutest.reset_pitch();
+		}
+		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X
+		)){
+			imutest.reset_heading();
+		}
+				if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y
+		)){
+			imutest.reset_roll();
+		}
+				if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B
+		)){
+			imutest.reset_roll();
 		}
 		pros::delay(20);
 	}
