@@ -1,8 +1,8 @@
 /**
  * \file pros/imubl.h
  *
- * IMU Backend Layer header for non-threadsafe functions mostly for 
- * reset functions, not intended for use by users.
+ * IMU Backend Layer header for non-threadsafe functions for reset
+ * functions that interact with the registry.
  *
  * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
  *
