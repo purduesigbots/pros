@@ -12,7 +12,7 @@
 
 #include <errno.h>
 #include "pros/imu.h"
-#include "pros/imubl.h"
+#include "vdml/imubl.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
