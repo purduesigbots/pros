@@ -64,7 +64,8 @@ int symlink(const char* file, const char* linkpath) {
 
 ssize_t readlink(const char* pathname, char* buf, size_t bufsiz) {
 	errno = ENOSYS;
-	return NULL;
+	return -1;
+
 }
 
 int truncate(const char* path, off_t length) {
