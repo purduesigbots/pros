@@ -23,8 +23,12 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
-typedef struct imu_reset_data { 
-	double heading_offset, rotation_offset, pitch_offset, yaw_offset, roll_offset;
+typedef __attribute__ ((__packed__)) struct imu_reset_data { 
+	double heading_offset;
+	double rotation_offset;
+	double pitch_offset;
+	double yaw_offset;
+	double roll_offset;
 } imu_data_s_t;
 
 int32_t imu_calibrate(uint8_t port) {
