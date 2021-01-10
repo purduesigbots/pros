@@ -361,7 +361,7 @@ class Imu {
 	 */
 	virtual std::int32_t set_roll(double target) const;
 	/**
-	 *  Get the current offset of the IMU's rotation reading from its true value
+	 * Get the Inertial Sensor's raw accelerometer values
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -371,8 +371,8 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \return The rotation offset or PROS_ERR if the operation failed, setting 
-	 * errno.
+	 * \return The raw accelerometer values. If the operation failed, all the
+	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::c::imu_accel_s_t get_accel() const;
 	/**
