@@ -12,7 +12,6 @@
 
 #include <errno.h>
 #include "pros/imu.h"
-#include "vdml/imubl.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
@@ -23,7 +22,7 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
-typedef __attribute__ ((__packed__)) struct imu_reset_data { 
+typedef struct __attribute__ ((packed)) imu_reset_data { 
 	double heading_offset;
 	double rotation_offset;
 	double pitch_offset;
@@ -56,14 +55,14 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 double imu_get_rotation(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuHeadingGet(device->device_info) + imu_get_rotation_offset(port - 1);
+	double rtn = vexDeviceImuHeadingGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->rotation_offset;
 	return_port(port - 1, rtn);
 }
 
 double imu_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuDegreesGet(device->device_info) + imu_get_heading_offset(port - 1);
+	double rtn = vexDeviceImuDegreesGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->heading_offset;
 	return_port(port - 1, rtn);
 }
 
@@ -105,20 +104,16 @@ euler_s_t imu_get_euler(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-euler_s_t imu_get_euler_bl(uint8_t port) {
-	euler_s_t rtn;
-	v5_smart_device_s_t* device;
-	device = registry_get_device(port - 1);
-	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
-	return rtn;
-}
-
 double imu_get_pitch(uint8_t port) {
 	double rtn = PROS_ERR_F;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler_bl(port).pitch + imu_get_pitch_offset(port - 1);
+	euler_s_t euler_values;
+	v5_smart_device_s_t* device;
+	device = registry_get_device(port - 1);
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	rtn = euler_values.pitch + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->pitch_offset;
 	return_port(port - 1, rtn);
 }
 
@@ -127,7 +122,11 @@ double imu_get_roll(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler_bl(port).roll + imu_get_roll_offset(port - 1);
+	euler_s_t euler_values;
+	v5_smart_device_s_t* device;
+	device = registry_get_device(port - 1);
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	rtn = euler_values.roll + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->roll_offset;
 	return_port(port - 1, rtn);
 }
 
@@ -136,7 +135,11 @@ double imu_get_yaw(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	rtn = imu_get_euler_bl(port).yaw + imu_get_yaw_offset(port - 1);
+	euler_s_t euler_values;
+	v5_smart_device_s_t* device;
+	device = registry_get_device(port - 1);
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	rtn = euler_values.yaw + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->yaw_offset;
 	return_port(port - 1, rtn);
 }
 
@@ -195,11 +198,14 @@ int32_t imu_reset(uint8_t port){
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
-	imu_set_heading_offset(port - 1, -vexDeviceImuDegreesGet(device->device_info));
-	imu_set_rotation_offset(port - 1, -vexDeviceImuHeadingGet(device->device_info));
-	imu_set_pitch_offset(port - 1, -imu_get_euler_bl(port).pitch);
-	imu_set_roll_offset(port - 1, -imu_get_euler_bl(port).roll);
-	imu_set_yaw_offset(port - 1, -imu_get_euler_bl(port).yaw);
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->rotation_offset = -vexDeviceImuDegreesGet(device->device_info);
+	data->heading_offset = -vexDeviceImuHeadingGet(device->device_info);
+	data->pitch_offset = -euler_values.pitch;
+	data->roll_offset = -euler_values.roll;
+	data->yaw_offset = -euler_values.yaw;
 	return_port(port - 1, 1);
 }
 
@@ -230,7 +236,10 @@ int32_t imu_set_rotation(uint8_t port, double target){
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
-	imu_set_rotation_offset(port - 1, target - vexDeviceImuHeadingGet(device->device_info));
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->rotation_offset = target - vexDeviceImuHeadingGet(device->device_info);
 	return_port(port - 1, 1);
 }
 
@@ -240,7 +249,10 @@ int32_t imu_set_heading(uint8_t port, double target){
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
-	imu_set_heading_offset(port - 1, target - vexDeviceImuDegreesGet(device->device_info));
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->heading_offset = target - vexDeviceImuDegreesGet(device->device_info);
 	return_port(port - 1, 1);
 }
 
@@ -250,7 +262,10 @@ int32_t imu_set_pitch(uint8_t port, double target){
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
-	imu_set_pitch_offset(port - 1, target - imu_get_euler_bl(port).pitch);
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->pitch_offset = target - euler_values.pitch;
 	return_port(port - 1, 1);
 }
 
@@ -260,7 +275,10 @@ int32_t imu_set_roll(uint8_t port, double target){
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
-	imu_set_roll_offset(port - 1, target - imu_get_euler_bl(port).roll);
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->roll_offset = target - euler_values.roll;
 	return_port(port - 1, 1);
 }
 
@@ -270,53 +288,9 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
-	imu_set_yaw_offset(port - 1, target - imu_get_euler_bl(port).yaw);
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->yaw_offset = target - euler_values.yaw;
 	return_port(port - 1, 1);
-}
-
-//Internal functions for getting IMU offsets (Not thread safe)
-double imu_get_heading_offset(uint8_t port){
-    return ((imu_data_s_t*)registry_get_device(port)->pad)->heading_offset;
-}
-
-double imu_get_rotation_offset(uint8_t port){
-    return ((imu_data_s_t*)registry_get_device(port)->pad)->rotation_offset;
-}
-
-double imu_get_pitch_offset(uint8_t port){
-    return ((imu_data_s_t*)registry_get_device(port)->pad)->pitch_offset;
-}
-
-double imu_get_yaw_offset(uint8_t port){
-    return ((imu_data_s_t*)registry_get_device(port)->pad)->yaw_offset;
-}
-
-double imu_get_roll_offset(uint8_t port){
-    return ((imu_data_s_t*)registry_get_device(port)->pad)->roll_offset;
-}
-
-//Internal offset setter functions (Not Thread safe)
-void imu_set_heading_offset(uint8_t port, double target) {
-	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
-	data->heading_offset = target;
-}
-
-void imu_set_rotation_offset(uint8_t port, double target) {
-	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
-	data->rotation_offset = target;
-}
-
-void imu_set_pitch_offset(uint8_t port, double target) {
-	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
-	data->pitch_offset = target;
-}
-
-void imu_set_yaw_offset(uint8_t port, double target) {
-	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
-	data->yaw_offset = target;
-}
-
-void imu_set_roll_offset(uint8_t port, double target) {
-	imu_data_s_t* data = (imu_data_s_t*)registry_get_device(port)->pad;
-	data->roll_offset = target;
 }
