@@ -7,7 +7,13 @@
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "I was pressed!");
+	} else {
+		pros::lcd::clear_line(2);
+	}
 }
 
 /**
@@ -67,66 +73,15 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-using namespace pros;
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-    Imu imutest(4);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 
 	while (true) {
-		pros::lcd::print(0, "Rotation: %f", imutest.get_rotation());
-		pros::lcd::print(1, "Heading: %f", imutest.get_heading());
-		pros::lcd::print(2, "pitch: %f", pros::c::imu_get_pitch(4));
-		pros::lcd::print(3, "yaw: %f", pros::c::imu_get_yaw(4));
-		pros::lcd::print(4, "roll: %f", pros::c::imu_get_roll(4));
-/*
-		pros::lcd::print(5, "pitch offset: %f", pros::c::imu_get_pitch_offset(4));
-		pros::lcd::print(6, "yaw offset: %f", pros::c::imu_get_yaw_offset(4));
-		pros::lcd::print(7, "roll offset: %f", pros::c::imu_get_roll_offset(4));
-*/
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L1)){
-			imutest.set_rotation(120);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)){
-			imutest.set_pitch(120);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_UP)){
-			imutest.set_heading(120);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)){
-			imutest.set_yaw(120);
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)){
-			imutest.set_roll(120);
-			//pros::c::imu_set_roll(4,120);
-			//imutest.tare();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)){
-			imutest.tare();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_A
-		)){
-			imutest.tare();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R1)){
-			imutest.tare_rotation();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_R2)){
-			imutest.tare_pitch();
-		}
-		if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_X
-		)){
-			imutest.tare_heading();
-		}
-				if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_Y
-		)){
-			imutest.tare_roll();
-		}
-				if(master.get_digital_new_press(E_CONTROLLER_DIGITAL_B
-		)){
-			imutest.tare_roll();
-		}
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 
