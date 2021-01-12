@@ -13,8 +13,8 @@
 #include "pros/imu.hpp"
 
 namespace pros {
-std::int32_t Imu::calibrate() const {
-	return pros::c::imu_calibrate(_port);
+std::int32_t Imu::reset() const {
+	return pros::c::imu_reset(_port);
 }
 
 std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
@@ -65,24 +65,24 @@ bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
 
-std::int32_t Imu::reset_heading() const {
-	return pros::c::imu_reset_heading(_port);
+std::int32_t Imu::tare_heading() const {
+	return pros::c::imu_tare_heading(_port);
 }
 
-std::int32_t Imu::reset_rotation() const {
-	return pros::c::imu_reset_rotation(_port);
+std::int32_t Imu::tare_rotation() const {
+	return pros::c::imu_tare_rotation(_port);
 }
 
-std::int32_t Imu::reset_pitch() const {
-	return pros::c::imu_reset_pitch(_port);
+std::int32_t Imu::tare_pitch() const {
+	return pros::c::imu_tare_pitch(_port);
 }
 
-std::int32_t Imu::reset_yaw() const {
-	return pros::c::imu_reset_yaw(_port);
+std::int32_t Imu::tare_yaw() const {
+	return pros::c::imu_tare_yaw(_port);
 }
 
-std::int32_t Imu::reset_roll() const {
-	return pros::c::imu_reset_roll(_port);
+std::int32_t Imu::tare_roll() const {
+	return pros::c::imu_tare_roll(_port);
 }
 
 std::int32_t Imu::set_heading(double target) const {
@@ -105,8 +105,8 @@ std::int32_t Imu::set_roll(double target) const {
 	return pros::c::imu_set_roll(_port, target);
 }
 
-std::int32_t Imu::reset() const {
-	return pros::c::imu_reset(_port);
+std::int32_t Imu::tare() const {
+	return pros::c::imu_tare(_port);
 }
 
 }  // namespace pros

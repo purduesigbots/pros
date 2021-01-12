@@ -74,7 +74,7 @@ typedef struct __attribute__((__packed__)) euler_s {
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_calibrate(uint8_t port);
+int32_t imu_reset(uint8_t port);
 
 
 /**
@@ -291,7 +291,7 @@ imu_status_e_t imu_get_status(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset_heading(uint8_t port);
+int32_t imu_tare_heading(uint8_t port);
 
 /**
  * Resets the current reading of the Inertial Sensor's rotation to zero
@@ -307,7 +307,7 @@ int32_t imu_reset_heading(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset_rotation(uint8_t port);
+int32_t imu_tare_rotation(uint8_t port);
 
 /**
  * Resets the current reading of the Inertial Sensor's pitch to zero
@@ -323,7 +323,7 @@ int32_t imu_reset_rotation(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset_pitch(uint8_t port);
+int32_t imu_tare_pitch(uint8_t port);
 
 /**
  * Resets the current reading of the Inertial Sensor's roll to zero
@@ -339,7 +339,7 @@ int32_t imu_reset_pitch(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset_roll(uint8_t port);
+int32_t imu_tare_roll(uint8_t port);
 
 /**
  * Resets the current reading of the Inertial Sensor's yaw to zero
@@ -355,7 +355,7 @@ int32_t imu_reset_roll(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset_yaw(uint8_t port);
+int32_t imu_tare_yaw(uint8_t port);
 
 /**
  * Resets all 5 values of the Inertial Sensor to 0.
@@ -371,7 +371,7 @@ int32_t imu_reset_yaw(uint8_t port);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t imu_reset(uint8_t port);
+int32_t imu_tare(uint8_t port);
 
 //Value set functions:
 /**

@@ -42,7 +42,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t calibrate() const;
+	virtual std::int32_t reset() const;
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
@@ -209,7 +209,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_rotation() const;
+	virtual std::int32_t tare_rotation() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's heading to zero
 	 *
@@ -224,7 +224,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_heading() const;
+	virtual std::int32_t tare_heading() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's pitch to zero
 	 *
@@ -239,7 +239,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_pitch() const;
+	virtual std::int32_t tare_pitch() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's pitch to zero
 	 *
@@ -254,7 +254,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_yaw() const;
+	virtual std::int32_t tare_yaw() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's roll to zero
 	 *
@@ -269,7 +269,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset_roll() const;
+	virtual std::int32_t tare_roll() const;
 	/**
 	 * Resets all 5 values of the Inertial Sensor to 0.
 	 *
@@ -284,7 +284,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset() const;
+	virtual std::int32_t tare() const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
 	 *

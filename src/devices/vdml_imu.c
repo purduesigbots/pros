@@ -30,7 +30,7 @@ typedef struct __attribute__ ((packed)) imu_reset_data {
 	double roll_offset;
 } imu_data_s_t;
 
-int32_t imu_calibrate(uint8_t port) {
+int32_t imu_reset(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	vexDeviceImuReset(device->device_info);
@@ -193,7 +193,7 @@ imu_status_e_t imu_get_status(uint8_t port) {
 }
 
 //Reset Functions:
-int32_t imu_reset(uint8_t port){
+int32_t imu_tare(uint8_t port){
     if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
@@ -201,31 +201,31 @@ int32_t imu_reset(uint8_t port){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->rotation_offset = -vexDeviceImuDegreesGet(device->device_info);
-	data->heading_offset = -vexDeviceImuHeadingGet(device->device_info);
+	data->rotation_offset = -vexDeviceImuHeadingGet(device->device_info);
+	data->heading_offset = -vexDeviceImuDegreesGet(device->device_info);
 	data->pitch_offset = -euler_values.pitch;
 	data->roll_offset = -euler_values.roll;
 	data->yaw_offset = -euler_values.yaw;
 	return_port(port - 1, 1);
 }
 
-int32_t imu_reset_heading(uint8_t port){
+int32_t imu_tare_heading(uint8_t port){
     return imu_set_heading(port, 0);
 }
 
-int32_t imu_reset_rotation(uint8_t port){
+int32_t imu_tare_rotation(uint8_t port){
     return imu_set_rotation(port, 0);
 }
 
-int32_t imu_reset_pitch(uint8_t port){
+int32_t imu_tare_pitch(uint8_t port){
     return imu_set_pitch(port, 0);
 }
 
-int32_t imu_reset_roll(uint8_t port){
+int32_t imu_tare_roll(uint8_t port){
     return imu_set_roll(port, 0);
 }
 
-int32_t imu_reset_yaw(uint8_t port){
+int32_t imu_tare_yaw(uint8_t port){
     return imu_set_yaw(port, 0);
 }
 
