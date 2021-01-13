@@ -241,7 +241,7 @@ class Imu {
 	 */
 	virtual std::int32_t tare_pitch() const;
 	/**
-	 * Resets the current reading of the Inertial Sensor's pitch to zero
+	 * Resets the current reading of the Inertial Sensor's yaw to zero
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
