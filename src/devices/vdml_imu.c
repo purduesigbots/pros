@@ -71,11 +71,10 @@ double imu_get_heading(uint8_t port) {
 
 quaternion_s_t imu_get_quaternion(uint8_t port) {
 	quaternion_s_t rtn = QUATERNION_ERR_INIT;
-	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	// HACK: vexos represents quaternions as {a,b,c,d} and we want them in
 	// {x,y,z,w}. we don't know how exactly the quaternion data is filled, so best
@@ -94,11 +93,10 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 
 euler_s_t imu_get_euler(uint8_t port) {
 	euler_s_t rtn = ATTITUDE_ERR_INIT;
-	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
 	return_port(port - 1, rtn);
@@ -110,8 +108,7 @@ double imu_get_pitch(uint8_t port) {
 		return rtn;
 	}
 	euler_s_t euler_values;
-	v5_smart_device_s_t* device;
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.pitch + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->pitch_offset;
 	return_port(port - 1, rtn);
@@ -123,8 +120,7 @@ double imu_get_roll(uint8_t port) {
 		return rtn;
 	}
 	euler_s_t euler_values;
-	v5_smart_device_s_t* device;
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.roll + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->roll_offset;
 	return_port(port - 1, rtn);
@@ -136,8 +132,7 @@ double imu_get_yaw(uint8_t port) {
 		return rtn;
 	}
 	euler_s_t euler_values;
-	v5_smart_device_s_t* device;
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.yaw + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->yaw_offset;
 	return_port(port - 1, rtn);
@@ -147,11 +142,10 @@ double imu_get_yaw(uint8_t port) {
 
 imu_gyro_s_t imu_get_gyro_rate(uint8_t port) {
 	imu_gyro_s_t rtn = RAW_IMU_ERR_INIT;
-	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	// NOTE: `V5_DeviceImuRaw` has the same form as a quaternion, but this call
 	// never fills the `w` field, so we make a dummy quaternion container and copy
@@ -166,11 +160,10 @@ imu_gyro_s_t imu_get_gyro_rate(uint8_t port) {
 
 imu_accel_s_t imu_get_accel(uint8_t port) {
 	imu_accel_s_t rtn = RAW_IMU_ERR_INIT;
-	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	// NOTE: this is the same as `imu_get_raw_gyro`
 	quaternion_s_t dummy;
@@ -183,11 +176,10 @@ imu_accel_s_t imu_get_accel(uint8_t port) {
 
 imu_status_e_t imu_get_status(uint8_t port) {
 	imu_status_e_t rtn = E_IMU_STATUS_ERROR;
-	v5_smart_device_s_t* device;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
-	device = registry_get_device(port - 1);
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	rtn = vexDeviceImuStatusGet(device->device_info);
 	return_port(port - 1, rtn);
 }
