@@ -16,6 +16,8 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
+#define DEGTORAD (M_PI / 180)
+
 #define ERROR_IMU_STILL_CALIBRATING(port, device, err_return)                  \
 	if (vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING) { \
 		errno = EAGAIN;                                                            \
@@ -76,24 +78,22 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
-
-	V5_DeviceImuQuaternion qt;
 	euler_s_t euler;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	// Note: this is disgusting. there is probably some trig magic u can do but screw it.
-    rtn.w = cos((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
-	 * cos((euler.yaw + data->yaw_offset) * 0.5) + sin((euler.roll + data->roll_offset) * 0.5) 
-	 * sin((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
-	rtn.x = sin((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
-	 * cos((euler.yaw + data->yaw_offset) * 0.5) - cos((euler.roll + data->roll_offset) * 0.5) 
-	 * sin((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
-    rtn.y = cos((euler.roll + data->roll_offset) * 0.5) * sin((euler.pitch + data->pitch_offset) * 0.5)
-	 * cos((euler.yaw + data->yaw_offset) * 0.5) + sin((euler.roll + data->roll_offset) * 0.5)
-	 * cos((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
-    rtn.z = cos((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
-	 * sin((euler.yaw + data->yaw_offset) * 0.5) - sin((euler.roll + data->roll_offset) * 0.5)
-	 * sin((euler.pitch + data->pitch_offset) * 0.5) * cos((euler.yaw + data->yaw_offset) * 0.5);
+	// To calculate the quaternion values, we first get the euler values, add the offsets,
+	// and then do the calculations. 
+	double cy = cos(DEGTORAD * (euler.yaw + data->yaw_offset) * 0.5);
+    double sy = sin(DEGTORAD * (euler.yaw + data->yaw_offset) * 0.5);
+    double cp = cos(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
+    double sp = sin(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
+    double cr = cos(DEGTORAD * (euler.roll + data->roll_offset) * 0.5);
+    double sr = sin(DEGTORAD * (euler.roll + data->roll_offset) * 0.5); 
+
+    rtn.w = cr * cp * cy + sr * sp * sy;
+    rtn.x = sr * cp * cy - cr * sp * sy;
+    rtn.y = cr * sp * cy + sr * cp * sy;
+    rtn.z = cr * cp * sy - sr * sp * cy;
 
 	return_port(port - 1, rtn);
 }
