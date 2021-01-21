@@ -358,6 +358,22 @@ int32_t imu_tare_roll(uint8_t port);
 int32_t imu_tare_yaw(uint8_t port);
 
 /**
+ * Reset all 3 euler values of the Inertial Sensor to 0.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t imu_tare_euler(uint8_t port);
+
+/**
  * Resets all 5 values of the Inertial Sensor to 0.
  *
  * This function uses the following values of errno when an error state is
@@ -375,6 +391,25 @@ int32_t imu_tare(uint8_t port);
 
 //Value set functions:
 /**
+ * Sets the current reading of the Inertial Sensor's euler values to
+ * target euler values.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target euler values for the euler values to be set to
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t imu_set_euler(uint8_t port, euler_s_t target);
+
+/**
  * Sets the current reading of the Inertial Sensor's rotation to target value
  *
  * This function uses the following values of errno when an error state is
@@ -385,13 +420,15 @@ int32_t imu_tare(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target value for the rotation value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
 int32_t imu_set_rotation(uint8_t port, double target);
 
 /**
- * Sets the current reading of the Inertial Sensor's set to target value
+ * Sets the current reading of the Inertial Sensor's heading to target value
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -401,6 +438,8 @@ int32_t imu_set_rotation(uint8_t port, double target);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target value for the heading value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
@@ -417,6 +456,8 @@ int32_t imu_set_heading(uint8_t port, double target);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target value for the pitch value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
@@ -433,6 +474,8 @@ int32_t imu_set_pitch(uint8_t port, double target);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target value for the roll value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
@@ -449,6 +492,8 @@ int32_t imu_set_roll(uint8_t port, double target);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target value for the yaw value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */

@@ -215,6 +215,10 @@ int32_t imu_tare(uint8_t port){
 	return_port(port - 1, 1);
 }
 
+int32_t imu_tare_euler(uint8_t port){
+    return imu_set_euler(port, (euler_s_t){0,0,0});
+}
+
 int32_t imu_tare_heading(uint8_t port){
     return imu_set_heading(port, 0);
 }
@@ -298,5 +302,19 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	data->yaw_offset = target - euler_values.yaw;
+	return_port(port - 1, 1);
+}
+
+int32_t imu_set_euler(uint8_t port, euler_s_t target){
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+		return PROS_ERR;
+	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	euler_s_t euler_values;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	data->pitch_offset = target.pitch - euler_values.pitch;
+	data->roll_offset = target.roll - euler_values.roll;
+	data->yaw_offset = target.yaw - euler_values.yaw;
 	return_port(port - 1, 1);
 }
