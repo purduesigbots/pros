@@ -84,16 +84,16 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	// To calculate the quaternion values, we first get the euler values, add the offsets,
 	// and then do the calculations. 
 	double cy = cos(DEGTORAD * (euler.yaw + data->yaw_offset) * 0.5);
-    double sy = sin(DEGTORAD * (euler.yaw + data->yaw_offset) * 0.5);
-    double cp = cos(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
-    double sp = sin(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
-    double cr = cos(DEGTORAD * (euler.roll + data->roll_offset) * 0.5);
-    double sr = sin(DEGTORAD * (euler.roll + data->roll_offset) * 0.5); 
+	double sy = sin(DEGTORAD * (euler.yaw + data->yaw_offset) * 0.5);
+	double cp = cos(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
+	double sp = sin(DEGTORAD * (euler.pitch + data->pitch_offset) * 0.5);
+	double cr = cos(DEGTORAD * (euler.roll + data->roll_offset) * 0.5);
+	double sr = sin(DEGTORAD * (euler.roll + data->roll_offset) * 0.5); 
 
-    rtn.w = cr * cp * cy + sr * sp * sy;
-    rtn.x = sr * cp * cy - cr * sp * sy;
-    rtn.y = cr * sp * cy + sr * cp * sy;
-    rtn.z = cr * cp * sy - sr * sp * cy;
+	rtn.w = cr * cp * cy + sr * sp * sy;
+	rtn.x = sr * cp * cy - cr * sp * sy;
+	rtn.y = cr * sp * cy + sr * cp * sy;
+	rtn.z = cr * cp * sy - sr * sp * cy;
 
 	return_port(port - 1, rtn);
 }
