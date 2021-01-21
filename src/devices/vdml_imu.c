@@ -76,15 +76,25 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
-	// HACK: vexos represents quaternions as {a,b,c,d} and we want them in
-	// {x,y,z,w}. we don't know how exactly the quaternion data is filled, so best
-	// just to manually shuffle stuff into the right places here
+
 	V5_DeviceImuQuaternion qt;
-	vexDeviceImuQuaternionGet(device->device_info, &qt);
-	rtn.x = qt.b;
-	rtn.y = qt.c;
-	rtn.z = qt.d;
-	rtn.w = qt.a;
+	euler_s_t euler;
+	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
+	// Note: this is disgusting. there is probably some trig magic u can do but screw it.
+    rtn.w = cos((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
+	 * cos((euler.yaw + data->yaw_offset) * 0.5) + sin((euler.roll + data->roll_offset) * 0.5) 
+	 * sin((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
+	rtn.x = sin((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
+	 * cos((euler.yaw + data->yaw_offset) * 0.5) - cos((euler.roll + data->roll_offset) * 0.5) 
+	 * sin((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
+    rtn.y = cos((euler.roll + data->roll_offset) * 0.5) * sin((euler.pitch + data->pitch_offset) * 0.5)
+	 * cos((euler.yaw + data->yaw_offset) * 0.5) + sin((euler.roll + data->roll_offset) * 0.5)
+	 * cos((euler.pitch + data->pitch_offset) * 0.5) * sin((euler.yaw + data->yaw_offset) * 0.5);
+    rtn.z = cos((euler.roll + data->roll_offset) * 0.5) * cos((euler.pitch + data->pitch_offset) * 0.5)
+	 * sin((euler.yaw + data->yaw_offset) * 0.5) - sin((euler.roll + data->roll_offset) * 0.5)
+	 * sin((euler.pitch + data->pitch_offset) * 0.5) * cos((euler.yaw + data->yaw_offset) * 0.5);
+
 	return_port(port - 1, rtn);
 }
 
@@ -97,8 +107,12 @@ euler_s_t imu_get_euler(uint8_t port) {
 		return rtn;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	ERROR_IMU_STILL_CALIBRATING(port, device, rtn);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&rtn);
+	rtn.pitch += data->pitch_offset;
+	rtn.yaw += data->yaw_offset;
+	rtn.roll += data->roll_offset;
 	return_port(port - 1, rtn);
 }
 
