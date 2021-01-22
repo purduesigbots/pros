@@ -302,7 +302,8 @@ class Imu {
 	virtual std::int32_t tare_euler() const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
-	 *
+	 * Target will default to 360 if above 360 and default to 0 if below 0.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -336,7 +337,8 @@ class Imu {
 	virtual std::int32_t set_rotation(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
-	 *
+	 * Will default to +/- 180 if target exceeds +/- 180.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -370,7 +372,8 @@ class Imu {
 	virtual std::int32_t set_pitch(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
-	 *
+	 * Will default to +/- 180 if target exceeds +/- 180.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -387,7 +390,7 @@ class Imu {
 	virtual std::int32_t set_roll(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's euler values to
-	 * target euler values.
+	 * target euler values. Will default to +/- 180 if target exceeds +/- 180.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

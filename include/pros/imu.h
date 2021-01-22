@@ -396,7 +396,7 @@ int32_t imu_tare(uint8_t port);
 //Value set functions:
 /**
  * Sets the current reading of the Inertial Sensor's euler values to
- * target euler values.
+ * target euler values. Will default to +/- 180 if target exceeds +/- 180.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -433,7 +433,8 @@ int32_t imu_set_rotation(uint8_t port, double target);
 
 /**
  * Sets the current reading of the Inertial Sensor's heading to target value
- *
+ * Target will default to 360 if above 360 and default to 0 if below 0.
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -451,7 +452,8 @@ int32_t imu_set_heading(uint8_t port, double target);
 
 /**
  * Sets the current reading of the Inertial Sensor's pitch to target value
- *
+ * Will default to +/- 180 if target exceeds +/- 180.
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -469,7 +471,8 @@ int32_t imu_set_pitch(uint8_t port, double target);
 
 /**
  * Sets the current reading of the Inertial Sensor's roll to target value
- *
+ * Will default to +/- 180 if value target +/- 180.
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -487,7 +490,8 @@ int32_t imu_set_roll(uint8_t port, double target);
 
 /**
  * Sets the current reading of the Inertial Sensor's yaw to target value
- *
+ * Will default to +/- 180 if target exceeds +/- 180.
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
