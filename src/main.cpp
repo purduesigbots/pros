@@ -7,7 +7,13 @@
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-
+	static bool pressed = false;
+	pressed = !pressed;
+	if (pressed) {
+		pros::lcd::set_text(2, "I was pressed!");
+	} else {
+		pros::lcd::clear_line(2);
+	}
 }
 
 /**
@@ -69,15 +75,18 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Motor left_mtr(1);
+	pros::Motor right_mtr(2);
 
 	while (true) {
-		
-		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) pros::c::imu_tare_euler(4);
-		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) pros::c::imu_set_euler(4,{999,999,999});
-		pros::lcd::print(1, "Roll %f!",pros::c::imu_get_euler(4).roll);
-		pros::lcd::print(2, "Yaw: %f!",pros::c::imu_get_euler(4).yaw);
-		pros::lcd::print(3, "Pitch: %f",pros::c::imu_get_euler(4).pitch);		
-		pros::lcd::print(4, "Heading: %f",pros::c::imu_get_heading(4));
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+		int left = master.get_analog(ANALOG_LEFT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
+
+		left_mtr = left;
+		right_mtr = right;
 		pros::delay(20);
 	}
 }

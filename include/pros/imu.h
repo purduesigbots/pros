@@ -183,7 +183,7 @@ quaternion_s_t imu_get_quaternion(uint8_t port);
 euler_s_t imu_get_euler(uint8_t port);
 
 /**
- * Get the Inertial Sensor's pitch angle
+ * Get the Inertial Sensor's pitch angle bounded by (-180,180)
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -199,7 +199,7 @@ euler_s_t imu_get_euler(uint8_t port);
 double imu_get_pitch(uint8_t port);
 
 /**
- * Get the Inertial Sensor's roll angle
+ * Get the Inertial Sensor's roll angle bounded by (-180,180)
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -214,7 +214,7 @@ double imu_get_pitch(uint8_t port);
 double imu_get_roll(uint8_t port);
 
 /**
- * Get the Inertial Sensor's yaw angle
+ * Get the Inertial Sensor's yaw angle bounded by (-180,180)
  *
  * This function uses the following values of errno when an error state is
  * reached:

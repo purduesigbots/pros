@@ -85,6 +85,10 @@ std::int32_t Imu::tare_roll() const {
 	return pros::c::imu_tare_roll(_port);
 }
 
+std::int32_t Imu::tare_euler() const {
+	return pros::c::imu_tare_euler(_port);
+}
+
 std::int32_t Imu::set_heading(double target) const {
 	return pros::c::imu_set_heading(_port, target);
 }
@@ -103,6 +107,10 @@ std::int32_t Imu::set_yaw(double target) const {
 
 std::int32_t Imu::set_roll(double target) const {
 	return pros::c::imu_set_roll(_port, target);
+}
+
+std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
+	return pros::c::imu_set_euler(_port, target);
 }
 
 std::int32_t Imu::tare() const {

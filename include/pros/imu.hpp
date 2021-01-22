@@ -89,7 +89,7 @@ class Imu {
 	 * Get the Inertial Sensor's heading relative to the initial direction of its
 	 * x-axis
 	 *
-	 * This value is bounded by (-360,360). Clockwise rotations are represented with
+	 * This value is bounded by (0,360). Clockwise rotations are represented with
 	 * positive degree values, while counterclockwise rotations are represented with
 	 * negative ones.
 	 *
@@ -138,7 +138,7 @@ class Imu {
 	 */
 	virtual pros::c::euler_s_t get_euler() const;
 	/**
-	 * Get the Inertial Sensor's pitch angle
+	 * Get the Inertial Sensor's pitch angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -153,7 +153,7 @@ class Imu {
 	 */
 	virtual double get_pitch() const;
 	/**
-	 * Get the Inertial Sensor's roll angle
+	 * Get the Inertial Sensor's roll angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -167,7 +167,7 @@ class Imu {
 	 */
 	virtual double get_roll() const;
 	/**
-	 * Get the Inertial Sensor's yaw angle
+	 * Get the Inertial Sensor's yaw angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -286,7 +286,7 @@ class Imu {
 	 */
 	virtual std::int32_t tare() const;
 	/**
-	 * Sets the current reading of the Inertial Sensor's heading to target value
+	 * Reset all 3 euler values of the Inertial Sensor to 0.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -299,7 +299,24 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_heading(double target) const;
+	virtual std::int32_t tare_euler() const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's heading to target value
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the heading value to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_heading(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's rotation to target value
 	 *
@@ -311,10 +328,12 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the rotation value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_rotation(double target) const;
+	virtual std::int32_t set_rotation(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
 	 *
@@ -326,10 +345,12 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for yaw value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_yaw(double target) const;
+	virtual std::int32_t set_yaw(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's pitch to target value
 	 *
@@ -341,10 +362,12 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the pitch value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_pitch(double target) const;
+	virtual std::int32_t set_pitch(const double target) const;
 	/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 *
@@ -356,10 +379,30 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target euler values for the euler values to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_roll(double target) const;
+	virtual std::int32_t set_roll(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's euler values to
+	 * target euler values.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target euler values for the euler values to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_euler(const pros::c::euler_s_t target) const;
 	/**
 	 * Get the Inertial Sensor's raw accelerometer values
 	 *
