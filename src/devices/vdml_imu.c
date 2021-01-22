@@ -209,9 +209,9 @@ int32_t imu_tare(uint8_t port){
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	data->rotation_offset = -vexDeviceImuHeadingGet(device->device_info);
 	data->heading_offset = -vexDeviceImuDegreesGet(device->device_info);
-	data->pitch_offset = -euler_values.pitch % 90;
-	data->roll_offset = -euler_values.roll % 90;
-	data->yaw_offset = -euler_values.yaw % 90;
+	data->pitch_offset = -euler_values.pitch;
+	data->roll_offset = -euler_values.roll;
+	data->yaw_offset = -euler_values.yaw;
 	return_port(port - 1, 1);
 }
 
@@ -262,7 +262,9 @@ int32_t imu_set_heading(uint8_t port, double target){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->heading_offset = (target - vexDeviceImuDegreesGet(device->device_info)) % 360;
+	if(target > 360) target = 360;
+	if(target < -360) target = -360;
+	data->heading_offset = target - vexDeviceImuDegreesGet(device->device_info);
 	return_port(port - 1, 1);
 }
 
@@ -275,7 +277,9 @@ int32_t imu_set_pitch(uint8_t port, double target){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->pitch_offset = (target - euler_values.pitch) % 90;
+	if(target > 90) target = 90;
+	if(target < -90) target = -90;
+	data->pitch_offset = target - euler_values.pitch;
 	return_port(port - 1, 1);
 }
 
@@ -288,7 +292,9 @@ int32_t imu_set_roll(uint8_t port, double target){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->roll_offset = (target - euler_values.roll) % 90;
+	if(target > 90) target = 90;
+	if(target < -90) target = -90;
+	data->roll_offset = target - euler_values.roll;
 	return_port(port - 1, 1);
 }
 
@@ -301,7 +307,9 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->yaw_offset = (target - euler_values.yaw) % 90;
+	data->yaw_offset = target - euler_values.yaw;
+	if(target > 90) target = 90;
+	if(target < -90) target = -90;
 	return_port(port - 1, 1);
 }
 
@@ -313,8 +321,14 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target){
 	euler_s_t euler_values;
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
-	data->pitch_offset = (target.pitch - euler_values.pitch) % 90;
-	data->roll_offset = (target.roll - euler_values.roll) % 90;
-	data->yaw_offset = (target.yaw - euler_values.yaw) % 90;
+	if(target.pitch > 90) target.pitch = 90;
+	if(target.pitch < -90) target.pitch = -90;
+	if(target.yaw > 90) target.yaw = 90;
+	if(target.yaw < -90) target.yaw = -90;
+	if(target.roll > 90) target.roll = 90;
+	if(target.roll < -90) target.roll = -90;
+	data->pitch_offset = target.pitch - euler_values.pitch;
+	data->roll_offset = target.roll - euler_values.roll;
+	data->yaw_offset = target.yaw - euler_values.yaw;
 	return_port(port - 1, 1);
 }

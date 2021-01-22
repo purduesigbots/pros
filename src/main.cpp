@@ -73,8 +73,10 @@ void opcontrol() {
 	while (true) {
 		
 		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) pros::c::imu_tare_euler(4);
-		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) pros::c::imu_tare_euler(4,999,999,999);
-		
+		if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) pros::c::imu_set_euler(4,{999,999,999});
+		pros::lcd::print(1, "Roll %f!",pros::c::imu_get_roll(4));
+		pros::lcd::print(2, "Yaw: %f!",pros::c::imu_get_yaw(4));
+		pros::lcd::print(3, "Pitch: %f",pros::c::imu_get_pitch(4));		
 		pros::delay(20);
 	}
 }
