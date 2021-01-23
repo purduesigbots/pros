@@ -89,7 +89,7 @@ class Imu {
 	 * Get the Inertial Sensor's heading relative to the initial direction of its
 	 * x-axis
 	 *
-	 * This value is bounded by (0,360). Clockwise rotations are represented with
+	 * This value is bounded by [0,360). Clockwise rotations are represented with
 	 * positive degree values, while counterclockwise rotations are represented with
 	 * negative ones.
 	 *

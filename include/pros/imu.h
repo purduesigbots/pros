@@ -57,10 +57,6 @@ typedef struct __attribute__((__packed__)) euler_s {
 } euler_s_t;
 
 #define IMU_MINIMUM_DATA_RATE 5
-#define IMU_EULER_LIMIT 180
-#define IMU_HEADING_MAX 360
-
-#define DEGTORAD (M_PI / 180)
 
 /**
  * Calibrate IMU
@@ -131,7 +127,7 @@ double imu_get_rotation(uint8_t port);
  * Get the Inertial Sensor's heading relative to the initial direction of its
  * x-axis
  *
- * This value is bounded by (0,360). Clockwise rotations are represented with
+ * This value is bounded by [0,360). Clockwise rotations are represented with
  * positive degree values, while counterclockwise rotations are represented with
  * negative ones.
  *
