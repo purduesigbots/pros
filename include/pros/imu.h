@@ -467,7 +467,7 @@ int32_t imu_set_pitch(uint8_t port, double target);
 
 /**
  * Sets the current reading of the Inertial Sensor's roll to target value
- * Will default to +/- 180 if value target +/- 180.
+ * Will default to +/- 180 if target exceeds +/- 180.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
