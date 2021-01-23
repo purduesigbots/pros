@@ -99,8 +99,8 @@ using namespace pros::c;
 
   Mutex::Mutex(void) : mutex(mutex_create(), mutex_delete) { }
 
-  ProsClock::time_point ProsClock::now() {
-    return ProsClock::time_point{ProsClock::duration{millis()}};
+  Clock::time_point Clock::now() {
+    return Clock::time_point{Clock::duration{millis()}};
   }
 
   bool Mutex::take(std::uint32_t timeout) {
@@ -112,7 +112,7 @@ using namespace pros::c;
   }
 
   void Mutex::lock(void) {
-	  if(!take(TIMEOUT_MAX)){
+	  if (!take(TIMEOUT_MAX)) {
 		  throw std::runtime_error{"Cannot obtain lock!"};
 	  }
   }
@@ -123,7 +123,7 @@ using namespace pros::c;
 
   bool Mutex::try_lock(void) {
 	  try_lock_for(std::chrono::duration<long, std::ratio<1>>{1});
-	  try_lock_until(ProsClock::time_point{std::chrono::duration<long, std::ratio<1>>{1}});
+	  try_lock_until(Clock::time_point{std::chrono::duration<long, std::ratio<1>>{1}});
 	  return take(0);
   }
 }

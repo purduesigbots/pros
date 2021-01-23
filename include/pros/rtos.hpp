@@ -322,22 +322,26 @@ class Task {
 };
 
 // STL Clock compliant clock
-class ProsClock {
-	public:
-	typedef uint32_t rep;
-	typedef std::milli period;
-	typedef std::chrono::duration<rep, period> duration;
-	typedef std::chrono::time_point<ProsClock> time_point;
+struct Clock {
+	using rep = std::uint32_t;
+	using period = std::milli;
+	using duration = std::chrono::duration<rep, period>;
+	using time_point = std::chrono::time_point<Clock>;
 	const bool is_steady = true;
 
 	/**
-	 * Returns the current time from pros::c::milis()
-	 * \return
+	 * Gets the current time.
+	 *
+	 * Effectively a wrapper around pros::millis()
+	 *
+	 * \return The current time
 	 */
 	static time_point now();
 };
 
 class Mutex {
+	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
+
 	public:
 	Mutex(void);
 
@@ -397,7 +401,7 @@ class Mutex {
 	 */
 	template <typename Rep, typename Period>
 	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
-		return take(std::chrono::duration_cast<ProsClock::duration>(rel_time).count());
+		return take(std::chrono::duration_cast<Clock::duration>(rel_time).count());
 	}
 
   /**
@@ -405,12 +409,9 @@ class Mutex {
    * Do not use directly, use pros::Mutex::take instead
    */
 	template <typename Duration>
-	bool try_lock_until(const std::chrono::time_point<ProsClock, Duration>& abs_time) {
-		return take(std::max(static_cast<uint32_t>(0), (abs_time - ProsClock::now()).count()));
+	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
+		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
 	}
-
-	private:
-	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
 };
 
 /**
