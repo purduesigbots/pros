@@ -1,5 +1,5 @@
 /**
- * \file devices/vdml_imu.c
+ * \file devices/vdml_optical.c
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
