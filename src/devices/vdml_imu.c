@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -153,7 +153,6 @@ imu_status_e_t imu_get_status(uint8_t port) {
 		return rtn;
 	}
 	device = registry_get_device(port - 1);
-	ERROR_IMU_STILL_CALIBRATING(port, device, E_IMU_STATUS_ERROR);
 	rtn = vexDeviceImuStatusGet(device->device_info);
 	return_port(port - 1, rtn);
 }
