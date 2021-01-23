@@ -59,7 +59,7 @@ class Task {
 	 *
 	 */
 	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+		 std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -104,13 +104,13 @@ class Task {
 	 */
 	template <class F>
 	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "")
-	    : Task(
-	          [](void* parameters) {
-		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
-		          (*ptr)();
-	          },
-	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
+		 const char* name = "")
+		: Task(
+			  [](void* parameters) {
+				  std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
+				  (*ptr)();
+			  },
+			  new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
 		static_assert(std::is_invocable_r_v<void, F>);
 	}
 
@@ -130,7 +130,7 @@ class Task {
 	 */
 	template <class F>
 	Task(F&& function, const char* name)
-	    : Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
+		: Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
 	/**
 	 * Create a C++ task object from a task handle
@@ -345,6 +345,14 @@ class Mutex {
 	public:
 	Mutex(void);
 
+	// disable copy and move construction and assignment per Mutex requirements
+	// (see https://en.cppreference.com/w/cpp/named_req/Mutex)
+	Mutex(const Mutex&) = delete;
+	Mutex(Mutex&&) = delete;
+
+	Mutex& operator=(const Mutex&) = delete;
+	Mutex& operator=(Mutex&&) = delete;
+
 	/**
 	 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
 	 * before timing out.
@@ -378,36 +386,73 @@ class Mutex {
 	bool give(void);
 
 	/**
-	 * BasicLockable compliance lock function https://en.cppreference.com/w/cpp/named_req/BasicLockable
-	 * Do not use directly, use pros::Mutex::take instead
+	 * Takes and locks a mutex, waiting for up to TIMEOUT_MAX milliseconds.
+	 *
+	 * Effectively equivalent to calling pros::Mutex::take with TIMEOUT_MAX as
+	 * the parameter.
+	 *
+	 * Conforms to named requirment BasicLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 *
+	 * \note Consider using a std::unique_lock, std::lock_guard, or
+	 * 		 std::scoped_lock instead of interacting with the Mutex directly.
+	 *
+	 * \exception std::system_error Mutex could not be locked within TIMEOUT_MAX
+	 *			  milliseconds. see errno for details.
 	 */
 	void lock(void);
 
 	/**
-	 * BasicLockable compliance unlock function https://en.cppreference.com/w/cpp/named_req/BasicLockable
-	 * Do not use directly, use pros::Mutex::give instead
+	 * Unlocks a mutex.
+	 * 
+	 * Equivalent to calling pros::Mutex::give.
+	 * 
+	 * Conforms to named requirement BasicLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 *
+	 * \note Consider using a std::unique_lock, std::lock_guard, or
+	 * 		 std::scoped_lock instead of interacting with the Mutex direcly.
 	 */
 	void unlock(void);
 
 	/**
-	 * Lockable compliance try_lock function https://en.cppreference.com/w/cpp/named_req/Lockable
-	 * Do not use directly, use pros::Mutex::take instead
+	 * Try to lock a mutex.
+	 * 
+	 * Returns immediately if unsucessful.
+	 * 
+	 * Conforms to named requirement Lockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/Lockable
+	 * 
+	 * \return True when lock was acquired succesfully, or false otherwise.
 	 */
 	bool try_lock(void);
 
 	/**
-	 * TimedLockable compliance try_unlock_for function https://en.cppreference.com/w/cpp/named_req/TimedLockable
-	 * Do not use directly, use pros::Mutex::take instead
+	 * Takes and locks a mutex, waiting for a specified duration.
+	 * 
+	 * Equivalent to calling pros::Mutex::take with a duration specified in
+	 * milliseconds.
+	 * 
+	 * Conforms to named requirement TimedLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	 * 
+	 * \param rel_time Time to wait before the mutex becomes available.
+	 * \return True if the lock was acquired succesfully, otherwise false.
 	 */
 	template <typename Rep, typename Period>
 	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
 		return take(std::chrono::duration_cast<Clock::duration>(rel_time).count());
 	}
 
-  /**
-   * TimedLockable compliance try_unlock_until function https://en.cppreference.com/w/cpp/named_req/TimedLockable
-   * Do not use directly, use pros::Mutex::take instead
-   */
+	/**
+	 * Takes and locks a mutex, waiting until a specified time.
+	 * 
+	 * Conforms to named requirement TimedLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	 * 
+	 * \param abs_time Time point until which to wait for the mutex.
+	 * \return True if the lock was acquired succesfully, otherwise false.
+	 */
 	template <typename Duration>
 	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
@@ -429,7 +474,7 @@ using pros::c::millis;
  * To delay cyclically, use task_delay_until().
  *
  * \param milliseconds
- *        The number of milliseconds to wait (1000 milliseconds per second)
+ * 		  The number of milliseconds to wait (1000 milliseconds per second)
  */
 using pros::c::delay;
 }  // namespace pros

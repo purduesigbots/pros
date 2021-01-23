@@ -14,6 +14,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <system_error>
 #include "kapi.h"
 #include "pros/rtos.hpp"
 
@@ -113,7 +114,7 @@ using namespace pros::c;
 
   void Mutex::lock(void) {
 	  if (!take(TIMEOUT_MAX)) {
-		  throw std::runtime_error{"Cannot obtain lock!"};
+		  throw std::system_error(errno, std::system_category(), "Cannot obtain lock!");
 	  }
   }
 
@@ -122,8 +123,6 @@ using namespace pros::c;
   }
 
   bool Mutex::try_lock(void) {
-	  try_lock_for(std::chrono::duration<long, std::ratio<1>>{1});
-	  try_lock_until(Clock::time_point{std::chrono::duration<long, std::ratio<1>>{1}});
 	  return take(0);
   }
 }
