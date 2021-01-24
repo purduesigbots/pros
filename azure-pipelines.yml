@@ -25,7 +25,7 @@ jobs:
   - task: PipAuthenticate@0
     inputs:
       artifactFeeds: 'pros-cli'
-  - bash: pip install pros-cli
+  - bash: pip install --verbose pros-cli
     displayName: Install CLI
   - bash: |
       make template
