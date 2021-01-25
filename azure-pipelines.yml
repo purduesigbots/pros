@@ -22,7 +22,7 @@ jobs:
     inputs:
       addToPath: true
       versionSpec: '3.6'
-  - task: PipAuthenticate@0
+  - task: PipAuthenticate@1
     inputs:
       artifactFeeds: 'pros-cli'
   - bash: pip install --verbose pros-cli
