@@ -28,7 +28,7 @@ jobs:
       # use official PyPi registry first and fall back to internal feed as needed
       onlyAddExtraIndex: true
   - bash: |
-      pip install 'pros-cli>=3'
+      pip install --verbose 'pros-cli>=3'
       pros --version 2>&1
     displayName: Install CLI
   - bash: |
