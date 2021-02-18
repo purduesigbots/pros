@@ -25,7 +25,9 @@ jobs:
   - task: PipAuthenticate@1
     inputs:
       artifactFeeds: 'pros-cli'
-  - bash: pip install click==6.7 requests pros-cli
+      # use official PyPi registry first and fall back to internal feed as needed
+      onlyAddExtraIndex: true
+  - bash: pip install pros-cli>2
     displayName: Install CLI
   - bash: |
       make template
