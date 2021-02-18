@@ -27,7 +27,10 @@ jobs:
       artifactFeeds: 'pros-cli'
       # use official PyPi registry first and fall back to internal feed as needed
       onlyAddExtraIndex: true
-  - bash: pip install pros-cli>2
+  - bash: |
+      pip install pros-cli>2
+      pros --version 2>&1
+      prosv5 --version 2>&1
     displayName: Install CLI
   - bash: |
       make template
