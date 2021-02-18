@@ -28,9 +28,8 @@ jobs:
       # use official PyPi registry first and fall back to internal feed as needed
       onlyAddExtraIndex: true
   - bash: |
-      pip install pros-cli>2
+      pip install pros-cli>2.6.1
       pros --version 2>&1
-      prosv5 --version 2>&1
     displayName: Install CLI
   - bash: |
       make template
