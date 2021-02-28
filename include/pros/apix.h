@@ -417,6 +417,36 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  */
 int registry_unbind_port(uint8_t port);
 
+/*
+ * Returns the type of device registered to the port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return The type of device that is registered into the port (NOT what is
+ * plugged in)
+ */
+v5_device_e_t registry_get_bound_type(uint8_t port);
+
+/*
+ * Returns the type of the device plugged into the port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return The type of device that is plugged into the port (NOT what is
+ * registered)
+ */
+v5_device_e_t registry_get_plugged_type(uint8_t port);
+
 /******************************************************************************/
 /**                               Filesystem                                 **/
 /******************************************************************************/
