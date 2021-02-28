@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -89,7 +89,7 @@ class Imu {
 	 * Get the Inertial Sensor's heading relative to the initial direction of its
 	 * x-axis
 	 *
-	 * This value is bounded by (-360,360). Clockwise rotations are represented with
+	 * This value is bounded by [0,360). Clockwise rotations are represented with
 	 * positive degree values, while counterclockwise rotations are represented with
 	 * negative ones.
 	 *
@@ -138,7 +138,7 @@ class Imu {
 	 */
 	virtual pros::c::euler_s_t get_euler() const;
 	/**
-	 * Get the Inertial Sensor's pitch angle
+	 * Get the Inertial Sensor's pitch angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -153,7 +153,7 @@ class Imu {
 	 */
 	virtual double get_pitch() const;
 	/**
-	 * Get the Inertial Sensor's roll angle
+	 * Get the Inertial Sensor's roll angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -167,7 +167,7 @@ class Imu {
 	 */
 	virtual double get_roll() const;
 	/**
-	 * Get the Inertial Sensor's yaw angle
+	 * Get the Inertial Sensor's yaw angle bounded by (-180,180)
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -196,7 +196,218 @@ class Imu {
 	 */
 	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
 	/**
-	 * Get the Inertial Sensor's raw acceleroneter values
+	 * Resets the current reading of the Inertial Sensor's rotation to zero
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_rotation() const;
+	/**
+	 * Resets the current reading of the Inertial Sensor's heading to zero
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_heading() const;
+	/**
+	 * Resets the current reading of the Inertial Sensor's pitch to zero
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_pitch() const;
+	/**
+	 * Resets the current reading of the Inertial Sensor's yaw to zero
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_yaw() const;
+	/**
+	 * Resets the current reading of the Inertial Sensor's roll to zero
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_roll() const;
+	/**
+	 * Resets all 5 values of the Inertial Sensor to 0.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare() const;
+	/**
+	 * Reset all 3 euler values of the Inertial Sensor to 0.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t tare_euler() const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's heading to target value
+	 * Target will default to 360 if above 360 and default to 0 if below 0.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the heading value to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_heading(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's rotation to target value
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the rotation value to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_rotation(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's yaw to target value
+	 * Will default to +/- 180 if target exceeds +/- 180.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for yaw value to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_yaw(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's pitch to target value
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target value for the pitch value to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_pitch(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's roll to target value
+	 * Will default to +/- 180 if target exceeds +/- 180.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target euler values for the euler values to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_roll(const double target) const;
+	/**
+	 * Sets the current reading of the Inertial Sensor's euler values to
+	 * target euler values. Will default to +/- 180 if target exceeds +/- 180.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \param  target
+	 * 				 Target euler values for the euler values to be set to
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_euler(const pros::c::euler_s_t target) const;
+	/**
+	 * Get the Inertial Sensor's raw accelerometer values
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

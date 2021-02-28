@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -366,6 +366,13 @@ class Mutex {
  * \return The number of milliseconds since PROS initialized
  */
 using pros::c::millis;
+
+/**
+ * Gets the number of microseconds since PROS initialized.
+ * 
+ * \return The number of microseconds since PROS initialized
+ */
+using pros::c::micros;
 
 /**
  * Delays a task for a given number of milliseconds.

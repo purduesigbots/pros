@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -110,7 +110,7 @@ int32_t rotation_get_position(uint8_t port);
 int32_t rotation_get_velocity(uint8_t port);
 
 /**
- * Get the Rotation Sensor's current position in centidegrees
+ * Get the Rotation Sensor's current angle in centidegrees (0-36000)
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -119,7 +119,7 @@ int32_t rotation_get_velocity(uint8_t port);
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
- * \return The angle value or PROS_ERR_F if the operation failed, setting
+ * \return The angle value (0-36000) or PROS_ERR_F if the operation failed, setting
  * errno.
  */
 int32_t rotation_get_angle(uint8_t port);

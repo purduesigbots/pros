@@ -6,7 +6,7 @@
  * Contains the various methods needed to enable standard C library support
  * through the use of the Arm-distributed implementation of newlib.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
