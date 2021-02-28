@@ -368,6 +368,13 @@ class Mutex {
 using pros::c::millis;
 
 /**
+ * Gets the number of microseconds since PROS initialized.
+ * 
+ * \return The number of microseconds since PROS initialized
+ */
+using pros::c::micros;
+
+/**
  * Delays a task for a given number of milliseconds.
  *
  * This is not the best method to have a task execute code at predefined
