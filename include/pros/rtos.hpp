@@ -368,7 +368,7 @@ class Mutex {
 using pros::c::millis;
 
 /**
- * @brief Gets the number of microseconds since PROS initialized.
+ * Gets the number of microseconds since PROS initialized.
  * 
  * \return The number of microseconds since PROS initialized
  */
