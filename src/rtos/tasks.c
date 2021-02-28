@@ -2060,6 +2060,11 @@ uint32_t xTicks;
 
 	return xTicks * (configTICK_RATE_HZ / 1000);
 }
+
+uint64_t micros(void)
+{
+	return vexSystemHighResTimeGet();
+}
 /*-----------------------------------------------------------*/
 
 uint32_t xTaskGetTickCountFromISR( void )
