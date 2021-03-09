@@ -126,6 +126,13 @@ namespace c {
 uint32_t millis(void);
 
 /**
+ * Gets the number of microseconds since PROS initialized,
+ * 
+ * \return The number of microseconds since PROS initialized
+ */
+uint64_t micros(void);
+
+/**
  * Creates a new task and add it to the list of tasks that are ready to run.
  *
  * This function uses the following values of errno when an error state is
