@@ -30,11 +30,11 @@ class Rotation {
 	Rotation(const std::uint8_t port) : _port(port){};
 
 	/**
-	 * Reset the Rotation Sensor 
-	 * 
+	 * Reset the Rotation Sensor
+	 *
 	 * Reset the current absolute position to be the same as the
 	 * Rotation Sensor angle.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -46,7 +46,30 @@ class Rotation {
 	virtual std::int32_t reset();
 
 	/**
- 	 * Set the Rotation Sensor position reading to a desired rotation value
+	 * Set the Rotation Sensor's refresh interval in milliseconds.
+	 *
+	 * The rate may be specified in increments of 5ms, and will be rounded down to
+	 * the nearest increment. The minimum allowable refresh rate is 5ms. The default
+	 * rate is 10ms.
+	 *
+	 * As values are copied into the shared memory buffer only at 10ms intervals,
+	 * setting this value to less than 10ms does not mean that you can poll the
+	 * sensor's values any faster. However, it will guarantee that the data is as
+	 * recent as possible.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Rotation Sensor
+	 *
+	 * \param rate The data refresh interval in milliseconds
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
+
+	/**
+	 * Set the Rotation Sensor position reading to a desired rotation value
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -76,7 +99,7 @@ class Rotation {
 	virtual std::int32_t reset_position(void);
 
 	/**
- 	 * Get the Rotation Sensor's current position in centidegrees
+	 * Get the Rotation Sensor's current position in centidegrees
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -89,7 +112,7 @@ class Rotation {
 	virtual std::int32_t get_position();
 
 	/**
- 	 * Get the Rotation Sensor's current velocity in centidegrees per second
+	 * Get the Rotation Sensor's current velocity in centidegrees per second
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -98,7 +121,7 @@ class Rotation {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The 
+	 * \return The
 	 value or PROS_ERR_F if the operation failed, setting
 	 * errno.
 	 */
