@@ -68,7 +68,6 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type) {
 }
 
 int registry_unbind_port(uint8_t port) {
-	port--;
 	if (!VALIDATE_PORT_NO(port)) {
 		errno = ENXIO;
 		return PROS_ERR;
