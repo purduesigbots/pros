@@ -28,6 +28,8 @@ namespace pros {
 namespace c {
 #endif
 
+typedef struct IMU Imu;
+
 typedef enum imu_status_e {
 	E_IMU_STATUS_CALIBRATING = 0x01,
 	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
