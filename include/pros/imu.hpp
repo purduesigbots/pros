@@ -445,7 +445,7 @@ class Imu {
 	virtual bool is_calibrating() const;
 };
 
-	using IMU = Imu;
+using IMU = Imu;
 
 }  // namespace pros
 
