@@ -25,10 +25,12 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
+
+	typedef struct IMU Imu;
+
 namespace c {
 #endif
 
-typedef struct IMU Imu;
 
 typedef enum imu_status_e {
 	E_IMU_STATUS_CALIBRATING = 0x01,
