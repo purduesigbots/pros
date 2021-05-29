@@ -18,10 +18,14 @@
 #include "common/linkedlist.h"
 #include "kapi.h"
 
+// NOTE: Do not intermix data and function payloads. This may cause data to be 
+// re-evaluated as a pointer to an area in memory and a false free or add.
+
 ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.func = func;
 	node->next = NULL;
+
 	return node;
 }
 
@@ -29,6 +33,7 @@ ll_node_s_t* linked_list_init_data_node(void* data) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.data = data;
 	node->next = NULL;
+
 	return node;
 }
 
@@ -73,9 +78,6 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func) {
 	it->next = n;
 }
 
-// NOTE: Do not intermix data and function payloads. This may cause data to be 
-// re-evaluated as a pointer to an area in memory and a false free.
-
 void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 	if (list == NULL || list->head == NULL) return;
 
@@ -89,8 +91,8 @@ void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 				p->next = it->next;
 			kfree(it);
 			break;
-			}
 		}
+
 		p = it;
 		it = it->next;
 	}
@@ -118,16 +120,15 @@ void linked_list_remove_data(linked_list_s_t* list, void* data) {
 	ll_node_s_t* it = list->head;
 	ll_node_s_t* p = NULL;
 	while (it != NULL) {
-		if(!it->isFunc) { //Outer if loop for protective wrapping
-			if (it->payload.data == data) {
-				if (p == NULL)
-					list->head = it->next;
-				else
-					p->next = it->next;
-				kfree(it);
-				break;
-			}
+		if (it->payload.data == data) {
+			if (p == NULL)
+				list->head = it->next;
+			else
+				p->next = it->next;
+			kfree(it);
+			break;
 		}
+		
 		p = it;
 		it = it->next;
 	}
