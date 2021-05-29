@@ -73,6 +73,9 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func) {
 	it->next = n;
 }
 
+// NOTE: Do not intermix data and function payloads. This may cause data to be 
+// re-evaluated as a pointer to an area in memory and a false free.
+
 void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 	if (list == NULL || list->head == NULL) return;
 
