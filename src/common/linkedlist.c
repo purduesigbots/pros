@@ -128,7 +128,7 @@ void linked_list_remove_data(linked_list_s_t* list, void* data) {
 			kfree(it);
 			break;
 		}
-		
+
 		p = it;
 		it = it->next;
 	}
