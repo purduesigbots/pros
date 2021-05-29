@@ -22,7 +22,6 @@ ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.func = func;
 	node->next = NULL;
-	node->isFunc = true;
 	return node;
 }
 
@@ -30,7 +29,6 @@ ll_node_s_t* linked_list_init_data_node(void* data) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
 	node->payload.data = data;
 	node->next = NULL;
-	node->isFunc = false;
 	return node;
 }
 
@@ -81,13 +79,12 @@ void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 	ll_node_s_t* it = list->head;
 	ll_node_s_t* p = NULL;
 	while (it != NULL) {
-		if(it->isFunc) { //Outer if loop for protective wrapping
-			if (it->payload.func == func) {
-				if (p == NULL)
-					list->head = it->next;
-				else
-					p->next = it->next;
-				kfree(it);
+		if (it->payload.func == func) {
+			if (p == NULL)
+				list->head = it->next;
+			else
+				p->next = it->next;
+			kfree(it);
 			break;
 			}
 		}
