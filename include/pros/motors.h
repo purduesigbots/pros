@@ -839,7 +839,7 @@ motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, doubl
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t __attribute__((deprecated)) motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid);
+int32_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid);
 
 /**
  * Sets one of motor_pid_full_s_t for the motor.
@@ -862,7 +862,7 @@ int32_t __attribute__((deprecated)) motor_set_pos_pid(uint8_t port, const motor_
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t __attribute__((deprecated)) motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid);
+int32_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid);
 
 /**
  * Sets one of motor_pid_s_t for the motor. This intended to just modify the
@@ -886,7 +886,7 @@ int32_t __attribute__((deprecated)) motor_set_pos_pid_full(uint8_t port, const m
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t __attribute__((deprecated)) motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid);
+int32_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid);
 
 /**
  * Sets one of motor_pid_full_s_t for the motor.
@@ -909,7 +909,7 @@ int32_t __attribute__((deprecated)) motor_set_vel_pid(uint8_t port, const motor_
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t __attribute__((deprecated)) motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid);
+int32_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid);
 
 /**
  * Sets the reverse flag for the motor.

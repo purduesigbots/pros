@@ -614,7 +614,7 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated]]
+	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
 	virtual std::int32_t set_pos_pid(const motor_pid_s_t pid) const;
 
 	/**
@@ -633,7 +633,7 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated]]
+	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
 	virtual std::int32_t set_pos_pid_full(const motor_pid_full_s_t pid) const;
 
 	/**
@@ -653,7 +653,7 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated]]
+	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
 	virtual std::int32_t set_vel_pid(const motor_pid_s_t pid) const;
 
 	/**
@@ -672,7 +672,7 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated]]
+	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
 	virtual std::int32_t set_vel_pid_full(const motor_pid_full_s_t pid) const;
 
 	/**
