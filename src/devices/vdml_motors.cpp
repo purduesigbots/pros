@@ -205,19 +205,31 @@ motor_pid_full_s_t Motor::convert_pid_full(double kf, double kp, double ki, doub
 }
 
 std::int32_t Motor::set_pos_pid(const motor_pid_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_pos_pid(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_pos_pid_full(const motor_pid_full_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_pos_pid_full(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_vel_pid(const motor_pid_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_vel_pid(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_vel_pid_full(const motor_pid_full_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_vel_pid_full(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_zero_position(const double position) const {
