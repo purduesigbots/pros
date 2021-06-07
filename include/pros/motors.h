@@ -780,7 +780,7 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
  *
  * \return A motor_pid_s_t struct formatted properly in 4.4.
  */
-motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
+motor_pid_s_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_convert_pid(double kf, double kp, double ki, double kd);
 
 /**
  * Takes in floating point values and returns a properly formatted pid struct.
@@ -814,7 +814,7 @@ motor_pid_s_t motor_convert_pid(double kf, double kp, double ki, double kd);
  *
  * \return A motor_pid_s_t struct formatted properly in 4.4.
  */
-motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
+motor_pid_full_s_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
                                           double threshold, double loopspeed);
 
 /**
@@ -1034,7 +1034,7 @@ motor_gearset_e_t motor_get_gearing(uint8_t port);
  * \return A motor_pid_full_s_t containing the position PID constants last set
  * to the given motor
  */
-motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
+motor_pid_full_s_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_get_pos_pid(uint8_t port);
 
 /**
  * Gets the velocity PID that was set for the motor. This function will return
@@ -1055,7 +1055,7 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port);
  * \return A motor_pid_full_s_t containing the velocity PID constants last set
  * to the given motor
  */
-motor_pid_full_s_t motor_get_vel_pid(uint8_t port);
+motor_pid_full_s_t __attribute__((deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage."))) motor_get_vel_pid(uint8_t port);
 
 /**
  * Gets the operation direction of the motor as set by the user.
