@@ -37,7 +37,7 @@ using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
 /** type definition for the triplet of smart port and two adi ports for the two wire adi devices*/
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
  
-class ADIPort {
+class Port {
 	public:
 	/**
 	 * Configures an ADI port to act as a given sensor type.
