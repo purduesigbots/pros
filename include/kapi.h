@@ -8,7 +8,7 @@
  * creation of statically allocated FreeRTOS primitives like tasks, semaphores,
  * and queues.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public

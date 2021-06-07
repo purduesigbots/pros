@@ -22,10 +22,12 @@ jobs:
     inputs:
       addToPath: true
       versionSpec: '3.6'
-  - task: PipAuthenticate@0
+  - task: PipAuthenticate@1
     inputs:
       artifactFeeds: 'pros-cli'
-  - bash: pip install pros-cli-v5
+      # use official PyPi registry first and fall back to internal feed as needed
+      onlyAddExtraIndex: true
+  - bash: pip install pros-cli
     displayName: Install CLI
   - bash: |
       make template

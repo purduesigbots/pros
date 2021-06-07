@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,95 +12,134 @@
 
 #include "kapi.h"
 #include "pros/adi.hpp"
+#include "vdml/port.h"
 
 namespace pros {
 namespace adi{
 using namespace pros::c;
 
-Port::Port(std::uint8_t port, adi_port_config_e_t type) : _port(port) {
-	adi_port_set_config(_port, type);
+Port::Port(std::uint8_t adi_port, adi_port_config_e_t type)
+    : _smart_port(INTERNAL_ADI_PORT), _adi_port(adi_port) {
+	ext_adi_port_set_config(_smart_port, _adi_port, type);
 }
 
-Port::Port(void) {
-	// for use by derived classes like Encoder
+Port::Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type)
+    : _smart_port(port_pair.first), _adi_port(port_pair.second) {
+	ext_adi_port_set_config(_smart_port, _adi_port, type);
 }
 
 std::int32_t Port::set_config(adi_port_config_e_t type) const {
-	return adi_port_set_config(_port, type);
+	return ext_adi_port_set_config(_smart_port, _adi_port, type);
 }
 
-std::int32_t Port::get_config(void) const {
-	return adi_port_get_config(_port);
+std::int32_t Port::get_config() const {
+	return ext_adi_port_get_config(_smart_port, _adi_port);
 }
 
 std::int32_t Port::set_value(std::int32_t value) const {
-	return adi_port_set_value(_port, value);
+	return ext_adi_port_set_value(_smart_port, _adi_port, value);
 }
 
-std::int32_t Port::get_value(void) const {
-	return adi_port_get_value(_port);
+std::int32_t Port::get_value() const {
+	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
 
-AnalogIn::AnalogIn(std::uint8_t port) : Port(port, E_ADI_ANALOG_IN) {}
+AnalogIn::AnalogIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_IN) {}
+AnalogIn::AnalogIn(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_IN) {}
 
-AnalogOut::AnalogOut(std::uint8_t port) : Port(port, E_ADI_ANALOG_OUT) {}
-
-std::int32_t AnalogIn::calibrate(void) const {
-	return adi_analog_calibrate(_port);
+std::int32_t AnalogIn::calibrate() const {
+	return ext_adi_analog_calibrate(_smart_port, _adi_port);
 }
 
-std::int32_t AnalogIn::get_value_calibrated(void) const {
-	return adi_analog_read_calibrated(_port);
+std::int32_t AnalogIn::get_value_calibrated() const {
+	return ext_adi_analog_read_calibrated(_smart_port, _adi_port);
 }
 
-std::int32_t AnalogIn::get_value_calibrated_HR(void) const {
-	return adi_analog_read_calibrated_HR(_port);
+std::int32_t AnalogIn::get_value_calibrated_HR() const {
+	return ext_adi_analog_read_calibrated_HR(_smart_port, _adi_port);
 }
 
-DigitalOut::DigitalOut(std::uint8_t port, bool init_state) : Port(port, E_ADI_DIGITAL_OUT) {
+AnalogOut::AnalogOut(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_OUT) {}
+AnalogOut::AnalogOut(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_OUT) {}
+
+DigitalIn::DigitalIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_DIGITAL_IN) {}
+DigitalIn::DigitalIn(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_DIGITAL_IN) {}
+
+std::int32_t DigitalIn::get_new_press() const {
+	return ext_adi_digital_get_new_press(_smart_port, _adi_port);
+}
+
+DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
-DigitalIn::DigitalIn(std::uint8_t port) : Port(port, E_ADI_DIGITAL_IN) {}
-
-std::int32_t DigitalIn::get_new_press(void) const {
-	return adi_digital_get_new_press(_port);
+DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
+	set_value(init_state);
 }
 
-Motor::Motor(std::uint8_t port) : Port(port, E_ADI_LEGACY_PWM) {
+Motor::Motor(std::uint8_t adi_port) : Port(adi_port, E_ADI_LEGACY_PWM) {
 	stop();
 }
 
-std::int32_t Motor::stop(void) const {
-	return adi_motor_stop(_port);
+Motor::Motor(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_LEGACY_PWM) {
+	stop();
 }
 
-Encoder::Encoder(std::uint8_t port_top, std::uint8_t port_bottom, bool reversed) {
-	_port = adi_encoder_init(port_top, port_bottom, reversed);
+std::int32_t Motor::stop() const {
+	return ext_adi_motor_stop(_smart_port, _adi_port);
 }
 
-std::int32_t Encoder::reset(void) const {
-	return adi_encoder_reset(_port);
+Encoder::Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) : Port(adi_port_top) {
+	std::int32_t _port = ext_adi_encoder_init(INTERNAL_ADI_PORT, adi_port_top, adi_port_bottom, reversed);
+	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t Encoder::get_value(void) const {
-	return adi_encoder_get(_port);
+Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get<1>(port_tuple)) {
+	std::int32_t _port =
+	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
+	get_ports(_port, _smart_port, _adi_port);
+
 }
 
-Ultrasonic::Ultrasonic(std::uint8_t port_ping, std::uint8_t port_echo) {
-	_port = adi_ultrasonic_init(port_ping, port_echo);
+std::int32_t Encoder::reset() const {
+	return adi_encoder_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
-Gyro::Gyro(std::uint8_t port, double multiplier) {
-	_port = adi_gyro_init(port, multiplier);
+std::int32_t Encoder::get_value() const {
+	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
-double Gyro::get_value(void) const {
-	return adi_gyro_get(_port);
+Ultrasonic::Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo) : Port(adi_port_ping) {
+	std::int32_t _port = ext_adi_ultrasonic_init(INTERNAL_ADI_PORT, adi_port_ping, adi_port_echo);
+	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t Gyro::reset(void) const {
-	return adi_gyro_reset(_port);
+Ultrasonic::Ultrasonic(ext_adi_port_tuple_t port_tuple) : Port(std::get<1>(port_tuple)) {
+	std::int32_t _port =
+	    ext_adi_ultrasonic_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple));
+	get_ports(_port, _smart_port, _adi_port);
+}
+
+std::int32_t Ultrasonic::get_value() const {
+	return adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
+}
+
+Gyro::Gyro(std::uint8_t adi_port, double multiplier) : Port(adi_port) {
+	std::int32_t _port = ext_adi_gyro_init(INTERNAL_ADI_PORT, adi_port, multiplier);
+	get_ports(_port, _smart_port, _adi_port);
+}
+
+Gyro::Gyro(ext_adi_port_pair_t port_pair, double multiplier) : ADIPort(std::get<1>(port_pair)) {
+	std::int32_t _port = ext_adi_gyro_init(port_pair.first, port_pair.second, multiplier);
+	get_ports(_port, _smart_port, _adi_port);
+}
+
+double Gyro::get_value() const {
+	return adi_gyro_get(merge_adi_ports(_smart_port, _adi_port));
+}
+
+std::int32_t Gyro::reset() const {
+	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 }  // namespace adi
 }  // namespace pros

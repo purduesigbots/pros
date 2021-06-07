@@ -6,7 +6,7 @@
  * Contains the driver for writing to any smart port with no regard to the
  * device on the other end.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
