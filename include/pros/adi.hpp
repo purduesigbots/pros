@@ -282,7 +282,7 @@ class DigitalOut : private Port {
 	 * \param init_state
 	 *        The initial state for the port
 	 */
-	explicit ADIDigitalOut(std::uint8_t adi_port, bool init_state = LOW);
+	explicit DigitalOut(std::uint8_t adi_port, bool init_state = LOW);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Digital Output.
