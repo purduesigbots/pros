@@ -51,7 +51,6 @@ class Port {
 	 * \param type
 	 *        The configuration type for the port
 	 */
-
 	explicit Port(std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
 	/**
@@ -116,6 +115,19 @@ class Port {
 
 class AnalogIn : private Port {
 	public:
+	/**
+	 * Configures an ADI port to act as an Analog Input.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+ 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 */
+	explicit AnalogIn(std::uint8_t adi_port);
+
 	/**
 	 * Configures an ADI port to act as an Analog Input.
 	 *
@@ -566,7 +578,7 @@ class Ultrasonic : private Port {
 	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
 	 * meter), measured from the sensor's mounting points.
 	 */
-	using Port::get_value;
+	std::int32_t get_value() const;
 };
 
 class Gyro : private Port {
