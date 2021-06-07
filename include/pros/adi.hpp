@@ -159,10 +159,10 @@ class AnalogIn : private Port {
 	/**
 	 * Gets the 12 bit calibrated value of an analog input port.
 	 *
-	 * The pros::AnalogIn::calibrate() function must be run first. This
+	 * The pros::adi::AnalogIn::calibrate() function must be run first. This
 	 * function is inappropriate for sensor values intended for integration, as
 	 * round-off error can accumulate causing drift over time. Use
-	 * pros::AnalogIn::get_value_calibrated_HR() instead.
+	 * pros::adi::AnalogIn::get_value_calibrated_HR() instead.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -176,7 +176,7 @@ class AnalogIn : private Port {
 	/**
 	 * Gets the 16 bit calibrated value of an analog input port.
 	 *
-	 * The pros::AnalogIn::calibrate() function must be run first. This is
+	 * The pros::adi::AnalogIn::calibrate() function must be run first. This is
 	 * intended for integrated sensor values such as gyros and accelerometers to
 	 * reduce drift due to round-off, and should not be used on a sensor such as a
 	 * line tracker or potentiometer.
