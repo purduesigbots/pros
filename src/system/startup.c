@@ -40,6 +40,8 @@ __attribute__((constructor(101))) static void pros_init(void) {
 
 	vdml_initialize();
 
+	graphical_context_daemon_initialize();
+
 	display_initialize();
 
 	// NOTE: this function should be called after all other initialize
