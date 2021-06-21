@@ -21,8 +21,8 @@
 extern void rtos_initialize();
 extern void vfs_initialize();
 extern void system_daemon_initialize();
-// extern void graphical_context_daemon_initialize(void);
-extern void display_initialize(void);
+extern void graphical_context_daemon_initialize();
+extern void display_initialize();
 extern void rtos_sched_start();
 extern void vdml_initialize();
 extern void invoke_install_hot_table();

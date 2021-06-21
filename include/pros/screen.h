@@ -27,7 +27,6 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-namespace c {
 #endif
 
 /**
@@ -40,32 +39,33 @@ namespace c {
  *  medium_center - Medium centered text
  *  large_center - Large centered text
  * 
- * Is exposed here not under pros namespace for ease of usage.
- * 
  */
 typedef enum {
-    small, // 0
-    medium,
-    large,
-    medium_center,
-    large_center
+    SMALL_TXT = 0, 
+    MEDIUM_TXT,
+    LARGE_TXT,
+    MEDIUM_CENTER_TXT,
+    LARGE_CENTER_TXT
 } text_format_e_t;
 
 /**
  * Can be used to determine what the current touch status is for the touchscreen.
- * (Seems redundant, but exists for the sake of user ease)
  *  
- *  pressed - Last interaction with screen was a quick press (not released yet)
- *  released - Last interaction with screen was a release
- *  held - User is holding screen down (not released or quick press)
+ *  TOUCH_PRESSED - Last interaction with screen was a quick press (not released yet)
+ *  TOUCH_RELEASED - Last interaction with screen was a release
+ *  TOUCH_HELD - User is holding screen down (not released or quick press)
  * 
  */
 
 typedef enum {
-    released,
-    pressed,
-    held
+    TOUCH_RELEASED = 0,
+    TOUCH_PRESSED,
+    TOUCH_HELD
 } last_touch_e_t;
+
+#ifdef __cplusplus
+namespace c {
+#endif
 
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/

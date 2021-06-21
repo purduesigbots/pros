@@ -34,14 +34,7 @@ const char* convert_args(const std::string& arg) {
 #pragma GCC diagnostic pop
 
 namespace pros {
-
-class Screen {
-    public:
-
-    Screen() = default;
-    /**
-	 * Creates a screen object.
-	 */
+namespace screen {
 
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
@@ -219,13 +212,19 @@ class Screen {
      * \param ...  Optional list of arguments for the format string
      */
     template <typename... Params>
-    void print(pros::c::text_format_e_t txt_fmt, const std::int16_t line, const char* text, Params... args);
-    
-    template <typename... Params>
-    void print(pros::c::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, Params... args);
+    void print(pros::text_format_e_t txt_fmt, const std::int16_t line, const char* text, Params... args){
+	    pros::c::screen_print(txt_fmt, line, text, convert_args(args)...);
+    }
 
     template <typename... Params>
-    void print(pros::c::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, std::uint32_t opacity, const char *text, Params... args);
+    void print(pros::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, Params... args){
+	    pros::c::screen_print_at(txt_fmt, x, y, text, convert_args(args)...);
+    }
+
+    template <typename... Params>
+    void print(pros::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, uint32_t opacity, const char *text, Params... args){
+        pros::c::screen_print_opacity(x, y, text, convert_args(args)...);
+    }
     
     /******************************************************************************/
     /**                         Screen Touch Functions                           **/
@@ -253,9 +252,9 @@ class Screen {
      * 
      * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */
-    pros::c::last_touch_e_t touch_status(void);
+    pros::last_touch_e_t touch_status(void);
     
-}; //class screen
+} //namespace screen
 } //namespace pros
 
 #endif //header guard
