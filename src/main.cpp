@@ -83,7 +83,7 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-		
+
 		left_mtr = left;
 		right_mtr = right;
 		pros::delay(20);
