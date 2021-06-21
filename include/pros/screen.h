@@ -63,6 +63,28 @@ typedef enum {
     TOUCH_HELD
 } last_touch_e_t;
 
+#ifdef PROS_USE_SIMPLE_NAMES
+#ifdef __cplusplus
+#define SMALL_TXT pros::SMALL_TXT
+#define MEDIUM_TXT pros::MEDIUM_TXT
+#define LARGE_TXT pros::LARGE_TXT
+#define MEDIUM_CENTER_TXT pros::MEDIUM_CENTER_TXT
+#define LARGE_CENTER_TXT pros::LARGE_CENTER_TXT
+#define TOUCH_RELEASED pros::TOUCH_RELEASED
+#define TOUCH_PRESSED pros::TOUCH_PRESSED
+#define TOUCH_HELD pros::TOUCH_HELD
+#else
+#define SMALL_TXT SMALL_TXT
+#define MEDIUM_TXT MEDIUM_TXT
+#define LARGE_TXT LARGE_TXT
+#define MEDIUM_CENTER_TXT MEDIUM_CENTER_TXT
+#define LARGE_CENTER_TXT LARGE_CENTER_TXT
+#define TOUCH_RELEASED TOUCH_RELEASED
+#define TOUCH_PRESSED TOUCH_PRESSED
+#define TOUCH_HELD TOUCH_HELD
+#endif
+#endif
+
 #ifdef __cplusplus
 namespace c {
 #endif
