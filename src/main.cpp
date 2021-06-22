@@ -84,7 +84,7 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-		pros::screen::print(MEDIUM_TXT, 1, "Last Touch: %3d", (int)pros::screen::touch_status());
+
 		left_mtr = left;
 		right_mtr = right;
 		pros::delay(20);
