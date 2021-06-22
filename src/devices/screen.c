@@ -102,13 +102,6 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius){
 /**     These functions allow programmers to display text on the v5 screen   **/
 /******************************************************************************/
 
-void screen_print_opacity( int32_t x, int32_t y, uint32_t opacity, const char *text, ...){
-    va_list args;
-	va_start(args, text);
-    display_opacity_vprintf(x, y, opacity, text, args);
-    va_end(args);
-}
-
 void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text, ...){
     va_list args;
 	va_start(args, text);

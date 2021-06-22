@@ -254,20 +254,6 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius);
 /******************************************************************************/
 
 /**
- * Print a normal unformatted string to the screen at the specified coordinates
- * 
- * Will default to a medium sized font by default if invalid text_format is given.
- * 
- * Text formats medium_center and large_center will default to medium and large respectively.
- * 
- * \param txt_fmt Text format enum that determines if the text is small, medium, and large.
- * \param x,y The (x,y) coordinates of the top left corner of the string
- * \param opacity The opacity of the text to display
- * \param text The text to display, with formatting parameters afterwards
- */
-void screen_print_opacity( int32_t x, int32_t y, uint32_t opacity, const char *text, ...);
-
-/**
  * Print a formatted string to the screen on the specified line
  * 
  * Will default to a medium sized font by default if invalid text_format is given.

@@ -220,11 +220,6 @@ namespace screen {
     void print(pros::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, const char* text, Params... args){
 	    pros::c::screen_print_at(txt_fmt, x, y, text, convert_args(args)...);
     }
-
-    template <typename... Params>
-    void print(pros::text_format_e_t txt_fmt, const std::int16_t x, const std::int16_t y, uint32_t opacity, const char *text, Params... args){
-        pros::c::screen_print_opacity(x, y, text, convert_args(args)...);
-    }
     
     /******************************************************************************/
     /**                         Screen Touch Functions                           **/
