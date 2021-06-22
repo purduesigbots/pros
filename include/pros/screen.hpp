@@ -207,7 +207,8 @@ namespace screen {
      * 
      * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
      * \param line The line number on which to print
-     * \param x, y The (x,y) coordinates of the top left corner of the string
+     * \param x The (x,y) coordinates of the top left corner of the string
+     * \param y The (x,y) coordinates of the top left corner of the string
      * \param fmt  Format string
      * \param ...  Optional list of arguments for the format string
      */

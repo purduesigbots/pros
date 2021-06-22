@@ -273,7 +273,8 @@ void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text,
  * Text formats medium_center and large_center will default to medium and large respectively.
  * 
  * \param txt_fmt Text format enum that determines if the text is small, medium, or large.
- * \param x, y The (x,y) coordinates of the top left corner of the string
+ * \param x The y coordinate of the top left corner of the string
+ * \param y The x coordinate of the top left corner of the string
  * \param text  Format string
  * \param ...  Optional list of arguments for the format string
  */
