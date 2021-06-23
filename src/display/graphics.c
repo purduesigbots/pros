@@ -130,7 +130,7 @@ void display_fill_circle(int16_t x, int16_t y, int16_t r) {
 
 //Text Display Functions
 void display_vprintf(uint8_t txt_fmt, const int16_t line, const char* fmt, va_list args){
-    mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_display_mutex, TIMEOUT_MAX);
 	char* out;
 	vasprintf(&out, fmt, args);
 	va_list empty;
@@ -234,7 +234,7 @@ static linked_list_s_t* _touch_event_release_handler_list = NULL;
 static linked_list_s_t* _touch_event_press_handler_list = NULL;
 static linked_list_s_t* _touch_event_press_auto_handler_list = NULL;
 
-void _set_up_touch_callback_storage() {
+static void _set_up_touch_callback_storage() {
 	_touch_event_release_handler_list = linked_list_init();
 	_touch_event_press_handler_list = linked_list_init();
 	_touch_event_press_auto_handler_list = linked_list_init();
@@ -256,7 +256,7 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 
 static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t touch_handle_task_buffer;
-zz task_t touch_handle_task;
+static task_t touch_handle_task;
 
 static void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,
