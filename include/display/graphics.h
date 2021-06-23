@@ -263,11 +263,6 @@ int16_t touch_last_y(void);
 touch_event_e_t touch_last_event(void);
 
 /**
- * Initializes the touch callback linked lists for different touch statuses.
- */
-void _set_up_touch_callback_storage();
-
-/**
  * Register a user-defined callback function for an event type
  *
  * When an event of the specified type is fired, the user-provided callback will
