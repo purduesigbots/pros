@@ -80,7 +80,7 @@ const char* convert_args(const std::string& arg) {
     /**
      * Scroll lines on the display upwards.
      *
-     * \param start_line	The line from which scrolling will start
+     * \param start_line		The line from which scrolling will start
      * \param lines			The number of lines to scroll up
      */
     void scroll(const std::int16_t start_line, const std::int16_t lines);
