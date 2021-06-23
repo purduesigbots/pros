@@ -207,7 +207,7 @@ void display_opacity_vprintf( int32_t xpos, int32_t ypos, uint32_t opacity, cons
 }
 
 int16_t touch_last_x() {
-	static V5_TouchStatus v5_touch_status;
+	V5_TouchStatus v5_touch_status;
 	mutex_take(_display_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
 	mutex_give(_display_mutex);
@@ -215,7 +215,7 @@ int16_t touch_last_x() {
 }
 
 int16_t touch_last_y() {
-	static V5_TouchStatus v5_touch_status;
+	V5_TouchStatus v5_touch_status;
 	mutex_take(_display_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
 	mutex_give(_display_mutex);
@@ -223,7 +223,7 @@ int16_t touch_last_y() {
 }
 
 touch_event_e_t touch_last_event() {
-	static V5_TouchStatus v5_touch_status;
+	V5_TouchStatus v5_touch_status;
 	mutex_take(_display_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
 	mutex_give(_display_mutex);
@@ -256,12 +256,13 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 
 static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t touch_handle_task_buffer;
-static task_t touch_handle_task;
+zz task_t touch_handle_task;
 
-void _handle_cb(ll_node_s_t* current, void* data) {
+static void _handle_cb(ll_node_s_t* current, void* data) {
 	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,
 	                                               ((touch_event_position_data_s_t*)(data))->y);
 }
+
 static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) {
 	return (x.lastEvent == y.lastEvent) && (x.lastXpos == y.lastXpos) && (x.lastYpos == y.lastYpos);
 }
