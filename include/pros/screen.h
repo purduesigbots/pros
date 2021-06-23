@@ -133,7 +133,7 @@ void screen_clear(void);
 /**
  * Scroll lines on the display upwards.
  *
- * \param start_line	The line from which scrolling will start
+ * \param start_line    The line from which scrolling will start
  * \param lines			The number of lines to scroll up
  */
 void screen_scroll(int16_t start_line, int16_t lines);
