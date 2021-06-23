@@ -18,6 +18,9 @@
 #include "pros/screen.h"
 #include <cstdint>
 
+namespace pros {
+namespace screen {
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"
 
@@ -32,9 +35,6 @@ const char* convert_args(const std::string& arg) {
 }  // namespace
 
 #pragma GCC diagnostic pop
-
-namespace pros {
-namespace screen {
 
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
