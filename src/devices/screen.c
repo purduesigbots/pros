@@ -104,14 +104,14 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius){
 
 void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text, ...){
     va_list args;
-	va_start(args, text);
+    va_start(args, text);
     display_vprintf((uint8_t)txt_fmt, line, text, args);
     va_end(args);
 }
 
 void screen_print_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* text, ...){
     va_list args;
-	va_start(args, text);
+    va_start(args, text);
     display_vprintf_at((uint8_t)txt_fmt, x, y, text, args);
     va_end(args);
 }
