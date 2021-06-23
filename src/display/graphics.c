@@ -295,6 +295,6 @@ void graphical_context_daemon_initialize(void) {
 	_display_mutex = mutex_create();
 	_set_up_touch_callback_storage();
 	touch_handle_task =
-	    task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MAX - 3, TASK_STACK_DEPTH_DEFAULT,
+	    task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
 	                       "PROS Graphics Touch Handler", touch_handle_task_stack, &touch_handle_task_buffer);
 }
