@@ -287,7 +287,7 @@ void _touch_handle_task(void* ignore) {
 			}
 			last = current;
 		}
-		delay(5);
+		delay(10);
 	}
 }
 

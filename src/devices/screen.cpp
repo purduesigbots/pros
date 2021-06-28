@@ -26,15 +26,15 @@ namespace screen {
         pros::c::screen_set_eraser(color);
     }
 
-    std::uint32_t get_pen(void){
+    std::uint32_t get_pen(){
         return pros::c::screen_get_pen();
     }
 
-    std::uint32_t get_eraser(void){
+    std::uint32_t get_eraser(){
         return pros::c::screen_get_eraser();
     }
 
-    void screen_clear(void){
+    void screen_clear(){
         pros::c::screen_clear();
     }
 
@@ -90,15 +90,15 @@ namespace screen {
         pros::c::screen_fill_circle(x, y, radius);
     }
 
-    std::int16_t last_x(void){
+    std::int16_t last_x(){
         return pros::c::screen_last_x();
     }
 
-    std::int16_t last_y(void){
+    std::int16_t last_y(){
         return pros::c::screen_last_y();
     }
 
-    pros::last_touch_e_t touch_status(void){
+    pros::last_touch_e_t touch_status(){
         return pros::c::screen_touch_status();
     }
 

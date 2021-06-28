@@ -63,19 +63,19 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return The current pen color of the screen object in the form of a value from the enum defined in colors.h.
      */
-    std::uint32_t get_pen(void);
+    std::uint32_t get_pen();
 
     /**
      * Get the current eraser color.
      *
      * \return The current eraser color of the screen object in the form of a value from the enum defined in colors.h.
      */
-    std::uint32_t get_eraser(void);
+    std::uint32_t get_eraser();
 
     /**
      * Reset the display to the default black screen
      */
-    void screen_clear(void);
+    void screen_clear();
 
     /**
      * Scroll lines on the display upwards.
@@ -234,21 +234,21 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return The x coordinate of the last touch.
      */
-    std::int16_t last_x(void);
+    std::int16_t last_x();
 
     /**
      * Gets the y coordinate of the last touch. 0 by default.
      * 
      * \return The y coordinate of the last touch.
      */
-    std::int16_t last_y(void);
+    std::int16_t last_y();
 
     /**
      * Gets the touch status of the last touch of the screen. 0 by default.
      * 
      * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */
-    pros::last_touch_e_t touch_status(void);
+    pros::last_touch_e_t touch_status();
     
 } //namespace screen
 } //namespace pros
