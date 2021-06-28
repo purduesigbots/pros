@@ -127,6 +127,7 @@ void display_fill_circle(int16_t x, int16_t y, int16_t r) {
 	mutex_give(_display_mutex);
 }
 
+
 //Text Display Functions
 void display_vprintf(uint8_t txt_fmt, const int16_t line, const char* fmt, va_list args){
 	mutex_take(_display_mutex, TIMEOUT_MAX);
