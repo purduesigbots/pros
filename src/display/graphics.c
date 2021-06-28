@@ -18,7 +18,7 @@
 #include "display/graphics.h"
 
 #include <stdint.h>
-#include <stdlib.h>  // free
+#include <stdlib.h>
 #include <sys/_stdint.h>
 
 #include "pros/apix.h"
