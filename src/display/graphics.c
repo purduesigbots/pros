@@ -14,7 +14,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-//this is a test
 #include "display/graphics.h"
 
 #include <stdint.h>
