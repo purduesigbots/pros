@@ -18,6 +18,12 @@
 namespace pros {
 namespace screen {
 
+    struct TouchStatus {
+        std::int16_t screen_last_x;
+        std::int16_t screen_last_y;
+        pros::last_touch_e_t screen_touch_status;
+    }
+
     void set_pen(const std::uint32_t color){
         pros::c::screen_set_pen(color);
     }
@@ -90,6 +96,12 @@ namespace screen {
         pros::c::screen_fill_circle(x, y, radius);
     }
 
+    //new one
+    struct TouchStatus screen_touch_status() {
+        return TouchStatus(pros::c::screen_last_x(), pros::c::screen_last_y(), pros::c::screen_touch_status());
+    }
+
+    // old functions
     std::int16_t last_x(){
         return pros::c::screen_last_x();
     }
