@@ -144,7 +144,7 @@ void touch_status_screen(void) {
             last_touch_status = E_TOUCH_RELEASED;
     }
 
-    struct TouchStatus = {screen_last_x(), screen_last_y(), screen_touch_status};
+    touch_status = {screen_last_x(), screen_last_y(), screen_touch_status};
 }
 
 

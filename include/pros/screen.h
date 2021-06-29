@@ -67,7 +67,7 @@ struct TouchStatus {
     int16_t screen_last_x;
     int16_t screen_last_y;
     last_touch_e_t screen_touch_status;
-};
+} touch_status;
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
