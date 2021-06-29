@@ -327,7 +327,7 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /**                    information about screen touches                      **/
 /******************************************************************************/
 
-struct TouchStatus touch_status_screen(void);
+void touch_status_screen(void);
 
 /**
  * Gets the x coordinate of the last touch. 0 by default.

@@ -131,7 +131,7 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /******************************************************************************/
 
 //new one
-struct TouchStatus touch_status_screen(void) {
+void touch_status_screen(void) {
     last_touch_e_t last_touch_status;
 
     switch (touch_last_event()){
@@ -144,7 +144,7 @@ struct TouchStatus touch_status_screen(void) {
             last_touch_status = E_TOUCH_RELEASED;
     }
 
-    return struct TouchStatus(touch_last_x, touch_last_x, last_touch_status);
+    struct TouchStatus = {screen_last_x(), screen_last_y(), screen_touch_status};
 }
 
 
