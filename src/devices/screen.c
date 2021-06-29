@@ -18,13 +18,6 @@
 #include "pros/apix.h"
 #include "v5_api.h"  // vexDisplay* 
 
-
-struct TouchStatus {
-    int16_t screen_last_x;
-    int16_t screen_last_y;
-    last_touch_e_t screen_touch_status;
-};
-
 /******************************************************************************/
 /**                  Screen Graphical Display Functions                      **/
 /**                                                                          **/
@@ -138,7 +131,7 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /******************************************************************************/
 
 //new one
-struct TouchStatus screen_touch_status(void) {
+struct TouchStatus touch_status_screen(void) {
     last_touch_e_t last_touch_status;
 
     switch (touch_last_event()){
@@ -151,7 +144,7 @@ struct TouchStatus screen_touch_status(void) {
             last_touch_status = E_TOUCH_RELEASED;
     }
 
-    return TouchStatus(touch_last_x, touch_last_x, last_touch_status);
+    return struct TouchStatus(touch_last_x, touch_last_x, last_touch_status);
 }
 
 

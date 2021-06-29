@@ -63,6 +63,12 @@ typedef enum {
     E_TOUCH_HELD
 } last_touch_e_t;
 
+struct TouchStatus {
+    int16_t screen_last_x;
+    int16_t screen_last_y;
+    last_touch_e_t screen_touch_status;
+};
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define TEXT_SMALL pros::E_TEXT_SMALL
@@ -320,6 +326,8 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /**               These functions allow programmers to access                **/
 /**                    information about screen touches                      **/
 /******************************************************************************/
+
+struct TouchStatus touch_status_screen(void);
 
 /**
  * Gets the x coordinate of the last touch. 0 by default.

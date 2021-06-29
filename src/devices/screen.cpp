@@ -97,8 +97,8 @@ namespace screen {
     }
 
     //new one
-    struct TouchStatus screen_touch_status() {
-        return TouchStatus(pros::c::screen_last_x(), pros::c::screen_last_y(), pros::c::screen_touch_status());
+    struct TouchStatus touch_status_screen() {
+        return struct TouchStatus(pros::c::screen_last_x(), pros::c::screen_last_y(), pros::c::screen_touch_status());
     }
 
     // old functions

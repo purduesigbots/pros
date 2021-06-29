@@ -229,6 +229,8 @@ const char* convert_args(const std::string& arg) {
     /**                    information about screen touches                      **/
     /******************************************************************************/
 
+    struct TouchStatus touch_status_screen(void);
+
     /**
      * Gets the x coordinate of the last touch.
      * 
