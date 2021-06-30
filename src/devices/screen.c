@@ -130,41 +130,6 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /**                    information about screen touches                      **/
 /******************************************************************************/
 
-//new one
-void touch_status_screen(void) {
-    last_touch_e_t last_touch_status;
-
-    switch (touch_last_event()){
-        case E_TOUCH_EVENT_PRESS:
-            last_touch_status = E_TOUCH_PRESSED;
-        case E_TOUCH_EVENT_PRESS_AND_HOLD:
-            last_touch_status = E_TOUCH_HELD;
-        case E_TOUCH_EVENT_RELEASE:
-        default:
-            last_touch_status = E_TOUCH_RELEASED;
-    }
-
-    touch_status = {screen_last_x(), screen_last_y(), screen_touch_status};
-}
-
-
-// old functions
-int16_t screen_last_x(void){
-    return touch_last_x();
-}
-
-int16_t screen_last_y(void){
-    return touch_last_y();
-}
-
-last_touch_e_t screen_touch_status(void){
-    switch (touch_last_event()){
-        case E_TOUCH_EVENT_PRESS:
-            return E_TOUCH_PRESSED;
-        case E_TOUCH_EVENT_PRESS_AND_HOLD:
-            return E_TOUCH_HELD;
-        case E_TOUCH_EVENT_RELEASE:
-        default:
-            return E_TOUCH_RELEASED;
-    }
+screen_touch_status_s_t screen_touch_status(void){
+    return (screen_touch_status_s_t) display_touch_status();
 }

@@ -206,28 +206,12 @@ void display_opacity_vprintf( int32_t xpos, int32_t ypos, uint32_t opacity, cons
 	mutex_give(_display_mutex);
 }
 
-int16_t touch_last_x() {
+V5_TouchStatus display_touch_status(void) {
 	V5_TouchStatus v5_touch_status;
 	mutex_take(_display_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
 	mutex_give(_display_mutex);
-	return v5_touch_status.lastXpos;
-}
-
-int16_t touch_last_y() {
-	V5_TouchStatus v5_touch_status;
-	mutex_take(_display_mutex, TIMEOUT_MAX);
-	vexTouchDataGet(&v5_touch_status);
-	mutex_give(_display_mutex);
-	return v5_touch_status.lastYpos;
-}
-
-touch_event_e_t touch_last_event() {
-	V5_TouchStatus v5_touch_status;
-	mutex_take(_display_mutex, TIMEOUT_MAX);
-	vexTouchDataGet(&v5_touch_status);
-	mutex_give(_display_mutex);
-	return v5_touch_status.lastEvent;
+	return v5_touch_status;
 }
 
 static linked_list_s_t* _touch_event_release_handler_list = NULL;
@@ -241,6 +225,7 @@ static void _set_up_touch_callback_storage() {
 }
 
 void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
+	mutex_take(_touch_event_release_handler_list, TIMEOUT_MAX);
 	switch (event_type) {
 	case E_TOUCH_EVENT_RELEASE:
 		linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
@@ -252,6 +237,7 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
 		break;
 	}
+	mutex_give(_touch_event_release_handler_list);
 }
 
 static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];

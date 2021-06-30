@@ -96,22 +96,8 @@ namespace screen {
         pros::c::screen_fill_circle(x, y, radius);
     }
 
-    //new one
     struct TouchStatus touch_status_screen() {
-        return struct TouchStatus(pros::c::screen_last_x(), pros::c::screen_last_y(), pros::c::screen_touch_status());
-    }
-
-    // old functions
-    std::int16_t last_x(){
-        return pros::c::screen_last_x();
-    }
-
-    std::int16_t last_y(){
-        return pros::c::screen_last_y();
-    }
-
-    pros::last_touch_e_t touch_status(){
-        return pros::c::screen_touch_status();
+        return struct pros::c::screen_touch_status();
     }
 
 }  // namespace screen

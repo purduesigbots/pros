@@ -242,25 +242,11 @@ typedef struct touch_event_position_data_s {
 } touch_event_position_data_s_t;
 
 /**
- * Gets the x coordinate of the last touch.
+ * Gets the touch event, x position, y position, pressCount, and release count for a touch.
  * 
- * \return The x coordinate of the last touch.
+ * \return A V5_TouchStatus struct containing the above values.
  */
-int16_t touch_last_x(void);
-
-/**
- * Gets the y coordinate of the last touch.
- * 
- * \return The y coordinate of the last touch.
- */
-int16_t touch_last_y(void);
-
-/**
- * Gets the touch status of the last touch of the screen.
- * 
- * \return The touch_event_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
- */
-touch_event_e_t touch_last_event(void);
+V5_TouchStatus display_touch_status(void);
 
 /**
  * Register a user-defined callback function for an event type
