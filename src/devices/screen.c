@@ -131,5 +131,5 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /******************************************************************************/
 
 screen_touch_status_s_t screen_touch_status(void){
-    return (screen_touch_status_s_t) display_touch_status();
+    return *((screen_touch_status_s_t*) (&(display_touch_status()))); // TODO
 }

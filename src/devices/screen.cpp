@@ -96,7 +96,7 @@ namespace screen {
         pros::c::screen_fill_circle(x, y, radius);
     }
 
-    struct TouchStatus touch_status_screen() {
+    screen_touch_status_s_t touch_status() {
         return struct pros::c::screen_touch_status();
     }
 

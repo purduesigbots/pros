@@ -56,7 +56,6 @@ typedef enum {
  *  E_TOUCH_HELD - User is holding screen down (not released or quick press)
  * 
  */
-
 typedef enum {
     E_TOUCH_PRESSED = 0,
     E_TOUCH_RELEASED,
@@ -73,13 +72,12 @@ typedef enum {
  *  release_count - Represents how many times the user released after a touch on the screen.
  * 
  */
-
-typdef struct {
-    last_touch_e_t screen_touch_status,
-    int16_t screen_last_x,
-    int16_t screen_last_y,
-    int32_t press_count,
-    int32_t release_count
+typedef struct screen_touch_status_s {
+    last_touch_e_t touch_status;
+    int16_t x;
+    int16_t y;
+    int32_t press_count;
+    int32_t release_count;
 } screen_touch_status_s_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -362,7 +360,7 @@ int16_t screen_last_y(void);
  * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
  * This will be released by default if no action was taken. 
  */
-last_touch_e_t screen_touch_status(void);
+screen_touch_status_s_t screen_touch_status(void);
 
 #ifdef __cplusplus
 } //namespace c
