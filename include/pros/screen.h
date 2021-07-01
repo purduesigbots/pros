@@ -346,6 +346,14 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
  */
 screen_touch_status_s_t screen_touch_status(void);
 
+/**
+ * Assigns a callback function to be called when a certain touch event happens.
+ * 
+ * \param cb* Function pointer to callback when event type happens
+ * \param event_type Touch event that will trigger the callback.
+ */
+void screen_touch_callback(void* cb, last_touch_e_t event_type)
+
 #ifdef __cplusplus
 } //namespace c
 } //namespace pros

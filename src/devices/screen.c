@@ -266,7 +266,7 @@ static void _set_up_touch_callback_storage() {
 	_touch_event_press_auto_handler_list = linked_list_init();
 }
 
-void register_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type) {
+void register_touch_callback(void* cb, last_touch_e_t event_type) {
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	switch (event_type) {
 	case E_TOUCH_RELEASED:
