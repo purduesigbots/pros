@@ -27,116 +27,116 @@
 /**   These functions allow programmers to display shapes on the v5 screen   **/
 /******************************************************************************/
 
-static mutex_t _display_mutex = NULL;
+static mutex_t _screen_mutex = NULL;
 
 void screen_set_pen(uint32_t color){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayForegroundColor(color);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_set_eraser(uint32_t color){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayBackgroundColor(color);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 uint32_t screen_get_pen(void){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	uint32_t color = vexDisplayForegroundColorGet();
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 	return color;
 }
 
 uint32_t screen_get_eraser(void){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	uint32_t color = vexDisplayBackgroundColorGet();
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 	return color;
 }
 
 void screen_clear(void){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayErase();
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_scroll(int16_t start_line, int16_t lines){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayScroll(start_line, lines);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayScrollRect(x0, y0, x1, y1, lines);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* buf, int32_t stride){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayCopyRect(x0, y0, x1, y1, buf, stride);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_draw_pixel(int16_t x, int16_t y){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayPixelSet(x, y);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_clear_pixel(int16_t x, int16_t y){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayPixelClear(x, y);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayLineDraw(x0, y0, x1, y1);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayLineClear(x0, y0, x1, y1);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayRectDraw(x0, y0, x1, y1);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayRectClear(x0, y0, x1, y1);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayRectFill(x0, y0, x1, y1);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_draw_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayCircleDraw(x, y, radius);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_clear_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayCircleClear(x, y, radius);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_fill_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayCircleFill(x, y, radius);
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 /******************************************************************************/
@@ -160,7 +160,7 @@ void screen_print_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* 
 }
 
 void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* text, va_list args){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	char* out;
 	vasprintf(&out, text, args);
 	va_list empty;
@@ -192,11 +192,11 @@ void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* tex
             break;
         }
     }
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 
 void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, va_list args){
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	char* out;
 	vasprintf(&out, text, args);
 	va_list empty;
@@ -224,7 +224,7 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
             break;
         }
     }
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 }
 /******************************************************************************/
 /**                         Screen Touch Functions                           **/
@@ -235,7 +235,7 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 
 screen_touch_status_s_t screen_touch_status(void){
     V5_TouchStatus v5_touch_status;
-	mutex_take(_display_mutex, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
     screen_touch_status_s_t rtv;
     rtv.touch_status = (last_touch_e_t)v5_touch_status.lastEvent;
@@ -243,7 +243,7 @@ screen_touch_status_s_t screen_touch_status(void){
     rtv.y = v5_touch_status.lastYpos;
     rtv.press_count = v5_touch_status.pressCount;
     rtv.release_count = v5_touch_status.releaseCount;
-	mutex_give(_display_mutex);
+	mutex_give(_screen_mutex);
 	return rtv;
 }
 
@@ -258,7 +258,7 @@ static void _set_up_touch_callback_storage() {
 }
 
 void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
-	mutex_take(_touch_event_release_handler_list, TIMEOUT_MAX);
+	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	switch (event_type) {
 	case E_TOUCH_EVENT_RELEASE:
 		linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
@@ -270,7 +270,7 @@ void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type)
 		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
 		break;
 	}
-	mutex_give(_touch_event_release_handler_list);
+	mutex_give(_screen_mutex);
 }
 
 static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
@@ -289,7 +289,7 @@ static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) 
 void _touch_handle_task(void* ignore) {
 	V5_TouchStatus last, current;
 	while (true) {
-		vexTouchDataGet(&current);
+		mutex_take(_screen_mutex, TIMEOUT_MAX);
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
 			switch (current.lastEvent) {
@@ -306,12 +306,13 @@ void _touch_handle_task(void* ignore) {
 			}
 			last = current;
 		}
+        mutex_give(_screen_mutex);
 		delay(10);
 	}
 }
 
 void graphical_context_daemon_initialize(void) {
-	_display_mutex = mutex_create();
+	_screen_mutex = mutex_create();
 	_set_up_touch_callback_storage();
 	touch_handle_task =
 	    task_create_static(_touch_handle_task, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
