@@ -352,7 +352,7 @@ screen_touch_status_s_t screen_touch_status(void);
  * \param cb* Function pointer to callback when event type happens
  * \param event_type Touch event that will trigger the callback.
  */
-void screen_touch_callback(void* cb, last_touch_e_t event_type)
+void screen_touch_callback(void* cb, last_touch_e_t event_type);
 
 #ifdef __cplusplus
 } //namespace c

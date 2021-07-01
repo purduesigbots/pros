@@ -93,5 +93,9 @@ namespace screen {
         return pros::c::screen_touch_status();
     }
 
+    void touch_callback(void* cb, last_touch_e_t event_type){
+        pros::c::screen_touch_callback(cb, event_type);
+    }
+    
 }  // namespace screen
 }  // namespace pros
