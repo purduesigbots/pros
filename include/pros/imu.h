@@ -61,7 +61,8 @@ typedef struct __attribute__((__packed__)) euler_s {
 /**
  * Calibrate IMU
  *
- * This takes approximately 2 seconds, and is a non-blocking operation.
+ * Calibration takes approximately 2 seconds, but this function only blocks
+ * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING.
  *
  * This function uses the following values of errno when an error state is
  * reached:
