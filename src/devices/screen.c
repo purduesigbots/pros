@@ -299,6 +299,7 @@ void _touch_handle_task(void* ignore) {
 	V5_TouchStatus last, current;
 	while (true) {
 		mutex_take(_screen_mutex, TIMEOUT_MAX);
+        vexTouchDataGet(&current);
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
 			switch (current.lastEvent) {
