@@ -18,6 +18,8 @@
 #include <stdlib.h>
 #include <sys/_stdint.h>
 
+#include "common/linkedlist.h"
+#include "kapi.h"
 #include "pros/apix.h"
 #include "v5_api.h"  // vexDisplay* 
 
@@ -257,16 +259,16 @@ static void _set_up_touch_callback_storage() {
 	_touch_event_press_auto_handler_list = linked_list_init();
 }
 
-void register_touch_callback(touch_event_cb_fn_t cb, touch_event_e_t event_type) {
+void register_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type) {
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	switch (event_type) {
-	case E_TOUCH_EVENT_RELEASE:
+	case E_TOUCH_RELEASED:
 		linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
 		break;
-	case E_TOUCH_EVENT_PRESS:
+	case E_TOUCH_PRESSED:
 		linked_list_prepend_func(_touch_event_press_handler_list, (generic_fn_t)cb);
 		break;
-	case E_TOUCH_EVENT_PRESS_AND_HOLD:
+	case E_TOUCH_HELD:
 		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
 		break;
 	}
@@ -293,13 +295,13 @@ void _touch_handle_task(void* ignore) {
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
 			switch (current.lastEvent) {
-			case E_TOUCH_EVENT_RELEASE:
+			case E_TOUCH_RELEASED:
 				linked_list_foreach(_touch_event_release_handler_list, _handle_cb, (void*)&event_data);
 				break;
-			case E_TOUCH_EVENT_PRESS:
+			case E_TOUCH_PRESSED:
 				linked_list_foreach(_touch_event_press_handler_list, _handle_cb, (void*)&event_data);
 				break;
-			case E_TOUCH_EVENT_PRESS_AND_HOLD:
+			case E_TOUCH_HELD:
 				linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb,
 				                    (void*)&event_data);
 				break;
