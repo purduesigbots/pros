@@ -57,8 +57,8 @@ typedef enum {
  * 
  */
 typedef enum {
-    E_TOUCH_PRESSED = 0,
-    E_TOUCH_RELEASED,
+    E_TOUCH_RELEASED = 0,
+    E_TOUCH_PRESSED,
     E_TOUCH_HELD
 } last_touch_e_t;
 
@@ -83,19 +83,19 @@ typedef struct screen_touch_status_s {
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define TEXT_SMALL pros::E_TEXT_SMALL
-#define TEXT_MEDIUM pros::E_TEXT_SMALL
-#define TEXT_LARGE pros::E_TEXT_SMALL
-#define TEXT_MEDIUM_CENTER pros::E_TEXT_SMALL
-#define TEXT_LARGE_CENTER pros::E_TEXT_SMALL
+#define TEXT_MEDIUM pros::E_TEXT_MEDIUM
+#define TEXT_LARGE pros::E_TEXT_LARGE
+#define TEXT_MEDIUM_CENTER pros::E_TEXT_MEDIUM_CENTER
+#define TEXT_LARGE_CENTER pros::E_LARGE_CENTER
 #define TOUCH_RELEASED pros::E_TOUCH_RELEASED
 #define TOUCH_PRESSED pros::E_TOUCH_PRESSED
 #define TOUCH_HELD pros::E_TOUCH_HELD
 #else
-#define SMALL_TXT E_SMALL_TXT
-#define MEDIUM_TXT E_MEDIUM_TXT
-#define LARGE_TXT E_LARGE_TXT
-#define MEDIUM_CENTER_TXT E_MEDIUM_CENTER_TXT
-#define LARGE_CENTER_TXT E_LARGE_CENTER_TXT
+#define TEXT_SMALL E_TEXT_SMALL
+#define TEXT_MEDIUM E_TEXT_MEDIUM
+#define TEXT_LARGE E_TEXT_LARGE
+#define TEXT_MEDIUM_CENTER E_TEXT_MEDIUM_CENTER
+#define TEXT_LARGE_CENTER E_TEXT_LARGE_CENTER
 #define TOUCH_RELEASED E_TOUCH_RELEASED
 #define TOUCH_PRESSED E_TOUCH_PRESSED
 #define TOUCH_HELD E_TOUCH_HELD
@@ -337,22 +337,6 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /**               These functions allow programmers to access                **/
 /**                    information about screen touches                      **/
 /******************************************************************************/
-
-void touch_status_screen(void);
-
-/**
- * Gets the x coordinate of the last touch. 0 by default.
- * 
- * \return The x coordinate of the last touch.
- */
-int16_t screen_last_x(void);
-
-/**
- * Gets the y coordinate of the last touch. 0 by default.
- * 
- * \return The y coordinate of the last touch.
- */
-int16_t screen_last_y(void);
 
 /**
  * Gets the touch status of the last touch of the screen.

@@ -12,17 +12,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "display/graphics.h"
 #include "pros/screen.hpp"
 
 namespace pros {
 namespace screen {
-
-    struct TouchStatus {
-        std::int16_t screen_last_x;
-        std::int16_t screen_last_y;
-        pros::last_touch_e_t screen_touch_status;
-    }
 
     void set_pen(const std::uint32_t color){
         pros::c::screen_set_pen(color);
@@ -97,7 +90,7 @@ namespace screen {
     }
 
     screen_touch_status_s_t touch_status() {
-        return struct pros::c::screen_touch_status();
+        return pros::c::screen_touch_status();
     }
 
 }  // namespace screen

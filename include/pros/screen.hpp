@@ -228,29 +228,13 @@ const char* convert_args(const std::string& arg) {
     /**               These functions allow programmers to access                **/
     /**                    information about screen touches                      **/
     /******************************************************************************/
-
-    struct TouchStatus touch_status_screen(void);
-
-    /**
-     * Gets the x coordinate of the last touch.
-     * 
-     * \return The x coordinate of the last touch.
-     */
-    std::int16_t last_x();
-
-    /**
-     * Gets the y coordinate of the last touch. 0 by default.
-     * 
-     * \return The y coordinate of the last touch.
-     */
-    std::int16_t last_y();
-
+    
     /**
      * Gets the touch status of the last touch of the screen. 0 by default.
      * 
      * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). 
      */
-    pros::last_touch_e_t touch_status();
+    screen_touch_status_s_t touch_status();
     
 } //namespace screen
 } //namespace pros
