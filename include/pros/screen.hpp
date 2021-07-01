@@ -240,10 +240,10 @@ const char* convert_args(const std::string& arg) {
     /**
      * Assigns a callback function to be called when a certain touch event happens.
      * 
-     * \param cb* Function pointer to callback when event type happens
+     * \param cb Function pointer to callback when event type happens
      * \param event_type Touch event that will trigger the callback.
      */
-    void touch_callback(void* cb, last_touch_e_t event_type);
+    void touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
 
 } //namespace screen
 } //namespace pros

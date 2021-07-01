@@ -31,8 +31,6 @@
 
 static mutex_t _screen_mutex = NULL;
 
-typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
-
 typedef struct touch_event_position_data_s {
 	int16_t x;
 	int16_t y;
@@ -266,7 +264,7 @@ static void _set_up_touch_callback_storage() {
 	_touch_event_press_auto_handler_list = linked_list_init();
 }
 
-void screen_touch_callback(void* cb, last_touch_e_t event_type) {
+void screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type) {
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	switch (event_type) {
 	case E_TOUCH_RELEASED:
