@@ -31,6 +31,13 @@
 
 static mutex_t _screen_mutex = NULL;
 
+typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
+
+typedef struct touch_event_position_data_s {
+	int16_t x;
+	int16_t y;
+} touch_event_position_data_s_t;
+
 void screen_set_pen(uint32_t color){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayForegroundColor(color);

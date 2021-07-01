@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 3
 #define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "3.3.2-dirty.49.d92f54d"
+#define PROS_VERSION_STRING "3.3.2-dirty.50.2eccb26"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
