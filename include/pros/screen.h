@@ -102,8 +102,6 @@ typedef struct screen_touch_status_s {
 #endif
 #endif
 
-typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
-
 #ifdef __cplusplus
 namespace c {
 #endif
@@ -354,7 +352,7 @@ screen_touch_status_s_t screen_touch_status(void);
  * \param cb Function pointer to callback when event type happens
  * \param event_type Touch event that will trigger the callback.
  */
-void screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
+void screen_touch_callback(generic_fn_t cb, last_touch_e_t event_type);
 
 #ifdef __cplusplus
 } //namespace c
