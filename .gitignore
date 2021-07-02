@@ -12,3 +12,6 @@ temp.log
 temp.errors
 .d/
 .clangd/
+.cache/
+build/
+firmware/libpros.a
