@@ -209,7 +209,7 @@ void screen_erase_pixel(int16_t x, int16_t y);
 void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
- * Draw a line on the screen using the current background color
+ * Erase a line on the screen using the current eraser color
  *
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
@@ -225,7 +225,7 @@ void screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
- * Draw a rectangle on the screen using the current eraser color
+ * Erase a rectangle on the screen using the current eraser color
  *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
@@ -250,7 +250,7 @@ void screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 void screen_draw_circle(int16_t x, int16_t y, int16_t radius);
 
 /**
- * Draw a circle on the screen using the current eraser color
+ * Erase a circle on the screen using the current eraser color
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
