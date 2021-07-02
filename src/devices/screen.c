@@ -241,15 +241,15 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 /******************************************************************************/
 
 screen_touch_status_s_t screen_touch_status(void){
-    V5_TouchStatus v5_touch_status;
+	V5_TouchStatus v5_touch_status;
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexTouchDataGet(&v5_touch_status);
-    screen_touch_status_s_t rtv;
-    rtv.touch_status = (last_touch_e_t)v5_touch_status.lastEvent;
-    rtv.x = v5_touch_status.lastXpos;
-    rtv.y = v5_touch_status.lastYpos;
-    rtv.press_count = v5_touch_status.pressCount;
-    rtv.release_count = v5_touch_status.releaseCount;
+	screen_touch_status_s_t rtv;
+	rtv.touch_status = (last_touch_e_t)v5_touch_status.lastEvent;
+	rtv.x = v5_touch_status.lastXpos;
+	rtv.y = v5_touch_status.lastYpos;
+	rtv.press_count = v5_touch_status.pressCount;
+	rtv.release_count = v5_touch_status.releaseCount;
 	mutex_give(_screen_mutex);
 	return rtv;
 }
