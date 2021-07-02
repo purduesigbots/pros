@@ -33,8 +33,8 @@ namespace screen {
         return pros::c::screen_get_eraser();
     }
 
-    void screen_clear(){
-        pros::c::screen_clear();
+    void erase(){
+        pros::c::screen_erase();
     }
 
     void scroll(const std::int16_t start_line, const std::int16_t lines){
@@ -54,7 +54,7 @@ namespace screen {
     }
 
     void clear_pixel(const std::int16_t x, const std::int16_t y){
-        pros::c::screen_clear_pixel(x, y);
+        pros::c::screen_erase_pixel(x, y);
     }
 
     void draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
@@ -62,7 +62,7 @@ namespace screen {
     }
 
     void clear_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_clear_line(x0, y0, x1, y1);
+        pros::c::screen_erase_line(x0, y0, x1, y1);
     }
 
     void draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
@@ -70,7 +70,7 @@ namespace screen {
     }
 
     void clear_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_clear_rect(x0, y0, x1, y1);
+        pros::c::screen_erase_rect(x0, y0, x1, y1);
     }
 
     void fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
@@ -82,7 +82,7 @@ namespace screen {
     }
 
     void clear_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
-        pros::c::screen_clear_circle(x, y, radius);
+        pros::c::screen_erase_circle(x, y, radius);
     }
 
     void fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){

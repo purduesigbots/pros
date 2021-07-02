@@ -123,7 +123,7 @@ namespace c {
 void screen_set_pen(uint32_t color);
 
 /**
- * Set the eraser color for clearing and the current background.
+ * Set the eraser color for erasing and the current background.
  *
  * \param color	The background color to set (it is recommended to use values
  * 					from the enum defined in colors.h)
@@ -145,9 +145,9 @@ uint32_t screen_get_pen(void);
 uint32_t screen_get_eraser(void);
 
 /**
- * Reset the display to the default black screen
+ * Clear display with eraser color
  */
-void screen_clear(void);
+void screen_erase(void);
 
 /**
  * Scroll lines on the display upwards.
@@ -194,11 +194,11 @@ void screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* 
 void screen_draw_pixel(int16_t x, int16_t y);
 
 /**
- * Clear a pixel from the screen (Sets the location)
+ * Erase a pixel from the screen (Sets the location)
  *
- * \param x, y 	The (x,y) coordinates of the cleared
+ * \param x, y 	The (x,y) coordinates of the erased
  */
-void screen_clear_pixel(int16_t x, int16_t y);
+void screen_erase_pixel(int16_t x, int16_t y);
 
 /**
  * Draw a line on the screen using the current pen color
@@ -214,7 +214,7 @@ void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
  */
-void screen_clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
  * Draw a rectangle on the screen using the current pen color
@@ -230,7 +230,7 @@ void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  */
-void screen_clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
+void screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
  * Fill a rectangular region of the screen using the current pen
@@ -255,7 +255,7 @@ void screen_draw_circle(int16_t x, int16_t y, int16_t radius);
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
  */
-void screen_clear_circle(int16_t x, int16_t y, int16_t radius);
+void screen_erase_circle(int16_t x, int16_t y, int16_t radius);
 
 /**
  * Fill a circular region of the screen using the current pen

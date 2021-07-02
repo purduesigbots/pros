@@ -62,7 +62,7 @@ uint32_t screen_get_eraser(void){
 	return color;
 }
 
-void screen_clear(void){
+void screen_erase(void){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayErase();
 	mutex_give(_screen_mutex);
@@ -92,7 +92,7 @@ void screen_draw_pixel(int16_t x, int16_t y){
 	mutex_give(_screen_mutex);
 }
 
-void screen_clear_pixel(int16_t x, int16_t y){
+void screen_erase_pixel(int16_t x, int16_t y){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayPixelClear(x, y);
 	mutex_give(_screen_mutex);
@@ -104,7 +104,7 @@ void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
 	mutex_give(_screen_mutex);
 }
 
-void screen_clear_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
+void screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayLineClear(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
@@ -116,7 +116,7 @@ void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
 	mutex_give(_screen_mutex);
 }
 
-void screen_clear_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
+void screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayRectClear(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
@@ -134,7 +134,7 @@ void screen_draw_circle(int16_t x, int16_t y, int16_t radius){
 	mutex_give(_screen_mutex);
 }
 
-void screen_clear_circle(int16_t x, int16_t y, int16_t radius){
+void screen_erase_circle(int16_t x, int16_t y, int16_t radius){
 	mutex_take(_screen_mutex, TIMEOUT_MAX);
 	vexDisplayCircleClear(x, y, radius);
 	mutex_give(_screen_mutex);

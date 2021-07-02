@@ -74,9 +74,9 @@ const char* convert_args(const std::string& arg) {
     std::uint32_t get_eraser();
 
     /**
-     * Reset the display to the default black screen
+     * Clear display with eraser color
      */
-    void screen_clear();
+    void erase();
 
     /**
      * Scroll lines on the display upwards.
