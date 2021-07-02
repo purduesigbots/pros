@@ -123,11 +123,11 @@ const char* convert_args(const std::string& arg) {
     void draw_pixel(const std::int16_t x, const std::int16_t y);
 
     /**
-     * Clear a pixel from the screen (Sets the location)
+     * Erase a pixel from the screen (Sets the location)
      *
-     * \param x, y 	The (x,y) coordinates of the cleared
+     * \param x, y 	The (x,y) coordinates of the erased pixel
      */
-    void clear_pixel(const std::int16_t x, const std::int16_t y);
+    void erase_pixel(const std::int16_t x, const std::int16_t y);
 
     /**
      * Draw a line on the screen using the current pen color
@@ -138,12 +138,12 @@ const char* convert_args(const std::string& arg) {
     void draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
     /**
-     * Draw a line on the screen using the current background color
+     * Erase a line on the screen using the current eraser color
      *
      * \param x0, y0	The (x, y) coordinates of the first point of the line
      * \param x1, y1 	The (x, y) coordinates of the second point of the line
      */
-    void clear_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
+    void erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
     /**
      * Draw a rectangle on the screen using the current pen color
@@ -159,7 +159,7 @@ const char* convert_args(const std::string& arg) {
      * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
      * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
      */
-    void clear_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
+    void erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
     /**
      * Fill a rectangular region of the screen using the current pen
@@ -184,7 +184,7 @@ const char* convert_args(const std::string& arg) {
      * \param x, y 	The (x,y) coordinates of the center of the circle
      * \param r 	The radius of the circle
      */
-    void clear_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
+    void erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
     /**
      * Fill a circular region of the screen using the current pen

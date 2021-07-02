@@ -53,7 +53,7 @@ namespace screen {
         pros::c::screen_draw_pixel(x, y);
     }
 
-    void clear_pixel(const std::int16_t x, const std::int16_t y){
+    void erase_pixel(const std::int16_t x, const std::int16_t y){
         pros::c::screen_erase_pixel(x, y);
     }
 
@@ -61,7 +61,7 @@ namespace screen {
         pros::c::screen_draw_line(x0, y0, x1, y1);
     }
 
-    void clear_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+    void erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
         pros::c::screen_erase_line(x0, y0, x1, y1);
     }
 
@@ -69,7 +69,7 @@ namespace screen {
         pros::c::screen_draw_rect(x0, y0, x1, y1);
     }
 
-    void clear_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+    void erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
         pros::c::screen_erase_rect(x0, y0, x1, y1);
     }
 
@@ -81,7 +81,7 @@ namespace screen {
         pros::c::screen_draw_circle(x, y, radius);
     }
 
-    void clear_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
+    void erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
         pros::c::screen_erase_circle(x, y, radius);
     }
 
