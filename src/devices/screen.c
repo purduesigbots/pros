@@ -172,23 +172,23 @@ void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* tex
 	vasprintf(&out, text, args);
 	va_list empty;
 	switch(txt_fmt){
-	case 0:
-	case 1:
+	case E_TEXT_SMALL:
+	case E_TEXT_MEDIUM:
 		{
             vexDisplayVString(line, out, empty);
             break;
         }
-    case 2:
+    case E_TEXT_LARGE:
 		{
             vexDisplayVBigString(line, out, empty);
             break;
         }
-    case 3:
+    case E_TEXT_MEDIUM_CENTER:
 		{
             vexDisplayVCenteredString(line, out, empty);
             break;
         }
-    case 4:
+    case E_TEXT_LARGE_CENTER:
         {
             vexDisplayVBigCenteredString(line, out, empty);
             break;
@@ -208,19 +208,19 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 	vasprintf(&out, text, args);
 	va_list empty;
 	switch(txt_fmt){
-    case 0:
+    case E_TEXT_SMALL:
 		{
             vexDisplayVSmallStringAt(x, y, out, empty);
             break;
         }
-    case 1:
-    case 3:
+    case E_TEXT_MEDIUM:
+    case E_TEXT_MEDIUM_CENTER:
 		{
             vexDisplayVStringAt(x, y, out, empty);
             break;
         }
-    case 2:
-    case 4:
+    case E_TEXT_LARGE:
+    case E_TEXT_LARGE_CENTER:
 		{
             vexDisplayVBigStringAt(x, y, out, empty);
             break;
