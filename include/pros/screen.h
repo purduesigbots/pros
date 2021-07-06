@@ -30,36 +30,23 @@ namespace pros {
 #endif
 
 /**
- * Different font sizes that can be used in printing text.
- * Also can determine if the medium/large text is centered or not.
- * 
- *  E_TEXT_SMALL - Small text font size
- *  E_TEXT_MEDIUM - Normal/Medium text font size
- *  E_TEXT_LARGE - Large text font size
- *  E_TEXT_MEDIUM_CENTER - Medium centered text
- *  E_TEXT_LARGE_CENTER - Large centered text
- * 
+ * ! Different font sizes that can be used in printing text.
  */
 typedef enum {
-    E_TEXT_SMALL = 0, 
-    E_TEXT_MEDIUM,
-    E_TEXT_LARGE,
-    E_TEXT_MEDIUM_CENTER,
-    E_TEXT_LARGE_CENTER
-} txt_fmt_e_t;
+    E_TEXT_SMALL = 0, ///< Small text font size
+    E_TEXT_MEDIUM, ///< Normal/Medium text font size
+    E_TEXT_LARGE, ///< Large text font size
+    E_TEXT_MEDIUM_CENTER, ///< Medium centered text
+    E_TEXT_LARGE_CENTER ///< Large centered text
+} text_format_e_t;
 
 /**
- * Can be used to determine what the current touch status is for the touchscreen.
- *  
- *  E_TOUCH_PRESSED - Last interaction with screen was a quick press (not released yet)
- *  E_TOUCH_RELEASED - Last interaction with screen was a release
- *  E_TOUCH_HELD - User is holding screen down (not released or quick press)
- * 
+ * ! Enum indicating what the current touch status is for the touchscreen.
  */
 typedef enum {
-    E_TOUCH_RELEASED = 0,
-    E_TOUCH_PRESSED,
-    E_TOUCH_HELD
+    E_TOUCH_RELEASED = 0, ///< Last interaction with screen was a quick press
+    E_TOUCH_PRESSED, ///< Last interaction with screen was a release
+    E_TOUCH_HELD ///< User is holding screen down 
 } last_touch_e_t;
 
 /**
