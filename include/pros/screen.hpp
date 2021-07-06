@@ -204,7 +204,7 @@ const char* convert_args(const std::string& arg) {
     /**
      * Print a formatted string to the screen, overwrite available for printing at location too.
      * 
-     * Will default to a medium sized font by default if invalid text_format is given.
+     * Will default to a medium sized font by default if invalid txt_fmt is given.
      * 
      * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
      * \param line The line number on which to print

@@ -5,7 +5,7 @@
  *
  * Contains user calls to the v5 screen for touching and displaying graphics.
  *
- * \copyright (c) 2017, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -46,7 +46,7 @@ typedef enum {
     E_TEXT_LARGE,
     E_TEXT_MEDIUM_CENTER,
     E_TEXT_LARGE_CENTER
-} text_format_e_t;
+} txt_fmt_e_t;
 
 /**
  * Can be used to determine what the current touch status is for the touchscreen.
@@ -275,7 +275,7 @@ void screen_fill_circle(int16_t x, int16_t y, int16_t radius);
 /**
  * Print a formatted string to the screen on the specified line
  * 
- * Will default to a medium sized font by default if invalid text_format is given.
+ * Will default to a medium sized font by default if invalid txt_fmt is given.
  * 
  * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
  * \param line The line number on which to print
@@ -287,7 +287,7 @@ void screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text,
 /**
  * Print a formatted string to the screen at the specified point
  * 
- * Will default to a medium sized font by default if invalid text_format is given.
+ * Will default to a medium sized font by default if invalid txt_fmt is given.
  * 
  * Text formats medium_center and large_center will default to medium and large respectively.
  * 
@@ -305,7 +305,7 @@ void screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, 
  * Same as `display_printf` except that this uses a `va_list` instead of the
  * ellipsis operator so this can be used by other functions.
  * 
- * Will default to a medium sized font by default if invalid text_format is given.
+ * Will default to a medium sized font by default if invalid txt_fmt is given.
  * Exposed mostly for writing libraries and custom functions.
  * 
  * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
@@ -321,7 +321,7 @@ void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* tex
  * Same as `display_printf_at` except that this uses a `va_list` instead of the
  * ellipsis operator so this can be used by other functions.
  * 
- * Will default to a medium sized font by default if invalid text_format is given.
+ * Will default to a medium sized font by default if invalid txt_fmt is given.
  * 
  * Text formats medium_center and large_center will default to medium and large respectively.
  * Exposed mostly for writing libraries and custom functions.
