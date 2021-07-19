@@ -23,6 +23,20 @@ int32_t rotation_reset(uint8_t port) {
 	return_port(port - 1, 1);
 }
 
+int32_t rotation_set_data_rate(uint8_t port, uint32_t rate) {
+	claim_port_i(port - 1, E_DEVICE_IMU);
+
+	// rate is not less than 5ms, and rounded down to nearest increment of 5
+	if (rate < ROTATION_MINIMUM_DATA_RATE) {
+		rate = ROTATION_MINIMUM_DATA_RATE;
+	} else {
+		rate -= rate % ROTATION_MINIMUM_DATA_RATE;
+	}
+
+	vexDeviceAbsEncDataRateSet(device->device_info, rate);
+	return_port(port - 1, 1);
+}
+
 int32_t rotation_reset_position(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	vexDeviceAbsEncPositionSet(device->device_info, 0);

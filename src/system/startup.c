@@ -21,7 +21,7 @@
 extern void rtos_initialize();
 extern void vfs_initialize();
 extern void system_daemon_initialize();
-// extern void graphical_context_daemon_initialize(void);
+extern void graphical_context_daemon_initialize(void);
 extern void display_initialize(void);
 extern void rtos_sched_start();
 extern void vdml_initialize();
@@ -39,6 +39,8 @@ __attribute__((constructor(101))) static void pros_init(void) {
 	vfs_initialize();
 
 	vdml_initialize();
+
+	graphical_context_daemon_initialize();
 
 	display_initialize();
 
