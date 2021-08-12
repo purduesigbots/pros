@@ -22,12 +22,12 @@
 {   .x = PROS_ERR_F,    \
     .y = PROS_ERR_F,    \
     .roll = PROS_ERR_F, \
-    .pitch = PROS_ERR_F \
+    .pitch = PROS_ERR_F, \
     .yaw = PROS_ERR_F   }
 
 #define GPS_RAW_ERR_INIT \
 {   .x = PROS_ERR_F, \
-    .y = PROS_ERR_F  \
+    .y = PROS_ERR_F,  \
     .z = PROS_ERR_F   }
 
 int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset){
@@ -80,6 +80,7 @@ gps_status_s_t gps_get_status(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
 		return rtv;
 	}
+    v5_smart_device_s_t* device = registry_get_device(port - 1);
     V5_DeviceGpsAttitude data;
 	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
     rtv.x = data.position_x;
@@ -125,6 +126,7 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port){
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
 		return rtv;
 	}
+    v5_smart_device_s_t* device = registry_get_device(port - 1);
     V5_DeviceGpsRaw data;
 	vexDeviceGpsRawGyroGet(device->device_info, &data);
     rtv.x = data.x;
@@ -138,6 +140,7 @@ gps_accel_s_t gps_get_accel(uint8_t port){
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
 		return rtv;
 	}
+    v5_smart_device_s_t* device = registry_get_device(port - 1);
     V5_DeviceGpsRaw data;
 	vexDeviceGpsRawAccelGet(device->device_info, &data);
     rtv.x = data.x;
