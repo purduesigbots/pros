@@ -16,7 +16,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#pragma once
+#ifndef _PROS_GPS_H_
+#define _PROS_GPS_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -24,28 +25,25 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
+namespace c {
 #endif
 
 typedef struct __attribute__((__packed__)) gps_status_s {
-    double x; ///< X Position (meters)
-    double y; ///< Y Position (meters)
-    double pitch; ///< Percieved Pitch based on GPS + IMU
-    double roll; ///< Percieved Roll based on GPS + IMU
-    double yaw; ///< Percieved Yaw based on GPS + IMU
+	double x;      ///< X Position (meters)
+	double y;      ///< Y Position (meters)
+	double pitch;  ///< Percieved Pitch based on GPS + IMU
+	double roll;   ///< Percieved Roll based on GPS + IMU
+	double yaw;    ///< Percieved Yaw based on GPS + IMU
 } gps_status_s_t;
 
 struct gps_raw_s {
-	double x; ///< Percieved Pitch based on GPS + IMU
-	double y; ///< Percieved Roll based on GPS + IMU
-	double z; ///< Percieved Yaw based on GPS + IMU
+	double x;  ///< Percieved Pitch based on GPS + IMU
+	double y;  ///< Percieved Roll based on GPS + IMU
+	double z;  ///< Percieved Yaw based on GPS + IMU
 };
 
 typedef struct gps_raw_s gps_accel_s_t;
 typedef struct gps_raw_s gps_gyro_s_t;
-
-#ifdef __cplusplus
-namespace c {
-#endif
 
 /**
  * Set the GPS's offset relative to the center of turning in meters,
@@ -72,7 +70,8 @@ namespace c {
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
+int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset,
+                            double yOffset);
 
 /**
  * Set the GPS's offset relative to the center of turning in meters.
@@ -165,7 +164,7 @@ int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * 
+ *
  * \return Possible RMS (Root Mean Squared) error in meters for GPS position.
  * If the operation failed, returns PROS_ERR_F and errno is set.
  */
@@ -182,9 +181,9 @@ double gps_get_error(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * 
+ *
  * \return A struct (gps_status_s_t) containing values mentioned above.
- * If the operation failed, all the structure's members are filled with 
+ * If the operation failed, all the structure's members are filled with
  * PROS_ERR_F and errno is set.
  */
 gps_status_s_t gps_get_status(uint8_t port);
@@ -200,8 +199,8 @@ gps_status_s_t gps_get_status(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * 
- * \return The heading in [0,360) degree values. If the operation failed, 
+ *
+ * \return The heading in [0,360) degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
  */
 double gps_get_heading(uint8_t port);
@@ -217,8 +216,8 @@ double gps_get_heading(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * 
- * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation 
+ *
+ * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation
  * fails, returns PROS_ERR_F and errno is set.
  */
 double gps_get_heading_raw(uint8_t port);
@@ -234,7 +233,7 @@ double gps_get_heading_raw(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * \return The elased heading in degrees. If the operation fails, returns 
+ * \return The elased heading in degrees. If the operation fails, returns
  * PROS_ERR_F and errno is set.
  */
 double gps_get_rotation(uint8_t port);
@@ -306,7 +305,9 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
 gps_accel_s_t gps_get_accel(uint8_t port);
 
 #ifdef __cplusplus
-}   // C extern
-}   // namespace c
-}   // namespace pros
+}
+}
+}
+#endif
+
 #endif
