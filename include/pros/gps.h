@@ -50,7 +50,32 @@ namespace c {
 #endif
 
 /**
- * Set the GPS's location relative to the center of turning/origin in meters.
+ * Set the GPS's offset relative to the center of turning in meters,
+ * as well as its initial position.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \param  xOffset
+ * 				 Cartesian 4-Quadrant X offset from center of turning (meters)
+ * \param  yOffset
+ * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
+ * \param  xInitial
+ * 				 Initial 4-Quadrant X Position, with (0,0) being at the center of the field (meters)
+ * \param  yInitial
+ * 				 Initial 4-Quadrant Y Position, with (0,0) being at the center of the field (meters)
+ * \param  headingInitial
+ *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
+ */
+void gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
+
+/**
+ * Set the GPS's offset relative to the center of turning in meters.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -65,7 +90,7 @@ namespace c {
  * \param  yOffset
  * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
  */
-void gps_set_origin(uint8_t port, double xOffset, double yOffset);
+void gps_set_offset(uint8_t port, double xOffset, double yOffset);
 
 /**
  * Get the GPS's location relative to the center of turning/origin in meters.
@@ -83,7 +108,7 @@ void gps_set_origin(uint8_t port, double xOffset, double yOffset);
  * \param  yOffset
  * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
  */
-void gps_get_origin(uint8_t port, double* xOffset, double* yOffset);
+void gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
 
 /**
  * Sets the robot's location relative to the center of the field in meters.

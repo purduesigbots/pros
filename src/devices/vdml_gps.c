@@ -30,15 +30,22 @@
     .y = PROS_ERR_F  \
     .z = PROS_ERR_F   }
 
-void gps_set_origin(uint8_t port, double xOffset, double yOffset) {
+void gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset){
+    claim_port(port - 1, E_DEVICE_GPS);
+	vexDeviceGpsOriginSet(device->device_info, xOffset, yOffset);
+    vexDeviceGpsInitialPositionSet(device->device_info, xInitial, yInitial, headingInitial);
+	port_mutex_give(port - 1);
+}
+
+void gps_set_offset(uint8_t port, double xOffset, double yOffset) {
 	claim_port(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsOriginSet(device->device_info, xOffset, yOffset);
 	port_mutex_give(port - 1);
 }
 
-void gps_get_origin(uint8_t port, double* xOffset, double* yOffset) {
+void gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
 	claim_port(port - 1, E_DEVICE_GPS);
-	vexDeviceGpsOriginGet(device->device_info);
+	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
 	port_mutex_give(port - 1);
 }
 
