@@ -24,7 +24,7 @@ int32_t rotation_reset(uint8_t port) {
 }
 
 int32_t rotation_set_data_rate(uint8_t port, uint32_t rate) {
-	claim_port_i(port - 1, E_DEVICE_IMU);
+	claim_port_i(port - 1, E_DEVICE_ROTATION);
 
 	// rate is not less than 5ms, and rounded down to nearest increment of 5
 	if (rate < ROTATION_MINIMUM_DATA_RATE) {
