@@ -66,8 +66,10 @@ class Gps {
     * 				 Initial 4-Quadrant Y Position, with (0,0) being at the center of the field (meters)
     * \param  headingInitial
     *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset) const;
+    virtual std::int32_t initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset) const;
 
     /**
     * Set the GPS's offset relative to the center of turning in meters.
@@ -82,8 +84,10 @@ class Gps {
     * 				 Cartesian 4-Quadrant X offset from center of turning (meters)
     * \param  yOffset
     * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void set_offset(double xOffset, double yOffset) const;
+    virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
     /**
     * Get the GPS's location relative to the center of turning/origin in meters.
@@ -98,8 +102,10 @@ class Gps {
     * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
     * \param  yOffset
     * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void get_offset(double* xOffset, double* yOffset) const;
+    virtual std::int32_t get_offset(double* xOffset, double* yOffset) const;
 
     /**
     * Sets the robot's location relative to the center of the field in meters.
@@ -116,8 +122,10 @@ class Gps {
     * 				 Initial 4-Quadrant Y Position, with (0,0) being at the center of the field (meters)
     * \param  headingInitial
     *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void set_position(double xInitial, double yInitial, double headingInitial) const;
+    virtual std::int32_t set_position(double xInitial, double yInitial, double headingInitial) const;
 
     /**
     * Set the GPS sensor's data rate in milliseconds, only applies to IMU on GPS.
@@ -130,8 +138,10 @@ class Gps {
     *
     * \param  rate
     * 				 Data rate in milliseconds (Minimum: 5 ms)
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void set_data_rate(std::uint32_t rate) const;
+    virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
     /**
     * Get the possible RMS (Root Mean Squared) error in meters for GPS position.
@@ -217,8 +227,10 @@ class Gps {
     *
     * \param  target
     * 				 Target rotation value to set rotation value to
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void set_rotation(double target) const;
+    virtual std::int32_t set_rotation(double target) const;
 
     /**
     * Tare the GPS sensor's rotation value
@@ -229,8 +241,10 @@ class Gps {
     * ENODEV - The port cannot be configured as a GPS
     * EAGAIN - The sensor is still calibrating
     *
+    * \return 1 if the operation was successful or PROS_ERR if the operation
+    * failed, setting errno.
     */
-    virtual void tare_rotation() const;
+    virtual std::int32_t tare_rotation() const;
 
     /**
     * Get the GPS's raw gyroscope values

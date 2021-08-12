@@ -42,8 +42,8 @@ struct gps_raw_s {
 	double z;
 };
 
-typedef gps_raw_s gps_accel_s_t;
-typedef gps_raw_s gps_gyro_s_t;
+typedef struct gps_raw_s gps_accel_s_t;
+typedef struct gps_raw_s gps_gyro_s_t;
 
 #ifdef __cplusplus
 namespace c {
@@ -71,8 +71,10 @@ namespace c {
  * 				 Initial 4-Quadrant Y Position, with (0,0) being at the center of the field (meters)
  * \param  headingInitial
  *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
+int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
 
 /**
  * Set the GPS's offset relative to the center of turning in meters.
@@ -89,8 +91,10 @@ void gps_initialize_full(uint8_t port, double xInitial, double yInitial, double 
  * 				 Cartesian 4-Quadrant X offset from center of turning (meters)
  * \param  yOffset
  * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_set_offset(uint8_t port, double xOffset, double yOffset);
+int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
 
 /**
  * Get the GPS's location relative to the center of turning/origin in meters.
@@ -107,8 +111,10 @@ void gps_set_offset(uint8_t port, double xOffset, double yOffset);
  * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
  * \param  yOffset
  * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
+int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
 
 /**
  * Sets the robot's location relative to the center of the field in meters.
@@ -127,8 +133,10 @@ void gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
  * 				 Initial 4-Quadrant Y Position, with (0,0) being at the center of the field (meters)
  * \param  headingInitial
  *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial);
+int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial);
 
 /**
  * Set the GPS sensor's data rate in milliseconds, only applies to IMU on GPS.
@@ -143,8 +151,10 @@ void gps_set_position(uint8_t port, double xInitial, double yInitial, double hea
  * 				 The V5 GPS port number from 1-21
  * \param  rate
  * 				 Data rate in milliseconds (Minimum: 5 ms)
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_set_data_rate(uint8_t port, uint32_t rate);
+int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
 
 /**
  * Get the possible RMS (Root Mean Squared) error in meters for GPS position.
@@ -244,8 +254,10 @@ double gps_get_rotation(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \param  target
  * 				 Target rotation value to set rotation value to
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_set_rotation(uint8_t port, double target);
+int32_t gps_set_rotation(uint8_t port, double target);
 
 /**
  * Tare the GPS sensor's rotation value
@@ -258,8 +270,10 @@ void gps_set_rotation(uint8_t port, double target);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
  */
-void gps_tare_rotation(uint8_t port);
+int32_t gps_tare_rotation(uint8_t port);
 
 /**
  * Get the GPS's raw gyroscope values

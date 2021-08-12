@@ -19,8 +19,8 @@
 #define GPS_MINIMUM_DATA_RATE 5
 
 #define GPS_STATUS_ERR_INIT    \
-{   .x = PROS_ERR_F,    \ 
-    .y = PROS_ERR_F,    \ 
+{   .x = PROS_ERR_F,    \
+    .y = PROS_ERR_F,    \
     .roll = PROS_ERR_F, \
     .pitch = PROS_ERR_F \
     .yaw = PROS_ERR_F   }
@@ -30,33 +30,33 @@
     .y = PROS_ERR_F  \
     .z = PROS_ERR_F   }
 
-void gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset){
-    claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset){
+    claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsOriginSet(device->device_info, xOffset, yOffset);
     vexDeviceGpsInitialPositionSet(device->device_info, xInitial, yInitial, headingInitial);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
-void gps_set_offset(uint8_t port, double xOffset, double yOffset) {
-	claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset) {
+	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsOriginSet(device->device_info, xOffset, yOffset);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
-void gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
-	claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
+	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
-void gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial) {
-	claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial) {
+	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsInitialPositionSet(device->device_info, xInitial, yInitial, headingInitial);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
-void gps_set_data_rate(uint8_t port, uint32_t rate){
-    claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_set_data_rate(uint8_t port, uint32_t rate){
+    claim_port_i(port - 1, E_DEVICE_GPS);
 
 	// rate is not less than 5ms, and rounded down to nearest increment of 5
 	if (rate < GPS_MINIMUM_DATA_RATE) {
@@ -66,7 +66,7 @@ void gps_set_data_rate(uint8_t port, uint32_t rate){
 	}
 
     vexDeviceGpsDataRateSet(device->device_info, rate );
-    port_mutex_give(port - 1);
+    return_port(port - 1, 1);
 }
 
 double gps_get_error(uint8_t port){
@@ -104,20 +104,20 @@ double gps_get_heading_raw(uint8_t port){
 
 double gps_get_rotation(uint8_t port){
     claim_port_f(port - 1, E_DEVICE_GPS);
-    double rtv = vexDeviceGpsRotationgGet(device->device_info);
+    double rtv = vexDeviceGpsRotationGet(device->device_info);
     return_port(port - 1, rtv);
 }
 
-void gps_set_rotation(uint8_t port, double target) {
-	claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_set_rotation(uint8_t port, double target) {
+	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsRotationSet(device->device_info, target);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
-void gps_tare_rotation(uint8_t port) {
-	claim_port(port - 1, E_DEVICE_GPS);
+int32_t gps_tare_rotation(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsRotationSet(device->device_info, 0);
-	port_mutex_give(port - 1);
+	return_port(port - 1, 1);
 }
 
 gps_gyro_s_t gps_get_gyro_rate(uint8_t port){

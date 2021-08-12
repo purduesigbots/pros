@@ -14,24 +14,24 @@
 
 namespace pros {
 
-    void Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset) const {
-        pros::c::gps_initialize_full(_port, xInitial, yInitial, headingInitial, xOffset, yOffset);
+    std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset) const {
+        return pros::c::gps_initialize_full(_port, xInitial, yInitial, headingInitial, xOffset, yOffset);
     }
 
-    void Gps::set_offset(double xOffset, double yOffset) const {
-        pros::c::gps_set_offset(_port, xOffset, yOffset);
+    std::int32_t Gps::set_offset(double xOffset, double yOffset) const {
+        return pros::c::gps_set_offset(_port, xOffset, yOffset);
     }
 
-    void Gps::get_offset(double* xOffset, double* yOffset) const {
-        pros::c::gps_get_offset(_port, xOffset, yOffset);
+    std::int32_t Gps::get_offset(double* xOffset, double* yOffset) const {
+        return pros::c::gps_get_offset(_port, xOffset, yOffset);
     }
 
-    void Gps::set_position(double xInitial, double yInitial, double headingInitial) const {
-        pros::c::gps_set_position(_port, xInitial, yInitial, headingInitial);
+    std::int32_t Gps::set_position(double xInitial, double yInitial, double headingInitial) const {
+        return pros::c::gps_set_position(_port, xInitial, yInitial, headingInitial);
     }
 
-    void Gps::set_data_rate(std::uint32_t rate) const {
-        pros::c::gps_set_data_rate(_port, rate);
+    std::int32_t Gps::set_data_rate(std::uint32_t rate) const {
+        return pros::c::gps_set_data_rate(_port, rate);
     }
 
     double Gps::get_error() const {
@@ -54,12 +54,12 @@ namespace pros {
         return pros::c::gps_get_rotation(_port);
     }
 
-    void Gps::set_rotation(double target) const {
-        pros::c::gps_set_rotation(_port, target);
+    std::int32_t Gps::set_rotation(double target) const {
+        return pros::c::gps_set_rotation(_port, target);
     }
 
-    void Gps::tare_rotation() const {
-        pros::c::gps_tare_rotation(_port);
+    std::int32_t Gps::tare_rotation() const {
+        return pros::c::gps_tare_rotation(_port);
     }
 
     gps_gyro_s_t Gps::get_gyro_rate() const {
