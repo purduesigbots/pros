@@ -36,7 +36,7 @@ class Gps {
         pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
     };
 
-    Gps(const std::uint8_t port, double xInitial, double xOffset, double yOffset) : _port(port)
+    Gps(const std::uint8_t port, double xOffset, double yOffset) : _port(port)
     {
         pros::c::gps_set_offset(port, xOffset, yOffset);
     };

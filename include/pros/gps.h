@@ -26,20 +26,18 @@ extern "C" {
 namespace pros {
 #endif
 
-// Datatypes: TODO: Do proper doxygen documentation for structs
-
 typedef struct __attribute__((__packed__)) gps_status_s {
-    double x;
-    double y;
-    double pitch;
-    double roll;
-    double yaw;
+    double x; ///< X Position (meters)
+    double y; ///< Y Position (meters)
+    double pitch; ///< Percieved Pitch based on GPS + IMU
+    double roll; ///< Percieved Roll based on GPS + IMU
+    double yaw; ///< Percieved Yaw based on GPS + IMU
 } gps_status_s_t;
 
 struct gps_raw_s {
-	double x;
-	double y;
-	double z;
+	double x; ///< Percieved Pitch based on GPS + IMU
+	double y; ///< Percieved Roll based on GPS + IMU
+	double z; ///< Percieved Yaw based on GPS + IMU
 };
 
 typedef struct gps_raw_s gps_accel_s_t;
