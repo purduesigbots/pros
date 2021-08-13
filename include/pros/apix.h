@@ -376,6 +376,7 @@ typedef enum v5_device_e {
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,
 	E_DEVICE_OPTICAL = 16,
+	E_DEVICE_GPS = 20,
 	E_DEVICE_GENERIC = 129,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
