@@ -16,8 +16,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef _PROS_IMU_HPP_
-#define _PROS_IMU_HPP_
+#ifndef _PROS_GPS_HPP_
+#define _PROS_GPS_HPP_
 
 #include <stdbool.h>
 
