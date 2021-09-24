@@ -40,7 +40,7 @@ int32_t imu_reset(uint8_t port) {
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	vexDeviceImuReset(device->device_info);
 	// delay for vexos to set calibration flag
-	while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING)) delay(5);
+	delay(20);
 	return_port(port - 1, 1);
 }
 
