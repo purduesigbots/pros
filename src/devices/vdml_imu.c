@@ -41,11 +41,10 @@ int32_t imu_reset(uint8_t port) {
 	vexDeviceImuReset(device->device_info);
 	// delay for vexos to set calibration flag, background processing must be called for flag
 	// to be set.
-	vexBackgroundProcessing();
-	while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING)) {
+	do {
 		delay(5);
 		vexBackgroundProcessing();
-	}
+	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
 	return_port(port - 1, 1);
 }
 
