@@ -27,6 +27,8 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
+#define IMU_RESET_TIMEOUT 1000
+
 typedef struct __attribute__ ((packed)) imu_reset_data { 
 	double heading_offset;
 	double rotation_offset;
@@ -41,10 +43,13 @@ int32_t imu_reset(uint8_t port) {
 	vexDeviceImuReset(device->device_info);
 	// delay for vexos to set calibration flag, background processing must be called for flag
 	// to be set.
+	uint16_t timeoutCount = 0;
 	do {
 		delay(5);
+		timeoutCount += 5;
 		vexBackgroundProcessing();
-	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING) && timeoutCount < IMU_RESET_TIMEOUT);
+	if(delay >= IMU_RESET_TIMEOUT) return_port(port - 1, PROS_ERR);
 	return_port(port - 1, 1);
 }
 

@@ -32,8 +32,9 @@ class Imu {
 	 * Calibrate IMU
 	 *
 	 * Calibration takes approximately 2 seconds, but this function only blocks
- 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING.
-	 *
+ 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
+	 * with a minimum blocking time of 5ms.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -41,7 +42,7 @@ class Imu {
 	 * EAGAIN - The sensor is already calibrating
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * failed or timed out at 500 ms, setting errno.
 	 */
 	virtual std::int32_t reset() const;
 	/**
