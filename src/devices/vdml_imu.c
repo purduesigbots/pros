@@ -44,13 +44,17 @@ int32_t imu_reset(uint8_t port) {
 	// delay for vexos to set calibration flag, background processing must be called for flag
 	// to be set.
 	uint16_t timeoutCount = 0;
+	// releasing mutex so vexBackgrounProcessing can run without being blocked.
+	port_mutex_give(port);
 	do {
 		delay(5);
 		timeoutCount += 5;
-		vexBackgroundProcessing();
 	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING) && timeoutCount < IMU_RESET_TIMEOUT);
-	if(delay >= IMU_RESET_TIMEOUT) return_port(port - 1, PROS_ERR);
-	return_port(port - 1, 1);
+	if (delay >= IMU_RESET_TIMEOUT) {
+		errno = EAGAIN;
+		return PROS_ERR;
+	}
+	return 1;
 }
 
 int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {

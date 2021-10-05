@@ -69,12 +69,12 @@ typedef struct __attribute__((__packed__)) euler_s {
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is already calibrating
+ * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
  *
  * \param port
  *        The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed or timed out at 500 ms, setting errno.
+ * failed setting errno.
  */
 int32_t imu_reset(uint8_t port);
 

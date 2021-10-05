@@ -39,10 +39,10 @@ class Imu {
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is already calibrating
+	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed or timed out at 500 ms, setting errno.
+	 * failed, setting errno.
 	 */
 	virtual std::int32_t reset() const;
 	/**
