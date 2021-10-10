@@ -20,10 +20,9 @@
 
 #include "rtos/task.h"
 #include "v5_api.h"
-#include "kapi.h"
 
 void _exit(int status) {
-	if(status != 0) kprintf("Error %d\n", status);
+	if(status != 0) dprintf(3, "Error %d\n", status);
 	vexSystemExitRequest();
 }
 
