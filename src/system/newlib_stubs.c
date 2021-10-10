@@ -23,14 +23,13 @@
 
 void _exit(int status) {
 	if(status != 0) kprintf("Error %d\n", status);
-	vexSystemExitRequest(void);
+	vexSystemExitRequest();
 }
 
 int usleep( useconds_t period ) {
 	// naive blocking delay, still needs testing as I'm not sure if the tight loop will work.
-	uint64_t initTime = micros();
-	uint64_t endTime = micros() + period;
-	while(micros() < endTime) asm("NOP");
+	uint64_t endTime = vexSystemHighResTimeGet() + period;
+	while(vexSystemHighResTimeGet() < endTime) asm("NOP");
 	return 0;
 }
 
