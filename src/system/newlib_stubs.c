@@ -22,10 +22,20 @@
 #include "v5_api.h"
 
 void _exit(int status) {
-	// TODO: print status code, maybe backtrace as well
-	while (1) {
-		vexBackgroundProcessing();
-	}
+	if(status != 0) kprintf("Error %d\n", status);
+	vexSystemExitRequest(void);
+}
+
+int usleep( useconds_t period ) {
+	// naive blocking delay, still needs testing as I'm not sure if the tight loop will work.
+	uint64_t initTime = micros();
+	uint64_t endTime = micros() + period;
+	while(micros() < endTime) asm("NOP");
+	return 0;
+}
+
+unsigned sleep( unsigned period ) {
+	return usleep(period * 1000000);
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for
