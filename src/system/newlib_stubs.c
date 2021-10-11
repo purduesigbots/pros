@@ -21,6 +21,8 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
+#define SEC_TO_USEC 1000000
+
 void _exit(int status) {
 	if(status != 0) dprintf(3, "Error %d\n", status);
 	vexSystemExitRequest();
@@ -34,7 +36,7 @@ int usleep( useconds_t period ) {
 }
 
 unsigned sleep( unsigned period ) {
-	return usleep(period * 1000000);
+	return usleep(period * SEC_TO_USEC);
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for
