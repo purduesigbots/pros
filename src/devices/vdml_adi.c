@@ -116,3 +116,11 @@ int32_t adi_gyro_reset(adi_gyro_t gyro) {
 int32_t adi_gyro_shutdown(adi_gyro_t gyro) {
 	return ext_adi_gyro_shutdown((ext_adi_gyro_t)gyro);
 }
+
+int32_t adi_potentiomter_get(adi_potentiometer_t potentiometer) {
+	return (adi_analog_read(potentiometer) / 4095) * 260;
+
+	//or
+
+	// return (adi_analog_read(potentiometer) / 4095) * 360;
+}

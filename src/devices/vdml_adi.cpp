@@ -140,4 +140,11 @@ double ADIGyro::get_value() const {
 std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
+
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port) : ADIPort(adi_port) { }
+
+std::int32_t ADIPotentiometer::get_value() const {
+	return adi_potentiomter_get(_adi_port);
+}
+
 }  // namespace pros
