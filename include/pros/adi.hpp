@@ -224,7 +224,7 @@ class ADIAnalogIn : private ADIPort {
 	using ADIPort::get_value;
 };
 
-using ADIPotentiometer = ADIAnalogIn;
+// using ADIPotentiometer = ADIAnalogIn;
 using ADILineSensor = ADIAnalogIn;
 using ADILightSensor = ADIAnalogIn;
 using ADIAccelerometer = ADIAnalogIn;
@@ -657,6 +657,15 @@ class ADIGyro : private ADIPort {
 	 * failed, setting errno.
 	 */
 	std::int32_t reset() const;
+};
+
+class ADIPotentiometer : private ADIPort {
+	public:
+
+	explicit ADIPotentiometer(std::uint8_t adi_port);
+
+	std::int32_t get_value() const;
+
 };
 }  // namespace pros
 

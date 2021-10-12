@@ -689,6 +689,30 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  */
 int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 
+/**
+ * Reference type for an initialized potentiometer.
+ *
+ * This merely contains the port number for the potentiometer.
+ */
+typedef int32_t adi_potentiometer_t;
+
+/**
+ * Gets the current potentiometer angle in tenths of a degree. Unless a multiplier is
+ * applied to the potentiometer, the return value will be a whole number representing
+ * the number of degrees of current rotation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a gyro
+ *
+ * \param potentiometer
+ *        The adi_gyro_t object for which the angle will be returned
+ *
+ * \return The potentiometer angle in degrees.
+ */
+int32_t adi_potentiomter_get(adi_potentiometer_t potentiometer);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros
