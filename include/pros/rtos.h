@@ -376,6 +376,21 @@ bool task_notify_clear(task_t task);
 mutex_t mutex_create(void);
 
 /**
+ * Takes and locks a mutex indefinetly.
+ *
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+ * for details.
+ *
+ * \param mutex
+ *        Mutex to attempt to lock.
+ *
+ * \return True if the mutex was successfully taken, false otherwise. If false
+ * is returned, then errno is set with a hint about why the the mutex
+ * couldn't be taken.
+ */
+bool mutex_take(mutex_t mutex);
+
+/**
  * Takes and locks a mutex, waiting for up to a certain number of milliseconds
  * before timing out.
  *
