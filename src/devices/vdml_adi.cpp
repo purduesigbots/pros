@@ -144,7 +144,7 @@ std::int32_t ADIGyro::reset() const {
 ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port) : ADIPort(adi_port) { }
 
 std::int32_t ADIPotentiometer::get_value() const {
-	return adi_potentiomter_get(_adi_port);
+	return (double)(adi_analog_read(_adi_port) * 250) / 4095;
 }
 
 }  // namespace pros
