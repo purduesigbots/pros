@@ -197,7 +197,7 @@ void task_delay(const uint32_t milliseconds);
  * \param microseconds
  *        The number of milliseconds to wait (1000 microseconds per millisecond)
  */
-void task_delay_micros(const uint32_t microseconds);
+void task_delay_micros(const uint64_t microseconds);
 
 void delay(const uint32_t milliseconds);
 

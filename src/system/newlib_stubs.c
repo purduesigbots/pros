@@ -21,7 +21,7 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
-#define SEC_TO_USEC 1000000
+#define SEC_TO_MSEC 1000
 
 void _exit(int status) {
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
@@ -29,14 +29,11 @@ void _exit(int status) {
 }
 
 int usleep( useconds_t period ) {
-	// naive blocking delay, still needs testing as I'm not sure if the tight loop will work.
-	uint64_t endTime = vexSystemHighResTimeGet() + period;
-	while(vexSystemHighResTimeGet() < endTime) asm("NOP");
-	return 0;
+	return task_delay_micros(period);
 }
 
 unsigned sleep( unsigned period ) {
-	return usleep(period * SEC_TO_USEC);
+	return task_delay(period * SEC_TO_MSEC);
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for

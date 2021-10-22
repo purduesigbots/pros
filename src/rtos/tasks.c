@@ -1158,7 +1158,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 		}
 	}
 
-void task_delay_micros(const uint32_t microseconds) {
+void task_delay_micros(const uint64_t microseconds) {
 		int32_t xAlreadyYielded = pdFALSE;
 		
 		if( milliseconds > ( uint32_t ) 0U )
@@ -1167,8 +1167,48 @@ void task_delay_micros(const uint32_t microseconds) {
 			rtos_suspend_all();
 			{
 				traceTASK_DELAY();
-				// TODO: Do work on this function here:
-				prvAddCurrentTaskToDelayedList( milliseconds, pdFALSE );
+				// Works similar to prvAddCurrentTaskToDelayedList
+				const uint64_t xConstTickCount = vexSystemHighResTimeGet(); 
+				uint64_t xTimeToWake = xConstTickCount + microseconds;
+
+				/* The list item will be inserted in wake time order. */
+				listSET_LIST_ITEM_VALUE( &( pxCurrentTCB->xStateListItem ), xTimeToWake );
+
+				if( xTimeToWake < xConstTickCount )
+				{
+					/* Wake time has overflowed.  Place this item in the overflow list. */
+					vListInsert( pxOverflowDelayedTaskList, &( pxCurrentTCB->xStateListItem ) );
+				}
+				else
+				{
+					/* The wake time has not overflowed, so the current block list is used. */
+					vListInsert( pxDelayedTaskList, &( pxCurrentTCB->xStateListItem ) );
+
+					/* If the task entering the blocked state was placed at the head of the
+					list of blocked tasks then xNextTaskUnblockTime needs to be updated
+					too. */
+					if( xTimeToWake < xNextTaskUnblockTime )
+					{
+						xNextTaskUnblockTime = xTimeToWake;
+					}
+					else
+					{
+						mtCOVERAGE_TEST_MARKER();
+					}
+				}
+
+				/* Remove the task from the ready list before adding it to the blocked list
+				as the same list item is used for both lists. */
+				if( uxListRemove( &( pxCurrentTCB->xStateListItem ) ) == ( uint32_t ) 0 )
+				{
+					/* The current task must be in a ready list, so there is no need to
+					check, and the port reset macro can be called directly. */
+					portRESET_READY_PRIORITY( pxCurrentTCB->uxPriority, uxTopReadyPriority );
+				}
+				else
+				{
+					mtCOVERAGE_TEST_MARKER();
+				}
 			}
 			xAlreadyYielded = rtos_resume_all();
 		}
