@@ -1,7 +1,7 @@
 #include "main.h"
 // #include "include/pros/adi.h"
 
-#define POTENTIOMETER_PORT 1
+#define POTENTIOMETER_PORT 'A'
 #define MOTOR_VOLTAGE 500
 
 /**
@@ -82,7 +82,8 @@ void opcontrol() {
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
 	pros::ADIPotentiometer potentiometer(POTENTIOMETER_PORT);
-	pros::c::adi_potentiometer_t potentiometer1 = 1;
+	pros::ADIAnalogIn potentiometer1(POTENTIOMETER_PORT);
+	int i = 0;
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -94,9 +95,9 @@ void opcontrol() {
 		left_mtr = left;
 		// right_mtr = right;
 
-		printf("opcontrol\n");
-		printf("potentiometer value: %ld degrees\n", pros::c::adi_potentiomter_get(potentiometer1));
+		printf("opcontrol %d\n", i++);
+		printf("potentiometer value: %ld degrees\n", potentiometer.get_value());
 
-		pros::delay(20);
+		pros::delay(200);
 	}
 }
