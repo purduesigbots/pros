@@ -1161,7 +1161,7 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 void task_delay_micros(const uint64_t microseconds) {
 		int32_t xAlreadyYielded = pdFALSE;
 		
-		if( milliseconds > ( uint32_t ) 0U )
+		if( microseconds > ( uint32_t ) 0U )
 		{
 			configASSERT( uxSchedulerSuspended == 0 );
 			rtos_suspend_all();
