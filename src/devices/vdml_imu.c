@@ -47,15 +47,16 @@ int32_t imu_reset(uint8_t port) {
 	// releasing mutex so vexBackgrounProcessing can run without being blocked.
 	do {
 		port_mutex_give(port - 1);
-		delay(5);
+		task_delay(5);
 		timeoutCount += 5;
 		claim_port_i(port - 1, E_DEVICE_IMU);
+		if (timeoutCount >= IMU_RESET_TIMEOUT) {
+			port_mutex_give(port - 1);
+			errno = EAGAIN;
+			return PROS_ERR;
+		}
 	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING) && timeoutCount < IMU_RESET_TIMEOUT);
 	port_mutex_give(port - 1);
-	if (delay >= IMU_RESET_TIMEOUT) {
-		errno = EAGAIN;
-		return PROS_ERR;
-	}
 	return 1;
 }
 
