@@ -187,6 +187,18 @@ void task_delete(task_t task);
  */
 void task_delay(const uint32_t milliseconds);
 
+/**
+ * Delays a task for a given number of microseconds.
+ *
+ * This is not the best method to have a task execute code at predefined
+ * intervals, as the delay time is measured from when the delay is requested.
+ * To delay cyclically, use task_delay_until().
+ *
+ * \param microseconds
+ *        The number of milliseconds to wait (1000 microseconds per millisecond)
+ */
+void task_delay_micros(const uint32_t microseconds);
+
 void delay(const uint32_t milliseconds);
 
 /**

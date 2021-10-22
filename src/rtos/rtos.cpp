@@ -89,6 +89,10 @@ using namespace pros::c;
     task_delay(milliseconds);
   }
 
+  void Task::delay_micros(const std::uint32_t microseconds) {
+    task_delay_micros(microseconds);
+  }
+
   void Task::delay_until(std::uint32_t* const prev_time, const std::uint32_t delta) {
     task_delay_until(prev_time, delta);
   }

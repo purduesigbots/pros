@@ -1158,6 +1158,37 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 		}
 	}
 
+void task_delay_micros(const uint32_t microseconds) {
+		int32_t xAlreadyYielded = pdFALSE;
+		
+		if( milliseconds > ( uint32_t ) 0U )
+		{
+			configASSERT( uxSchedulerSuspended == 0 );
+			rtos_suspend_all();
+			{
+				traceTASK_DELAY();
+				// TODO: Do work on this function here:
+				prvAddCurrentTaskToDelayedList( milliseconds, pdFALSE );
+			}
+			xAlreadyYielded = rtos_resume_all();
+		}
+		else
+		{
+			mtCOVERAGE_TEST_MARKER();
+		}
+
+		/* Force a reschedule if rtos_resume_all has not already done so, we may
+		have put ourselves to sleep. */
+		if( xAlreadyYielded == pdFALSE )
+		{
+			portYIELD_WITHIN_API();
+		}
+		else
+		{
+			mtCOVERAGE_TEST_MARKER();
+		}
+}
+
 void delay(const uint32_t milliseconds)
 {
   task_delay(milliseconds);

@@ -24,7 +24,7 @@
 #define SEC_TO_USEC 1000000
 
 void _exit(int status) {
-	if(status != 0) dprintf(3, "Error %d\n", status);
+	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
 	vexSystemExitRequest();
 }
 
