@@ -301,7 +301,7 @@ class Task {
 	 * \param microseconds
 	 *        The number of microseconds to wait (1000 microseconds per millisecond)
 	 */
-	static void delay_micros(const std::uint32_t microseconds);
+	static void delay_micros(const std::uint64_t microseconds);
 
 	/**
 	 * Delays a task until a specified time.  This function can be used by
