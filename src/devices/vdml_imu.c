@@ -56,7 +56,7 @@ int32_t imu_reset(uint8_t port) {
 			return PROS_ERR;
 		}
 		device = device; // suppressing compiler warning
-	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING) && timeoutCount < IMU_RESET_TIMEOUT);
+	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
 	port_mutex_give(port - 1);
 	return 1;
 }
