@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "pros/rtos.h"
+#include "pros/task.h"
 #include "v5_api.h"
 
 #define SEC_TO_MSEC 1000
@@ -30,9 +30,10 @@ void _exit(int status) {
 }
 
 int usleep( useconds_t period ) {
-	task_delay_micros(period);
-	return 1;
-
+	// naive blocking delay, still needs testing as I'm not sure if the tight loop will work.
+	uint64_t endTime = vexSystemHighResTimeGet() + period;
+	while(vexSystemHighResTimeGet() < endTime) asm("NOP");
+	return 0;
 }
 
 unsigned sleep( unsigned period ) {
