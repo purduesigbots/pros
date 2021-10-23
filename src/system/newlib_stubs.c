@@ -17,8 +17,9 @@
 #include <errno.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <stdio.h>
 
-#include "rtos/task.h"
+#include "pros/rtos.h"
 #include "v5_api.h"
 
 #define SEC_TO_MSEC 1000
@@ -29,11 +30,14 @@ void _exit(int status) {
 }
 
 int usleep( useconds_t period ) {
-	return task_delay_micros(period);
+	task_delay_micros(period);
+	return 1;
+
 }
 
 unsigned sleep( unsigned period ) {
-	return task_delay(period * SEC_TO_MSEC);
+	task_delay(period * SEC_TO_MSEC);
+	return 1;
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for
