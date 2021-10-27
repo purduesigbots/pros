@@ -630,6 +630,13 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
  */
 int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
+typedef int32_t ext_adi_potentiometer_t;
+
+
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, bool new_potentiometer); 
+
+int32_t ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiometer);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros
