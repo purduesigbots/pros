@@ -30,7 +30,12 @@ void _exit(int status) {
 }
 
 int usleep( useconds_t period ) {
-	// naive blocking delay, still needs testing as I'm not sure if the tight loop will work.
+	// Compromise: If the delay is in microsecond range, it will block threads.
+	// if not, it will not block threads but not be accurate to the microsecond range.
+	if(period >= 1000) {
+		task_delay (period / SEC_TO_MSEC);
+		return 0;
+	}
 	uint64_t endTime = vexSystemHighResTimeGet() + period;
 	while(vexSystemHighResTimeGet() < endTime) asm("NOP");
 	return 0;
