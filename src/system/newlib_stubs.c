@@ -37,7 +37,7 @@ int usleep( useconds_t period ) {
 		return 0;
 	}
 	uint64_t endTime = vexSystemHighResTimeGet() + period;
-	while(vexSystemHighResTimeGet() < endTime) asm("NOP");
+	while(vexSystemHighResTimeGet() < endTime) asm("YIELD");
 	return 0;
 }
 
