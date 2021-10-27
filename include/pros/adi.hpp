@@ -662,7 +662,9 @@ class ADIGyro : private ADIPort {
 class ADIPotentiometer : private ADIPort {
 	public:
 
-	explicit ADIPotentiometer(std::uint8_t adi_port);
+	explicit ADIPotentiometer(std::uint8_t adi_port, bool new_potentiometer);
+
+	ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_potentiometer);
 
 	std::int32_t get_value() const;
 
