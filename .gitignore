@@ -12,3 +12,4 @@ temp.log
 temp.errors
 .d/
 .clangd/
+.cache/
