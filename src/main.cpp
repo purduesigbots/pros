@@ -1,8 +1,4 @@
 #include "main.h"
-// #include "include/pros/adi.h"
-
-#define POTENTIOMETER_PORT 'A'
-#define MOTOR_VOLTAGE 500
 
 /**
  * A callback function for LLEMU's center button.
@@ -81,23 +77,16 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
-	pros::ADIPotentiometer potentiometer(POTENTIOMETER_PORT);
-	pros::ADIAnalogIn potentiometer1(POTENTIOMETER_PORT);
-	int i = 0;
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
-		// int right = master.get_analog(ANALOG_RIGHT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
 
 		left_mtr = left;
-		// right_mtr = right;
-
-		printf("opcontrol %d\n", i++);
-		printf("potentiometer value: %ld degrees\n", potentiometer.get_value());
-
-		pros::delay(200);
+		right_mtr = right;
+		pros::delay(20);
 	}
 }
