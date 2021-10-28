@@ -437,4 +437,6 @@ int32_t ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentio
 	} else {
 		return ((double)(rtn * 4095) / 250);
 	}
+
+	return_port(smart_port - 1, 1);
 }
