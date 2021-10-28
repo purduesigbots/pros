@@ -667,6 +667,5 @@ class ADIPotentiometer : private ADIPort {
 	std::int32_t get_value() const;
 
 };
-}  // namespace pros
 
 #endif  // _PROS_ADI_HPP_

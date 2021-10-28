@@ -408,3 +408,33 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
 }
+
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, bool new_potentiometer) {
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI);
+
+	//store device version
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+	adi_data->potentiometer_data.potentiometer_version = new_potentiometer;
+
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+}
+
+int32_t ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiometer) {
+	int32_t rtn;
+	uint8_t smart_port, adi_port;
+	get_ports(potentiometer, smart_port, adi_port);
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI);
+	validate_type(device, adi_port, E_ADI_ANALOG_IN);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
+	
+	rtn = ext_adi_analog_read(smart_port, adi_port);
+	// adjust degree value conversion according to potentiometer type
+	if(adi_data->potentiometer_data.potentiometer_version) {
+		return ((double)(rtn * 4095) / 360);
+	} else {
+		return ((double)(rtn * 4095) / 250);
+	}
+}
