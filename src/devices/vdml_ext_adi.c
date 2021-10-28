@@ -433,7 +433,7 @@ int32_t ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentio
 	rtn = ext_adi_analog_read(smart_port, adi_port);
 	// adjust degree value conversion according to potentiometer type
 	if(adi_data->potentiometer_data.potentiometer_version) {
-		return ((double)(rtn * 4095) / 360);
+		return ((double)(rtn * 4095) / 330);
 	} else {
 		return ((double)(rtn * 4095) / 250);
 	}
