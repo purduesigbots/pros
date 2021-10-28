@@ -81,8 +81,9 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
-	pros::ADIPotentiometer potentiometer(POTENTIOMETER_PORT, false);
+	pros::ADIPotentiometer potentiometer(POTENTIOMETER_PORT);
 	pros::ADIAnalogIn potentiometer1(POTENTIOMETER_PORT);
+	int i = 0;
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -94,7 +95,7 @@ void opcontrol() {
 		left_mtr = left;
 		// right_mtr = right;
 
-		printf("opcontrol\n");
+		printf("opcontrol %d\n", i++);
 		printf("potentiometer value: %ld degrees\n", potentiometer.get_value());
 
 		pros::delay(200);

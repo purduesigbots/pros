@@ -141,18 +141,10 @@ std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, bool new_potentiometer) : ADIPort(adi_port) { 
-	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, new_potentiometer);
-	get_ports(_port, _smart_port, _adi_port);
-}
-
-ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_potentiometer) : ADIPort(std::get<1>(port_pair)) { 
-	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, new_potentiometer);
-	get_ports(_port, _smart_port, _adi_port);
-}
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port) : ADIPort(adi_port) { }
 
 std::int32_t ADIPotentiometer::get_value() const {
-	return adi_potentiometer_get(merge_adi_ports(_smart_port, _adi_port));
+	return (double)(adi_analog_read(_adi_port) * 250) / 4095;
 }
 
 }  // namespace pros
