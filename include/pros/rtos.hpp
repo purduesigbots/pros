@@ -102,14 +102,59 @@ class Task {
 	 *
 	 */
 	template <class F>
+	static task_t create(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+			 std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "") {
+		static_assert(std::is_invocable_r_v<void, F>);
+		return pros::c::task_create(
+			[](void* parameters) {
+				std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
+				(*ptr)();
+			},
+			new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name);
+	}
+
+	/**
+	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENOMEM - The stack cannot be used as the TCB was not created.
+	 *
+	 * \param function
+	 *        Callable object to use as entry function
+	 * \param name
+	 *        A descriptive name for the task.  This is mainly used to facilitate
+	 *        debugging. The name may be up to 32 characters long.
+	 *
+	 */
+	template <class F>
+	static task_t create(F&& function, const char* name) {
+		return Task::create(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name);
+	}
+	
+	/**
+	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENOMEM - The stack cannot be used as the TCB was not created.
+	 *
+	 * \param function
+	 *        Callable object to use as entry function
+	 * \param prio
+	 *        The priority at which the task should run.
+	 *        TASK_PRIO_DEFAULT plus/minus 1 or 2 is typically used.
+	 * \param stack_depth
+	 *        The number of words (i.e. 4 * stack_depth) available on the task's
+	 *        stack. TASK_STACK_DEPTH_DEFAULT is typically sufficienct.
+	 * \param name
+	 *        A descriptive name for the task.  This is mainly used to facilitate
+	 *        debugging. The name may be up to 32 characters long.
+	 *
+	 */
+	template <class F>
 	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "")
-	    : Task(
-	          [](void* parameters) {
-		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
-		          (*ptr)();
-	          },
-	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
+	     const char* name = "") : Task(Task::create(std::forward<F>(function), prio, stack_depth, name)) {
 		static_assert(std::is_invocable_r_v<void, F>);
 	}
 
