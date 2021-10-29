@@ -668,4 +668,6 @@ class ADIPotentiometer : private ADIPort {
 
 };
 
+} // namespace pros
+
 #endif  // _PROS_ADI_HPP_
