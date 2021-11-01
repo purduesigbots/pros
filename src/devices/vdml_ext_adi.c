@@ -45,6 +45,9 @@ typedef union adi_data {
 		double multiplier;
 		double tare_value;
 	} gyro_data;
+	struct {
+		bool potentiometer_version;
+	} potentiometer_data;
 } adi_data_s_t;
 
 #define transform_adi_port(port)       \
@@ -413,7 +416,6 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 
-	//store device version
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->potentiometer_data.potentiometer_version = new_potentiometer;
 
@@ -429,14 +431,13 @@ int32_t ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentio
 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
-	
-	rtn = ext_adi_analog_read(smart_port, adi_port);
-	// adjust degree value conversion according to potentiometer type
-	if(adi_data->potentiometer_data.potentiometer_version) {
-		return ((double)(rtn * 4095) / 330);
+
+	if (adi_data->potentiometer_data.potentiometer_version) {
+		rtn = ((double)(ext_adi_analog_read(smart_port, adi_port) * 4095) / 330);
 	} else {
-		return ((double)(rtn * 4095) / 250);
+		rtn = ((double)(ext_adi_analog_read(smart_port, adi_port) * 4095) / 250);
 	}
 
 	return_port(smart_port - 1, 1);
+	return rtn;
 }
