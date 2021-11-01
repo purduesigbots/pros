@@ -666,7 +666,7 @@ class ADIPotentiometer : private ADIPort {
 
 	ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_potentiometer);
 
-	std::int32_t get_value() const;
+	double get_value() const;
 
 };
 

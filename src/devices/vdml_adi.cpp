@@ -151,7 +151,7 @@ ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_poten
  	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t ADIPotentiometer::get_value() const {
+double ADIPotentiometer::get_value() const {
 	return adi_potentiometer_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
