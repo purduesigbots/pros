@@ -41,13 +41,13 @@ typedef union adi_data {
 	struct {
 		bool reversed;
 	} encoder_data;
+	struct {
+		bool potentiometer_version;
+	} potentiometer_data;
 	struct __attribute__((packed)) {
 		double multiplier;
 		double tare_value;
 	} gyro_data;
-	struct {
-		bool potentiometer_version;
-	} potentiometer_data;
 } adi_data_s_t;
 
 #define transform_adi_port(port)       \
