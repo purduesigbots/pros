@@ -370,6 +370,19 @@ class Mutex {
 	Mutex(void);
 
 	/**
+	 * Takes and locks a mutex indefinetly.
+	 *
+	 * See
+	 * https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html#mutexes
+	 * for details.
+	 *
+	 * \return True if the mutex was successfully taken, false otherwise. If false
+	 * is returned, then errno is set with a hint about why the the mutex
+	 * couldn't be taken.
+	 */
+	bool take(void);
+
+	/**
 	 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
 	 * before timing out.
 	 *
