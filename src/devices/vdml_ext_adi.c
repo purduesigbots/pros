@@ -422,7 +422,7 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-double ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiometer) {
+double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	int32_t rtn;
 	uint8_t smart_port, adi_port;
 	get_ports(potentiometer, smart_port, adi_port);
@@ -433,11 +433,10 @@ double ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiom
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
 
 	if (adi_data->potentiometer_data.potentiometer_version) {
-		rtn = ((double)(ext_adi_analog_read(smart_port, adi_port) * 4095) / 330);
+		rtn =  vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
 	} else {
-		rtn = ((double)(ext_adi_analog_read(smart_port, adi_port) * 4095) / 250);
+		rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
 	}
 
-	return_port(smart_port - 1, 1);
-	return rtn;
+	return_port(smart_port - 1, rtn);
 }
