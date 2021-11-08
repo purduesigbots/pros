@@ -69,6 +69,11 @@ typedef enum adi_port_config_e {
 	E_ADI_ERR = PROS_ERR
 } adi_port_config_e_t;
 
+typedef enum adi_potentiometer_type_e { 
+	OLD_POTENTIOMETER = false,
+	NEW_POTENTIOMETER = true
+} adi_potentiometer_type_e_t;
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define ADI_ANALOG_IN pros::E_ADI_ANALOG_IN

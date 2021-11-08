@@ -661,10 +661,10 @@ class ADIGyro : private ADIPort {
 
 class ADIPotentiometer : private ADIPort {
 	public:
+ 
+	ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = OLD_POTENTIOMETER);
 
-	explicit ADIPotentiometer(std::uint8_t adi_port, bool new_potentiometer);
-
-	ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_potentiometer);
+	ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = OLD_POTENTIOMETER);
 
 	double get_value() const;
 

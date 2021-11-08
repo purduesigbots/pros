@@ -141,13 +141,13 @@ std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, bool new_potentiometer) : ADIPort(adi_port) { 
-	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, new_potentiometer);
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : ADIPort(adi_port) { 
+	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, bool new_potentiometer) : ADIPort(std::get<1>(port_pair)) { 
- 	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, new_potentiometer);
+ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : ADIPort(std::get<1>(port_pair)) { 
+ 	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
  	get_ports(_port, _smart_port, _adi_port);
 }
 

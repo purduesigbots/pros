@@ -42,7 +42,7 @@ typedef union adi_data {
 		bool reversed;
 	} encoder_data;
 	struct {
-		bool potentiometer_version;
+		adi_potentiometer_type_e_t potentiometer_type;
 	} potentiometer_data;
 	struct __attribute__((packed)) {
 		double multiplier;
@@ -412,12 +412,12 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	return_port(smart_port, 1);
 }
 
-ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, bool new_potentiometer) {
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-	adi_data->potentiometer_data.potentiometer_version = new_potentiometer;
+	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
 
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
@@ -432,7 +432,7 @@ double ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiom
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
 
-	if (adi_data->potentiometer_data.potentiometer_version) {
+	if (adi_data->potentiometer_data.potentiometer_type) {
 		rtn =  vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
 	} else {
 		rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;

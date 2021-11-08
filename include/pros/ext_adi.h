@@ -632,7 +632,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
 typedef int32_t ext_adi_potentiometer_t;
 
-ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, bool new_potentiometer); 
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type); 
 
 double ext_adi_potentiometer_get_value_degrees(ext_adi_potentiometer_t potentiometer);
 
