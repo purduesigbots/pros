@@ -696,7 +696,7 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 
 typedef int32_t adi_potentiometer_t;
 
-adi_potentiometer_t adi_potentiometer_init(uint8_t port, bool new_potentiometer);
+adi_potentiometer_t adi_potentiometer_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
 
 double adi_potentiometer_get(adi_potentiometer_t potentiometer);
 
