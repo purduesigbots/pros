@@ -43,6 +43,7 @@ std::int32_t ADIPort::get_value() const {
 	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
 
+
 ADIAnalogIn::ADIAnalogIn(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_IN) {}
 ADIAnalogIn::ADIAnalogIn(ext_adi_port_pair_t port_pair) : ADIPort(port_pair, E_ADI_ANALOG_IN) {}
 
@@ -56,6 +57,22 @@ std::int32_t ADIAnalogIn::get_value_calibrated() const {
 
 std::int32_t ADIAnalogIn::get_value_calibrated_HR() const {
 	return ext_adi_analog_read_calibrated_HR(_smart_port, _adi_port);
+}
+
+std::uint8_t ADIAnalogIn::get_adi_port() const {
+	return _adi_port;
+}
+
+std::uint8_t ADIAnalogIn::get_smart_port() const {
+	return _smart_port;
+}
+
+void ADIAnalogIn::set_adi_port(std::uint8_t adi_port) {
+	_adi_port = adi_port;
+}
+
+void ADIAnalogIn::set_smart_port(std::uint8_t smart_port) {
+	_smart_port = smart_port;
 }
 
 ADIAnalogOut::ADIAnalogOut(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_OUT) {}
@@ -141,18 +158,28 @@ std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : ADIPort(adi_port) { 
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(adi_port) { 
 	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
+	std::uint8_t _smart_port, _adi_port;
+	_smart_port = get_smart_port();
+	_adi_port = get_adi_port();
 	get_ports(_port, _smart_port, _adi_port);
+	set_smart_port(_smart_port);
+	set_adi_port(_adi_port);
 }
 
-ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : ADIPort(std::get<1>(port_pair)) { 
+ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(std::get<1>(port_pair)) { 
  	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
- 	get_ports(_port, _smart_port, _adi_port);
+	std::uint8_t _smart_port, _adi_port;
+ 	_smart_port = get_smart_port();
+	_adi_port = get_adi_port();
+	get_ports(_port, _smart_port, _adi_port);
+	set_smart_port(_smart_port);
+	set_adi_port(_adi_port);
 }
 
-double ADIPotentiometer::get_value() const {
-	return adi_potentiometer_get(merge_adi_ports(_smart_port, _adi_port));
+double ADIPotentiometer::get_angle() const {
+	return adi_potentiometer_get(merge_adi_ports(get_smart_port(), get_adi_port()));
 }
 
 }  // namespace pros

@@ -222,6 +222,14 @@ class ADIAnalogIn : private ADIPort {
 	 * nearly 5 V
 	 */
 	using ADIPort::get_value;
+
+	std::uint8_t get_adi_port() const;
+
+	std::uint8_t get_smart_port() const;
+	
+	void set_adi_port(std::uint8_t adi_port);
+
+	void set_smart_port(std::uint8_t smart_port);
 };
 
 // using ADIPotentiometer = ADIAnalogIn;
@@ -659,15 +667,22 @@ class ADIGyro : private ADIPort {
 	std::int32_t reset() const;
 };
 
-class ADIPotentiometer : private ADIPort {
+class ADIPotentiometer : private ADIAnalogIn {
 	public:
  
 	ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = OLD_POTENTIOMETER);
 
 	ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = OLD_POTENTIOMETER);
 
-	double get_value() const;
+	double get_angle() const;
 
+	using ADIAnalogIn::get_value;
+
+	using ADIAnalogIn::calibrate;
+
+	using ADIAnalogIn::get_value_calibrated;
+
+	using ADIAnalogIn::get_value_calibrated_HR;
 };
 
 } // namespace pros
