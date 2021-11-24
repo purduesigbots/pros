@@ -434,10 +434,10 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
 
 	switch (adi_data->potentiometer_data.potentiometer_type) {
-		case 0:
+		case E_ADI_POT_EDR:
 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
 			break;
-		case 1:
+		case E_ADI_POT_V2:
 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
 			break;
 		default:
