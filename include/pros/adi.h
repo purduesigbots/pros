@@ -70,8 +70,8 @@ typedef enum adi_port_config_e {
 } adi_port_config_e_t;
 
 typedef enum adi_potentiometer_type_e { 
-	OLD_POTENTIOMETER = false,
-	NEW_POTENTIOMETER = true
+	E_ADI_POT_EDR = 0,
+	E_ADI_POT_V2
 } adi_potentiometer_type_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
