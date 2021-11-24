@@ -412,7 +412,8 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	return_port(smart_port, 1);
 }
 
-ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) {
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port,
+                                                   adi_potentiometer_type_e_t potentiometer_type) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 
@@ -432,10 +433,10 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
 
-	if (adi_data->potentiometer_data.potentiometer_type) {
-		rtn =  vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
-	} else {
-		rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
+	switch (adi_data->potentiometer_data.potentiometer_type) {
+		case 0: rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
+		case 1: rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
+		default: return PROS_ERR;
 	}
 
 	return_port(smart_port - 1, rtn);
