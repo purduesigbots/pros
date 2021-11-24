@@ -121,6 +121,6 @@ adi_potentiometer_t adi_potentiometer_init(uint8_t port, adi_potentiometer_type_
 	return (adi_potentiometer_t)ext_adi_potentiometer_init(INTERNAL_ADI_PORT, port, potentiometer_type);
 }
 
-double adi_potentiometer_get(adi_potentiometer_t potentiometer) {
-	return ext_adi_potentiometer_get((ext_adi_potentiometer_t)potentiometer);
+double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer) {
+	return ext_adi_potentiometer_get_angle((ext_adi_potentiometer_t)potentiometer);
 }

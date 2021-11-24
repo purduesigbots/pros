@@ -634,7 +634,7 @@ typedef int32_t ext_adi_potentiometer_t;
 
 ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type); 
 
-double ext_adi_potentiometer_get(ext_adi_potentiometer_t potentiometer);
+double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer);
 
 #ifdef __cplusplus
 }  // namespace c

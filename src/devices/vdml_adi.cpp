@@ -179,7 +179,7 @@ ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiome
 }
 
 double ADIPotentiometer::get_angle() const {
-	return adi_potentiometer_get(merge_adi_ports(get_smart_port(), get_adi_port()));
+	return adi_potentiometer_get_angle(merge_adi_ports(get_smart_port(), get_adi_port()));
 }
 
 }  // namespace pros

@@ -422,7 +422,7 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-double ext_adi_potentiometer_get(ext_adi_potentiometer_t potentiometer) {
+double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	int32_t rtn;
 	uint8_t smart_port, adi_port;
 	get_ports(potentiometer, smart_port, adi_port);
