@@ -99,6 +99,10 @@ using namespace pros::c;
 
   Mutex::Mutex(void) : mutex(mutex_create(), mutex_delete) { }
 
+  bool Mutex::take(void) {
+    return mutex_take(mutex.get(), TIMEOUT_MAX);
+  }
+
   bool Mutex::take(std::uint32_t timeout) {
     return mutex_take(mutex.get(), timeout);
   }
