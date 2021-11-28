@@ -671,7 +671,7 @@ class ADIGyro : private ADIPort {
 
 class ADIPotentiometer : private ADIAnalogIn {
 	public:
- 
+
 	ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
