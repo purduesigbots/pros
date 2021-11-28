@@ -228,7 +228,7 @@ class ADIAnalogIn : private ADIPort {
 	std::uint8_t get_adi_port() const;
 
 	std::uint8_t get_smart_port() const;
-	
+
 	void set_adi_port(std::uint8_t adi_port);
 
 	void set_smart_port(std::uint8_t smart_port);
