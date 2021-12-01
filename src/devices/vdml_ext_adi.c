@@ -439,7 +439,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
 			break;
 		case E_ADI_POT_V2:
-			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
+			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 330 / 4095.0;
 			break;
 		default:
 			errno = ENXIO;
