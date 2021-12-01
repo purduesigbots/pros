@@ -706,6 +706,22 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 typedef int32_t adi_potentiometer_t;
 
 /**
+ * Initializes a potentiometer on the given port of the original potentiometer.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a potentiometer
+ *
+ * \param port
+ *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
+ * initialization failed.
+ */
+adi_potentiometer_t adi_potentiometer_init(uint8_t port);
+
+/**
  * Initializes a potentiometer on the given port. 
  *
  * This function uses the following values of errno when an error state is
@@ -721,7 +737,7 @@ typedef int32_t adi_potentiometer_t;
  * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
  * initialization failed.
  */
-adi_potentiometer_t adi_potentiometer_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
+adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
 
 /**
  * Gets the current potentiometer angle in tenths of a degree.
