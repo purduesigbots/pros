@@ -361,29 +361,18 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port
-// possibly returning PROS_ERR, not PROS_ERR_F
-int32_t _ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
+double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, E_ADI_LEGACY_GYRO);
+	claim_port_f(smart_port, E_DEVICE_ADI);
+	claim_port(port, device_type, PROS_ERR_F)
 
-	double rtn = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
+	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-	rtn -= adi_data->gyro_data.tare_value;
-	rtn *= adi_data->gyro_data.multiplier;
-	*out = rtn;
-	return_port(smart_port, 1);
-}
-
-double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
-	double rtn;
-	if (_ext_adi_gyro_get(gyro, &rtn) == PROS_ERR)
-		return PROS_ERR_F;
-	else
-		return rtn;
+	rtv -= adi_data->gyro_data.tare_value;
+	rtv *= adi_data->gyro_data.multiplier;
+	return_port(smart_port, rtv);
 }
 
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
