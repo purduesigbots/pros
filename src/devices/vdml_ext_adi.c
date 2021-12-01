@@ -66,7 +66,7 @@ typedef union adi_data {
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port); \
 	if (config != type) {                                                                                   \
 		errno = EADDRINUSE;                                                                                   \
-		 return PROS_ERR;                                                                                      \
+		return PROS_ERR;                                                                                      \
 	}
 
 #define validate_motor(device, port)                                                                      \
