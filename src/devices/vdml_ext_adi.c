@@ -66,6 +66,13 @@ typedef union adi_data {
 		return PROS_ERR;                                                                                      \
 	}
 
+#define validate_type_f(device, port, type)                                                                 \
+	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port); \
+	if (config != type) {                                                                                   \
+		errno = EADDRINUSE;                                                                                   \
+		return PROS_ERR_F;                                                                                      \
+	}
+
 #define validate_motor(device, port)                                                                      \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port); \
 	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                       \
@@ -366,7 +373,7 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_f(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, E_ADI_LEGACY_GYRO);
+	validate_type_f(device, adi_port, E_ADI_LEGACY_GYRO);
 
 	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
