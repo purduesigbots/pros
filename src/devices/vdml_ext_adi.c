@@ -66,7 +66,7 @@ typedef union adi_data {
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port); \
 	if (config != type) {                                                                                   \
 		errno = EADDRINUSE;                                                                                   \
-		return PROS_ERR;                                                                                      \
+		 return PROS_ERR;                                                                                      \
 	}
 
 #define validate_motor(device, port)                                                                      \
@@ -419,6 +419,7 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
 
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
