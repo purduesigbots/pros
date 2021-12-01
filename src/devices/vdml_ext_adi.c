@@ -415,7 +415,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port,
                                                    adi_potentiometer_type_e_t potentiometer_type) {
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
@@ -424,26 +424,26 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 }
 
 double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
-	int32_t rtn;
-	uint8_t smart_port, adi_port;
-	get_ports(potentiometer, smart_port, adi_port);
-	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, E_ADI_ANALOG_IN);
+ 	double rtn;
+ 	uint8_t smart_port, adi_port;
+ 	get_ports(potentiometer, smart_port, adi_port);
+ 	transform_adi_port(adi_port);
+ 	claim_port_f(smart_port, E_DEVICE_ADI);
+ 	validate_type(device, adi_port, E_ADI_ANALOG_IN);
 
-	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
+ 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[potentiometer];
 
-	switch (adi_data->potentiometer_data.potentiometer_type) {
-		case E_ADI_POT_EDR:
-			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
-			break;
-		case E_ADI_POT_V2:
-			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
-			break;
-		default:
-			errno = ENXIO;
-			rtn = PROS_ERR;
-	}
+ 	switch (adi_data->potentiometer_data.potentiometer_type) {
+ 		case E_ADI_POT_EDR:
+ 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
+ 			break;
+ 		case E_ADI_POT_V2:
+ 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 333 / 4095.0;
+ 			break;
+ 		default:
+ 			errno = ENXIO;
+ 			rtn = PROS_ERR;
+ 	}
 
-	return_port(smart_port - 1, rtn);
+ 	return_port(smart_port, rtn);
 }
