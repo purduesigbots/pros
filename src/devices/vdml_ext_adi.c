@@ -366,7 +366,7 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_f(smart_port, E_DEVICE_ADI);
-	claim_port(port, device_type, PROS_ERR_F)
+	validate_type(device, adi_port, E_ADI_LEGACY_GYRO);
 
 	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
