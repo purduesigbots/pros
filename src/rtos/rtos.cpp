@@ -37,7 +37,7 @@ Task& Task::operator=(const task_t in) {
 }
 
 Task Task::current() {
-	return {task_get_current()};
+	return Task{task_get_current()};
 }
 
 void Task::remove() {
