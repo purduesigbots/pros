@@ -376,19 +376,20 @@ typedef enum v5_device_e {
 	E_DEVICE_VISION = 11,
 	E_DEVICE_ADI = 12,
 	E_DEVICE_OPTICAL = 16,
+	E_DEVICE_GPS = 20,
 	E_DEVICE_GENERIC = 129,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
 /*
- * Registers a device in the given port
+ * Registers a device in the given zero-indexed port
  *
  * Registers a device of the given type in the given port into the registry, if
  * that type of device is detected to be plugged in to that port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21), or a
+ * ENXIO - The given value is not within the range of V5 ports (0-20), or a
  * a different device than specified is plugged in.
  * EADDRINUSE - The port is already registered to another device.
  *
@@ -402,13 +403,13 @@ typedef enum v5_device_e {
 int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
 /*
- * Deregisters a devices from the given port
+ * Deregisters a devices from the given zero-indexed port
  *
  * Removes the device registed in the given port, if there is one.
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
  *
  * \param port
  *        The port number to deregister
@@ -416,6 +417,36 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  * \return 1 upon success, PROS_ERR upon failure
  */
 int registry_unbind_port(uint8_t port);
+
+/*
+ * Returns the type of device registered to the zero-indexed port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ *
+ * \return The type of device that is registered into the port (NOT what is
+ * plugged in)
+ */
+v5_device_e_t registry_get_bound_type(uint8_t port);
+
+/*
+ * Returns the type of the device plugged into the zero-indexed port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (0-20).
+ *
+ * \param port
+ *        The V5 port number from 0-20
+ *
+ * \return The type of device that is plugged into the port (NOT what is
+ * registered)
+ */
+v5_device_e_t registry_get_plugged_type(uint8_t port);
 
 /******************************************************************************/
 /**                               Filesystem                                 **/

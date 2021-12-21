@@ -17,15 +17,33 @@
 #include <errno.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "rtos/task.h"
 #include "v5_api.h"
 
+#define SEC_TO_MSEC 1000
+
 void _exit(int status) {
-	// TODO: print status code, maybe backtrace as well
-	while (1) {
-		vexBackgroundProcessing();
+	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
+	vexSystemExitRequest();
+}
+
+int usleep( useconds_t period ) {
+	// Compromise: If the delay is in microsecond range, it will block threads.
+	// if not, it will not block threads but not be accurate to the microsecond range.
+	if(period >= 1000) {
+		task_delay (period / SEC_TO_MSEC);
+		return 0;
 	}
+	uint64_t endTime = vexSystemHighResTimeGet() + period;
+	while(vexSystemHighResTimeGet() < endTime) asm("YIELD");
+	return 0;
+}
+
+unsigned sleep( unsigned period ) {
+	task_delay(period * SEC_TO_MSEC);
+	return 1;
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for

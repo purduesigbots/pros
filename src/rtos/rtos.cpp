@@ -103,6 +103,10 @@ using namespace pros::c;
   Clock::time_point Clock::now() {
     return Clock::time_point{Clock::duration{millis()}};
   }
+  
+  bool Mutex::take(void) {
+    return mutex_take(mutex.get(), TIMEOUT_MAX);
+  }
 
   bool Mutex::take(std::uint32_t timeout) {
     return mutex_take(mutex.get(), timeout);
