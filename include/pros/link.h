@@ -41,6 +41,9 @@ namespace c {
  *
  * \param port 
  *      The port of the radio for the intended link.
+ * \param link_id
+ *      Unique link ID in the form of a string, needs to be different from other links in
+ *      the area.
  * \param type
  *      Indicates whether the radio link on the brain is a transmitter or reciever,
  *      with the transmitter having double the transmitting bandwidth as the recieving
@@ -48,7 +51,7 @@ namespace c {
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
  */
-uint32_t link_init(uint8_t port, link_type_e_t type);
+uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 
 /**
  * Checks if a radio link on a port is active or not.
@@ -60,6 +63,12 @@ uint32_t link_init(uint8_t port, link_type_e_t type);
  */
 bool link_connected(uint8_t port);
 
+/**
+ * Get the number of active links on the brain 
+ *
+ * \return Number of active links connected to the V5 brain.
+ */
+uint8_t link_get_count(void);
 
 #ifdef __cplusplus
 }

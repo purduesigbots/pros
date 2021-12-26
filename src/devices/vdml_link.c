@@ -20,12 +20,13 @@
  #include "kapi.h"
  #include "pros/apix.h"
  #include "vdml.h"
+ #include <string.h>
 
 static uint8_t link_count = 0;
 
-uint32_t link_init(uint8_t port, link_type_e_t type) {
-    claim_port(port - 1, E_DEVICE_RADIO, false);
-    vexGenericRadioConnection(port - 1, (char)('A' + link_count), type, true);
+uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
+    claim_port_i(port - 1, E_DEVICE_RADIO);
+    vexGenericRadioConnection(port - 1, link_id, type, true);
     link_count++;
     return_port(port - 1, 1);
 }
@@ -34,4 +35,8 @@ bool link_connected(uint8_t port) {
     claim_port(port - 1, E_DEVICE_RADIO, false);
     bool rtv = vexGenericRadioLinkStatus(device);
     return_port(port - 1, rtv);
+}
+
+uint32_t link_get_count(void) {
+    return link_count;
 }
