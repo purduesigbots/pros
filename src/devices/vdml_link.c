@@ -40,3 +40,12 @@ bool link_connected(uint8_t port) {
 uint32_t link_get_count(void) {
     return link_count;
 }
+
+uint32_t link_transmit_raw(uint8_t port, void* data) {
+    claim_port_i(port - 1, E_DEVICE_RADIO);
+    uint32_t data_size = sizeof(data);
+    if(!vexGenericRadioLinkStatus(device) || data_size > vexGenericRadioWriteFree(port - 1))
+        return_port(port - 1, PROS_ERR);
+    vexGenericRadioTransmit(port - 1, data, data_size);
+    return_port(port - 1, 1);
+}

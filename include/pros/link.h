@@ -70,6 +70,18 @@ bool link_connected(uint8_t port);
  */
 uint8_t link_get_count(void);
 
+/**
+ * Send raw serial data through vexlink, without any COBS protocol
+ *
+ * \param port 
+ *      The port of the radio for the intended link.
+ * \param data
+ *      Buffer with data to send
+
+ * \return PROS_ERR if sending the data failed (if no link at port or the data is larger than ), 1 if it succeeded.
+ */
+uint32_t link_transmit_raw(uint8_t port, void* data);
+
 #ifdef __cplusplus
 }
 }
