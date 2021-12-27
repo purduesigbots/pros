@@ -44,8 +44,6 @@ namespace c {
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as a radio.
  * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
- * EBUSY - The transmitter buffer is still busy with a previous transmission, and there is no 
- * room in the FIFO buffer (queue) to transmit the data.
  *
  * \param port 
  *      The port of the radio for the intended link.
@@ -63,7 +61,13 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 
 /**
  * Checks if a radio link on a port is active or not.
- *
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * 
  * \param port 
  *      The port of the radio for the intended link.
  *
@@ -80,7 +84,15 @@ uint8_t link_get_count(void);
 
 /**
  * Send raw serial data through vexlink, without any COBS protocol
- *
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * EBUSY - The transmitter buffer is still busy with a previous transmission, and there is no 
+ * room in the FIFO buffer (queue) to transmit the data.
+ * 
  * \param port 
  *      The port of the radio for the intended link.
  * \param data
