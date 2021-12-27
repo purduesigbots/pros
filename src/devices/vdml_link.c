@@ -16,7 +16,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
- #include "link.h"
+ #include "pros/link.h"
  #include "kapi.h"
  #include "pros/apix.h"
  #include "vdml.h"
