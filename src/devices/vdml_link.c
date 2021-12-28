@@ -19,7 +19,7 @@
  #include "pros/link.h"
  #include "kapi.h"
  #include "pros/apix.h"
- #include "vdml.h"
+ #include "vdml/vdml.h"
  #include <string.h>
 
 static uint8_t link_count = 0;
