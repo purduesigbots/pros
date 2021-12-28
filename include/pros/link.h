@@ -57,7 +57,7 @@ namespace c {
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
  */
-uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
+uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type);
 
 /**
  * Checks if a radio link on a port is active or not.
@@ -76,6 +76,23 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 bool link_connected(uint8_t port);
 
 /**
+ * Returns the bytes of data available to be read 
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ *
+ * \return PROS_ERR if port is not a link/radio, else the bytes available to be
+ * read by the user.
+ */
+uint32_t link_readable_size(uint8_t port);
+
+/**
  * Get the number of active links on the brain 
  *
  * \return Number of active links connected to the V5 brain.
@@ -92,6 +109,7 @@ uint8_t link_get_count(void);
  * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
  * EBUSY - The transmitter buffer is still busy with a previous transmission, and there is no 
  * room in the FIFO buffer (queue) to transmit the data.
+ * EINVAL - The data given is NULL
  * 
  * \param port 
  *      The port of the radio for the intended link.
@@ -102,6 +120,29 @@ uint8_t link_get_count(void);
  * and 1 if it succeeded.
  */
 uint32_t link_transmit_raw(uint8_t port, void* data);
+
+/**
+ * Send raw serial data through vexlink, without any COBS protocol
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * EINVAL - The destination given is NULL, or the size given is larger than the FIFO buffer 
+ * or destination buffer. 
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ * \param dest
+ *      Destination buffer to read data to
+ * \param size
+ *      Bytes of data to be read to the destination buffer
+ * 
+ * \return PROS_ERR if port is not a link, 0 if the link is busy, 
+ * and 1 if it succeeded.
+ */
+uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size);
 
 #ifdef __cplusplus
 }
