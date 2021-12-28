@@ -27,22 +27,22 @@
 
 static uint8_t link_count = 0;
 
-uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
+uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type) {
     claim_port_i(port - 1, E_DEVICE_RADIO);
-    vexDeviceGenericRadioConnection(device, link_id, type, true);
+    vexDeviceGenericRadioConnection(device->device_info, link_id, type, true);
     link_count++;
     return_port(port - 1, 1);
 }
 
 bool link_connected(uint8_t port) {
     claim_port(port - 1, E_DEVICE_RADIO, false);
-    bool rtv = vexDeviceGenericRadioLinkStatus(device);
+    bool rtv = vexDeviceGenericRadioLinkStatus(device->device_info);
     return_port(port - 1, rtv);
 }
 
 uint32_t link_readable_size(uint8_t port) {
     claim_port(port - 1, E_DEVICE_RADIO, false);
-    bool rtv = vexDeviceGenericRadioReceiveAvail(device);
+    bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info);
     return_port(port - 1, rtv);
 }
 
@@ -53,11 +53,11 @@ uint8_t link_get_count(void) {
 uint32_t link_transmit_raw(uint8_t port, void* data) {
     claim_port_i(port - 1, E_DEVICE_RADIO);
     uint32_t data_size = sizeof((uint8_t*)data);
-    if(!vexDeviceGenericRadioLinkStatus(device)) {
+    if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
-    if(data_size > vexDeviceGenericRadioWriteFree(device)) {
+    if(data_size > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
         return_port(port - 1, 0);
     }
@@ -65,7 +65,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
-    vexDeviceGenericRadioTransmit(device, data, data_size);
+    vexDeviceGenericRadioTransmit(device->device_info, data, data_size);
     return_port(port - 1, 1);
 }
 
@@ -75,7 +75,7 @@ uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size) {
         errno = EINVAL;
         return_port(port - 1, 0);
     }
-    if(!vexDeviceGenericRadioLinkStatus(device)) {
+    if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
@@ -83,7 +83,7 @@ uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
-    uint32_t rtv = vexDeviceGenericRadioReceive(device, dest, size);
+    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, dest, size);
     return_port(port - 1, rtv);
 }
 
