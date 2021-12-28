@@ -43,15 +43,19 @@ uint32_t link_get_count(void) {
 
 uint32_t link_transmit_raw(uint8_t port, void* data) {
     claim_port_i(port - 1, E_DEVICE_RADIO);
-    uint32_t data_size = sizeof(data);
+    uint32_t data_size = sizeof((uint8_t*)data);
     if(!vexGenericRadioLinkStatus(device)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
     if(data_size > vexGenericRadioWriteFree(port - 1)) {
         errno = EBUSY;
-        return_port(port - 1, PROS_ERR);
+        return_port(port - 1, 0);
     }
     vexGenericRadioTransmit(port - 1, data, data_size);
     return_port(port - 1, 1);
 }
+
+
+
+
