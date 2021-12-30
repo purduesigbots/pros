@@ -53,6 +53,7 @@
 #include "pros/ext_adi.h"
 #include "pros/gps.h"
 #include "pros/imu.h"
+#include "pros/link.h"
 #include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
