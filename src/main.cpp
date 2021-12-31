@@ -73,20 +73,20 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+#define LINK_PORT 5
+
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-
+	pros::c::link_init(LINK_PORT, "cock_and_bot_torture", pros::E_LINK_TRANSMITTER);
+	// pros::c::link_init(LINK_PORT, "cock_and_bot_torture", pros::E_LINK_RECIEVER);
+	char buf[100];
 	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-		left_mtr = left;
-		right_mtr = right;
-		pros::delay(20);
+		if(pros::c::link_readable_size(LINK_PORT) > 0) {
+			pros::c::link_read_raw(LINK_PORT, buf, pros::c::link_readable_size(LINK_PORT));
+			pros::lcd::print(0, "Recieved Message: %s", buf);
+		}
+		pros::c::link_transmit_raw(LINK_PORT, (void*)" Test_MSG1 ");
+		pros::c::link_transmit_raw(LINK_PORT, (void*)" Test_MSG2 ");
+		pros::delay(500);
 	}
 }
