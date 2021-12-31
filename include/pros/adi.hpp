@@ -109,7 +109,7 @@ class ADIPort {
 	std::uint8_t _adi_port;
 };
 
-class ADIAnalogIn : private ADIPort {
+class ADIAnalogIn : protected ADIPort {
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Input.
@@ -222,16 +222,6 @@ class ADIAnalogIn : private ADIPort {
 	 * nearly 5 V
 	 */
 	using ADIPort::get_value;
-
-	protected:
-
-	std::uint8_t get_adi_port() const;
-
-	std::uint8_t get_smart_port() const;
-
-	void set_adi_port(std::uint8_t adi_port);
-
-	void set_smart_port(std::uint8_t smart_port);
 };
 
 // using ADIPotentiometer = ADIAnalogIn;
@@ -669,7 +659,7 @@ class ADIGyro : private ADIPort {
 	std::int32_t reset() const;
 };
 
-class ADIPotentiometer : private ADIAnalogIn {
+class ADIPotentiometer : public ADIAnalogIn {
 	public:
 	/**
 	 * Configures an ADI port to act as a Potentiometer.
