@@ -41,7 +41,7 @@ bool link_connected(uint8_t port) {
 }
 
 uint32_t link_readable_size(uint8_t port) {
-    claim_port(port - 1, E_DEVICE_RADIO, false);
+    claim_port_i(port - 1, E_DEVICE_RADIO);
     bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info);
     return_port(port - 1, rtv);
 }
