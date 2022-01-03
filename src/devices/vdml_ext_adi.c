@@ -443,8 +443,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			break;
 		default:
 			errno = ENXIO;
-			rtn = PROS_ERR;
+			rtn = PROS_ERR_F;
 	}
-
 	return_port(smart_port, rtn);
 }
