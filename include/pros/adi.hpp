@@ -696,7 +696,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * Gets the current potentiometer angle in tenths of a degree.
 	 *
 	 * The original potentiometer rotates 250 degrees thus returning an angle between 0-250 degrees.
-	 * Potentiometer V2 rotates 333 degrees thus returning an angle between 0-333 degrees.
+	 * Potentiometer V2 rotates 330 degrees thus returning an angle between 0-330 degrees.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
