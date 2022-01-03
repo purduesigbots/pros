@@ -116,3 +116,15 @@ int32_t adi_gyro_reset(adi_gyro_t gyro) {
 int32_t adi_gyro_shutdown(adi_gyro_t gyro) {
 	return ext_adi_gyro_shutdown((ext_adi_gyro_t)gyro);
 }
+
+adi_potentiometer_t adi_potentiometer_init(uint8_t port) {
+	return (adi_potentiometer_t)ext_adi_potentiometer_init(INTERNAL_ADI_PORT, port, E_ADI_POT_EDR);
+}
+
+adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type) {
+	return (adi_potentiometer_t)ext_adi_potentiometer_init(INTERNAL_ADI_PORT, port, potentiometer_type);
+}
+
+double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer) {
+	return ext_adi_potentiometer_get_angle((ext_adi_potentiometer_t)potentiometer);
+}
