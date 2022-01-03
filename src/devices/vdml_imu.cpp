@@ -3,14 +3,13 @@
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "pros/imu.h"
 #include "pros/imu.hpp"
 
 namespace pros {
@@ -65,4 +64,57 @@ pros::c::imu_status_e_t Imu::get_status() const {
 bool Imu::is_calibrating() const {
 	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
+
+std::int32_t Imu::tare_heading() const {
+	return pros::c::imu_tare_heading(_port);
+}
+
+std::int32_t Imu::tare_rotation() const {
+	return pros::c::imu_tare_rotation(_port);
+}
+
+std::int32_t Imu::tare_pitch() const {
+	return pros::c::imu_tare_pitch(_port);
+}
+
+std::int32_t Imu::tare_yaw() const {
+	return pros::c::imu_tare_yaw(_port);
+}
+
+std::int32_t Imu::tare_roll() const {
+	return pros::c::imu_tare_roll(_port);
+}
+
+std::int32_t Imu::tare_euler() const {
+	return pros::c::imu_tare_euler(_port);
+}
+
+std::int32_t Imu::set_heading(double target) const {
+	return pros::c::imu_set_heading(_port, target);
+}
+
+std::int32_t Imu::set_rotation(double target) const {
+	return pros::c::imu_set_rotation(_port, target);
+}
+
+std::int32_t Imu::set_pitch(double target) const {
+	return pros::c::imu_set_pitch(_port, target);
+}
+
+std::int32_t Imu::set_yaw(double target) const {
+	return pros::c::imu_set_yaw(_port, target);
+}
+
+std::int32_t Imu::set_roll(double target) const {
+	return pros::c::imu_set_roll(_port, target);
+}
+
+std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
+	return pros::c::imu_set_euler(_port, target);
+}
+
+std::int32_t Imu::tare() const {
+	return pros::c::imu_tare(_port);
+}
+
 }  // namespace pros

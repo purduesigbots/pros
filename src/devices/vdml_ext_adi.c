@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 3-Wire Expander.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -41,6 +41,9 @@ typedef union adi_data {
 	struct {
 		bool reversed;
 	} encoder_data;
+	struct {
+		adi_potentiometer_type_e_t potentiometer_type;
+	} potentiometer_data;
 	struct __attribute__((packed)) {
 		double multiplier;
 		double tare_value;
@@ -508,4 +511,40 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 
 	done:
 	return_port(smart_port, 1);
+}
+
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port,
+                                                   adi_potentiometer_type_e_t potentiometer_type) {
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
+
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+}
+
+double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
+	double rtn;
+	uint8_t smart_port, adi_port;
+	get_ports(potentiometer, smart_port, adi_port);
+	transform_adi_port(adi_port);
+	claim_port_f(smart_port, E_DEVICE_ADI);
+	validate_type(device, adi_port, E_ADI_ANALOG_IN);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+
+	switch (adi_data->potentiometer_data.potentiometer_type) {
+		case E_ADI_POT_EDR:
+			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
+			break;
+		case E_ADI_POT_V2:
+			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 330 / 4095.0;
+			break;
+		default:
+			errno = ENXIO;
+			rtn = PROS_ERR_F;
+	}
+	return_port(smart_port, rtn);
 }
