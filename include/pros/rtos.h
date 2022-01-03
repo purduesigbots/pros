@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -124,6 +124,13 @@ namespace c {
  * \return The number of milliseconds since PROS initialized
  */
 uint32_t millis(void);
+
+/**
+ * Gets the number of microseconds since PROS initialized,
+ * 
+ * \return The number of microseconds since PROS initialized
+ */
+uint64_t micros(void);
 
 /**
  * Creates a new task and add it to the list of tasks that are ready to run.

@@ -6,7 +6,7 @@
  * This file defines a linked list implementation that operates on the FreeRTOS
  * heap, and is able to generically store function pointers and data
  *
- * Copyright (c) 2017-2020, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -19,7 +19,7 @@ typedef void (*generic_fn_t)(void);
 
 typedef struct ll_node_s {
 	union {
-		generic_fn_t func;
+		generic_fn_t func; // Note: a list should not contain both data/funcs
 		void* data;
 	} payload;
 	struct ll_node_s* next;

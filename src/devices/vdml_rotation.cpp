@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Rotation sensor.
  *
- * Copyright (c) 2017-2019, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -15,6 +15,10 @@
 namespace pros {
 std::int32_t Rotation::reset() {
 	return pros::c::rotation_reset(_port);
+}
+
+std::int32_t Rotation::set_data_rate(std::uint32_t rate) const {
+	return pros::c::rotation_set_data_rate(_port, rate);
 }
 
 std::int32_t Rotation::set_position(std::uint32_t position) {

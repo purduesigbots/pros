@@ -5,7 +5,7 @@ jobs:
     toolchain_update: 8-2019-q3
     toolchain: https://developer.arm.com/-/media/Files/downloads/gnu-rm/$(toolchain_update_short)/RC1.1/gcc-arm-none-eabi-$(toolchain_update)-update-linux.tar.bz2
   pool:
-    vmImage: 'ubuntu-16.04'
+    vmImage: 'ubuntu-latest'
   steps:
   - task: InstallSSHKey@0
     inputs:
@@ -22,10 +22,12 @@ jobs:
     inputs:
       addToPath: true
       versionSpec: '3.6'
-  - task: PipAuthenticate@0
+  - task: PipAuthenticate@1
     inputs:
       artifactFeeds: 'pros-cli'
-  - bash: pip install pros-cli-v5
+      # use official PyPi registry first and fall back to internal feed as needed
+      onlyAddExtraIndex: true
+  - bash: pip install pros-cli
     displayName: Install CLI
   - bash: |
       make template
