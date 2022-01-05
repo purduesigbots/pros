@@ -36,112 +36,166 @@ typedef struct touch_event_position_data_s {
 	int16_t y;
 } touch_event_position_data_s_t;
 
-void screen_set_pen(uint32_t color){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+uint32_t screen_set_pen(uint32_t color){
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayForegroundColor(color);
-	mutex_give(_screen_mutex);
+	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_give(_screen_mutex); // 0 if task scheduler isn't running
 }
 
-void screen_set_eraser(uint32_t color){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+uint32_t screen_set_eraser(uint32_t color){
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayBackgroundColor(color);
-	mutex_give(_screen_mutex);
+	return xTaskGetSchedulerState() != taskSCHEDULER_RUNNING || mutex_give(_screen_mutex);
 }
 
 uint32_t screen_get_pen(void){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
-	uint32_t color = vexDisplayForegroundColorGet();
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
+	uint32_t color = vexDisplayForegroundColorGet(); // What to return when an int's already being returned?
 	mutex_give(_screen_mutex);
 	return color;
 }
 
 uint32_t screen_get_eraser(void){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	uint32_t color = vexDisplayBackgroundColorGet();
 	mutex_give(_screen_mutex);
 	return color;
 }
 
 void screen_erase(void){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayErase();
 	mutex_give(_screen_mutex);
 }
 
 void screen_scroll(int16_t start_line, int16_t lines){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayScroll(start_line, lines);
 	mutex_give(_screen_mutex);
 }
 
 void screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayScrollRect(x0, y0, x1, y1, lines);
 	mutex_give(_screen_mutex);
 }
 
 void screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* buf, int32_t stride){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayCopyRect(x0, y0, x1, y1, buf, stride);
 	mutex_give(_screen_mutex);
 }
 
 void screen_draw_pixel(int16_t x, int16_t y){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayPixelSet(x, y);
 	mutex_give(_screen_mutex);
 }
 
 void screen_erase_pixel(int16_t x, int16_t y){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayPixelClear(x, y);
 	mutex_give(_screen_mutex);
 }
 
 void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayLineDraw(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
 }
 
 void screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayLineClear(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
 }
 
 void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayRectDraw(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
 }
 
 void screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayRectClear(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
 }
 
 void screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayRectFill(x0, y0, x1, y1);
 	mutex_give(_screen_mutex);
 }
 
 void screen_draw_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayCircleDraw(x, y, radius);
 	mutex_give(_screen_mutex);
 }
 
 void screen_erase_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayCircleClear(x, y, radius);
 	mutex_give(_screen_mutex);
 }
 
 void screen_fill_circle(int16_t x, int16_t y, int16_t radius){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexDisplayCircleFill(x, y, radius);
 	mutex_give(_screen_mutex);
 }
@@ -167,7 +221,10 @@ void screen_print_at(text_format_e_t txt_fmt, int16_t x, int16_t y, const char* 
 }
 
 void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* text, va_list args){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	char* out;
 	vasprintf(&out, text, args);
 	va_list empty;
@@ -203,7 +260,10 @@ void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* tex
 }
 
 void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, va_list args){
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	char* out;
 	vasprintf(&out, text, args);
 	va_list empty;
@@ -242,7 +302,10 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 
 screen_touch_status_s_t screen_touch_status(void){
 	V5_TouchStatus v5_touch_status;
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	vexTouchDataGet(&v5_touch_status);
 	screen_touch_status_s_t rtv;
 	rtv.touch_status = (last_touch_e_t)v5_touch_status.lastEvent;
@@ -265,7 +328,10 @@ static void _set_up_touch_callback_storage() {
 }
 
 void screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type) {
-	mutex_take(_screen_mutex, TIMEOUT_MAX);
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
 	switch (event_type) {
 	case E_TOUCH_RELEASED:
 		linked_list_prepend_func(_touch_event_release_handler_list, (generic_fn_t)cb);
@@ -296,7 +362,10 @@ static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) 
 void _touch_handle_task(void* ignore) {
 	V5_TouchStatus last, current;
 	while (true) {
-		mutex_take(_screen_mutex, TIMEOUT_MAX);
+		if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+			errno = EACCES;
+			return PROS_ERR;
+		}
         vexTouchDataGet(&current);
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };

@@ -96,22 +96,38 @@ namespace c {
 
 /**
  * Set the pen color for subsequent graphics operations
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param color	The pen color to set (it is recommended to use values
  * 		 from the enum defined in colors.h)
+ * 
+ * Returns 1 if the operation was successful or 0 if the task scheduler isn't running
  */
-void screen_set_pen(uint32_t color);
+uint32_t screen_set_pen(uint32_t color);
 
 /**
  * Set the eraser color for erasing and the current background.
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ * 
  * \param color	The background color to set (it is recommended to use values
  * 					from the enum defined in colors.h)
+ * 
+ * Returns 1 if the operation was successful or 0 if the task scheduler isn't running
  */
-void screen_set_eraser(uint32_t color);
+uint32_t screen_set_eraser(uint32_t color);
 
 /**
  *  Get the current pen color.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
  * \return The current pen color in the form of a value from the enum defined in colors.h.
  */
@@ -120,17 +136,29 @@ uint32_t screen_get_pen(void);
 /**
  * Get the current eraser color.
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \return The current eraser color in the form of a value from the enum defined in colors.h.
  */
 uint32_t screen_get_eraser(void);
 
 /**
  * Clear display with eraser color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  */
 void screen_erase(void);
 
 /**
  * Scroll lines on the display upwards.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param start_line    The line from which scrolling will start
  * \param lines			The number of lines to scroll up
@@ -144,6 +172,10 @@ void screen_scroll(int16_t start_line, int16_t lines);
  * specify a rectangular region within which to scroll lines instead of a start
  * line.
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x0, y0	The (x,y) coordinates of the first corner of the
  * 						rectangular region
  * \param x1, y1	The (x,y) coordinates of the second corner of the
@@ -155,6 +187,10 @@ void screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t 
 /**
  * Copy a screen region (designated by a rectangle) from an off-screen buffer 
  * to the screen
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x0, y0 	The (x,y) coordinates of the first corner of the
  * 						rectangular region of the screen
@@ -169,6 +205,10 @@ void screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* 
 /**
  * Draw a single pixel on the screen using the current pen color
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x, y 	The (x,y) coordinates of the pixel
  */
 void screen_draw_pixel(int16_t x, int16_t y);
@@ -176,12 +216,20 @@ void screen_draw_pixel(int16_t x, int16_t y);
 /**
  * Erase a pixel from the screen (Sets the location)
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x, y 	The (x,y) coordinates of the erased
  */
 void screen_erase_pixel(int16_t x, int16_t y);
 
 /**
  * Draw a line on the screen using the current pen color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
@@ -191,6 +239,10 @@ void screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 /**
  * Erase a line on the screen using the current eraser color
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
  */
@@ -199,6 +251,10 @@ void screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 /**
  * Draw a rectangle on the screen using the current pen color
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  */
@@ -206,6 +262,10 @@ void screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
  * Erase a rectangle on the screen using the current eraser color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
@@ -216,6 +276,10 @@ void screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * Fill a rectangular region of the screen using the current pen
  * 		  color
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  */
@@ -223,6 +287,10 @@ void screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
 /**
  * Draw a circle on the screen using the current pen color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
@@ -232,6 +300,10 @@ void screen_draw_circle(int16_t x, int16_t y, int16_t radius);
 /**
  * Erase a circle on the screen using the current eraser color
  *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
+ *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
  */
@@ -240,6 +312,10 @@ void screen_erase_circle(int16_t x, int16_t y, int16_t radius);
 /**
  * Fill a circular region of the screen using the current pen
  * 		  color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
@@ -287,6 +363,10 @@ void screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, 
  * 
  * Will default to a medium sized font by default if invalid txt_fmt is given.
  * Exposed mostly for writing libraries and custom functions.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
  * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
  * \param line The line number on which to print
@@ -305,6 +385,10 @@ void screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* tex
  * 
  * Text formats medium_center and large_center will default to medium and large respectively.
  * Exposed mostly for writing libraries and custom functions.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
  * \param txt_fmt Text format enum that determines if the text is small, medium, or large.
  * \param x, y The (x,y) coordinates of the top left corner of the string
@@ -322,6 +406,10 @@ void screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y
 
 /**
  * Gets the touch status of the last touch of the screen.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
  * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
  * This will be released by default if no action was taken. 
@@ -330,6 +418,10 @@ screen_touch_status_s_t screen_touch_status(void);
 
 /**
  * Assigns a callback function to be called when a certain touch event happens.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
  * \param cb Function pointer to callback when event type happens
  * \param event_type Touch event that will trigger the callback.
