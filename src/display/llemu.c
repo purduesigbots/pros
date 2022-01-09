@@ -177,7 +177,7 @@ bool _lcd_set_text(lv_obj_t* lcd_dummy, int16_t line, const char* text) {
 }
 
 void _lcd_clear(lv_obj_t* lcd_dummy) {
-	for (std::size_t i = 0; i < LLEMU_LINES; i++)
+	for (size_t i = 0; i < LLEMU_LINES; i++)
     	_lcd_clear_line(lcd_dummy, i);
 }
 
