@@ -176,11 +176,6 @@ bool _lcd_set_text(lv_obj_t* lcd_dummy, int16_t line, const char* text) {
 	return _lcd_print(lcd_dummy, line, "%s", text);
 }
 
-void _lcd_clear(lv_obj_t* lcd_dummy) {
-	for (size_t i = 0; i < LLEMU_LINES; i++)
-    	_lcd_clear_line(lcd_dummy, i);
-}
-
 bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
 	if (line < 0 || line > 7) {
 		errno = EINVAL;
@@ -189,6 +184,11 @@ bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
 	lv_label_set_text(lcd->lcd_text[line], "");
 	return true;
+}
+
+void _lcd_clear(lv_obj_t* lcd_dummy) {
+	for (size_t i = 0; i < LLEMU_LINES; i++)
+    	_lcd_clear_line(lcd_dummy, i);
 }
 
 void _lcd_set_left_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
