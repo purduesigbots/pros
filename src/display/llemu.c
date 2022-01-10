@@ -151,7 +151,7 @@ static lv_obj_t* _create_lcd(void) {
 }
 
 bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list args) {
-	if (line < 0 || line > 7) {
+	if (line < 0 || line > (LLEMU_LINES - 1)) {
 		errno = EINVAL;
 		return false;
 	}
