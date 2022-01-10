@@ -23,8 +23,8 @@
 #include "kapi.h"
 #include "pros/llemu.h"
 
-#define LCD_W 		480 
-#define LCD_H 		240
+#define LCD_WIDTH	480 
+#define LCD_HEIGHT 	240
 #define LLEMU_LINES 8
 
 static lv_style_t frame_style;
@@ -85,10 +85,10 @@ static lv_obj_t* _create_lcd(void) {
 	button_pressed_style.body.grad_color = LV_COLOR_MAKE(0x80, 0x80, 0x80);
 
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act(), NULL);
-	lv_obj_set_size(lcd_dummy, LCD_W, LCD_H);
+	lv_obj_set_size(lcd_dummy, LCD_WIDTH, LCD_HEIGHT);
 
 	lv_obj_t* frame = lv_cont_create(lcd_dummy, NULL);
-	lv_obj_set_size(frame, LCD_W, LCD_H);
+	lv_obj_set_size(frame, LCD_WIDTH, LCD_HEIGHT);
 	lv_obj_set_style(frame, &frame_style);
 
 	lv_obj_t* screen = lv_cont_create(frame, NULL);
@@ -177,7 +177,7 @@ bool _lcd_set_text(lv_obj_t* lcd_dummy, int16_t line, const char* text) {
 }
 
 bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
-	if (line < 0 || line > 7) {
+	if (line < 0 || line > (LLEMU_LINES - 1)) {
 		errno = EINVAL;
 		return false;
 	}
@@ -187,8 +187,9 @@ bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
 }
 
 void _lcd_clear(lv_obj_t* lcd_dummy) {
-	for (size_t i = 0; i < LLEMU_LINES; i++)
+	for (size_t i = 0; i < LLEMU_LINES; i++) {
     	_lcd_clear_line(lcd_dummy, i);
+	}
 }
 
 void _lcd_set_left_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
