@@ -188,7 +188,7 @@ bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
 
 void _lcd_clear(lv_obj_t* lcd_dummy) {
 	for (size_t i = 0; i < LLEMU_LINES; i++) {
-    	_lcd_clear_line(lcd_dummy, i);
+		_lcd_clear_line(lcd_dummy, i);
 	}
 }
 
