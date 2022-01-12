@@ -117,4 +117,8 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
+std::uint8_t Imu::get_port(void) const {
+	return _port;
+}
+
 }  // namespace pros

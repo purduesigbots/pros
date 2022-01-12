@@ -71,4 +71,8 @@ pros::c::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
 }
 
+std::uint8_t Gps::get_port(void) const {
+	return _port;
+}
+
 }  // namespace pros

@@ -53,4 +53,7 @@ std::int32_t Rotation::get_reversed(void) {
     return pros::c::rotation_get_reversed(_port);
 }
 
+std::uint8_t Rotation::get_port(void) const {
+	return _port;
+}
 }  // namespace pros

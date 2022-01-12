@@ -182,6 +182,13 @@ class Rotation {
 	 * errno.
 	 */
 	virtual std::int32_t get_reversed();
+
+	/**
+	 * Gets the port number of the Rotation Sensor.
+	 *
+	 * \return The Rotation Sensor's port number.
+	 */
+	virtual std::uint8_t get_port(void) const;
 };
 }  // namespace pros
 

@@ -445,6 +445,13 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+	
+	/**
+	 * Gets the port number of the Inertial Sensor.
+	 *
+	 * \return The Inertial Sensor's port number.
+	 */
+	virtual std::uint8_t get_port(void) const;
 };
 
 using IMU = Imu;

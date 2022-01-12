@@ -276,6 +276,13 @@ class Gps {
 	 */
 	virtual pros::c::gps_accel_s_t get_accel() const;
 
+	/**
+	 * Gets the port number of the GPS Sensor.
+	 *
+	 * \return The GPS Sensor's port number.
+	 */
+	virtual std::uint8_t get_port(void) const;
+
 };  // Gps Class
 
 using GPS = Gps;
