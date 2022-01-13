@@ -29,6 +29,8 @@ class Rotation {
 	public:
 	Rotation(const std::uint8_t port) : _port(port){};
 
+	Rotation(const std::uint8_t port, const bool reverse_flag) : _port(port){};
+
 	/**
 	 * Reset the Rotation Sensor
 	 *
