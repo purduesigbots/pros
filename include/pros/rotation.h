@@ -180,7 +180,7 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  */
 int32_t rotation_reverse(uint8_t port);
 
-int32_t rotation_set_reversed_blocking(uint8_t port, bool value);
+int32_t rotation_init_with_reverse_flag(uint8_t port, bool reverse_flag);
 
 /**
  * Get the Rotation Sensor's reversed flag
