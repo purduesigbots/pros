@@ -84,7 +84,7 @@ int32_t rotation_init_with_reverse_flag(uint8_t port, bool reverse_flag) {
         task_delay(5);
         timeoutCount += 5;
         claim_port_i(port - 1, E_DEVICE_ROTATION);
-        if (timeoutCount >= ROTATION_INIT_TIMEOUT) {
+        if (timeoutCount >= ROTATION_RESET_TIMEOUT) {
             port_mutex_give(port - 1);
             errno = EAGAIN;
             return PROS_ERR;
