@@ -82,7 +82,7 @@ void opcontrol() {
 	// pros::c::link_init(LINK_PORT, "cock_and_bot_torture", pros::E_LINK_RECIEVER);
 	char buf[100];
 	while (true) {
-		printf("Readable Size\n");
+		printf("Readable Size: \n");
 		if(pros::c::link_readable_size(LINK_PORT) > 0) {
 			printf("Readable Size: %d\n", pros::c::link_readable_size(LINK_PORT));
 			pros::c::link_read_raw(LINK_PORT, buf, pros::c::link_readable_size(LINK_PORT));

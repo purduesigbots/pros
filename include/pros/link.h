@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -91,13 +91,6 @@ bool link_connected(uint8_t port);
  * read by the user.
  */
 uint32_t link_readable_size(uint8_t port);
-
-/**
- * Get the number of active links on the brain 
- *
- * \return Number of active links connected to the V5 brain.
- */
-uint8_t link_get_count(void);
 
 /**
  * Send raw serial data through vexlink, without any COBS protocol

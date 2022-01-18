@@ -124,7 +124,7 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 		registry_bind_port(port, actual_t);
 		registered_t = registry_get_bound_type(port);
 	}
-	if(expected_t == E_DEVICE_RADIO) {
+	if(expected_t == E_DEVICE_SERIAL) {
 		printf("Registered Type: %d\n", registered_t);
 		printf("Actual Type: %d\n", actual_t);
 	}

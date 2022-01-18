@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -25,24 +25,30 @@
 #define COBS_HEADER_SIZE    0   // Placeholder, Fill in later once protocol implemented
 #define FIFO_SIZE           512 // VEX Defined TX/RX Queue Size
 
-static uint8_t link_count = 0;
-
 // other info about vexlink discovered:
 // E_DEVICE_GENERIC is the "Generic Serial device, but also a vexlink device
 // this PR should rename it to E_DEVICE_CEREAL
 
 uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type) {
     // not used because it's a generic serial device 
-    // claim_port_i(port - 1, E_DEVICE_SERIAL);
+    // claim_port_i(port - 1, E_DEVICE_RADIO);
 	if (!VALIDATE_PORT_NO(port - 1)) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
+    // by default, the second radio in the lower port should be by default E_DEVICE_NONE
+    if(registry_get_plugged_type(port - 1) != E_DEVICE_NONE) {
+        return PROS_ERR;
+    }
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	if (!port_mutex_take(port - 1)) {
 		errno = EACCES;
 		return PROS_ERR;
 	}
+    v5_device_e_t registered_t = registry_get_bound_type(port - 1);
+	v5_device_e_t actual_t = registry_get_plugged_type(port - 1);
+    printf("Registered Type: %d\n", registered_t);
+	printf("Actual Type: %d\n", actual_t);
     vexDeviceGenericRadioConnection(device->device_info, link_id, type, true);
     link_count++;
     return_port(port - 1, 1);
@@ -52,18 +58,12 @@ bool link_connected(uint8_t port) {
     claim_port(port - 1, E_DEVICE_SERIAL, false);
     bool rtv = vexDeviceGenericRadioLinkStatus(device->device_info); // does this only return true if there is another side to this
     return_port(port - 1, rtv);
-    return rtv;
 }
 
 uint32_t link_readable_size(uint8_t port) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
     return_port(port - 1, rtv);
-    return rtv;
-}
-
-uint8_t link_get_count(void) {
-    return link_count;
 }
 
 uint32_t link_transmit_raw(uint8_t port, void* data) {
