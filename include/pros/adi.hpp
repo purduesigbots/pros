@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -44,7 +44,7 @@ class Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -59,7 +59,7 @@ class Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the ADI port number
@@ -113,7 +113,7 @@ class Port {
 	std::uint8_t _adi_port;
 };
 
-class AnalogIn : private Port {
+class AnalogIn : protected Port {
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Input.
@@ -121,7 +121,7 @@ class AnalogIn : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -134,7 +134,7 @@ class AnalogIn : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -225,7 +225,6 @@ class AnalogIn : private Port {
 };
 
 //Derived Classes from AnalogIn
-using Potentiometer = AnalogIn;
 using LineSensor = AnalogIn;
 using LightSensor = AnalogIn;
 using Accelerometer = AnalogIn;
@@ -238,7 +237,7 @@ class AnalogOut : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -251,7 +250,7 @@ class AnalogOut : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
@@ -287,7 +286,7 @@ class DigitalOut : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -302,7 +301,7 @@ class DigitalOut : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
@@ -338,7 +337,7 @@ class DigitalIn : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -351,7 +350,7 @@ class DigitalIn : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
@@ -402,7 +401,7 @@ class Motor : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
@@ -415,7 +414,7 @@ class Motor : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
@@ -471,7 +470,7 @@ class Encoder : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port_top
 	 *        The  "top" wire from the encoder sensor with the removable cover side up
@@ -488,7 +487,7 @@ class Encoder : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_tuple
 	 *        The tuple of the smart port number, the "top" wire from the encoder
@@ -537,7 +536,7 @@ class Ultrasonic : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_ping
 	 *        The port connected to the orange OUTPUT cable. This should be in port
@@ -554,12 +553,12 @@ class Ultrasonic : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_tuple
 	 *        The tuple of the smart port number, the port connected to the orange
-	 * 		  OUTPUT cable (1, 3, 5, 7 or 'A', 'C', 'E', 'G'), and the port 
-	 * 		  connected to the yellow INPUT cable (the next) highest port 
+	 * 		  OUTPUT cable (1, 3, 5, 7 or 'A', 'C', 'E', 'G'), and the port
+	 * 		  connected to the yellow INPUT cable (the next) highest port
 	 * 		  following port_ping).
 	 */
 	Ultrasonic(ext_adi_port_tuple_t port_tuple);
@@ -597,7 +596,7 @@ class Gyro : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param adi_port
 	 *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
@@ -621,7 +620,7 @@ class Gyro : private Port {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
- 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
@@ -660,6 +659,109 @@ class Gyro : private Port {
 	 */
 	std::int32_t reset() const;
 };
+
+
+class Potentiometer : public AnalogIn {
+	public:
+	/**
+	 * Configures an ADI port to act as a Potentiometer.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param potentiometer_type
+ 	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+	 */
+	Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+
+	/**
+	 * Configures an ADI port on an adi_expander to act as a Potentiometer.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param potentiometer_type
+ 	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+	 */
+	Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+
+	/**
+	 * Gets the current potentiometer angle in tenths of a degree.
+	 *
+	 * The original potentiometer rotates 250 degrees thus returning an angle between 0-250 degrees.
+	 * Potentiometer V2 rotates 330 degrees thus returning an angle between 0-330 degrees.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 * EADDRINUSE - The port is not configured as a potentiometer
+
+	 * \return The potentiometer angle in degrees.
+	 */
+	double get_angle() const;
+
+	/**
+	 * Gets the 12-bit value of the specified port.
+	 *
+	 * The value returned is undefined if the analog pin has been switched to a
+	 * different mode.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port is not configured as a potentiometer
+	 *
+	 * \return The analog sensor value, where a value of 0 reflects an input
+	 * voltage of nearly 0 V and a value of 4095 reflects an input voltage of
+	 * nearly 5 V
+	 */
+	using AnalogIn::get_value;
+
+	/**
+	 * Calibrates the potentiometer on the specified port and returns the new
+	 * calibration value.
+	 *
+	 * This method assumes that the potentiometer value is not actively changing at
+	 * this time and computes an average from approximately 500 samples, 1 ms
+	 * apart, for a 0.5 s period of calibration. The average value thus calculated
+	 * is returned and stored for later calls to the
+	 * pros::ADIPotentiometer::get_value_calibrated() function. This function
+	 * will return the difference between this value and the current sensor value
+	 * when called.
+	 *
+	 * Do not use this function when the potentiometer value might be unstable (rotating the potentiometer)
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port is not configured as a potentiometer
+	 *
+	 * \return The average potentiometer value computed by this function
+	 */
+	using AnalogIn::calibrate;
+
+	/**
+	 * Gets the 12 bit calibrated value of a potentiometer port.
+	 *
+	 * The pros::ADIPotentiometer::calibrate() function must be run first.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port is not configured as a potentiometer
+	 *
+	 * \return The difference of the potentiometer value from its calibrated default from
+	 * -4095 to 4095
+	 */
+	using AnalogIn::get_value_calibrated;
+};
+
 }  // namespace adi
 
 /*

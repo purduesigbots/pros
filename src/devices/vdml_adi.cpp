@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -141,5 +141,25 @@ double Gyro::get_value() const {
 std::int32_t Gyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
+
+Potentiometer::Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(adi_port) { 
+	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
+	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
+}
+
+Potentiometer::Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(std::get<1>(port_pair)) { 
+ 	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
+	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
+}
+
+double Potentiometer::get_angle() const {
+	uint8_t temp_smart = _smart_port - 1;
+	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
+}
+
 }  // namespace adi
+
+
 }  // namespace pros

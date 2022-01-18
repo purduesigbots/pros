@@ -6,7 +6,7 @@
  * This file defines a linked list implementation that operates on the FreeRTOS
  * heap, and is able to generically store function pointers and data
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -17,6 +17,9 @@
 
 #include "common/linkedlist.h"
 #include "kapi.h"
+
+// NOTE: Do not intermix data and function payloads. This may cause data to be 
+// re-evaluated as a pointer to an area in memory and a false free or add.
 
 ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
 	ll_node_s_t* node = (ll_node_s_t*)kmalloc(sizeof *node);
@@ -75,8 +78,6 @@ void linked_list_append_func(linked_list_s_t* list, generic_fn_t func) {
 	it->next = n;
 }
 
-// NOTE: this will likely break if the list has intermixed data and function ptrs
-// TODO: add tag field to ll_node_s_t to easily check what is present
 void linked_list_remove_func(linked_list_s_t* list, generic_fn_t func) {
 	if (list == NULL || list->head == NULL) return;
 
@@ -113,8 +114,6 @@ void linked_list_append_data(linked_list_s_t* list, void* data) {
 	it->next = n;
 }
 
-// NOTE: this will likely break if the list has intermixed data and function ptrs
-// TODO: add tag field to ll_node_s_t to easily check what is present
 void linked_list_remove_data(linked_list_s_t* list, void* data) {
 	if (list == NULL || list->head == NULL) return;
 

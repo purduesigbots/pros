@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -27,6 +27,8 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
+#define IMU_RESET_TIMEOUT 1000
+
 typedef struct __attribute__ ((packed)) imu_reset_data { 
 	double heading_offset;
 	double rotation_offset;
@@ -39,7 +41,24 @@ int32_t imu_reset(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
 	vexDeviceImuReset(device->device_info);
-	return_port(port - 1, 1);
+	// delay for vexos to set calibration flag, background processing must be called for flag
+	// to be set.
+	uint16_t timeoutCount = 0;
+	// releasing mutex so vexBackgrounProcessing can run without being blocked.
+	do {
+		port_mutex_give(port - 1);
+		task_delay(5);
+		timeoutCount += 5;
+		claim_port_i(port - 1, E_DEVICE_IMU);
+		if (timeoutCount >= IMU_RESET_TIMEOUT) {
+			port_mutex_give(port - 1);
+			errno = EAGAIN;
+			return PROS_ERR;
+		}
+		device = device; // suppressing compiler warning
+	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+	port_mutex_give(port - 1);
+	return 1;
 }
 
 int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {

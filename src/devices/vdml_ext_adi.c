@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 3-Wire Expander.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -41,6 +41,9 @@ typedef union adi_data {
 	struct {
 		bool reversed;
 	} encoder_data;
+	struct {
+		adi_potentiometer_type_e_t potentiometer_type;
+	} potentiometer_data;
 	struct __attribute__((packed)) {
 		double multiplier;
 		double tare_value;
@@ -64,6 +67,13 @@ typedef union adi_data {
 	if (config != type) {                                                                                   \
 		errno = EADDRINUSE;                                                                                   \
 		return PROS_ERR;                                                                                      \
+	}
+
+#define validate_type_f(device, port, type)                                                                 \
+	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, port); \
+	if (config != type) {                                                                                   \
+		errno = EADDRINUSE;                                                                                   \
+		return PROS_ERR_F;                                                                                      \
 	}
 
 #define validate_motor(device, port)                                                                      \
@@ -361,29 +371,18 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-// Internal wrapper for adi_gyro_get to get around transform_adi_port, claim_port_i, validate_type and return_port
-// possibly returning PROS_ERR, not PROS_ERR_F
-int32_t _ext_adi_gyro_get(ext_adi_gyro_t gyro, double* out) {
+double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, E_ADI_LEGACY_GYRO);
+	claim_port_f(smart_port, E_DEVICE_ADI);
+	validate_type_f(device, adi_port, E_ADI_LEGACY_GYRO);
 
-	double rtn = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
+	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-	rtn -= adi_data->gyro_data.tare_value;
-	rtn *= adi_data->gyro_data.multiplier;
-	*out = rtn;
-	return_port(smart_port, 1);
-}
-
-double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
-	double rtn;
-	if (_ext_adi_gyro_get(gyro, &rtn) == PROS_ERR)
-		return PROS_ERR_F;
-	else
-		return rtn;
+	rtv -= adi_data->gyro_data.tare_value;
+	rtv *= adi_data->gyro_data.multiplier;
+	return_port(smart_port, rtv);
 }
 
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
@@ -407,4 +406,40 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
+}
+
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port,
+                                                   adi_potentiometer_type_e_t potentiometer_type) {
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
+
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+}
+
+double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
+	double rtn;
+	uint8_t smart_port, adi_port;
+	get_ports(potentiometer, smart_port, adi_port);
+	transform_adi_port(adi_port);
+	claim_port_f(smart_port, E_DEVICE_ADI);
+	validate_type(device, adi_port, E_ADI_ANALOG_IN);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+
+	switch (adi_data->potentiometer_data.potentiometer_type) {
+		case E_ADI_POT_EDR:
+			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
+			break;
+		case E_ADI_POT_V2:
+			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 330 / 4095.0;
+			break;
+		default:
+			errno = ENXIO;
+			rtn = PROS_ERR_F;
+	}
+	return_port(smart_port, rtn);
 }

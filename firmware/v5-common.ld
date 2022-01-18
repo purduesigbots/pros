@@ -21,7 +21,7 @@ SECTIONS
    *(.gnu.linkonce.t.*)
    *(.plt)
    *(.gnu_warning)
-   *(.gcc_execpt_table)
+   *(.gcc_except_table)
    *(.glue_7)
    *(.glue_7t)
    *(.vfp11_veneer)

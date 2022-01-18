@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -113,11 +113,17 @@ motor_gearset_e_t Motor::get_gearing(void) const {
 }
 
 motor_pid_full_s_t Motor::get_pos_pid(void) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_get_pos_pid(_port);
+	#pragma GCC diagnostic pop
 }
 
 motor_pid_full_s_t Motor::get_vel_pid(void) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_get_vel_pid(_port);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp) const {
@@ -197,28 +203,46 @@ std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
 }
 
 motor_pid_s_t Motor::convert_pid(double kf, double kp, double ki, double kd) {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_convert_pid(kf, kp, ki, kd);
+	#pragma GCC diagnostic pop
 }
 
 motor_pid_full_s_t Motor::convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
                                            double threshold, double loopspeed) {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_convert_pid_full(kf, kp, ki, kd, filter, limit, threshold, loopspeed);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_pos_pid(const motor_pid_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_pos_pid(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_pos_pid_full(const motor_pid_full_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_pos_pid_full(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_vel_pid(const motor_pid_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_vel_pid(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_vel_pid_full(const motor_pid_full_s_t pid) const {
+	#pragma GCC diagnostic push
+  	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 	return motor_set_vel_pid_full(_port, pid);
+	#pragma GCC diagnostic pop
 }
 
 std::int32_t Motor::set_zero_position(const double position) const {

@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -32,13 +32,15 @@ class Imu {
 	/**
 	 * Calibrate IMU
 	 *
-	 * This takes approximately 2 seconds, and is a non-blocking operation.
-	 *
+	 * Calibration takes approximately 2 seconds, but this function only blocks
+ 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
+	 * with a minimum blocking time of 5ms.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is already calibrating
+	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
