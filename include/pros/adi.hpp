@@ -761,7 +761,6 @@ class Potentiometer : public AnalogIn {
 	 */
 	using AnalogIn::get_value_calibrated;
 };
-
 }  // namespace adi
 
 /*

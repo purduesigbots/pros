@@ -158,8 +158,5 @@ double Potentiometer::get_angle() const {
 	uint8_t temp_smart = _smart_port - 1;
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
-
 }  // namespace adi
-
-
 }  // namespace pros
