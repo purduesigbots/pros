@@ -74,19 +74,25 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 
-#define LINK_PORT 5
+#define LINK_PORT 20
 
 void opcontrol() {
+	printf("Init \n");
 	pros::c::link_init(LINK_PORT, "cock_and_bot_torture", pros::E_LINK_TRANSMITTER);
 	// pros::c::link_init(LINK_PORT, "cock_and_bot_torture", pros::E_LINK_RECIEVER);
 	char buf[100];
 	while (true) {
+		printf("Readable Size\n");
 		if(pros::c::link_readable_size(LINK_PORT) > 0) {
+			printf("Readable Size: %d\n", pros::c::link_readable_size(LINK_PORT));
 			pros::c::link_read_raw(LINK_PORT, buf, pros::c::link_readable_size(LINK_PORT));
 			pros::lcd::print(0, "Recieved Message: %s", buf);
 		}
+		printf("2 transmits\n");
 		pros::c::link_transmit_raw(LINK_PORT, (void*)" Test_MSG1 ");
 		pros::c::link_transmit_raw(LINK_PORT, (void*)" Test_MSG2 ");
-		pros::delay(500);
+		pros::lcd::print(2, "Errno: %d", errno); // ENODEV
+		pros::lcd::print(3, "Device Connected?: %d", pros::c::link_connected(LINK_PORT));
+		pros::delay(2500);
 	}
 }

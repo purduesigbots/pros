@@ -27,23 +27,39 @@
 
 static uint8_t link_count = 0;
 
+// other info about vexlink discovered:
+// E_DEVICE_GENERIC is the "Generic Serial device, but also a vexlink device
+// this PR should rename it to E_DEVICE_CEREAL
+
 uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type) {
-    claim_port_i(port - 1, E_DEVICE_RADIO);
+    // not used because it's a generic serial device 
+    // claim_port_i(port - 1, E_DEVICE_SERIAL);
+	if (!VALIDATE_PORT_NO(port - 1)) {
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	if (!port_mutex_take(port - 1)) {
+		errno = EACCES;
+		return PROS_ERR;
+	}
     vexDeviceGenericRadioConnection(device->device_info, link_id, type, true);
     link_count++;
     return_port(port - 1, 1);
 }
 
 bool link_connected(uint8_t port) {
-    claim_port(port - 1, E_DEVICE_RADIO, false);
-    bool rtv = vexDeviceGenericRadioLinkStatus(device->device_info);
+    claim_port(port - 1, E_DEVICE_SERIAL, false);
+    bool rtv = vexDeviceGenericRadioLinkStatus(device->device_info); // does this only return true if there is another side to this
     return_port(port - 1, rtv);
+    return rtv;
 }
 
 uint32_t link_readable_size(uint8_t port) {
-    claim_port_i(port - 1, E_DEVICE_RADIO);
-    bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info);
+    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
     return_port(port - 1, rtv);
+    return rtv;
 }
 
 uint8_t link_get_count(void) {
@@ -51,7 +67,7 @@ uint8_t link_get_count(void) {
 }
 
 uint32_t link_transmit_raw(uint8_t port, void* data) {
-    claim_port_i(port - 1, E_DEVICE_RADIO);
+    claim_port_i(port - 1, E_DEVICE_SERIAL);
     uint32_t data_size = sizeof((uint8_t*)data);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
@@ -70,7 +86,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data) {
 }
 
 uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size) {
-    claim_port_i(port - 1, E_DEVICE_RADIO);
+    claim_port_i(port - 1, E_DEVICE_SERIAL); 
     if(size > FIFO_SIZE || size > sizeof((uint8_t*)dest)) {
         errno = EINVAL;
         return_port(port - 1, 0);
