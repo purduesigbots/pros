@@ -137,6 +137,22 @@ uint32_t link_transmit_raw(uint8_t port, void* data);
  */
 uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size);
 
+/**
+ * Returns the bytes of data available in transmission buffer without account for protocol.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ *
+ * \return PROS_ERR if port is not a link/radio, 
+ */
+uint32_t link_peek_raw(uint8_t port);
+
 #ifdef __cplusplus
 }
 }
