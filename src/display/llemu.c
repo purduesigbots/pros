@@ -7,7 +7,7 @@
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -22,6 +22,10 @@
 #include <string.h>
 #include "kapi.h"
 #include "pros/llemu.h"
+
+#define LCD_WIDTH	480 
+#define LCD_HEIGHT 	240
+#define LLEMU_LINES 8
 
 static lv_style_t frame_style;
 static lv_style_t screen_style;
@@ -81,10 +85,10 @@ static lv_obj_t* _create_lcd(void) {
 	button_pressed_style.body.grad_color = LV_COLOR_MAKE(0x80, 0x80, 0x80);
 
 	lv_obj_t* lcd_dummy = lv_obj_create(lv_scr_act(), NULL);
-	lv_obj_set_size(lcd_dummy, 480, 240);
+	lv_obj_set_size(lcd_dummy, LCD_WIDTH, LCD_HEIGHT);
 
 	lv_obj_t* frame = lv_cont_create(lcd_dummy, NULL);
-	lv_obj_set_size(frame, 480, 240);
+	lv_obj_set_size(frame, LCD_WIDTH, LCD_HEIGHT);
 	lv_obj_set_style(frame, &frame_style);
 
 	lv_obj_t* screen = lv_cont_create(frame, NULL);
@@ -133,7 +137,7 @@ static lv_obj_t* _create_lcd(void) {
 	lcd->callbacks[1] = NULL;
 	lcd->callbacks[2] = NULL;
 
-	for (size_t i = 0; i < 8; i++) {
+	for (size_t i = 0; i < LLEMU_LINES; i++) {
 		lcd->lcd_text[i] = lv_label_create(lcd->screen, NULL);
 		lv_obj_set_width(lcd->lcd_text[i], 426);
 		lv_obj_align(lcd->lcd_text[i], NULL, LV_ALIGN_IN_TOP_LEFT, 5, 20 * i);
@@ -147,7 +151,7 @@ static lv_obj_t* _create_lcd(void) {
 }
 
 bool _lcd_vprint(lv_obj_t* lcd_dummy, int16_t line, const char* fmt, va_list args) {
-	if (line < 0 || line > 7) {
+	if (line < 0 || line > (LLEMU_LINES - 1)) {
 		errno = EINVAL;
 		return false;
 	}
@@ -172,21 +176,20 @@ bool _lcd_set_text(lv_obj_t* lcd_dummy, int16_t line, const char* text) {
 	return _lcd_print(lcd_dummy, line, "%s", text);
 }
 
-void _lcd_clear(lv_obj_t* lcd_dummy) {
-	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
-	// delete children of screen (this is fine because when we print, we just
-	// overwrite the pointer anyway)
-	lv_obj_clean(lcd->screen);
-}
-
 bool _lcd_clear_line(lv_obj_t* lcd_dummy, int16_t line) {
-	if (line < 0 || line > 7) {
+	if (line < 0 || line > (LLEMU_LINES - 1)) {
 		errno = EINVAL;
 		return false;
 	}
 	lcd_s_t* lcd = lv_obj_get_ext_attr(lcd_dummy);
 	lv_label_set_text(lcd->lcd_text[line], "");
 	return true;
+}
+
+void _lcd_clear(lv_obj_t* lcd_dummy) {
+	for (size_t i = 0; i < LLEMU_LINES; i++) {
+		_lcd_clear_line(lcd_dummy, i);
+	}
 }
 
 void _lcd_set_left_callback(lv_obj_t* lcd_dummy, lcd_btn_cb_fn_t cb) {
