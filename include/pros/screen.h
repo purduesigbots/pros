@@ -390,7 +390,7 @@ uint32_t screen_print(text_format_e_t txt_fmt, const int16_t line, const char* t
  * 
  *  \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
  */
-void screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, ...);
+uint32_t screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, ...);
 
 /**
  * Print a formatted string to the screen on the specified line
