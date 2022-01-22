@@ -23,10 +23,11 @@
 
 #include <cstdint>
 
+#include "pros/device.hpp"
 #include "pros/optical.h"
 
 namespace pros {
-class Optical {
+class Optical : protected Device {
 	public:
 	/**
 	 * Creates an Optical Sensor object for the given port.
@@ -218,16 +219,20 @@ class Optical {
  	 * setting errno.
 	 */
 	virtual std::int32_t disable_gesture();
+	
+	/**
+	 * Gets the port number of the device.
+	 *
+	 * \return The device's port number.
+	 */
+	using Device::get_port;
 
 	/**
-	 * Gets the port number of the Optical Sensor.
+	 * Gets the expecred type of the device.
 	 *
-	 * \return The Optical Sensor's port number.
+	 * \return The device's expected type.
 	 */
-	virtual std::uint8_t get_port();
-
-	private:
-	const std::uint8_t _port;
+	using Device::get_type;
 };
 }  // namespace pros
 

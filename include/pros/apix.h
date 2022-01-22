@@ -28,6 +28,8 @@
 #pragma GCC diagnostic ignored "-Wall"
 #include "display/lvgl.h"
 #pragma GCC diagnostic pop
+
+#include "pros/device.h"
 #include "pros/serial.h"
 
 #ifdef __cplusplus
@@ -359,27 +361,6 @@ void queue_reset(queue_t queue);
 /******************************************************************************/
 /**                           Device Registration                            **/
 /******************************************************************************/
-
-/*
- * List of possible v5 devices
- *
- * This list contains all current V5 Devices, and mirrors V5_DeviceType from the
- * api.
- */
-typedef enum v5_device_e {
-	E_DEVICE_NONE = 0,
-	E_DEVICE_MOTOR = 2,
-	E_DEVICE_ROTATION = 4,
-	E_DEVICE_IMU = 6,
-	E_DEVICE_DISTANCE = 7,
-	E_DEVICE_RADIO = 8,
-	E_DEVICE_VISION = 11,
-	E_DEVICE_ADI = 12,
-	E_DEVICE_OPTICAL = 16,
-	E_DEVICE_GPS = 20,
-	E_DEVICE_GENERIC = 129,
-	E_DEVICE_UNDEFINED = 255
-} v5_device_e_t;
 
 /*
  * Registers a device in the given zero-indexed port

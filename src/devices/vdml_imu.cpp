@@ -13,6 +13,9 @@
 #include "pros/imu.hpp"
 
 namespace pros {
+
+Imu::Imu(const std::uint8_t port) : Device(port, pros::c::E_DEVICE_IMU) {}
+
 std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }
@@ -22,7 +25,7 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 double Imu::get_rotation() const {
-    return pros::c::imu_get_rotation(_port);
+	return pros::c::imu_get_rotation(_port);
 }
 
 double Imu::get_heading() const {
@@ -115,10 +118,6 @@ std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
 
 std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
-}
-
-std::uint8_t Imu::get_port(void) const {
-	return _port;
 }
 
 }  // namespace pros

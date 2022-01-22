@@ -15,7 +15,7 @@
 namespace pros {
 using namespace pros::c;
 
-Optical::Optical(std::uint8_t port): _port(port){}
+Optical::Optical(std::uint8_t port) : Device(port, pros::c::E_DEVICE_OPTICAL) {}
 
 double Optical::get_hue(){
   return optical_get_hue(_port);
@@ -65,7 +65,4 @@ std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
-std::uint8_t Optical::get_port(){
-  return _port;
-}
 }

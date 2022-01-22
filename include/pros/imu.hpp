@@ -19,14 +19,14 @@
 #define _PROS_IMU_HPP_
 
 #include <cstdint>
+
+#include "pros/device.hpp"
 #include "pros/imu.h"
 
 namespace pros {
-class Imu {
-	const std::uint8_t _port;
-
+class Imu : protected Device {
 	public:
-	Imu(const std::uint8_t port) : _port(port){};
+	Imu(const std::uint8_t port);
 
 	/**
 	 * Calibrate IMU
@@ -446,12 +446,20 @@ class Imu {
 	 */
 	virtual bool is_calibrating() const;
 	
+	
 	/**
-	 * Gets the port number of the Inertial Sensor.
+	 * Gets the port number of the device.
 	 *
-	 * \return The Inertial Sensor's port number.
+	 * \return The device's port number.
 	 */
-	virtual std::uint8_t get_port(void) const;
+	using Device::get_port;
+
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 };
 
 using IMU = Imu;

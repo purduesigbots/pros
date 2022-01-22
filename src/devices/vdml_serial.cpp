@@ -16,12 +16,12 @@
 namespace pros {
 using namespace pros::c;
 
-Serial::Serial(std::uint8_t port, std::int32_t baudrate) : _port(port) {
+Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port, pros::c::E_DEVICE_GENERIC) {
 	serial_enable(port);
 	set_baudrate(baudrate);
 }
 
-Serial::Serial(std::uint8_t port) : _port(port) {
+Serial::Serial(std::uint8_t port) : Device(port, pros::c::E_DEVICE_GENERIC) {
 	serial_enable(port);
 }
 
@@ -39,10 +39,6 @@ std::int32_t Serial::get_read_avail() const {
 
 std::int32_t Serial::get_write_free() const {
 	return serial_get_write_free(_port);
-}
-
-std::uint8_t Serial::get_port() const {
-	return _port;
 }
 
 std::int32_t Serial::peek_byte() const {

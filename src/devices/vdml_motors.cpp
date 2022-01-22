@@ -18,26 +18,29 @@ using namespace pros::c;
 
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
-    : _port(port) {
+    : Device(port, pros::c::E_DEVICE_MOTOR) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse)
+	: Device(port, pros::c::E_DEVICE_MOTOR) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset)
+	: Device(port, pros::c::E_DEVICE_MOTOR) {
 	set_gearing(gearset);
 }
 
-Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const bool reverse)
+	: Device(port, pros::c::E_DEVICE_MOTOR) {
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port) : _port(port) {}
+Motor::Motor(const std::uint8_t port) : Device(port, pros::c::E_DEVICE_MOTOR) {}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
@@ -175,10 +178,6 @@ std::int32_t Motor::get_voltage(void) const {
 
 std::int32_t Motor::get_voltage_limit(void) const {
 	return motor_get_voltage_limit(_port);
-}
-
-std::uint8_t Motor::get_port(void) const {
-	return _port;
 }
 
 std::int32_t Motor::tare_position(void) const {

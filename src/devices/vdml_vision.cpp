@@ -15,7 +15,7 @@
 namespace pros {
 using namespace pros::c;
 
-Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port) {
+Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port, pros::c::E_DEVICE_VISION) {
 	vision_set_zero_point(port, zero_point);
 }
 
@@ -59,10 +59,6 @@ int32_t Vision::get_object_count(void) const {
 
 std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
-}
-
-std::uint8_t Vision::get_port(void) const {
-	return _port;
 }
 
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
@@ -115,4 +111,5 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
 }
+
 }  // namespace pros

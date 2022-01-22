@@ -21,10 +21,11 @@
 
 #include <cstdint>
 
+#include "pros/device.hpp"
 #include "pros/distance.h"
 
 namespace pros {
-class Distance {
+class Distance : protected Device {
 	public:
 	/**
 	 * Creates a Distance Sensor object for the given port.
@@ -100,14 +101,18 @@ class Distance {
 	virtual double get_object_velocity();
 
 	/**
-	 * Gets the port number of the distance sensor.
+	 * Gets the port number of the device.
 	 *
-	 * \return The distance sensor's port number.
+	 * \return The device's port number.
 	 */
-	std::uint8_t get_port();
+	using Device::get_port;
 
-	private:
-	const std::uint8_t _port;
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 };
 }  // namespace pros
 

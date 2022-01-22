@@ -14,7 +14,7 @@
 
 namespace pros {
 
-Distance::Distance(const std::uint8_t port) : _port(port) {}
+Distance::Distance(const std::uint8_t port) : Device(port, pros::c::E_DEVICE_DISTANCE) {}
 
 std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);
@@ -30,9 +30,5 @@ std::int32_t Distance::get_object_size() {
 
 double Distance::get_object_velocity() {
 	return pros::c::distance_get_object_velocity(_port);
-}
-
-std::uint8_t Distance::get_port() {
-	return _port;
 }
 }  // namespace pros

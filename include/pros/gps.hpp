@@ -23,27 +23,19 @@
 
 #include <cstdint>
 
+#include "pros/device.hpp"
 #include "pros/gps.h"
 
 namespace pros {
-class Gps {
-	const std::uint8_t _port;
-
+class Gps : protected Device {
 	public:
-	Gps(const std::uint8_t port) : _port(port){};
+	Gps(const std::uint8_t port);
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : _port(port) {
-		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
-	};
+	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial);
 
-	Gps(const std::uint8_t port, double xOffset, double yOffset) : _port(port) {
-		pros::c::gps_set_offset(port, xOffset, yOffset);
-	};
+	Gps(const std::uint8_t port, double xOffset, double yOffset);
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
-	    : _port(port) {
-		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
-	};
+	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
 
 	/**
 	 * Set the GPS's offset relative to the center of turning in meters,
@@ -276,12 +268,20 @@ class Gps {
 	 */
 	virtual pros::c::gps_accel_s_t get_accel() const;
 
+	
 	/**
-	 * Gets the port number of the GPS Sensor.
+	 * Gets the port number of the device.
 	 *
-	 * \return The GPS Sensor's port number.
+	 * \return The device's port number.
 	 */
-	virtual std::uint8_t get_port(void) const;
+	using Device::get_port;
+
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 
 };  // Gps Class
 

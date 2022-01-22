@@ -14,6 +14,24 @@
 
 namespace pros {
 
+Gps::Gps(const std::uint8_t port)
+	: Device(port, pros::c::E_DEVICE_GPS) {}
+
+Gps::Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial)
+	: Device(port, pros::c::E_DEVICE_GPS) {
+	pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
+}
+
+Gps::Gps(const std::uint8_t port, double xOffset, double yOffset)
+	: Device(port, pros::c::E_DEVICE_GPS) {
+	pros::c::gps_set_offset(port, xOffset, yOffset);
+}
+
+Gps::Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
+	: Device(port, pros::c::E_DEVICE_GPS) {
+	pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
+}
+
 std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
                                   double yOffset) const {
 	return pros::c::gps_initialize_full(_port, xInitial, yInitial, headingInitial, xOffset, yOffset);
@@ -69,10 +87,6 @@ pros::c::gps_gyro_s_t Gps::get_gyro_rate() const {
 
 pros::c::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
-}
-
-std::uint8_t Gps::get_port(void) const {
-	return _port;
 }
 
 }  // namespace pros

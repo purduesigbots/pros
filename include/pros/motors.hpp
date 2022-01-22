@@ -21,10 +21,11 @@
 
 #include <cstdint>
 
+#include "pros/device.hpp"
 #include "pros/motors.h"
 
 namespace pros {
-class Motor {
+class Motor : protected Device {
 	public:
 	/**
 	 * Creates a Motor object for the given port and specifications.
@@ -823,15 +824,20 @@ class Motor {
 	 */
 	virtual std::int32_t get_voltage_limit(void) const;
 
+	
 	/**
-	 * Gets the port number of the motor.
+	 * Gets the port number of the device.
 	 *
-	 * \return The motor's port number.
+	 * \return The device's port number.
 	 */
-	virtual std::uint8_t get_port(void) const;
+	using Device::get_port;
 
-	private:
-	const std::uint8_t _port;
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 };
 
 namespace literals {

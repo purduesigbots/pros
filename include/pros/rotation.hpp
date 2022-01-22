@@ -20,14 +20,13 @@
 
 #include <cstdint>
 
+#include "pros/device.hpp"
 #include "pros/rotation.h"
 
 namespace pros {
-class Rotation {
-	const std::uint8_t _port;
-
+class Rotation : protected Device {
 	public:
-	Rotation(const std::uint8_t port) : _port(port){};
+	Rotation(const std::uint8_t port);
 
 	/**
 	 * Reset the Rotation Sensor
@@ -184,11 +183,18 @@ class Rotation {
 	virtual std::int32_t get_reversed();
 
 	/**
-	 * Gets the port number of the Rotation Sensor.
+	 * Gets the port number of the device.
 	 *
-	 * \return The Rotation Sensor's port number.
+	 * \return The device's port number.
 	 */
-	virtual std::uint8_t get_port(void) const;
+	using Device::get_port;
+
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 };
 }  // namespace pros
 

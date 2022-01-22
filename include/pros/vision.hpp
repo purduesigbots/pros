@@ -20,12 +20,13 @@
 #ifndef _PROS_VISION_HPP_
 #define _PROS_VISION_HPP_
 
-#include "pros/vision.h"
-
 #include <cstdint>
 
+#include "pros/device.hpp"
+#include "pros/vision.h"
+
 namespace pros {
-class Vision {
+class Vision : protected Device {
 	public:
 	/**
 	 * Create a Vision Sensor object on the given port.
@@ -220,13 +221,6 @@ class Vision {
 	 * \return The current RGB white balance setting of the sensor
 	 */
 	std::int32_t get_white_balance(void) const;
-
-	/**
-	 * Gets the port number of the Vision Sensor.
-	 *
-	 * \return The vision sensor's port number.
-	 */
-	std::uint8_t get_port(void) const;
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.
@@ -437,9 +431,20 @@ class Vision {
 	 * failed, setting errno.
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
+	
+	/**
+	 * Gets the port number of the device.
+	 *
+	 * \return The device's port number.
+	 */
+	using Device::get_port;
 
-	private:
-	std::uint8_t _port;
+	/**
+	 * Gets the expecred type of the device.
+	 *
+	 * \return The device's expected type.
+	 */
+	using Device::get_type;
 };
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_
