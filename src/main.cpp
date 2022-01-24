@@ -78,9 +78,9 @@ void autonomous() {}
 #define RX_LINK_PORT 10
 void opcontrol() {
 	printf("Init \n");
-	pros::c::link_init(TX_LINK_PORT, "_bot_torture", pros::E_LINK_TRANSMITTER);
-	pros::c::link_init(RX_LINK_PORT, "_bot_torture", pros::E_LINK_RECIEVER);
-	char buf[100];
+	pros::c::link_init(TX_LINK_PORT, "test", pros::E_LINK_TRANSMITTER);
+	pros::c::link_init(RX_LINK_PORT, "test", pros::E_LINK_RECIEVER);
+	char buf[100] = "none";
 	while (true) {
 		printf("Readable Size: \n");
 		if(pros::c::link_readable_size(RX_LINK_PORT) > 0) {
