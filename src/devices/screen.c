@@ -459,7 +459,7 @@ static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) 
 void _touch_handle_task(void* ignore) {
 	V5_TouchStatus last, current;
 	while (true) {
-		mutex_take(_screen_mutex, TIMEOUT_MAX)
+		mutex_take(_screen_mutex, TIMEOUT_MAX);
         vexTouchDataGet(&current);
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
@@ -477,7 +477,7 @@ void _touch_handle_task(void* ignore) {
 			}
 			last = current;
 		}
-        mutex_give(_screen_mutex)
+        mutex_give(_screen_mutex);
 		delay(10);
 	}
 }
