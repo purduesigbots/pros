@@ -396,7 +396,7 @@ screen_touch_status_s_t screen_touch_status(void){
 	rtv.press_count = v5_touch_status.pressCount;
 	rtv.release_count = v5_touch_status.releaseCount;
 	if (mutex_take_failed == 1 || !mutex_give(_screen_mutex)) {
-		rtv.touch_status = MUTEX_ERROR;
+		rtv.touch_status = E_TOUCH_ERROR;
 		rtv.x = -1;
 		rtv.y = -1;
 		rtv.press_count = -1;
@@ -432,7 +432,7 @@ uint32_t screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type
 	case E_TOUCH_HELD:
 		linked_list_prepend_func(_touch_event_press_auto_handler_list, (generic_fn_t)cb);
 		break;
-	case MUTEX_ERROR:
+	case E_TOUCH_ERROR:
 		return PROS_ERR;
 		break;
 	}
@@ -456,13 +456,10 @@ static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) 
 	return (x.lastEvent == y.lastEvent) && (x.lastXpos == y.lastXpos) && (x.lastYpos == y.lastYpos);
 }
 
-uint32_t _touch_handle_task(void* ignore) {
+void _touch_handle_task(void* ignore) {
 	V5_TouchStatus last, current;
 	while (true) {
-		if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
-			errno = EACCES;
-			return PROS_ERR;
-		}
+		mutex_take(_screen_mutex, TIMEOUT_MAX)
         vexTouchDataGet(&current);
 		if (!_touch_status_equivalent(current, last)) {
 			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
@@ -480,12 +477,9 @@ uint32_t _touch_handle_task(void* ignore) {
 			}
 			last = current;
 		}
-        if (!mutex_give(_screen_mutex)) {
-			return PROS_ERR;
-		}
+        mutex_give(_screen_mutex)
 		delay(10);
 	}
-	return 1; // returns 1 if everything ran successfully
 }
 
 void graphical_context_daemon_initialize(void) {

@@ -47,7 +47,7 @@ typedef enum {
     E_TOUCH_RELEASED = 0, ///< Last interaction with screen was a quick press
     E_TOUCH_PRESSED, ///< Last interaction with screen was a release
     E_TOUCH_HELD, ///< User is holding screen down
-    MUTEX_ERROR // An error occured while taking/returning the mutex
+    E_TOUCH_ERROR // An error occured while taking/returning the mutex
 } last_touch_e_t;
 
 /**
@@ -105,8 +105,8 @@ namespace c {
  * \param color	The pen color to set (it is recommended to use values
  * 		 from the enum defined in colors.h)
  * 
- * \return Returns 1 if the mutex was successfully returned, or prosERR if there was an error either taking or
- * returning the screen mutex.
+ * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
+ *         there was an error either taking or returning the screen mutex.
  */
 uint32_t screen_set_pen(uint32_t color);
 
@@ -120,8 +120,8 @@ uint32_t screen_set_pen(uint32_t color);
  * \param color	The background color to set (it is recommended to use values
  * 					from the enum defined in colors.h)
  * 
- * \return Returns 1 if the mutex was successfully returned, or prosERR if there was an error either taking or 
- * returning the screen mutex.
+ * \return Returns 1 if the mutex was successfully returned, or 
+ * prosERR if there was an error either taking or returning the screen mutex.
  */
 uint32_t screen_set_eraser(uint32_t color);
 
@@ -132,8 +132,9 @@ uint32_t screen_set_eraser(uint32_t color);
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
- * \return The current pen color in the form of a value from the enum defined in colors.h, or PROS_ERR if there was an error taking 
- * or returning the screen mutex.
+ * \return The current pen color in the form of a value from the enum defined 
+ *         in colors.h, or PROS_ERR if there was an error taking or returning 
+ *         the screen mutex.
  */
 uint32_t screen_get_pen(void);
 
@@ -144,8 +145,9 @@ uint32_t screen_get_pen(void);
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  *
- * \return The current eraser color in the form of a value from the enum defined in colors.h, or PROS_ERR if there was an error 
- * taking or returning the screen mutex.
+ * \return The current eraser color in the form of a value from the enum 
+ *         defined in colors.h, or PROS_ERR if there was an error taking or 
+ *         returning the screen mutex.
  */
 uint32_t screen_get_eraser(void);
 
@@ -156,7 +158,8 @@ uint32_t screen_get_eraser(void);
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_erase(void);
 
@@ -170,7 +173,8 @@ uint32_t screen_erase(void);
  * \param start_line    The line from which scrolling will start
  * \param lines			The number of lines to scroll up
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_scroll(int16_t start_line, int16_t lines);
 
@@ -191,7 +195,8 @@ uint32_t screen_scroll(int16_t start_line, int16_t lines);
  * 						rectangular region
  * \param lines 	The number of lines to scroll upwards
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *           taking or returning the screen mutex.
  */
 uint32_t screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines);
 
@@ -211,7 +216,8 @@ uint32_t screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int1
  * \param stride	Off-screen buffer width in pixels, such that image size
  * 						is stride-padding
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32_t* buf, int32_t stride);
 
@@ -224,7 +230,8 @@ uint32_t screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32
  *
  * \param x, y 	The (x,y) coordinates of the pixel
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_draw_pixel(int16_t x, int16_t y);
 
@@ -237,7 +244,8 @@ uint32_t screen_draw_pixel(int16_t x, int16_t y);
  *
  * \param x, y 	The (x,y) coordinates of the erased
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_erase_pixel(int16_t x, int16_t y);
 
@@ -251,7 +259,8 @@ uint32_t screen_erase_pixel(int16_t x, int16_t y);
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
@@ -265,7 +274,8 @@ uint32_t screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
@@ -279,7 +289,8 @@ uint32_t screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
@@ -293,7 +304,8 @@ uint32_t screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
@@ -308,7 +320,8 @@ uint32_t screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 
@@ -322,7 +335,8 @@ uint32_t screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_draw_circle(int16_t x, int16_t y, int16_t radius);
 
@@ -336,7 +350,8 @@ uint32_t screen_draw_circle(int16_t x, int16_t y, int16_t radius);
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_erase_circle(int16_t x, int16_t y, int16_t radius);
 
@@ -351,7 +366,8 @@ uint32_t screen_erase_circle(int16_t x, int16_t y, int16_t radius);
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *         taking or returning the screen mutex.
  */
 uint32_t screen_fill_circle(int16_t x, int16_t y, int16_t radius);
 
@@ -371,7 +387,8 @@ uint32_t screen_fill_circle(int16_t x, int16_t y, int16_t radius);
  * \param text  Format string
  * \param ...  Optional list of arguments for the format string
  * 
- *  \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ *  \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *          taking or returning the screen mutex.
  */
 uint32_t screen_print(text_format_e_t txt_fmt, const int16_t line, const char* text, ...);
 
@@ -388,7 +405,8 @@ uint32_t screen_print(text_format_e_t txt_fmt, const int16_t line, const char* t
  * \param text  Format string
  * \param ...  Optional list of arguments for the format string
  * 
- *  \return 1 if there were no errors, or PROS_ERR if an error occured taking or returning the screen mutex.
+ *  \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *          taking or returning the screen mutex.
  */
 uint32_t screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, ...);
 
@@ -410,7 +428,8 @@ uint32_t screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t
  * \param text  Format string
  * \param args List of arguments for the format string
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured while taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *          while taking or returning the screen mutex.
  */
 uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* text, va_list args);
 
@@ -434,7 +453,8 @@ uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char*
  * \param text  Format string
  * \param args List of arguments for the format string
  *  
- * \return 1 if there were no errors, or PROS_ERR if an error occured while taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *          while taking or returning the screen mutex.
  */
 uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, va_list args);
 
@@ -450,7 +470,8 @@ uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16
  * 
  * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
  * This will be released by default if no action was taken. 
- * If an error occured, the screen_touch_status_s_t will have its last_touch_e_t enum specifier set to E_TOUCH_ERR, and other values set to -1.
+ * If an error occured, the screen_touch_status_s_t will have its last_touch_e_t
+ *  enum specifier set to E_TOUCH_ERR, and other values set to -1.
  */
 screen_touch_status_s_t screen_touch_status(void);
 
@@ -464,7 +485,8 @@ screen_touch_status_s_t screen_touch_status(void);
  * \param cb Function pointer to callback when event type happens
  * \param event_type Touch event that will trigger the callback.
  * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured while taking or returning the screen mutex.
+ * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *          while taking or returning the screen mutex.
  */
 uint32_t screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
 
