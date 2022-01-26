@@ -75,7 +75,7 @@ int32_t rotation_set_reversed(uint8_t port, bool value) {
 	return_port(port - 1, 1);
 }
 
-int32_t rotation_init_with_reverse_flag(uint8_t port, bool reverse_flag) {
+int32_t rotation_init_reverse(uint8_t port, bool reverse_flag) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
     uint16_t timeoutCount = 0;
     // releasing mutex so vexBackgrounProcessing can run without being blocked.
