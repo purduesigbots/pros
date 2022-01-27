@@ -136,7 +136,7 @@ uint32_t link_readable_size(uint8_t port);
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
  * and 1 if it succeeded.
  */
-uint32_t link_transmit_raw(uint8_t port, void* data);
+uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size);
 
 /**
  * Send raw serial data through vexlink, without any COBS protocol

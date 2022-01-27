@@ -77,43 +77,28 @@ void autonomous() {}
 
 #define TX_LINK_PORT 19
 #define RX_LINK_PORT 20
+char msg[10] = "TEST_MSG1";
 void opcontrol() {
-	// printf("Init \n");
-	// pros::c::link_init(TX_LINK_PORT, "test", pros::E_LINK_TRANSMITTER);
-	// pros::c::link_init(RX_LINK_PORT, "test", pros::E_LINK_RECIEVER);
-	// char buf[100] = "none";
-	// while (true) {
-	// 	printf("Readable Size: \n");
-	// 	if(pros::c::link_readable_size(RX_LINK_PORT) > 0) {
-	// 		printf("Readable Size Actual: %d\n", pros::c::link_readable_size(RX_LINK_PORT));
-	// 		pros::c::link_read_raw(RX_LINK_PORT, buf, pros::c::link_readable_size(RX_LINK_PORT));
-	// 		pros::lcd::print(0, "Recieved Message: %s", buf);
-	// 	}
-	// 	printf("2 transmits\n");
-	// 	pros::c::link_transmit_raw(TX_LINK_PORT, (void*)" Test_MSG1 ");
-	// 	pros::c::link_transmit_raw(TX_LINK_PORT, (void*)" Test_MSG2 ");
-	// 	pros::lcd::print(2, "Errno: %d", errno); // ENODEV
-	// 	pros::lcd::print(3, "TX Device Connected?: %d", pros::c::link_connected(TX_LINK_PORT));
-	// 	pros::lcd::print(4, "RX Device Connected?: %d", pros::c::link_connected(RX_LINK_PORT));
-	// 	pros::lcd::print(5, "TX Size: %d", pros::c::link_tx_size_raw(TX_LINK_PORT));
-	// 	pros::delay(2500);
-	// }
-
-	bool bManager = true;
-    char name[] = "james";
-
-    // enable, allow use of any radio
-    vexGenericRadioConnection( TX_LINK_PORT, name, bManager, true );
-    vexGenericRadioConnection( RX_LINK_PORT, name, false, true );
-
-	pros::delay(2000);
-
+	printf("Init \n");
+	pros::c::link_init(TX_LINK_PORT, "test", pros::E_LINK_TRANSMITTER);
+	pros::c::link_init(RX_LINK_PORT, "test", pros::E_LINK_RECIEVER);
+	char buf[100];
 	while (true) {
-	bool connected = pros::c::link_connected(TX_LINK_PORT);
-	bool connected1 = pros::c::link_connected(RX_LINK_PORT);
-	printf("TX: %d	RX: %d\n", connected,connected1);
-	pros::delay(100);
+		printf("Readable Size: \n");
+		if(pros::c::link_readable_size(RX_LINK_PORT) > 0) {
+			pros::lcd::clear_line(0);
+			printf("Readable Size Actual: %d\n", pros::c::link_readable_size(RX_LINK_PORT));
+			pros::c::link_read_raw(RX_LINK_PORT, buf, pros::c::link_readable_size(RX_LINK_PORT));
+			pros::lcd::print(0, "Recieved Message: %s", buf);
+		}
+		printf("2 transmits\n");
+		pros::c::link_transmit_raw(TX_LINK_PORT, msg, 10);
+		//pros::c::link_transmit_raw(TX_LINK_PORT, (void*)" Test_MSG2 ");
+		pros::lcd::print(2, "Errno: %d", errno); // ENODEV
+		pros::lcd::print(3, "TX Device Connected?: %d", pros::c::link_connected(TX_LINK_PORT));
+		pros::lcd::print(4, "RX Device Connected?: %d", pros::c::link_connected(RX_LINK_PORT));
+		pros::lcd::print(5, "TX Size: %d", pros::c::link_tx_size_raw(TX_LINK_PORT));
+		pros::lcd::print(6, "RX Size: %d", pros::c::link_readable_size(RX_LINK_PORT));
+		pros::delay(2000);
 	}
-
-
 }

@@ -81,19 +81,16 @@ bool link_connected(uint8_t port) {
 
 uint32_t link_readable_size(uint8_t port) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
-    bool rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
+    uint32_t rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
     return_port(port - 1, rtv);
 }
 
-uint32_t link_transmit_raw(uint8_t port, void* data) {
+uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
-    uint32_t data_size = sizeof((uint8_t*)data);
-    /* returning false, commented out for testing
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
-    */
     if(data_size > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
         return_port(port - 1, 0);
@@ -102,22 +99,20 @@ uint32_t link_transmit_raw(uint8_t port, void* data) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
-    vexDeviceGenericRadioTransmit(device->device_info, data, data_size);
+    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, (uint8_t)data_size);
     return_port(port - 1, 1);
 }
 
 uint32_t link_read_raw(uint8_t port, void* dest, uint32_t size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL); 
-    if(size > FIFO_SIZE || size > sizeof((uint8_t*)dest)) {
+    if(size > FIFO_SIZE) {
         errno = EINVAL;
         return_port(port - 1, 0);
     }
-    /* returning false, commented out for testing
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
-    */
     if(dest == NULL) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
