@@ -190,8 +190,8 @@ int32_t rotation_reverse(uint8_t port);
  *
  * \param  port
  * 				 The V5 Rotation Sensor port number from 1-21
- * \param reverse_flag
- *               Determines if the Rotation Sensor is reversed or not.
+ * \param  reverse_flag
+ * 				 Determines if the Rotation Sensor is reversed or not.
  * 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
