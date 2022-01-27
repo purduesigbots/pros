@@ -17,6 +17,8 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
+#define ROTATION_RESET_TIMEOUT 1000
+
 int32_t rotation_reset(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	vexDeviceAbsEncReset(device->device_info);
@@ -71,6 +73,26 @@ int32_t rotation_set_reversed(uint8_t port, bool value) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	vexDeviceAbsEncReverseFlagSet(device->device_info, value);
 	return_port(port - 1, 1);
+}
+
+int32_t rotation_init_reverse(uint8_t port, bool reverse_flag) {
+	claim_port_i(port - 1, E_DEVICE_ROTATION);
+    uint16_t timeoutCount = 0;
+    // releasing mutex so vexBackgrounProcessing can run without being blocked.
+    do {
+        port_mutex_give(port - 1);
+        task_delay(5);
+        timeoutCount += 5;
+        claim_port_i(port - 1, E_DEVICE_ROTATION);
+        if (timeoutCount >= ROTATION_RESET_TIMEOUT) {
+            port_mutex_give(port - 1);
+            errno = EAGAIN;
+            return PROS_ERR;
+        }
+        device = device; // suppressing compiler warning
+    } while(vexDeviceAbsEncStatusGet(device->device_info) == 0);
+    vexAbsEncReverseFlagSet(port - 1, reverse_flag);
+    return_port(port - 1, 1)
 }
 
 int32_t rotation_reverse(uint8_t port){
