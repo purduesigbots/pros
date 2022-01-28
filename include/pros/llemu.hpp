@@ -193,6 +193,23 @@ void register_btn2_cb(lcd_btn_cb_fn_t cb);
  * \return The buttons pressed as a bit mask
  */
 std::uint8_t read_buttons(void);
+
+/**
+ * Changes the color of the LCD background to a provided color expressed in
+ * type lv_color_t.
+ *
+ * \return void
+ */
+void set_background_color(lv_color_t color);
+
+/**
+ * Changes the color of the LCD background to a provided color expressed in RGB
+ * form, with three values of type uint8_t.
+ * 
+ * \return void
+ */
+void set_background_color(std::uint8_t r, std::uint8_t g, std::uint8_t b);
+
 }  // namespace lcd
 }  // namespace pros
 
