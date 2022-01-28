@@ -226,9 +226,12 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
 uint8_t lcd_read_buttons(void);
 
 /**
- * Changes the color of the LCD background to a provided color in type
- * lv_color_t.
- *
+ * Changes the color of the LCD background to a provided color expressed in
+ * type lv_color_t.
+ * 
+ * \param color
+ *        A color of type lv_color_t
+ * 
  * \return void
  */
 void lcd_set_background_color(lv_color_t color);

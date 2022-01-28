@@ -198,6 +198,9 @@ std::uint8_t read_buttons(void);
  * Changes the color of the LCD background to a provided color expressed in
  * type lv_color_t.
  *
+ * \param color
+ *        A color of type lv_color_t
+ * 
  * \return void
  */
 void set_background_color(lv_color_t color);
@@ -205,6 +208,18 @@ void set_background_color(lv_color_t color);
 /**
  * Changes the color of the LCD background to a provided color expressed in RGB
  * form, with three values of type uint8_t.
+ * 
+ * \param r
+ * A value of type uint8_t, with a range of 0 to 255, representing the
+ * red value of a color
+ * 
+ * \param g
+ * A value of type uint8_t, with a range of 0 to 255, representing the
+ * green value of a color
+ * 
+ * \param b
+ * A value of type uint8_t, with a range of 0 to 255, representing the
+ * blue value of a color
  * 
  * \return void
  */
