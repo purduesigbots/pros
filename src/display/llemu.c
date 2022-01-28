@@ -309,3 +309,13 @@ uint8_t lcd_read_buttons(void) {
 	}
 	return _lcd_read_buttons(_llemu_lcd);
 }
+
+void lcd_set_background_color(lv_color_t color) {
+	screen_style.body.main_color = color;
+	screen_style.body.grad_color = color;
+}
+
+void lcd_set_background_rgb(uint8_t r, uint8_t g, uint8_t b) {
+	lcd_set_background_color(LV_COLOR_MAKE(r, g, b));
+}
+
