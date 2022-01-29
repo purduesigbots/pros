@@ -56,7 +56,7 @@ void set_background_color(lv_color_t color) {
 }
 
 void set_background_color(uint8_t r, uint8_t g, uint8_t b) {
-	lcd_set_background_color(lv_color_t{r,g,b,});
+	lcd_set_background_color(LV_COLOR_MAKE(r, g, b));
 }
 
 }  // namespace lcd
