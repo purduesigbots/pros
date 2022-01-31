@@ -236,6 +236,17 @@ uint8_t lcd_read_buttons(void);
  */
 void lcd_set_background_color(lv_color_t color);
 
+/**
+ * Changes the text color of the LCD to a provided color expressed in
+ * type lv_color_t.
+ *
+ * \param color
+ *        A color of type lv_color_t
+ *
+ * \return void
+ */
+void lcd_set_text_color(lv_color_t color);
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros

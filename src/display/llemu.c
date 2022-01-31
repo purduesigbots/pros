@@ -314,3 +314,7 @@ void lcd_set_background_color(lv_color_t color) {
 	screen_style.body.main_color = color;
 	screen_style.body.grad_color = color;
 }
+
+void lcd_set_text_color(lv_color_t color) {
+	screen_style.text.color = color;
+}
