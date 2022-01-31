@@ -152,7 +152,7 @@ using lcd_btn_cb_fn_t = void (*)(void);
  * user-provided callback function will be invoked.
  *
  * \param cb
- * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ *        A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn0_cb(lcd_btn_cb_fn_t cb);
 
@@ -163,7 +163,7 @@ void register_btn0_cb(lcd_btn_cb_fn_t cb);
  * user-provided callback function will be invoked.
  *
  * \param cb
- * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ *         A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn1_cb(lcd_btn_cb_fn_t cb);
 
@@ -174,7 +174,7 @@ void register_btn1_cb(lcd_btn_cb_fn_t cb);
  * user-provided callback function will be invoked.
  *
  * \param cb
- * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
+ *         A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
  */
 void register_btn2_cb(lcd_btn_cb_fn_t cb);
 
@@ -199,7 +199,7 @@ std::uint8_t read_buttons(void);
  * type lv_color_t.
  *
  * \param color
- * A color of type lv_color_t
+ *         A color of type lv_color_t
  * 
  * \return void
  */
@@ -210,16 +210,16 @@ void set_background_color(lv_color_t color);
  * form, with three values of type uint8_t.
  *
  * \param r
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * red value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         red value of a color
  * 
  * \param g
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * green value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         green value of a color
  * 
  * \param b
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * blue value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         blue value of a color
  * 
  * \return void
  */
@@ -230,7 +230,7 @@ void set_background_color(std::uint8_t r, std::uint8_t g, std::uint8_t b);
  * type lv_color_t.
  *
  * \param color
- * A color of type lv_color_t
+ *         A color of type lv_color_t
  *
  * \return void
  */
@@ -241,16 +241,16 @@ void set_text_color(lv_color_t color);
  * form, with three values of type uint8_t.
  *
  * \param r
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * red value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         red value of a color
  *
  * \param g
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * green value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         green value of a color
  *
  * \param b
- * A value of type uint8_t, with a range of 0 to 255, representing the
- * blue value of a color
+ *         A value of type uint8_t, with a range of 0 to 255, representing the
+ *         blue value of a color
  *
  * \return void
  */
