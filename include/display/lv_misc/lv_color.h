@@ -379,7 +379,7 @@ static inline uint8_t lv_color_brightness(lv_color_t color)
 #  endif
 #elif LV_COLOR_DEPTH == 32
 #ifdef __cplusplus
-#  define LV_COLOR_MAKE lv_color_t{b8, g8, r8, 0xff}
+#  define LV_COLOR_MAKE(r8, g8, b8) lv_color_t{b8, g8, r8, 0xff}
 #else 
 #  define LV_COLOR_MAKE(r8, g8, b8) ((lv_color_t){{b8, g8, r8, 0xff}})            /*Fix 0xff alpha*/
 #endif
