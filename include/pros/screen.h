@@ -47,7 +47,7 @@ typedef enum {
     E_TOUCH_RELEASED = 0, ///< Last interaction with screen was a quick press
     E_TOUCH_PRESSED, ///< Last interaction with screen was a release
     E_TOUCH_HELD, ///< User is holding screen down
-    E_TOUCH_ERROR // An error occured while taking/returning the mutex
+    E_TOUCH_ERROR ///< An error occured while taking/returning the mutex
 } last_touch_e_t;
 
 /**
