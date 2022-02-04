@@ -61,7 +61,7 @@ uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type);
 
 /**
  * Initializes a link on a radio port, with an indicated type and the ability for
- * vexnet to override the radio.
+ * vexlink to override the controller radio.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -81,7 +81,7 @@ uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type);
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
  */
-uint32_t link_init_vexnet(uint8_t port, char* link_id, link_type_e_t type);
+uint32_t link_init_override(uint8_t port, char* link_id, link_type_e_t type);
 
 /**
  * Checks if a radio link on a port is active or not.
@@ -100,7 +100,7 @@ uint32_t link_init_vexnet(uint8_t port, char* link_id, link_type_e_t type);
 bool link_connected(uint8_t port);
 
 /**
- * Returns the bytes of data available to be read 
+ * Returns the bytes of data number of without protocol available to be read 
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -114,10 +114,10 @@ bool link_connected(uint8_t port);
  * \return PROS_ERR if port is not a link/radio, else the bytes available to be
  * read by the user.
  */
-uint32_t link_readable_size(uint8_t port);
+uint32_t link_raw_readable_size(uint8_t port);
 
 /**
- * Send raw serial data through vexlink, without any COBS protocol
+ * Send raw serial data through vexlink, without any protocol
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -139,7 +139,7 @@ uint32_t link_readable_size(uint8_t port);
 uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size);
 
 /**
- * Send raw serial data through vexlink, without any COBS protocol
+ * Send raw serial data through vexlink, without any protocol
  * 
  * This function uses the following values of errno when an error state is
  * reached:
