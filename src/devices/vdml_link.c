@@ -77,7 +77,7 @@ bool link_connected(uint8_t port) {
     return_port(port - 1, rtv);
 }
 
-uint32_t link_readable_size(uint8_t port) {
+uint32_t link_raw_readable_size(uint8_t port) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     uint32_t rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
     return_port(port - 1, rtv);
@@ -139,12 +139,12 @@ uint32_t link_transmit(uint8_t port, void* data, uint32_t data_size) {
     checksum ^= (msg_size >> 8) & 0xff;
     checksum ^= (msg_size) & 0xff;
     for(int i = 0; i < data_size; i++) {
-        checksum ^= data[i];
+        checksum ^= ((char*)data)[i];
     }
     // send protocol
     vexDeviceGenericRadioTransmit(device->device_info, &start_byte, 1);
-    vexDeviceGenericRadioTransmit(device->device_info, &msg_size, 2);
-    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)msg, data_size);
+    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)msg_size, 2);
+    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
     vexDeviceGenericRadioTransmit(device->device_info, &checksum, 1);
     return_port(port - 1, 1);
 }

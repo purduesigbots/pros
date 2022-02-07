@@ -85,10 +85,10 @@ void opcontrol() {
 	char buf[100];
 	while (true) {
 		printf("Readable Size: \n");
-		if(pros::c::link_readable_size(RX_LINK_PORT) > 0) {
+		if(pros::c::link_raw_readable_size(RX_LINK_PORT) > 0) {
 			pros::lcd::clear_line(0);
-			printf("Readable Size Actual: %d\n", pros::c::link_readable_size(RX_LINK_PORT));
-			pros::c::link_read_raw(RX_LINK_PORT, buf, pros::c::link_readable_size(RX_LINK_PORT));
+			printf("Readable Size Actual: %d\n", pros::c::link_raw_readable_size(RX_LINK_PORT));
+			pros::c::link_read_raw(RX_LINK_PORT, buf, pros::c::link_raw_readable_size(RX_LINK_PORT));
 			pros::lcd::print(0, "Recieved Message: %s", buf);
 		}
 		printf("2 transmits\n");
@@ -98,7 +98,7 @@ void opcontrol() {
 		pros::lcd::print(3, "TX Device Connected?: %d", pros::c::link_connected(TX_LINK_PORT));
 		pros::lcd::print(4, "RX Device Connected?: %d", pros::c::link_connected(RX_LINK_PORT));
 		pros::lcd::print(5, "TX Size: %d", pros::c::link_tx_size_raw(TX_LINK_PORT));
-		pros::lcd::print(6, "RX Size: %d", pros::c::link_readable_size(RX_LINK_PORT));
+		pros::lcd::print(6, "RX Size: %d", pros::c::link_raw_readable_size(RX_LINK_PORT));
 		pros::delay(2000);
 	}
 }
