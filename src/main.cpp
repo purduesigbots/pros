@@ -88,7 +88,7 @@ void opcontrol() {
 		if(pros::c::link_raw_readable_size(RX_LINK_PORT) > 0) {
 			pros::lcd::clear_line(0);
 			printf("Readable Size Actual: %d\n", pros::c::link_raw_readable_size(RX_LINK_PORT));
-			pros::c::link_read_raw(RX_LINK_PORT, buf, pros::c::link_raw_readable_size(RX_LINK_PORT));
+			pros::c::link_receive_raw(RX_LINK_PORT, buf, pros::c::link_raw_readable_size(RX_LINK_PORT));
 			pros::lcd::print(0, "Recieved Message: %s", buf);
 		}
 		printf("2 transmits\n");
