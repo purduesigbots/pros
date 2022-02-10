@@ -177,6 +177,8 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size);
  */
 uint32_t link_receive_raw(uint8_t port, void* dest, uint32_t data_size);
 
+// TODO: Write more function headers
+
 #ifdef __cplusplus
 }
 }

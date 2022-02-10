@@ -146,12 +146,12 @@ uint32_t link_transmit(uint8_t port, void* data, uint32_t data_size) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
-    uint16_t msg_size = (uint16_t)(data_size + PROTOCOL_SIZE);
+    // calculated checksum
     uint8_t checksum = start_byte;
-    checksum ^= (msg_size >> 8) & 0xff;
-    checksum ^= (msg_size) & 0xff;
+    checksum ^= (data_size >> 8) & 0xff;
+    checksum ^= (data_size) & 0xff;
     for(int i = 0; i < data_size; i++) {
-        checksum ^= ((char*)data)[i];
+        checksum ^= ((uint8_t*)data)[i];
     }
     // send protocol
     vexDeviceGenericRadioTransmit(device->device_info, &start_byte, 1);
@@ -196,9 +196,18 @@ uint32_t link_recieve(uint8_t port, void* data, uint32_t data_size) {
     if(rtv != data_size || _size != data_size) {
         _clear_rx_buf(device);
     }
-    vexDeviceGenericRadioRecieve(device->device_info, &checksum, 1);
+    uint8_t received_checksum;
+    vexDeviceGenericRadioRecieve(device->device_info, &received_checksum, 1);
     // check checksum
-
+    uint8_t calculated_checksum = start_byte;
+    calculated_checksum ^= (data_size >> 8) & 0xff;
+    calculated_checksum ^= (data_size) & 0xff;
+    for(int i = 0; i < data_size; i++) {
+        calculated_checksum ^= ((uint8_t*)data)[i];
+    }
+    if(calculated_checksum != received_checksum) {
+        // TODO: set errno, return PROS_ERR, kprintf some message about this
+    }
     return_port(port - 1, rtv);
 }
 
