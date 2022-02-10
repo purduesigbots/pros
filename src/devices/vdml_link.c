@@ -106,6 +106,8 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
+        errno = ENXIO;
+        return_port(port - 1, PROS_ERR);
     }
     if(data_size > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
