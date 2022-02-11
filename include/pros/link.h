@@ -152,7 +152,7 @@ uint32_t link_raw_transmittable_size(uint8_t port);
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
  * and 1 if it succeeded.
  */
-uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size);
+uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 
 /**
  * Send raw serial data through vexlink, without any protocol
@@ -175,7 +175,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size);
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
  * and 1 if it succeeded.
  */
-uint32_t link_receive_raw(uint8_t port, void* dest, uint32_t data_size);
+uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
 
 // TODO: Write more function headers
 

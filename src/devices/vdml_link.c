@@ -97,9 +97,9 @@ uint32_t link_raw_transmittable_size(uint8_t port) {
     return_port(port - 1, rtv);
 }
 
-uint32_t link_receive_raw(uint8_t port, void* dest, uint32_t data_size) {
+uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL); 
-    if(size > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
+    if(data_size > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
         errno = EINVAL;
         return_port(port - 1, 0);
     }
@@ -111,11 +111,11 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint32_t data_size) {
         errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
-    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, dest, size);
+    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, dest, data_size);
     return_port(port - 1, rtv);
 }
 
-uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size) {
+uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
@@ -132,7 +132,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint32_t data_size) {
     return_port(port - 1, 1);
 }
 
-uint32_t link_transmit(uint8_t port, void* data, uint32_t data_size) {
+uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
@@ -148,20 +148,24 @@ uint32_t link_transmit(uint8_t port, void* data, uint32_t data_size) {
     }
     // calculated checksum
     uint8_t checksum = start_byte;
-    checksum ^= (data_size >> 8) & 0xff;
-    checksum ^= (data_size) & 0xff;
+    uint8_t size_tx_buf[2];
+    size_tx_buf[1] = (data_size >> 8) & 0xff;
+    size_tx_buf[0] = (data_size) & 0xff;
+    checksum ^= size_tx_buf[1];
+    checksum ^= size_tx_buf[0];
+    
     for(int i = 0; i < data_size; i++) {
         checksum ^= ((uint8_t*)data)[i];
     }
     // send protocol
     vexDeviceGenericRadioTransmit(device->device_info, &start_byte, 1);
-    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)msg_size, 2);
+    vexDeviceGenericRadioTransmit(device->device_info, size_tx_buf, 2);
     vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
     vexDeviceGenericRadioTransmit(device->device_info, &checksum, 1);
     return_port(port - 1, 1);
 }
 
-uint32_t link_recieve(uint8_t port, void* data, uint32_t data_size) {
+uint32_t link_recieve(uint8_t port, void* data, uint16_t data_size) {
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
@@ -179,7 +183,7 @@ uint32_t link_recieve(uint8_t port, void* data, uint32_t data_size) {
     uint8_t header_byte;
     uint8_t received_size;
     // process protocol
-    received_size = vexDeviceGenericRadioReceive(device->device_info, &header, 1); // 0x33
+    received_size = vexDeviceGenericRadioReceive(device->device_info, &header_byte, 1); // 0x33
     if(start_byte != header_byte || received_size != 1) {
         // TODO: set errno, return PROS_ERR, kprintf some message about this
     }
@@ -197,7 +201,7 @@ uint32_t link_recieve(uint8_t port, void* data, uint32_t data_size) {
         _clear_rx_buf(device);
     }
     uint8_t received_checksum;
-    vexDeviceGenericRadioRecieve(device->device_info, &received_checksum, 1);
+    received_size = vexDeviceGenericRadioReceive(device->device_info, &received_checksum, 1);
     // check checksum
     uint8_t calculated_checksum = start_byte;
     calculated_checksum ^= (data_size >> 8) & 0xff;
@@ -205,7 +209,7 @@ uint32_t link_recieve(uint8_t port, void* data, uint32_t data_size) {
     for(int i = 0; i < data_size; i++) {
         calculated_checksum ^= ((uint8_t*)data)[i];
     }
-    if(calculated_checksum != received_checksum) {
+    if(calculated_checksum != received_checksum || received_size != 1) {
         // TODO: set errno, return PROS_ERR, kprintf some message about this
     }
     return_port(port - 1, rtv);
