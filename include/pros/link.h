@@ -146,7 +146,7 @@ uint32_t link_raw_transmittable_size(uint8_t port);
  * 
  * \param port 
  *      The port of the radio for the intended link.
- * \param data
+ * \param data_size
  *      Buffer with data to send
  * 
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
@@ -155,7 +155,7 @@ uint32_t link_raw_transmittable_size(uint8_t port);
 uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 
 /**
- * Send raw serial data through vexlink, without any protocol
+ * Receive raw serial data through vexlink, without any protocol
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -177,7 +177,69 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
  */
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
 
-// TODO: Write more function headers
+/**
+ * Send packeted through vexlink, with a checksum and start byte.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * EBUSY - The transmitter buffer is still busy with a previous transmission, and there is no 
+ * room in the FIFO buffer (queue) to transmit the data.
+ * EINVAL - The data given is NULL
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ * \param data_size
+ *      Buffer with data to send
+ * 
+ * \return PROS_ERR if port is not a link, 0 if the link is busy, 
+ * and 1 if it succeeded.
+ */
+uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
+
+/**
+ * Receive packeted through vexlink, with a checksum and start byte.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * EINVAL - The destination given is NULL, or the size given is larger than the FIFO buffer 
+ * or destination buffer. 
+ * EBADMSG - Protocol error related to start byte, data size, or checksum.
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ * \param dest
+ *      Destination buffer to read data to
+ * \param data_size
+ *      Bytes of data to be read to the destination buffer
+ * 
+ * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy, 
+ * and 1 if it succeeded.
+ */
+uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
+
+/**
+ * Clear the receive buffer of the link, and discarding the data.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a radio.
+ * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+ * 
+ * \param port 
+ *      The port of the radio for the intended link.
+ * \param data_size
+ *      Buffer with data to send
+ * 
+ * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
+ */
+uint32_t link_clear_receive_buf(uint8_t port);
 
 #ifdef __cplusplus
 }
