@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 5
 #define PROS_VERSION_PATCH 5
-#define PROS_VERSION_STRING "3.5.5-dirty.31.56c0e84"
+#define PROS_VERSION_STRING "3.5.5-dirty.42.603a795"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
@@ -76,6 +76,7 @@
 #include "pros/rtos.hpp"
 #include "pros/screen.hpp"
 #include "pros/vision.hpp"
+#include "pros/link.hpp"
 #endif
 
 #endif  // _PROS_API_H_
