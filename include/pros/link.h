@@ -146,8 +146,10 @@ uint32_t link_raw_transmittable_size(uint8_t port);
  * 
  * \param port 
  *      The port of the radio for the intended link.
- * \param data_size
+ * \param data
  *      Buffer with data to send
+ * \param data_size
+ *      Bytes of data to be read to the destination buffer
  * 
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
  * and 1 if it succeeded.
@@ -191,8 +193,10 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
  * 
  * \param port 
  *      The port of the radio for the intended link.
- * \param data_size
+ * \param data
  *      Buffer with data to send
+ * \param data_size
+ *      Bytes of data to be read to the destination buffer
  * 
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
  * and 1 if it succeeded.
@@ -234,8 +238,6 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
  * 
  * \param port 
  *      The port of the radio for the intended link.
- * \param data_size
- *      Buffer with data to send
  * 
  * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
  */
