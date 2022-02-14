@@ -19,8 +19,8 @@
 #include "pros/link.hpp"
 
 namespace pros {
-    Link::Link(const std::uint8_t port, char* link_id, link_type_e_t type, bool ov = false) : _port(port) {
-        (ov) ? pros::c::link_init_override(_port, link_id, type) : pros::c::link_init(_port, link_id, type);
+    Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : _port(port) {
+        (ov) ? pros::c::link_init_override(_port, link_id.c_str(), type) : pros::c::link_init(_port, link_id.c_str(), type);
     }
 
     bool Link::connected() {

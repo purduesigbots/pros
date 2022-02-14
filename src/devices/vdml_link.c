@@ -24,10 +24,10 @@
 
 #define PROTOCOL_SIZE         4 // Protocol Size 
 
-static const uint8_t start_byte = 0x33;
+static const uint8_t START_BYTE = 0x33;
 
 // internal function for clearing the rx buffer 
-uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
+static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
     uint8_t buf[LINK_BUFFER_SIZE];
     return vexDeviceGenericRadioReceive(device->device_info, 
     (uint8_t*)buf, 
@@ -35,7 +35,7 @@ uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
 }
 
 // internal wrapper for initialization
-inline uint32_t _link_init_wrapper(uint8_t port, char* link_id, link_type_e_t type, bool ov) {
+inline uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
     // not used because it's a generic serial device 
     // claim_port_i(port - 1, E_DEVICE_RADIO);
 	if (!VALIDATE_PORT_NO(port - 1)) {
@@ -53,15 +53,15 @@ inline uint32_t _link_init_wrapper(uint8_t port, char* link_id, link_type_e_t ty
 		errno = EACCES;
 		return PROS_ERR;
 	}
-    vexDeviceGenericRadioConnection(device->device_info, link_id, type, ov);
+    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
     return_port(port - 1, 1);
 }
 
-uint32_t link_init(uint8_t port, char* link_id, link_type_e_t type) {
+uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
     return _link_init_wrapper(port, link_id, type, false);
 }
 
-uint32_t link_init_override(uint8_t port, char* link_id, link_type_e_t type) {
+uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t type) {
     return _link_init_wrapper(port, link_id, type, true);
 }
 
@@ -97,7 +97,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
         errno = EBUSY;
         return_port(port - 1, 0);
     }
-    uint32_t vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
+    uint32_t rtv = vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
     return_port(port - 1, rtv);
 }
 
@@ -135,7 +135,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
         return_port(port - 1, PROS_ERR);
     }
     // calculated checksum
-    uint8_t checksum = start_byte;
+    uint8_t checksum = START_BYTE;
     uint8_t size_tx_buf[2];
     size_tx_buf[1] = (data_size >> 8) & 0xff;
     size_tx_buf[0] = (data_size) & 0xff;
@@ -147,7 +147,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     }
 
     // send protocol
-    vexDeviceGenericRadioTransmit(device->device_info, &start_byte, 1);
+    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)&START_BYTE, 1);
     vexDeviceGenericRadioTransmit(device->device_info, size_tx_buf, 2);
     vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
     vexDeviceGenericRadioTransmit(device->device_info, &checksum, 1);
@@ -173,7 +173,7 @@ uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
     uint8_t received_size;
     // process protocol
     received_size = vexDeviceGenericRadioReceive(device->device_info, &header_byte, 1); // 0x33
-    if(start_byte != header_byte || received_size != 1) {
+    if(START_BYTE != header_byte || received_size != 1) {
         kprintf("[VEXLINK] Invalid Header Byte Received Port %d, header byte: %x", port, header_byte);
         errno = EBADMSG;
         return_port(port - 1, PROS_ERR);
@@ -198,7 +198,7 @@ uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
     uint8_t received_checksum;
     received_size = vexDeviceGenericRadioReceive(device->device_info, &received_checksum, 1);
     // check checksum
-    uint8_t calculated_checksum = start_byte;
+    uint8_t calculated_checksum = START_BYTE;
     calculated_checksum ^= (data_size >> 8) & 0xff;
     calculated_checksum ^= (data_size) & 0xff;
     for(int i = 0; i < data_size; i++) {

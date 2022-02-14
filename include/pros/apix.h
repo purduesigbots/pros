@@ -378,10 +378,9 @@ typedef enum v5_device_e {
 	E_DEVICE_OPTICAL = 16,
 	E_DEVICE_GPS = 20,
 	E_DEVICE_SERIAL = 129,
-	E_DEVICE_GENERIC = __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
+	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
-#pragma deprecated(E_DEVICE_SERIAL)
 
 /*
  * Registers a device in the given zero-indexed port

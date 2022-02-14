@@ -19,6 +19,7 @@
 #define _PROS_LINK_HPP_
 
 #include <cstdint>
+#include <string>
 
 #include "pros/link.h"
 
@@ -46,12 +47,12 @@ class Link {
 	 *      Indicates whether the radio link on the brain is a transmitter or reciever,
 	 *      with the transmitter having double the transmitting bandwidth as the recieving
 	 *      end (1040 bytes/s vs 520 bytes/s).
-	 * \param override
+	 * \param ov
 	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 */
-	Link(const uint8_t port, char* link_id, link_type_e_t type, bool override = false);
+	Link(const uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
 	/**
 	 * Checks if a radio link on a port is active or not.
