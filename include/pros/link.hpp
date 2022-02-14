@@ -26,8 +26,6 @@ namespace pros {
 class Link {
 	private:
 	std::uint8_t _port;
-	char* _link_id;
-	link_type_e_t _type;
 
 	public:
 	/**
