@@ -22,14 +22,13 @@
  #include "vdml/vdml.h"
  #include <string.h>
 
-#define FIFO_SIZE           512 // VEX Defined TX/RX Queue Size
 #define PROTOCOL_SIZE         4 // Protocol Size 
 
-static uint8_t start_byte = 0x33;
+static const uint8_t start_byte = 0x33;
 
 // internal function for clearing the rx buffer 
 uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
-    uint8_t buf[FIFO_SIZE];
+    uint8_t buf[LINK_BUFFER_SIZE];
     return vexDeviceGenericRadioReceive(device->device_info, 
     (uint8_t*)buf, 
     vexDeviceGenericRadioReceiveAvail(device->device_info));

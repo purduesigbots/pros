@@ -32,6 +32,8 @@ typedef enum link_type_e {
     E_LINK_TRANSMITTER
 } link_type_e_t;
 
+#define LINK_BUFFER_SIZE 512
+
 #ifdef __cplusplus
 namespace c {
 #endif
