@@ -186,6 +186,18 @@ class Motor {
 	virtual std::int32_t move_voltage(const std::int32_t voltage) const;
 
 	/**
+	 * Sets the output voltage for the motor to 0, stopping the motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t stop(void) const;
+
+	/**
 	 * Changes the output velocity for a profiled movement (motor_move_absolute()
 	 * or motor_move_relative()). This will have no effect if the motor is not
 	 * following a profiled movement.

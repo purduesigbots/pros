@@ -61,6 +61,10 @@ int32_t motor_move(uint8_t port, int32_t voltage) {
 	return motor_move_voltage(port, command);
 }
 
+int32_t motor_stop(uint8_t port) {
+	return motor_move_voltage(port, 0);
+}
+
 int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);

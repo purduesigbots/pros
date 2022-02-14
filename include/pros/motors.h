@@ -57,6 +57,22 @@ namespace c {
 int32_t motor_move(uint8_t port, int32_t voltage);
 
 /**
+ * Sets the voltage for the motor to 0, stopping the motor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ * 
+ * \param port
+ *        The V5 port number from 1-21
+ * 
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t motor_stop(uint8_t port);
+
+/**
  * Sets the target absolute position for the motor to move to.
  *
  * This movement is relative to the position of the motor when initialized or
