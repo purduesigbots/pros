@@ -100,7 +100,7 @@ uint32_t link_init_override(uint8_t port, char* link_id, link_type_e_t type);
 bool link_connected(uint8_t port);
 
 /**
- * Returns the bytes of data number of without protocol available to be read 
+ * Returns the bytes of data available to be read  
  * 
  * This function uses the following values of errno when an error state is
  * reached:
