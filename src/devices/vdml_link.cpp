@@ -35,19 +35,19 @@ namespace pros {
         return pros::c::link_raw_transmittable_size(_port);
     }
 
-    std::uint32_t Link::transmit_raw(void* data, uint16_t data_size) {
+    std::uint32_t Link::transmit_raw(void* data, std::uint16_t data_size) {
         return pros::c::link_transmit_raw(_port, data, data_size);
     }
 
-    std::uint32_t Link::receive_raw(void* dest, uint16_t data_size) {
+    std::uint32_t Link::receive_raw(void* dest, std::uint16_t data_size) {
         return pros::c::link_receive_raw(_port, dest, data_size);
     }
 
-    std::uint32_t Link::transmit(void* data, uint16_t data_size) {
+    std::uint32_t Link::transmit(void* data, std::uint16_t data_size) {
         return pros::c::link_transmit(_port, data, data_size);
     }
 
-    std::uint32_t Link::receive(void* data, uint16_t data_size) {
+    std::uint32_t Link::receive(void* data, std::uint16_t data_size) {
         return pros::c::link_receive(_port, data, data_size);
     }
 

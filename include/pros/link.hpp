@@ -52,7 +52,7 @@ class Link {
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 */
-	Link(const uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
+	Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
 	/**
 	 * Checks if a radio link on a port is active or not.
@@ -79,7 +79,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link/radio, else the bytes available to be
 	 * read by the user.
 	 */
-	uint32_t raw_receivable_size();
+	std::uint32_t raw_receivable_size();
 
 	/**
 	 * Returns the bytes of data available in transmission buffer without account for protocol.
@@ -92,7 +92,7 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link/radio,
 	 */
-	uint32_t raw_transmittable_size();
+	std::uint32_t raw_transmittable_size();
 
 	/**
 	 * Send raw serial data through vexlink, without any protocol
@@ -114,7 +114,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
 	 * and 1 if it succeeded.
 	 */
-	uint32_t transmit_raw(void* data, uint16_t data_size);
+	std::uint32_t transmit_raw(void* data, std::uint16_t data_size);
 
 	/**
 	 * Receive raw serial data through vexlink, without any protocol
@@ -135,7 +135,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
 	 * and 1 if it succeeded.
 	 */
-	uint32_t receive_raw(void* dest, uint16_t data_size);
+	std::uint32_t receive_raw(void* dest, std::uint16_t data_size);
 
 	/**
 	 * Send packeted through vexlink, with a checksum and start byte.
@@ -157,7 +157,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
 	 * and 1 if it succeeded.
 	 */
-	uint32_t transmit(void* data, uint16_t data_size);
+	std::uint32_t transmit(void* data, std::uint16_t data_size);
 
 	/**
 	 * Receive packeted through vexlink, with a checksum and start byte.
@@ -179,7 +179,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy,
 	 * and 1 if it succeeded.
 	 */
-	uint32_t receive(void* dest, uint16_t data_size);
+	std::uint32_t receive(void* dest, std::uint16_t data_size);
 
 	/**
 	 * Clear the receive buffer of the link, and discarding the data.
@@ -192,7 +192,7 @@ class Link {
 
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
-	uint32_t clear_receive_buf();
+	std::uint32_t clear_receive_buf();
 };
 }  // namespace pros
 
