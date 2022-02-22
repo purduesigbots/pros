@@ -47,8 +47,8 @@ namespace pros {
         return pros::c::link_transmit(_port, data, data_size);
     }
 
-    std::uint32_t Link::receive(void* data, std::uint16_t data_size) {
-        return pros::c::link_receive(_port, data, data_size);
+    std::uint32_t Link::receive(void* dest, std::uint16_t data_size) {
+        return pros::c::link_receive(_port, dest, data_size);
     }
 
     std::uint32_t Link::clear_receive_buf() {

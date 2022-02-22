@@ -104,7 +104,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
 }
 
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size) {
-    if(data == NULL) {
+    if(dest == NULL) {
         errno = EINVAL;
         return PROS_ERR;
     }
@@ -144,7 +144,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     checksum ^= size_tx_buf[0];
     
     for(int i = 0; i < data_size; i++) {
-        checksum ^= ((uint8_t*)data)[i];
+        checksum ^= ((uint8_t*)dest)[i];
     }
     uint32_t rtv = 0;
     // send protocol
@@ -155,8 +155,8 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     return_port(port - 1, rtv);
 }
 
-uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
-    if(data == NULL) {
+uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
+    if(dest == NULL) {
         errno = EINVAL;
         return PROS_ERR;
     }
@@ -189,7 +189,7 @@ uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
         return_port(port - 1, PROS_ERR);
     }
     // receive data
-    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)data, data_size);
+    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)dest, data_size);
     if(rtv != data_size || received_data_size != data_size) {
         kprintf("[VEXLINK] Invalid Data Received Port %d, flushing RX buffer!\n", port);
         errno = EBADMSG;
@@ -202,7 +202,7 @@ uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
     calculated_checksum ^= (data_size >> 8) & 0xff;
     calculated_checksum ^= (data_size) & 0xff;
     for(int i = 0; i < data_size; i++) {
-        calculated_checksum ^= ((uint8_t*)data)[i];
+        calculated_checksum ^= ((uint8_t*)dest)[i];
     }
     if(calculated_checksum != received_checksum || received_size != 1) {
         kprintf("[VEXLINK] Checksum Mismatch Port %d!, Checksum: %x\n", port, received_checksum);
