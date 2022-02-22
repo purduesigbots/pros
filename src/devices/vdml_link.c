@@ -144,7 +144,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     checksum ^= size_tx_buf[0];
     
     for(int i = 0; i < data_size; i++) {
-        checksum ^= ((uint8_t*)dest)[i];
+        checksum ^= ((uint8_t*)data)[i];
     }
     uint32_t rtv = 0;
     // send protocol
