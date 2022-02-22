@@ -44,7 +44,7 @@ inline uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-// by default, the vexlink radio in the lower port should be E_DEVICE_NONE
+    // by default, the vexlink radio in the lower port should be E_DEVICE_NONE
     // or, the only radio on the brain
     v5_device_e_t plugged_device = registry_get_plugged_type(port - 1);
     if(plugged_device != E_DEVICE_NONE && plugged_device != E_DEVICE_RADIO) {
@@ -104,24 +104,28 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
 }
 
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size) {
-    claim_port_i(port - 1, E_DEVICE_SERIAL); 
-    if(data_size > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
+    if(data == NULL) {
         errno = EINVAL;
-        return_port(port - 1, 0);
+        return PROS_ERR;
     }
+    claim_port_i(port - 1, E_DEVICE_SERIAL); 
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
     }
-    if(dest == NULL) {
+    if(data_size > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
         errno = EINVAL;
-        return_port(port - 1, PROS_ERR);
+        return_port(port - 1, 0);
     }
     uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)dest, data_size);
     return_port(port - 1, rtv);
 }
 
 uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
+    if(data == NULL) {
+        errno = EINVAL;
+        return PROS_ERR;
+    }
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
@@ -129,12 +133,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     }
     if(data_size + PROTOCOL_SIZE > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
-        kprintf("Data Size too big: %d\n", data_size + PROTOCOL_SIZE);
         return_port(port - 1, 0);
-    }
-    if(data == NULL) {
-        errno = EINVAL;
-        return_port(port - 1, PROS_ERR);
     }
     // calculated checksum
     uint8_t checksum = START_BYTE;
@@ -157,13 +156,13 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
 }
 
 uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
+    if(data == NULL) {
+        errno = EINVAL;
+        return PROS_ERR;
+    }
     claim_port_i(port - 1, E_DEVICE_SERIAL);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
-        return_port(port - 1, PROS_ERR);
-    }
-    if(data == NULL) {
-        errno = EINVAL;
         return_port(port - 1, PROS_ERR);
     }
     if(data_size + PROTOCOL_SIZE > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
