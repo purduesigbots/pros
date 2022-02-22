@@ -38,11 +38,13 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
 inline uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
     // not used because it's a generic serial device 
     // claim_port_i(port - 1, E_DEVICE_RADIO);
+    // the reason behind why it can be a radio or a serial device is because
+    // a radio is not the highest port radio, it will not be registered with vexos.
 	if (!VALIDATE_PORT_NO(port - 1)) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-    // by default, the vexlink radio in the lower port should be by default E_DEVICE_NONE
+// by default, the vexlink radio in the lower port should be E_DEVICE_NONE
     // or, the only radio on the brain
     v5_device_e_t plugged_device = registry_get_plugged_type(port - 1);
     if(plugged_device != E_DEVICE_NONE && plugged_device != E_DEVICE_RADIO) {
@@ -145,13 +147,13 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     for(int i = 0; i < data_size; i++) {
         checksum ^= ((uint8_t*)data)[i];
     }
-
+    uint32_t rtv = 0;
     // send protocol
-    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)&START_BYTE, 1);
-    vexDeviceGenericRadioTransmit(device->device_info, size_tx_buf, 2);
-    vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
-    vexDeviceGenericRadioTransmit(device->device_info, &checksum, 1);
-    return_port(port - 1, 1);
+    rtv += vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)&START_BYTE, 1);
+    rtv += vexDeviceGenericRadioTransmit(device->device_info, size_tx_buf, 2);
+    rtv += vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
+    rtv += vexDeviceGenericRadioTransmit(device->device_info, &checksum, 1);
+    return_port(port - 1, rtv);
 }
 
 uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
@@ -179,18 +181,17 @@ uint32_t link_receive(uint8_t port, void* data, uint16_t data_size) {
         return_port(port - 1, PROS_ERR);
     }
     // datasize
-    uint16_t _size;
-    received_size = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)&_size, 2);
-    if(received_size != 2 || _size != data_size) {
+    uint16_t received_data_size;
+    received_size = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)&received_data_size, 2);
+    if(received_size != 2 || received_data_size != data_size) {
         _clear_rx_buf(device);
-        kprintf("[VEXLINK] Invalid Data Size (Size: %d ) Received Port %d, flushing RX buffer!\n", _size, port);
+        kprintf("[VEXLINK] Invalid Data Size (Size: %d ) Received Port %d, flushing RX buffer!\n", received_data_size, port);
         errno = EBADMSG;
         return_port(port - 1, PROS_ERR);
     }
     // receive data
-    uint32_t rtv;
-    rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)data, data_size);
-    if(rtv != data_size || _size != data_size) {
+    uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)data, data_size);
+    if(rtv != data_size || received_data_size != data_size) {
         kprintf("[VEXLINK] Invalid Data Received Port %d, flushing RX buffer!\n", port);
         errno = EBADMSG;
         _clear_rx_buf(device);

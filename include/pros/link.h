@@ -39,7 +39,8 @@ namespace c {
 #endif
 
 /**
- * Initializes a link on a radio port, with an indicated type.
+ * Initializes a link on a radio port, with an indicated type. There might be a
+ * 1 to 2 second delay from when this function is called to when the link is initializes.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -63,7 +64,8 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 
 /**
  * Initializes a link on a radio port, with an indicated type and the ability for
- * vexlink to override the controller radio.
+ * vexlink to override the controller radio. There might be a 1 to 2 second delay
+ * from when this function is called to when the link is initializes.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -182,7 +184,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
 
 /**
- * Send packeted through vexlink, with a checksum and start byte.
+ * Send packeted message through vexlink, with a checksum and start byte.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -201,12 +203,12 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
  *      Bytes of data to be read to the destination buffer
  * 
  * \return PROS_ERR if port is not a link, 0 if the link is busy, 
- * and 1 if it succeeded.
+ * and the successfully transmitted size if it succeeded.
  */
 uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
 
 /**
- * Receive packeted through vexlink, with a checksum and start byte.
+ * Receive packeted message through vexlink, with a checksum and start byte.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -225,7 +227,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
  *      Bytes of data to be read to the destination buffer
  * 
  * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy, 
- * and 1 if it succeeded.
+ * and successfully received size if it succeeded.
  */
 uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
 

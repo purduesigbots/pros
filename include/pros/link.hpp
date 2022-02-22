@@ -30,7 +30,8 @@ class Link {
 
 	public:
 	/**
-	 * Initializes a link on a radio port, with an indicated type.
+	 * Initializes a link on a radio port, with an indicated type. There might be a
+	 * 1 to 2 second delay from when this function is called to when the link is initializes.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -138,7 +139,7 @@ class Link {
 	std::uint32_t receive_raw(void* dest, std::uint16_t data_size);
 
 	/**
-	 * Send packeted through vexlink, with a checksum and start byte.
+	 * Send packeted message through vexlink, with a checksum and start byte.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -154,13 +155,13 @@ class Link {
 	 * \param data_size
 	 *      Bytes of data to be read to the destination buffer
 	 *
-	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
-	 * and 1 if it succeeded.
+	 * \return PROS_ERR if port is not a link, 0 if the link is busy, 
+	 * and the successfully transmitted size if it succeeded.
 	 */
 	std::uint32_t transmit(void* data, std::uint16_t data_size);
 
 	/**
-	 * Receive packeted through vexlink, with a checksum and start byte.
+	 * Receive packeted message through vexlink, with a checksum and start byte.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -176,8 +177,8 @@ class Link {
 	 * \param data_size
 	 *      Bytes of data to be read to the destination buffer
 	 *
-	 * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy,
-	 * and 1 if it succeeded.
+	 * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy, 
+	 * and successfully received size if it succeeded.
 	 */
 	std::uint32_t receive(void* dest, std::uint16_t data_size);
 
