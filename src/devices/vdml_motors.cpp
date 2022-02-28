@@ -64,7 +64,7 @@ std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
 }
 
 std::int32_t Motor::stop(void) const {
-	return motor_stop(_port);
+	return motor_brake(_port);
 }
 
 std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {

@@ -57,7 +57,7 @@ namespace c {
 int32_t motor_move(uint8_t port, int32_t voltage);
 
 /**
- * Sets the voltage for the motor to 0, stopping the motor
+ * Sets the velocity for the motor to 0, stopping the motor with respect to set brake mode.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -70,7 +70,7 @@ int32_t motor_move(uint8_t port, int32_t voltage);
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
-int32_t motor_stop(uint8_t port);
+int32_t motor_brake(uint8_t port);
 
 /**
  * Sets the target absolute position for the motor to move to.
