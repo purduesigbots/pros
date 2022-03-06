@@ -308,6 +308,21 @@ task_t task_get_current();
 uint32_t task_notify(task_t task);
 
 /**
+ * 
+ * Waits until specified task is complete and deleted, then continues to execute the program.
+ * Analogous to std::thread::join in C++.
+ *
+ * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+ * details.
+ * 
+ * \param task
+ *        The task to wait on.
+ * 
+ * \return void
+ */
+void task_join(task_t task);
+
+/**
  * Sends a notification to a task, optionally performing some action. Will also
  * retrieve the value of the notification in the target task before modifying
  * the notification value.
