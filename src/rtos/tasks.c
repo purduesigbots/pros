@@ -4750,8 +4750,8 @@ uint32_t uxReturn;
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
 	void task_join(task_t task) {
-    	task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
-    	while (!pros::Task::notify_take(true, 20));
+    		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
+    		while (!pros::Task::notify_take(true, 20));
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */

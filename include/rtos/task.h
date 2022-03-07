@@ -1751,24 +1751,6 @@ int32_t task_notify(task_t xTaskToNotify);
 
 /**
  * task. h
- * <PRE>void task_join( task_t taskToJoin );</PRE>
- *
- * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this macro
- * to be available.
- * 
- * Waits until specified task is complete and deleted, then continues to execute the program.
- * Analogous to std::thread::join in C++.
- *
- * @param xTaskToJoin The handle of the task to wait on.
- * 
- * \defgroup task_join task_join
- * \ingroup TaskNotifications
- */
-
-void task_join(task_t xTaskToJoin);
-
-/**
- * task. h
  * <PRE>void vTaskNotifyGiveFromISR( task_t xTaskHandle, int32_t *pxHigherPriorityTaskWoken );
  *
  * configUSE_TASK_NOTIFICATIONS must be undefined or defined as 1 for this macro
