@@ -35,9 +35,8 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
 }
 
 // internal wrapper for initialization
-inline uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
-    // not used because it's a generic serial device 
-    // claim_port_i(port - 1, E_DEVICE_RADIO);
+static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
+    // claim_port_i(port - 1, E_DEVICE_RADIO); is not used because it's a generic serial device 
     // the reason behind why it can be a radio or a serial device is because
     // a radio is not the highest port radio, it will not be registered with vexos.
 	if (!VALIDATE_PORT_NO(port - 1)) {
@@ -166,7 +165,6 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
         return_port(port - 1, PROS_ERR);
     }
     if(data_size + PROTOCOL_SIZE > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
-        _clear_rx_buf(device);
         errno = EBUSY;
         return_port(port - 1, 0);
     }
@@ -194,6 +192,7 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
         kprintf("[VEXLINK] Invalid Data Received Port %d, flushing RX buffer!\n", port);
         errno = EBADMSG;
         _clear_rx_buf(device);
+        return_port(port - 1, PROS_ERR);
     }
     uint8_t received_checksum;
     received_size = vexDeviceGenericRadioReceive(device->device_info, &received_checksum, 1);

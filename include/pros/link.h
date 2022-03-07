@@ -121,7 +121,7 @@ bool link_connected(uint8_t port);
 uint32_t link_raw_receivable_size(uint8_t port);
 
 /**
- * Returns the bytes of data available in transmission buffer without account for protocol.
+ * Returns the bytes of data available in transmission buffer.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -137,7 +137,7 @@ uint32_t link_raw_receivable_size(uint8_t port);
 uint32_t link_raw_transmittable_size(uint8_t port);
 
 /**
- * Send raw serial data through vexlink, without any protocol
+ * Send raw serial data through vexlink.
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -161,7 +161,7 @@ uint32_t link_raw_transmittable_size(uint8_t port);
 uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 
 /**
- * Receive raw serial data through vexlink, without any protocol
+ * Receive raw serial data through vexlink.
  * 
  * This function uses the following values of errno when an error state is
  * reached:

@@ -83,7 +83,7 @@ class Link {
 	std::uint32_t raw_receivable_size();
 
 	/**
-	 * Returns the bytes of data available in transmission buffer without account for protocol.
+	 * Returns the bytes of data available in transmission buffer.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -96,7 +96,7 @@ class Link {
 	std::uint32_t raw_transmittable_size();
 
 	/**
-	 * Send raw serial data through vexlink, without any protocol
+	 * Send raw serial data through vexlink.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -118,7 +118,7 @@ class Link {
 	std::uint32_t transmit_raw(void* data, std::uint16_t data_size);
 
 	/**
-	 * Receive raw serial data through vexlink, without any protocol
+	 * Receive raw serial data through vexlink.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
