@@ -1,5 +1,6 @@
 /**
  * \file pros/motors.h
+ * \ingroup c-motors
  *
  * Contains prototypes for the V5 Motor-related functions.
  *
@@ -9,11 +10,14 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-motors Motors C API
+ * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
  */
 
 #ifndef _PROS_MOTORS_H_
@@ -28,11 +32,18 @@ namespace pros {
 namespace c {
 #endif
 
-/******************************************************************************/
-/**                         Motor movement functions                         **/
-/**                                                                          **/
-/**          These functions allow programmers to make motors move           **/
-/******************************************************************************/
+/**
+ * \ingroup c-motors
+ */
+
+/**
+ * \addtogroup c-motors
+ *  @{
+ */
+
+/// \name Motor movement functions
+/// These functions allow programmers to make motors move
+///@{
 
 /**
  * Sets the voltage for the motor from -127 to 127.
@@ -41,6 +52,8 @@ namespace c {
  * stick for simple opcontrol use. The actual behavior of the motor is analogous
  * to use of motor_move_voltage(), or motorSet() from the PROS 2 API.
  *
+ * \note This function will not respect brake modes, and simply sets the voltage to the desired value.
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -53,6 +66,16 @@ namespace c {
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_move(uint8_t port, int32_t voltage);
 
@@ -83,8 +106,8 @@ int32_t motor_brake(uint8_t port);
  * This movement is relative to the position of the motor when initialized or
  * the position when it was most recently reset with motor_set_zero_position().
  *
- * \note This function simply sets the target for the motor, it does not block
- * program execution until the movement finishes.
+ * \note This function simply sets the target for the motor, it does not block program
+ * execution until the movement finishes. The example code shows how to block until a movement is finished.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -100,6 +123,27 @@ int32_t motor_brake(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
+ *     // Continue running this loop as long as the motor is not within +-5 units of its goal
+ *     delay(2);
+ *   }
+ *   motor_move_absolute(1, 100, 100); // This will not cause a movement
+ *   while(!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
+ *     delay(2);
+ *   }
+ * 
+ *   motor_tare_position(1);
+ *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity);
 
@@ -112,7 +156,8 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  * is.
  *
  * \note This function simply sets the target for the motor, it does not block
- * program execution until the movement finishes.
+ * program execution until the movement finishes. The example code shows how to
+ * block until a movement is finished.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -128,6 +173,22 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_relative(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
+ *     // Continue running this loop as long as the motor is not within +-5 units of its goal
+ *     delay(2);
+ *   }
+ * 
+ *   motor_move_relative(1, 100, 100); // Also moves 100 units forward
+ *   while (!((motor_get_position(1) < 205) && (motor_get_position(1) > 195))) {
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity);
 
@@ -153,6 +214,15 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_velocity(1, 100);
+ *   delay(1000); // Move at 100 RPM for 1 second
+ *   motor_move_velocity(1, 0);
+ * }
+ * \endcode
  */
 int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
 
@@ -163,6 +233,9 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as a motor
+ * 
+ * \note This function will not respect brake modes, and simply sets the
+ * voltage to the desired value.
  *
  * \param port
  *        The V5 port number from 1-21
@@ -171,6 +244,15 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_voltage(1, 12000);
+ *   delay(1000); // Move at max voltage for 1 second
+ *   motor_move_voltage(1, 0);
+ * }
+ * \endcode
  */
 int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
 
@@ -192,6 +274,15 @@ int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_absolute(1, 100, 100);
+ *   delay(100);
+ *   motor_modify_profiled_velocity(1, 0); // Stop the motor early
+ * }
+ * \endcode
  */
 int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
 
@@ -208,6 +299,15 @@ int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
  *
  * \return The target position in its encoder units or PROS_ERR_F if the
  * operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_absolute(1, 100, 100);
+ *   printf("Motor Target: %d\n", motor_get_target_position(1));
+ *   // Prints 100
+ * }
+ * \endcode
  */
 double motor_get_target_position(uint8_t port);
 
@@ -224,14 +324,25 @@ double motor_get_target_position(uint8_t port);
  *
  * \return The commanded motor velocity from +-100, +-200, or +-600, or PROS_ERR
  * if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move_velocity(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Commanded Velocity: %d\n", motor_get_target_velocity(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_target_velocity(uint8_t port);
 
-/******************************************************************************/
-/**                        Motor telemetry functions                         **/
-/**                                                                          **/
-/**    These functions allow programmers to collect telemetry from motors    **/
-/******************************************************************************/
+///@}
+
+/// \name Motor telemetry functions
+/// These functions allow programmers to collect telemetry from motors
+///@{
 
 /**
  * Gets the actual velocity of the motor.
@@ -246,6 +357,17 @@ int32_t motor_get_target_velocity(uint8_t port);
  *
  * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Actual velocity: %lf\n", motor_get_actual_velocity(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_actual_velocity(uint8_t port);
 
@@ -262,6 +384,17 @@ double motor_get_actual_velocity(uint8_t port);
  *
  * \return The motor's current in mA or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Current Draw: %d\n", motor_get_current_draw(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_current_draw(uint8_t port);
 
@@ -278,6 +411,17 @@ int32_t motor_get_current_draw(uint8_t port);
  *
  * \return 1 for moving in the positive direction, -1 for moving in the
  * negative direction, or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Direction: %d\n", motor_get_direction(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_direction(uint8_t port);
 
@@ -298,6 +442,17 @@ int32_t motor_get_direction(uint8_t port);
  *
  * \return The motor's efficiency in percent or PROS_ERR_F if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Efficiency: %d\n", motor_get_efficiency(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_efficiency(uint8_t port);
 
@@ -314,6 +469,17 @@ double motor_get_efficiency(uint8_t port);
  *
  * \return 1 if the motor's current limit is being exceeded and 0 if the current
  * limit is not exceeded, or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Current Limit Hit?: %d\n", motor_is_over_current(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_is_over_current(uint8_t port);
 
@@ -330,6 +496,17 @@ int32_t motor_is_over_current(uint8_t port);
  *
  * \return 1 if the temperature limit is exceeded and 0 if the the temperature
  * is below the limit, or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Temp Limit: %d\n", motor_is_over_temp(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_is_over_temp(uint8_t port);
 
@@ -345,6 +522,17 @@ int32_t motor_is_over_temp(uint8_t port);
  *
  * \return 1 if the motor is not moving, 0 if the motor is moving, or PROS_ERR
  * if the operation failed, setting errno
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Is the motor stopped? %d\n", motor_is_stopped(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_is_stopped(uint8_t port);
 
@@ -361,6 +549,17 @@ int32_t motor_is_stopped(uint8_t port);
  * \return 1 if the motor is at zero absolute position, 0 if the motor has
  * moved from its absolute zero, or PROS_ERR if the operation failed,
  * setting errno
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Is the motor at its zero position? %d\n", motor_get_zero_position_flag(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_zero_position_flag(uint8_t port);
 
@@ -410,6 +609,17 @@ namespace c {
  *        The V5 port number from 1-21
  *
  * \return A bitfield containing the motor's faults.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Faults: %d\n", motor_get_faults(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t motor_get_faults(uint8_t port);
 
@@ -456,6 +666,17 @@ namespace c {
  *        The V5 port number from 1-21
  *
  * \return A bitfield containing the motor's flags.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Flags: %d\n", motor_get_flags(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t motor_get_flags(uint8_t port);
 
@@ -476,6 +697,18 @@ uint32_t motor_get_flags(uint8_t port);
  *
  * \return The raw encoder count at the given timestamp or PROS_ERR if the
  * operation failed.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Encoder Count: %d\n", motor_get_raw_position(1, &now));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
 
@@ -492,6 +725,17 @@ int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
  *
  * \return The motor's absolute position in its encoder units or PROS_ERR_F
  * if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Position: %lf\n", motor_get_position(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_position(uint8_t port);
 
@@ -508,6 +752,18 @@ double motor_get_position(uint8_t port);
  *
  * \return The motor's power draw in Watts or PROS_ERR_F if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Power: %lf\n", motor_get_power(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_power(uint8_t port);
 
@@ -524,6 +780,17 @@ double motor_get_power(uint8_t port);
  *
  * \return The motor's temperature in degrees Celsius or PROS_ERR_F if the
  * operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Temperature: %lf\n", motor_get_temperature(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_temperature(uint8_t port);
 
@@ -540,6 +807,17 @@ double motor_get_temperature(uint8_t port);
  *
  * \return The motor's torque in Nm or PROS_ERR_F if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Torque: %lf\n", motor_get_torque(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 double motor_get_torque(uint8_t port);
 
@@ -556,14 +834,25 @@ double motor_get_torque(uint8_t port);
  *
  * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     printf("Motor Voltage: %lf\n", motor_get_voltage(1));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_get_voltage(uint8_t port);
 
-/******************************************************************************/
-/**                      Motor configuration functions                       **/
-/**                                                                          **/
-/**  These functions allow programmers to configure the behavior of motors   **/
-/******************************************************************************/
+///@}
+
+/// \name Motor configuration functions
+/// These functions allow programmers to configure the behavior of motors
+///@{
 
 #ifdef __cplusplus
 }  // namespace c
@@ -687,6 +976,28 @@ namespace c {
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * 
+ * \code
+ * void autonomous() {
+ *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     // Continue running this loop as long as the motor is not within +-5 units of its goal
+ *     delay(2);
+ *   }
+ *   motor_move_absolute(1, 100, 100); // This does not cause a movement
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     delay(2);
+ *   }
+ * 
+ *   motor_set_zero_position(1, 80);
+ *   motor_move_absolute(1, 100, 100); // Moves 80 units forward
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_set_zero_position(uint8_t port, const double position);
 
@@ -703,6 +1014,27 @@ int32_t motor_set_zero_position(uint8_t port, const double position);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     // Continue running this loop as long as the motor is not within +-5 units of its goal
+ *     delay(2);
+ *   }
+ *   motor_move_absolute(1, 100, 100); // This does not cause a movement
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     delay(2);
+ *   }
+ * 
+ *   motor_tare_position(1);
+ *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
+ *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_tare_position(uint8_t port);
 
@@ -721,6 +1053,14 @@ int32_t motor_tare_position(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   motor_set_brake_mode(1, E_MOTOR_BRAKE_HOLD);
+ *   printf("Brake Mode: %d\n", motor_get_brake_mode(1));
+ * }
+ * \endcode
  */
 int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
 
@@ -739,6 +1079,18 @@ int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   motor_set_current_limit(1, 1000);
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     // The motor will reduce its output at 1000 mA instead of the default 2500 mA
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
 
@@ -757,6 +1109,14 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * void initialize() {
+ *   motor_set_encoder_units(1, E_MOTOR_ENCODER_DEGREES);
+ *   printf("Encoder Units: %d\n", motor_get_encoder_units(1));
+ * }
+ * \endcode
  */
 int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units);
 
@@ -775,6 +1135,14 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   motor_set_gearing(1, E_MOTOR_GEARSET_06);
+ *   printf("Brake Mode: %d\n", motor_get_gearing(1));
+ * }
+ * \endcode
  */
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
 
@@ -949,6 +1317,14 @@ int32_t __attribute__((deprecated("Changing these values is not supported by VEX
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_set_reversed(1, true);
+ *   printf("Is this motor reversed? %d\n", motor_is_reversed(1));
+ * }
+ * \endcode
  */
 int32_t motor_set_reversed(uint8_t port, const bool reverse);
 
@@ -967,6 +1343,18 @@ int32_t motor_set_reversed(uint8_t port, const bool reverse);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_set_voltage_limit(1, 10000);
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     // The motor will not output more than 10 V
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
 
@@ -983,6 +1371,14 @@ int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
  *
  * \return One of motor_brake_mode_e_t, according to what was set for the motor,
  * or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   motor_set_brake_mode(1, E_MOTOR_BRAKE_HOLD);
+ *   printf("Brake Mode: %d\n", motor_get_brake_mode(1));
+ * }
+ * \endcode
  */
 motor_brake_mode_e_t motor_get_brake_mode(uint8_t port);
 
@@ -1001,6 +1397,14 @@ motor_brake_mode_e_t motor_get_brake_mode(uint8_t port);
  *
  * \return The motor's current limit in mA or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Motor Current Limit: %d\n", motor_get_current_limit(1));
+ *   // Prints "Motor Current Limit: 2500"
+ * }
+ * \endcode
  */
 int32_t motor_get_current_limit(uint8_t port);
 
@@ -1033,6 +1437,14 @@ motor_encoder_units_e_t motor_get_encoder_units(uint8_t port);
  *
  * \return One of motor_gearset_e_t according to what is set for the motor,
  * or E_GEARSET_INVALID if the operation failed.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Motor Encoder Units: %d\n", motor_get_encoder_units(1));
+ *   // Prints E_MOTOR_ENCODER_DEGREES by default
+ * }
+ * \endcode
  */
 motor_gearset_e_t motor_get_gearing(uint8_t port);
 
@@ -1091,6 +1503,14 @@ motor_pid_full_s_t __attribute__((deprecated("Changing these values is not suppo
  *
  * \return 1 if the motor has been reversed and 0 if the motor was not reversed,
  * or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Is the motor reversed? %d\n", motor_is_reversed(1));
+ *   // Prints "Is the motor reversed? 0"
+ * }
+ * \endcode
  */
 int32_t motor_is_reversed(uint8_t port);
 
@@ -1110,8 +1530,20 @@ int32_t motor_is_reversed(uint8_t port);
  *
  * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Motor Voltage Limit: %d\n", motor_get_voltage_limit(1));
+ *   // Prints 0 by default, indicating no limit
+ * }
+ * \endcode
  */
 int32_t motor_get_voltage_limit(uint8_t port);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c
