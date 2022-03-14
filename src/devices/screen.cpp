@@ -17,12 +17,12 @@
 namespace pros {
 namespace screen {
 
-    void set_pen(const std::uint32_t color){
-        pros::c::screen_set_pen(color);
+    std::uint32_t set_pen(const std::uint32_t color){
+        return pros::c::screen_set_pen(color);
     }
     
-    void set_eraser(const std::uint32_t color){
-        pros::c::screen_set_eraser(color);
+    std::uint32_t set_eraser(const std::uint32_t color){
+        return pros::c::screen_set_eraser(color);
     }
 
     std::uint32_t get_pen(){
@@ -33,68 +33,68 @@ namespace screen {
         return pros::c::screen_get_eraser();
     }
 
-    void erase(){
-        pros::c::screen_erase();
+    std::uint32_t erase(){
+        return pros::c::screen_erase();
     }
 
-    void scroll(const std::int16_t start_line, const std::int16_t lines){
-        pros::c::screen_scroll(start_line, lines);
+    std::uint32_t scroll(const std::int16_t start_line, const std::int16_t lines){
+        return pros::c::screen_scroll(start_line, lines);
     }
 
-    void scroll_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, std::int16_t lines){
-        pros::c::screen_scroll_area(x0, y0, x1, y1, lines);
+    std::uint32_t scroll_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, std::int16_t lines){
+        return pros::c::screen_scroll_area(x0, y0, x1, y1, lines);
     }
 
-    void copy_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, uint32_t* buf, const std::int32_t stride){
-        pros::c::screen_copy_area( x0, y0, x1, y1, buf, stride);
+    std::uint32_t copy_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, uint32_t* buf, const std::int32_t stride){
+        return pros::c::screen_copy_area( x0, y0, x1, y1, buf, stride);
     }
 
-    void draw_pixel(const std::int16_t x, const std::int16_t y){
-        pros::c::screen_draw_pixel(x, y);
+    std::uint32_t draw_pixel(const std::int16_t x, const std::int16_t y){
+        return pros::c::screen_draw_pixel(x, y);
     }
 
-    void erase_pixel(const std::int16_t x, const std::int16_t y){
-        pros::c::screen_erase_pixel(x, y);
+    std::uint32_t erase_pixel(const std::int16_t x, const std::int16_t y){
+        return pros::c::screen_erase_pixel(x, y);
     }
 
-    void draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_draw_line(x0, y0, x1, y1);
+    std::uint32_t draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+        return pros::c::screen_draw_line(x0, y0, x1, y1);
     }
 
-    void erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_erase_line(x0, y0, x1, y1);
+    std::uint32_t erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+        return pros::c::screen_erase_line(x0, y0, x1, y1);
     }
 
-    void draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_draw_rect(x0, y0, x1, y1);
+    std::uint32_t draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+        return pros::c::screen_draw_rect(x0, y0, x1, y1);
     }
 
-    void erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_erase_rect(x0, y0, x1, y1);
+    std::uint32_t erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+        return pros::c::screen_erase_rect(x0, y0, x1, y1);
     }
 
-    void fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
-        pros::c::screen_fill_rect(x0, y0, x1, y1);
+    std::uint32_t fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1){
+        return pros::c::screen_fill_rect(x0, y0, x1, y1);
     }
 
-    void draw_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
-        pros::c::screen_draw_circle(x, y, radius);
+    std::uint32_t draw_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
+        return pros::c::screen_draw_circle(x, y, radius);
     }
 
-    void erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
-        pros::c::screen_erase_circle(x, y, radius);
+    std::uint32_t erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
+        return pros::c::screen_erase_circle(x, y, radius);
     }
 
-    void fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
-        pros::c::screen_fill_circle(x, y, radius);
+    std::uint32_t fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius){
+        return pros::c::screen_fill_circle(x, y, radius);
     }
 
     screen_touch_status_s_t touch_status() {
         return pros::c::screen_touch_status();
     }
 
-    void touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type){
-        pros::c::screen_touch_callback(cb, event_type);
+    std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type){
+        return pros::c::screen_touch_callback(cb, event_type);
     }
 
 }  // namespace screen
