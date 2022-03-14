@@ -1,7 +1,7 @@
 /**
  * \file devices/vdml_distance.cpp
  *
- * Contains functions for interacting with the V5 ADI.
+ * Contains functions for interacting with the VEX Distance sensor.
  *
  * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
