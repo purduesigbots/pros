@@ -72,7 +72,7 @@ std::uint32_t Task::notify() {
 	return task_notify(task);
 }
 
-std::void_t Task::join() {
+void Task::join() {
 	return task_join(task);
 }
 
