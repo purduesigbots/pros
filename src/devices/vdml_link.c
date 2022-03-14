@@ -96,7 +96,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
     }
     if(data_size > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
-        return_port(port - 1, 0);
+        return_port(port - 1, PROS_ERR);
     }
     uint32_t rtv = vexDeviceGenericRadioTransmit(device->device_info, (uint8_t*)data, data_size);
     return_port(port - 1, rtv);
@@ -113,8 +113,8 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size) {
         return_port(port - 1, PROS_ERR);
     }
     if(data_size > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
-        errno = EINVAL;
-        return_port(port - 1, 0);
+        errno = EBUSY;
+        return_port(port - 1, PROS_ERR);
     }
     uint32_t rtv = vexDeviceGenericRadioReceive(device->device_info, (uint8_t*)dest, data_size);
     return_port(port - 1, rtv);
@@ -132,7 +132,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
     }
     if(data_size + PROTOCOL_SIZE > vexDeviceGenericRadioWriteFree(device->device_info)) {
         errno = EBUSY;
-        return_port(port - 1, 0);
+        return_port(port - 1, PROS_ERR);
     }
     // calculated checksum
     uint8_t checksum = START_BYTE;
@@ -166,7 +166,7 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
     }
     if(data_size + PROTOCOL_SIZE > vexDeviceGenericRadioReceiveAvail(device->device_info)) {
         errno = EBUSY;
-        return_port(port - 1, 0);
+        return_port(port - 1, PROS_ERR);
     }
     uint8_t header_byte;
     uint8_t received_size;

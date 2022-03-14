@@ -112,8 +112,8 @@ class Link {
 	 * \param data_size
 	 *      Buffer with data to send
 	 *
-	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
-	 * and 1 if it succeeded.
+	 * \return PROS_ERR if port is not a link, and the successfully transmitted 
+	 * data size if it succeeded.
 	 */
 	std::uint32_t transmit_raw(void* data, std::uint16_t data_size);
 
@@ -133,8 +133,8 @@ class Link {
 	 * \param data_size
 	 *      Bytes of data to be read to the destination buffer
 	 *
-	 * \return PROS_ERR if port is not a link, 0 if the link is busy,
-	 * and 1 if it succeeded.
+	 * \return PROS_ERR if port is not a link, and the successfully received 
+	 * data size if it succeeded.
 	 */
 	std::uint32_t receive_raw(void* dest, std::uint16_t data_size);
 
@@ -155,8 +155,8 @@ class Link {
 	 * \param data_size
 	 *      Bytes of data to be read to the destination buffer
 	 *
-	 * \return PROS_ERR if port is not a link, 0 if the link is busy, 
-	 * and the successfully transmitted size if it succeeded.
+	 * \return PROS_ERR if port is not a link, and the successfully transmitted 
+	 * data size if it succeeded.
 	 */
 	std::uint32_t transmit(void* data, std::uint16_t data_size);
 
@@ -177,8 +177,8 @@ class Link {
 	 * \param data_size
 	 *      Bytes of data to be read to the destination buffer
 	 *
-	 * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy, 
-	 * and successfully received size if it succeeded.
+	 * \return PROS_ERR if port is not a link, and the successfully received 
+	 * data size if it succeeded.
 	 */
 	std::uint32_t receive(void* dest, std::uint16_t data_size);
 

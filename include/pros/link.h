@@ -155,8 +155,8 @@ uint32_t link_raw_transmittable_size(uint8_t port);
  * \param data_size
  *      Bytes of data to be read to the destination buffer
  * 
- * \return PROS_ERR if port is not a link, 0 if the link is busy, 
- * and 1 if it succeeded.
+ * \return PROS_ERR if port is not a link, and the successfully transmitted 
+ * data size if it succeeded.
  */
 uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 
@@ -178,8 +178,8 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
  * \param data_size
  *      Bytes of data to be read to the destination buffer
  * 
- * \return PROS_ERR if port is not a link, 0 if the link is busy, 
- * and 1 if it succeeded.
+ * \return PROS_ERR if port is not a link, and the successfully received 
+ * data size if it succeeded.
  */
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
 
@@ -202,8 +202,8 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
  * \param data_size
  *      Bytes of data to be read to the destination buffer
  * 
- * \return PROS_ERR if port is not a link, 0 if the link is busy, 
- * and the successfully transmitted size if it succeeded.
+ * \return PROS_ERR if port is not a link, and the successfully transmitted 
+ * data size if it succeeded.
  */
 uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
 
@@ -226,8 +226,8 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
  * \param data_size
  *      Bytes of data to be read to the destination buffer
  * 
- * \return PROS_ERR if port is not a link or protocol error, 0 if the link is busy, 
- * and successfully received size if it succeeded.
+ * \return PROS_ERR if port is not a link or protocol error, and the successfully 
+ * transmitted data size if it succeeded.
  */
 uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
 
@@ -243,7 +243,8 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
  * \param port 
  *      The port of the radio for the intended link.
  * 
- * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
+ * \return PROS_ERR if port is not a link, and the successfully received 
+ * data size if it succeeded.
  */
 uint32_t link_clear_receive_buf(uint8_t port);
 
