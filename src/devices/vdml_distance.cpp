@@ -13,7 +13,8 @@
 #include "pros/distance.hpp"
 
 namespace pros {
-
+inline namespace v5{ 
+	
 Distance::Distance(const std::uint8_t port) : _port(port) {}
 
 std::int32_t Distance::get() {
@@ -34,5 +35,7 @@ double Distance::get_object_velocity() {
 
 std::uint8_t Distance::get_port() {
 	return _port;
+}
+
 }
 }  // namespace pros

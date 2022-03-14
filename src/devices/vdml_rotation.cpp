@@ -13,6 +13,8 @@
 #include "pros/rotation.hpp"
 
 namespace pros {
+inline namespace v5 {
+
 std::int32_t Rotation::reset() {
 	return pros::c::rotation_reset(_port);
 }
@@ -53,4 +55,5 @@ std::int32_t Rotation::get_reversed(void) {
     return pros::c::rotation_get_reversed(_port);
 }
 
+}
 }  // namespace pros

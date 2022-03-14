@@ -26,6 +26,7 @@
 #include "pros/gps.h"
 
 namespace pros {
+inline namespace v5 {
 class Gps {
 	const std::uint8_t _port;
 
@@ -277,6 +278,7 @@ class Gps {
 	virtual pros::c::gps_accel_s_t get_accel() const;
 
 };  // Gps Class
+}
 
 using GPS = Gps;
 

@@ -22,7 +22,7 @@
 #include "pros/imu.h"
 
 namespace pros {
-inline namespace v5{
+inline namespace v5 {
 class Imu {
 	const std::uint8_t _port;
 

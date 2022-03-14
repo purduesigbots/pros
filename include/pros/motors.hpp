@@ -24,7 +24,7 @@
 #include "pros/motors.h"
 
 namespace pros {
-inline namespace v5{
+inline namespace v5 {
 class Motor {
 	public:
 	/**

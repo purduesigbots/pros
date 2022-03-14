@@ -25,7 +25,7 @@
 #include <cstdint>
 
 namespace pros {
-inline namespace v5{
+inline namespace v5 {
 class Vision {
 	public:
 	/**
