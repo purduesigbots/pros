@@ -1,5 +1,6 @@
 /**
  * \file pros/misc.h
+ * \ingroup c-misc
  *
  * Contains prototypes for miscellaneous functions pertaining to the controller,
  * battery, and competition control.
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-misc Miscellaneous C API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref controller)
  */
 
 #ifndef _PROS_MISC_H_
@@ -25,63 +29,169 @@
 
 #define NUM_V5_PORTS (22)
 
-/******************************************************************************/
-/**                             V5 Competition                               **/
-/******************************************************************************/
+/**
+ * \ingroup c-misc
+ */
+
+/**
+ * \addtogroup c-misc
+ *  @{
+ */
+
+/// \name V5 Competition
+//@{
+
 #define COMPETITION_DISABLED (1 << 0)
 #define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
 
-/**
- * Get the current status of the competition control.
- *
- * \return The competition control status as a mask of bits with
- * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
- */
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
 namespace c {
 #endif
+
+/**
+ * \fn competition_get_status(void)
+ * Get the current status of the competition control.
+ *
+ * \return The competition control status as a mask of bits with
+ * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_get_status() & COMPETITION_CONNECTED == true) {
+ *     // Field Control is Connected
+ *     // Run LCD Selector code or similar
+ *   }
+ * }
+ * \endcode
+ */
 uint8_t competition_get_status(void);
+
 #ifdef __cplusplus
 }
 }
 }
 #endif
+
+/**
+ * \fn competition_is_disabled()
+ * 
+ * \return True if the V5 Brain is disabled, false otherwise.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ignore) {
+ *   while (!competition_is_disabled()) {
+ *   // Run competition tasks (like Lift Control or similar)
+ *   }
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * }
+ * \endcode
+ */
 #define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
+
+/**
+ * \return True if the V5 Brain is connected to competition control, false otherwise.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_connected()) {
+ *     // Field Control is Connected
+ *     // Run LCD Selector code or similar
+ *   }
+ * }
+ * \endcode
+ */
 #define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
+
+/**
+ * \return True if the V5 Brain is in autonomous mode, false otherwise.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ignore) {
+ *   while (!competition_is_autonomous()) {
+ *     // Wait to do anything until autonomous starts
+ *     delay(2);
+ *   }
+ *   while (competition_is_autonomous()) {
+ *     // Run whatever code is desired to just execute in autonomous
+ *     }
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * }
+ * \endcode
+ */
 #define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
 
-/******************************************************************************/
-/**                              V5 Controller                               **/
-/******************************************************************************/
+///@}
+
+/// \name V5 Controller
+///@{
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
 #endif
 
-typedef enum { E_CONTROLLER_MASTER = 0, E_CONTROLLER_PARTNER } controller_id_e_t;
-
+/**
+ * \enum
+ */
 typedef enum {
+	///The master controller.
+	E_CONTROLLER_MASTER = 0,
+	///The partner controller.
+	E_CONTROLLER_PARTNER } controller_id_e_t;
+
+/**
+ * \enum
+ */
+typedef enum {
+	///The horizontal axis of the controller’s left analog stick.
 	E_CONTROLLER_ANALOG_LEFT_X = 0,
+	///The vertical axis of the controller’s left analog stick.
 	E_CONTROLLER_ANALOG_LEFT_Y,
+	///The horizontal axis of the controller’s right analog stick.
 	E_CONTROLLER_ANALOG_RIGHT_X,
+	///The vertical axis of the controller’s right analog stick.
 	E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
+/**
+ * \enum
+ */
 typedef enum {
+	///The first trigger on the left side of the controller.
 	E_CONTROLLER_DIGITAL_L1 = 6,
+	///The second trigger on the left side of the controller.
 	E_CONTROLLER_DIGITAL_L2,
+	///The first trigger on the right side of the controller.
 	E_CONTROLLER_DIGITAL_R1,
+	///The second trigger on the right side of the controller.
 	E_CONTROLLER_DIGITAL_R2,
+	///The up arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_UP,
+	///The down arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_DOWN,
+	///The left arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_LEFT,
+	///The right arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_RIGHT,
+	///The ‘X’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_X,
+	///The ‘B’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_B,
+	///The ‘Y’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_Y,
+	///The ‘A’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
@@ -127,12 +237,10 @@ typedef enum {
 #endif
 #endif
 
-/*
-Given an id and a port, this macro sets the port 
-variable based on the id and allows the mutex to take that port.
-
-Returns error (in the function/scope it's in) if the controller
-failed to connect or an invalid id is given.
+/**
+ * \def Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that port.
+ * 
+ * \returns error (in the function/scope it's in) if the controller failed to connect or an invalid id is given.
 */
 #define CONTROLLER_PORT_MUTEX_TAKE(id, port) \
 	switch (id) {							\
@@ -169,6 +277,16 @@ namespace c {
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  *
  * \return 1 if the controller is connected, 0 otherwise
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_connected()) {
+ *     // Field Control is Connected
+ *     // Run LCD Selector code or similar
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_is_connected(controller_id_e_t id);
 
@@ -191,6 +309,16 @@ int32_t controller_is_connected(controller_id_e_t id);
  *
  * \return The current reading of the analog channel: [-127, 127].
  * If the controller was not connected, then 0 is returned
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channel);
 
@@ -208,6 +336,13 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
  *        Must be one of E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER
  *
  * \return The controller's battery capacity
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Capacity: %d\n", controller_get_battery_capacity(E_CONTROLLER_MASTER));
+ * }
+ * \endcode
  */
 int32_t controller_get_battery_capacity(controller_id_e_t id);
 
@@ -225,6 +360,13 @@ int32_t controller_get_battery_capacity(controller_id_e_t id);
  *        Must be one of E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER
  *
  * \return The controller's battery level
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Level: %d\n", controller_get_battery_level(E_CONTROLLER_MASTER));
+ * }
+ * \endcode
  */
 int32_t controller_get_battery_level(controller_id_e_t id);
 
@@ -246,6 +388,22 @@ int32_t controller_get_battery_level(controller_id_e_t id);
  *
  * \return 1 if the button on the controller is pressed.
  * If the controller was not connected, then 0 is returned
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   while (true) {
+ *   if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
+ *     motor_set(1, 100);
+ *   }
+ *   else {
+ *     motor_set(1, 0);
+ *   }
+ *     delay(2);
+ *   }
+ * }
+
+ * \endcode
  */
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button);
 
@@ -275,20 +433,34 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  *
  * \return 1 if the button on the controller is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * while (true) {
+ *   if (controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
+ *     // Toggle pneumatics or other similar actions
+ *   }
+ * 
+ *   delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digital_e_t button);
 
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so continuous, fast
- * updates will not work well.
+ * \note Controller text setting is a slow process, so updates faster than 10ms
+ * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
  * given.
  * EACCES - Another resource is currently trying to access the controller port.
+ * EAGAIN - Could not send the text to the controller.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -304,20 +476,36 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   int count = 0;
+ *   while (true) {
+ *   if (!(count % 25)) {
+ *     // Only print every 50ms, the controller text update rate is slow
+ *     controller_print(E_CONTROLLER_MASTER, 0, 0, "Counter: %d", count);
+ *   }
+ *     count++;
+ *     delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const char* fmt, ...);
 
 /**
  * Sets text to the controller LCD screen.
  *
- * \note Controller text setting is currently in beta, so continuous, fast
- * updates will not work well.
+ * \note Controller text setting is a slow process, so updates faster than 10ms
+ * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
  * given.
  * EACCES - Another resource is currently trying to access the controller port.
+ * EAGAIN - Could not send the text to the controller.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -331,6 +519,21 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   int count = 0;
+ *   while (true) {
+ *     if (!(count % 25)) {
+ *       // Only print every 50ms, the controller text update rate is slow
+ *       controller_set_text(E_CONTROLLER_MASTER, 0, 0, "Example text");
+ *     }
+ *   count++;
+ *   delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str);
 
@@ -354,21 +557,25 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * \endcode
  */
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
 
 /**
  * Clears all of the lines on the controller screen.
  *
- * \note Controller text setting is currently in beta, so continuous, fast
- * updates will not work well. On vexOS version 1.0.0 this function will block
- * for 110ms.
+ * \note Controller text setting is a slow process, so updates faster than 10ms
+ * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * EINVAL - A value other than E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER is
  * given.
  * EACCES - Another resource is currently trying to access the controller port.
+ * EAGAIN - Could not send the text to the controller.
  *
  * \param id
  *        The ID of the controller (e.g. the master or partner controller).
@@ -376,14 +583,23 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   controller_set_text(E_CONTROLLER_MASTER, 0, 0, "Example");
+ *   delay(100);
+ *   controller_clear_line(E_CONTROLLER_MASTER, 0);
+ * }
+ * \endcode
  */
 int32_t controller_clear(controller_id_e_t id);
 
 /**
  * Rumble the controller.
  *
- * \note Controller rumble activation is currently in beta, so continuous, fast
- * updates will not work well.
+ * \note Controller rumble activation is a slow process, so updates faster than 10ms
+ * when on a wired connection or 50ms over Vexnet will not be applied to the controller.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -401,6 +617,21 @@ int32_t controller_clear(controller_id_e_t id);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   int count = 0;
+ *   while (true) {
+ *   if (!(count % 25)) {
+ *     // Only send every 50ms, the controller update rate is slow
+ *     controller_rumble(E_CONTROLLER_MASTER, ". - . -");
+ *   }
+ *   count++;
+ *   delay(2);
+ *   }
+ * }
+ * \endcode
  */
 int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
 
@@ -412,6 +643,13 @@ int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current voltage of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery's Voltage: %d\n", battery_get_voltage());
+ * }
+ * \endcode
  */
 int32_t battery_get_voltage(void);
 
@@ -423,6 +661,13 @@ int32_t battery_get_voltage(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current current of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Current: %d\n", battery_get_current());
+ * }
+ * \endcode
  */
 int32_t battery_get_current(void);
 
@@ -434,6 +679,13 @@ int32_t battery_get_current(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current temperature of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery's Temperature: %d\n", battery_get_temperature());
+ * }
+ * \endcode
  */
 double battery_get_temperature(void);
 
@@ -445,6 +697,13 @@ double battery_get_temperature(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current capacity of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Level: %d\n", battery_get_capacity());
+ * }
+ * \endcode
  */
 double battery_get_capacity(void);
 
@@ -452,8 +711,19 @@ double battery_get_capacity(void);
  * Checks if the SD card is installed.
  *
  * \return 1 if the SD card is installed, 0 otherwise
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   printf("%i", usd_is_installed());
+ * }
+ * \endcode
  */
 int32_t usd_is_installed(void);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }

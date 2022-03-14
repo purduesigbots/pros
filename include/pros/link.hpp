@@ -1,5 +1,6 @@
 /**
  * \file pros/link.hpp
+ * \ingroup cpp-link
  *
  * Contains prototypes for functions related to robot to robot communications.
  *
@@ -14,6 +15,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-link VEX Link C++ API
  */
 #ifndef _PROS_LINK_HPP_
 #define _PROS_LINK_HPP_
@@ -24,7 +27,15 @@
 #include "pros/link.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-link
+ * 
+ */
 class Link {
+	/**
+	 * \addtogroup cpp-link
+	 * ///@{
+	 */
 	private:
 	std::uint8_t _port;
 
@@ -194,6 +205,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
 	std::uint32_t clear_receive_buf();
+	///@}
 };
 }  // namespace pros
 
