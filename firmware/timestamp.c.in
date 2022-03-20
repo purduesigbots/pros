@@ -1,0 +1,2 @@
+char const* const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__;
+char const* const _PROS_COMPILE_DIRECTORY = "${CMAKE_SOURCE_DIR}";

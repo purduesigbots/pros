@@ -1,0 +1,74 @@
+cmake_minimum_required(VERSION 3.22)
+
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+include(arm-none-eabi-binutils.cmake)
+include(pros-common-tasks.cmake)
+
+# TODO: change this!
+set(LIBRARY_NAME test)
+project(${LIBRARY_NAME})
+
+# add extra source files here e.g. src/drivetrain.cpp
+set(SOURCES )
+
+# add any sources you want to place in the cold package (if configured) here
+set(LIBRARY_SOURCES )
+
+# add templates here, e.g. find_package(EZ-Template)
+# NOTE: you must first install the template and then (re-)configure the project
+find_package(kernel)
+find_package(okapilib)
+
+# add templates here as well, e.g. EZ-Template::EZ-Template
+set(LIBRARIES
+        kernel::libpros
+        kernel::libc
+        kernel::libm
+        okapilib::okapilib)
+
+# add libraries you do not wish to include in the cold package here
+set(EXCLUDE_COLD_LIBRARIES )
+
+# add extra include directories you wish to be treated as top-level include
+# directories here. for example, if you have include/my-include-dir/header.h and
+# you want to write `#include "header.h"` instead of `#include "my-include-dir/header.h"
+# you may place "include/my-include-dir" in this variable
+set(INCLUDE_DIRECTORIES )
+
+### NOTE: nothing below this line should be edited by typical users
+
+list(SUBLIST LIBRARIES 0 -1 COLD_LIBRARIES)
+list(REMOVE_ITEM COLD_LIBRARIES ${EXCLUDE_COLD_LIBRARIES})
+
+include_directories(${CMAKE_SOURCE_DIR}/include ${INCLUDE_DIRECTORIES})
+
+# pros configure --library
+if(DEFINED LIBRARY_BUILD)
+    set(LIBRARY_TARGET lib${LIBRARY_NAME}.a)
+    add_library(${LIBRARY_TARGET} ${LIBRARY_SOURCES})
+
+    target_link_libraries(${LIBRARY_TARGET} ${COLD_LIBRARIES})
+
+    list(APPEND LIBRARIES ${LIBRARY_TARGET})
+endif()
+
+# pros configure [--library] --monolith
+if(DEFINED MONOLITH_BUILD)
+    set(MONOLITH_SOURCES src/main.cpp)
+    if (NOT DEFINED LIBRARY_BUILD)
+        list(APPEND MONOLITH_SOURCES ${SOURCES})
+    endif()
+
+    add_pros_monolith("${MONOLITH_SOURCES}" "${LIBRARIES}")
+
+# pros configure [--library]
+else()
+    add_pros_cold_package("${COLD_LIBRARIES}" "${LIBRARIES}")
+
+    set(HOT_SOURCES src/main.cpp)
+    if(NOT DEFINED LIBRARY_BUILD)
+        list(APPEND HOT_SOURCES ${SOURCES})
+    endif()
+    add_pros_hot_package("${HOT_SOURCES}")
+endif()

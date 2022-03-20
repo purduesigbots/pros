@@ -8,6 +8,8 @@
 
 # PROS
 bin/
+build/
+cmake/Find*.cmake
 .vscode/
 compile_commands.json
 temp.log

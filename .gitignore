@@ -1,15 +1,28 @@
+# IDEs
 .vscode/
 .idea/
-bin/
-.*.sw*
-template/
+
+# PROS
 version
+template/
+
+# language servers
 cquery_log.txt
 compile_commands.json
+.cache/
 .ccls-cache/
 .ccls
+.clangd/
+
+# make
 temp.log
 temp.errors
 .d/
-.clangd/
-.cache/
+bin/
+
+# cmake
+include/api.h
+build/
+
+# misc
+.*.sw*
