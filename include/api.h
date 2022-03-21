@@ -53,6 +53,7 @@
 #include "pros/ext_adi.h"
 #include "pros/gps.h"
 #include "pros/imu.h"
+#include "pros/link.h"
 #include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
@@ -75,6 +76,7 @@
 #include "pros/rtos.hpp"
 #include "pros/screen.hpp"
 #include "pros/vision.hpp"
+#include "pros/link.hpp"
 #endif
 
 #endif  // _PROS_API_H_
