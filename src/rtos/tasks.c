@@ -4753,17 +4753,10 @@ uint32_t uxReturn;
 			// TODO: remove debugging code, fix warning, and do more testing to make sure this works.
 			// potentially also try using eTaskGetState ?
 			if(!task) return;
-			TaskStatus_t xTaskDetails;
-			vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
-			printf("Task Joining Started, Status: %d\n", xTaskDetails.eCurrentState);
     		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
-    		while (!task_notify_take(true, 20)) {
-				vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
-				if(xTaskDetails.eCurrentState == E_TASK_STATE_DELETED) { 
-					break;
-				}
-			}
-			printf("Task completed: \n");
+			while (!task_notify_take(true, 20)){}
+			return;
+		}
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */

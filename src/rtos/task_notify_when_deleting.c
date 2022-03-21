@@ -60,6 +60,13 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
   if (task_to_notify == target_task || !task_to_notify || !target_task) {
     return;
   }
+  
+  // Return immediately if the target task is already deleted
+  TaskStatus_t target_task_details;
+  vTaskGetInfo(target_task, &target_task_details, pdTRUE, E_TASK_STATE_INVALID);
+  if (target_task_details == E_TASK_STATE_DELETED) {
+    return;
+  }
 
   mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
 
