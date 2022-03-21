@@ -73,20 +73,25 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+void task_one(void* ignore) {
+	pros::c::lcd_print(1, "%s running", pros::c::task_get_name(NULL));
+	pros::c::task_delay(5000);
+	pros::c::lcd_print(2, "End of %s", pros::c::task_get_name(NULL));
+}
+
+void task_two(void* ignore) {
+	pros::c::lcd_print(3, "%s running", pros::c::task_get_name(NULL));
+    
+	pros::c::task_delay(2500);
+	pros::c::lcd_print(4, "End of %s", pros::c::task_get_name(NULL));
+}
+
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-
-	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-		left_mtr = left;
-		right_mtr = right;
-		pros::delay(20);
-	}
+	pros::task_t task1= pros::c::task_create(task_one, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Task One");
+	pros::task_t task2 = pros::c::task_create(task_two, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Task Two");
+	pros::c::lcd_set_text(0, "Running tasks.");
+        pros::c::task_join(task1);
+        pros::c::task_join(task2);
+        pros::c::task_delay(1000);
+        pros::c::lcd_set_text(5, "End of tasks.");
 }
