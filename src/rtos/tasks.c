@@ -4756,7 +4756,6 @@ uint32_t uxReturn;
     		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
 			while (!task_notify_take(true, 20)){}
 			return;
-		}
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */
