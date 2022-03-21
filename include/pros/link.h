@@ -63,9 +63,9 @@ namespace c {
 uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 
 /**
- * Initializes a link on a radio port, with aniti indicated type and the ability for
- * vexlink to override the radio used to communicate to the controller. There might be 
- * a 1 to 2 second delay from when this function is called to when the link initializes.
+ * Initializes a link on a radio port, with an indicated type and the ability for
+ * vexlink to override the controller radio. There might be a 1 to 2 second delay
+ * from when this function is called to when the link is initializes.
  *
  * This function uses the following values of errno when an error state is
  * reached:
