@@ -4750,12 +4750,15 @@ uint32_t uxReturn;
 #if( configUSE_TASK_NOTIFICATIONS == 1 )
 
 	void task_join(task_t task) {
-			// TODO: remove debugging code, fix warning, and do more testing to make sure this works.
-			// potentially also try using eTaskGetState ?
-			if(!task) return;
-    		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
-			while (!task_notify_take(true, 20)){}
-			return;
+		if(!task) return;
+		TaskStatus_t xTaskDetails;
+		do
+		{
+			vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
+			if(xTaskDetails.eCurrentState == E_TASK_STATE_DELETED) { 
+				break;
+			}
+		} while (!task_notify_take(true, 20));
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */
