@@ -121,7 +121,7 @@ uint32_t screen_set_pen(uint32_t color);
  * 					from the enum defined in colors.h)
  * 
  * \return Returns 1 if the mutex was successfully returned, or 
- * prosERR if there was an error either taking or returning the screen mutex.
+ * PROS_ERR if there was an error either taking or returning the screen mutex.
  */
 uint32_t screen_set_eraser(uint32_t color);
 
