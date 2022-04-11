@@ -4756,7 +4756,7 @@ uint32_t uxReturn;
 		do
 		{
 			vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
-		} while (!task_notify_take(true, 20) || xTaskDetails.eCurrentState != E_TASK_STATE_DELETED);
+		} while (!task_notify_take(true, 20) && xTaskDetails.eCurrentState != E_TASK_STATE_DELETED);
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */
