@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -61,6 +61,10 @@ std::int32_t Motor::move_velocity(const std::int32_t velocity) const {
 
 std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
 	return motor_move_voltage(_port, voltage);
+}
+
+std::int32_t Motor::brake(void) const {
+	return motor_brake(_port);
 }
 
 std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {

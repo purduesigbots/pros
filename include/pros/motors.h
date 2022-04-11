@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -55,6 +55,27 @@ namespace c {
  * failed, setting errno.
  */
 int32_t motor_move(uint8_t port, int32_t voltage);
+
+/**
+ * Stops the motor using the currently configured brake mode.
+ * 
+ * This function sets motor velocity to zero, which will cause it to act
+ * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
+ * this function may behave differently than calling motor_move_absolute(port, 0)
+ * or motor_move_relative(port, 0).
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ * 
+ * \param port
+ *        The V5 port number from 1-21
+ * 
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t motor_brake(uint8_t port);
 
 /**
  * Sets the target absolute position for the motor to move to.

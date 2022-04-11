@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -42,6 +42,7 @@ std::int32_t ADIPort::set_value(std::int32_t value) const {
 std::int32_t ADIPort::get_value() const {
 	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
+
 
 ADIAnalogIn::ADIAnalogIn(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_IN) {}
 ADIAnalogIn::ADIAnalogIn(ext_adi_port_pair_t port_pair) : ADIPort(port_pair, E_ADI_ANALOG_IN) {}
@@ -140,4 +141,22 @@ double ADIGyro::get_value() const {
 std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
+
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(adi_port) { 
+	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
+	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
+}
+
+ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(std::get<1>(port_pair)) { 
+ 	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
+	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
+}
+
+double ADIPotentiometer::get_angle() const {
+	uint8_t temp_smart = _smart_port - 1;
+	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
+}
+
 }  // namespace pros

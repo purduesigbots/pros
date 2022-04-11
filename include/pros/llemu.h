@@ -13,7 +13,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -224,6 +224,28 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
  * \return The buttons pressed as a bit mask
  */
 uint8_t lcd_read_buttons(void);
+
+/**
+ * Changes the color of the LCD background to a provided color expressed in
+ * type lv_color_t.
+ * 
+ * \param color
+ *        A color of type lv_color_t
+ * 
+ * \return void
+ */
+void lcd_set_background_color(lv_color_t color);
+
+/**
+ * Changes the text color of the LCD to a provided color expressed in
+ * type lv_color_t.
+ *
+ * \param color
+ *        A color of type lv_color_t
+ *
+ * \return void
+ */
+void lcd_set_text_color(lv_color_t color);
 
 #ifdef __cplusplus
 }  // namespace c

@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -68,6 +68,14 @@ typedef enum adi_port_config_e {
 	E_ADI_TYPE_UNDEFINED = 255,
 	E_ADI_ERR = PROS_ERR
 } adi_port_config_e_t;
+
+/**
+ * Represents the potentiometer version type.
+ */
+typedef enum adi_potentiometer_type_e { 
+	E_ADI_POT_EDR = 0,
+	E_ADI_POT_V2
+} adi_potentiometer_type_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -688,6 +696,66 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  * failed, setting errno.
  */
 int32_t adi_gyro_shutdown(adi_gyro_t gyro);
+
+/**
+ * Reference type for an initialized potentiometer.
+ *
+ * This merely contains the port number for the potentiometer, unlike its use as an
+ * object to store gyro data in PROS 2.
+ */
+typedef int32_t adi_potentiometer_t;
+
+/**
+ * Initializes a potentiometer on the given port of the original potentiometer.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a potentiometer
+ *
+ * \param port
+ *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
+ * initialization failed.
+ */
+adi_potentiometer_t adi_potentiometer_init(uint8_t port);
+
+/**
+ * Initializes a potentiometer on the given port. 
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a potentiometer
+ *
+ * \param port
+ *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
+ * \param potentiometer_type
+ *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+ *
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
+ * initialization failed.
+ */
+adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
+
+/**
+ * Gets the current potentiometer angle in tenths of a degree.
+ *
+ * The original potentiometer rotates 250 degrees thus returning an angle between 0-250 degrees.
+ * Potentiometer V2 rotates 330 degrees thus returning an angle between 0-330 degrees.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a potentiometer
+ *
+ * \param potentiometer
+ *        The adi_potentiometer_t object for which the angle will be returned
+ *
+ * \return The potentiometer angle in degrees.
+ */
+double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer);
 
 #ifdef __cplusplus
 }  // namespace c

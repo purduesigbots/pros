@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -23,6 +23,7 @@
 
 #include "pros/rtos.h"
 #undef delay
+#include <chrono>
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
@@ -57,8 +58,8 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	Task(task_fn_t function, void* parameters = NULL, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+	explicit Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -103,14 +104,14 @@ class Task {
 	 */
 	template <class F>
 	static task_t create(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-			 std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "") {
+	                     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "") {
 		static_assert(std::is_invocable_r_v<void, F>);
 		return pros::c::task_create(
-			[](void* parameters) {
-				std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
-				(*ptr)();
-			},
-			new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name);
+		    [](void* parameters) {
+			    std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
+			    (*ptr)();
+		    },
+		    new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name);
 	}
 
 	/**
@@ -131,7 +132,7 @@ class Task {
 	static task_t create(F&& function, const char* name) {
 		return Task::create(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name);
 	}
-	
+
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
 	 *
@@ -146,15 +147,21 @@ class Task {
 	 *        TASK_PRIO_DEFAULT plus/minus 1 or 2 is typically used.
 	 * \param stack_depth
 	 *        The number of words (i.e. 4 * stack_depth) available on the task's
-	 *        stack. TASK_STACK_DEPTH_DEFAULT is typically sufficienct.
+	 *        stack. TASK_STACK_DEPTH_DEFAULT is typically sufficient.
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
 	template <class F>
-	Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "") : Task(Task::create(std::forward<F>(function), prio, stack_depth, name)) {
+	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
+	     const char* name = "")
+	    : Task(
+	          [](void* parameters) {
+		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
+		          (*ptr)();
+	          },
+	          new std::function<void()>(std::forward<F>(function)), prio, stack_depth, name) {
 		static_assert(std::is_invocable_r_v<void, F>);
 	}
 
@@ -183,7 +190,7 @@ class Task {
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
 	 */
-	Task(task_t task);
+	explicit Task(task_t task);
 
 	/**
 	 * Get the currently running Task
@@ -213,7 +220,7 @@ class Task {
 	 *
 	 * \return The priority of the task
 	 */
-	std::uint32_t get_priority(void);
+	std::uint32_t get_priority();
 
 	/**
 	 * Sets the priority of the specified task.
@@ -232,12 +239,12 @@ class Task {
 	 *
 	 * \return The state of the task
 	 */
-	std::uint32_t get_state(void);
+	std::uint32_t get_state();
 
 	/**
 	 * Suspends the specified task, making it ineligible to be scheduled.
 	 */
-	void suspend(void);
+	void suspend();
 
 	/**
 	 * Resumes the specified task, making it eligible to be scheduled.
@@ -245,19 +252,19 @@ class Task {
 	 * \param task
 	 *        The task to resume
 	 */
-	void resume(void);
+	void resume();
 
 	/**
 	 * Gets the name of the specified task.
 	 *
 	 * \return A pointer to the name of the task
 	 */
-	const char* get_name(void);
+	const char* get_name();
 
 	/**
 	 * Convert this object to a C task_t handle
 	 */
-	operator task_t() {
+	explicit operator task_t() {
 		return task;
 	}
 
@@ -270,7 +277,18 @@ class Task {
 	 *
 	 * \return Always returns true.
 	 */
-	std::uint32_t notify(void);
+	std::uint32_t notify();
+
+	/**
+ 	 * Utilizes task notifications to wait until specified task is complete and deleted,
+ 	 * then continues to execute the program. Analogous to std::thread::join in C++.
+	 *
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
+	 *
+	 * \return void
+	 */
+	void join();
 
 	/**
 	 * Sends a notification to a task, optionally performing some action. Will
@@ -322,7 +340,7 @@ class Task {
 	 *
 	 * \return False if there was not a notification waiting, true if there was
 	 */
-	bool notify_clear(void);
+	bool notify_clear();
 
 	/**
 	 * Delays a task for a given number of milliseconds.
@@ -359,15 +377,43 @@ class Task {
 	 *
 	 * \return The number of tasks that are currently being managed by the kernel.
 	 */
-	static std::uint32_t get_count(void);
+	static std::uint32_t get_count();
 
 	private:
-	task_t task;
+	task_t task{};
+};
+
+// STL Clock compliant clock
+struct Clock {
+	using rep = std::uint32_t;
+	using period = std::milli;
+	using duration = std::chrono::duration<rep, period>;
+	using time_point = std::chrono::time_point<Clock>;
+	const bool is_steady = true;
+
+	/**
+	 * Gets the current time.
+	 *
+	 * Effectively a wrapper around pros::millis()
+	 *
+	 * \return The current time
+	 */
+	static time_point now();
 };
 
 class Mutex {
+	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
+
 	public:
-	Mutex(void);
+	Mutex();
+
+	// disable copy and move construction and assignment per Mutex requirements
+	// (see https://en.cppreference.com/w/cpp/named_req/Mutex)
+	Mutex(const Mutex&) = delete;
+	Mutex(Mutex&&) = delete;
+
+	Mutex& operator=(const Mutex&) = delete;
+	Mutex& operator=(Mutex&&) = delete;
 
 	/**
 	 * Takes and locks a mutex indefinetly.
@@ -380,7 +426,7 @@ class Mutex {
 	 * is returned, then errno is set with a hint about why the the mutex
 	 * couldn't be taken.
 	 */
-	bool take(void);
+	bool take();
 
 	/**
 	 * Takes and locks a mutex, waiting for up to a certain number of milliseconds
@@ -412,10 +458,80 @@ class Mutex {
 	 * false is returned, then errno is set with a hint about why the mutex
 	 * couldn't be returned.
 	 */
-	bool give(void);
+	bool give();
 
-	private:
-	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
+	/**
+	 * Takes and locks a mutex, waiting for up to TIMEOUT_MAX milliseconds.
+	 *
+	 * Effectively equivalent to calling pros::Mutex::take with TIMEOUT_MAX as
+	 * the parameter.
+	 *
+	 * Conforms to named requirment BasicLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 *
+	 * \note Consider using a std::unique_lock, std::lock_guard, or
+	 * 		 std::scoped_lock instead of interacting with the Mutex directly.
+	 *
+	 * \exception std::system_error Mutex could not be locked within TIMEOUT_MAX
+	 *			  milliseconds. see errno for details.
+	 */
+	void lock();
+
+	/**
+	 * Unlocks a mutex.
+	 *
+	 * Equivalent to calling pros::Mutex::give.
+	 *
+	 * Conforms to named requirement BasicLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/BasicLockable
+	 *
+	 * \note Consider using a std::unique_lock, std::lock_guard, or
+	 * 		 std::scoped_lock instead of interacting with the Mutex direcly.
+	 */
+	void unlock();
+
+	/**
+	 * Try to lock a mutex.
+	 *
+	 * Returns immediately if unsucessful.
+	 *
+	 * Conforms to named requirement Lockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/Lockable
+	 *
+	 * \return True when lock was acquired succesfully, or false otherwise.
+	 */
+	bool try_lock();
+
+	/**
+	 * Takes and locks a mutex, waiting for a specified duration.
+	 *
+	 * Equivalent to calling pros::Mutex::take with a duration specified in
+	 * milliseconds.
+	 *
+	 * Conforms to named requirement TimedLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	 *
+	 * \param rel_time Time to wait before the mutex becomes available.
+	 * \return True if the lock was acquired succesfully, otherwise false.
+	 */
+	template <typename Rep, typename Period>
+	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
+		return take(std::chrono::duration_cast<Clock::duration>(rel_time).count());
+	}
+
+	/**
+	 * Takes and locks a mutex, waiting until a specified time.
+	 *
+	 * Conforms to named requirement TimedLockable
+	 * \see https://en.cppreference.com/w/cpp/named_req/TimedLockable
+	 *
+	 * \param abs_time Time point until which to wait for the mutex.
+	 * \return True if the lock was acquired succesfully, otherwise false.
+	 */
+	template <typename Duration>
+	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
+		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
+	}
 };
 
 /**
@@ -427,7 +543,7 @@ using pros::c::millis;
 
 /**
  * Gets the number of microseconds since PROS initialized.
- * 
+ *
  * \return The number of microseconds since PROS initialized
  */
 using pros::c::micros;
@@ -440,9 +556,9 @@ using pros::c::micros;
  * To delay cyclically, use task_delay_until().
  *
  * \param milliseconds
- *        The number of milliseconds to wait (1000 milliseconds per second)
+ * 		  The number of milliseconds to wait (1000 milliseconds per second)
  */
 using pros::c::delay;
 }  // namespace pros
 
-#endif  // _PROS_RTOS_HPP_s
+#endif  // _PROS_RTOS_HPP_

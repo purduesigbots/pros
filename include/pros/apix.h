@@ -12,7 +12,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -377,7 +377,8 @@ typedef enum v5_device_e {
 	E_DEVICE_ADI = 12,
 	E_DEVICE_OPTICAL = 16,
 	E_DEVICE_GPS = 20,
-	E_DEVICE_GENERIC = 129,
+	E_DEVICE_SERIAL = 129,
+	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
