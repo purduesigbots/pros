@@ -4752,13 +4752,11 @@ uint32_t uxReturn;
 	void task_join(task_t task) {
 		if(!task) return;
 		TaskStatus_t xTaskDetails;
+		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
 		do
 		{
 			vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
-			if(xTaskDetails.eCurrentState == E_TASK_STATE_DELETED) { 
-				break;
-			}
-		} while (!task_notify_take(true, 20));
+		} while (!task_notify_take(true, 20) && xTaskDetails.eCurrentState != E_TASK_STATE_DELETED);
 	}
 
 #endif /* configUSE_TASK_NOTIFICATIONS */
