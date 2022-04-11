@@ -4745,6 +4745,24 @@ uint32_t uxReturn;
 #endif /* configUSE_TASK_NOTIFICATIONS */
 /*-----------------------------------------------------------*/
 
+/*-----------------------------------------------------------*/
+
+#if( configUSE_TASK_NOTIFICATIONS == 1 )
+
+	void task_join(task_t task) {
+		if(!task) return;
+		TaskStatus_t xTaskDetails;
+		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
+		do
+		{
+			vTaskGetInfo(task, &xTaskDetails, pdTRUE, E_TASK_STATE_INVALID);
+		} while (!task_notify_take(true, 20) && xTaskDetails.eCurrentState != E_TASK_STATE_DELETED);
+	}
+
+#endif /* configUSE_TASK_NOTIFICATIONS */
+/*-----------------------------------------------------------*/
+
+/*-----------------------------------------------------------*/
 
 static void prvAddCurrentTaskToDelayedList( uint32_t timeout, const int32_t xCanBlockIndefinitely )
 {
