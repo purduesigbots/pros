@@ -68,6 +68,7 @@
 #include "pros/distance.hpp"
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"
+#include "pros/link.hpp"
 #include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motors.hpp"
@@ -76,7 +77,6 @@
 #include "pros/rtos.hpp"
 #include "pros/screen.hpp"
 #include "pros/vision.hpp"
-#include "pros/link.hpp"
 #endif
 
 #endif  // _PROS_API_H_

@@ -77,9 +77,9 @@ static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
     if(plugged_device != E_DEVICE_NONE && plugged_device != E_DEVICE_RADIO) {
         return PROS_ERR;
     }
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
     // set whether this device is an override radio or not
     *((bool*)device->pad) = ov;
-	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	if (!port_mutex_take(port - 1)) {
 		errno = EACCES;
 		return PROS_ERR;
