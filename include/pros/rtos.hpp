@@ -58,7 +58,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	explicit Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
@@ -264,7 +264,7 @@ class Task {
 	/**
 	 * Convert this object to a C task_t handle
 	 */
-	explicit operator task_t() {
+	operator task_t() {
 		return task;
 	}
 
