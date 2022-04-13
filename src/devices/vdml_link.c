@@ -26,6 +26,26 @@
 
 static const uint8_t START_BYTE = 0x33;
 
+// necessary because if an override is used on the only radio on the brain, the
+// device is registered still as a radio but has the generic serial icon on the brain 
+// :/
+
+#define claim_port_link(port, err_val) \
+    if (!VALIDATE_PORT_NO(port)) {                                                  \
+		errno = EINVAL;                                                                 \
+		return err_val;                                                                \
+	}                                                                                   \
+    v5_device_e_t plugged_device = registry_get_plugged_type(port);                 \
+    if(plugged_device != E_DEVICE_SERIAL && plugged_device != E_DEVICE_RADIO) {           \
+        return err_val;                                                                \
+    }                                                                                   \
+	v5_smart_device_s_t* device = registry_get_device(port);                        \
+	if (!port_mutex_take(port - 1)) {                                                   \
+		errno = EACCES;                                                                 \
+		return err_val;                                                                \
+	}                                                                                   \
+
+
 // internal function for clearing the rx buffer 
 static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
     uint8_t buf[LINK_BUFFER_SIZE];
@@ -39,6 +59,7 @@ static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
     // claim_port_i(port - 1, E_DEVICE_RADIO); is not used because it's a generic serial device 
     // the reason behind why it can be a radio or a serial device is because
     // a radio is not the highest port radio, it will not be registered with vexos.
+    // ... this applies to all functions for vexlink (patch 3.6.1 extended this from the init functions to all funcs)
 	if (!VALIDATE_PORT_NO(port - 1)) {
 		errno = EINVAL;
 		return PROS_ERR;
@@ -67,19 +88,19 @@ uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t typ
 }
 
 bool link_connected(uint8_t port) {
-    claim_port(port - 1, E_DEVICE_SERIAL, false);
+    claim_port_link(port - 1, false);
     bool rtv = vexDeviceGenericRadioLinkStatus(device->device_info); 
     return_port(port - 1, rtv);
 }
 
 uint32_t link_raw_receivable_size(uint8_t port) {
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     uint32_t rtv = vexDeviceGenericRadioReceiveAvail(device->device_info); 
     return_port(port - 1, rtv);
 }
 
 uint32_t link_raw_transmittable_size(uint8_t port) {
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     uint32_t rtv = vexDeviceGenericRadioWriteFree(device->device_info);
     return_port(port - 1, rtv);
 }
@@ -89,7 +110,7 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size) {
         errno = EINVAL;
         return PROS_ERR;
     }
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
@@ -107,7 +128,7 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size) {
         errno = EINVAL;
         return PROS_ERR;
     }
-    claim_port_i(port - 1, E_DEVICE_SERIAL); 
+    claim_port_link(port - 1, PROS_ERR); 
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
@@ -125,7 +146,7 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size) {
         errno = EINVAL;
         return PROS_ERR;
     }
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
@@ -159,7 +180,7 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
         errno = EINVAL;
         return PROS_ERR;
     }
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     if(!vexDeviceGenericRadioLinkStatus(device->device_info)) {
         errno = ENXIO;
         return_port(port - 1, PROS_ERR);
@@ -212,7 +233,7 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size) {
 }
 
 uint32_t link_clear_receive_buf(uint8_t port) {
-    claim_port_i(port - 1, E_DEVICE_SERIAL);
+    claim_port_link(port - 1, PROS_ERR);
     uint32_t rtv = _clear_rx_buf(device);
     return_port(port - 1, rtv);
 }
