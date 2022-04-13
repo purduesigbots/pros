@@ -1,4 +1,5 @@
 #include "main.h"
+#include "../firmware/libv5rts/sdk/vexv5/include/v5_api.h"
 
 /**
  * A callback function for LLEMU's center button.
@@ -7,13 +8,13 @@
  * "I was pressed!" and nothing.
  */
 void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
+    static bool pressed = false;
+    pressed = !pressed;
+    if (pressed) {
+        pros::lcd::set_text(2, "I was pressed!");
+    } else {
+        pros::lcd::clear_line(2);
+    }
 }
 
 /**
@@ -23,10 +24,10 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+    pros::lcd::initialize();
+    pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+    pros::lcd::register_btn1_cb(on_center_button);
 }
 
 /**
@@ -73,20 +74,34 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+#define TX_LINK_PORT 19
+#define RX_LINK_PORT 20
+char msg[10] = "TEST_MSG1";
 void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
-
-	while (true) {
-		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
-		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
-		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
-		int left = master.get_analog(ANALOG_LEFT_Y);
-		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-		left_mtr = left;
-		right_mtr = right;
-		pros::delay(20);
-	}
+    printf("Init \n");
+    pros::c::link_init_override(TX_LINK_PORT, "test", pros::E_LINK_TRANSMITTER);
+    pros::c::link_init_override(RX_LINK_PORT, "test", pros::E_LINK_RECIEVER);
+    char buf[100];
+	pros::lcd::print(7, "Init Successful: %d", errno); // ENODEV
+    while (true) {
+        printf("Readable Size: \n");
+		
+        if(pros::c::link_raw_receivable_size(RX_LINK_PORT) > 0) {
+            pros::lcd::clear_line(0);
+            printf("Readable Size Actual: %d\n", pros::c::link_raw_receivable_size(RX_LINK_PORT));
+            pros::c::link_receive(RX_LINK_PORT, buf, 10);
+            pros::lcd::print(0, "Recieved Message: %s", buf);
+        }
+		
+        printf("2 transmits\n");
+        pros::c::link_transmit(TX_LINK_PORT, msg, 10);
+        //pros::c::link_transmit(TX_LINK_PORT, (void*)" Test_MSG2 ");
+        pros::lcd::print(2, "Errno: %d", errno); // ENODEV
+        pros::lcd::print(3, "TX Device Connected?: %d", pros::c::link_connected(TX_LINK_PORT));
+        pros::lcd::print(4, "RX Device Connected?: %d", pros::c::link_connected(RX_LINK_PORT));
+        pros::lcd::print(5, "TX Size: %d", pros::c::link_raw_transmittable_size(TX_LINK_PORT));
+        pros::lcd::print(6, "RX Size: %d", pros::c::link_raw_receivable_size(RX_LINK_PORT));
+        pros::delay(2000);
+    }
 }
