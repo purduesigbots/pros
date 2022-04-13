@@ -28,29 +28,22 @@ static const uint8_t START_BYTE = 0x33;
 
 // necessary because if an override is used on the only radio on the brain, the
 // device is registered still as a radio but has the generic serial icon on the brain 
-// Therefore, just if the controller radio is overriden, it can be either a serial device or radio
-// else, it must be a generic serial device or something has gone wrong.
+// :/
 
-#define claim_port_link(port, err_val)                                                      \
-    if (!VALIDATE_PORT_NO(port)) {                                                          \
-		errno = EINVAL;                                                                     \
-		return err_val;                                                                     \
-	}                                                                                       \
-    v5_device_e_t plugged_device = registry_get_plugged_type(port);                         \
-    v5_smart_device_s_t* device = registry_get_device(port);                                \
-    if(*((bool*)device->pad) == true) {                                                     \
-        if(plugged_device != E_DEVICE_SERIAL && plugged_device != E_DEVICE_RADIO) {         \
-            return err_val;                                                                 \
-        }                                                                                   \
-    }                                                                                       \
-    else if(plugged_device != E_DEVICE_SERIAL) {                                            \
-        return err_val;                                                                     \
-    }                                                                                       \
-                                                                                            \
-	if (!port_mutex_take(port - 1)) {                                                       \
-		errno = EACCES;                                                                     \
-		return err_val;                                                                     \
-	}                                                                                       \
+#define claim_port_link(port, err_val) \
+    if (!VALIDATE_PORT_NO(port)) {                                                  \
+		errno = EINVAL;                                                                 \
+		return err_val;                                                                \
+	}                                                                                   \
+    v5_device_e_t plugged_device = registry_get_plugged_type(port);                 \
+    if(plugged_device != E_DEVICE_SERIAL && plugged_device != E_DEVICE_RADIO) {           \
+        return err_val;                                                                \
+    }                                                                                   \
+	v5_smart_device_s_t* device = registry_get_device(port);                        \
+	if (!port_mutex_take(port - 1)) {                                                   \
+		errno = EACCES;                                                                 \
+		return err_val;                                                                \
+	}                                                                                   \
 
 
 // internal function for clearing the rx buffer 
@@ -78,8 +71,6 @@ static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
         return PROS_ERR;
     }
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
-    // set whether this device is an override radio or not
-    *((bool*)device->pad) = ov;
 	if (!port_mutex_take(port - 1)) {
 		errno = EACCES;
 		return PROS_ERR;
