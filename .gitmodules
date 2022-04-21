@@ -1,4 +1,0 @@
-[submodule "firmware/libv5rts"]
-	path = firmware/libv5rts
-	url = git@github.com:purduesigbots/libv5rts.git
-	ignore = dirty
