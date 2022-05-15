@@ -1,5 +1,6 @@
 /**
  * \file pros/adi.h
+ * \ingroup c-adi
  *
  * Contains prototypes for interfacing with the ADI.
  *
@@ -13,6 +14,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * \defgroup c-adi ADI (TriPort) C API
+ * \note The external ADI API can be found [here.](@ref ext-adi)
  */
 
 #ifndef _PROS_ADI_H_
@@ -126,11 +129,17 @@ typedef enum adi_potentiometer_type_e {
 namespace c {
 #endif
 
-/******************************************************************************/
-/**                         General ADI Use Functions                        **/
-/**                                                                          **/
-/**       These functions allow for interaction with any ADI port type       **/
-/******************************************************************************/
+/**
+ * \ingroup c-adi
+ */
+
+/**
+ * \addtogroup c-adi
+ *  @{
+ */
+/// \name General ADI Use Functions
+/// These functions allow for interaction with any ADI port type
+///@{
 
 /**
  * Gets the configuration for the given ADI port.
@@ -144,6 +153,11 @@ namespace c {
  *        the configuration
  *
  * \return The ADI configuration for the given port
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_port_config_e_t adi_port_get_config(uint8_t port);
 
@@ -159,6 +173,11 @@ adi_port_config_e_t adi_port_get_config(uint8_t port);
  *        will be returned
  *
  * \return The value stored for the given port
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_port_get_value(uint8_t port);
 
@@ -176,6 +195,11 @@ int32_t adi_port_get_value(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
 
@@ -197,14 +221,19 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_port_set_value(uint8_t port, int32_t value);
 
-/******************************************************************************/
-/**                      PROS 2 Compatibility Functions                      **/
-/**                                                                          **/
-/**     These functions provide similar functionality to the PROS 2 API      **/
-/******************************************************************************/
+///@}
+
+/// \name PROS 2 Compatibility Functions
+/// These functions provide similar functionality to the PROS 2 API
+///@{
 
 /**
  * Used for adi_digital_write() to specify a logic HIGH state to output.
@@ -260,6 +289,11 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  *        The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The average sensor value computed by this function
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_analog_calibrate(uint8_t port);
 
@@ -280,6 +314,11 @@ int32_t adi_analog_calibrate(uint8_t port);
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_analog_read(uint8_t port);
 
@@ -302,6 +341,11 @@ int32_t adi_analog_read(uint8_t port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_analog_read_calibrated(uint8_t port);
 
@@ -329,6 +373,11 @@ int32_t adi_analog_read_calibrated(uint8_t port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_analog_read_calibrated_HR(uint8_t port);
 
@@ -349,6 +398,11 @@ int32_t adi_analog_read_calibrated_HR(uint8_t port);
  *        The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return True if the pin is HIGH, or false if it is LOW
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_digital_read(uint8_t port);
 
@@ -373,6 +427,11 @@ int32_t adi_digital_read(uint8_t port);
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_digital_get_new_press(uint8_t port);
 
@@ -394,6 +453,11 @@ int32_t adi_digital_get_new_press(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_digital_write(uint8_t port, bool value);
 
@@ -411,6 +475,11 @@ int32_t adi_digital_write(uint8_t port, bool value);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_pin_mode(uint8_t port, uint8_t mode);
 
@@ -430,6 +499,11 @@ int32_t adi_pin_mode(uint8_t port, uint8_t mode);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_motor_set(uint8_t port, int8_t speed);
 
@@ -445,6 +519,11 @@ int32_t adi_motor_set(uint8_t port, int8_t speed);
  *        The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The last set speed of the motor on the given port
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_motor_get(uint8_t port);
 
@@ -461,6 +540,11 @@ int32_t adi_motor_get(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_motor_stop(uint8_t port);
 
@@ -469,6 +553,11 @@ int32_t adi_motor_stop(uint8_t port);
  *
  * This merely contains the port number for the encoder, unlike its use as an
  * object to store encoder data in PROS 2.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 typedef int32_t adi_encoder_t;
 
@@ -488,6 +577,11 @@ typedef int32_t adi_encoder_t;
  *
  * \return The signed and cumulative number of counts since the last start or
  * reset
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_encoder_get(adi_encoder_t enc);
 
@@ -510,6 +604,11 @@ int32_t adi_encoder_get(adi_encoder_t enc);
  *
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool reverse);
 
@@ -530,6 +629,11 @@ adi_encoder_t adi_encoder_init(uint8_t port_top, uint8_t port_bottom, bool rever
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_encoder_reset(adi_encoder_t enc);
 
@@ -546,6 +650,11 @@ int32_t adi_encoder_reset(adi_encoder_t enc);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_encoder_shutdown(adi_encoder_t enc);
 
@@ -554,6 +663,11 @@ int32_t adi_encoder_shutdown(adi_encoder_t enc);
  *
  * This merely contains the port number for the ultrasonic, unlike its use as an
  * object to store ultrasonic data in PROS 2.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 typedef int32_t adi_ultrasonic_t;
 
@@ -574,6 +688,11 @@ typedef int32_t adi_ultrasonic_t;
  *
  * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
  * measured from the sensor's mounting points.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
 
@@ -594,6 +713,11 @@ int32_t adi_ultrasonic_get(adi_ultrasonic_t ult);
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
 
@@ -610,6 +734,11 @@ adi_ultrasonic_t adi_ultrasonic_init(uint8_t port_ping, uint8_t port_echo);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 
@@ -618,6 +747,11 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
  *
  * This merely contains the port number for the gyroscope, unlike its use as an
  * object to store gyro data in PROS 2.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 typedef int32_t adi_gyro_t;
 
@@ -638,6 +772,11 @@ typedef int32_t adi_gyro_t;
  *        The adi_gyro_t object for which the angle will be returned
  *
  * \return The gyro angle in degrees.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 double adi_gyro_get(adi_gyro_t gyro);
 
@@ -662,6 +801,11 @@ double adi_gyro_get(adi_gyro_t gyro);
  *
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
 
@@ -678,6 +822,11 @@ adi_gyro_t adi_gyro_init(uint8_t port, double multiplier);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_gyro_reset(adi_gyro_t gyro);
 
@@ -694,6 +843,11 @@ int32_t adi_gyro_reset(adi_gyro_t gyro);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 
@@ -702,6 +856,11 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
  *
  * This merely contains the port number for the potentiometer, unlike its use as an
  * object to store gyro data in PROS 2.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 typedef int32_t adi_potentiometer_t;
 
@@ -718,6 +877,11 @@ typedef int32_t adi_potentiometer_t;
  *
  * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
  * initialization failed.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_potentiometer_t adi_potentiometer_init(uint8_t port);
 
@@ -736,6 +900,11 @@ adi_potentiometer_t adi_potentiometer_init(uint8_t port);
  *
  * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
  * initialization failed.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_type_e_t potentiometer_type);
 
@@ -754,8 +923,17 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
  *        The adi_potentiometer_t object for which the angle will be returned
  *
  * \return The potentiometer angle in degrees.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c

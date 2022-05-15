@@ -97,6 +97,11 @@ int32_t motor_move(uint8_t port, int32_t voltage);
  * 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code {.language-id}
+ * code
+ * \endcode
  */
 int32_t motor_brake(uint8_t port);
 
