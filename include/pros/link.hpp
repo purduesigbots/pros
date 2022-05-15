@@ -1,5 +1,6 @@
 /**
  * \file pros/link.hpp
+ * \ingroup cpp-link
  *
  * Contains prototypes for functions related to robot to robot communications.
  *
@@ -14,6 +15,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-link VEX Link C++ API
  */
 #ifndef _PROS_LINK_HPP_
 #define _PROS_LINK_HPP_

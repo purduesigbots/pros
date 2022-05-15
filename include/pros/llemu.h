@@ -1,4 +1,4 @@
-/*
+/**
  * \file pros/llemu.h
  * \ingroup c-llemu
  *

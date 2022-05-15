@@ -1,5 +1,6 @@
 /**
  * \file pros/rtos.h
+ * \ingroup c-rtos
  *
  * Contains declarations for the PROS RTOS kernel for use by typical VEX
  * programmers.
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-rtos RTOS Facilities C API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref multitasking)
  */
 
 #ifndef _PROS_RTOS_H_

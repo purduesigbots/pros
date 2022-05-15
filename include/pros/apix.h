@@ -1,5 +1,6 @@
 /**
  * \file pros/apix.h
+ * \ingroup apix
  *
  * PROS Extended API header
  *
@@ -12,12 +13,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup apix Extended API
+ * \note Also included in the Extended API is [LVGL.](https://lvgl.io/)
  */
 
 #ifndef _PROS_API_EXTENDED_H_

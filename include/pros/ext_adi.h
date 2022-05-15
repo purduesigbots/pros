@@ -1,5 +1,6 @@
 /**
  * \file pros/ext_adi.h
+ * \ingroup ext-adi
  *
  * Contains prototypes for interfacing with the 3-Wire Expander.
  *
@@ -8,11 +9,14 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup ext-adi ADI Expander C API
+ * \note The internal ADI API can be found [here.](@ref c-adi)
  */
 
 #ifndef _PROS_EXT_ADI_H_

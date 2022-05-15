@@ -1,5 +1,6 @@
 /**
  * \file pros/adi.hpp
+ * \ingroup cpp-adi
  *
  * Contains prototypes for interfacing with the ADI.
  *
@@ -8,11 +9,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-adi ADI (TriPort) C++ API
+ * \note The external ADI API can be found [here.](@ref ext-adi)
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref adi)
  */
 
 #ifndef _PROS_ADI_HPP_

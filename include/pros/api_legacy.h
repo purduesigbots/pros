@@ -1,5 +1,6 @@
 /**
  * \file pros/api_legacy.h
+ * \ingroup api-legacy
  *
  * PROS 2 Legacy API header
  *
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup api-legacy Legacy API
+ * \note Using this functionality requires including "pros/api_legacy.h" in addition to "api.h".
  */
 
 #ifndef _PROS_API_LEGACY_H_

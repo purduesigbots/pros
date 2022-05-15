@@ -1,5 +1,6 @@
 /**
  * \file pros/distance.h
+ * \ingroup c-distance
  *
  * Contains prototypes for functions related to the VEX Distance sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-distance VEX Distance Sensor C API
  */
 
 #ifndef _PROS_DISTANCE_H_

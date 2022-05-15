@@ -1,5 +1,6 @@
 /**
  * \file pros/vision.h
+ * \ingroup c-vision
  *
  * Contains prototypes for the VEX Vision Sensor-related functions.
  *
@@ -9,12 +10,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-vision Vision Sensor C API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref vision)
  */
 
 #ifndef _PROS_VISION_H_
