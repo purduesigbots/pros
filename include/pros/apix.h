@@ -40,12 +40,18 @@ namespace pros::c {
 extern "C" {
 #endif
 
-/******************************************************************************/
-/**                             RTOS FACILITIES                              **/
-/**                                                                          **/
-/**                                                                          **/
-/**See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more**/
-/******************************************************************************/
+/**
+ * \ingroup apix
+ */
+
+/**
+ * \addtogroup apix
+ *  @{
+ */
+
+/// \name RTOS Facilities
+/// See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more
+///@{
 
 typedef void* queue_t;
 typedef void* sem_t;
@@ -360,9 +366,10 @@ void queue_delete(queue_t queue);
  */
 void queue_reset(queue_t queue);
 
-/******************************************************************************/
-/**                           Device Registration                            **/
-/******************************************************************************/
+///@}
+
+/// \name Device Registration
+///@{
 
 /*
  * List of possible v5 devices
@@ -386,7 +393,7 @@ typedef enum v5_device_e {
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
-/*
+/**
  * Registers a device in the given zero-indexed port
  *
  * Registers a device of the given type in the given port into the registry, if
@@ -407,7 +414,7 @@ typedef enum v5_device_e {
  */
 int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
-/*
+/**
  * Deregisters a devices from the given zero-indexed port
  *
  * Removes the device registed in the given port, if there is one.
@@ -423,7 +430,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  */
 int registry_unbind_port(uint8_t port);
 
-/*
+/**
  * Returns the type of device registered to the zero-indexed port.
  *
  * This function uses the following values of errno when an error state is
@@ -438,7 +445,7 @@ int registry_unbind_port(uint8_t port);
  */
 v5_device_e_t registry_get_bound_type(uint8_t port);
 
-/*
+/**
  * Returns the type of the device plugged into the zero-indexed port.
  *
  * This function uses the following values of errno when an error state is
@@ -453,9 +460,11 @@ v5_device_e_t registry_get_bound_type(uint8_t port);
  */
 v5_device_e_t registry_get_plugged_type(uint8_t port);
 
-/******************************************************************************/
-/**                               Filesystem                                 **/
-/******************************************************************************/
+///@}
+
+/// \name Filesystem
+///@{
+
 /**
  * Control settings of the serial driver.
  *
@@ -588,6 +597,10 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * The extra argument is the baudrate.
  */
 #define DEVCTL_SET_BAUDRATE 17
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }
