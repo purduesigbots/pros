@@ -36,6 +36,17 @@
 #endif
 
 /**
+ * \ingroup api-legacy
+ */
+
+/**
+ * \addtogroup api-legacy
+ *  @{
+ */
+
+/// \name ADI Functions
+///@{
+/**
  * From adi.h
  */
 #define analogCalibrate(port) adi_analog_calibrate(port)
@@ -55,9 +66,18 @@
 #define ultrasonicInit(portEcho, portPing) adi_ultrasonic_init(portEcho, portPing)
 #define ultrasonicShutdown(ult) adi_ultrasonic_shutdown(ult)
 
+///@}
+
+/// \name Typedefs
+///@{
+
 typedef _CNAMESPACE adi_encoder_t Encoder;
 typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 
+///@}
+
+/// \name LCD Functions
+///@{
 /**
  * From llemu.h
  */
@@ -69,6 +89,10 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 #define lcdPrint(line, fmt, ...) lcd_print(line, fmt, __VA_ARGS__)
 #define lcdSetText(line, text) lcd_set_text(line, text)
 
+///@}
+
+/// \name Miscallaneous Functions
+///@{
 /**
  * From misc.h
  */
@@ -77,7 +101,10 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 #define isOnline competition_is_connected
 #define isJoystickConnected(id) controller_is_connected(id)
 #define joystickGetAnalog(id, channel) controller_get_analog(id, channel)
+///@}
 
+/// \name RTOS Functions
+///@{
 /**
  * From rtos.h
  */
@@ -99,12 +126,20 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 typedef _NAMESPACE task_t TaskHandle;
 typedef _NAMESPACE mutex_t Mutex;
 
+///@}
+
+/// \name Motor Functions
+///@{
 /**
  * From motors.h
  */
 #define motorSet(port, speed) motor_move(port, speed)
 #define motorGet(port) motor_get_voltage(port)
 #define motorStop(port) motor_move(port, 0)
+
+///@}
+
+///@}
 
 #undef _NAMESPACE
 #undef _CNAMESPACE
