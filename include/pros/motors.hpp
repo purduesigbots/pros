@@ -1345,10 +1345,11 @@ class Motor {
 
 	///@}
 
-	///@}
 	private:
 	const std::uint8_t _port;
 };
+
+///@}
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
