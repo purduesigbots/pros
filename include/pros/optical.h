@@ -36,9 +36,23 @@ namespace pros {
 namespace c {
 #endif
 
+/**
+ * \ingroup c-motors
+ */
 
+/**
+ * \addtogroup c-motors
+ *  @{
+ */
+
+/**
+ * Enumerated Values
+ */
 typedef enum optical_direction_e { NO_GESTURE = 0, UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4, ERROR = PROS_ERR } optical_direction_e_t;
 
+/**
+ * The RGB and Brightness values for the optical sensor.
+ */
 typedef struct optical_rgb_s {
 	double red;
 	double green;
@@ -46,6 +60,9 @@ typedef struct optical_rgb_s {
 	double brightness;
 } optical_rgb_s_t;
 
+/**
+ * The RGB and clear values for the optical sensor.
+ */
 typedef struct optical_raw_s {
 	uint32_t clear;
 	uint32_t red;
@@ -53,14 +70,26 @@ typedef struct optical_raw_s {
 	uint32_t blue;
 } optical_raw_s_t;
 
+/**
+ * This structure contains the raw gesture data.
+ */
 typedef struct optical_gesture_s {
+	// up data
 	uint8_t udata;
+	// down data
 	uint8_t ddata;
+	// left data
 	uint8_t ldata;
+	// right data
 	uint8_t rdata;
+
+	// type of gesture
 	uint8_t type;
+	// padding
 	uint8_t pad;
+	// number of gestures
 	uint16_t count;
+	// time since gesture recoginized
 	uint32_t time;
 } optical_gesture_s_t;
 
@@ -79,6 +108,18 @@ typedef struct optical_gesture_s {
  *        The V5 Optical Sensor port number from 1-21
  * \return hue value if the operation was successful or PROS_ERR_F if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Hue value: %lf \n", optical_get_hue(OPTICAL_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double optical_get_hue(uint8_t port);
 
@@ -97,6 +138,18 @@ double optical_get_hue(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return saturation value if the operation was successful or PROS_ERR_F if
  * the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Saturation value: %lf \n", optical_get_saturation(OPTICAL_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double optical_get_saturation(uint8_t port);
 
@@ -115,6 +168,18 @@ double optical_get_saturation(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return brightness value if the operation was successful or PROS_ERR_F if
  * the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Brightness value: %lf \n", optical_get_brightness(OPTICAL_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double optical_get_brightness(uint8_t port);
 
@@ -133,6 +198,18 @@ double optical_get_brightness(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return poximity value if the operation was successful or PROS_ERR if
  * the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Proximity value: %d \n", optical_get_proximity(OPTICAL_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t optical_get_proximity(uint8_t port);
 
@@ -150,6 +227,18 @@ int32_t optical_get_proximity(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return 1 if the operation is successful or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     optical_set_led_pwm(OPTICAL_PORT, 50);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
 
@@ -166,6 +255,18 @@ int32_t optical_set_led_pwm(uint8_t port, uint8_t value);
  *        The V5 Optical Sensor port number from 1-21
  * \return LED pwm value that ranges from 0 to 100 if the operation was 
  * successful or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("PWM Value: %d \n", optical_get_led_pwm(OPTICAL_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t optical_get_led_pwm(uint8_t port);
 
@@ -181,6 +282,23 @@ int32_t optical_get_led_pwm(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return rgb value if the operation was successful or an optical_rgb_s_t with
  * all fields set to PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * optical_rgb_s_t RGB_values;
+ * void opcontrol() {
+ *   while (true) {
+ *     RGB_values = optical_get_rgb(OPTICAL_PORT);
+ *     printf("Red value: %lf \n", RGB_values.red);
+ *     printf("Green value: %lf \n", RGB_values.green);
+ *     printf("Blue value: %lf \n", RGB_values.blue);
+ *     printf("Brightness value: %lf \n", RGB_values.brightness);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 optical_rgb_s_t optical_get_rgb(uint8_t port);
 
@@ -196,6 +314,23 @@ optical_rgb_s_t optical_get_rgb(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return raw rgb value if the operation was successful or an optical_raw_s_t 
  * with all fields set to PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * optical_raw_s_t raw_values;
+ * void opcontrol() {
+ * while (true) {
+ *   raw_values = optical_get_raw(OPTICAL_PORT);
+ *   printf("Red value: %ld \n", raw_values.red);
+ *   printf("Green value: %ld \n", raw_values.green);
+ *   printf("Blue value: %ld \n", raw_values.blue);
+ *   printf("Clear value: %ld \n", raw_values.clear);
+ *   delay(20);
+ *   }
+ * }
+ * \endcode
  */
 optical_raw_s_t optical_get_raw(uint8_t port);
 
@@ -213,6 +348,20 @@ optical_raw_s_t optical_get_raw(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return gesture value if the operation was successful or PROS_ERR if
  * the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * optical_direction_e_t gesture;
+ * void opcontrol() {
+ *   while (true) {
+ *     gesture = optical_get_gesture(OPTICAL_PORT);
+ *     printf("Gesture value: %d \n", gesture);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 optical_direction_e_t optical_get_gesture(uint8_t port);
 
@@ -228,6 +377,26 @@ optical_direction_e_t optical_get_gesture(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return gesture value if the operation was successful or an optical_gesture_s_t 
  * with all fields set to PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * optical_gesture_s_t raw_gesture;
+ * void opcontrol() {
+ *   while (true) {
+ *     raw_gesture = optical_get_gesture_raw(OPTICAL_PORT);
+ *     printf("Up data: %u \n", raw_gesture.udata);
+ *     printf("Down data: %u \n", raw_gesture.ddata);
+ *     printf("Left data: %u \n", raw_gesture.ldata);
+ *     printf("Right data: %u \n", raw_gesture.rdata);
+ *     printf("Type: %u \n", raw_gesture.type);
+ *     printf("Count: %u \n", raw_gesture.count);
+ *     printf("Time: %lu \n", raw_gesture.time);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 optical_gesture_s_t optical_get_gesture_raw(uint8_t port);
 
@@ -243,6 +412,18 @@ optical_gesture_s_t optical_get_gesture_raw(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return 1 if the operation is successful or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     optical_enable_gesture(OPTICAL_PORT);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t optical_enable_gesture(uint8_t port);
 
@@ -258,8 +439,22 @@ int32_t optical_enable_gesture(uint8_t port);
  *        The V5 Optical Sensor port number from 1-21
  * \return 1 if the operation is successful or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define OPTICAL_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     optical_disable_gesture(OPTICAL_PORT);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t optical_disable_gesture(uint8_t port);
+
+///@}
 
 #ifdef __cplusplus
 }
