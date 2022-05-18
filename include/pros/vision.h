@@ -27,11 +27,11 @@
 #define VISION_OBJECT_ERR_SIG 255
 
 /**
- * \ingroup c-motors
+ * \ingroup c-vision
  */
 
 /**
- * \addtogroup c-motors
+ * \addtogroup c-vision
  *  @{
  */
 
