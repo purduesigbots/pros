@@ -46,6 +46,10 @@ unsigned sleep( unsigned period ) {
 	return 1;
 }
 
+int getentropy(void *_buffer, size_t _length) {
+	return -1;
+}
+
 // HACK: this helps confused libc++ functions call the right instruction. for
 // info see https://github.com/purduesigbots/pros/issues/153#issuecomment-519335375
 void __sync_synchronize(void) {
