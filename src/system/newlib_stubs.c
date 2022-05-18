@@ -47,6 +47,7 @@ unsigned sleep( unsigned period ) {
 }
 
 int getentropy(void *_buffer, size_t _length) {
+	errno = ENOSYS;
 	return -1;
 }
 
