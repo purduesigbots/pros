@@ -56,8 +56,16 @@ extern "C" {
 namespace pros {
 #endif
 
-/// \name Data Structures 
-///@{
+/**
+ * This enumeration defines the different types of objects
+ * that can be detected by the Vision Sensor
+ */
+typedef enum vision_object_type {
+	E_VISION_OBJECT_NORMAL = 0,
+	E_VISION_OBJECT_COLOR_CODE = 1,
+	E_VISION_OBJECT_LINE = 2
+} vision_object_type_e_t;
+
 /**
  * This structure contains the parameters used by the Vision Sensor
  * to detect objects.
@@ -75,6 +83,12 @@ typedef struct __attribute__((__packed__)) vision_signature {
 	uint32_t rgb;
 	uint32_t type;
 } vision_signature_s_t;
+
+
+/**
+ * Color codes are just signatures with multiple IDs and a different type.
+ */
+typedef uint16_t vision_color_code_t;
 
 /**
  * This structure contains a descriptor of an object detected
@@ -101,19 +115,6 @@ typedef struct __attribute__((__packed__)) vision_object {
 	int16_t x_middle_coord;
 	int16_t y_middle_coord;
 } vision_object_s_t;
-///@}
-
-/// \name Enumerated Values
-///@{
-/**
- * This enumeration defines the different types of objects
- * that can be detected by the Vision Sensor
- */
-typedef enum vision_object_type {
-	E_VISION_OBJECT_NORMAL = 0,
-	E_VISION_OBJECT_COLOR_CODE = 1,
-	E_VISION_OBJECT_LINE = 2
-} vision_object_type_e_t;
 
 /**
  * This enumeration defines different zero points for returned vision objects.
@@ -122,15 +123,6 @@ typedef enum vision_zero {
 	E_VISION_ZERO_TOPLEFT = 0,  // (0,0) coordinate is the top left of the FOV
 	E_VISION_ZERO_CENTER = 1    // (0,0) coordinate is the center of the FOV
 } vision_zero_e_t;
-///@}
-
-/// \name Typedefs
-///@{
-/**
- * Color codes are just signatures with multiple IDs and a different type.
- */
-typedef uint16_t vision_color_code_t;
-///@}
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
