@@ -66,6 +66,7 @@ typedef enum vision_object_type {
 	E_VISION_OBJECT_LINE = 2
 } vision_object_type_e_t;
 
+/// \name Data Structure
 /**
  * This structure contains the parameters used by the Vision Sensor
  * to detect objects.

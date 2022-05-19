@@ -31,11 +31,18 @@ namespace pros {
 namespace c {
 #endif
 
-/******************************************************************************/
-/**                      Serial communication functions                      **/
-/**                                                                          **/
-/**  These functions allow programmers to communicate using UART over RS485  **/
-/******************************************************************************/
+/**
+ * \ingroup c-serial
+ */
+
+/**
+ * \addtogroup c-serial
+ *  @{
+ */
+
+/// \name Serial communication functions
+/// These functions allow programmers to communicate using UART over RS485
+///@{
 
 /**
  * Enables generic serial on the given port.
@@ -240,6 +247,10 @@ int32_t serial_write_byte(uint8_t port, uint8_t buffer);
  * setting errno.
  */
 int32_t serial_write(uint8_t port, uint8_t* buffer, int32_t length);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c
