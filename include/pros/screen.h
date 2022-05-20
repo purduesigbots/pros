@@ -683,10 +683,6 @@ uint32_t screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t
  * \return 1 if there were no errors, or PROS_ERR if an error occured 
  *          while taking or returning the screen mutex.
  * 
- * \b Example
- * \code
- * 
- * \endcode
  */
 uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* text, va_list args);
 
@@ -713,10 +709,6 @@ uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char*
  * \return 1 if there were no errors, or PROS_ERR if an error occured 
  *          while taking or returning the screen mutex.
  * 
- * \b Example
- * \code
- * 
- * \endcode
  */
 uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, va_list args);
 

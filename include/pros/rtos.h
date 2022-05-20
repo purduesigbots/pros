@@ -33,6 +33,18 @@ extern "C" {
 namespace pros {
 #endif
 
+/**
+ * \ingroup c-rtos
+ */
+
+/**
+ * \addtogroup c-rtos
+ *  @{
+ */
+
+/// \name Macros
+///@{
+
 // The highest priority that can be assigned to a task. Beware of deadlock.
 #define TASK_PRIORITY_MAX 16
 
@@ -59,25 +71,40 @@ namespace pros {
 // The maximum timeout value that can be given to, for instance, a mutex grab.
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
+///@}
+
+/**
+ * Points to a task handle. Used for referencing a task.
+ */
 typedef void* task_t;
+
+/**
+ * Points to the function associated with a task.
+ */
 typedef void (*task_fn_t)(void*);
 
+/**
+ * \name Enumerated Values
+ * @{
+ */
 typedef enum {
-	E_TASK_STATE_RUNNING = 0,
-	E_TASK_STATE_READY,
-	E_TASK_STATE_BLOCKED,
-	E_TASK_STATE_SUSPENDED,
-	E_TASK_STATE_DELETED,
-	E_TASK_STATE_INVALID
+	E_TASK_STATE_RUNNING = 0,  ///The task is actively executing.
+	E_TASK_STATE_READY,        ///The task exists and is available to run, but is not currently running.
+	E_TASK_STATE_BLOCKED,      ///The task is delayed or blocked by a mutex, semaphore, or I/O operation.
+	E_TASK_STATE_SUSPENDED,    ///The task is supended using task_suspend.
+	E_TASK_STATE_DELETED,      ///The task has been deleted using task_delete.
+	E_TASK_STATE_INVALID       ///The task handle does not point to a current or past task.
 } task_state_e_t;
 
 typedef enum {
-	E_NOTIFY_ACTION_NONE,
-	E_NOTIFY_ACTION_BITS,
-	E_NOTIFY_ACTION_INCR,
-	E_NOTIFY_ACTION_OWRITE,
-	E_NOTIFY_ACTION_NO_OWRITE
+	E_NOTIFY_ACTION_NONE,      ///The task’s notification value will not be touched.
+	E_NOTIFY_ACTION_BITS,      ///The task’s notification value will be bitwise ORed with the new value.
+	E_NOTIFY_ACTION_INCR,      ///The task’s notification value will be incremented by one, effectively using it as a notification counter.
+	E_NOTIFY_ACTION_OWRITE,    ///The task’s notification value will be unconditionally set to the new value.
+	E_NOTIFY_ACTION_NO_OWRITE  ///The task’s notification value will be set to the new value if the task does not already have a pending notification.
 } notify_action_e_t;
+
+///@}
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -107,6 +134,9 @@ typedef enum {
 #endif
 #endif
 
+/**
+ * A [mutex.](@ref multitasking)
+ */
 typedef void* mutex_t;
 
 /**
@@ -122,10 +152,24 @@ typedef void* mutex_t;
 namespace c {
 #endif
 
+/// \name Functions
+/// @{
+
 /**
  * Gets the number of milliseconds since PROS initialized.
  *
  * \return The number of milliseconds since PROS initialized
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     // Do opcontrol things
+ *     task_delay_until(&now, 2);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t millis(void);
 
@@ -133,6 +177,17 @@ uint32_t millis(void);
  * Gets the number of microseconds since PROS initialized,
  * 
  * \return The number of microseconds since PROS initialized
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   uint64_t now = micros();
+ *   while (true) {
+ *     // Do opcontrol things
+ *     task_delay_until(&now, 2000);
+ *   }
+ * }
+ * \endcode
  */
 uint64_t micros(void);
 
@@ -162,6 +217,19 @@ uint64_t micros(void);
  * \return A handle by which the newly created task can be referenced. If an
  * error occurred, NULL will be returned and errno can be checked for hints as
  * to why task_create failed.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                               TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * }
+ * \endcode
  */
 task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, const uint16_t stack_depth,
                    const char* const name);
@@ -176,6 +244,21 @@ task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, co
  * \param task
  *        The handle of the task to be deleted.  Passing NULL will cause the
  *        calling task to be deleted.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   // Do other things
+ *   task_delete(my_task);
+ * }
+ * \endcode
  */
 void task_delete(task_t task);
 
@@ -188,6 +271,16 @@ void task_delete(task_t task);
  *
  * \param milliseconds
  *        The number of milliseconds to wait (1000 milliseconds per second)
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * while (true) {
+ *   // Do opcontrol things
+ *   task_delay(2);
+ *   }
+ * }
+ * \endcode
  */
 void task_delay(const uint32_t milliseconds);
 
@@ -205,6 +298,17 @@ void delay(const uint32_t milliseconds);
  *        typically be initialized to the return value of millis().
  * \param delta
  *        The number of milliseconds to wait (1000 milliseconds per second)
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     // Do opcontrol things
+ *     task_delay_until(&now, 2);
+ *   }
+ * }
+ * \endcode
  */
 void task_delay_until(uint32_t* const prev_time, const uint32_t delta);
 
@@ -215,6 +319,20 @@ void task_delay_until(uint32_t* const prev_time, const uint32_t delta);
  *        The task to check
  *
  * \return The priority of the task
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   printf("Task Priority: %d\n", task_get_priority(my_task));
+ * }
+ * \endcode
  */
 uint32_t task_get_priority(task_t task);
 
@@ -229,6 +347,19 @@ uint32_t task_get_priority(task_t task);
  *        The task to set
  * \param prio
  *        The new priority of the task
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   // Do things
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
+ *   task_set_priority(my_task, TASK_PRIORITY_DEFAULT + 1);
+ * }
+ * \endcode
  */
 void task_set_priority(task_t task, uint32_t prio);
 
@@ -239,6 +370,20 @@ void task_set_priority(task_t task, uint32_t prio);
  *        The task to check
  *
  * \return The state of the task
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   printf("Task's State: %d\n", task_get_state(my_task));
+ * }
+ * \endcode
  */
 task_state_e_t task_get_state(task_t task);
 
@@ -247,6 +392,22 @@ task_state_e_t task_get_state(task_t task);
  *
  * \param task
  *        The task to suspend
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   // Do things
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
+ *   // Do things
+ *   task_suspend(my_task); // The task will no longer execute
+ *   // Do other things
+ *   task_resume(my_task); // The task will resume execution
+ * }
+ * \endcode
  */
 void task_suspend(task_t task);
 
@@ -255,6 +416,22 @@ void task_suspend(task_t task);
  *
  * \param task
  *        The task to resume
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   // Do things
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
+ *   // Do things
+ *   task_suspend(my_task); // The task will no longer execute
+ *   // Do other things
+ *   task_resume(my_task); // The task will resume execution
+ * }
+ * \endcode
  */
 void task_resume(task_t task);
 
@@ -265,6 +442,20 @@ void task_resume(task_t task);
  * created may take one context switch to be counted.
  *
  * \return The number of tasks that are currently being managed by the kernel.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   printf("Number of Running Tasks: %d\n", task_get_count());
+ * }
+ * \endcode
  */
 uint32_t task_get_count(void);
 
@@ -275,6 +466,20 @@ uint32_t task_get_count(void);
  *        The task to check
  *
  * \return A pointer to the name of the task
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   printf("Task Name: %d\n", task_get_name(my_task));
+ * }
+ * \endcode
  */
 char* task_get_name(task_t task);
 
@@ -287,6 +492,21 @@ char* task_get_name(task_t task);
  *        The name to query
  *
  * \return A task handle with a matching name, or NULL if none were found.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   printf("Hello %s\n", (char*)param);
+ *   // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   // Do other things
+ *   task_delete(task_get_by_name("My Task"));
+ * }
+ * \endcode
  */
 task_t task_get_by_name(const char* name);
 
@@ -295,6 +515,22 @@ task_t task_get_by_name(const char* name);
  * wants to tell another task about itself.
  *
  * \return The currently running task handle.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* param) {
+ *   task_t this_task = task_get_current();
+ *   if (task_get_state(this_take) == E_TASK_STATE_RUNNING) {
+ *     printf("This task is currently running\n");
+ *   }
+ * // ...
+ * }
+ * 
+ * void initialize() {
+ *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * }
+ * \endcode
  */
 task_t task_get_current();
 
@@ -308,6 +544,25 @@ task_t task_get_current();
  *        The task to notify
  *
  * \return Always returns true.
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   while(task_notify_take(true, TIMEOUT_MAX)) {
+ *   puts("I was unblocked!");
+ *   }
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
+ *   while(true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *     task_notify(my_task);
+ *     }
+ *   }
+ * }
+ * \endcode
  */
 uint32_t task_notify(task_t task);
 
@@ -320,9 +575,26 @@ uint32_t task_notify(task_t task);
  * details.
  * 
  * \param task
- *        The task to wait on.
+ *        The handle of the task to wait on.
  * 
  * \return void
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   lcd_print(1, "%s running", task_get_name(NULL));
+ *   task_delay(1000);
+ *   lcd_print(2, "End of %s", task_get_name(NULL));
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
+ *   lcd_set_text(0, "Running task.");
+ *   task_join(my_task);
+ *   lcd_set_text(3, "Task completed.");
+ * }
+ * \endcode
  */
 void task_join(task_t task);
 
@@ -349,6 +621,11 @@ void task_join(task_t task);
  * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
  * needing to overwrite, 1 otherwise.
  * For all other NOTIFY_ACTION values: always return 0
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
@@ -367,6 +644,25 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  *
  * \return The value of the task's notification value before it is decremented
  * or cleared
+ * 
+ * \b Example
+ * \code
+ * void my_task_fn(void* ign) {
+ *   while(task_notify_take(true, TIMEOUT_MAX)) {
+ *   puts("I was unblocked!");
+ *   }
+ * }
+ * 
+ * void opcontrol() {
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
+ *   while(true) {
+ *   if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *     task_notify(my_task);
+ *     }
+ *   }
+ * }
+ * \endcode
  */
 uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
 
@@ -380,6 +676,11 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  *        The task to clear
  *
  * \return False if there was not a notification waiting, true if there was
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 bool task_notify_clear(task_t task);
 
@@ -391,6 +692,18 @@ bool task_notify_clear(task_t task);
  *
  * \return A handle to a newly created mutex. If an error occurred, NULL will be
  * returned and errno can be checked for hints as to why mutex_create failed.
+ * 
+ * \b Example
+ * \code
+ * mutex_t mutex = mutex_create();
+ * // Acquire the mutex; other tasks using this command will wait until the mutex is released
+ * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
+ * // If the timeout expires, "false" will be returned, otherwise "true"
+ * mutex_take(mutex, MAX_DELAY);
+ * // do some work
+ * // Release the mutex for other tasks
+ * mutex_give(mutex);
+ * \endcode
  */
 mutex_t mutex_create(void);
 
@@ -411,6 +724,18 @@ mutex_t mutex_create(void);
  * \return True if the mutex was successfully taken, false otherwise. If false
  * is returned, then errno is set with a hint about why the the mutex
  * couldn't be taken.
+ * 
+ * \b Example
+ * \code
+ * mutex_t mutex = mutex_create();
+ * // Acquire the mutex; other tasks using this command will wait until the mutex is released
+ * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
+ * // If the timeout expires, "false" will be returned, otherwise "true"
+ * mutex_take(mutex, timeout);
+ * // do some work
+ * // Release the mutex for other tasks
+ * mutex_give(mutex);
+ * \endcode
  */
 bool mutex_take(mutex_t mutex, uint32_t timeout);
 
@@ -426,6 +751,18 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
  * \return True if the mutex was successfully returned, false otherwise. If
  * false is returned, then errno is set with a hint about why the mutex
  * couldn't be returned.
+ * 
+ * \b Example
+ * \code
+ * mutex_t mutex = mutex_create();
+ * // Acquire the mutex; other tasks using this command will wait until the mutex is released
+ * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
+ * // If the timeout expires, "false" will be returned, otherwise "true"
+ * mutex_take(mutex, timeout);
+ * // do some work
+ * // Release the mutex for other tasks
+ * mutex_give(mutex);
+ * \endcode
  */
 bool mutex_give(mutex_t mutex);
 
@@ -434,8 +771,26 @@ bool mutex_give(mutex_t mutex);
  *
  * \param mutex
  *        Mutex to unlock.
+ * 
+ * \b Example
+ * \code
+ * mutex_t mutex = mutex_create();
+ * // Acquire the mutex; other tasks using this command will wait until the mutex is released
+ * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
+ * // If the timeout expires, "false" will be returned, otherwise "true"
+ * mutex_take(mutex, MAX_DELAY);
+ * // do some work
+ * // Release the mutex for other tasks
+ * mutex_give(mutex);
+ * // Delete the mutex
+ * mutex_delete(mutex);
+ * \endcode
  */
 void mutex_delete(mutex_t mutex);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c
