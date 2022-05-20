@@ -48,7 +48,12 @@ namespace c {
 /**
  * Enumerated Values
  */
-typedef enum optical_direction_e { NO_GESTURE = 0, UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4, ERROR = PROS_ERR } optical_direction_e_t;
+typedef enum optical_direction_e { NO_GESTURE = 0,
+	UP = 1,     /// The direction indicating an upward gesture.
+	DOWN = 2,   /// The direction indicating a downward gesture.
+	RIGHT = 3,  /// The direction indicating a rightward gesture.
+	LEFT = 4,   /// The direction indicating a leftward gesture.
+	ERROR = PROS_ERR } optical_direction_e_t;
 
 /**
  * The RGB and Brightness values for the optical sensor.
@@ -74,23 +79,14 @@ typedef struct optical_raw_s {
  * This structure contains the raw gesture data.
  */
 typedef struct optical_gesture_s {
-	// up data
-	uint8_t udata;
-	// down data
-	uint8_t ddata;
-	// left data
-	uint8_t ldata;
-	// right data
-	uint8_t rdata;
-
-	// type of gesture
-	uint8_t type;
-	// padding
-	uint8_t pad;
-	// number of gestures
-	uint16_t count;
-	// time since gesture recoginized
-	uint32_t time;
+	uint8_t udata;  ///Up data
+	uint8_t ddata;  ///Down data
+	uint8_t ldata;  ///Left data
+	uint8_t rdata;  ///Right data
+	uint8_t type;   ///Type of gesture
+	uint8_t pad;    ///Padding
+	uint16_t count; ///Number of gestures
+	uint32_t time;  ///Time since gesture recognized
 } optical_gesture_s_t;
 
 /**
