@@ -85,34 +85,43 @@ typedef struct __attribute__((__packed__)) vision_signature {
 	uint32_t type;
 } vision_signature_s_t;
 
-
 /**
  * Color codes are just signatures with multiple IDs and a different type.
  */
 typedef uint16_t vision_color_code_t;
 
 /**
- * This structure contains a descriptor of an object detected
- * by the Vision Sensor
+ * This structure contains a descriptor of an object detected by the Vision Sensor
  */
 typedef struct __attribute__((__packed__)) vision_object {
-	uint16_t signature;               /// Object signature
-	vision_object_type_e_t type;      /// Object type, e.g. normal, color code, or line detection
-	int16_t left_coord;               /// Left boundary coordinate of the object
-	int16_t top_coord;                /// Top boundary coordinate of the object
-	int16_t width;                    /// Width of the object
-	int16_t height;                   /// Height of the object
-	uint16_t angle;                   /// Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155 -> 15.5 degrees)
-	int16_t x_middle_coord;           /// Coordinates of the middle of the object (computed from the values above)
-	int16_t y_middle_coord;           /// Coordinates of the middle of the object (computed from the values above)
+	/// Object signature
+	uint16_t signature;
+	/// Object type, e.g. normal, color code, or line detection
+	vision_object_type_e_t type;
+	/// Left boundary coordinate of the object
+	int16_t left_coord;
+	/// Top boundary coordinate of the object
+	int16_t top_coord;
+	/// Width of the object
+	int16_t width;
+	/// Height of the object
+	int16_t height;
+	/// Angle of a color code object in 0.1 degree units (e.g. 10 -> 1 degree, 155 -> 15.5 degrees)
+	uint16_t angle;
+	/// Coordinates of the middle of the object (computed from the values above)
+	int16_t x_middle_coord;
+	/// Coordinates of the middle of the object (computed from the values above)
+	int16_t y_middle_coord;
 } vision_object_s_t;
 
 /**
  * This enumeration defines different zero points for returned vision objects.
  */
 typedef enum vision_zero {
-	E_VISION_ZERO_TOPLEFT = 0,  /// (0,0) coordinate is the top left of the FOV
-	E_VISION_ZERO_CENTER = 1    /// (0,0) coordinate is the center of the FOV
+	/// (0,0) coordinate is the top left of the FOV
+	E_VISION_ZERO_TOPLEFT = 0,
+	/// (0,0) coordinate is the center of the FOV
+	E_VISION_ZERO_CENTER = 1
 } vision_zero_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES

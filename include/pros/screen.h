@@ -47,11 +47,16 @@ namespace pros {
  * Different font sizes that can be used in printing text.
  */
 typedef enum {
-    E_TEXT_SMALL = 0, /// Small text font size
-    E_TEXT_MEDIUM, /// Normal/Medium text font size
-    E_TEXT_LARGE, /// Large text font size
-    E_TEXT_MEDIUM_CENTER, /// Medium centered text
-    E_TEXT_LARGE_CENTER /// Large centered text
+    /// Small text font size
+    E_TEXT_SMALL = 0,
+    /// Normal/Medium text font size
+    E_TEXT_MEDIUM,
+    /// Large text font size
+    E_TEXT_LARGE,
+    /// Medium centered text
+    E_TEXT_MEDIUM_CENTER,
+    /// Large centered text 
+    E_TEXT_LARGE_CENTER
 } text_format_e_t;
 
 /**

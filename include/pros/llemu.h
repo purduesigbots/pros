@@ -41,6 +41,16 @@ extern "C" {
 namespace pros {
 #endif
 
+/**
+ * \ingroup c-llemu
+ */
+
+/**
+ * \addtogroup c-llemu
+ *  @{
+ */
+
+
 typedef void (*lcd_btn_cb_fn_t)(void);
 
 #define LCD_BTN_LEFT 4
@@ -61,15 +71,6 @@ typedef struct lcd_s {
 #ifdef __cplusplus
 namespace c {
 #endif
-
-/**
- * \ingroup c-motors
- */
-
-/**
- * \addtogroup c-motors
- *  @{
- */
 
 /// \name Functions
 /// These functions allow programmers to change the LLEMU
