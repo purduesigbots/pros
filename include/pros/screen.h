@@ -61,6 +61,7 @@ typedef enum {
 
 /**
  * \name Enumerated Values
+ * \enum
  * Enum indicating what the current touch status is for the touchscreen.
  */
 typedef enum {
@@ -71,6 +72,7 @@ typedef enum {
 } last_touch_e_t;
 
 /**
+ * \enum
  * \name Structures
  * Struct representing screen touch status, screen last x, screen last y, press count, release count.
  */
