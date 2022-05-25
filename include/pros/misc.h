@@ -45,8 +45,14 @@
 #define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
 
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+namespace c {
+#endif
+
 /**
- * Get the current status of the competition control.
+ * \fn Get the current status of the competition control.
  *
  * \return The competition control status as a mask of bits with
  * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
@@ -61,12 +67,8 @@
  * }
  * \endcode
  */
-#ifdef __cplusplus
-extern "C" {
-namespace pros {
-namespace c {
-#endif
 uint8_t competition_get_status(void);
+
 #ifdef __cplusplus
 }
 }
@@ -137,12 +139,18 @@ extern "C" {
 namespace pros {
 #endif
 
+/**
+ * \enum
+ */
 typedef enum {
 	///The master controller.
 	E_CONTROLLER_MASTER = 0,
 	///The partner controller.
 	E_CONTROLLER_PARTNER } controller_id_e_t;
 
+/**
+ * \enum
+ */
 typedef enum {
 	///The horizontal axis of the controller’s left analog stick.
 	E_CONTROLLER_ANALOG_LEFT_X = 0,
@@ -154,6 +162,9 @@ typedef enum {
 	E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
+/**
+ * \enum
+ */
 typedef enum {
 	///The first trigger on the left side of the controller.
 	E_CONTROLLER_DIGITAL_L1 = 6,
@@ -224,7 +235,7 @@ typedef enum {
 #endif
 
 /**
- * Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that port.
+ * \def Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that port.
  * 
  * \returns error (in the function/scope it's in) if the controller failed to connect or an invalid id is given.
 */

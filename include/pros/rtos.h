@@ -45,66 +45,77 @@ namespace pros {
 /// \name Macros
 ///@{
 
-// The highest priority that can be assigned to a task. Beware of deadlock.
+/// The highest priority that can be assigned to a task. Beware of deadlock.
 #define TASK_PRIORITY_MAX 16
 
-// The lowest priority that can be assigned to a task.
-// This may cause severe performance problems and is generally not recommended.
+/// The lowest priority that can be assigned to a task.
+/// This may cause severe performance problems and is generally not recommended.
 #define TASK_PRIORITY_MIN 1
 
-// The default task priority, which should be used for most tasks.
-// Default tasks such as autonomous() inherit this priority.
+/// The default task priority, which should be used for most tasks.
+/// Default tasks such as autonomous() inherit this priority.
 #define TASK_PRIORITY_DEFAULT 8
 
-// The recommended stack size for a new task. This stack size is used for
-// default tasks such as autonomous(). This equates to 32,768 bytes, or 128
-// times the default stack size for a task in PROS 2.
+/// The recommended stack size for a new task. This stack size is used for
+/// default tasks such as autonomous(). This equates to 32,768 bytes, or 128
+/// times the default stack size for a task in PROS 2.
 #define TASK_STACK_DEPTH_DEFAULT 0x2000
 
-// The minimal stack size for a task. This equates to 2048 bytes, or 8 times the
-// default stack size for a task in PROS 2.
+/// The minimal stack size for a task. This equates to 2048 bytes, or 8 times the
+/// default stack size for a task in PROS 2.
 #define TASK_STACK_DEPTH_MIN 0x200
 
-// The maximum number of characters allowed in a task's name.
+/// The maximum number of characters allowed in a task's name.
 #define TASK_NAME_MAX_LEN 32
 
-// The maximum timeout value that can be given to, for instance, a mutex grab.
+/// The maximum timeout value that can be given to, for instance, a mutex grab.
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
 ///@}
 
 /**
- * Points to a task handle. Used for referencing a task.
+ * \typedef Points to a task handle. Used for referencing a task.
  */
 typedef void* task_t;
 
 /**
- * Points to the function associated with a task.
+ * \typedef Points to the function associated with a task.
  */
 typedef void (*task_fn_t)(void*);
 
 /**
- * \name Enumerated Values
- * @{
+ * \enum
  */
 typedef enum {
-	E_TASK_STATE_RUNNING = 0,  ///The task is actively executing.
-	E_TASK_STATE_READY,        ///The task exists and is available to run, but is not currently running.
-	E_TASK_STATE_BLOCKED,      ///The task is delayed or blocked by a mutex, semaphore, or I/O operation.
-	E_TASK_STATE_SUSPENDED,    ///The task is supended using task_suspend.
-	E_TASK_STATE_DELETED,      ///The task has been deleted using task_delete.
-	E_TASK_STATE_INVALID       ///The task handle does not point to a current or past task.
+	///The task is actively executing.
+	E_TASK_STATE_RUNNING = 0,
+	///The task exists and is available to run, but is not currently running.
+	E_TASK_STATE_READY,
+	///The task is delayed or blocked by a mutex, semaphore, or I/O operation.
+	E_TASK_STATE_BLOCKED,
+	///The task is supended using task_suspend.
+	E_TASK_STATE_SUSPENDED,
+	///The task has been deleted using task_delete.
+	E_TASK_STATE_DELETED,
+	///The task handle does not point to a current or past task.
+	E_TASK_STATE_INVALID
 } task_state_e_t;
 
+/**
+ * \enum
+ */
 typedef enum {
-	E_NOTIFY_ACTION_NONE,      ///The task’s notification value will not be touched.
-	E_NOTIFY_ACTION_BITS,      ///The task’s notification value will be bitwise ORed with the new value.
-	E_NOTIFY_ACTION_INCR,      ///The task’s notification value will be incremented by one, effectively using it as a notification counter.
-	E_NOTIFY_ACTION_OWRITE,    ///The task’s notification value will be unconditionally set to the new value.
-	E_NOTIFY_ACTION_NO_OWRITE  ///The task’s notification value will be set to the new value if the task does not already have a pending notification.
+	///The task’s notification value will not be touched.
+	E_NOTIFY_ACTION_NONE,
+	///The task’s notification value will be bitwise ORed with the new value.
+	E_NOTIFY_ACTION_BITS,
+	///The task’s notification value will be incremented by one, effectively using it as a notification counter.
+	E_NOTIFY_ACTION_INCR,
+	///The task’s notification value will be unconditionally set to the new value.
+	E_NOTIFY_ACTION_OWRITE,
+	///The task’s notification value will be set to the new value if the task does not already have a pending notification.
+	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
-
-///@}
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -135,12 +146,12 @@ typedef enum {
 #endif
 
 /**
- * A [mutex.](@ref multitasking)
+ * \typedef A [mutex.](@ref multitasking)
  */
 typedef void* mutex_t;
 
 /**
- * Refers to the current task handle
+ * \def Refers to the current task handle
  */
 #ifdef __cplusplus
 #define CURRENT_TASK ((pros::task_t)NULL)

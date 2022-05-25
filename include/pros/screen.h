@@ -42,15 +42,8 @@ namespace pros {
  *  @{
  */
 
-
 /**
- * \name Enumerated Values
- * @{
- */
-
-/**
- * \enum
- * \details Different font sizes that can be used in printing text.
+ * \enum Different font sizes that can be used in printing text.
  */
 typedef enum {
     /// Small text font size
@@ -66,8 +59,7 @@ typedef enum {
 } text_format_e_t;
 
 /**
- * \enum
- * \details Enum indicating what the current touch status is for the touchscreen.
+ * \enum Enum indicating what the current touch status is for the touchscreen.
  */
 typedef enum {
     /// Last interaction with screen was a quick press
@@ -80,16 +72,8 @@ typedef enum {
     E_TOUCH_ERROR
 } last_touch_e_t;
 
-///@}
-
 /**
- * \name Structures
- * @{
- */
-
-/**
- * \enum
- * \details Struct representing screen touch status, screen last x, screen last y, press count, release count.
+ * \struct Struct representing screen touch status, screen last x, screen last y, press count, release count.
  */
 typedef struct screen_touch_status_s {
     /// Represents if the screen is being held, released, or pressed.
@@ -103,8 +87,6 @@ typedef struct screen_touch_status_s {
     /// Represents how many times the user released after a touch on the screen.
     int32_t release_count;
 } screen_touch_status_s_t;
-
-///@}
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -129,12 +111,9 @@ typedef struct screen_touch_status_s {
 #endif
 
 /**
- * \name Typedefs
- * A callback function for a screen callback. This will be called each time its corresponding touch type happens.
- * @{
+ * \typedef A callback function for a screen callback. This will be called each time its corresponding touch type happens.
  */
 typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
-///@}
 
 #ifdef __cplusplus
 namespace c {

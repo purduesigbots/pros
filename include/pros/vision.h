@@ -24,8 +24,6 @@
 #ifndef _PROS_VISION_H_
 #define _PROS_VISION_H_
 
-#define VISION_OBJECT_ERR_SIG 255
-
 /**
  * \ingroup c-vision
  */
@@ -38,6 +36,9 @@
 /// \name Macros
 ///Parameters given by VEX
 ///@{
+
+#define VISION_OBJECT_ERR_SIG 255
+
 /**
  * The width of the Vision Sensor’s field of view.
  */
@@ -47,6 +48,7 @@
  * The height of the Vision Sensor’s field of view.
  */
 #define VISION_FOV_HEIGHT 212
+
 ///@}
 
 #include <stdint.h>
@@ -57,8 +59,7 @@ namespace pros {
 #endif
 
 /**
- * This enumeration defines the different types of objects
- * that can be detected by the Vision Sensor
+ * \enum This enumeration defines the different types of objects that can be detected by the Vision Sensor
  */
 typedef enum vision_object_type {
 	E_VISION_OBJECT_NORMAL = 0,
@@ -66,10 +67,8 @@ typedef enum vision_object_type {
 	E_VISION_OBJECT_LINE = 2
 } vision_object_type_e_t;
 
-/// \name Data Structure
 /**
- * This structure contains the parameters used by the Vision Sensor
- * to detect objects.
+ * \struct This structure contains the parameters used by the Vision Sensor to detect objects.
  */
 typedef struct __attribute__((__packed__)) vision_signature {
 	uint8_t id;
@@ -86,12 +85,12 @@ typedef struct __attribute__((__packed__)) vision_signature {
 } vision_signature_s_t;
 
 /**
- * Color codes are just signatures with multiple IDs and a different type.
+ * \typedef Color codes are just signatures with multiple IDs and a different type.
  */
 typedef uint16_t vision_color_code_t;
 
 /**
- * This structure contains a descriptor of an object detected by the Vision Sensor
+ * \struct This structure contains a descriptor of an object detected by the Vision Sensor
  */
 typedef struct __attribute__((__packed__)) vision_object {
 	/// Object signature
@@ -115,7 +114,7 @@ typedef struct __attribute__((__packed__)) vision_object {
 } vision_object_s_t;
 
 /**
- * This enumeration defines different zero points for returned vision objects.
+ * \enum This enumeration defines different zero points for returned vision objects.
  */
 typedef enum vision_zero {
 	/// (0,0) coordinate is the top left of the FOV

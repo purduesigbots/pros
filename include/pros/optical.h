@@ -46,17 +46,21 @@ namespace c {
  */
 
 /**
- * Enumerated Values
+ * \enum
  */
 typedef enum optical_direction_e { NO_GESTURE = 0,
-	UP = 1,     /// The direction indicating an upward gesture.
-	DOWN = 2,   /// The direction indicating a downward gesture.
-	RIGHT = 3,  /// The direction indicating a rightward gesture.
-	LEFT = 4,   /// The direction indicating a leftward gesture.
+	/// The direction indicating an upward gesture.
+	UP = 1,
+	/// The direction indicating a downward gesture.
+	DOWN = 2,
+	/// The direction indicating a rightward gesture.
+	RIGHT = 3,
+	/// The direction indicating a leftward gesture.
+	LEFT = 4,
 	ERROR = PROS_ERR } optical_direction_e_t;
 
 /**
- * The RGB and Brightness values for the optical sensor.
+ * \struct The RGB and Brightness values for the optical sensor.
  */
 typedef struct optical_rgb_s {
 	double red;
@@ -66,7 +70,7 @@ typedef struct optical_rgb_s {
 } optical_rgb_s_t;
 
 /**
- * The RGB and clear values for the optical sensor.
+ * \struct The RGB and clear values for the optical sensor.
  */
 typedef struct optical_raw_s {
 	uint32_t clear;
@@ -76,7 +80,7 @@ typedef struct optical_raw_s {
 } optical_raw_s_t;
 
 /**
- * This structure contains the raw gesture data.
+ * \struct This structure contains the raw gesture data.
  */
 typedef struct optical_gesture_s {
 	uint8_t udata;  ///Up data
@@ -88,6 +92,11 @@ typedef struct optical_gesture_s {
 	uint16_t count; ///Number of gestures
 	uint32_t time;  ///Time since gesture recognized
 } optical_gesture_s_t;
+
+/**
+ * \name Functions
+ * @{
+ */
 
 /**
  * Get the detected color hue
@@ -449,6 +458,8 @@ int32_t optical_enable_gesture(uint8_t port);
  * \endcode
  */
 int32_t optical_disable_gesture(uint8_t port);
+
+///@}
 
 ///@}
 

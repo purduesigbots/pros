@@ -50,22 +50,40 @@ namespace pros {
  *  @{
  */
 
-
+/**
+ * \typedef
+ */
 typedef void (*lcd_btn_cb_fn_t)(void);
 
+/**
+ * \def
+ */
 #define LCD_BTN_LEFT 4
+
+/**
+ * \def
+ */
 #define LCD_BTN_CENTER 2
+
+/**
+ * \def
+ */
 #define LCD_BTN_RIGHT 1
 
+/**
+ * \struct
+ */
 typedef struct lcd_s {
 	lv_obj_t* frame;
 	lv_obj_t* screen;
 	lv_obj_t* lcd_text[8];
 	lv_obj_t* btn_container;
-	lv_obj_t* btns[3];             // < 0 => left; 1 => center; 2 => right
-	lcd_btn_cb_fn_t callbacks[3];  // < 0 => left; 1 => center; 2 => right
-	volatile uint8_t touch_bits;   // < 4 => left; 2 => center; 1 => right (no
-	                               // multitouch support)
+	/// < 0 => left; 1 => center; 2 => right
+	lv_obj_t* btns[3];
+	/// < 0 => left; 1 => center; 2 => right            
+	lcd_btn_cb_fn_t callbacks[3];
+	/// < 4 => left; 2 => center; 1 => right (no multitouch support)  
+	volatile uint8_t touch_bits;
 } lcd_s_t;
 
 #ifdef __cplusplus
