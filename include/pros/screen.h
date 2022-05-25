@@ -43,7 +43,8 @@ namespace pros {
  */
 
 /**
- * \enum Different font sizes that can be used in printing text.
+ * \enum text_format_e_t
+ * Different font sizes that can be used in printing text.
  */
 typedef enum {
     /// Small text font size
@@ -59,7 +60,8 @@ typedef enum {
 } text_format_e_t;
 
 /**
- * \enum Enum indicating what the current touch status is for the touchscreen.
+ * \enum last_touch_e_t
+ * Enum indicating what the current touch status is for the touchscreen.
  */
 typedef enum {
     /// Last interaction with screen was a quick press
@@ -73,7 +75,8 @@ typedef enum {
 } last_touch_e_t;
 
 /**
- * \struct Struct representing screen touch status, screen last x, screen last y, press count, release count.
+ * \struct screen_touch_status_s_t
+ *  Struct representing screen touch status, screen last x, screen last y, press count, release count.
  */
 typedef struct screen_touch_status_s {
     /// Represents if the screen is being held, released, or pressed.
@@ -111,7 +114,8 @@ typedef struct screen_touch_status_s {
 #endif
 
 /**
- * \typedef A callback function for a screen callback. This will be called each time its corresponding touch type happens.
+ * \fn
+ * A callback function for a screen callback. This will be called each time its corresponding touch type happens.
  */
 typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
 
@@ -356,7 +360,8 @@ uint32_t screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  *
- * \param x, y 	The (x,y) coordinates of the pixel
+ * \param x The (x,y) coordinates of the pixel
+ * \param y The (x,y) coordinates of the pixel
  * 
  * \return 1 if there were no errors, or PROS_ERR if an error occured 
  *         taking or returning the screen mutex.

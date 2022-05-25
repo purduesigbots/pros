@@ -46,7 +46,7 @@ namespace c {
  */
 
 /**
- * \enum
+ * \enum optical_direction_e_t
  */
 typedef enum optical_direction_e { NO_GESTURE = 0,
 	/// The direction indicating an upward gesture.
@@ -60,7 +60,8 @@ typedef enum optical_direction_e { NO_GESTURE = 0,
 	ERROR = PROS_ERR } optical_direction_e_t;
 
 /**
- * \struct The RGB and Brightness values for the optical sensor.
+ * \struct optical_rgb_s_t
+ * The RGB and Brightness values for the optical sensor.
  */
 typedef struct optical_rgb_s {
 	double red;
@@ -70,7 +71,8 @@ typedef struct optical_rgb_s {
 } optical_rgb_s_t;
 
 /**
- * \struct The RGB and clear values for the optical sensor.
+ * \struct optical_raw_s_t
+ * The RGB and clear values for the optical sensor.
  */
 typedef struct optical_raw_s {
 	uint32_t clear;
@@ -80,7 +82,8 @@ typedef struct optical_raw_s {
 } optical_raw_s_t;
 
 /**
- * \struct This structure contains the raw gesture data.
+ * \struct optical_gesture_s_t
+ * This structure contains the raw gesture data.
  */
 typedef struct optical_gesture_s {
 	uint8_t udata;  ///Up data

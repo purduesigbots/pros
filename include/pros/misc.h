@@ -52,7 +52,8 @@ namespace c {
 #endif
 
 /**
- * \fn Get the current status of the competition control.
+ * \fn competition_get_status(void)
+ * Get the current status of the competition control.
  *
  * \return The competition control status as a mask of bits with
  * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
@@ -76,6 +77,8 @@ uint8_t competition_get_status(void);
 #endif
 
 /**
+ * \fn competition_is_disabled()
+ * 
  * \return True if the V5 Brain is disabled, false otherwise.
  * 
  * \b Example

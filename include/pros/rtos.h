@@ -74,17 +74,19 @@ namespace pros {
 ///@}
 
 /**
- * \typedef Points to a task handle. Used for referencing a task.
+ * \typedef
+ * Points to a task handle. Used for referencing a task.
  */
 typedef void* task_t;
 
 /**
- * \typedef Points to the function associated with a task.
+ * \typedef
+ * Points to the function associated with a task.
  */
 typedef void (*task_fn_t)(void*);
 
 /**
- * \enum
+ * \enum task_state_e_t
  */
 typedef enum {
 	///The task is actively executing.

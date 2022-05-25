@@ -51,27 +51,27 @@ namespace pros {
  */
 
 /**
- * \typedef
+ * \typedef *lcd_btn_cb_fn_t
  */
 typedef void (*lcd_btn_cb_fn_t)(void);
 
 /**
- * \def
+ * \def LCD_BTN_LEFT
  */
 #define LCD_BTN_LEFT 4
 
 /**
- * \def
+ * \def LCD_BTN_CENTER
  */
 #define LCD_BTN_CENTER 2
 
 /**
- * \def
+ * \def LCD_BTN_RIGHT
  */
 #define LCD_BTN_RIGHT 1
 
 /**
- * \struct
+ * \struct lcd_s_t
  */
 typedef struct lcd_s {
 	lv_obj_t* frame;

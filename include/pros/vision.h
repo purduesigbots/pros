@@ -59,7 +59,8 @@ namespace pros {
 #endif
 
 /**
- * \enum This enumeration defines the different types of objects that can be detected by the Vision Sensor
+ * \enum vision_object_type_e_t
+ * This enumeration defines the different types of objects that can be detected by the Vision Sensor
  */
 typedef enum vision_object_type {
 	E_VISION_OBJECT_NORMAL = 0,
@@ -68,7 +69,8 @@ typedef enum vision_object_type {
 } vision_object_type_e_t;
 
 /**
- * \struct This structure contains the parameters used by the Vision Sensor to detect objects.
+ * \struct vision_signature_s_t
+ * This structure contains the parameters used by the Vision Sensor to detect objects.
  */
 typedef struct __attribute__((__packed__)) vision_signature {
 	uint8_t id;
@@ -85,12 +87,14 @@ typedef struct __attribute__((__packed__)) vision_signature {
 } vision_signature_s_t;
 
 /**
- * \typedef Color codes are just signatures with multiple IDs and a different type.
+ * \typedef vision_color_code_t
+ * Color codes are just signatures with multiple IDs and a different type.
  */
 typedef uint16_t vision_color_code_t;
 
 /**
- * \struct This structure contains a descriptor of an object detected by the Vision Sensor
+ * \struct vision_object_s_t
+ * This structure contains a descriptor of an object detected by the Vision Sensor
  */
 typedef struct __attribute__((__packed__)) vision_object {
 	/// Object signature
@@ -114,7 +118,8 @@ typedef struct __attribute__((__packed__)) vision_object {
 } vision_object_s_t;
 
 /**
- * \enum This enumeration defines different zero points for returned vision objects.
+ * \enum vision_zero
+ * This enumeration defines different zero points for returned vision objects.
  */
 typedef enum vision_zero {
 	/// (0,0) coordinate is the top left of the FOV

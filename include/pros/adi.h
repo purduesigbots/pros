@@ -35,6 +35,7 @@ namespace pros {
 #endif
 
 /**
+ * \enum adi_port_config_e
  * Represents the port type for an ADI port.
  */
 typedef enum adi_port_config_e {
@@ -75,6 +76,7 @@ typedef enum adi_port_config_e {
 } adi_port_config_e_t;
 
 /**
+ * \enum adi_potentiometer_type_e_t
  * Represents the potentiometer version type.
  */
 typedef enum adi_potentiometer_type_e { 

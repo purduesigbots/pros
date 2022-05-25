@@ -31,7 +31,7 @@ namespace pros {
 #endif
 
 /**
- * \enum
+ * \enum link_type_e_t
  */
 typedef enum link_type_e {
     ///Indicating that the radio is a reciever.
