@@ -30,8 +30,13 @@ extern "C" {
 namespace pros {
 #endif
 
+/**
+ * \enum
+ */
 typedef enum link_type_e {
+    ///Indicating that the radio is a reciever.
     E_LINK_RECIEVER = 0,
+    ///Indicating that the radio is a transmitter.
     E_LINK_TRANSMITTER
 } link_type_e_t;
 
@@ -62,6 +67,16 @@ namespace c {
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * #define LINK_ID "ROBOT1"
+ * 
+ * void initialize() {
+ *   link_init(LINK_TRANSMITTER_PORT, LINK_ID, E_LINK_TRANSMITTER);
+ * }
+ * \endcode
  */
 uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
 
@@ -87,6 +102,17 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_PORT 1
+ * #define LINK_ID "ROBOT1"
+ * 
+ * void initialize() {
+ *   link_init(LINK_PORT, LINK_ID, E_LINK_TRANSMITTER);
+ *   link_init_override(LINK_PORT, LINK_ID, E_LINK_TRANSMITTER);
+ * }
+ * \endcode
  */
 uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t type);
 
@@ -103,6 +129,20 @@ uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t typ
  *      The port of the radio for the intended link.
  *
  * \return If a radio is connected to a port and it's connected to a link.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if (link_connected(LINK_TRANSMITTER_PORT)) {
+ *       screen_print(TEXT_MEDIUM, 1, "Link connected!");
+ *     }
+ *   delay(20);
+ *   }
+ * }
+ * \endcode
  */
 bool link_connected(uint8_t port);
 
@@ -120,6 +160,19 @@ bool link_connected(uint8_t port);
  *
  * \return PROS_ERR if port is not a link/radio, else the bytes available to be
  * read by the user.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_RECIVER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     uint32_t receiveable_size = link_raw_receivable_size(LINK_RECIVER_PORT);
+ *     screen_print(TEXT_MEDIUM, 1, "link_raw_receiveable_size: %d", receiveable_size);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_raw_receivable_size(uint8_t port);
 
@@ -136,6 +189,19 @@ uint32_t link_raw_receivable_size(uint8_t port);
  *      The port of the radio for the intended link.
  *
  * \return PROS_ERR if port is not a link/radio, 
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     uint32_t transmittable_size = link_raw_transmittable_size(LINK_TRANSMITTER_PORT);
+ *     screen_print(TEXT_MEDIUM, 1, "link_raw_transmittable_size: %d", transmittable_size);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_raw_transmittable_size(uint8_t port);
 
@@ -160,6 +226,19 @@ uint32_t link_raw_transmittable_size(uint8_t port);
  * 
  * \return PROS_ERR if port is not a link, and the successfully transmitted 
  * data size if it succeeded.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     char* data = "Hello!";
+ *     link_transmit_raw(LINK_TRANSMITTER_PORT, (void*)data, sizeof(*data) * sizeof(data));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
 
@@ -183,6 +262,20 @@ uint32_t link_transmit_raw(uint8_t port, void* data, uint16_t data_size);
  * 
  * \return PROS_ERR if port is not a link, and the successfully received 
  * data size if it succeeded.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_RECIVER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     char* result;
+ *     char* expected = "Hello!";
+ *     link_receive_raw(LINK_RECIVER_PORT, (void*)result, sizeof(*expected) * sizeof(expected));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
 
@@ -207,6 +300,19 @@ uint32_t link_receive_raw(uint8_t port, void* dest, uint16_t data_size);
  * 
  * \return PROS_ERR if port is not a link, and the successfully transmitted 
  * data size if it succeeded.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     char* data = "Hello!";
+ *     link_transmit(LINK_TRANSMITTER_PORT, (void*)data, sizeof(*data) * sizeof(data));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
 
@@ -231,6 +337,20 @@ uint32_t link_transmit(uint8_t port, void* data, uint16_t data_size);
  * 
  * \return PROS_ERR if port is not a link or protocol error, and the successfully 
  * transmitted data size if it succeeded.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_RECIVER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     char* result;
+ *     char* expected = "Hello!";
+ *     link_receive(LINK_RECIVER_PORT, (void*)result, sizeof(*expected) * sizeof(expected));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
 
@@ -248,6 +368,20 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
  * 
  * \return PROS_ERR if port is not a link, and the successfully received 
  * data size if it succeeded.
+ * 
+ * \b Example
+ * \code
+ * #define LINK_TRANSMITTER_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     char* data = "Hello!";
+ *     link_transmit(LINK_TRANSMITTER_PORT, (void*)data, sizeof(*data) * sizeof(data));
+ *     link_clear_receive_buf(LINK_TRANSMITTER_PORT);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 uint32_t link_clear_receive_buf(uint8_t port);
 
