@@ -24,9 +24,6 @@
 
 #define ADI_MOTOR_MAX_SPEED 127
 #define ADI_MOTOR_MIN_SPEED -128
-
-#define DCHECKPOINT printf("|-------------------------CHECKPOINT--------------------------| Function: %s Line: %d \n", __func__,  __LINE__);
-
 #define NUM_MAX_TWOWIRE 4
 
 // Theoretical calibration time is 1024ms, but in practice this seemed to be the
@@ -66,11 +63,9 @@ typedef union adi_data {
 
 #define validate_type(device, adi_port, smart_port, type)                                                                 \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
-	DCHECKPOINT	\
-	if (config != type) {     \
-		DCHECKPOINT                                                                              \
-		errno = EADDRINUSE;          \
-		printf("Error: validate_type\n"); \
+	if (config != type) {     																					\
+		errno = EADDRINUSE;          																			\
+		printf("Error: validate_type\n"); 																		\
 		return_port(smart_port, PROS_ERR);                                                                                      \
 	}
 
@@ -212,15 +207,10 @@ int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port) {
 }
 
 int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, bool value) {
-	DCHECKPOINT
 	transform_adi_port(adi_port);
-	DCHECKPOINT
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
-	DCHECKPOINT
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
-	DCHECKPOINT
 	vexDeviceAdiValueSet(device->device_info, adi_port, (int32_t)value);
-	DCHECKPOINT
 	return_port(smart_port - 1, 1);
 }
 
