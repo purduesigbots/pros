@@ -32,6 +32,15 @@ namespace c {
 #endif
 
 /**
+ * \ingroup c-distance
+ */
+
+/**
+ * \addtogroup c-distance
+ *  @{
+ */
+
+/**
  * Get the currently measured distance from the sensor in mm
  *
  * This function uses the following values of errno when an error state is
@@ -39,9 +48,21 @@ namespace c {
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Distance Sensor
  *
- * \param  port The V5 Distance Sensor port number from 1-21
+ * \param port The V5 Distance Sensor port number from 1-21
  * \return The distance value or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define DISTANCE_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Distance Value: %d mm\n", distance_get(DISTANCE_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t distance_get(uint8_t port);
 
@@ -60,6 +81,18 @@ int32_t distance_get(uint8_t port);
  * \param  port The V5 Distance Sensor port number from 1-21
  * \return The confidence value or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define DISTANCE_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Distance Confidence Value: %d\n", distance_get_confidence(DISTANCE_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t distance_get_confidence(uint8_t port);
 
@@ -92,8 +125,22 @@ int32_t distance_get_object_size(uint8_t port);
  * \param  port The V5 Distance Sensor port number from 1-21
  * \return The velocity value or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define DISTANCE_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Distance Object Size: %d\n", distance_get_object_size(DISTANCE_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double distance_get_object_velocity(uint8_t port);
+
+///@}
 
 #ifdef __cplusplus
 }
