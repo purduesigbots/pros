@@ -37,11 +37,11 @@ namespace c {
 #endif
 
 /**
- * \ingroup c-motors
+ * \ingroup c-optical
  */
 
 /**
- * \addtogroup c-motors
+ * \addtogroup c-optical
  *  @{
  */
 
