@@ -31,6 +31,15 @@ namespace pros {
 #endif
 
 /**
+ * \ingroup c-link
+ * */
+
+/**
+ * \addtogroup c-link
+ *  @{
+ */
+
+/**
  * \enum link_type_e_t
  */
 typedef enum link_type_e {
@@ -384,6 +393,8 @@ uint32_t link_receive(uint8_t port, void* dest, uint16_t data_size);
  * \endcode
  */
 uint32_t link_clear_receive_buf(uint8_t port);
+
+///@}
 
 #ifdef __cplusplus
 }

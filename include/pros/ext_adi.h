@@ -40,6 +40,15 @@ namespace pros {
 namespace c {
 #endif
 
+/**
+ * \ingroup ext-adi
+ */
+
+/**
+ * \addtogroup ext-adi
+ *  @{
+ */
+
 /******************************************************************************/
 /**                         General ADI Use Functions                        **/
 /**                                                                          **/
@@ -677,6 +686,8 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
  * \return The potentiometer angle in degrees.
  */
 double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer);
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c

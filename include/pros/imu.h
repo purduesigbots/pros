@@ -32,11 +32,11 @@ namespace c {
 #endif
 
 /**
- * \ingroup c-gps
- */
+ * \ingroup c-imu
+ * */
 
 /**
- * \addtogroup c-gps
+ * \addtogroup c-imu
  *  @{
  */
 
