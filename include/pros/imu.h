@@ -42,7 +42,7 @@ namespace c {
 
 /**
  * \enum imu_status_e_t
- * Indicates IMU status.
+ * @brief Indicates IMU status.
  */
 typedef enum imu_status_e {
 	/// The IMU is calibrating
@@ -96,7 +96,6 @@ typedef struct __attribute__((__packed__)) euler_s {
 
 /**
  * \def IMU_MINIMUM_DATA_RATE
- * 
  */
 #define IMU_MINIMUM_DATA_RATE 5
 

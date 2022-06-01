@@ -40,6 +40,15 @@ const char* convert_args(const std::string& arg) {
 
 #pragma GCC diagnostic pop
 
+/**
+ * \ingroup cpp-screen
+ */
+
+/**
+ * \addtogroup cpp-screen
+ *  @{
+ */
+
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
     /**                                                                          **/
@@ -381,6 +390,8 @@ const char* convert_args(const std::string& arg) {
      * while taking or returning the screen mutex.
      */
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
+
+///@}
 
 } //namespace screen
 } //namespace pros

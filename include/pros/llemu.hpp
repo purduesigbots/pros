@@ -35,7 +35,7 @@
 namespace pros {
 
 /**
- * \ingroup cpp-motors
+ * \ingroup cpp-llemu
  */
 namespace lcd {
 

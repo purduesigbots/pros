@@ -26,7 +26,14 @@
 #include "pros/rotation.h"
 
 namespace pros {
+/**
+ * \addtogroup cpp-rotation
+ */
 class Rotation {
+	/**
+	 * \ingroup cpp-rotation
+	 *  @{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -187,6 +194,7 @@ class Rotation {
 	 * errno.
 	 */
 	virtual std::int32_t get_reversed();
+	///@}
 };
 }  // namespace pros
 

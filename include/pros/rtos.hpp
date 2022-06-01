@@ -35,7 +35,14 @@
 #include <type_traits>
 
 namespace pros {
+/**
+ * \ingroup cpp-rtos
+ */
 class Task {
+	/**
+	 * \addtogroup cpp-rtos
+	 *  @{
+	 */
 	public:
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -536,6 +543,7 @@ class Mutex {
 	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
 	}
+	///@}
 };
 
 /**

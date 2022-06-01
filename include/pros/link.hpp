@@ -27,7 +27,15 @@
 #include "pros/link.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-link
+ * 
+ */
 class Link {
+	/**
+	 * \addtogroup cpp-link
+	 * ///@{
+	 */
 	private:
 	std::uint8_t _port;
 
@@ -197,6 +205,7 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
 	std::uint32_t clear_receive_buf();
+	///@}
 };
 }  // namespace pros
 

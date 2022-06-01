@@ -43,7 +43,6 @@ namespace c {
 
 /**
  * \struct gps_status_s_t
- * 
  */
 typedef struct __attribute__((__packed__)) gps_status_s {
 	/// X Position (meters)
@@ -60,7 +59,6 @@ typedef struct __attribute__((__packed__)) gps_status_s {
 
 /**
  * \struct gps_raw_s
- * 
  */
 struct gps_raw_s {
 	/// Percieved Pitch based on GPS + IMU

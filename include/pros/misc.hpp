@@ -31,7 +31,15 @@
 #include <string>
 
 namespace pros {
+/**
+ * \ingroup cpp-misc
+ * 
+ */
 class Controller {
+	/**
+	 * \addtogroup cpp-misc
+	 * ///@{
+	 */
 	public:
 	/**
 	 * Creates a controller object for the given controller id.
@@ -261,9 +269,14 @@ class Controller {
 
 	private:
 	controller_id_e_t _id;
+	///@}
 };
 
 namespace battery {
+/**
+ * \addtogroup cpp-misc
+ * ///@{
+ */
 /**
  * Gets the current voltage of the battery, as reported by VEXos.
  *
@@ -307,6 +320,7 @@ double get_temperature(void);
  * \return The current capacity of the battery
  */
 int32_t get_voltage(void);
+///@}
 }  // namespace battery
 
 namespace competition {

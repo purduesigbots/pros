@@ -25,7 +25,14 @@
 #include "pros/imu.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-imu
+ */
 class Imu {
+	/**
+	 * \addtogroup cpp-imu
+	 * ///@{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -448,6 +455,7 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+	///@}
 };
 
 using IMU = Imu;

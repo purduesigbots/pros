@@ -29,7 +29,14 @@
 #include "pros/optical.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-optical
+ */
 class Optical {
+	/**
+	 * \addtogroup cpp-optical
+	 *  @{
+	 */
 	public:
 	/**
 	 * Creates an Optical Sensor object for the given port.
@@ -231,6 +238,7 @@ class Optical {
 
 	private:
 	const std::uint8_t _port;
+	///@}
 };
 }  // namespace pros
 

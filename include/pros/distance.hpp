@@ -27,7 +27,14 @@
 #include "pros/distance.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-distance
+ */
 class Distance {
+	/**
+	 * \addtogroup cpp-distance
+	 *  @{
+ 	*/
 	public:
 	/**
 	 * Creates a Distance Sensor object for the given port.
@@ -111,6 +118,7 @@ class Distance {
 
 	private:
 	const std::uint8_t _port;
+	///@}
 };
 }  // namespace pros
 

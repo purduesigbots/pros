@@ -30,7 +30,15 @@
 #include "pros/gps.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-gps
+ *  @{
+ */
 class Gps {
+	/**
+	 * \addtogroup cpp-gps
+	 *  @{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -279,7 +287,7 @@ class Gps {
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::c::gps_accel_s_t get_accel() const;
-
+///@}
 };  // Gps Class
 
 using GPS = Gps;

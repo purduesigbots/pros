@@ -29,7 +29,14 @@
 #include <cstdint>
 
 namespace pros {
+/**
+ * \ingroup cpp-vision
+ */
 class Vision {
+	/**
+	 * \addtogroup cpp-vision
+	 *  @{
+	 */
 	public:
 	/**
 	 * Create a Vision Sensor object on the given port.
@@ -444,6 +451,7 @@ class Vision {
 
 	private:
 	std::uint8_t _port;
+	///@}
 };
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_
