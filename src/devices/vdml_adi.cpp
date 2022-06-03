@@ -15,7 +15,7 @@
 #include "vdml/port.h"
 
 namespace pros {
-namespace adi{
+namespace adi {
 using namespace pros::c;
 
 Port::Port(std::uint8_t adi_port, adi_port_config_e_t type)
