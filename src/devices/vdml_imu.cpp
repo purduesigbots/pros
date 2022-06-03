@@ -13,6 +13,8 @@
 #include "pros/imu.hpp"
 
 namespace pros {
+inline namespace v5 {
+	
 std::int32_t Imu::reset() const {
 	return pros::c::imu_reset(_port);
 }
@@ -117,4 +119,5 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
+}  // namespace v5
 }  // namespace pros

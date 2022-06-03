@@ -24,6 +24,8 @@
 #include "pros/distance.h"
 
 namespace pros {
+inline namespace v5 {
+
 class Distance {
 	public:
 	/**
@@ -109,6 +111,8 @@ class Distance {
 	private:
 	const std::uint8_t _port;
 };
+
+}
 }  // namespace pros
 
 #endif

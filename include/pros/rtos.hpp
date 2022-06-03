@@ -31,6 +31,7 @@
 #include <type_traits>
 
 namespace pros {
+inline namespace rtos {
 class Task {
 	public:
 	/**
@@ -522,7 +523,7 @@ class Mutex {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
 	}
 };
-
+}
 /**
  * Gets the number of milliseconds since PROS initialized.
  *

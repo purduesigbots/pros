@@ -457,7 +457,7 @@ int32_t usd_is_installed(void);
 
 #ifdef __cplusplus
 }
-}
+} // namespace pros
 }
 #endif
 
