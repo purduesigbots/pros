@@ -26,6 +26,7 @@
 #include "pros/optical.h"
 
 namespace pros {
+inline namespace v5 {
 class Optical {
 	public:
 	/**
@@ -229,6 +230,7 @@ class Optical {
 	private:
 	const std::uint8_t _port;
 };
+}
 }  // namespace pros
 
 #endif

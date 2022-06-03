@@ -24,6 +24,7 @@
 #include "pros/motors.h"
 
 namespace pros {
+inline namespace v5 {
 class Motor {
 	public:
 	/**
@@ -838,5 +839,6 @@ namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_MOTORS_HPP_
