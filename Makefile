@@ -37,7 +37,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 # that are in the the include directory get exported
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(FWDIR)/v5-common.ld $(FWDIR)/v5-hot.ld
 TEMPLATE_FILES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
-TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(INCDIR)/display
+TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* 
 TEMPLATE_FILES+= $(SRCDIR)/main.cpp
 TEMPLATE_FILES+= $(ROOT)/template-gitignore
 
