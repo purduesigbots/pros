@@ -488,23 +488,16 @@ void display_fatal_error(const char* text) {
 	// in fatal error state, cannot rely on integrity of the RTOS
 	char s[50];
 	strncpy(s, text, 50);
-	if (lcd_is_initialized()) {
-		vexDisplayForegroundColor(COLOR_RED);
-		vexDisplayRectFill(0, 0, 480, 19);
-		vexDisplayRectFill(0, 0, 27, 240);
-		vexDisplayRectFill(453, 0, 480, 240);
-		vexDisplayRectFill(0, 179, 480, 240);
-		vexDisplayForegroundColor(0x1A1917);
-		vexDisplayRectFill(50, 190, 130, 230);
-		vexDisplayRectFill(200, 190, 280, 230);
-		vexDisplayRectFill(350, 190, 430, 230);
-		vexDisplayCenteredString(0, s);
-	} else {
-		vexDisplayForegroundColor(COLOR_RED);
-		vexDisplayRectFill(0, 0, 480, 240);
-		vexDisplayForegroundColor(COLOR_WHITE);
-		vexDisplayCenteredString(6, s);
-	}
+	vexDisplayForegroundColor(COLOR_RED);
+	vexDisplayRectFill(0, 0, 480, 19);
+	vexDisplayRectFill(0, 0, 27, 240);
+	vexDisplayRectFill(453, 0, 480, 240);
+	vexDisplayRectFill(0, 179, 480, 240);
+	vexDisplayForegroundColor(0x1A1917);
+	vexDisplayRectFill(50, 190, 130, 230);
+	vexDisplayRectFill(200, 190, 280, 230);
+	vexDisplayRectFill(350, 190, 430, 230);
+	vexDisplayCenteredString(0, s);
 }
 
 void graphical_context_daemon_initialize(void) {
