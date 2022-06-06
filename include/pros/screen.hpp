@@ -3,6 +3,8 @@
  * \ingroup cpp-screen
  *
  * Brain screen display and touch functions.
+ * 
+ * \note The default color for the pen is white, while the default eraser color is black.
  *
  * Contains user calls to the v5 screen for touching and displaying graphics.
  *
@@ -71,7 +73,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void initialize() {
+     *   pros::screen::set_pen(COLOR_RED);
+     * }
      * 
+     * void opcontrol() {
+     *   int iter = 0;
+     *   while(1){
+     *     // This should print in red.
+     *     pros::screen::print(TEXT_MEDIUM, 1, "%d", iter++);
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t set_pen(const std::uint32_t color);
@@ -91,7 +103,16 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void initialize() {
+     *   pros::screen::set_eraser(COLOR_RED);
+     * }
      * 
+     * void opcontrol() {
+     *   while(1){
+     *     // This should turn the screen red.
+     *     pros::screen::erase();
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t set_eraser(const std::uint32_t color);
@@ -109,7 +130,16 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void initialize() {
+     *   pros::screen::set_pen(COLOR_RED);
+     * }
      * 
+     * void opcontrol() {
+     *   while(1){
+     *     // Should print number equivalent to COLOR_RED defined in colors.h.
+     *     pros::screen::print(TEXT_MEDIUM, 1, "%d", pros::screen::get_pen());
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t get_pen();
@@ -127,7 +157,16 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void initialize() {
+     *   pros::screen::set_pen(COLOR_RED);
+     * }
      * 
+     * void opcontrol() {
+     *   while(1){
+     *     // Should print number equivalent to COLOR_RED defined in colors.h.
+     *     pros::screen::print(TEXT_MEDIUM, 1, "%d", pros::screen::get_eraser());
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t get_eraser();
@@ -144,7 +183,16 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void initialize() {
+     *   pros::screen::set_eraser(COLOR_RED);
+     * }
      * 
+     * void opcontrol() {
+     *   while(1){
+     *   // This should turn the screen red.
+     *   pros::screen::erase();
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t erase();
@@ -164,7 +212,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   pros::screen::print(TEXT_MEDIUM, 4, "Line Here");
+     *   // Scroll 3 lines
+     *   pros::screen::scroll(4, 3);
+     * }
      * \endcode
      */
     std::uint32_t scroll(const std::int16_t start_line, const std::int16_t lines);
@@ -191,7 +243,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   pros::screen::print(TEXT_MEDIUM, 1, "Line Here");
+     *   // Scrolls area of screen upwards slightly. including line of text
+     *   pros::screen::scroll(0,0, 400, 200, 3);
+     * }
      * \endcode
      */
     std::uint32_t scroll_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, std::int16_t lines);
@@ -217,7 +273,14 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void opcontrol() {
+     *   uint32_t* buf = malloc(sizeof(uint32_t) * 400 * 200);
+     *   pros::screen::print(TEXT_MEDIUM, 1, "Line Here");
      * 
+     *   // Copies area of the screen including text
+     *   pros::screen::copy_area(0, 0, 400, 200, (uint32_t*)buf, 400 + 1);
+     *   // Equation for stride is x2 - x1 + 1
+     * }
      * \endcode
      */
     std::uint32_t copy_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, uint32_t* buf, const std::int32_t stride);
@@ -236,7 +299,14 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * int i = 0;
+     * void opcontrol() {
+     *   while(i < 200){
+     *     pros::screen::draw_pixel(100,i++);
+     *     // Draws a line at x = 100 gradually down the screen, pixel by pixel
+     *     pros::delay(200);
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t draw_pixel(const std::int16_t x, const std::int16_t y);
@@ -255,7 +325,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Color the Screen in Red
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::fill_rect(0,0,400,200);
+     *   int i = 0;
+     *   while(i < 200){
+     *     pros::screen::erase_pixel(100,i++);
+     *     // Erases a line at x = 100 gradually down the screen, pixel by pixel
+     *     pros::delay(200);
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t erase_pixel(const std::int16_t x, const std::int16_t y);
@@ -275,7 +355,10 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Draw line down the screen at x = 100
+     *   pros::screen::draw_line(100,0,100,200);
+     * }
      * \endcode
      */
     std::uint32_t draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
@@ -295,7 +378,13 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Color the Screen in Red
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::fill_rect(0,0,400,200);
+     *   // Erase line down the screen at x = 100
+     *   pros::screen::erase_line(100,0,100,200);
+     * }
      * \endcode
      */
     std::uint32_t erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
@@ -315,7 +404,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Color the Screen in Red
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::draw_rect(1,1,480,200);
+     * }
      * \endcode
      */
     std::uint32_t draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
@@ -335,7 +428,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Draw Box Around Half the Screen in Red
+     *   pros::screen::set_eraser(COLOR_RED);
+     *   pros::screen::erase_rect(5,5,240,200);
+     * }
      * \endcode
      */
     std::uint32_t erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
@@ -348,15 +445,21 @@ const char* convert_args(const std::string& arg) {
      * reached:
      * EACCESS - Another resource is currently trying to access the screen mutex.
      *
-     * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
-     * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
+     * \param x0 The x coordinates of the first point of the rectangle
+     * \param y0 The y coordinates of the first point of the rectangle
+     * \param x1 The x coordinates of the second point of the rectangle
+     * \param y1 The y coordinates of the second point of the rectangle
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Fill Around Half the Screen in Red
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::fill_rect(5,5,240,200);
+     * }
      * \endcode
      */
     std::uint32_t fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
@@ -376,7 +479,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   // Draw a circle with radius of 100 in red
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::draw_circle(240, 200, 100);
+     * }
      * \endcode
      */
     std::uint32_t draw_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
@@ -396,7 +503,13 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::fill_rect(5,5,240,200);
+     *   // Erase a circle with radius of 100 in COLOR_BLUE
+     *   pros::screen::set_pen(COLOR_BLUE);
+     *   pros::screen::erase_circle(240, 200, 100);
+     * }
      * \endcode
      */
     std::uint32_t erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
@@ -409,15 +522,22 @@ const char* convert_args(const std::string& arg) {
      * reached:
      * EACCESS - Another resource is currently trying to access the screen mutex.
      *
-     * \param x, y 	The (x,y) coordinates of the center of the circle
-     * \param r 	The radius of the circle
+     * \param x The x coordinate of the center of the circle
+     * \param y The y coordinate of the center of the circle
+     * \param r The radius of the circle
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   pros::screen::set_pen(COLOR_RED);
+     *   pros::screen::fill_rect(5,5,240,200);
+     *   // Fill a circlular area with radius of 100 in COLOR_BLUE
+     *   pros::screen::set_pen(COLOR_BLUE);
+     *   pros::screen::fill_circle(240, 200, 100);
+     * }
      * \endcode
      */
     std::uint32_t fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
@@ -445,7 +565,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
-     * 
+     * void opcontrol() {
+     *   int i = 0;
+     *   pros::screen::set_pen(COLOR_BLUE);
+     *   while(1){
+     *     // Will print seconds started since program started on line 3
+     *     pros::screen::print(pros::TEXT_MEDIUM, 3, "Seconds Passed: %3d", i++);
+     *     pros::delay(1000);
+     *   }
+     * }
      * \endcode
      */
     template <typename... Params>
@@ -477,7 +605,21 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * void opcontrol() {
+     *   int i = 0;
+     *   pros::screen_touch_status_s_t status;
+     *   while(1){
+     *     status = pros::screen_touch_status();
      * 
+     *     // Will print various information about the last touch
+     *     pros::screen::print(pros::TEXT_MEDIUM, 1, "Touch Status (Type): %d", status.touch_status);
+     *     pros::screen::print(pros::TEXT_MEDIUM, 2, "Last X: %d", status.x);
+     *     pros::screen::print(pros::TEXT_MEDIUM, 3, "Last Y: %d", status.y);
+     *     pros::screen::print(pros::TEXT_MEDIUM, 4, "Press Count: %d", status.press_count);
+     *     pros::screen::print(pros::TEXT_MEDIUM, 5, "Release Count: %d", status.release_count);
+     *     pros::delay(20);
+     *   }
+     * }
      * \endcode
      */
     screen_touch_status_s_t touch_status();
@@ -497,7 +639,19 @@ const char* convert_args(const std::string& arg) {
      * 
      * \b Example
      * \code
+     * pros::touch_event_cb_fn_t changePixel(){
+     * pros::screen_touch_status_s_t status = pros::screen::touch_status();
+     * pros::screen::draw_pixel(status.x,status.y);
+     * return NULL;
+     * }
      * 
+     * void opcontrol() {
+     *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+     *   pros::Motor left_mtr(1);
+     *   pros::Motor right_mtr(2);
+     *   pros::screen::touch_callback(changePixel(), TOUCH_PRESSED);
+     *   while(1) delay(20);
+     * }
      * \endcode
      */
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
