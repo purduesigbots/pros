@@ -55,6 +55,11 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t reset();
 
@@ -78,6 +83,11 @@ class Rotation {
 	 * \param rate The data refresh interval in milliseconds
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
@@ -93,6 +103,11 @@ class Rotation {
 	 * 		  The position in terms of ticks
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_position(std::uint32_t position);
 
@@ -108,6 +123,11 @@ class Rotation {
 	 * 		  The position in terms of ticks
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t reset_position(void);
 
@@ -121,6 +141,11 @@ class Rotation {
 	 *
 	 * \return The position value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_position();
 
@@ -134,9 +159,13 @@ class Rotation {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The
-	 value or PROS_ERR_F if the operation failed, setting
+	 * \return The value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_velocity();
 
@@ -150,6 +179,11 @@ class Rotation {
 	 *
 	 * \return The angle value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_angle();
 
@@ -167,6 +201,11 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_reversed(bool value);
 
@@ -180,6 +219,11 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t reverse();
 
@@ -193,6 +237,11 @@ class Rotation {
 	 *
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_reversed();
 	///@}

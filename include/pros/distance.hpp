@@ -47,6 +47,11 @@ class Distance {
 	 *
 	 * \param port
 	 *        The V5 port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	explicit Distance(const std::uint8_t port);
 
@@ -60,6 +65,11 @@ class Distance {
 	 *
 	 * \return The distance value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get();
 
@@ -77,6 +87,11 @@ class Distance {
 	 *
 	 * \return The confidence value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_confidence();
 
@@ -94,6 +109,11 @@ class Distance {
 	 *
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_object_size();
 
@@ -107,6 +127,10 @@ class Distance {
 	 *
 	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_object_velocity();
 
@@ -114,6 +138,11 @@ class Distance {
 	 * Gets the port number of the distance sensor.
 	 *
 	 * \return The distance sensor's port number.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint8_t get_port();
 

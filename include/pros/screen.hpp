@@ -40,20 +40,21 @@ const char* convert_args(const std::string& arg) {
 
 #pragma GCC diagnostic pop
 
-/**
- * \ingroup cpp-screen
- */
+    /**
+     * \ingroup cpp-screen
+     */
 
-/**
- * \addtogroup cpp-screen
- *  @{
- */
+    /**
+     * \addtogroup cpp-screen
+     *  @{
+     */
 
-    /******************************************************************************/
-    /**                  Screen Graphical Display Functions                      **/
-    /**                                                                          **/
-    /**   These functions allow programmers to display shapes on the v5 screen   **/
-    /******************************************************************************/
+    /**
+     * \name Screen Graphical Display Functions
+     * 
+     * These functions allow programmers to display shapes on the v5 screen
+     * @{
+     */
 
     /**
      * Set the pen color for subsequent graphics operations
@@ -67,6 +68,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t set_pen(const std::uint32_t color);
 
@@ -82,6 +88,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t set_eraser(const std::uint32_t color);
 
@@ -95,6 +106,11 @@ const char* convert_args(const std::string& arg) {
      * \return The current pen color in the form of a value from the enum 
      * defined in colors.h, or PROS_ERR if there was an error taking or 
      * returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t get_pen();
 
@@ -108,6 +124,11 @@ const char* convert_args(const std::string& arg) {
      * \return The current eraser color in the form of a value from the enum
      *  defined in colors.h, or PROS_ERR if there was an error taking or 
      *  returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t get_eraser();
 
@@ -120,6 +141,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      *         taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t erase();
 
@@ -135,6 +161,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured
      *  taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t scroll(const std::int16_t start_line, const std::int16_t lines);
 
@@ -157,6 +188,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t scroll_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, std::int16_t lines);
 
@@ -178,6 +214,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured taking
      *  or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t copy_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, uint32_t* buf, const std::int32_t stride);
 
@@ -192,6 +233,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t draw_pixel(const std::int16_t x, const std::int16_t y);
 
@@ -206,6 +252,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t erase_pixel(const std::int16_t x, const std::int16_t y);
 
@@ -221,6 +272,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -236,6 +292,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -251,6 +312,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -266,6 +332,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -282,6 +353,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -297,6 +373,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t draw_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
@@ -312,6 +393,11 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
@@ -328,14 +414,22 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
-    /******************************************************************************/
-    /**                       Screen Text Display Functions                      **/
-    /**                                                                          **/
-    /**     These functions allow programmers to display text on the v5 screen   **/
-    /******************************************************************************/
+    ///@}
+
+    /**
+     * \name Screen Text Display Functions
+     * 
+     * These functions allow programmers to display text on the v5 screen
+     * @{
+     */
 
     /**
      * Print a formatted string to the screen, overwrite available for printing at location too.
@@ -348,6 +442,11 @@ const char* convert_args(const std::string& arg) {
      * \param y The (x,y) coordinates of the top left corner of the string
      * \param fmt  Format string
      * \param ...  Optional list of arguments for the format string
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     template <typename... Params>
     void print(pros::text_format_e_t txt_fmt, const std::int16_t line, const char* text, Params... args){
@@ -359,12 +458,14 @@ const char* convert_args(const std::string& arg) {
 	    pros::c::screen_print_at(txt_fmt, x, y, text, convert_args(args)...);
     }
     
-    /******************************************************************************/
-    /**                         Screen Touch Functions                           **/
-    /**                                                                          **/
-    /**               These functions allow programmers to access                **/
-    /**                    information about screen touches                      **/
-    /******************************************************************************/
+    ///@}
+
+    /**
+     * \name Screen Touch Functions
+     * 
+     * These functions allow programmers to access information about screen touches
+     * @{
+     */
     
    /**
      * Gets the touch status of the last touch of the screen.
@@ -373,6 +474,11 @@ const char* convert_args(const std::string& arg) {
      * This will be released by default if no action was taken. 
      * If an error occured, the screen_touch_status_s_t will have its 
      * last_touch_e_t enum specifier set to E_TOUCH_ERR, and other values set to -1.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     screen_touch_status_s_t touch_status();
     
@@ -388,10 +494,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * while taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * 
+     * \endcode
      */
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
-
-///@}
+    
+    ///@}
+    
+    ///@}
 
 } //namespace screen
 } //namespace pros

@@ -81,6 +81,11 @@ class Gps {
 	 *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
 	                                     double yOffset) const;
@@ -100,6 +105,11 @@ class Gps {
 	 * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
@@ -118,6 +128,11 @@ class Gps {
 	 * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_offset(double* xOffset, double* yOffset) const;
 
@@ -138,6 +153,11 @@ class Gps {
 	 *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_position(double xInitial, double yInitial, double headingInitial) const;
 
@@ -154,6 +174,11 @@ class Gps {
 	 * 				 Data rate in milliseconds (Minimum: 5 ms)
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
@@ -168,6 +193,11 @@ class Gps {
 	 *
 	 * \return Possible RMS (Root Mean Squared) error in meters for GPS position.
 	 * If the operation failed, returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_error() const;
 
@@ -180,10 +210,14 @@ class Gps {
 	 * ENODEV - The port cannot be configured as a GPS
 	 * EAGAIN - The sensor is still calibrating
 	 *
-	 *
 	 * \return A struct (gps_status_s_t) containing values mentioned above.
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::gps_status_s_t get_status() const;
 
@@ -196,9 +230,13 @@ class Gps {
 	 * ENODEV - The port cannot be configured as a GPS
 	 * EAGAIN - The sensor is still calibrating
 	 *
-	 *
 	 * \return The heading in [0,360) degree values. If the operation failed,
 	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_heading() const;
 
@@ -213,6 +251,11 @@ class Gps {
 	 *
 	 * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation
 	 * fails, returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_heading_raw() const;
 
@@ -227,6 +270,11 @@ class Gps {
 	 *
 	 * \return The elased heading in degrees. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_rotation() const;
 
@@ -243,6 +291,11 @@ class Gps {
 	 * 				 Target rotation value to set rotation value to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_rotation(double target) const;
 
@@ -257,6 +310,11 @@ class Gps {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_rotation() const;
 
@@ -271,6 +329,11 @@ class Gps {
 	 *
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::gps_gyro_s_t get_gyro_rate() const;
 
@@ -287,6 +350,11 @@ class Gps {
 	 * 				 The V5 GPS's port number from 1-21
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::gps_accel_s_t get_accel() const;
 ///@}

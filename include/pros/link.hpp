@@ -63,6 +63,11 @@ class Link {
 	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
@@ -76,6 +81,11 @@ class Link {
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
 	 *
 	 * \return If a radio is connected to a port and it's connected to a link.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	bool connected();
 
@@ -90,6 +100,11 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link/radio, else the bytes available to be
 	 * read by the user.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t raw_receivable_size();
 
@@ -102,7 +117,12 @@ class Link {
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
 	 *
-	 * \return PROS_ERR if port is not a link/radio,
+	 * \return PROS_ERR if port is not a link/radio
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t raw_transmittable_size();
 
@@ -125,6 +145,11 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link, and the successfully transmitted 
 	 * data size if it succeeded.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t transmit_raw(void* data, std::uint16_t data_size);
 
@@ -146,6 +171,11 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link, and the successfully received 
 	 * data size if it succeeded.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t receive_raw(void* dest, std::uint16_t data_size);
 
@@ -168,6 +198,11 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link, and the successfully transmitted 
 	 * data size if it succeeded.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t transmit(void* data, std::uint16_t data_size);
 
@@ -190,6 +225,11 @@ class Link {
 	 *
 	 * \return PROS_ERR if port is not a link, and the successfully received 
 	 * data size if it succeeded.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t receive(void* dest, std::uint16_t data_size);
 
@@ -201,8 +241,13 @@ class Link {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
-
+	 * 
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t clear_receive_buf();
 	///@}

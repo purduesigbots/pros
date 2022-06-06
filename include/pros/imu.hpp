@@ -55,8 +55,14 @@ class Imu {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t reset() const;
+
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
@@ -78,8 +84,14 @@ class Imu {
 	* \param rate The data refresh interval in milliseconds
 	* \return 1 if the operation was successful or PROS_ERR if the operation
 	* failed, setting errno.
+	
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	*/
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
+
 	/**
 	 * Get the total number of degrees the Inertial Sensor has spun about the z-axis
 	 *
@@ -97,8 +109,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The degree value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_rotation() const;
+
 	/**
 	 * Get the Inertial Sensor's heading relative to the initial direction of its
 	 * x-axis
@@ -117,8 +135,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The degree value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_heading() const;
+
 	/**
 	 * Get a quaternion representing the Inertial Sensor's orientation
 	 *
@@ -133,8 +157,14 @@ class Imu {
 	 * \return The quaternion representing the sensor's orientation. If the
 	 * operation failed, all the quaternion's members are filled with PROS_ERR_F and
 	 * errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::quaternion_s_t get_quaternion() const;
+
 	/**
 	 * Get the Euler angles representing the Inertial Sensor's orientation
 	 *
@@ -149,8 +179,14 @@ class Imu {
 	 * \return The Euler angles representing the sensor's orientation. If the
 	 * operation failed, all the structure's members are filled with PROS_ERR_F and
 	 * errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::euler_s_t get_euler() const;
+
 	/**
 	 * Get the Inertial Sensor's pitch angle bounded by (-180,180)
 	 *
@@ -164,8 +200,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The pitch angle, or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_pitch() const;
+
 	/**
 	 * Get the Inertial Sensor's roll angle bounded by (-180,180)
 	 *
@@ -178,8 +220,18 @@ class Imu {
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The roll angle, or PROS_ERR_F if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
+	 * \endcode
 	 */
 	virtual double get_roll() const;
+
 	/**
 	 * Get the Inertial Sensor's yaw angle bounded by (-180,180)
 	 *
@@ -192,8 +244,14 @@ class Imu {
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The yaw angle, or PROS_ERR_F if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_yaw() const;
+
 	/**
 	 * Get the Inertial Sensor's raw gyroscope values
 	 *
@@ -207,8 +265,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
+	
 	/**
 	 * Resets the current reading of the Inertial Sensor's rotation to zero
 	 *
@@ -222,8 +286,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_rotation() const;
+
 	/**
 	 * Resets the current reading of the Inertial Sensor's heading to zero
 	 *
@@ -237,8 +307,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_heading() const;
+
 	/**
 	 * Resets the current reading of the Inertial Sensor's pitch to zero
 	 *
@@ -252,8 +328,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_pitch() const;
+
 	/**
 	 * Resets the current reading of the Inertial Sensor's yaw to zero
 	 *
@@ -267,8 +349,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_yaw() const;
+
 	/**
 	 * Resets the current reading of the Inertial Sensor's roll to zero
 	 *
@@ -282,8 +370,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_roll() const;
+
 	/**
 	 * Resets all 5 values of the Inertial Sensor to 0.
 	 *
@@ -297,8 +391,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare() const;
+
 	/**
 	 * Reset all 3 euler values of the Inertial Sensor to 0.
 	 *
@@ -312,8 +412,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t tare_euler() const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
 	 * Target will default to 360 if above 360 and default to 0 if below 0.
@@ -330,8 +436,14 @@ class Imu {
 	 * 				 Target value for the heading value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_heading(const double target) const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's rotation to target value
 	 *
@@ -347,8 +459,14 @@ class Imu {
 	 * 				 Target value for the rotation value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_rotation(const double target) const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
 	 * Will default to +/- 180 if target exceeds +/- 180.
@@ -365,8 +483,14 @@ class Imu {
 	 * 				 Target value for yaw value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_yaw(const double target) const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's pitch to target value
 	 *
@@ -382,8 +506,14 @@ class Imu {
 	 * 				 Target value for the pitch value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_pitch(const double target) const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 * Will default to +/- 180 if target exceeds +/- 180.
@@ -400,8 +530,14 @@ class Imu {
 	 * 				 Target euler values for the euler values to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_roll(const double target) const;
+
 	/**
 	 * Sets the current reading of the Inertial Sensor's euler values to
 	 * target euler values. Will default to +/- 180 if target exceeds +/- 180.
@@ -418,8 +554,14 @@ class Imu {
 	 * 				 Target euler values for the euler values to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_euler(const pros::c::euler_s_t target) const;
+
 	/**
 	 * Get the Inertial Sensor's raw accelerometer values
 	 *
@@ -433,8 +575,14 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::imu_accel_s_t get_accel() const;
+
 	/**
 	 * Get the Inertial Sensor's status
 	 *
@@ -448,15 +596,27 @@ class Imu {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The Inertial Sensor's status code, or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::imu_status_e_t get_status() const;
+
 	/**
 	 * Check whether the IMU is calibrating
 	 *
 	 * \return true if the V5 Inertial Sensor is calibrating or false
 	 * false if it is not.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual bool is_calibrating() const;
+	
 	///@}
 };
   

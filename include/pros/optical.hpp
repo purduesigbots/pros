@@ -49,6 +49,11 @@ class Optical {
 	 *
 	 * \param port
 	 *        The V5 port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	explicit Optical(const std::uint8_t port);
 
@@ -65,6 +70,11 @@ class Optical {
 	 *
 	 * \return hue value if the operation was successful or PROS_ERR_F if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_hue();
 
@@ -81,6 +91,11 @@ class Optical {
 	 *
 	 * \return saturation value if the operation was successful or PROS_ERR_F if
 	 * the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_saturation();
 
@@ -97,6 +112,11 @@ class Optical {
 	 *
 	 * \return brightness value if the operation was successful or PROS_ERR_F if
 	 * the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual double get_brightness();
 
@@ -111,8 +131,13 @@ class Optical {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return poximity value if the operation was successful or PROS_ERR if
+	 * \return proximity value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_proximity();
 
@@ -127,6 +152,11 @@ class Optical {
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
 	 * \return The Error code encountered
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t set_led_pwm(uint8_t value);
 
@@ -142,6 +172,11 @@ class Optical {
 	 *
 	 * \return LED pwm value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t get_led_pwm();
 
@@ -155,6 +190,11 @@ class Optical {
 	 *
 	 * \return rgb value if the operation was successful or an optical_rgb_s_t 
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::optical_rgb_s_t get_rgb();
 
@@ -168,6 +208,11 @@ class Optical {
 	 *
 	 * \return raw rgb value if the operation was successful or an optical_raw_s_t 
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::optical_raw_s_t get_raw();
 
@@ -188,6 +233,11 @@ class Optical {
 	 *
 	 * \return gesture value if the operation was successful or PROS_ERR if
 	 * the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::optical_direction_e_t get_gesture();
 
@@ -201,6 +251,11 @@ class Optical {
 	 *
 	 * \return gesture value if the operation was successful or an optical_gesture_s_t 
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual pros::c::optical_gesture_s_t get_gesture_raw();
 
@@ -214,6 +269,11 @@ class Optical {
 	 *
 	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
  	 * setting errno.
+	  * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t enable_gesture();
 
@@ -227,6 +287,11 @@ class Optical {
 	 *
 	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
  	 * setting errno.
+	  * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::int32_t disable_gesture();
 
@@ -234,6 +299,11 @@ class Optical {
 	 * Gets the port number of the Optical Sensor.
 	 *
 	 * \return The Optical Sensor's port number.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	virtual std::uint8_t get_port();
 

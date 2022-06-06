@@ -52,6 +52,11 @@ class Vision {
 	 *        The V5 port number from 1-21
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
 
@@ -65,6 +70,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t clear_led(void) const;
 
@@ -91,6 +101,11 @@ class Vision {
 	 *        Signature type
 	 *
 	 * \return A vision_signature_s_t that can be set using Vision::set_signature
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static vision_signature_s_t signature_from_utility(const std::int32_t id, const std::int32_t u_min,
 	                                                   const std::int32_t u_max, const std::int32_t u_mean,
@@ -119,6 +134,11 @@ class Vision {
 	 *        The fifth signature id [1-7] to add to the color code
 	 *
 	 * \return A vision_color_code_t object containing the color code information.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	vision_color_code_t create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
@@ -139,6 +159,11 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given size id, or
 	 * PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	vision_object_s_t get_by_size(const std::uint32_t size_id) const;
 
@@ -161,6 +186,11 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given signature
 	 * and size_id, or PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	vision_object_s_t get_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id) const;
 
@@ -180,6 +210,11 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given color code
 	 * and size_id, or PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	vision_object_s_t get_by_code(const std::uint32_t size_id, const vision_color_code_t color_code) const;
 
@@ -194,6 +229,11 @@ class Vision {
 	 *
 	 * \return The current exposure parameter from [0,150],
 	 * PROS_ERR if an error occurred
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_exposure(void) const;
 
@@ -206,6 +246,11 @@ class Vision {
 	 *
 	 * \return The number of objects detected on the specified vision sensor.
 	 * Returns PROS_ERR if the port was invalid or an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_object_count(void) const;
 
@@ -220,6 +265,11 @@ class Vision {
 	 *        The signature id to read
 	 *
 	 * \return A vision_signature_s_t containing information about the signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	vision_signature_s_t get_signature(const std::uint8_t signature_id) const;
 
@@ -231,6 +281,11 @@ class Vision {
 	 * ENODEV - The port cannot be configured as a vision sensor
 	 *
 	 * \return The current RGB white balance setting of the sensor
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_white_balance(void) const;
 
@@ -238,6 +293,11 @@ class Vision {
 	 * Gets the port number of the Vision Sensor.
 	 *
 	 * \return The vision sensor's port number.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint8_t get_port(void) const;
 
@@ -263,6 +323,11 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
 	                          vision_object_s_t* const object_arr) const;
@@ -293,6 +358,11 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t read_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id, const std::uint32_t object_count,
 	                         vision_object_s_t* const object_arr) const;
@@ -321,6 +391,11 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	int32_t read_by_code(const std::uint32_t size_id, const vision_color_code_t color_code,
 	                     const std::uint32_t object_count, vision_object_s_t* const object_arr) const;
@@ -332,6 +407,11 @@ class Vision {
 	 *        The signature for which the contents will be printed
 	 *
 	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static std::int32_t print_signature(const vision_signature_s_t sig);
 
@@ -347,6 +427,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_auto_white_balance(const std::uint8_t enable) const;
 
@@ -364,6 +449,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_exposure(const std::uint8_t exposure) const;
 
@@ -379,6 +469,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_led(const std::int32_t rgb) const;
 
@@ -399,6 +494,11 @@ class Vision {
 	 *            A pointer to the signature to save
 	 *
 	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const;
 
@@ -414,6 +514,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_white_balance(const std::int32_t rgb) const;
 
@@ -433,6 +538,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_zero_point(vision_zero_e_t zero_point) const;
 
@@ -448,6 +558,11 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
 

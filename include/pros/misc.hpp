@@ -49,6 +49,11 @@ class Controller {
 	 * \param id
 	 * 			  The ID of the controller (e.g. the master or partner controller).
 	 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Controller(controller_id_e_t id);
 
@@ -61,6 +66,11 @@ class Controller {
 	 * port.
 	 *
 	 * \return 1 if the controller is connected, 0 otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t is_connected(void);
 
@@ -79,6 +89,11 @@ class Controller {
 	 *
 	 * \return The current reading of the analog channel: [-127, 127].
 	 * If the controller was not connected, then 0 is returned
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_analog(controller_analog_e_t channel);
 
@@ -91,6 +106,11 @@ class Controller {
 	 * port.
 	 *
 	 * \return The controller's battery capacity
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_battery_capacity(void);
 
@@ -103,6 +123,11 @@ class Controller {
 	 * port.
 	 *
 	 * \return The controller's battery level
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_battery_level(void);
 
@@ -121,6 +146,11 @@ class Controller {
 	 *
 	 * \return 1 if the button on the controller is pressed.
 	 * If the controller was not connected, then 0 is returned
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_digital(controller_digital_e_t button);
 
@@ -146,6 +176,11 @@ class Controller {
 	 *
 	 * \return 1 if the button on the controller is pressed and had not been
 	 * pressed the last time this function was called, 0 otherwise.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t get_digital_new_press(controller_digital_e_t button);
 
@@ -182,6 +217,11 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	template <typename... Params>
 	std::int32_t print(std::uint8_t line, std::uint8_t col, const char* fmt, Params... args) {
@@ -208,6 +248,11 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const char* str);
 	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const std::string& str);
@@ -228,6 +273,11 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t clear_line(std::uint8_t line);
 
@@ -249,6 +299,11 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t rumble(const char* rumble_pattern);
 
@@ -266,6 +321,11 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::int32_t clear(void);
 
@@ -288,6 +348,11 @@ namespace battery {
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current voltage of the battery
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 double get_capacity(void);
 
@@ -299,6 +364,11 @@ double get_capacity(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current current of the battery
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 int32_t get_current(void);
 
@@ -310,6 +380,11 @@ int32_t get_current(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current temperature of the battery
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 double get_temperature(void);
 
@@ -321,6 +396,11 @@ double get_temperature(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current capacity of the battery
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 int32_t get_voltage(void);
 ///@}
@@ -332,6 +412,11 @@ namespace competition {
  *
  * \return The competition control status as a mask of bits with
  * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 std::uint8_t get_status(void);
 std::uint8_t is_autonomous(void);
@@ -344,6 +429,11 @@ namespace usd {
  * Checks if the SD card is installed.
  *
  * \return 1 if the SD card is installed, 0 otherwise
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 std::int32_t is_installed(void);
 }  // namespace usd

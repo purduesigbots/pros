@@ -48,16 +48,22 @@ class Serial {
 	 *        The V5 port number from 1-21
 	 * \param baudrate
 	 *        The baudrate to run the port at
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	explicit Serial(std::uint8_t port, std::int32_t baudrate);
 
 	explicit Serial(std::uint8_t port);
 
-	/******************************************************************************/
-	/**                      Serial communication functions                      **/
-	/**                                                                          **/
-	/**  These functions allow programmers to communicate using UART over RS485  **/
-	/******************************************************************************/
+	/**
+	 * \name Serial communication functions
+	 * 
+	 * These functions allow programmers to communicate using UART over RS485
+	 * @{
+	 */
 
 	/**
 	 * Sets the baudrate for the serial port to operate at.
@@ -227,7 +233,7 @@ class Serial {
 	 * setting errno.
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
-
+	///@}
 	private:
 	const std::uint8_t _port;
 	///@}

@@ -69,6 +69,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
@@ -91,6 +95,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Task(task_fn_t function, void* parameters, const char* name);
 
@@ -113,6 +121,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	template <class F>
 	static task_t create(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
@@ -139,6 +151,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	template <class F>
 	static task_t create(F&& function, const char* name) {
@@ -164,6 +180,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	template <class F>
 	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
@@ -190,6 +210,10 @@ class Task {
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
 	 *
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	template <class F>
 	Task(F&& function, const char* name)
@@ -201,11 +225,21 @@ class Task {
 	 * \param task
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	explicit Task(task_t task);
 
 	/**
 	 * Get the currently running Task
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static Task current();
 
@@ -215,6 +249,11 @@ class Task {
 	 * \param in
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	Task& operator=(task_t in);
 
@@ -224,6 +263,11 @@ class Task {
 	 *
 	 * Memory dynamically allocated by the task is not automatically freed, and
 	 * should be freed before the task is deleted.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	void remove();
 
@@ -231,6 +275,11 @@ class Task {
 	 * Gets the priority of the specified task.
 	 *
 	 * \return The priority of the task
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t get_priority();
 
@@ -243,6 +292,11 @@ class Task {
 	 *
 	 * \param prio
 	 *        The new priority of the task
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	void set_priority(std::uint32_t prio);
 
@@ -250,11 +304,21 @@ class Task {
 	 * Gets the state of the specified task.
 	 *
 	 * \return The state of the task
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t get_state();
 
 	/**
 	 * Suspends the specified task, making it ineligible to be scheduled.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	void suspend();
 
@@ -263,6 +327,11 @@ class Task {
 	 *
 	 * \param task
 	 *        The task to resume
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	void resume();
 
@@ -270,11 +339,21 @@ class Task {
 	 * Gets the name of the specified task.
 	 *
 	 * \return A pointer to the name of the task
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	const char* get_name();
 
 	/**
 	 * Convert this object to a C task_t handle
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	explicit operator task_t() {
 		return task;
@@ -288,6 +367,11 @@ class Task {
 	 * details.
 	 *
 	 * \return Always returns true.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t notify();
 
@@ -299,6 +383,11 @@ class Task {
 	 * details.
 	 *
 	 * \return void
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	void join();
 
@@ -323,6 +412,11 @@ class Task {
 	 * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
 	 * needing to overwrite, 1 otherwise.
 	 * For all other NOTIFY_ACTION values: always return 0
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	std::uint32_t notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value);
 
@@ -341,6 +435,11 @@ class Task {
 	 *
 	 * \return The value of the task's notification value before it is decremented
 	 * or cleared
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
 
@@ -351,6 +450,11 @@ class Task {
 	 * details.
 	 *
 	 * \return False if there was not a notification waiting, true if there was
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	bool notify_clear();
 
@@ -363,6 +467,11 @@ class Task {
 	 *
 	 * \param milliseconds
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static void delay(const std::uint32_t milliseconds);
 
@@ -378,6 +487,11 @@ class Task {
 	 *        typically be initialized to the return value from pros::millis().
 	 * \param delta
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static void delay_until(std::uint32_t* const prev_time, const std::uint32_t delta);
 
@@ -388,6 +502,11 @@ class Task {
 	 * Tasks recently created may take one context switch to be counted.
 	 *
 	 * \return The number of tasks that are currently being managed by the kernel.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * \endcode
 	 */
 	static std::uint32_t get_count();
 
