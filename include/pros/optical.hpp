@@ -38,6 +38,7 @@ class Optical {
 	 * \addtogroup cpp-optical
 	 *  @{
 	 */
+
 	public:
 	/**
 	 * Creates an Optical Sensor object for the given port.
@@ -47,12 +48,15 @@ class Optical {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
+	 * \param port The V5 port number from 1-21
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void initialize() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 * }
 	 * \endcode
 	 */
 	explicit Optical(const std::uint8_t port);
@@ -73,7 +77,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Hue value: %lf \n", optical_sensor.get_hue());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual double get_hue();
@@ -94,7 +106,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Saturation value: %lf \n", optical_sensor.get_saturation());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual double get_saturation();
@@ -115,7 +135,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Brightness value: %lf \n", optical_sensor.get_brightness());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual double get_brightness();
@@ -136,7 +164,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Proximity value: %ld \n", optical_sensor.get_proximity());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_proximity();
@@ -155,7 +191,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     optical_sensor.set_led_pwm(50);
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t set_led_pwm(uint8_t value);
@@ -175,7 +219,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("LED PWM: %d \n", optical_sensor.get_led_pwm());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_led_pwm();
@@ -193,7 +245,20 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   pros::c::optical_rgb_s_t rgb_value;
+	 *   while (true) {
+	 *     rgb_value = optical_sensor.get_rgb();
+	 *     printf("Red value: %lf \n", rgb_value.red);
+	 *     printf("Green value: %lf \n", rgb_value.green);
+	 *     printf("Blue value: %lf \n", rgb_value.blue);
+	 *     printf("Clear value: %lf \n", rgb_value.clear);
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual pros::c::optical_rgb_s_t get_rgb();
@@ -211,7 +276,20 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   pros::c::optical_raw_s_t raw_values;
+	 *   while (true) {
+	 *     raw_values = optical_sensor.get_raw();
+	 *     printf("Red value: %ld \n", raw_values.red);
+	 *     printf("Green value: %ld \n", raw_values.green);
+	 *     printf("Blue value: %ld \n", raw_values.blue);
+	 *     printf("Clear value: %ld \n", raw_values.clear);
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual pros::c::optical_raw_s_t get_raw();
@@ -220,11 +298,11 @@ class Optical {
 	 * Get the most recent gesture data from the sensor
 	 *
 	 * Gestures will be cleared after 500mS
-	 * 0 = no gesture
-	 * 1 = up (towards cable)
-	 * 2 = down
-	 * 3 = right
-	 * 4 = left
+	 * \n 0 = no gesture
+	 * \n 1 = up (towards cable)
+	 * \n 2 = down
+	 * \n 3 = right
+	 * \n 4 = left
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -236,7 +314,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Direction: %d \n", optical_sensor.get_gesture());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual pros::c::optical_direction_e_t get_gesture();
@@ -254,7 +340,23 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   pros::c::optical_gesture_s_t raw_gesture;
+	 *   while (true) {
+	 *     raw_gesture = optical_sensor.get_gesture_raw();
+	 *     printf("Up data: %u \n", raw_gesture.udata);
+	 *     printf("Down data: %u \n", raw_gesture.ddata);
+	 *     printf("Left data: %u \n", raw_gesture.ldata);
+	 *     printf("Right data: %u \n", raw_gesture.rdata);
+	 *     printf("Type: %u \n", raw_gesture.type);
+	 *     printf("Count: %u \n", raw_gesture.count);
+	 *     printf("Time: %u \n", raw_gesture.time);
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual pros::c::optical_gesture_s_t get_gesture_raw();
@@ -272,7 +374,15 @@ class Optical {
 	  * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     optical_sensor.enable_gesture();
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t enable_gesture();
@@ -290,7 +400,15 @@ class Optical {
 	  * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     optical_sensor.disable_gesture();
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t disable_gesture();
@@ -302,7 +420,15 @@ class Optical {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define OPTICAL_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Optical optical_sensor(OPTICAL_PORT);
+	 *   while (true) {
+	 *     printf("Port number: %u \n", optical_sensor.get_port());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::uint8_t get_port();
@@ -311,7 +437,7 @@ class Optical {
 	const std::uint8_t _port;
 	///@}
 };
-}
+}  // namespace v5
 }  // namespace pros
 
 #endif

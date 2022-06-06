@@ -38,6 +38,21 @@ class Rotation {
 	const std::uint8_t _port;
 
 	public:
+
+	/**
+	 * Constructor for the rotation sensor
+	 * 
+	 * \param port The V5 port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 * }
+	 * \endcode
+	 */
 	Rotation(const std::uint8_t port) : _port(port){};
 
 	Rotation(const std::uint8_t port, const bool reverse_flag);
@@ -58,7 +73,18 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reverse(); //Rotation sensor recently reversed
+	 *       rotation_sensor.reset(); //Reversal causes position to be multiplied by -1.
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t reset();
@@ -86,7 +112,12 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   rotation_sensor.set_data_rate(5);
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
@@ -106,7 +137,15 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Tick Position: %ld \n", rotation_sensor.get_position());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t set_position(std::uint32_t position);
@@ -126,7 +165,17 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reset_position();
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t reset_position(void);
@@ -144,7 +193,15 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Tick Position: %ld \n", rotation_sensor.get_position());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_position();
@@ -164,7 +221,15 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Rotational Velocity: %ld \n", rotation_sensor.get_velocity());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_velocity();
@@ -182,7 +247,15 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Angle: %ld \n", rotation_sensor.get_angle());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_angle();
@@ -204,7 +277,17 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.set_reversed(true);
+	 *     }
+	 *   pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t set_reversed(bool value);
@@ -222,7 +305,16 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reverse();
+	 *     }
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t reverse();
@@ -240,13 +332,21 @@ class Rotation {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define ROTATION_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Rotation Sensor Reversed: %ld \n", rotation_sensor.get_reversed());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_reversed();
 	///@}
 };
-}
+}  // namespace v5
 }  // namespace pros
 
 #endif
