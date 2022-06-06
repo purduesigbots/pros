@@ -26,6 +26,7 @@
 #include "pros/rotation.h"
 
 namespace pros {
+inline namespace v5 {
 /**
  * \addtogroup cpp-rotation
  */
@@ -196,6 +197,7 @@ class Rotation {
 	virtual std::int32_t get_reversed();
 	///@}
 };
+}
 }  // namespace pros
 
 #endif

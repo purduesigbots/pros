@@ -29,6 +29,7 @@
 #include "pros/optical.h"
 
 namespace pros {
+inline namespace v5 {
 /**
  * \ingroup cpp-optical
  */
@@ -240,6 +241,7 @@ class Optical {
 	const std::uint8_t _port;
 	///@}
 };
+}
 }  // namespace pros
 
 #endif

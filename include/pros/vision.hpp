@@ -29,6 +29,8 @@
 #include <cstdint>
 
 namespace pros {
+inline namespace v5 {
+  
 /**
  * \ingroup cpp-vision
  */
@@ -453,5 +455,6 @@ class Vision {
 	std::uint8_t _port;
 	///@}
 };
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_

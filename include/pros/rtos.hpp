@@ -35,6 +35,7 @@
 #include <type_traits>
 
 namespace pros {
+inline namespace rtos {
 /**
  * \ingroup cpp-rtos
  */
@@ -545,7 +546,7 @@ class Mutex {
 	}
 	///@}
 };
-
+}
 /**
  * Gets the number of milliseconds since PROS initialized.
  *

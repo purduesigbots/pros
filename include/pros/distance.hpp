@@ -27,6 +27,7 @@
 #include "pros/distance.h"
 
 namespace pros {
+inline namespace v5 {
 /**
  * \ingroup cpp-distance
  */
@@ -120,6 +121,8 @@ class Distance {
 	const std::uint8_t _port;
 	///@}
 };
+
+}
 }  // namespace pros
 
 #endif

@@ -31,6 +31,8 @@
 #include <string>
 
 namespace pros {
+inline namespace v5 {
+
 /**
  * \ingroup cpp-misc
  * 
@@ -271,6 +273,7 @@ class Controller {
 	controller_id_e_t _id;
 	///@}
 };
+} //  namespace v5
 
 namespace battery {
 /**

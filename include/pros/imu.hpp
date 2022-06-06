@@ -25,6 +25,8 @@
 #include "pros/imu.h"
 
 namespace pros {
+inline namespace v5 {
+
 /**
  * \ingroup cpp-imu
  */
@@ -457,9 +459,10 @@ class Imu {
 	virtual bool is_calibrating() const;
 	///@}
 };
-
+  
 using IMU = Imu;
-
+  
+}  //namespace v5
 }  // namespace pros
 
 #endif
