@@ -15,6 +15,7 @@
  */
 
 #include "pros/rtos.hpp"
+#include "pros/screen.hpp"
 
 #include <system_error>
 
