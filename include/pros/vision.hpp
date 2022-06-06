@@ -1,5 +1,6 @@
 /**
  * \file pros/vision.hpp
+ * \ingroup cpp-vision
  *
  * Contains prototypes for the VEX Vision Sensor-related functions in C++.
  *
@@ -9,12 +10,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-vision Vision Sensor C++ API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref vision)
  */
 
 #ifndef _PROS_VISION_HPP_
@@ -26,7 +30,15 @@
 
 namespace pros {
 inline namespace v5 {
+  
+/**
+ * \ingroup cpp-vision
+ */
 class Vision {
+	/**
+	 * \addtogroup cpp-vision
+	 *  @{
+	 */
 	public:
 	/**
 	 * Create a Vision Sensor object on the given port.
@@ -441,6 +453,7 @@ class Vision {
 
 	private:
 	std::uint8_t _port;
+	///@}
 };
 }  // namespace v5
 }  // namespace pros

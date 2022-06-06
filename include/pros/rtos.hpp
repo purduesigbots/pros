@@ -1,5 +1,6 @@
 /**
  * \file pros/rtos.hpp
+ * \ingroup cpp-rtos
  *
  * Contains declarations for the PROS RTOS kernel for use by typical VEX
  * programmers.
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-rtos RTOS Facilities C API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref multitasking)
  */
 
 #ifndef _PROS_RTOS_HPP_
@@ -32,7 +36,14 @@
 
 namespace pros {
 inline namespace rtos {
+/**
+ * \ingroup cpp-rtos
+ */
 class Task {
+	/**
+	 * \addtogroup cpp-rtos
+	 *  @{
+	 */
 	public:
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -59,7 +70,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	explicit Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
@@ -279,6 +290,17 @@ class Task {
 	 * \return Always returns true.
 	 */
 	std::uint32_t notify();
+
+	/**
+ 	 * Utilizes task notifications to wait until specified task is complete and deleted,
+ 	 * then continues to execute the program. Analogous to std::thread::join in C++.
+	 *
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
+	 *
+	 * \return void
+	 */
+	void join();
 
 	/**
 	 * Sends a notification to a task, optionally performing some action. Will
@@ -522,6 +544,7 @@ class Mutex {
 	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
 	}
+	///@}
 };
 }
 /**

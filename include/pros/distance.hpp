@@ -1,5 +1,6 @@
 /**
  * \file pros/distance.hpp
+ * \ingroup cpp-distance
  *
  * Contains prototypes for the V5 Distance Sensor-related functions.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-distance VEX Distance Sensor C++ API
  */
 
 #ifndef _PROS_DISTANCE_HPP_
@@ -25,8 +28,14 @@
 
 namespace pros {
 inline namespace v5 {
-
+/**
+ * \ingroup cpp-distance
+ */
 class Distance {
+	/**
+	 * \addtogroup cpp-distance
+	 *  @{
+ 	*/
 	public:
 	/**
 	 * Creates a Distance Sensor object for the given port.
@@ -110,6 +119,7 @@ class Distance {
 
 	private:
 	const std::uint8_t _port;
+	///@}
 };
 
 }

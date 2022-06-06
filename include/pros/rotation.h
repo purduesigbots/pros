@@ -1,5 +1,6 @@
 /**
  * \file pros/rotation.h
+ * \ingroup c-rotation
  *
  * Contains prototypes for functions related to the VEX Rotation Sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-rotation VEX Rotation Sensor C API
  */
 
 #ifndef _PROS_ROTATION_H_
@@ -27,6 +30,15 @@ extern "C" {
 namespace pros {
 namespace c {
 #endif
+
+/**
+ * \ingroup c-rotation
+ */
+
+/**
+ * \addtogroup c-rotation
+ *  @{
+ */
 
 #define ROTATION_MINIMUM_DATA_RATE 5
 
@@ -45,6 +57,21 @@ namespace c {
  *        The V5 Rotation Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_reset(ROTATION_PORT);
+ *     }
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_reset(uint8_t port);
 
@@ -65,6 +92,16 @@ int32_t rotation_reset(uint8_t port);
  * \param rate The data refresh interval in milliseconds
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void initialize() {
+ *   pros::Rotation rotation_sensor(ROTATION_PORT);
+ *   rotation_set_data_rate(ROTATION_PORT, 5);
+ * }
+ * \endcode
  */
 int32_t rotation_set_data_rate(uint8_t port, uint32_t rate);
 
@@ -82,6 +119,21 @@ int32_t rotation_set_data_rate(uint8_t port, uint32_t rate);
  * 		  The position in terms of ticks
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_set_position(ROTATION_PORT, 600);
+ *     }
+ *   delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_set_position(uint8_t port, uint32_t position);
 
@@ -98,6 +150,21 @@ int32_t rotation_set_position(uint8_t port, uint32_t position);
 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_reset_position(ROTATION_PORT);
+ *     }
+ *       delay(20);
+ *     }
+ * }
+ * \endcode
  */
 int32_t rotation_reset_position(uint8_t port);
 
@@ -113,6 +180,18 @@ int32_t rotation_reset_position(uint8_t port);
  * 				 The V5 Rotation Sensor port number from 1-21
  * \return The position value or PROS_ERR_F if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Position: %d Ticks \n", rotation_get_position(ROTATION_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_get_position(uint8_t port);
 
@@ -128,6 +207,18 @@ int32_t rotation_get_position(uint8_t port);
  * 				 The V5 Rotation Sensor port number from 1-21
  * \return The velocity value or PROS_ERR_F if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Velocity: %d Ticks \n", rotation_get_velocity(ROTATION_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_get_velocity(uint8_t port);
 
@@ -143,6 +234,18 @@ int32_t rotation_get_velocity(uint8_t port);
  * 				 The V5 Rotation Sensor port number from 1-21
  * \return The angle value (0-36000) or PROS_ERR_F if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Angle: %d Ticks \n", rotation_get_angle(ROTATION_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_get_angle(uint8_t port);
 
@@ -161,6 +264,22 @@ int32_t rotation_get_angle(uint8_t port);
  * 
  * \return 1 if operation succeeded or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   Rotation rotation_sensor(ROTATION_PORT);
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_set_reversed(ROTATION_PORT);
+ *     }
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_set_reversed(uint8_t port, bool value);
 
@@ -177,6 +296,22 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   Rotation rotation_sensor(ROTATION_PORT);
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_reverse(ROTATION_PORT);
+ *     }
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_reverse(uint8_t port);
 
@@ -195,6 +330,11 @@ int32_t rotation_reverse(uint8_t port);
  * 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 int32_t rotation_init_reverse(uint8_t port, bool reverse_flag);
 
@@ -211,8 +351,26 @@ int32_t rotation_init_reverse(uint8_t port, bool reverse_flag);
  * 
  * \return Boolean value of if the Rotation Sensor's direction is reversed or not
  * or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define ROTATION_PORT 1
+ * 
+ * void opcontrol() {
+ *   Rotation rotation_sensor(ROTATION_PORT);
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_get_reversed(ROTATION_PORT);
+ *     }
+ *   delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t rotation_get_reversed(uint8_t port);
+
+///@}
 
 #ifdef __cplusplus
 } //namespace C

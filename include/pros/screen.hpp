@@ -1,5 +1,6 @@
 /**
  * \file screen.hpp
+ * \ingroup cpp-screen
  *
  * Brain screen display and touch functions.
  *
@@ -10,6 +11,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-screen Simplified Brain Screen C++ API
  */
 
 #ifndef _PROS_SCREEN_HPP_
@@ -37,6 +40,15 @@ const char* convert_args(const std::string& arg) {
 
 #pragma GCC diagnostic pop
 
+/**
+ * \ingroup cpp-screen
+ */
+
+/**
+ * \addtogroup cpp-screen
+ *  @{
+ */
+
     /******************************************************************************/
     /**                  Screen Graphical Display Functions                      **/
     /**                                                                          **/
@@ -53,7 +65,7 @@ const char* convert_args(const std::string& arg) {
      * \param color	The pen color to set (it is recommended to use values
      * 		 from the enum defined in colors.h)
      * 
-     * \return Returns 1 if the mutex was successfully returned, or prosERR if 
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_pen(const std::uint32_t color);
@@ -68,7 +80,7 @@ const char* convert_args(const std::string& arg) {
      * \param color	The background color to set (it is recommended to use values
      * 					from the enum defined in colors.h)
      * 
-     * \return Returns 1 if the mutex was successfully returned, or prosERR
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_eraser(const std::uint32_t color);
@@ -378,6 +390,8 @@ const char* convert_args(const std::string& arg) {
      * while taking or returning the screen mutex.
      */
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
+
+///@}
 
 } //namespace screen
 } //namespace pros
