@@ -50,23 +50,24 @@ class Link {
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
 	 *
-	 * \param port
-	 *      The port of the radio for the intended link.
-	 * \param link_id
-	 *      Unique link ID in the form of a string, needs to be different from other links in
-	 *      the area.
-	 * \param type
-	 *      Indicates whether the radio link on the brain is a transmitter or reciever,
-	 *      with the transmitter having double the transmitting bandwidth as the recieving
-	 *      end (1040 bytes/s vs 520 bytes/s).
-	 * \param ov
-	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
+	 * \param port The port of the radio for the intended link.
+	 * \param link_id Unique link ID in the form of a string, needs to be different from
+	 * other links in the area.
+	 * \param type Indicates whether the radio link on the brain is a transmitter or reciever,
+	 * with the transmitter having double the transmitting bandwidth as the recieving
+	 * end (1040 bytes/s vs 520 bytes/s).
+	 * \param ov Indicates if the radio on the given port needs vexlink to override the controller radio
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
+	 * #define LINK_ID "ROBOT1"
 	 * 
+	 * void initialize() {
+	 *   pros::Link transmitter(LINK_TRANSMITTER_PORT, LINK_ID, pros::E_LINK_TRANSMITTER);
+	 * }
 	 * \endcode
 	 */
 	Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
@@ -84,7 +85,18 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link transmitter(LINK_TRANSMITTER_PORT);
+	 * 
+	 *   while (true) {
+	 *     if (transmitter.connected()) {
+	 *       pros::lcd::set_text(1, "Link connected!");
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	bool connected();
@@ -103,7 +115,14 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_RECIVER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link reciever(LINK_RECIVER_PORT);
+	 *   std::uint32_t recieveable_size = reciever.raw_receivable_size();
+	 *   pros::lcd::set_text(1, "Link recieveable_size:");
+	 *   pros::lcd::set_text(2, std::to_string(recieveable_size));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t raw_receivable_size();
@@ -121,7 +140,14 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link transmitter(LINK_RECIVER_PORT);
+	 *   std::uint32_t transmittable_size = transmitter.raw_transmittable_size();
+	 *   pros::lcd::set_text(1, "Link transmittable_size:");
+	 *   pros::lcd::set_text(2, std::to_string(transmittable_size));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t raw_transmittable_size();
@@ -148,7 +174,13 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link transmitter(LINK_RECIVER_PORT);
+	 *   char* data = "Hello!";
+	 *   transmitter.transmit_raw((void*)data, sizeof(*data) * sizeof(data));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t transmit_raw(void* data, std::uint16_t data_size);
@@ -161,6 +193,7 @@ class Link {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+	 * EBUSY - The transmitter buffer is still busy with a previous transmission.
 	 * EINVAL - The destination given is NULL, or the size given is larger than the FIFO buffer
 	 * or destination buffer.
 	 *
@@ -174,7 +207,14 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_RECIVER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   char* result;
+	 *   char* expected = "Hello!";
+	 *   pros::Link reciever(LINK_RECIVER_PORT);
+	 *   reciever.reciever_raw((void*)result, sizeof(*expected) * sizeof(expected));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t receive_raw(void* dest, std::uint16_t data_size);
@@ -201,7 +241,14 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link transmitter(LINK_RECIVER_PORT);
+	 *   char* data = "Hello!";
+	 * 
+	 *   transmitter.transmit((void*)data, sizeof(*data) * sizeof(data));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t transmit(void* data, std::uint16_t data_size);
@@ -214,6 +261,7 @@ class Link {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+	 * EBUSY - The transmitter buffer is still busy with a previous transmission.
 	 * EINVAL - The destination given is NULL, or the size given is larger than the FIFO buffer
 	 * or destination buffer.
 	 * EBADMSG - Protocol error related to start byte, data size, or checksum.
@@ -228,7 +276,15 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_RECIVER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   char* result;
+	 *   char* expected = "Hello!";
+	 *   pros::Link reciever(LINK_RECIVER_PORT);
+	 * 
+	 *   reciever.recieve((void*)result, sizeof(*expected) * sizeof(expected));
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t receive(void* dest, std::uint16_t data_size);
@@ -246,7 +302,16 @@ class Link {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define LINK_TRANSMITTER_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Link transmitter(LINK_RECIVER_PORT);
+	 *   char* data = "Hello!";
+	 * 
+	 *   transmitter.transmit((void*)data, sizeof(*data) * sizeof(data));
+	 * 
+	 *   transmitter.clear_receive_buf();
+	 * }
 	 * \endcode
 	 */
 	std::uint32_t clear_receive_buf();
