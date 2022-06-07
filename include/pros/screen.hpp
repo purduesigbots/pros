@@ -389,13 +389,12 @@ const char* convert_args(const std::string& arg) {
 namespace lcd {
   using lcd_btn_cb_fn_t = void (*)(void);
 
-  // rfc: should these set errno?
   extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
   extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
   extern __attribute__((weak)) bool initialize(void) {return false;}
   extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
   extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
-
+  
   template <typename... Params>
   extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
   
@@ -412,5 +411,7 @@ namespace lcd {
   #endif
 } // namespace LCD
 } // namespace pros
+
+extern __attribute__((weak)) void lvgl_init() {}
 
 #endif //header guard
