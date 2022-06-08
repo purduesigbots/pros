@@ -237,7 +237,7 @@ class Serial {
 	private:
 	const std::uint8_t _port;
 	///@}
-};
+};  //class serial
 
 namespace literals {
 const pros::Serial operator"" _ser(const unsigned long long int m);

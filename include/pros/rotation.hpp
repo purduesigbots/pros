@@ -28,11 +28,11 @@
 namespace pros {
 inline namespace v5 {
 /**
- * \addtogroup cpp-rotation
+ * \ingroup cpp-rotation
  */
 class Rotation {
 	/**
-	 * \ingroup cpp-rotation
+	 * \addtogroup cpp-rotation
 	 *  @{
 	 */
 	const std::uint8_t _port;
@@ -55,6 +55,21 @@ class Rotation {
 	 */
 	Rotation(const std::uint8_t port) : _port(port){};
 
+	/**
+	 * Constructor for the rotation sensor
+	 * 
+	 * \param port The V5 port number from 1-21
+	 * \param reverse_flag 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT, 0);
+	 * }
+	 * \endcode
+	 */
 	Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
