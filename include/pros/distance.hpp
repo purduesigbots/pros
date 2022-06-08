@@ -45,12 +45,15 @@ class Distance {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a Distance Sensor
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
+	 * \param port The V5 port number from 1-21
 	 * 
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void initialize() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 * }
 	 * \endcode
 	 */
 	explicit Distance(const std::uint8_t port);
@@ -68,7 +71,15 @@ class Distance {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance: %d mm\n", distance_sensor.get());
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get();
@@ -90,7 +101,15 @@ class Distance {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance Confidence Value: %d\n", distance_sensor.get_confidence(DISTANCE_PORT));
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_confidence();
@@ -112,7 +131,15 @@ class Distance {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance Object Size: %d\n", distance_sensor.get_object_size(DISTANCE_PORT));
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t get_object_size();
@@ -129,7 +156,15 @@ class Distance {
 	 * errno.
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance Object Velocity: %d\n", distance_sensor.get_object_velocity(DISTANCE_PORT));
+	 *     pros::delay(20);
+	 *   }
+	 * }
 	 * \endcode
 	 */
 	virtual double get_object_velocity();
@@ -141,7 +176,12 @@ class Distance {
 	 * 
 	 * \b Example
 	 * \code
+	 * #define DISTANCE_PORT 1
 	 * 
+	 * void opcontrol() {
+	 *   pros::Distance distance_sensor(DISTANCE_PORT);
+	 *   printf("Distance Sensor Port: %d\n", distance_sensor.get_port());
+	 * }
 	 * \endcode
 	 */
 	std::uint8_t get_port();
@@ -151,7 +191,7 @@ class Distance {
 	///@}
 };
 
-}
+}  // namespace v5
 }  // namespace pros
 
 #endif

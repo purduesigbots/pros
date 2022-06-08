@@ -34,11 +34,19 @@
 
 namespace pros {
 namespace adi {
-  
-/** type definition for the pair of smart port and adi port for the basic adi devices */
+
+/**
+ * \typedef ext_adi_port_pair_t
+ * 
+ * Type definition for the pair of smart port and adi port for the basic adi devices
+ */
 using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
 
-/** type definition for the triplet of smart port and two adi ports for the two wire adi devices*/
+/**
+ * \typedef ext_adi_port_tuple_t
+ * 
+ * Type definition for the triplet of smart port and two adi ports for the two wire adi devices
+ */
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
 
 /**
@@ -196,6 +204,9 @@ class Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class AnalogIn : protected Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -397,6 +408,9 @@ using LineSensor = AnalogIn;
 using LightSensor = AnalogIn;
 using Accelerometer = AnalogIn;
 
+/**
+ * \ingroup cpp-adi
+ */
 class AnalogOut : private Port {
   /**
 	 * \addtogroup cpp-adi
@@ -480,6 +494,9 @@ class AnalogOut : private Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class DigitalOut : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -581,6 +598,9 @@ class DigitalOut : private Port {
 };
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class DigitalIn : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -704,6 +724,9 @@ class DigitalIn : private Port {
 //Derived Class(es) from DigitalIn
 using Button = DigitalIn;
 
+/**
+ * \ingroup cpp-adi
+ */
 class Motor : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -845,6 +868,9 @@ class Motor : private Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class Encoder : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -965,6 +991,9 @@ class Encoder : private Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class Ultrasonic : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -1069,6 +1098,9 @@ class Ultrasonic : private Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class Gyro : private Port {
 	/**
 	 * \addtogroup cpp-adi
@@ -1220,6 +1252,9 @@ class Gyro : private Port {
 
 ///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class Potentiometer : public AnalogIn {
 	/**
 	 * \addtogroup cpp-adi
