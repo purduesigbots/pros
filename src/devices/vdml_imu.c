@@ -87,7 +87,7 @@ double imu_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
 	double rtn = vexDeviceImuDegreesGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->heading_offset;
-	rtn = (rtn + IMU_HEADING_MAX) % (double) IMU_HEADING_MAX;
+	rtn = fmod((rtn + IMU_HEADING_MAX), (double) IMU_HEADING_MAX);
 	return_port(port - 1, rtn);
 }
 
@@ -106,9 +106,9 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	// To calculate the quaternion values, we first get the euler values, add the offsets,
 	// and then do the calculations.
-	double roll = (euler.roll + data->roll_offset) % (2.0 * IMU_EULER_LIMIT);
-	double yaw = (euler.yaw + data->yaw_offset) % (2.0 * IMU_EULER_LIMIT);
-	double pitch = (euler.pitch + data->pitch_offset) % (2.0 * IMU_EULER_LIMIT);
+	double roll = fmod(euler.roll + data->roll_offset, 2.0 * IMU_EULER_LIMIT);
+	double yaw = fmod(euler.yaw + data->yaw_offset, 2.0 * IMU_EULER_LIMIT);
+	double pitch = fmod(euler.pitch + data->pitch_offset, 2.0 * IMU_EULER_LIMIT);
 
 	double cy = cos(DEGTORAD * yaw * 0.5);
 	double sy = sin(DEGTORAD * yaw * 0.5);
@@ -140,9 +140,9 @@ euler_s_t imu_get_euler(uint8_t port) {
 	rtn.pitch += data->pitch_offset;
 	rtn.yaw += data->yaw_offset;
 	rtn.roll += data->roll_offset;
-	rtn.roll = rtn.roll % (2.0 * IMU_EULER_LIMIT);
-	rtn.yaw = rtn.yaw % (2.0 * IMU_EULER_LIMIT);
-	rtn.pitch = rtn.pitch % (2.0 * IMU_EULER_LIMIT);
+	rtn.roll = fmod(rtn.roll, 2.0 * IMU_EULER_LIMIT);
+	rtn.yaw = fmod(rtn.yaw, 2.0 * IMU_EULER_LIMIT);
+	rtn.pitch = fmod(rtn.pitch, 2.0 * IMU_EULER_LIMIT);
 	return_port(port - 1, rtn);
 }
 
@@ -154,7 +154,8 @@ double imu_get_pitch(uint8_t port) {
 	euler_s_t euler_values;
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
-	rtn = (euler_values.pitch + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->pitch_offset) % (2 * IMU_EULER_LIMIT);
+	rtn = euler_values.pitch + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->pitch_offset;
+	rtn = fmod(rtn, 2.0 * IMU_EULER_LIMIT);
 	return_port(port - 1, rtn);
 }
 
@@ -166,7 +167,8 @@ double imu_get_roll(uint8_t port) {
 	euler_s_t euler_values;
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
-	rtn = (euler_values.roll + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->roll_offset) % (2 * IMU_EULER_LIMIT);
+	rtn = euler_values.roll + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->roll_offset;
+	rtn = fmod(rtn, 2.0 * IMU_EULER_LIMIT);
 	return_port(port - 1, rtn);
 }
 
@@ -178,7 +180,8 @@ double imu_get_yaw(uint8_t port) {
 	euler_s_t euler_values;
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
-	rtn = (euler_values.yaw + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->yaw_offset) % (2.0 * IMU_EULER_LIMIT);
+	rtn = euler_values.yaw + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->yaw_offset;
+	rtn = fmod(rtn, 2.0 * IMU_EULER_LIMIT);
 	return_port(port - 1, rtn);
 }
 
