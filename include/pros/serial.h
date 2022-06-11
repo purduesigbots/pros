@@ -1,5 +1,6 @@
 /**
  * \file pros/serial.h
+ * \ingroup c-serial
  *
  * Contains prototypes for the V5 Generic Serial related functions.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-serial Generic Serial C API
  */
 
 #ifndef _PROS_SERIAL_H_
@@ -28,11 +31,18 @@ namespace pros {
 namespace c {
 #endif
 
-/******************************************************************************/
-/**                      Serial communication functions                      **/
-/**                                                                          **/
-/**  These functions allow programmers to communicate using UART over RS485  **/
-/******************************************************************************/
+/**
+ * \ingroup c-serial
+ */
+
+/**
+ * \addtogroup c-serial
+ *  @{
+ */
+
+/// \name Serial communication functions
+/// These functions allow programmers to communicate using UART over RS485
+///@{
 
 /**
  * Enables generic serial on the given port.
@@ -237,6 +247,10 @@ int32_t serial_write_byte(uint8_t port, uint8_t buffer);
  * setting errno.
  */
 int32_t serial_write(uint8_t port, uint8_t* buffer, int32_t length);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c

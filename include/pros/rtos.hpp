@@ -1,5 +1,6 @@
 /**
  * \file pros/rtos.hpp
+ * \ingroup cpp-rtos
  *
  * Contains declarations for the PROS RTOS kernel for use by typical VEX
  * programmers.
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-rtos RTOS Facilities C API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref multitasking)
  */
 
 #ifndef _PROS_RTOS_HPP_
@@ -31,7 +35,15 @@
 #include <type_traits>
 
 namespace pros {
+inline namespace rtos {
+/**
+ * \ingroup cpp-rtos
+ */
 class Task {
+	/**
+	 * \addtogroup cpp-rtos
+	 *  @{
+	 */
 	public:
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -532,8 +544,9 @@ class Mutex {
 	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
 		return take(std::max(static_cast<uint32_t>(0), (abs_time - Clock::now()).count()));
 	}
+	///@}
 };
-
+}
 /**
  * Gets the number of milliseconds since PROS initialized.
  *
