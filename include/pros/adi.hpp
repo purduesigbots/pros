@@ -291,7 +291,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIAnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -320,7 +320,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIAnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -354,7 +354,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIAnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -382,7 +382,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIAnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   std::cout << "Sensor Reading:" << sensor.get_value();
 	 * }
 	 * \endcode
@@ -393,9 +393,9 @@ class AnalogIn : protected Port {
 ///@}
 
 // using ADIPotentiometer = ADIAnalogIn;
-using ADILineSensor = ADIAnalogIn;
-using ADILightSensor = ADIAnalogIn;
-using ADIAccelerometer = ADIAnalogIn;
+using LineSensor = AnalogIn;
+using LightSensor = AnalogIn;
+using Accelerometer = AnalogIn;
 
 class AnalogOut : private Port {
 	/**
@@ -579,7 +579,6 @@ class DigitalOut : private Port {
 	 */
 	using Port::set_value;
 };
-
 ///@}
 
 class DigitalIn : private Port {
@@ -604,7 +603,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (ANALOG_SENSOR_PORT);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -629,7 +628,7 @@ class DigitalIn : private Port {
 	 * #define ADI_PORT 'a'
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   pros::adi::DigitalIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -659,7 +658,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor (DIGITAL_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (DIGITAL_SENSOR_PORT);
 	 *   while (true) {
 	 *     if (sensor.get_new_press()) {
 	 *       // Toggle pneumatics or other state operations
@@ -689,7 +688,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor (DIGITAL_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (DIGITAL_SENSOR_PORT);
 	 *   while (true) {
 	 *     std::cout << "Sensor Value:" << sensor.get_value();
 	 *     pros::delay(10);
@@ -700,17 +699,16 @@ class DigitalIn : private Port {
 	using Port::get_value;
 };
 
+///@}
+
 //Derived Class(es) from DigitalIn
 using Button = DigitalIn;
 
 class Motor : private Port {
-
-///@}
 	/**
 	 * \addtogroup cpp-adi
 	 *  @{
 	 */	
-
 	public:
 	/**
 	 * Configures an ADI port to act as a Motor.
