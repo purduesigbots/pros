@@ -28,7 +28,7 @@ SECTIONS
    *(.ARM.extab)
    *(.gnu.linkonce.armextab.*)
 } > RAM
- 
+
 .init : {
    KEEP (*(.init))
 } > RAM
