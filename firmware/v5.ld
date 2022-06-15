@@ -28,6 +28,6 @@ MEMORY
    HOT_MEMORY : ORIGIN = start_of_hot_mem, LENGTH = _HOT_MEM_SIZE  /* Just over 8 MB */
 }
 
-REGION_ALIAS("MEMORY", COLD_MEMORY);
+REGION_ALIAS("RAM", COLD_MEMORY);
 
 ENTRY(vexStartup)
