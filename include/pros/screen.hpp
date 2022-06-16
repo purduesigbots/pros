@@ -53,7 +53,7 @@ const char* convert_args(const std::string& arg) {
      * \param color	The pen color to set (it is recommended to use values
      * 		 from the enum defined in colors.h)
      * 
-     * \return Returns 1 if the mutex was successfully returned, or prosERR if 
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_pen(const std::uint32_t color);
@@ -68,7 +68,7 @@ const char* convert_args(const std::string& arg) {
      * \param color	The background color to set (it is recommended to use values
      * 					from the enum defined in colors.h)
      * 
-     * \return Returns 1 if the mutex was successfully returned, or prosERR
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_eraser(const std::uint32_t color);
