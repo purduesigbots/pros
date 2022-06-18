@@ -87,9 +87,8 @@ double imu_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
 	double rtn = vexDeviceImuDegreesGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->heading_offset;
-	if (rtn > IMU_HEADING_MAX) rtn -= IMU_HEADING_MAX;
-	if (rtn < 0) rtn += IMU_HEADING_MAX;
-	return_port(port - 1, rtn);
+	// Restricting value to raw boundaries
+	return_port(port - 1, fmod((rtn + IMU_HEADING_MAX), (double) IMU_HEADING_MAX));
 }
 
 #define QUATERNION_ERR_INIT \
@@ -107,16 +106,9 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	// To calculate the quaternion values, we first get the euler values, add the offsets,
 	// and then do the calculations.
-	double roll = euler.roll + data->roll_offset;
-	double yaw = euler.yaw + data->yaw_offset;
-	double pitch = euler.pitch + data->pitch_offset;
-
-	if (roll > IMU_EULER_LIMIT) roll -= 2 * IMU_EULER_LIMIT;
-	if (roll < -IMU_EULER_LIMIT) roll += 2 * IMU_EULER_LIMIT;
-	if (yaw > IMU_EULER_LIMIT) yaw -= 2 * IMU_EULER_LIMIT;
-	if (yaw < -IMU_EULER_LIMIT) yaw += 2 * IMU_EULER_LIMIT;
-	if (pitch > IMU_EULER_LIMIT) pitch -= 2 * IMU_EULER_LIMIT;
-	if (pitch < -IMU_EULER_LIMIT) pitch += 2 * IMU_EULER_LIMIT; 
+	double roll = fmod(euler.roll + data->roll_offset, 2.0 * IMU_EULER_LIMIT);
+	double yaw = fmod(euler.yaw + data->yaw_offset, 2.0 * IMU_EULER_LIMIT);
+	double pitch = fmod(euler.pitch + data->pitch_offset, 2.0 * IMU_EULER_LIMIT);
 
 	double cy = cos(DEGTORAD * yaw * 0.5);
 	double sy = sin(DEGTORAD * yaw * 0.5);
@@ -148,12 +140,9 @@ euler_s_t imu_get_euler(uint8_t port) {
 	rtn.pitch += data->pitch_offset;
 	rtn.yaw += data->yaw_offset;
 	rtn.roll += data->roll_offset;
-	if (rtn.roll > IMU_EULER_LIMIT) rtn.roll -= 2 * IMU_EULER_LIMIT;
-	if (rtn.roll < -IMU_EULER_LIMIT) rtn.roll += 2 * IMU_EULER_LIMIT;
-	if (rtn.yaw > IMU_EULER_LIMIT) rtn.yaw -= 2 * IMU_EULER_LIMIT;
-	if (rtn.yaw < -IMU_EULER_LIMIT) rtn.yaw += 2 * IMU_EULER_LIMIT;
-	if (rtn.pitch > IMU_EULER_LIMIT) rtn.pitch -= 2 * IMU_EULER_LIMIT;
-	if (rtn.pitch < -IMU_EULER_LIMIT) rtn.pitch += 2 * IMU_EULER_LIMIT;
+	rtn.roll = fmod(rtn.roll, 2.0 * IMU_EULER_LIMIT);
+	rtn.yaw = fmod(rtn.yaw, 2.0 * IMU_EULER_LIMIT);
+	rtn.pitch = fmod(rtn.pitch, 2.0 * IMU_EULER_LIMIT);
 	return_port(port - 1, rtn);
 }
 
@@ -166,9 +155,8 @@ double imu_get_pitch(uint8_t port) {
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.pitch + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->pitch_offset;
-	if (rtn > IMU_EULER_LIMIT) rtn -= 2 * IMU_EULER_LIMIT;
-	if (rtn < -IMU_EULER_LIMIT) rtn += 2 * IMU_EULER_LIMIT;
-	return_port(port - 1, rtn);
+	// Restricting value to raw boundaries
+	return_port(port - 1, fmod(rtn, 2.0 * IMU_EULER_LIMIT));
 }
 
 double imu_get_roll(uint8_t port) {
@@ -180,9 +168,8 @@ double imu_get_roll(uint8_t port) {
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.roll + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->roll_offset;
-	if (rtn > IMU_EULER_LIMIT) rtn -= 2 * IMU_EULER_LIMIT;
-	if (rtn < -IMU_EULER_LIMIT) rtn += 2 * IMU_EULER_LIMIT;
-	return_port(port - 1, rtn);
+	// Restricting value to raw boundaries
+	return_port(port - 1, fmod(rtn, 2.0 * IMU_EULER_LIMIT));
 }
 
 double imu_get_yaw(uint8_t port) {
@@ -194,9 +181,8 @@ double imu_get_yaw(uint8_t port) {
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	rtn = euler_values.yaw + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->yaw_offset;
-	if (rtn > IMU_EULER_LIMIT) rtn -= 2 * IMU_EULER_LIMIT;
-	if (rtn < -IMU_EULER_LIMIT) rtn += 2 * IMU_EULER_LIMIT;
-	return_port(port - 1, rtn);
+	// Restricting value to raw boundaries
+	return_port(port - 1, fmod(rtn, 2.0 * IMU_EULER_LIMIT));
 }
 
 #define RAW_IMU_ERR_INIT {.x = PROS_ERR_F, .y = PROS_ERR_F, .z = PROS_ERR_F};
