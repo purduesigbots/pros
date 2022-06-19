@@ -93,6 +93,8 @@ typedef enum adi_potentiometer_type_e {
 	E_ADI_POT_V2
 } adi_potentiometer_type_e_t;
 
+///@}
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define ADI_ANALOG_IN pros::E_ADI_ANALOG_IN
@@ -264,6 +266,14 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
 
 ///@}
 
+/**
+ * \ingroup c-adi
+ */
+
+/**
+ * \addtogroup c-adi
+ *  @{
+ */
 /// \name PROS 2 Compatibility Functions
 /// These functions provide similar functionality to the PROS 2 API
 ///@{
