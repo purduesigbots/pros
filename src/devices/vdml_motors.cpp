@@ -14,6 +14,7 @@
 #include "pros/motors.hpp"
 
 namespace pros {
+inline namespace v5 {
 using namespace pros::c;
 
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
@@ -61,6 +62,10 @@ std::int32_t Motor::move_velocity(const std::int32_t velocity) const {
 
 std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
 	return motor_move_voltage(_port, voltage);
+}
+
+std::int32_t Motor::brake(void) const {
+	return motor_brake(_port);
 }
 
 std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {
@@ -263,5 +268,7 @@ const pros::Motor operator"" _mtr(const unsigned long long int m) {
 const pros::Motor operator"" _rmtr(const unsigned long long int m) {
 	return pros::Motor(m, true);
 }
+
 }  // namespace literals
+}  // namespace v5
 }  // namespace pros

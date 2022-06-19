@@ -1,4 +1,4 @@
-/*
+/**
  * \file pros/llemu.hpp
  * \ingroup cpp-llemu
  * 
@@ -20,7 +20,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * 
- * \defgroup cpp-llemu LLEMU (Legacy LCD Emulator) C API
+ * \defgroup cpp-llemu LLEMU (Legacy LCD Emulator) C++ API
  * \note Additional example code for this module can be found in its [Tutorial](@ref llemu).
  */
 
@@ -35,7 +35,7 @@
 namespace pros {
 
 /**
- * \ingroup cpp-motors
+ * \ingroup cpp-llemu
  */
 namespace lcd {
 

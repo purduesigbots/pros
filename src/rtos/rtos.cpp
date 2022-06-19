@@ -72,6 +72,10 @@ std::uint32_t Task::notify() {
 	return task_notify(task);
 }
 
+void Task::join() {
+	return task_join(task);
+}
+
 std::uint32_t Task::notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value) {
 	return task_notify_ext(task, value, action, prev_value);
 }

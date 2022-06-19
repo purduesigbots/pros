@@ -1,4 +1,4 @@
-/*
+/**
  * \file pros/llemu.h
  * \ingroup c-llemu
  *
@@ -41,26 +41,58 @@ extern "C" {
 namespace pros {
 #endif
 
+/**
+ * \ingroup c-llemu
+ */
+
+/**
+ * \addtogroup c-llemu
+ *  @{
+ */
+
+/**
+ * \typedef *lcd_btn_cb_fn_t
+ */
 typedef void (*lcd_btn_cb_fn_t)(void);
 
+/**
+ * \def LCD_BTN_LEFT
+ */
 #define LCD_BTN_LEFT 4
+
+/**
+ * \def LCD_BTN_CENTER
+ */
 #define LCD_BTN_CENTER 2
+
+/**
+ * \def LCD_BTN_RIGHT
+ */
 #define LCD_BTN_RIGHT 1
 
+/**
+ * \struct lcd_s_t
+ */
 typedef struct lcd_s {
 	lv_obj_t* frame;
 	lv_obj_t* screen;
 	lv_obj_t* lcd_text[8];
 	lv_obj_t* btn_container;
-	lv_obj_t* btns[3];             // < 0 => left; 1 => center; 2 => right
-	lcd_btn_cb_fn_t callbacks[3];  // < 0 => left; 1 => center; 2 => right
-	volatile uint8_t touch_bits;   // < 4 => left; 2 => center; 1 => right (no
-	                               // multitouch support)
+	/// < 0 => left; 1 => center; 2 => right
+	lv_obj_t* btns[3];
+	/// < 0 => left; 1 => center; 2 => right            
+	lcd_btn_cb_fn_t callbacks[3];
+	/// < 4 => left; 2 => center; 1 => right (no multitouch support)  
+	volatile uint8_t touch_bits;
 } lcd_s_t;
 
 #ifdef __cplusplus
 namespace c {
 #endif
+
+/// \name Functions
+/// These functions allow programmers to change the LLEMU
+///@{
 
 /**
  * \ingroup c-motors

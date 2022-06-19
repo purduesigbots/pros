@@ -1,5 +1,6 @@
 /**
  * \file pros/rotation.hpp
+ * \ingroup cpp-rotation
  *
  * Contains prototypes for functions related to the VEX Rotation Sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-rotation VEX Rotation Sensor C++ API
  */
 #ifndef _PROS_ROTATION_HPP_
 #define _PROS_ROTATION_HPP_
@@ -23,12 +26,50 @@
 #include "pros/rotation.h"
 
 namespace pros {
+inline namespace v5 {
+/**
+ * \ingroup cpp-rotation
+ */
 class Rotation {
+	/**
+	 * \addtogroup cpp-rotation
+	 *  @{
+	 */
 	const std::uint8_t _port;
 
 	public:
+
+	/**
+	 * Constructor for the rotation sensor
+	 * 
+	 * \param port The V5 port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 * }
+	 * \endcode
+	 */
 	Rotation(const std::uint8_t port) : _port(port){};
 
+	/**
+	 * Constructor for the rotation sensor
+	 * 
+	 * \param port The V5 port number from 1-21
+	 * \param reverse_flag 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT, 0);
+	 * }
+	 * \endcode
+	 */
 	Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
@@ -44,6 +85,22 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reverse(); //Rotation sensor recently reversed
+	 *       rotation_sensor.reset(); //Reversal causes position to be multiplied by -1.
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t reset();
 
@@ -67,6 +124,16 @@ class Rotation {
 	 * \param rate The data refresh interval in milliseconds
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   rotation_sensor.set_data_rate(5);
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
@@ -82,6 +149,19 @@ class Rotation {
 	 * 		  The position in terms of ticks
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Tick Position: %ld \n", rotation_sensor.get_position());
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_position(std::uint32_t position);
 
@@ -97,6 +177,21 @@ class Rotation {
 	 * 		  The position in terms of ticks
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reset_position();
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t reset_position(void);
 
@@ -110,6 +205,19 @@ class Rotation {
 	 *
 	 * \return The position value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Tick Position: %ld \n", rotation_sensor.get_position());
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_position();
 
@@ -123,9 +231,21 @@ class Rotation {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The
-	 value or PROS_ERR_F if the operation failed, setting
+	 * \return The value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Rotational Velocity: %ld \n", rotation_sensor.get_velocity());
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_velocity();
 
@@ -139,6 +259,19 @@ class Rotation {
 	 *
 	 * \return The angle value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Angle: %ld \n", rotation_sensor.get_angle());
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_angle();
 
@@ -156,6 +289,21 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.set_reversed(true);
+	 *     }
+	 *   pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_reversed(bool value);
 
@@ -169,6 +317,20 @@ class Rotation {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+	 *       rotation_sensor.reverse();
+	 *     }
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t reverse();
 
@@ -182,9 +344,24 @@ class Rotation {
 	 *
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Rotation rotation_sensor(ROTATION_PORT);
+	 *   while (true) {
+	 *     printf("Rotation Sensor Reversed: %ld \n", rotation_sensor.get_reversed());
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_reversed();
+	///@}
 };
+}  // namespace v5
 }  // namespace pros
 
 #endif

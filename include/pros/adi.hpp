@@ -1,5 +1,6 @@
 /**
  * \file pros/adi.hpp
+ * \ingroup cpp-adi
  *
  * Contains prototypes for interfacing with the ADI.
  *
@@ -8,11 +9,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-adi ADI (TriPort) C++ API
+ * \note The external ADI API can be found [here.](@ref ext-adi)
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref adi)
  */
 
 #ifndef _PROS_ADI_HPP_
@@ -24,15 +29,34 @@
 
 #include "pros/adi.h"
 
-namespace pros {
+#define LEGACY_TYPEDEF(old_name, new_name) \
+    using old_name [[deprecated("use " #new_name " instead")]] = new_name
 
-/** type definition for the pair of smart port and adi port for the basic adi devices */
+namespace pros {
+namespace adi {
+
+/**
+ * \typedef ext_adi_port_pair_t
+ * 
+ * Type definition for the pair of smart port and adi port for the basic adi devices
+ */
 using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
 
-/** type definition for the triplet of smart port and two adi ports for the two wire adi devices*/
+/**
+ * \typedef ext_adi_port_tuple_t
+ * 
+ * Type definition for the triplet of smart port and two adi ports for the two wire adi devices
+ */
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
 
-class ADIPort {
+/**
+ * \ingroup cpp-adi
+ */
+class Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as a given sensor type.
@@ -46,8 +70,23 @@ class ADIPort {
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param type
 	 *        The configuration type for the port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define POTENTIOMETER_PORT 1
+	 * #define POTENTIOMETER_TYPE pros::E_ADI_POT_EDR
+	 * 
+	 * void opcontrol() {
+	 *   pros::ADIPotentiometer potentiometer (POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
+	 *   while (true) {
+	 *     // Get the potentiometer angle
+	 *     std::cout << "Angle: " << potnetiometer.get_angle();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	explicit ADIPort(std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	explicit Port(std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Configures an ADI port on an adi expander to act as a given sensor type.
@@ -62,13 +101,35 @@ class ADIPort {
 	 * 		  (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param type
 	 * 		  The configuration type for the port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 'a'
+	 * #define EXT_ADI_SMART_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::ADIPort sensor ({{ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }}, E_ADI_ANALOG_IN);
+	 *   // Displays the value of E_ADI_ANALOG_IN
+	 *   std::cout << "Port Type: " << sensor.get_config();
+	 * }
+	 * \endcode
 	 */
-	ADIPort(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Gets the configuration for the given ADI port.
 	 *
 	 * \return The ADI configuration for the given port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 *   void initialize() {
+	 *     adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+	 *     // Displays the value of E_ADI_ANALOG_IN
+	 *     printf("Port Type: %d\n", adi_port_get_config(ANALOG_SENSOR_PORT));
+	 *   }
+	 * \endcode
 	 */
 	std::int32_t get_config() const;
 
@@ -76,6 +137,16 @@ class ADIPort {
 	 * Gets the value for the given ADI port.
 	 *
 	 * \return The value stored for the given port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::ADIPort sensor (ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+	 *   std::cout << "Port Value: " << sensor.get_value();
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_value() const;
 
@@ -87,6 +158,18 @@ class ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::ADIPort sensor (ANALOG_SENSOR_PORT, E_ADI_DIGITAL_IN);
+	 *   // Do things as a digital sensor
+	 *   // Digital is unplugged and an analog is plugged in
+	 *   sensor.set_config(E_ADI_ANALOG_IN);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_config(adi_port_config_e_t type) const;
 
@@ -101,6 +184,16 @@ class ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::ADIPort sensor (DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
+	 *   sensor.set_value(DIGITAL_SENSOR_PORT, HIGH);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_value(std::int32_t value) const;
 
@@ -109,7 +202,16 @@ class ADIPort {
 	std::uint8_t _adi_port;
 };
 
-class ADIAnalogIn : protected ADIPort {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class AnalogIn : protected Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Input.
@@ -124,25 +226,49 @@ class ADIAnalogIn : protected ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   while (true) {
+	 *     // Use the sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	explicit ADIAnalogIn(std::uint8_t adi_port);
+	explicit AnalogIn(std::uint8_t adi_port);
 
 	/**
-	 * Configures an ADI port on an adi expander to act as an Analog Input.
+	 * Configures an ADI port to act as an Analog Input.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - Either the ADI port value or the smart port value is not within its
 	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
 	 *
-	 * \param port_pair
-	 *        The pair of the smart port number (from 1-22) and the
-	 * 		  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define EXT_ADI_SENSOR_PORT 1
+	 * #define ADI_PORT 'a'
+	 * 
+	 * void opcontrol() {
+	 *   pros::AnalogIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   while (true) {
+	 *     // Use the sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIAnalogIn(ext_adi_port_pair_t port_pair);
+	explicit AnalogIn(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Calibrates the analog sensor on the specified port and returns the new
@@ -152,29 +278,46 @@ class ADIAnalogIn : protected ADIPort {
 	 * this time and computes an average from approximately 500 samples, 1 ms
 	 * apart, for a 0.5 s period of calibration. The average value thus calculated
 	 * is returned and stored for later calls to the
-	 * pros::ADIAnalogIn::get_value_calibrated() and
-	 * pros::ADIAnalogIn::get_value_calibrated_HR() functions. These functions
+	 * pros::AnalogIn::get_value_calibrated() and
+	 * pros::AnalogIn::get_value_calibrated_HR() functions. These functions
 	 * will return the difference between this value and the current sensor value
 	 * when called.
 	 *
 	 * Do not use this function when the sensor value might be unstable (gyro
 	 * rotation, accelerometer movement).
+	 * 
+	 * \note The ADI currently returns data at 10ms intervals, in contrast to the
+	 * calibrate function’s 1ms sample rate. This sample rate was kept for the sake
+	 * of being similar to PROS 2, and increasing the sample rate would not have a
+	 * tangible difference in the function’s performance.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The average sensor value computed by this function
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
+	 *   // All readings from then on will be calibrated
+	 * }
+	 * \endcode
 	 */
 	std::int32_t calibrate() const;
 
 	/**
 	 * Gets the 12 bit calibrated value of an analog input port.
 	 *
-	 * The pros::ADIAnalogIn::calibrate() function must be run first. This
+	 * The pros::adi::AnalogIn::calibrate() function must be run first. This
 	 * function is inappropriate for sensor values intended for integration, as
 	 * round-off error can accumulate causing drift over time. Use
-	 * pros::ADIAnalogIn::get_value_calibrated_HR() instead.
+	 * pros::adi::AnalogIn::get_value_calibrated_HR() instead.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -182,13 +325,25 @@ class ADIAnalogIn : protected ADIPort {
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
 	 * -4095 to 4095
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
+	 *   // All readings from then on will be calibrated
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_value_calibrated() const;
 
 	/**
 	 * Gets the 16 bit calibrated value of an analog input port.
 	 *
-	 * The pros::ADIAnalogIn::calibrate() function must be run first. This is
+	 * The pros::adi::AnalogIn::calibrate() function must be run first. This is
 	 * intended for integrated sensor values such as gyros and accelerometers to
 	 * reduce drift due to round-off, and should not be used on a sensor such as a
 	 * line tracker or potentiometer.
@@ -203,33 +358,64 @@ class ADIAnalogIn : protected ADIPort {
 	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
-	 * -16384 to 16384
+	 * -16384 to 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
+	 *   // All readings from then on will be calibrated
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_value_calibrated_HR() const;
 
 	/**
-	 * Gets the 12-bit value of the specified port.
-	 *
-	 * The value returned is undefined if the analog pin has been switched to a
-	 * different mode.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port is not configured as an analog input
-	 *
+	 * Reads an analog input channel and returns the 12-bit value.
+	 * 
+	 * The value returned is undefined if the analog pin has been switched to a different mode. The meaning of the returned value varies depending on the sensor attached.
+	 * 
+	 * Inherited from ADIPort::get_value.
+	 * 
+	 * This function uses the following values of errno when an error state is reached:
+	 * EADDRINUSE - The port is not configured as an analog input (e.g. the port has been reconfigured)
+	 * 
 	 * \return The analog sensor value, where a value of 0 reflects an input
 	 * voltage of nearly 0 V and a value of 4095 reflects an input voltage of
 	 * nearly 5 V
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   std::cout << "Sensor Reading:" << sensor.get_value();
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::get_value;
+	using Port::get_value;
 };
 
-// using ADIPotentiometer = ADIAnalogIn;
-using ADILineSensor = ADIAnalogIn;
-using ADILightSensor = ADIAnalogIn;
-using ADIAccelerometer = ADIAnalogIn;
+///@}
 
-class ADIAnalogOut : private ADIPort {
+//Derived Classes from AnalogIn
+using LineSensor = AnalogIn;
+using LightSensor = AnalogIn;
+using Accelerometer = AnalogIn;
+
+/**
+ * \ingroup cpp-adi
+ */
+class AnalogOut : private Port {
+  /**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Output.
@@ -241,8 +427,18 @@ class ADIAnalogOut : private ADIPort {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
+	 *   // Use the sensor
+	 * }
+	 * @endcode
 	 */
-	explicit ADIAnalogOut(std::uint8_t adi_port);
+	explicit AnalogOut(std::uint8_t adi_port);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as an Analog Output.
@@ -255,30 +451,57 @@ class ADIAnalogOut : private ADIPort {
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
 	 * 		  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 *
+	 * 
+	 * \b Example
+	 * \code
+	 * #define EXT_ADI_SMART_PORT 1
+	 * #define ADI_PORT 'a'
+	 * 
+	 * void opcontrol() {
+	 *   pros::AnalogOut sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   // Use the sensor
+	 * }
+	 * \endcode
 	 */
-	ADIAnalogOut(ext_adi_port_pair_t port_pair);
+	AnalogOut(ext_adi_port_pair_t port_pair);
 
 	/**
-	 * Sets the value for the given ADI port.
+	 * Sets the output for the Analog Output from 0 (0V) to 4095 (5V).
 	 *
-	 * This only works on ports configured as outputs, and the behavior will
-	 * change depending on the configuration of the port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port is not configured as an analog output
+	 * Inherited from ADIPort::set_value.
+	 * 
+	 * This function uses the following values of errno when an error state is reached:
+	 * EACCES - Another resource is currently trying to access the ADI.
 	 *
 	 * \param value
 	 *        The value to set the ADI port to
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ANALOG_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
+	 *   sensor.set_value(4095); // Set the port to 5V
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::set_value;
+	using Port::set_value;
 };
 
-class ADIDigitalOut : private ADIPort {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class DigitalOut : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as a Digital Output.
@@ -292,8 +515,23 @@ class ADIDigitalOut : private ADIPort {
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param init_state
 	 *        The initial state for the port
+	 * 
+	 * \b Example
+	 * \code
+	 * 	#define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   bool state = LOW;
+	 *   pros::DigitalOut sensor (DIGITAL_SENSOR_PORT, state);
+	 *   while (true) {
+	 *     state != state;
+	 *     sensor.set_value(state);
+	 *     pros::delay(10); // toggle the sensor value every 50ms
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	explicit ADIDigitalOut(std::uint8_t adi_port, bool init_state = LOW);
+	explicit DigitalOut(std::uint8_t adi_port, bool init_state = LOW);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Digital Output.
@@ -308,28 +546,66 @@ class ADIDigitalOut : private ADIPort {
 	 * 		  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param init_state
 	 *        The initial state for the port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define EXT_ADI_SMART_PORT 1
+	 * #define ADI_PORT 'a'
+	 * 
+	 * void opcontrol() {
+	 *   bool state = LOW;
+	 *   pros::DigitalOut sensor ( {{ EXT_ADI_SMART_PORT , ADI_PORT }});
+	 *   while (true) {
+	 *     state != state;
+	 *     sensor.set_value(state);
+	 *     pros::delay(10); // toggle the sensor value every 50ms
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIDigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
+	DigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
 
 	/**
-	 * Sets the value for the given ADI port.
+	 * Sets the digital value (1 or 0) of a pin.
 	 *
-	 * This only works on ports configured as outputs, and the behavior will
-	 * change depending on the configuration of the port.
-	 *
+	 * Inherited from ADIPort::set_value.
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * ENODEV - The port is not configured as a digital output
+	 * EADDRINUSE - The port is not configured as a digital output (e.g. the port has been reconfigured)
 	 *
 	 * \param value
 	 *        The value to set the ADI port to
 	 *
 	 * \return if the operation was successful or PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   bool state = LOW;
+	 *   pros::DigitalOut sensor (DIGITAL_SENSOR_PORT);
+	 *   while (true) {
+	 *     state != state;
+	 *     sensor.set_value(state);
+	 *     pros::delay(10); // toggle the sensor value every 50ms
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::set_value;
+	using Port::set_value;
 };
+///@}
 
-class ADIDigitalIn : private ADIPort {
+/**
+ * \ingroup cpp-adi
+ */
+class DigitalIn : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Digital Input.
@@ -341,8 +617,18 @@ class ADIDigitalIn : private ADIPort {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::DigitalIn sensor (ANALOG_SENSOR_PORT);
+	 *   // Use the sensor
+	 * }
+	 * \endcode
 	 */
-	explicit ADIDigitalIn(std::uint8_t adi_port);
+	explicit DigitalIn(std::uint8_t adi_port);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Digital Input.
@@ -355,8 +641,19 @@ class ADIDigitalIn : private ADIPort {
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * 
+	 * \b Example
+	 * \code
+	 * #define EXT_ADI_SMART_PORT 1
+	 * #define ADI_PORT 'a'
+	 * 
+	 * void opcontrol() {
+	 *   pros::DigitalIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   // Use the sensor
+	 * }
+	 * \endcode
 	 */
-	ADIDigitalIn(ext_adi_port_pair_t port_pair);
+	DigitalIn(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Gets a rising-edge case for a digital button press.
@@ -375,24 +672,66 @@ class ADIDigitalIn : private ADIPort {
 	 *
 	 * \return 1 if the button is pressed and had not been pressed the last time
 	 * this function was called, 0 otherwise.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::DigitalIn sensor (DIGITAL_SENSOR_PORT);
+	 *   while (true) {
+	 *     if (sensor.get_new_press()) {
+	 *       // Toggle pneumatics or other state operations
+	 *     }
+	 *   pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_new_press() const;
 
 	/**
-	 * Gets the value for the given ADI port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port is not configured as a digital input
+	 * Gets the digital value (1 or 0) of a pin.
+	 * 
+	 * Inherited from ADIPort::get_value.
+	 * 
+	 * This function uses the following values of errno when an error state is reached:
+	 * 
+	 * EADDRINUSE - The port is not configured as a digital input (e.g. the port has been reconfigured)
+	 * 
+	 * Analogous to adi_digital_read.
 	 *
 	 * \return The value stored for the given port
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::DigitalIn sensor (DIGITAL_SENSOR_PORT);
+	 *   while (true) {
+	 *     std::cout << "Sensor Value:" << sensor.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::get_value;
+	using Port::get_value;
 };
 
-using ADIButton = ADIDigitalIn;
+///@}
 
-class ADIMotor : private ADIPort {
+//Derived Class(es) from DigitalIn
+using Button = DigitalIn;
+
+/**
+ * \ingroup cpp-adi
+ */
+class Motor : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Motor.
@@ -404,8 +743,21 @@ class ADIMotor : private ADIPort {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * 
+	 * \b Example
+	 * \code
+	 * #define MOTOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Motor motor (MOTOR_PORT);
+	 *   motor.set_value(127); // Go full speed forward
+	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
+	 *   delay(1000);
+	 *   motor.set_value(0); // Stop the motor
+	 * }
+	 * \endcode
 	 */
-	explicit ADIMotor(std::uint8_t adi_port);
+	explicit Motor(std::uint8_t adi_port);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Motor.
@@ -418,8 +770,22 @@ class ADIMotor : private ADIPort {
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * 
+	 * \b Example
+	 * \code
+	 * #define EXT_ADI_SMART_PORT 1
+	 * #define ADI_MOTOR_PORT 'a'
+	 * 
+	 * void opcontrol() {
+	 *   pros::Motor motor ( {{ EXT_ADI_SMART_PORT ,  ADI_MOTOR_PORT}} );
+	 *   motor.set_value(127); // Go full speed forward
+	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
+	 *   delay(1000);
+	 *   motor.set_value(0); // Stop the motor
+	 * }
+	 * \endcode
 	 */
-	ADIMotor(ext_adi_port_pair_t port_pair);
+	Motor(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Stops the motor on the given port.
@@ -430,6 +796,19 @@ class ADIMotor : private ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define MOTOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Motor motor (MOTOR_PORT);
+	 *   motor.set_value(127); // Go full speed forward
+	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
+	 *   delay(1000);
+	 *   motor.stop(); // Stop the motor
+	 * }
+	 * \endcode
 	 */
 	std::int32_t stop() const;
 
@@ -446,8 +825,21 @@ class ADIMotor : private ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define MOTOR_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Motor motor (MOTOR_PORT);
+	 *   motor.set_value(127); // Go full speed forward
+	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
+	 *   delay(1000);
+	 *   motor.set_value(0); // Stop the motor
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::set_value;
+	using Port::set_value;
 
 	/**
 	 * Gets the last set speed of the motor on the given port.
@@ -456,12 +848,34 @@ class ADIMotor : private ADIPort {
 	 * reached:
 	 * ENODEV - The port is not configured as a motor
 	 *
-	 * \return The last set speed of the motor on the given port
+	 * \return The last set speed of the motor on the given 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define MOTOR_PORT 1
+	 * 
+	 * void opcontrol() { 
+	 *   pros::Motor motor (MOTOR_PORT);
+	 *   motor.set_value(127); // Go full speed forward
+	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
+	 *   delay(1000);
+	 *   motor.set_value(0); // Stop the motor
+	 * }
+	 * \endcode
 	 */
-	using ADIPort::get_value;
+	using Port::get_value;
 };
 
-class ADIEncoder : private ADIPort {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class Encoder : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures a set of ADI ports to act as an Encoder.
@@ -477,8 +891,19 @@ class ADIEncoder : private ADIPort {
 	 *       The "bottom" wire from the encoder sensor
 	 * \param reverse
 	 *        If "true", the sensor will count in the opposite direction
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_TOP 1
+	 * #define PORT_BOTTOM 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   // Use the sensor
+	 * }
+	 * \endcode
 	 */
-	ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
+	Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Encoder.
@@ -494,8 +919,20 @@ class ADIEncoder : private ADIPort {
 	 * 		  the encoder sensor
 	 * \param reverse
 	 *        If "true", the sensor will count in theopposite direction
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_TOP 'A'
+	 * #define PORT_BOTTOM 'B'
+	 * #define SMART_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Encoder sensor ({ SMART_PORT, PORT_TOP, PORT_BOTTOM }, false);
+	 *   // Use the sensor
+	 * }
+	 * \endcode
 	 */
-	ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
+	Encoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
 	/**
 	 * Sets the encoder value to zero.
@@ -509,6 +946,18 @@ class ADIEncoder : private ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_TOP 1
+	 * #define PORT_BOTTOM 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   delay(1000); // Move the encoder around in this time
+	 *   sensor.reset(); // The encoder is now zero again
+	 * }
+	 * \endcode
 	 */
 	std::int32_t reset() const;
 
@@ -522,12 +971,34 @@ class ADIEncoder : private ADIPort {
 	 * ENODEV - The port is not configured as a motor
 	 *
 	 * \return The signed and cumulative number of counts since the last start or
-	 * reset
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_TOP 1
+	 * #define PORT_BOTTOM 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   while (true) {
+	 *     std::cout << "Encoder Value: " << sensor.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_value() const;
 };
 
-class ADIUltrasonic : private ADIPort {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class Ultrasonic : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures a set of ADI ports to act as an Ultrasonic sensor.
@@ -543,8 +1014,23 @@ class ADIUltrasonic : private ADIPort {
 	 * \param port_echo
 	 *        The port connected to the yellow INPUT cable. This should be in the
 	 *        next highest port following port_ping.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_PING 1
+	 * #define PORT_ECHO 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Ultrasonic sensor (PORT_PING, PORT_ECHO);
+	 *   while (true) {
+	 *     // Print the distance read by the ultrasonic
+	 *     std::cout << "Distance: " << sensor.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
+	Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
@@ -559,8 +1045,24 @@ class ADIUltrasonic : private ADIPort {
 	 * 		  OUTPUT cable (1, 3, 5, 7 or 'A', 'C', 'E', 'G'), and the port
 	 * 		  connected to the yellow INPUT cable (the next) highest port
 	 * 		  following port_ping).
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_PING 'A'
+	 * #define PORT_ECHO 'B'
+	 * #define SMART_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Ultrasonic sensor ( {{ SMART_PORT, PORT_PING, PORT_ECHO }} );
+	 *   while (true) {
+	 *     // Print the distance read by the ultrasonic
+	 *     std::cout << "Distance: " << sensor.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIUltrasonic(ext_adi_port_tuple_t port_tuple);
+	Ultrasonic(ext_adi_port_tuple_t port_tuple);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -575,19 +1077,43 @@ class ADIUltrasonic : private ADIPort {
 	 *
 	 * \return The distance to the nearest object in m^-4 (10000 indicates 1
 	 * meter), measured from the sensor's mounting points.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define PORT_PING 1
+	 * #define PORT_ECHO 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Ultrasonic sensor (PORT_PING, PORT_ECHO);
+	 *   while (true) {
+	 *     // Print the distance read by the ultrasonic
+	 *     std::cout << "Distance: " << sensor.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_value() const;
 };
 
-class ADIGyro : private ADIPort {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class Gyro : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Initializes a gyroscope on the given port. If the given port has not
 	 * previously been configured as a gyro, then this function starts a 1300ms
 	 * calibration period.
 	 *
-	 * It is highly recommended that an ADIGyro object be created in initialize()
-	 * when the robot is stationary to ensure proper calibration. If an ADIGyro
+	 * It is highly recommended that an Gyro object be created in initialize()
+	 * when the robot is stationary to ensure proper calibration. If an Gyro
 	 * object is declared at the global scope, a hardcoded 1300ms delay at the
 	 * beginning of initialize will be necessary to ensure that the gyro's
 	 * returned values are correct at the beginning of autonomous/opcontrol.
@@ -601,9 +1127,23 @@ class ADIGyro : private ADIPort {
 	 *        The ADI port to initialize as a gyro (from 1-8, 'a'-'h', 'A'-'H')
 	 * \param multiplier
 	 *        A scalar value that will be multiplied by the gyro heading value
-	 *        supplied by the ADI
+	 *        supplied by the 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GYRO_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   while (true) {
+	 *     // Get the gyro heading
+	 *     std::cout << "Distance: " << gyro.get_value();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	explicit ADIGyro(std::uint8_t adi_port, double multiplier = 1);
+	explicit Gyro(std::uint8_t adi_port, double multiplier = 1);
 
 	/**
 	 * Initializes a gyroscope on the given port of an adi expander. If the given
@@ -626,10 +1166,25 @@ class ADIGyro : private ADIPort {
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param multiplier
 	 *        A scalar value that will be multiplied by the gyro heading value
-	 *        supplied by the ADI
+	 *        supplied by the 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ADI_GYRO_PORT 'a'
+	 * #define SMART_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Gyro gyro ({{ SMART_PORT , ADI_GYRO_PORT }});
+	 *   while (true) {
+	 *     // Get the gyro heading
+	 *   std::cout << "Distance: " << gyro.get_value();
+	 *   pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIGyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
-
+	Gyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
+  
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
 	 * applied to the gyro, the return value will be a whole number representing
@@ -643,6 +1198,20 @@ class ADIGyro : private ADIPort {
 	 * ENODEV - The port is not configured as a gyro
 	 *
 	 * \return The gyro angle in degrees.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GYRO_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   while (true) {
+	 *   // Get the gyro heading
+	 *   std::cout << "Distance: " << gyro.get_value();
+	 *   pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	double get_value() const;
 
@@ -655,11 +1224,42 @@ class ADIGyro : private ADIPort {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GYRO_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   std::uint32_t now = pros::millis();
+	 *   while (true) {
+	 *     // Get the gyro heading
+	 *     std::cout << "Distance: " << gyro.get_value();
+	 * 
+	 *   if (pros::millis() - now > 2000) {
+	 *     // Reset the gyro every 2 seconds
+	 *     gyro.reset();
+	 *     now = pros::millis();
+	 *   }
+	 * 
+	 *   pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t reset() const;
 };
 
-class ADIPotentiometer : public ADIAnalogIn {
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
+class Potentiometer : public AnalogIn {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Potentiometer.
@@ -673,8 +1273,23 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param potentiometer_type
  	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+	  * 
+	  * \b Example
+	  * \code
+	  * #define POTENTIOMETER_PORT 1
+	  * #define POTENTIOMETER_TYPE pros::E_ADI_POT_EDR
+	  * 
+	  * void opcontrol() {
+	  *   pros::Potentiometer potentiometer (POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
+	  *   while (true) {
+	  *     // Get the potentiometer angle
+	  *     std::cout << "Angle: " << potnetiometer.get_angle();
+	  *     pros::delay(10);
+	  *   }
+	  * }
+	  * \endcode
 	 */
-	ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Potentiometer.
@@ -689,8 +1304,23 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param potentiometer_type
  	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ADI_POTENTIOMETER_PORT 'a'
+	 * #define SMART_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
+	 *   while (true) {
+	 *     // Get the potentiometer angle
+	 *     std::cout << "Angle: " << potentiometer.get_angle();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
-	ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Gets the current potentiometer angle in tenths of a degree.
@@ -702,8 +1332,23 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
 	 * EADDRINUSE - The port is not configured as a potentiometer
-
+	 * 
 	 * \return The potentiometer angle in degrees.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ADI_POTENTIOMETER_PORT 'a'
+	 * #define SMART_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
+	 *   while (true) {
+	 *     // Get the potentiometer angle
+	 *     std::cout << "Angle: " << potentiometer.get_angle();
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	double get_angle() const;
 
@@ -721,7 +1366,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * voltage of nearly 0 V and a value of 4095 reflects an input voltage of
 	 * nearly 5 V
 	 */
-	using ADIAnalogIn::get_value;
+	using AnalogIn::get_value;
 
 	/**
 	 * Calibrates the potentiometer on the specified port and returns the new
@@ -743,7 +1388,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 *
 	 * \return The average potentiometer value computed by this function
 	 */
-	using ADIAnalogIn::calibrate;
+	using AnalogIn::calibrate;
 
 	/**
 	 * Gets the 12 bit calibrated value of a potentiometer port.
@@ -757,8 +1402,36 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * \return The difference of the potentiometer value from its calibrated default from
 	 * -4095 to 4095
 	 */
-	using ADIAnalogIn::get_value_calibrated;
+	using AnalogIn::get_value_calibrated;
 };
+}  // namespace adi
+
+/*
+Pros4 upgrade backwards compatibility for ADI api.
+
+Prints a deprecated warning when user uses old pros::ADIDevice style API. 
+Remove when and if fully removing old API.
+*/
+LEGACY_TYPEDEF(ADIPort, pros::adi::Port);
+LEGACY_TYPEDEF(ADIAnalogIn, pros::adi::AnalogIn);
+LEGACY_TYPEDEF(ADIAnalogOut, pros::adi::AnalogOut);
+LEGACY_TYPEDEF(ADIDigitalIn, pros::adi::DigitalIn);
+LEGACY_TYPEDEF(ADIDigitalOut, pros::adi::DigitalOut);
+LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
+LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
+LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
+LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
+
+// Backwards Compatibility for Derived Classes
+LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);
+LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
+LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
+LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
+LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
+
+///@}
+
+///@}
 
 }  // namespace pros
 

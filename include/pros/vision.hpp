@@ -1,5 +1,6 @@
 /**
  * \file pros/vision.hpp
+ * \ingroup cpp-vision
  *
  * Contains prototypes for the VEX Vision Sensor-related functions in C++.
  *
@@ -9,12 +10,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-vision Vision Sensor C++ API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref vision)
  */
 
 #ifndef _PROS_VISION_HPP_
@@ -25,7 +29,16 @@
 #include <cstdint>
 
 namespace pros {
+inline namespace v5 {
+  
+/**
+ * \ingroup cpp-vision
+ */
 class Vision {
+	/**
+	 * \addtogroup cpp-vision
+	 *  @{
+	 */
 	public:
 	/**
 	 * Create a Vision Sensor object on the given port.
@@ -39,6 +52,16 @@ class Vision {
 	 *        The V5 port number from 1-21
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.clear_led();
+	 * }
+	 * \endcode
 	 */
 	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
 
@@ -52,6 +75,16 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.clear_led();
+	 * }
+	 * \endcode
 	 */
 	std::int32_t clear_led(void) const;
 
@@ -78,6 +111,28 @@ class Vision {
 	 *        Signature type
 	 *
 	 * \return A vision_signature_s_t that can be set using Vision::set_signature
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision sensor(VISION_PORT);
+	 *   // values acquired from the vision utility
+	 *   pros::vision_signature_s_t RED_SIG =
+	 *     pros::Vision::signature_from_utility(EXAMPLE_SIG, 8973, 11143, 10058, -2119, -1053, -1586, 5.4, 0);
+	 * 
+	 *   sensor.set_signature(EXAMPLE_SIG, &RED_SIG);
+	 *   while (true) {
+	 *     pros::vision_signature_s_t rtn = sensor.get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
+	 *     // Gets the largest object of the EXAMPLE_SIG signature
+	 *     std::cout << "sig: " << rtn.signature << std::endl;
+	 *     // Prints "sig: 1"
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	static vision_signature_s_t signature_from_utility(const std::int32_t id, const std::int32_t u_min,
 	                                                   const std::int32_t u_max, const std::int32_t u_mean,
@@ -106,6 +161,18 @@ class Vision {
 	 *        The fifth signature id [1-7] to add to the color code
 	 *
 	 * \return A vision_color_code_t object containing the color code information.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT
+	 * #define EXAMPLE_SIG 1
+	 * #define OTHER_SIG 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_color_code_t code1 = vis.create_color_code(EXAMPLE_SIG, OTHER_SIG);
+	 * }
+	 * \endcode
 	 */
 	vision_color_code_t create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
@@ -126,6 +193,21 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given size id, or
 	 * PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   while (true) {
+	 *     vision_object_s_t rtn = vision_sensor.get_by_size(0);
+	 *     // Gets the largest object
+	 *     std::cout << "sig: " << rtn.signature;
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	vision_object_s_t get_by_size(const std::uint32_t size_id) const;
 
@@ -148,6 +230,23 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given signature
 	 * and size_id, or PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   while (true) {
+	 *     vision_object_s_t rtn = vision_sensor.get_by_sig(0, EXAMPLE_SIG);
+	 *     // Gets the largest object of the EXAMPLE_SIG signature
+	 *     std::cout << "sig: " << rtn.signature;
+	 *     // Prints "sig: 1"
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	vision_object_s_t get_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id) const;
 
@@ -167,6 +266,24 @@ class Vision {
 	 *
 	 * \return The vision_object_s_t object corresponding to the given color code
 	 * and size_id, or PROS_ERR if an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * #define OTHER_SIG 2
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_color_code_t code1 = vis.create_color_code(EXAMPLE_SIG, OTHER_SIG);
+	 *   while (true) {
+	 *     pros::vision_object_s_t rtn = vis.get_by_code(0, code1);
+	 *     // Gets the largest object
+	 *     printf("sig: %d", rtn.signature);
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	vision_object_s_t get_by_code(const std::uint32_t size_id, const vision_color_code_t color_code) const;
 
@@ -181,6 +298,17 @@ class Vision {
 	 *
 	 * \return The current exposure parameter from [0,150],
 	 * PROS_ERR if an error occurred
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   if (vision_sensor.get_exposure() < 50)
+	 *     vision_sensor.set_exposure(50);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_exposure(void) const;
 
@@ -193,6 +321,17 @@ class Vision {
 	 *
 	 * \return The number of objects detected on the specified vision sensor.
 	 * Returns PROS_ERR if the port was invalid or an error occurred.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   while (true) {
+	 *     std::cout << "Number of Objects Detected: " << vision_sensor.get_object_count());
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_object_count(void) const;
 
@@ -207,6 +346,18 @@ class Vision {
 	 *        The signature id to read
 	 *
 	 * \return A vision_signature_s_t containing information about the signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_signature_s_t sig = vis.get_signature(EXAMPLE_SIG);
+	 *   pros::Vision::print_signature(sig);
+     * }
+	 * \endcode
 	 */
 	vision_signature_s_t get_signature(const std::uint8_t signature_id) const;
 
@@ -218,6 +369,18 @@ class Vision {
 	 * ENODEV - The port cannot be configured as a vision sensor
 	 *
 	 * \return The current RGB white balance setting of the sensor
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define VISION_WHITE 0xff
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   if (vision_sensor.get_white_balance() != VISION_WHITE)
+	 *     vision_sensor.set_white_balance(VISION_WHITE);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_white_balance(void) const;
 
@@ -225,6 +388,16 @@ class Vision {
 	 * Gets the port number of the Vision Sensor.
 	 *
 	 * \return The vision sensor's port number.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   std::uint8_t port = vision_sensor.get_port(); // returns 1
+	 * }
+	 * \endcode
 	 */
 	std::uint8_t get_port(void) const;
 
@@ -250,6 +423,23 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define NUM_VISION_OBJECTS 4
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   while (true) {
+	 *     vision_sensor.read_by_size(0, NUM_VISION_OBJECTS, object_arr);
+	 *     std::cout << "sig: " << object_arr[0].signature;
+	 *     // Prints the signature of the largest object found
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
 	                          vision_object_s_t* const object_arr) const;
@@ -280,6 +470,24 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * #define NUM_VISION_OBJECTS 4
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   while (true) {
+	 *     vision_sensor.read_by_sig(0, EXAMPLE_SIG, NUM_VISION_OBJECTS, object_arr);
+	 *     std::cout << "sig: " << object_arr[0].signature;
+	 *     // Prints "sig: 1"
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t read_by_sig(const std::uint32_t size_id, const std::uint32_t sig_id, const std::uint32_t object_count,
 	                         vision_object_s_t* const object_arr) const;
@@ -308,6 +516,26 @@ class Vision {
 	 * Returns PROS_ERR if the port was invalid, an error occurred, or fewer objects
 	 * than size_id were found. All objects in object_arr that were not found are
 	 * given VISION_OBJECT_ERR_SIG as their signature.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * #define OTHER_SIG 2
+	 * #define NUM_VISION_OBJECTS 4
+	 * 
+	 * void opcontrol() {
+	 *   pros::vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_color_code_t code1 = vis.create_color_code(EXAMPLE_SIG, OTHER_SIG);
+	 *   while (true) {
+	 *     vis.read_by_code(0, code1, NUM_VISION_OBJECTS, object_arr);
+	 *     printf("sig: %d", object_arr[0].signature);
+	 *     // Prints the signature of the largest object found
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	int32_t read_by_code(const std::uint32_t size_id, const vision_color_code_t color_code,
 	                     const std::uint32_t object_count, vision_object_s_t* const object_arr) const;
@@ -319,6 +547,18 @@ class Vision {
 	 *        The signature for which the contents will be printed
 	 *
 	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_signature_s_t sig = vis.get_signature(EXAMPLE_SIG);
+	 *   pros::Vision::print_signature(sig);
+	 * }
+	 * \endcode
 	 */
 	static std::int32_t print_signature(const vision_signature_s_t sig);
 
@@ -334,6 +574,16 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.set_auto_white_balance(true);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_auto_white_balance(const std::uint8_t enable) const;
 
@@ -351,6 +601,17 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   if (vision_sensor.get_exposure() < 50)
+	 *     vision_sensor.set_exposure(50);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_exposure(const std::uint8_t exposure) const;
 
@@ -366,13 +627,23 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.set_led(COLOR_BLANCHED_ALMOND);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_led(const std::int32_t rgb) const;
 
 	/**
 	 * Stores the supplied object detection signature onto the vision sensor.
 	 *
-	 * NOTE: This saves the signature in volatile memory, and the signature will be
+	 * \note This saves the signature in volatile memory, and the signature will be
 	 * lost as soon as the sensor is powered down.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -386,6 +657,19 @@ class Vision {
 	 *            A pointer to the signature to save
 	 *
 	 * \return 1 if no errors occured, PROS_ERR otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define EXAMPLE_SIG 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Vision vis (VISION_PORT);
+	 *   pros::vision_signature_s_t sig = vis.get_signature(EXAMPLE_SIG);
+	 *   sig.range = 10.0;
+	 *   vis.set_signature(EXAMPLE_SIG, &sig);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_signature(const std::uint8_t signature_id, vision_signature_s_t* const signature_ptr) const;
 
@@ -401,6 +685,17 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * #define VISION_WHITE 0xff
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.set_white_balance(VISION_WHITE);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_white_balance(const std::int32_t rgb) const;
 
@@ -420,6 +715,16 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.set_zero_point(pros::E_VISION_ZERO_CENTER);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_zero_point(vision_zero_e_t zero_point) const;
 
@@ -435,11 +740,23 @@ class Vision {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define VISION_PORT 1
+	 * 
+	 * void initialize() {
+	 *   pros::Vision vision_sensor (VISION_PORT);
+	 *   vision_sensor.set_wifi_mode(0);
+	 * }
+	 * \endcode
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
 
 	private:
 	std::uint8_t _port;
+	///@}
 };
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_

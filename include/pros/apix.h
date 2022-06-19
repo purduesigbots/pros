@@ -1,5 +1,6 @@
 /**
  * \file pros/apix.h
+ * \ingroup apix
  *
  * PROS Extended API header
  *
@@ -12,12 +13,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup apix Extended API
+ * \note Also included in the Extended API is [LVGL.](https://lvgl.io/)
  */
 
 #ifndef _PROS_API_EXTENDED_H_
@@ -36,12 +40,18 @@ namespace pros::c {
 extern "C" {
 #endif
 
-/******************************************************************************/
-/**                             RTOS FACILITIES                              **/
-/**                                                                          **/
-/**                                                                          **/
-/**See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more**/
-/******************************************************************************/
+/**
+ * \ingroup apix
+ */
+
+/**
+ * \addtogroup apix
+ *  @{
+ */
+
+/// \name RTOS Facilities
+/// See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more
+///@{
 
 typedef void* queue_t;
 typedef void* sem_t;
@@ -356,9 +366,10 @@ void queue_delete(queue_t queue);
  */
 void queue_reset(queue_t queue);
 
-/******************************************************************************/
-/**                           Device Registration                            **/
-/******************************************************************************/
+///@}
+
+/// \name Device Registration
+///@{
 
 /*
  * List of possible v5 devices
@@ -377,11 +388,12 @@ typedef enum v5_device_e {
 	E_DEVICE_ADI = 12,
 	E_DEVICE_OPTICAL = 16,
 	E_DEVICE_GPS = 20,
-	E_DEVICE_GENERIC = 129,
+	E_DEVICE_SERIAL = 129,
+	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255
 } v5_device_e_t;
 
-/*
+/**
  * Registers a device in the given zero-indexed port
  *
  * Registers a device of the given type in the given port into the registry, if
@@ -402,7 +414,7 @@ typedef enum v5_device_e {
  */
 int registry_bind_port(uint8_t port, v5_device_e_t device_type);
 
-/*
+/**
  * Deregisters a devices from the given zero-indexed port
  *
  * Removes the device registed in the given port, if there is one.
@@ -418,7 +430,7 @@ int registry_bind_port(uint8_t port, v5_device_e_t device_type);
  */
 int registry_unbind_port(uint8_t port);
 
-/*
+/**
  * Returns the type of device registered to the zero-indexed port.
  *
  * This function uses the following values of errno when an error state is
@@ -433,7 +445,7 @@ int registry_unbind_port(uint8_t port);
  */
 v5_device_e_t registry_get_bound_type(uint8_t port);
 
-/*
+/**
  * Returns the type of the device plugged into the zero-indexed port.
  *
  * This function uses the following values of errno when an error state is
@@ -448,9 +460,11 @@ v5_device_e_t registry_get_bound_type(uint8_t port);
  */
 v5_device_e_t registry_get_plugged_type(uint8_t port);
 
-/******************************************************************************/
-/**                               Filesystem                                 **/
-/******************************************************************************/
+///@}
+
+/// \name Filesystem
+///@{
+
 /**
  * Control settings of the serial driver.
  *
@@ -583,6 +597,10 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
  * The extra argument is the baudrate.
  */
 #define DEVCTL_SET_BAUDRATE 17
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }

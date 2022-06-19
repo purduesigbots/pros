@@ -28,6 +28,7 @@
 #include "pros/motors.h"
 
 namespace pros {
+inline namespace v5 {
 
 /**
  * \ingroup cpp-motors
@@ -287,6 +288,23 @@ class Motor {
 	 * \endcode
 	 */
 	virtual std::int32_t move_voltage(const std::int32_t voltage) const;
+
+	/**
+	 * Stops the motor using the currently configured brake mode.
+	 *
+	 * This function sets motor velocity to zero, which will cause it to act
+	 * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
+	 * this function may behave differently than calling move_absolute(0)
+	 * or move_relative(0).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t brake(void) const;
 
 	/**
 	 * Changes the output velocity for a profiled movement (motor_move_absolute()
@@ -1333,9 +1351,12 @@ class Motor {
 	const std::uint8_t _port;
 };
 
+///@}
+
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_MOTORS_HPP_
