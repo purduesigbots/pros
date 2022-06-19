@@ -95,11 +95,11 @@ namespace c {
 ///@{
 
 /**
- * \ingroup c-motors
+ * \ingroup c-llemu
  */
 
 /**
- * \addtogroup c-motors
+ * \addtogroup c-llemu
  *  @{
  */
 
