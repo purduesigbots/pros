@@ -60,7 +60,7 @@ class Task {
 	 *
 	 */
 	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -155,8 +155,8 @@ class Task {
 	 *
 	 */
 	template <class F>
-	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "")
+	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "")
 	    : Task(
 	          [](void* parameters) {
 		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
@@ -281,8 +281,8 @@ class Task {
 	std::uint32_t notify();
 
 	/**
- 	 * Utilizes task notifications to wait until specified task is complete and deleted,
- 	 * then continues to execute the program. Analogous to std::thread::join in C++.
+	 * Utilizes task notifications to wait until specified task is complete and deleted,
+	 * then continues to execute the program. Analogous to std::thread::join in C++.
 	 *
 	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
 	 * details.
