@@ -952,13 +952,12 @@ class Imu {
 	 * \endcode
 	 */
 	virtual bool is_calibrating() const;
-	
 	///@}
 };
   
 using IMU = Imu;
   
-}  //namespace v5
+}  // namespace v5
 }  // namespace pros
 
 #endif

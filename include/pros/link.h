@@ -397,9 +397,9 @@ uint32_t link_clear_receive_buf(uint8_t port);
 ///@}
 
 #ifdef __cplusplus
-}
-}
+} // namespace c
+} // namespace pros
 }
 #endif
 
-#endif
+#endif // _PROS_LINK_H_

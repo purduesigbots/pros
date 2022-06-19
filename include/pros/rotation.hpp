@@ -364,4 +364,4 @@ class Rotation {
 }  // namespace v5
 }  // namespace pros
 
-#endif
+#endif  // _PROS_ROTATION_HPP_

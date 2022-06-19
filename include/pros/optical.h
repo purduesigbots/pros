@@ -467,9 +467,9 @@ int32_t optical_disable_gesture(uint8_t port);
 ///@}
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace procs
 }
 #endif
 
-#endif
+#endif // _PROS_OPTICAL_H_

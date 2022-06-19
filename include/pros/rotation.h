@@ -378,4 +378,4 @@ int32_t rotation_get_reversed(uint8_t port);
 } //extern "C"
 #endif
 
-#endif
+#endif // _PROS_ROTATION_H_

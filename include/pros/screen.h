@@ -26,7 +26,7 @@
 #undef _GNU_SOURCE
 #include <stdint.h>
 
-#include "pros/colors.h"     // c color macros
+#include "pros/colors.h" // c color macros
 
 #ifdef __cplusplus
 extern "C" {
@@ -799,4 +799,4 @@ uint32_t screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type
 }
 #endif  
 
-#endif 
+#endif  // _PROS_SCREEN_H_

@@ -519,8 +519,8 @@ gps_accel_s_t gps_get_accel(uint8_t port);
 ///@}
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 

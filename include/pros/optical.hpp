@@ -440,4 +440,4 @@ class Optical {
 }  // namespace v5
 }  // namespace pros
 
-#endif
+#endif // _PROS_OPTICAL_HPP_

@@ -143,8 +143,8 @@ double distance_get_object_velocity(uint8_t port);
 ///@}
 
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 

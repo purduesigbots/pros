@@ -663,4 +663,4 @@ const char* convert_args(const std::string& arg) {
 } //namespace screen
 } //namespace pros
 
-#endif //header guard
+#endif // _PROS_SCREEN_HPP_

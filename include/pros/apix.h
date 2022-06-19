@@ -604,7 +604,7 @@ int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 
 #ifdef __cplusplus
 }
-}
+} // namespace pros::c
 #endif
 
 #endif  // _PROS_API_EXTENDED_H_

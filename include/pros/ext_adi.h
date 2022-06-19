@@ -41,6 +41,8 @@ namespace c {
 #endif
 
 /**
+ * \name General ADI Use Functions
+ * These functions allow for interaction with any ADI port type
  * \ingroup ext-adi
  */
 
@@ -48,12 +50,6 @@ namespace c {
  * \addtogroup ext-adi
  *  @{
  */
-
-/******************************************************************************/
-/**                         General ADI Use Functions                        **/
-/**                                                                          **/
-/**       These functions allow for interaction with any ADI port type       **/
-/******************************************************************************/
 
 /**
  * Gets the configuration for the given ADI port.

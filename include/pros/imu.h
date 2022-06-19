@@ -471,8 +471,16 @@ imu_status_e_t imu_get_status(uint8_t port);
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
 
-/// \name Value Reset Functions
-///@{
+///@}
+
+/**
+ * \name Value Reset Functions
+ * \ingroup c-imu
+ */
+/**
+ * \addtogroup c-imu
+ *  @{
+ */
 
 /**
  * Resets the current reading of the Inertial Sensor's heading to zero
@@ -885,11 +893,9 @@ int32_t imu_set_yaw(uint8_t port, double target);
 
 ///@}
 
-///@}
-
 #ifdef __cplusplus
-}
-}
+}  // namespace c
+}  // namespace pros
 }
 #endif
 
