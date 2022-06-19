@@ -20,15 +20,6 @@
  * \note Additional example code for this module can be found in its [Tutorial.](@ref adi)
  */
 
-/**
- * \ingroup c-adi
- */
-
-/**
- * \addtogroup c-adi
- *  @{
- */
-
 #ifndef _PROS_ADI_H_
 #define _PROS_ADI_H_
 
@@ -42,6 +33,15 @@
 extern "C" {
 namespace pros {
 #endif
+
+/**
+ * \ingroup c-adi
+ */
+
+/**
+ * \addtogroup c-adi
+ *  @{
+ */
 
 /**
  * \enum adi_port_config_e
@@ -142,6 +142,14 @@ typedef enum adi_potentiometer_type_e {
 namespace c {
 #endif
 
+/**
+ * \ingroup c-adi
+ */
+
+/**
+ * \addtogroup c-adi
+ *  @{
+ */
 /// \name General ADI Use Functions
 /// These functions allow for interaction with any ADI port type
 ///@{
@@ -256,6 +264,10 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
 
 ///@}
 
+/// \name PROS 2 Compatibility Functions
+/// These functions provide similar functionality to the PROS 2 API
+///@{
+
 /**
  * Used for adi_digital_write() to specify a logic HIGH state to output.
  *
@@ -282,15 +294,11 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  * adi_pin_mode() state for an analog input.
  */
 #define INPUT_ANALOG 0x02
+
 /**
  * adi_pin_mode() state for an analog output.
  */
 #define OUTPUT_ANALOG 0x03
-
-
-/// \name PROS 2 Compatibility Functions
-/// These functions provide similar functionality to the PROS 2 API
-///@{
 
 /**
  * Calibrates the analog sensor on the specified port and returns the new
@@ -1166,6 +1174,8 @@ double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer);
 
 ///@}
 
+///@}
+
 #ifdef __cplusplus
 }  // namespace c
 }  // namespace pros
@@ -1173,5 +1183,3 @@ double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer);
 #endif
 
 #endif  // _PROS_ADI_H_
-
-///@}

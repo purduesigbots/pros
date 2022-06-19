@@ -20,15 +20,6 @@
  * \note Additional example code for this module can be found in its [Tutorial.](@ref adi)
  */
 
-/**
- * \ingroup
- */
-
-/**
- * \addtogroup cpp-adi
- *  @{
- */
-
 #ifndef _PROS_ADI_HPP_
 #define _PROS_ADI_HPP_
 
@@ -58,7 +49,14 @@ using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
  */
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
 
+/**
+ * \ingroup cpp-adi
+ */
 class Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as a given sensor type.
@@ -204,7 +202,16 @@ class Port {
 	std::uint8_t _adi_port;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class AnalogIn : protected Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Input.
@@ -394,12 +401,21 @@ class AnalogIn : protected Port {
 	using Port::get_value;
 };
 
+///@}
+
 //Derived Classes from AnalogIn
 using LineSensor = AnalogIn;
 using LightSensor = AnalogIn;
 using Accelerometer = AnalogIn;
 
+/**
+ * \ingroup cpp-adi
+ */
 class AnalogOut : private Port {
+  /**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as an Analog Output.
@@ -476,7 +492,16 @@ class AnalogOut : private Port {
 	using Port::set_value;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class DigitalOut : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */
 	public:
 	/**
 	 * Configures an ADI port to act as a Digital Output.
@@ -571,8 +596,16 @@ class DigitalOut : private Port {
 	 */
 	using Port::set_value;
 };
+///@}
 
+/**
+ * \ingroup cpp-adi
+ */
 class DigitalIn : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Digital Input.
@@ -686,10 +719,19 @@ class DigitalIn : private Port {
 	using Port::get_value;
 };
 
+///@}
+
 //Derived Class(es) from DigitalIn
 using Button = DigitalIn;
 
+/**
+ * \ingroup cpp-adi
+ */
 class Motor : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Motor.
@@ -824,7 +866,16 @@ class Motor : private Port {
 	using Port::get_value;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class Encoder : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures a set of ADI ports to act as an Encoder.
@@ -938,7 +989,16 @@ class Encoder : private Port {
 	std::int32_t get_value() const;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class Ultrasonic : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures a set of ADI ports to act as an Ultrasonic sensor.
@@ -1036,7 +1096,16 @@ class Ultrasonic : private Port {
 	std::int32_t get_value() const;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class Gyro : private Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Initializes a gyroscope on the given port. If the given port has not
@@ -1181,7 +1250,16 @@ class Gyro : private Port {
 	std::int32_t reset() const;
 };
 
+///@}
+
+/**
+ * \ingroup cpp-adi
+ */
 class Potentiometer : public AnalogIn {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Configures an ADI port to act as a Potentiometer.
@@ -1351,8 +1429,10 @@ LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
 LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
 LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
 
+///@}
+
+///@}
+
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_
-
-///@}
