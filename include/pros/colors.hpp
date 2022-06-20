@@ -15,7 +15,6 @@
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
 namespace pros{
-namespace colors {
 enum class colors_e_c{
   COLOR_ALICE_BLUE = 0x00F0F8FF,
   COLOR_ANTIQUE_WHITE = 0x00FAEBD7,
@@ -157,6 +156,5 @@ enum class colors_e_c{
   COLOR_YELLOW = 0x00FFFF00,
   COLOR_YELLOW_GREEN = 0x009ACD32,
 };
-} // namespace colors;
 } // namespace pros
 #endif //_PROS_COLORS_HPP_

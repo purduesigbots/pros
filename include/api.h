@@ -65,6 +65,7 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
+#include "pros/colors.hpp"
 #include "pros/distance.hpp"
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"
