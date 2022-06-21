@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with V5 Generic Serial devices.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -24,7 +24,7 @@
 
 int32_t serial_enable(uint8_t port) {
 	/**
-	 * claim_port_i(port - 1, E_DEVICE_GENERIC) is not used because it requires
+	 * claim_port_i(port - 1, E_DEVICE_SERIAL) is not used because it requires
 	 * the port to already be of the requested type in VEXos, which will not yet
 	 * be the case for generic serial as vexDeviceGenericSerialEnable is what
 	 * switches the port into the correct mode
@@ -43,13 +43,13 @@ int32_t serial_enable(uint8_t port) {
 }
 
 int32_t serial_set_baudrate(uint8_t port, int32_t baudrate) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	vexDeviceGenericSerialBaudrate(device->device_info, baudrate);
 	return_port(port - 1, 1);
 }
 
 int32_t serial_flush(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	vexDeviceGenericSerialFlush(device->device_info);
 	return_port(port - 1, 1);
 }
@@ -57,13 +57,13 @@ int32_t serial_flush(uint8_t port) {
 // Telemetry functions
 
 int32_t serial_get_read_avail(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialReceiveAvail(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_get_write_free(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialWriteFree(device->device_info);
 	return_port(port - 1, rtn);
 }
@@ -71,19 +71,19 @@ int32_t serial_get_write_free(uint8_t port) {
 // Read functions
 
 int32_t serial_peek_byte(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialPeekChar(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_read_byte(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialReadChar(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialReceive(device->device_info, buffer, length);
 	return_port(port - 1, rtn);
 }
@@ -91,7 +91,7 @@ int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length) {
 // Write functions
 
 int32_t serial_write_byte(uint8_t port, uint8_t buffer) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialWriteChar(device->device_info, buffer);
 	if (rtn == -1) {
 		errno = EIO;
@@ -101,7 +101,7 @@ int32_t serial_write_byte(uint8_t port, uint8_t buffer) {
 }
 
 int32_t serial_write(uint8_t port, uint8_t* buffer, int32_t length) {
-	claim_port_i(port - 1, E_DEVICE_GENERIC);
+	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	int32_t rtn = vexDeviceGenericSerialTransmit(device->device_info, buffer, length);
 	if (rtn == -1) {
 		errno = EIO;

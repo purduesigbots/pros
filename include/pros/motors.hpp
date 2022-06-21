@@ -186,6 +186,23 @@ class Motor {
 	virtual std::int32_t move_voltage(const std::int32_t voltage) const;
 
 	/**
+	 * Stops the motor using the currently configured brake mode.
+	 *
+	 * This function sets motor velocity to zero, which will cause it to act
+	 * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
+	 * this function may behave differently than calling move_absolute(0)
+	 * or move_relative(0).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	virtual std::int32_t brake(void) const;
+
+	/**
 	 * Changes the output velocity for a profiled movement (motor_move_absolute()
 	 * or motor_move_relative()). This will have no effect if the motor is not
 	 * following a profiled movement.

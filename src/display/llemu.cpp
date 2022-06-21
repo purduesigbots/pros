@@ -7,7 +7,7 @@
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -50,5 +50,22 @@ void register_btn2_cb(lcd_btn_cb_fn_t cb) {
 std::uint8_t read_buttons(void) {
 	return lcd_read_buttons();
 }
+
+void set_background_color(lv_color_t color) {
+	lcd_set_background_color(color);
+}
+
+void set_background_color(uint8_t r, uint8_t g, uint8_t b) {
+	lcd_set_background_color(LV_COLOR_MAKE(r, g, b));
+}
+
+void set_text_color(lv_color_t color) {
+	lcd_set_text_color(color);
+}
+
+void set_text_color(uint8_t r, uint8_t g, uint8_t b) {
+	lcd_set_text_color(LV_COLOR_MAKE(r, g, b));
+}
+
 }  // namespace lcd
 }  // namespace pros

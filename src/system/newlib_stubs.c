@@ -6,7 +6,7 @@
  * Contains the various methods needed to enable standard C library support
  * through the use of the Arm-distributed implementation of newlib.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -45,6 +45,11 @@ int usleep( useconds_t period ) {
 unsigned sleep( unsigned period ) {
 	task_delay(period * SEC_TO_MSEC);
 	return 1;
+}
+
+int getentropy(void *_buffer, size_t _length) {
+	errno = ENOSYS;
+	return -1;
 }
 
 // HACK: this helps confused libc++ functions call the right instruction. for

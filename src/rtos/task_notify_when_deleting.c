@@ -60,6 +60,11 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify,
   if (task_to_notify == target_task || !task_to_notify || !target_task) {
     return;
   }
+  
+  // Return immediately if the target task is already deleted
+  if (eTaskStateGet(target_task) == E_TASK_STATE_DELETED) {
+    return;
+  }
 
   mutex_take(task_notify_when_deleting_mutex, TIMEOUT_MAX);
 

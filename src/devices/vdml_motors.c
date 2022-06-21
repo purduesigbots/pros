@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -59,6 +59,10 @@ int32_t motor_move(uint8_t port, int32_t voltage) {
 	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
 	command -= MOTOR_VOLTAGE_RANGE;
 	return motor_move_voltage(port, command);
+}
+
+int32_t motor_brake(uint8_t port) {
+	return motor_move_velocity(port, 0);
 }
 
 int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity) {

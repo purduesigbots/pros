@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -58,7 +58,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	explicit Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
@@ -278,6 +278,17 @@ class Task {
 	 * \return Always returns true.
 	 */
 	std::uint32_t notify();
+
+	/**
+ 	 * Utilizes task notifications to wait until specified task is complete and deleted,
+ 	 * then continues to execute the program. Analogous to std::thread::join in C++.
+	 *
+	 * See https://pros.cs.purdue.edu/v5/tutorials/topical/notifications.html for
+	 * details.
+	 *
+	 * \return void
+	 */
+	void join();
 
 	/**
 	 * Sends a notification to a task, optionally performing some action. Will

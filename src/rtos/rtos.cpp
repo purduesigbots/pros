@@ -6,7 +6,7 @@
  *
  * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html to learn more.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -70,6 +70,10 @@ const char* Task::get_name() {
 
 std::uint32_t Task::notify() {
 	return task_notify(task);
+}
+
+void Task::join() {
+	return task_join(task);
 }
 
 std::uint32_t Task::notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value) {

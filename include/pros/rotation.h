@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -179,6 +179,24 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * failed, setting errno.
  */
 int32_t rotation_reverse(uint8_t port);
+
+/**
+ * Initialize the Rotation Sensor with a reverse flag
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Rotation Sensor
+ *
+ * \param  port
+ * 				 The V5 Rotation Sensor port number from 1-21
+ * \param  reverse_flag
+ * 				 Determines if the Rotation Sensor is reversed or not.
+ * 
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t rotation_init_reverse(uint8_t port, bool reverse_flag);
 
 /**
  * Get the Rotation Sensor's reversed flag
