@@ -25,16 +25,7 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-namespace c {
-#endif
-
-typedef enum imu_status_e {
-	E_IMU_STATUS_CALIBRATING = 0x01,
-	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
-	                            // necessarily in an error state
-} imu_status_e_t;
-
-typedef struct __attribute__((__packed__)) quaternion_s {
+	typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
 	double y;
 	double z;
@@ -55,6 +46,14 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double roll;
 	double yaw;
 } euler_s_t;
+namespace c {
+#endif
+
+typedef class enum imu_status_e {
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
+	                            // necessarily in an error state
+} imu_status_e_t;
 
 #define IMU_MINIMUM_DATA_RATE 5
 

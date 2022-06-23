@@ -122,7 +122,7 @@ class Imu {
 	 * operation failed, all the quaternion's members are filled with PROS_ERR_F and
 	 * errno is set.
 	 */
-	virtual pros::c::quaternion_s_t get_quaternion() const;
+	virtual pros::quaternion_s_t get_quaternion() const;
 	/**
 	 * Get the Euler angles representing the Inertial Sensor's orientation
 	 *
@@ -138,7 +138,7 @@ class Imu {
 	 * operation failed, all the structure's members are filled with PROS_ERR_F and
 	 * errno is set.
 	 */
-	virtual pros::c::euler_s_t get_euler() const;
+	virtual pros::euler_s_t get_euler() const;
 	/**
 	 * Get the Inertial Sensor's pitch angle bounded by (-180,180)
 	 *
@@ -196,7 +196,7 @@ class Imu {
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
+	virtual pros::imu_gyro_s_t get_gyro_rate() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's rotation to zero
 	 *
@@ -407,7 +407,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_euler(const pros::c::euler_s_t target) const;
+	virtual std::int32_t set_euler(const pros::euler_s_t target) const;
 	/**
 	 * Get the Inertial Sensor's raw accelerometer values
 	 *
@@ -422,7 +422,7 @@ class Imu {
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::imu_accel_s_t get_accel() const;
+	virtual pros::imu_accel_s_t get_accel() const;
 	/**
 	 * Get the Inertial Sensor's status
 	 *
@@ -437,7 +437,7 @@ class Imu {
 	 * \return The Inertial Sensor's status code, or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual pros::c::imu_status_e_t get_status() const;
+	virtual pros::imu_status_e_t get_status() const;
 	/**
 	 * Check whether the IMU is calibrating
 	 *

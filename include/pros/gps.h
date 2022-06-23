@@ -25,9 +25,7 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-namespace c {
-#endif
-
+	
 typedef struct __attribute__((__packed__)) gps_status_s {
 	double x;      ///< X Position (meters)
 	double y;      ///< Y Position (meters)
@@ -44,6 +42,8 @@ struct gps_raw_s {
 
 typedef struct gps_raw_s gps_accel_s_t;
 typedef struct gps_raw_s gps_gyro_s_t;
+namespace c {
+#endif
 
 /**
  * Set the GPS's offset relative to the center of turning in meters,

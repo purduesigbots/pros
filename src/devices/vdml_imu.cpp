@@ -33,7 +33,7 @@ pros::c::quaternion_s_t Imu::get_quaternion() const {
 	return pros::c::imu_get_quaternion(_port);
 }
 
-pros::c::euler_s_t Imu::get_euler() const {
+pros::euler_s_t Imu::get_euler() const {
 	return pros::c::imu_get_euler(_port);
 }
 
