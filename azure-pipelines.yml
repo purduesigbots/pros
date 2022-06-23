@@ -15,7 +15,7 @@ jobs:
   - bash: |
       curl -LSso toolchain.tar.bz2 $(toolchain)
       tar -xjvf toolchain.tar.bz2
-      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)-update/bin"
+      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)/bin"
     displayName: Install gcc-arm-embedded
   - task: UsePythonVersion@0
     inputs:
