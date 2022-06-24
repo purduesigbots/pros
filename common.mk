@@ -10,6 +10,9 @@ WARNFLAGS+=-Wno-psabi
 SPACE := $() $()
 COMMA := ,
 
+C_STANDARD?=gnu11
+CXX_STANDARD?=gnu++20
+
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR))
 DEPFLAGS = -MT $$@ -MMD -MP -MF $(DEPDIR)/$$*.Td
