@@ -13,8 +13,6 @@
  * file You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
-
 #ifndef _PROS_COLORS_H_
 #define _PROS_COLORS_H_
 
@@ -29,8 +27,11 @@
 #define COLOR_LIGHT_GREY COLOR_LIGHT_GRAY
 #define COLOR_LIGHT_SLATE_GREY COLOR_LIGHT_SLATE_GRAY
 #define COLOR_SLATE_GREY COLOR_SLATE_GRAY
-
-typedef enum{
+#ifdef __cplusplus
+namespace pros {
+namespace c {
+#endif
+typedef enum color_e {
   COLOR_ALICE_BLUE = 0x00F0F8FF,
   COLOR_ANTIQUE_WHITE = 0x00FAEBD7,
   COLOR_AQUA = 0x0000FFFF,
@@ -170,6 +171,10 @@ typedef enum{
   COLOR_WHITE_SMOKE = 0x00F5F5F5,
   COLOR_YELLOW = 0x00FFFF00,
   COLOR_YELLOW_GREEN = 0x009ACD32,
-}color_e_t;
+} color_e_t;
+#ifdef __cplusplus
+} //namespace c
+} //namespace pros
+#endif
 
 #endif  // _PROS_COLORS_H_
