@@ -15,7 +15,7 @@
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
 namespace pros{
-enum class colors_e_c{
+enum class Color{
   COLOR_ALICE_BLUE = 0x00F0F8FF,
   COLOR_ANTIQUE_WHITE = 0x00FAEBD7,
   COLOR_AQUA = 0x0000FFFF,
