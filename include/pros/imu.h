@@ -47,6 +47,12 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
+typedef enum class imu_status_e {
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
+	                            // necessarily in an error state
+} imu_status_e_t;
+
 /**
  * Get a quaternion representing the Inertial Sensor's orientation
  *
@@ -148,12 +154,6 @@ imu_status_e_t imu_get_status(uint8_t port);
  * failed, setting errno.
  */
 int32_t imu_set_euler(uint8_t port, euler_s_t target);
-
-typedef enum class imu_status_e {
-	E_IMU_STATUS_CALIBRATING = 0x01,
-	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
-	                            // necessarily in an error state
-} imu_status_e_t;
 
 namespace c {
 #endif
