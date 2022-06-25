@@ -171,7 +171,7 @@ class Gps {
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_status_s_t get_status() const;
+	virtual pros::gps_status_s_t get_status() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
