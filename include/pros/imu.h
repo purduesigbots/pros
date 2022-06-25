@@ -46,10 +46,93 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double roll;
 	double yaw;
 } euler_s_t;
+
+/**
+ * Get a quaternion representing the Inertial Sensor's orientation
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The quaternion representing the sensor's orientation. If the
+ * operation failed, all the quaternion's members are filled with PROS_ERR_F and
+ * errno is set.
+ */
+quaternion_s_t imu_get_quaternion(uint8_t port);
+
+/**
+ * Get the Euler angles representing the Inertial Sensor's orientation
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The Euler angles representing the sensor's orientation. If the
+ * operation failed, all the structure's members are filled with PROS_ERR_F and
+ * errno is set.
+ */
+euler_s_t imu_get_euler(uint8_t port);
+
+/**
+ * Get the Inertial Sensor's raw gyroscope values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The raw gyroscope values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ */
+imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
+
+/**
+ * Get the Inertial Sensor's raw acceleroneter values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The raw accelerometer values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ */
+imu_accel_s_t imu_get_accel(uint8_t port);
+
+/**
+ * Get the Inertial Sensor's status
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The Inertial Sensor's status code, or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+imu_status_e_t imu_get_status(uint8_t port);
+
 namespace c {
 #endif
 
-typedef class enum imu_status_e {
+enum class imu_status_e {
 	E_IMU_STATUS_CALIBRATING = 0x01,
 	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
 	                            // necessarily in an error state
@@ -145,39 +228,6 @@ double imu_get_rotation(uint8_t port);
  */
 double imu_get_heading(uint8_t port);
 
-/**
- * Get a quaternion representing the Inertial Sensor's orientation
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The quaternion representing the sensor's orientation. If the
- * operation failed, all the quaternion's members are filled with PROS_ERR_F and
- * errno is set.
- */
-quaternion_s_t imu_get_quaternion(uint8_t port);
-
-/**
- * Get the Euler angles representing the Inertial Sensor's orientation
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The Euler angles representing the sensor's orientation. If the
- * operation failed, all the structure's members are filled with PROS_ERR_F and
- * errno is set.
- */
-euler_s_t imu_get_euler(uint8_t port);
 
 /**
  * Get the Inertial Sensor's pitch angle bounded by (-180,180)
@@ -225,53 +275,8 @@ double imu_get_roll(uint8_t port);
  */
 double imu_get_yaw(uint8_t port);
 
-/**
- * Get the Inertial Sensor's raw gyroscope values
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The raw gyroscope values. If the operation failed, all the
- * structure's members are filled with PROS_ERR_F and errno is set.
- */
-imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
 
-/**
- * Get the Inertial Sensor's raw acceleroneter values
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The raw accelerometer values. If the operation failed, all the
- * structure's members are filled with PROS_ERR_F and errno is set.
- */
-imu_accel_s_t imu_get_accel(uint8_t port);
 
-/**
- * Get the Inertial Sensor's status
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The Inertial Sensor's status code, or PROS_ERR if the operation
- * failed, setting errno.
- */
-imu_status_e_t imu_get_status(uint8_t port);
 
 // NOTE: not used
 // void imu_set_mode(uint8_t port, uint32_t mode);
