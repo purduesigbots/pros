@@ -129,14 +129,34 @@ imu_accel_s_t imu_get_accel(uint8_t port);
  */
 imu_status_e_t imu_get_status(uint8_t port);
 
-namespace c {
-#endif
+//Value set functions:
+/**
+ * Sets the current reading of the Inertial Sensor's euler values to
+ * target euler values. Will default to +/- 180 if target exceeds +/- 180.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target euler values for the euler values to be set to
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t imu_set_euler(uint8_t port, euler_s_t target);
 
-enum class imu_status_e {
+typedef enum class imu_status_e {
 	E_IMU_STATUS_CALIBRATING = 0x01,
 	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
 	                            // necessarily in an error state
 } imu_status_e_t;
+
+namespace c {
+#endif
 
 #define IMU_MINIMUM_DATA_RATE 5
 
@@ -394,26 +414,6 @@ int32_t imu_tare_euler(uint8_t port);
  * failed, setting errno.
  */
 int32_t imu_tare(uint8_t port);
-
-//Value set functions:
-/**
- * Sets the current reading of the Inertial Sensor's euler values to
- * target euler values. Will default to +/- 180 if target exceeds +/- 180.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \param  target
- * 				 Target euler values for the euler values to be set to
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed, setting errno.
- */
-int32_t imu_set_euler(uint8_t port, euler_s_t target);
 
 /**
  * Sets the current reading of the Inertial Sensor's rotation to target value
