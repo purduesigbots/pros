@@ -624,7 +624,7 @@ class MutexVar {
 	MutexVarLock<Var> lock() {
 		while (!mutex.take(TIMEOUT_MAX))
 			;
-		return {{mutex, var}};
+		return {mutex, var};
 	}
 };
 
