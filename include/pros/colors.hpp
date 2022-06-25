@@ -14,6 +14,14 @@
  */
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
+
+#define dark_grey dark_gray
+#define dark_slate_grey dark_slate_gray
+#define dim_grey dim_gray
+#define grey gray
+#define light_grey light_gray
+#define light_slate_grey light_slate_gray
+#define slate_grey slate_gray
 namespace pros{
 enum class Color{
   alice_blue = 0x00F0F8FF,
