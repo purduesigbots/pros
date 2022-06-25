@@ -235,8 +235,8 @@ imu_accel_s_t imu_get_accel(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-pros::imu_status_e_t imu_get_status(uint8_t port) {
-	pros::imu_status_e_t rtn = E_IMU_STATUS_ERROR;
+imu_status_e_t imu_get_status(uint8_t port) {
+	imu_status_e_t rtn = E_IMU_STATUS_ERROR;
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return rtn;
 	}
