@@ -71,8 +71,8 @@ double gps_get_error(uint8_t port) {
 	return_port(port - 1, rtv);
 }
 
-gps_status_s_t gps_get_status(uint8_t port) {
-	gps_status_s_t rtv = GPS_STATUS_ERR_INIT;
+pros::gps_status_s_t gps_get_status(uint8_t port) {
+	pros::gps_status_s_t rtv = GPS_STATUS_ERR_INIT;
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
 		return rtv;
 	}
