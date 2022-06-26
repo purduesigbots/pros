@@ -15,15 +15,9 @@
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
 
-#define dark_grey dark_gray
-#define dark_slate_grey dark_slate_gray
-#define dim_grey dim_gray
-#define grey gray
-#define light_grey light_gray
-#define light_slate_grey light_slate_gray
-#define slate_grey slate_gray
+
 namespace pros{
-enum class Color{
+enum class Color {
   alice_blue = 0x00F0F8FF,
   antique_white = 0x00FAEBD7,
   aqua = 0x0000FFFF,
@@ -49,6 +43,7 @@ enum class Color{
   dark_cyan = 0x00008B8B,
   dark_goldenrod = 0x00B8860B,
   dark_gray = 0x00A9A9A9,
+  dark_grey = dark_gray,
   dark_green = 0x00006400,
   dark_khaki = 0x00BDB76B,
   dark_magenta = 0x008B008B,
@@ -59,11 +54,13 @@ enum class Color{
   dark_salmon = 0x00E9967A,
   dark_sea_green = 0x008FBC8F,
   dark_slate_gray = 0x002F4F4F,
+  dark_slate_grey = dark_slate_gray,
   dark_turquoise = 0x0000CED1,
   dark_violet = 0x009400D3,
   deep_pink = 0x00FF1493,
   deep_sky_blue = 0x0000BFFF,
   dim_gray = 0x00696969,
+  dim_grey = dim_gray,
   dodger_blue = 0x001E90FF,
   fire_brick = 0x00B22222,
   floral_white = 0x00FFFAF0,
@@ -74,6 +71,7 @@ enum class Color{
   gold = 0x00FFD700,
   goldenrod = 0x00DAA520,
   gray = 0x00808080,
+  grey = gray,
   green = 0x00008000,
   green_yellow = 0x00ADFF2F,
   honeydew = 0x00F0FFF0,
@@ -92,11 +90,13 @@ enum class Color{
   light_goldenrod_yellow = 0x00FAFAD2,
   light_green = 0x0090EE90,
   light_gray = 0x00D3D3D3,
+  light_grey = light_gray,
   light_pink = 0x00FFB6C1,
   light_salmon = 0x00FFA07A,
   light_sea_green = 0x0020B2AA,
   light_sky_blue = 0x0087CEFA,
   light_slate_gray = 0x00778899,
+  light_slate_grey = light_slate_gray,
   light_steel_blue = 0x00B0C4DE,
   light_yellow = 0x00FFFFE0,
   lime = 0x0000FF00,
@@ -149,6 +149,7 @@ enum class Color{
   sky_blue = 0x0087CEEB,
   slate_blue = 0x006A5ACD,
   slate_gray = 0x00708090,
+  slate_grey = slate_gray,
   snow = 0x00FFFAFA,
   spring_green = 0x0000FF7F,
   steel_blue = 0x004682B4,
@@ -165,4 +166,5 @@ enum class Color{
   yellow_green = 0x009ACD32,
 };
 } // namespace pros
+
 #endif //_PROS_COLORS_HPP_
