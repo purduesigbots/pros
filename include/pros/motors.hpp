@@ -867,7 +867,7 @@ class MotorGroup {
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity);
 
 	private:
-	std::vector<Motor> _motors;
+	std::initializer_list<Motor> _motors;
 };
 
 namespace literals {
