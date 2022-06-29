@@ -864,8 +864,6 @@ class MotorGroup {
 	std::int32_t move_velocity(const std::int32_t velocity);
 	std::int32_t move_voltage(const std::int32_t voltage);
 	std::int32_t brake(void);
-	std::int32_t modify_profiled_velocity(const std::int32_t velocity);
-
 	private:
 	std::initializer_list<Motor> _motors;
 };
