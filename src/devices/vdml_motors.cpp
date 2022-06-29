@@ -267,56 +267,56 @@ MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) {
 std::int32_t MotorGroup::move(std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move(voltage) != PROS_ERR?1:PROS_ERR;
+		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move(voltage) != PROS_ERR?1:PROS_ERR;
+		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_absolute(position, velocity) != PROS_ERR?1:PROS_ERR;
+		out = motor.move_absolute(position, velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_relative(position, velocity) != PROS_ERR?1:PROS_ERR;
+		out = motor.move_relative(position, velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_velocity(velocity) != PROS_ERR?1:PROS_ERR;
+		out = motor.move_velocity(velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_voltage(voltage) != PROS_ERR?1:PROS_ERR;
+		out = motor.move_voltage(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::brake(void) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.brake() != PROS_ERR?1:PROS_ERR;
+		out = motor.brake() != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
 std::int32_t MotorGroup::modify_profiled_velocity(const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.modify_profiled_velocity(velocity) != PROS_ERR?1:PROS_ERR;
+		out = motor.modify_profiled_velocity(velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
