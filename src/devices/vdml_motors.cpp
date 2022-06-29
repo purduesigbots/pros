@@ -16,6 +16,7 @@
 namespace pros {
 using namespace pros::c;
 
+
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
@@ -259,6 +260,68 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
+MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) {
+	_motors = motors;
+}
+
+std::int32_t MotorGroup::move(std::int32_t voltage) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move(voltage) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::operator=(std::int32_t volatile) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move(voltage) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move_absolute(position, velocity) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move_relative(position, velocity) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move_velocity(velocity) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::move_voltage(voltage) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::brake(void) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::brake() != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::modify_profiled_velocity(const std::int32_t velocity) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor::modify_profiled_velocity(velocity) != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+
+
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m) {

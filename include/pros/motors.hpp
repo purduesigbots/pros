@@ -20,6 +20,8 @@
 #define _PROS_MOTORS_HPP_
 
 #include <cstdint>
+#include<vector>
+#include<initializer_list>
 
 #include "pros/motors.h"
 
@@ -849,6 +851,23 @@ class Motor {
 
 	private:
 	const std::uint8_t _port;
+};
+
+class MotorGroup {
+	public:
+	explicit MotorGroup(const std::initializer_list<Motor> motors);
+
+	std::int32_t operator=(std::int32_t);
+	std::int32_t move(std::int32_t voltage);
+	std::int32_t move_absolute(const double position, const std::int32_t velocity);
+	std::int32_t move_relative(const double position, const std::int32_t velocity);
+	std::int32_t move_velocity(const std::int32_t velocity);
+	std::int32_t move_voltage(const std::int32_t voltage);
+	std::int32_t brake(void);
+	std::int32_t modify_profiled_velocity(const std::int32_t velocity);
+
+	private:
+	std::vector<Motor> _motors;
 };
 
 namespace literals {
