@@ -313,12 +313,6 @@ std::int32_t MotorGroup::brake(void) {
 	}
 	return out;
 }
-std::int32_t MotorGroup::modify_profiled_velocity(const std::int32_t velocity) {
-	int32_t out = 0;
-	for(Motor motor:_motors) {
-	}
-	return out;
-}
 
 
 
