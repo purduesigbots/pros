@@ -29,11 +29,11 @@ double Imu::get_heading() const {
 	return pros::c::imu_get_heading(_port);
 }
 
-pros::quaternion_s_t Imu::get_quaternion() const {
+pros::c::quaternion_s_t Imu::get_quaternion() const {
 	return pros::c::imu_get_quaternion(_port);
 }
 
-pros::euler_s_t Imu::get_euler() const {
+pros::c::euler_s_t Imu::get_euler() const {
 	return pros::c::imu_get_euler(_port);
 }
 
@@ -49,15 +49,15 @@ double Imu::get_yaw() const {
 	return get_euler().yaw;
 }
 
-pros::imu_gyro_s_t Imu::get_gyro_rate() const {
+pros::c::imu_gyro_s_t Imu::get_gyro_rate() const {
 	return pros::c::imu_get_gyro_rate(_port);
 }
 
-pros::imu_accel_s_t Imu::get_accel() const {
+pros::c::imu_accel_s_t Imu::get_accel() const {
 	return pros::c::imu_get_accel(_port);
 }
 
-pros::imu_status_e_t Imu::get_status() const {
+pros::c::imu_status_e_t Imu::get_status() const {
 	return pros::c::imu_get_status(_port);
 }
 
