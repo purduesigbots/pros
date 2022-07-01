@@ -54,6 +54,101 @@ typedef enum imu_status_e {
 	                            // necessarily in an error state
 } imu_status_e_t;
 
+#ifdef __cplusplus
+namespace c {
+#endif
+
+#define IMU_MINIMUM_DATA_RATE 5
+
+/**
+ * Calibrate IMU
+ *
+ * Calibration takes approximately 2 seconds, but this function only blocks
+ * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
+ * with a minimum blocking time of 5ms.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
+ *
+ * \param port
+ *        The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed setting errno.
+ */
+int32_t imu_reset(uint8_t port);
+
+
+/**
+ * Set the Inertial Sensor's refresh interval in milliseconds.
+ *
+ * The rate may be specified in increments of 5ms, and will be rounded down to
+ * the nearest increment. The minimum allowable refresh rate is 5ms. The default
+ * rate is 10ms.
+ *
+ * As values are copied into the shared memory buffer only at 10ms intervals,
+ * setting this value to less than 10ms does not mean that you can poll the
+ * sensor's values any faster. However, it will guarantee that the data is as
+ * recent as possible.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param port
+ *		  The V5 Inertial Sensor port number from 1-21
+ * \param rate The data refresh interval in milliseconds
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t imu_set_data_rate(uint8_t port, uint32_t rate);
+
+/**
+ * Get the total number of degrees the Inertial Sensor has spun about the z-axis
+ *
+ * This value is theoretically unbounded. Clockwise rotations are represented
+ * with positive degree values, while counterclockwise rotations are represented
+ * with negative ones.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The degree value or PROS_ERR_F if the operation failed, setting
+ * errno.
+ */
+double imu_get_rotation(uint8_t port);
+
+/**
+ * Get the Inertial Sensor's heading relative to the initial direction of its
+ * x-axis
+ *
+ * This value is bounded by [0,360). Clockwise rotations are represented with
+ * positive degree values, while counterclockwise rotations are represented with
+ * negative ones.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The degree value or PROS_ERR_F if the operation failed, setting
+ * errno.
+ */
+double imu_get_heading(uint8_t port);
+
+
 /**
  * Get a quaternion representing the Inertial Sensor's orientation
  *
@@ -155,100 +250,6 @@ imu_status_e_t imu_get_status(uint8_t port);
  * failed, setting errno.
  */
 int32_t imu_set_euler(uint8_t port, euler_s_t target);
-
-#ifdef __cplusplus
-namespace c {
-#endif
-
-#define IMU_MINIMUM_DATA_RATE 5
-
-/**
- * Calibrate IMU
- *
- * Calibration takes approximately 2 seconds, but this function only blocks
- * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
- * with a minimum blocking time of 5ms.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
- *
- * \param port
- *        The V5 Inertial Sensor port number from 1-21
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed setting errno.
- */
-int32_t imu_reset(uint8_t port);
-
-
-/**
- * Set the Inertial Sensor's refresh interval in milliseconds.
- *
- * The rate may be specified in increments of 5ms, and will be rounded down to
- * the nearest increment. The minimum allowable refresh rate is 5ms. The default
- * rate is 10ms.
- *
- * As values are copied into the shared memory buffer only at 10ms intervals,
- * setting this value to less than 10ms does not mean that you can poll the
- * sensor's values any faster. However, it will guarantee that the data is as
- * recent as possible.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param port
- *		  The V5 Inertial Sensor port number from 1-21
- * \param rate The data refresh interval in milliseconds
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed, setting errno.
- */
-int32_t imu_set_data_rate(uint8_t port, uint32_t rate);
-
-/**
- * Get the total number of degrees the Inertial Sensor has spun about the z-axis
- *
- * This value is theoretically unbounded. Clockwise rotations are represented
- * with positive degree values, while counterclockwise rotations are represented
- * with negative ones.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
- * errno.
- */
-double imu_get_rotation(uint8_t port);
-
-/**
- * Get the Inertial Sensor's heading relative to the initial direction of its
- * x-axis
- *
- * This value is bounded by [0,360). Clockwise rotations are represented with
- * positive degree values, while counterclockwise rotations are represented with
- * negative ones.
- *
- * This function uses the following values of errno when an error state is
- * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
- * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
- *
- * \param  port
- * 				 The V5 Inertial Sensor port number from 1-21
- * \return The degree value or PROS_ERR_F if the operation failed, setting
- * errno.
- */
-double imu_get_heading(uint8_t port);
 
 
 /**
