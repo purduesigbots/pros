@@ -1,5 +1,6 @@
 /**
  * \file pros/gps.h
+ * \ingroup c-gps
  *
  * Contains prototypes for functions related to the VEX GPS.
  *
@@ -9,11 +10,14 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-gps VEX GPS Sensor C API
+ * \note For a pros-specific usage guide on the GPS, please check out our article [here.](@ref gps)
  */
 
 #ifndef _PROS_GPS_H_
@@ -26,26 +30,60 @@
 extern "C" {
 namespace pros {
 #endif	
+
+/**
+ * \ingroup c-gps
+ */
+
+/**
+ * \addtogroup c-gps
+ *  @{
+ */
+
+/**
+ * \struct gps_status_s_t
+ */
 typedef struct __attribute__((__packed__)) gps_status_s {
-	double x;      ///< X Position (meters)
-	double y;      ///< Y Position (meters)
-	double pitch;  ///< Percieved Pitch based on GPS + IMU
-	double roll;   ///< Percieved Roll based on GPS + IMU
-	double yaw;    ///< Percieved Yaw based on GPS + IMU
+	/// X Position (meters)
+	double x;
+	/// Y Position (meters)
+	double y;
+	/// Percieved Pitch based on GPS + IMU
+	double pitch;
+	/// Percieved Roll based on GPS + IMU
+	double roll;
+	/// Percieved Yaw based on GPS + IMU
+	double yaw;
 } gps_status_s_t;
 
+/**
+ * \struct gps_raw_s
+ */
 struct gps_raw_s {
-	double x;  ///< Percieved Pitch based on GPS + IMU
-	double y;  ///< Percieved Roll based on GPS + IMU
-	double z;  ///< Percieved Yaw based on GPS + IMU
+	/// Percieved Pitch based on GPS + IMU
+	double x;
+	/// Percieved Roll based on GPS + IMU
+	double y;
+	/// Percieved Yaw based on GPS + IMU
+	double z;
 };
 
+/**
+ * \struct gps_accel_s_t
+ * 
+ */
 typedef struct gps_raw_s gps_accel_s_t;
+
+/**
+ * \struct gps_gyro_s_t
+ * 
+ */
 typedef struct gps_raw_s gps_gyro_s_t;
 
 #ifdef __cplusplus
 namespace c {
 #endif
+
 
 /**
  * Set the GPS's offset relative to the center of turning in meters,
@@ -71,6 +109,20 @@ namespace c {
  *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * #define X_OFFSET .225
+ * #define Y_OFFSET .223
+ * #define X_INITIAL 1.54
+ * #define Y_INITIAL 1.14
+ * #define HEADING_INITIAL 90
+ * 
+ * void initialize() {
+ *   gps_initialize_full(GPS_PORT, X_OFFSET, Y_OFFSET, X_INITIAL, Y_INITIAL, HEADING_INITIAL);
+ * }
+ * \endcode
  */
 int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset,
                             double yOffset);
@@ -92,6 +144,17 @@ int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, doub
  * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * #define X_OFFSET -.225
+ * #define Y_OFFSET .225
+ * 
+ * void initialize() {
+ *   gps_set_offset(GPS_PORT, X_OFFSET, Y_OFFSET);
+ * }
+ * \endcode
  */
 int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
 
@@ -162,6 +225,22 @@ gps_accel_s_t gps_get_accel(uint8_t port);
  * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   int *x;
+ *   int *y;
+ * 
+ *   while (true) {
+ *     gps_get_offset(GPS_PORT, x, y);
+ *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", *x, *y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
 
@@ -184,6 +263,18 @@ int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
  *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * #define X_INITIAL -1.15
+ * #define Y_INITIAL 1.45
+ * #define HEADING_INITIAL 90
+ * 
+ * void initialize() {
+ *   gps_set_position(GPS_PORT, X_INITIAL, Y_INITIAL, HEADING_INITIAL);
+ * }
+ * \endcode
  */
 int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial);
 
@@ -202,6 +293,16 @@ int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double 
  * 				 Data rate in milliseconds (Minimum: 5 ms)
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * #define GPS_DATA_RATE 5
+ * 
+ * void initialize() {
+ *   gps_set_data_rate(GPS_PORT, GPS_DATA_RATE);
+ * }
+ * \endcode
  */
 int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
 
@@ -219,10 +320,58 @@ int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
  *
  * \return Possible RMS (Root Mean Squared) error in meters for GPS position.
  * If the operation failed, returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   double error;
+ *   error = gps_get_error(GPS_PORT);
+ * }
+ * \endcode
  */
 double gps_get_error(uint8_t port);
 
 /**
+<<<<<<< HEAD
+=======
+ * Gets the position and roll, yaw, and pitch of the GPS.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ *
+ * \return A struct (gps_status_s_t) containing values mentioned above.
+ * If the operation failed, all the structure's members are filled with
+ * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   struct gps_status_s_t status;
+ * 
+ *   while (true) {
+ *     status = gps_get_status(GPS_PORT);
+ *     screen_print(TEXT_MEDIUM, 1, "x: %3f, y: %3f, pitch: %3f", status.x, status.y);
+ *     screen_print(TEXT_MEDIUM, 2, "yaw: %3f, roll: %3f", status.pitch, status.yaw);
+ *     screen_print(TEXT_MEDIUM, 3, "roll: %3f", status.roll);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
+ */
+gps_status_s_t gps_get_status(uint8_t port);
+
+/**
+>>>>>>> 84fecedf3552b22e3ced9bb4285d160c3b27c5fe
  * Get the heading in [0,360) degree values.
  *
  * This function uses the following values of errno when an error state is
@@ -236,6 +385,20 @@ double gps_get_error(uint8_t port);
  *
  * \return The heading in [0,360) degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   double heading;
+ * 
+ *   while (true) {
+ *     heading = gps_get_heading(GPS_PORT);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_heading(uint8_t port);
 
@@ -253,6 +416,20 @@ double gps_get_heading(uint8_t port);
  *
  * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation
  * fails, returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   double heading;
+ * 
+ *   while (true) {
+ *     heading = gps_get_heading_raw(GPS_PORT);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_heading_raw(uint8_t port);
 
@@ -269,6 +446,17 @@ double gps_get_heading_raw(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \return The elased heading in degrees. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   double elapsed_rotation;
+ * 
+ *   elapsed_rotation = gps_get_rotation(GPS_PORT);
+ * }
+ * \endcode
  */
 double gps_get_rotation(uint8_t port);
 
@@ -287,6 +475,15 @@ double gps_get_rotation(uint8_t port);
  * 				 Target rotation value to set rotation value to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   gps_set_rotation(GPS_PORT, 60);
+ * }
+ * \endcode
  */
 int32_t gps_set_rotation(uint8_t port, double target);
 
@@ -303,9 +500,83 @@ int32_t gps_set_rotation(uint8_t port, double target);
  * 				 The V5 GPS port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void initialize() {
+ *   gps_tare_rotation(GPS_PORT);
+ * }
+ * \endcode
  */
 int32_t gps_tare_rotation(uint8_t port);
 
+<<<<<<< HEAD
+=======
+/**
+ * Get the GPS's raw gyroscope values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \return The raw gyroscope values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   struct gps_gyro_s_t gyro;
+ * 
+ *   while (true) {
+ *     gyro = gps_get_gyro_rate(GPS_PORT);
+ *     screen_print(TEXT_MEDIUM, 1, "gyroscope- x: %3f, y: %3f, z: %3f", gyro.x, gyro.y, gyro.z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
+ */
+gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
+
+/**
+ * Get the GPS's raw accelerometer values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS's port number from 1-21
+ * \return The raw accelerometer values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ * 
+ * void opcontrol() {
+ *   struct gps_accel_s_t accel;
+ * 
+ *   while (true) {
+ *     accel = gps_get_accel(GPS_PORT);
+ *     screen_print(TEXT_MEDIUM, 1, "accleration- x: %3f, y: %3f, z: %3f", accel.x, accel.y, accel.z);
+ *   }
+ * }
+ * \endcode
+ */
+gps_accel_s_t gps_get_accel(uint8_t port);
+>>>>>>> 84fecedf3552b22e3ced9bb4285d160c3b27c5fe
+
+///@}
 
 #ifdef __cplusplus
 }

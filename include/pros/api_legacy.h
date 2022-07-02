@@ -1,5 +1,6 @@
 /**
  * \file pros/api_legacy.h
+ * \ingroup api-legacy
  *
  * PROS 2 Legacy API header
  *
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup api-legacy Legacy API
+ * \note Using this functionality requires including "pros/api_legacy.h" in addition to "api.h".
  */
 
 #ifndef _PROS_API_LEGACY_H_
@@ -31,6 +35,17 @@
 #define _CNAMESPACE
 #endif
 
+/**
+ * \ingroup api-legacy
+ */
+
+/**
+ * \addtogroup api-legacy
+ *  @{
+ */
+
+/// \name ADI Functions
+///@{
 /**
  * From adi.h
  */
@@ -51,9 +66,18 @@
 #define ultrasonicInit(portEcho, portPing) adi_ultrasonic_init(portEcho, portPing)
 #define ultrasonicShutdown(ult) adi_ultrasonic_shutdown(ult)
 
+///@}
+
+/// \name Typedefs
+///@{
+
 typedef _CNAMESPACE adi_encoder_t Encoder;
 typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 
+///@}
+
+/// \name LCD Functions
+///@{
 /**
  * From llemu.h
  */
@@ -65,6 +89,10 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 #define lcdPrint(line, fmt, ...) lcd_print(line, fmt, __VA_ARGS__)
 #define lcdSetText(line, text) lcd_set_text(line, text)
 
+///@}
+
+/// \name Miscallaneous Functions
+///@{
 /**
  * From misc.h
  */
@@ -73,7 +101,10 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 #define isOnline competition_is_connected
 #define isJoystickConnected(id) controller_is_connected(id)
 #define joystickGetAnalog(id, channel) controller_get_analog(id, channel)
+///@}
 
+/// \name RTOS Functions
+///@{
 /**
  * From rtos.h
  */
@@ -95,12 +126,20 @@ typedef _CNAMESPACE adi_ultrasonic_t Ultrasonic;
 typedef _NAMESPACE task_t TaskHandle;
 typedef _NAMESPACE mutex_t Mutex;
 
+///@}
+
+/// \name Motor Functions
+///@{
 /**
  * From motors.h
  */
 #define motorSet(port, speed) motor_move(port, speed)
 #define motorGet(port) motor_get_voltage(port)
 #define motorStop(port) motor_move(port, 0)
+
+///@}
+
+///@}
 
 #undef _NAMESPACE
 #undef _CNAMESPACE

@@ -1,5 +1,6 @@
 /**
  * \file pros/imu.h
+ * \ingroup c-imu
  *
  * Contains prototypes for functions related to the VEX Inertial sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup c-imu VEX Inertial Sensor C API
  */
 
 #ifndef _PROS_IMU_H_
@@ -27,21 +30,64 @@ extern "C" {
 namespace pros {
 #endif
 	typedef struct __attribute__((__packed__)) quaternion_s {
+
+/**
+ * \ingroup c-imu
+ * */
+
+/**
+ * \addtogroup c-imu
+ *  @{
+ */
+
+/**
+ * \enum imu_status_e_t
+ * @brief Indicates IMU status.
+ */
+typedef enum imu_status_e {
+	/// The IMU is calibrating
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	/// Used to indicate that an error state was reached in the imu_get_status function,\
+	not that the IMU is necessarily in an error state
+	E_IMU_STATUS_ERROR = 0xFF,
+} imu_status_e_t;
+
+/**
+ * \struct quaternion_s_t
+ */
+typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
 	double y;
 	double z;
 	double w;
 } quaternion_s_t;
 
+/**
+ * \struct imu_raw_s
+ * 
+ */
 struct imu_raw_s {
 	double x;
 	double y;
 	double z;
 };
 
+/**
+ * \struct imu_gyro_s_t
+ * 
+ */
 typedef struct imu_raw_s imu_gyro_s_t;
+
+/**
+ * \struct imu_accel_s_t
+ * 
+ */
 typedef struct imu_raw_s imu_accel_s_t;
 
+/**
+ * \struct euler_s_t
+ * 
+ */
 typedef struct __attribute__((__packed__)) euler_s {
 	double pitch;
 	double roll;
@@ -58,6 +104,9 @@ typedef enum imu_status_e {
 namespace c {
 #endif
 
+/**
+ * \def IMU_MINIMUM_DATA_RATE
+ */
 #define IMU_MINIMUM_DATA_RATE 5
 
 /**
@@ -77,9 +126,26 @@ namespace c {
  *        The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void initialize() {
+ *   imu_reset(IMU_PORT);
+ *   int time = millis();
+ *   int iter = 0;
+ *   while (imu_get_status(IMU_PORT) & E_IMU_STATUS_CALIBRATING) {
+ *     printf("IMU calibrating... %d\n", iter);
+ *     iter += 10;
+ *     delay(10);
+ *   }
+ *   // should print about 2000 ms
+ *   printf("IMU is done calibrating (took %d ms)\n", iter - time);
+ * }
+ * \endcode
  */
 int32_t imu_reset(uint8_t port);
-
 
 /**
  * Set the Inertial Sensor's refresh interval in milliseconds.
@@ -104,6 +170,11 @@ int32_t imu_reset(uint8_t port);
  * \param rate The data refresh interval in milliseconds
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * 
+ * \endcode
  */
 int32_t imu_set_data_rate(uint8_t port, uint32_t rate);
 
@@ -124,6 +195,18 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return The degree value or PROS_ERR_F if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("IMU get rotation: %f degrees\n", imu_get_rotation(IMU_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double imu_get_rotation(uint8_t port);
 
@@ -145,6 +228,18 @@ double imu_get_rotation(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return The degree value or PROS_ERR_F if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("IMU get heading: %f degrees\n", imu_get_heading(IMU_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double imu_get_heading(uint8_t port);
 
@@ -163,6 +258,19 @@ double imu_get_heading(uint8_t port);
  * \return The quaternion representing the sensor's orientation. If the
  * operation failed, all the quaternion's members are filled with PROS_ERR_F and
  * errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     quaternion_s_t qt = imu_get_quaternion(IMU_PORT);
+ *     printf("IMU quaternion: {x: %f, y: %f, z: %f, w: %f}\n", qt.x, qt.y, qt.z, qt.w);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 quaternion_s_t imu_get_quaternion(uint8_t port);
 
@@ -180,6 +288,19 @@ quaternion_s_t imu_get_quaternion(uint8_t port);
  * \return The Euler angles representing the sensor's orientation. If the
  * operation failed, all the structure's members are filled with PROS_ERR_F and
  * errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     euler_s_t eu = imu_get_euler(IMU_PORT);
+ *     printf("IMU euler angles: {pitch: %f, roll: %f, yaw: %f}\n", eu.pitch, eu.roll, eu.yaw);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 euler_s_t imu_get_euler(uint8_t port);
 
@@ -196,6 +317,20 @@ euler_s_t imu_get_euler(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return The raw gyroscope values. If the operation failed, all the
  * structure's members are filled with PROS_ERR_F and errno is set.
+ * \return The pitch angle, or PROS_ERR_F if the operation failed, setting
+ * errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("IMU pitch: %f\n", imu_get_pitch(IMU_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
 
@@ -210,8 +345,19 @@ imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \return The raw accelerometer values. If the operation failed, all the
- * structure's members are filled with PROS_ERR_F and errno is set.
+ * \return The roll angle, or PROS_ERR_F if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("IMU roll: %f\n", imu_get_roll(IMU_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 imu_accel_s_t imu_get_accel(uint8_t port);
 
@@ -226,8 +372,19 @@ imu_accel_s_t imu_get_accel(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \return The Inertial Sensor's status code, or PROS_ERR if the operation
- * failed, setting errno.
+ * \return The yaw angle, or PROS_ERR_F if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("IMU yaw: %f\n", imu_get_yaw(IMU_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 imu_status_e_t imu_get_status(uint8_t port);
 
@@ -244,10 +401,21 @@ imu_status_e_t imu_get_status(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \param  target
- * 				 Target euler values for the euler values to be set to
- * \return 1 if the operation was successful or PROS_ERR if the operation
- * failed, setting errno.
+ * \return The raw gyroscope values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     imu_gyro_s_t gyro = imu_get_gyro_rate(IMU_PORT);
+ *     printf("IMU gyro values: {x: %f, y: %f, z: %f}\n", gyro.x, gyro.y, gyro.z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_euler(uint8_t port, euler_s_t target);
 
@@ -263,8 +431,21 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \return The pitch angle, or PROS_ERR_F if the operation failed, setting
- * errno.
+ * \return The raw accelerometer values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     imu_accel_s_t accel = imu_get_accel(IMU_PORT);
+ *     printf("IMU accel values: {x: %f, y: %f, z: %f}\n", accel.x, accel.y, accel.z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double imu_get_pitch(uint8_t port);
 
@@ -279,7 +460,26 @@ double imu_get_pitch(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \return The roll angle, or PROS_ERR_F if the operation failed, setting errno.
+ * \return The Inertial Sensor's status code, or PROS_ERR if the operation
+ * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void initialize() {
+ *   imu_reset(IMU_PORT);
+ *   int time = millis();
+ *   int iter = 0;
+ *   while (imu_get_status(IMU_PORT) & E_IMU_STATUS_CALIBRATING) {
+ *     printf("IMU calibrating... %d\n", iter);
+ *     iter += 10;
+ *     delay(10);
+ *   }
+ *   // should print about 2000 ms
+ *   printf("IMU is done calibrating (took %d ms)\n", iter - time);
+ * }
+ * \endcode
  */
 double imu_get_roll(uint8_t port);
 
@@ -305,7 +505,9 @@ double imu_get_yaw(uint8_t port);
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
 
-//Value reset functions:
+/// \name Value Reset Functions
+///@{
+
 /**
  * Resets the current reading of the Inertial Sensor's heading to zero
  *
@@ -319,6 +521,20 @@ double imu_get_yaw(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_heading(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_heading(uint8_t port);
 
@@ -335,6 +551,20 @@ int32_t imu_tare_heading(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_rotation(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_rotation(uint8_t port);
 
@@ -351,6 +581,18 @@ int32_t imu_tare_rotation(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_pitch(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_pitch(uint8_t port);
 
@@ -367,6 +609,20 @@ int32_t imu_tare_pitch(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_roll(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_roll(uint8_t port);
 
@@ -383,6 +639,20 @@ int32_t imu_tare_roll(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_yaw(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_yaw(uint8_t port);
 
@@ -399,6 +669,20 @@ int32_t imu_tare_yaw(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare_euler(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare_euler(uint8_t port);
 
@@ -415,8 +699,60 @@ int32_t imu_tare_euler(uint8_t port);
  * 				 The V5 Inertial Sensor port number from 1-21
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_tare(IMU_PORT);
+ *     }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_tare(uint8_t port);
+
+///@}
+
+/// \name Value Set Functions
+///@{
+
+/**
+ * Sets the current reading of the Inertial Sensor's euler values to
+ * target euler values. Will default to +/- 180 if target exceeds +/- 180.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \param  target
+ * 				 Target euler values for the euler values to be set to
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_set_euler(IMU_PORT, {45,45,45});
+ *     }
+ *     pros::delay(20);
+ *   }
+ * }
+ * \endcode
+ */
+int32_t imu_set_euler(uint8_t port, euler_s_t target);
 
 /**
  * Sets the current reading of the Inertial Sensor's rotation to target value
@@ -433,6 +769,20 @@ int32_t imu_tare(uint8_t port);
  * 				 Target value for the rotation value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_set_rotation(IMU_PORT, 45);
+ *     }
+ *     pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_rotation(uint8_t port, double target);
 
@@ -452,6 +802,20 @@ int32_t imu_set_rotation(uint8_t port, double target);
  * 				 Target value for the heading value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_set_heading(IMU_PORT, 45);
+ *     }
+ *     pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_heading(uint8_t port, double target);
 
@@ -471,6 +835,20 @@ int32_t imu_set_heading(uint8_t port, double target);
  * 				 Target value for the pitch value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_set_pitch(IMU_PORT, 45);
+ *     }
+ *     pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_pitch(uint8_t port, double target);
 
@@ -490,6 +868,20 @@ int32_t imu_set_pitch(uint8_t port, double target);
  * 				 Target value for the roll value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       imu_set_roll(IMU_PORT, 45);
+ *     }
+ *     pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_roll(uint8_t port, double target);
 
@@ -509,8 +901,25 @@ int32_t imu_set_roll(uint8_t port, double target);
  * 				 Target value for the yaw value to be set to
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * #define IMU_PORT 1void opcontrol() {
+ * 
+ * while (true) {
+ *   if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *     imu_set_yaw(IMU_PORT, 45);
+ *   }
+ *   pros::delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t imu_set_yaw(uint8_t port, double target);
+
+///@}
+
+///@}
 
 #ifdef __cplusplus
 }

@@ -13,6 +13,7 @@
 #include "pros/gps.hpp"
 
 namespace pros {
+inline namespace v5 {
 
 std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
                                   double yOffset) const {
@@ -71,4 +72,5 @@ pros::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
 }
 
+}
 }  // namespace pros

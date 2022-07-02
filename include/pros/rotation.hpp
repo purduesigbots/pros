@@ -1,5 +1,6 @@
 /**
  * \file pros/rotation.hpp
+ * \ingroup cpp-rotation
  *
  * Contains prototypes for functions related to the VEX Rotation Sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-rotation VEX Rotation Sensor C++ API
  */
 #ifndef _PROS_ROTATION_HPP_
 #define _PROS_ROTATION_HPP_
@@ -23,7 +26,15 @@
 #include "pros/rotation.h"
 
 namespace pros {
+inline namespace v5 {
+/**
+ * \addtogroup cpp-rotation
+ */
 class Rotation {
+	/**
+	 * \ingroup cpp-rotation
+	 *  @{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -184,7 +195,9 @@ class Rotation {
 	 * errno.
 	 */
 	virtual std::int32_t get_reversed();
+	///@}
 };
+}
 }  // namespace pros
 
 #endif

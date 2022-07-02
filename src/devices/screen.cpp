@@ -17,12 +17,12 @@
 namespace pros {
 namespace screen {
 
-    std::uint32_t set_pen(const std::uint32_t color){
-        return pros::c::screen_set_pen(color);
+    std::uint32_t set_pen(pros::Color color){
+        return pros::c::screen_set_pen(static_cast<pros::c::color_e_t>(color));
     }
     
-    std::uint32_t set_eraser(const std::uint32_t color){
-        return pros::c::screen_set_eraser(color);
+    std::uint32_t set_eraser(pros::Color color){
+        return pros::c::screen_set_eraser(static_cast<pros::c::color_e_t>(color));
     }
 
     std::uint32_t get_pen(){
