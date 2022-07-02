@@ -22,6 +22,12 @@
 #include "pros/imu.h"
 
 namespace pros {
+
+enum class imu_status_e_c {
+	imu_status_calibrating = 0x01,
+	imu_status_error = 0xFF,
+}
+
 class Imu {
 	const std::uint8_t _port;
 
