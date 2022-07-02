@@ -334,8 +334,6 @@ int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
 double gps_get_error(uint8_t port);
 
 /**
-<<<<<<< HEAD
-=======
  * Gets the position and roll, yaw, and pitch of the GPS.
  *
  * This function uses the following values of errno when an error state is
@@ -371,7 +369,6 @@ double gps_get_error(uint8_t port);
 gps_status_s_t gps_get_status(uint8_t port);
 
 /**
->>>>>>> 84fecedf3552b22e3ced9bb4285d160c3b27c5fe
  * Get the heading in [0,360) degree values.
  *
  * This function uses the following values of errno when an error state is
@@ -512,8 +509,6 @@ int32_t gps_set_rotation(uint8_t port, double target);
  */
 int32_t gps_tare_rotation(uint8_t port);
 
-<<<<<<< HEAD
-=======
 /**
  * Get the GPS's raw gyroscope values
  *
@@ -574,7 +569,6 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
  * \endcode
  */
 gps_accel_s_t gps_get_accel(uint8_t port);
->>>>>>> 84fecedf3552b22e3ced9bb4285d160c3b27c5fe
 
 ///@}
 
