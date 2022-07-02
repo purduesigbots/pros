@@ -29,16 +29,6 @@
 extern "C" {
 namespace pros {
 #endif
-	typedef struct __attribute__((__packed__)) quaternion_s {
-
-/**
- * \ingroup c-imu
- * */
-
-/**
- * \addtogroup c-imu
- *  @{
- */
 
 /**
  * \enum imu_status_e_t
@@ -103,6 +93,14 @@ typedef enum imu_status_e {
 #ifdef __cplusplus
 namespace c {
 #endif
+/**
+ * \ingroup c-imu
+ * */
+
+/**
+ * \addtogroup c-imu
+ *  @{
+ */
 
 /**
  * \def IMU_MINIMUM_DATA_RATE
@@ -315,8 +313,6 @@ euler_s_t imu_get_euler(uint8_t port);
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
- * \return The raw gyroscope values. If the operation failed, all the
- * structure's members are filled with PROS_ERR_F and errno is set.
  * \return The pitch angle, or PROS_ERR_F if the operation failed, setting
  * errno.
  * 
