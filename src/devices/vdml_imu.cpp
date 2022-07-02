@@ -62,7 +62,7 @@ pros::imu_status_e_t Imu::get_status() const {
 }
 
 bool Imu::is_calibrating() const {
-	return get_status() & static_cast<pros::imu_status_e_t> (imu_status_calibrating);
+	return get_status() & static_cast<pros::imu_status_e_t> (imu_status_e_c::imu_status_calibrating);
 }
 
 std::int32_t Imu::tare_heading() const {
