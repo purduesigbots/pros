@@ -29,23 +29,10 @@
 extern "C" {
 namespace pros {
 #endif
-
-/**
- * \enum imu_status_e_t
- * @brief Indicates IMU status.
- */
-typedef enum imu_status_e {
-	/// The IMU is calibrating
-	E_IMU_STATUS_CALIBRATING = 0x01,
-	/// Used to indicate that an error state was reached in the imu_get_status function,\
-	not that the IMU is necessarily in an error state
-	E_IMU_STATUS_ERROR = 0xFF,
-} imu_status_e_t;
-
 /**
  * \struct quaternion_s_t
  */
-typedef struct __attribute__((__packed__)) quaternion_s {
+	typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
 	double y;
 	double z;
@@ -84,15 +71,6 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
-typedef enum imu_status_e {
-	E_IMU_STATUS_CALIBRATING = 0x01,
-	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
-	                            // necessarily in an error state
-} imu_status_e_t;
-
-#ifdef __cplusplus
-namespace c {
-#endif
 /**
  * \ingroup c-imu
  * */
@@ -103,8 +81,22 @@ namespace c {
  */
 
 /**
+ * \enum imu_status_e_t
+ * @brief Indicates IMU status.
+ */
+typedef enum imu_status_e {
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
+	                            // necessarily in an error state
+} imu_status_e_t;
+
+#ifdef __cplusplus
+namespace c {
+#endif
+/**
  * \def IMU_MINIMUM_DATA_RATE
  */
+
 #define IMU_MINIMUM_DATA_RATE 5
 
 /**
