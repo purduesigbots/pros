@@ -864,6 +864,11 @@ class MotorGroup {
 	std::int32_t move_velocity(const std::int32_t velocity);
 	std::int32_t move_voltage(const std::int32_t voltage);
 	std::int32_t brake(void);
+	std::int32_t set_zero_position(const double position);
+	std::int32_t set_reversed(const bool reversed);
+	std::int32_t set_voltage_limit(const std::int32_t limit);
+	std::int32_t set_gearing(const motor_gearset_e_t gearset);
+	std::int32_t set_encoder_limits(const motor_encoder_units_e_t units);
 	private:
 	std::initializer_list<Motor> _motors;
 };

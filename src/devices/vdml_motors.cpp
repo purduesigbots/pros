@@ -314,6 +314,43 @@ std::int32_t MotorGroup::brake(void) {
 	return out;
 }
 
+std::int32_t MotorGroup::set_zero_position(const double position) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor.set_zero_position(position) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::set_reversed(const bool reversed) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor.set_reversed(reversed) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor.set_voltage_limit(limit) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor.set_gearing(gearset) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+std::int32_t set_encoder_limits(const motor_encoder_units_e_t units) {
+	int32_t out = 0;
+	for(Motor motor:_motors) {
+		out = motor.set_encoder_limits(units) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+	}
+	return out;
+}
+
+
 
 
 namespace literals {
