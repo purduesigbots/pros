@@ -868,7 +868,7 @@ class MotorGroup {
 	std::int32_t set_reversed(const bool reversed);
 	std::int32_t set_voltage_limit(const std::int32_t limit);
 	std::int32_t set_gearing(const motor_gearset_e_t gearset);
-	std::int32_t set_encoder_limits(const motor_encoder_units_e_t units);
+	std::int32_t set_encoder_units(const motor_encoder_units_e_t units);
 	private:
 	std::initializer_list<Motor> _motors;
 };

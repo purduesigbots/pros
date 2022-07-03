@@ -342,10 +342,10 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 	}
 	return out;
 }
-std::int32_t set_encoder_limits(const motor_encoder_units_e_t units) {
+std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_encoder_limits(units) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_encoder_units(units) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
 	}
 	return out;
 }
