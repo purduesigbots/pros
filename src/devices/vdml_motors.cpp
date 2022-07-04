@@ -260,56 +260,61 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
-MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) {
-	_motors = motors;
-}
+MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors);
 
 std::int32_t MotorGroup::move(std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_absolute(position, velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move_absolute(position, velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_relative(position, velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move_relative(position, velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 	int32_t out = 0;
+	
 	for(Motor motor:_motors) {
-		out = motor.move_velocity(velocity) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move_velocity(velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.move_voltage(voltage) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.move_voltage(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::brake(void) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.brake() != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.brake() != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
@@ -317,41 +322,42 @@ std::int32_t MotorGroup::brake(void) {
 std::int32_t MotorGroup::set_zero_position(const double position) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_zero_position(position) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_zero_position(position) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::set_reversed(const bool reversed) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_reversed(reversed) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_reversed(reversed) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_voltage_limit(limit) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_voltage_limit(limit) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_gearing(gearset) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_gearing(gearset) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
+
 std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) {
 	int32_t out = 0;
 	for(Motor motor:_motors) {
-		out = motor.set_encoder_units(units) != PROS_ERR && out != PROS_ERR?1:PROS_ERR;
+		out = motor.set_encoder_units(units) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
 }
-
-
-
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m) {
