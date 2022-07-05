@@ -261,7 +261,7 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
-MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors);
+MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors) {}
 
 std::int32_t MotorGroup::move(std::int32_t voltage) {
 	int32_t out = 0;
