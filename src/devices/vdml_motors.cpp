@@ -13,6 +13,7 @@
 #include "kapi.h"
 #include "pros/motors.hpp"
 
+#include <vector>
 namespace pros {
 using namespace pros::c;
 
@@ -264,7 +265,7 @@ MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(moto
 
 std::int32_t MotorGroup::move(std::int32_t voltage) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -272,7 +273,7 @@ std::int32_t MotorGroup::move(std::int32_t voltage) {
 
 std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -280,7 +281,7 @@ std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 
 std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move_absolute(position, velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -288,7 +289,7 @@ std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t
 
 std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move_relative(position, velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -297,7 +298,7 @@ std::int32_t MotorGroup::move_relative(const double position, const std::int32_t
 std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 	int32_t out = 0;
 	
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move_velocity(velocity) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -305,7 +306,7 @@ std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.move_voltage(voltage) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -313,7 +314,7 @@ std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 
 std::int32_t MotorGroup::brake(void) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.brake() != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -321,7 +322,7 @@ std::int32_t MotorGroup::brake(void) {
 
 std::int32_t MotorGroup::set_zero_position(const double position) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.set_zero_position(position) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -329,7 +330,7 @@ std::int32_t MotorGroup::set_zero_position(const double position) {
 
 std::int32_t MotorGroup::set_reversed(const bool reversed) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.set_reversed(reversed) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -337,7 +338,7 @@ std::int32_t MotorGroup::set_reversed(const bool reversed) {
 
 std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.set_voltage_limit(limit) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -345,7 +346,7 @@ std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 
 std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.set_gearing(gearset) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
 	return out;
@@ -353,9 +354,86 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 
 std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) {
 	int32_t out = 0;
-	for(Motor motor:_motors) {
+	for(Motor motor : _motors) {
 		out = motor.set_encoder_units(units) != PROS_ERR && out != PROS_ERR ? 1 : PROS_ERR;
 	}
+	return out;
+}
+
+vector<double> MotorGroup::get_target_positions(void) {
+	vector<double> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_target_position());
+	}
+	return out;
+}
+vector<double> MotorGroup::get_actual_velocities(void) {
+	vector<double> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_target_position());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
+vector<pros::motor_brake_mode_e_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_brake_mode());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<std::int32_t> MotorGroup::get_current_draws(void) {
+	vector<std::int32_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_current_draw());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<std::int32_t> MotorGroup::get_current_limits(void) {
+	vector<std::int32_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_current_limit());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<std::uint8_t> MotorGroup::get_ports(void) {
+	vector<std::uint8_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_port());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<std::int32_t> MotorGroup::get_directions(void) {
+	vector<std::int32_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_direction());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
+	return out;
+}
+
+vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
+	vector<pros::motor_encoder_units_e_t> out;
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_encoder_units());
+	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
 	return out;
 }
 

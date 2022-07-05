@@ -869,6 +869,15 @@ class MotorGroup {
 	std::int32_t set_voltage_limit(const std::int32_t limit);
 	std::int32_t set_gearing(const motor_gearset_e_t gearset);
 	std::int32_t set_encoder_units(const motor_encoder_units_e_t units);
+	vector<double> get_target_positions(void);
+	vector<double> get_actual_velocities(void);
+	vector<pros::motor_brake_mode_e_t> get_brake_modes(void);
+	vector<std::int32_t> get_current_draws(void);
+	vector<std::int32_t> get_current_limits(void);
+	vector<std::uint8_t> get_ports(void);
+	vector<std::int32_t> get_directions(void);
+	vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
+
 	private:
 	std::initializer_list<Motor> _motors;
 };
