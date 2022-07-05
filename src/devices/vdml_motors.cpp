@@ -360,15 +360,15 @@ std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) 
 	return out;
 }
 
-vector<double> MotorGroup::get_target_positions(void) {
-	vector<double> out;
+std::vector<double> MotorGroup::get_target_positions(void) {
+	std::vector<double> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_target_position());
 	}
 	return out;
 }
-vector<double> MotorGroup::get_actual_velocities(void) {
-	vector<double> out;
+std::vector<double> MotorGroup::get_actual_velocities(void) {
+	std::vector<double> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_target_position());
 	}
@@ -377,8 +377,8 @@ vector<double> MotorGroup::get_actual_velocities(void) {
 	return out;
 }
 
-vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
-vector<pros::motor_brake_mode_e_t> out;
+std::vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
+std::vector<pros::motor_brake_mode_e_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_brake_mode());
 	}
@@ -387,8 +387,8 @@ vector<pros::motor_brake_mode_e_t> out;
 	return out;
 }
 
-vector<std::int32_t> MotorGroup::get_current_draws(void) {
-	vector<std::int32_t> out;
+std::vector<std::int32_t> MotorGroup::get_current_draws(void) {
+	std::vector<std::int32_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_current_draw());
 	}
@@ -397,8 +397,8 @@ vector<std::int32_t> MotorGroup::get_current_draws(void) {
 	return out;
 }
 
-vector<std::int32_t> MotorGroup::get_current_limits(void) {
-	vector<std::int32_t> out;
+std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
+	std::vector<std::int32_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_current_limit());
 	}
@@ -407,8 +407,8 @@ vector<std::int32_t> MotorGroup::get_current_limits(void) {
 	return out;
 }
 
-vector<std::uint8_t> MotorGroup::get_ports(void) {
-	vector<std::uint8_t> out;
+std::vector<std::uint8_t> MotorGroup::get_ports(void) {
+	std::vector<std::uint8_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_port());
 	}
@@ -417,8 +417,8 @@ vector<std::uint8_t> MotorGroup::get_ports(void) {
 	return out;
 }
 
-vector<std::int32_t> MotorGroup::get_directions(void) {
-	vector<std::int32_t> out;
+std::vector<std::int32_t> MotorGroup::get_directions(void) {
+	std::vector<std::int32_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_direction());
 	}
@@ -427,8 +427,8 @@ vector<std::int32_t> MotorGroup::get_directions(void) {
 	return out;
 }
 
-vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
-	vector<pros::motor_encoder_units_e_t> out;
+std::vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
+	std::vector<pros::motor_encoder_units_e_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_encoder_units());
 	}
