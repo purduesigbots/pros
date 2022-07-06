@@ -29,6 +29,28 @@
 extern "C" {
 namespace pros {
 #endif
+
+/**
+ * \ingroup c-imu
+ * */
+
+/**
+ * \addtogroup c-imu
+ *  @{
+ */
+
+/**
+ * \enum imu_status_e_t
+ * @brief Indicates IMU status.
+ */
+typedef enum imu_status_e {
+	/** The IMU is calibrating */
+	E_IMU_STATUS_CALIBRATING = 0x01,
+	/** Used to indicate that an error state was reached in the imu_get_status function,\
+	not that the IMU is necessarily in an error state */
+	E_IMU_STATUS_ERROR = 0xFF,
+} imu_status_e_t;
+
 /**
  * \struct quaternion_s_t
  */
@@ -493,8 +515,10 @@ double imu_get_yaw(uint8_t port);
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
 
-/// \name Value Reset Functions
-///@{
+/**
+ * \name Value Reset Functions 
+ * @{
+*/
 
 /**
  * Resets the current reading of the Inertial Sensor's heading to zero
@@ -704,10 +728,12 @@ int32_t imu_tare_euler(uint8_t port);
  */
 int32_t imu_tare(uint8_t port);
 
-///@}
+/** @} */
 
-/// \name Value Set Functions
-///@{
+/**
+ * \name Value Set Functions
+ * @{
+*/
 
 /**
  * Sets the current reading of the Inertial Sensor's euler values to
@@ -905,9 +931,9 @@ int32_t imu_set_roll(uint8_t port, double target);
  */
 int32_t imu_set_yaw(uint8_t port, double target);
 
-///@}
+/** @} */
 
-///@}
+/** @} */
 
 #ifdef __cplusplus
 }
