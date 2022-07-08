@@ -41,10 +41,10 @@ typedef enum link_type_e {
 #define LINK_RX pros::E_LINK_RX
 #define LINK_TX pros::E_LINK_TX
 #else
-#define LINK_RECIEVER LINK_RECIEVER
-#define LINK_TRANSMITTER LINK_TRANSMITTER
-#define LINK_RX LINK_RX
-#define LINK_TX LINK_TX
+#define LINK_RECIEVER E_LINK_RECIEVER
+#define LINK_TRANSMITTER E_LINK_TRANSMITTER
+#define LINK_RX E_LINK_RX
+#define LINK_TX E_LINK_TX
 #endif
 #endif
 
