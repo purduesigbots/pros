@@ -54,7 +54,7 @@ typedef enum imu_status_e {
 /**
  * \struct quaternion_s_t
  */
-	typedef struct __attribute__((__packed__)) quaternion_s {
+typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
 	double y;
 	double z;
@@ -92,25 +92,6 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double roll;
 	double yaw;
 } euler_s_t;
-
-/**
- * \ingroup c-imu
- * */
-
-/**
- * \addtogroup c-imu
- *  @{
- */
-
-/**
- * \enum imu_status_e_t
- * @brief Indicates IMU status.
- */
-typedef enum imu_status_e {
-	E_IMU_STATUS_CALIBRATING = 0x01,
-	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
-	                            // necessarily in an error state
-} imu_status_e_t;
 
 #ifdef __cplusplus
 namespace c {
