@@ -261,7 +261,7 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
-MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex::Mutex()) {}
+MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex()) {}
 
 std::int32_t MotorGroup::move(std::int32_t voltage) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
@@ -273,7 +273,7 @@ std::int32_t MotorGroup::move(std::int32_t voltage) {
 		if (motor.move(voltage) != PROS_ERR && out != PROS_ERR) {
 			out = 1;
 		} else {
-			errno = EACCES //Unsure what to set errno to. using EACCES for now
+			errno = EACCES; //Unsure what to set errno to. using EACCES for now
 		}
 	}
 	if (!_motor_group_mutex.give()) {
