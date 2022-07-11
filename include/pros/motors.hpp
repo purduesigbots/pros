@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <vector>
 #include <initializer_list>
+#include <rtos.hpp>
 
 #include "pros/motors.h"
 
