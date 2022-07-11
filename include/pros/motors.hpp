@@ -880,6 +880,7 @@ class MotorGroup {
 
 	private:
 	std::initializer_list<Motor> _motors;
+	pros::Mutex _motor_group_mutex;
 };
 
 namespace literals {
