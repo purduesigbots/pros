@@ -21,6 +21,7 @@
 #define _PROS_SCREEN_HPP_
 
 #include "pros/screen.h"
+#include "pros/colors.hpp"
 #include <cstdint>
 #include <string>
 
@@ -86,7 +87,7 @@ const char* convert_args(const std::string& arg) {
      * }
      * \endcode
      */
-    std::uint32_t set_pen(const std::uint32_t color);
+    std::uint32_t set_pen(pros::Color color);
 
     /**
      * Set the eraser color for erasing and the current background.
@@ -115,7 +116,7 @@ const char* convert_args(const std::string& arg) {
      * }
      * \endcode
      */
-    std::uint32_t set_eraser(const std::uint32_t color);
+    std::uint32_t set_eraser(pros::Color color);
 
     /**
      *  Get the current pen color.

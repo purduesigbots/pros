@@ -30,7 +30,6 @@
 
 namespace pros {
 inline namespace v5 {
-  
 /**
  * \ingroup cpp-vision
  */

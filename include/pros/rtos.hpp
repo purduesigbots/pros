@@ -32,6 +32,7 @@
 #include <cstdlib>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <type_traits>
 
 namespace pros {
@@ -83,7 +84,7 @@ class Task {
 	 * \endcode
 	 */
 	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
-	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
+	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -220,8 +221,8 @@ class Task {
 	 * \endcode
 	 */
 	template <class F>
-	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT, std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT,
-	     const char* name = "")
+	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	              std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "")
 	    : Task(
 	          [](void* parameters) {
 		          std::unique_ptr<std::function<void()>> ptr{static_cast<std::function<void()>*>(parameters)};
@@ -518,8 +519,8 @@ class Task {
 	std::uint32_t notify();
 
 	/**
- 	 * Utilizes task notifications to wait until specified task is complete and deleted,
- 	 * then continues to execute the program. Analogous to std::thread::join in C++.
+	 * Utilizes task notifications to wait until specified task is complete and deleted,
+	 * then continues to execute the program. Analogous to std::thread::join in C++.
 	 *
 	 * See @ref notifications for details.
 	 * 
@@ -903,6 +904,99 @@ class Mutex {
 }; // class mutex
 } // namespace rtos
 
+template <typename Var>
+class MutexVar;
+
+template <typename Var>
+class MutexVarLock {
+	Mutex& mutex;
+	Var& var;
+
+	friend class MutexVar<Var>;
+
+	constexpr MutexVarLock(Mutex& mutex, Var& var) : mutex(mutex), var(var) {}
+
+	public:
+	/**
+	 * Accesses the value of the mutex-protected variable.
+	 */
+	constexpr Var& operator*() const {
+		return var;
+	}
+
+	/**
+	 * Accesses the value of the mutex-protected variable.
+	 */
+	constexpr Var* operator->() const {
+		return &var;
+	}
+
+	~MutexVarLock() {
+		mutex.unlock();
+	}
+};
+
+template <typename Var>
+class MutexVar {
+	Mutex mutex;
+	Var var;
+
+	public:
+	/**
+	 * Creates a mutex-protected variable which is initialized with the given
+	 * constructor arguments.
+	 *
+	 * \param args
+	          The arguments to provide to the Var constructor.
+	 */
+	template <typename... Args>
+	MutexVar(Args&&... args) : mutex(), var(std::forward<Args>(args)...) {}
+
+	/**
+	 * Try to lock the mutex-protected variable.
+	 *
+	 * \param timeout
+	 *        Time to wait before the mutex becomes available, in milliseconds. A
+	 *        timeout of 0 can be used to poll the mutex.
+	 *
+	 * \return A std::optional which contains a MutexVarLock providing access to
+	 * the protected variable if locking is successful.
+	 */
+	std::optional<MutexVarLock<Var>> try_lock(std::uint32_t timeout) {
+		if (mutex.take(timeout)) {
+			return {{mutex, var}};
+		} else {
+			return {};
+		}
+	}
+
+	/**
+	 * Try to lock the mutex-protected variable.
+	 *
+	 * \param timeout
+	 *        Time to wait before the mutex becomes available. A timeout of 0 can
+	 *        be used to poll the mutex.
+	 *
+	 * \return A std::optional which contains a MutexVarLock providing access to
+	 * the protected variable if locking is successful.
+	 */
+	template <typename Rep, typename Period>
+	std::optional<MutexVarLock<Var>> try_lock(const std::chrono::duration<Rep, Period>& rel_time) {
+		try_lock(std::chrono::duration_cast<Clock::duration>(rel_time).count());
+	}
+
+	/**
+	 * Lock the mutex-protected variable, waiting indefinitely.
+	 *
+	 * \return A MutexVarLock providing access to the protected variable.
+	 */
+	MutexVarLock<Var> lock() {
+		while (!mutex.take(TIMEOUT_MAX))
+			;
+		return {mutex, var};
+	}
+};
+
 /**
  * \name PROS Time-related functions
  * @{
@@ -969,5 +1063,6 @@ using pros::c::micros;
 
 using pros::c::delay;
 }  // namespace pros
+//
 
 #endif  // _PROS_RTOS_HPP_

@@ -41,8 +41,8 @@
 
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 6
-#define PROS_VERSION_PATCH 0
-#define PROS_VERSION_STRING "3.6.0"
+#define PROS_VERSION_PATCH 2
+#define PROS_VERSION_STRING "3.6.2"
 
 #define PROS_ERR (INT32_MAX)
 #define PROS_ERR_F (INFINITY)
@@ -65,6 +65,7 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
+#include "pros/colors.hpp"
 #include "pros/distance.hpp"
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"

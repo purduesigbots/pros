@@ -48,7 +48,7 @@ using ext_adi_port_pair_t = std::pair<std::uint8_t, std::uint8_t>;
  * Type definition for the triplet of smart port and two adi ports for the two wire adi devices
  */
 using ext_adi_port_tuple_t = std::tuple<std::uint8_t, std::uint8_t, std::uint8_t>;
-
+ 
 /**
  * \ingroup cpp-adi
  */
@@ -57,6 +57,7 @@ class Port {
 	 * \addtogroup cpp-adi
 	 *  @{
 	 */
+
 	public:
 	/**
 	 * Configures an ADI port to act as a given sensor type.
@@ -108,7 +109,7 @@ class Port {
 	 * #define EXT_ADI_SMART_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIPort sensor ({{ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }}, E_ADI_ANALOG_IN);
+	 *   pros::adi::Port sensor ({{ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }}, E_ADI_ANALOG_IN);
 	 *   // Displays the value of E_ADI_ANALOG_IN
 	 *   std::cout << "Port Type: " << sensor.get_config();
 	 * }
@@ -143,7 +144,7 @@ class Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::ADIPort sensor (ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
 	 *   std::cout << "Port Value: " << sensor.get_value();
 	 * }
 	 * \endcode
@@ -164,7 +165,7 @@ class Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIPort sensor (ANALOG_SENSOR_PORT, E_ADI_DIGITAL_IN);
+	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, E_ADI_DIGITAL_IN);
 	 *   // Do things as a digital sensor
 	 *   // Digital is unplugged and an analog is plugged in
 	 *   sensor.set_config(E_ADI_ANALOG_IN);
@@ -190,7 +191,7 @@ class Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::ADIPort sensor (DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
+	 *   pros::adi::Port sensor (DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
 	 *   sensor.set_value(DIGITAL_SENSOR_PORT, HIGH);
 	 * }
 	 * \endcode
@@ -201,7 +202,6 @@ class Port {
 	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
 };
-
 ///@}
 
 /**
@@ -232,7 +232,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::ADIAnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   while (true) {
 	 *     // Use the sensor
 	 *   }
@@ -261,7 +261,7 @@ class AnalogIn : protected Port {
 	 * #define ADI_PORT 'a'
 	 * 
 	 * void opcontrol() {
-	 *   pros::AnalogIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   pros::ADIAnalogIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
 	 *   while (true) {
 	 *     // Use the sensor
 	 *   }
@@ -302,7 +302,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -331,7 +331,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -365,7 +365,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
@@ -393,7 +393,7 @@ class AnalogIn : protected Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::AnalogIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
 	 *   std::cout << "Sensor Reading:" << sensor.get_value();
 	 * }
 	 * \endcode
@@ -403,7 +403,7 @@ class AnalogIn : protected Port {
 
 ///@}
 
-//Derived Classes from AnalogIn
+// using ADIPotentiometer = ADIAnalogIn;
 using LineSensor = AnalogIn;
 using LightSensor = AnalogIn;
 using Accelerometer = AnalogIn;
@@ -412,7 +412,7 @@ using Accelerometer = AnalogIn;
  * \ingroup cpp-adi
  */
 class AnalogOut : private Port {
-  /**
+	/**
 	 * \addtogroup cpp-adi
 	 *  @{
 	 */
@@ -522,7 +522,7 @@ class DigitalOut : private Port {
 	 * 
 	 * void opcontrol() {
 	 *   bool state = LOW;
-	 *   pros::DigitalOut sensor (DIGITAL_SENSOR_PORT, state);
+	 *   pros::adi::DigitalOut sensor (DIGITAL_SENSOR_PORT, state);
 	 *   while (true) {
 	 *     state != state;
 	 *     sensor.set_value(state);
@@ -554,7 +554,7 @@ class DigitalOut : private Port {
 	 * 
 	 * void opcontrol() {
 	 *   bool state = LOW;
-	 *   pros::DigitalOut sensor ( {{ EXT_ADI_SMART_PORT , ADI_PORT }});
+	 *   pros::adi::DigitalOut sensor ( {{ EXT_ADI_SMART_PORT , ADI_PORT }});
 	 *   while (true) {
 	 *     state != state;
 	 *     sensor.set_value(state);
@@ -585,7 +585,7 @@ class DigitalOut : private Port {
 	 * 
 	 * void opcontrol() {
 	 *   bool state = LOW;
-	 *   pros::DigitalOut sensor (DIGITAL_SENSOR_PORT);
+	 *   pros::adi::DigitalOut sensor (DIGITAL_SENSOR_PORT);
 	 *   while (true) {
 	 *     state != state;
 	 *     sensor.set_value(state);
@@ -623,7 +623,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::DigitalIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (ANALOG_SENSOR_PORT);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -648,7 +648,7 @@ class DigitalIn : private Port {
 	 * #define ADI_PORT 'a'
 	 * 
 	 * void opcontrol() {
-	 *   pros::DigitalIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
+	 *   pros::adi::DigitalIn sensor ({{EXT_ADI_SMART_PORT, ADI_PORT}});
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -678,7 +678,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::DigitalIn sensor (DIGITAL_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (DIGITAL_SENSOR_PORT);
 	 *   while (true) {
 	 *     if (sensor.get_new_press()) {
 	 *       // Toggle pneumatics or other state operations
@@ -708,7 +708,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::DigitalIn sensor (DIGITAL_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (DIGITAL_SENSOR_PORT);
 	 *   while (true) {
 	 *     std::cout << "Sensor Value:" << sensor.get_value();
 	 *     pros::delay(10);
@@ -749,7 +749,7 @@ class Motor : private Port {
 	 * #define MOTOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Motor motor (MOTOR_PORT);
+	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
 	 *   delay(1000);
@@ -777,7 +777,7 @@ class Motor : private Port {
 	 * #define ADI_MOTOR_PORT 'a'
 	 * 
 	 * void opcontrol() {
-	 *   pros::Motor motor ( {{ EXT_ADI_SMART_PORT ,  ADI_MOTOR_PORT}} );
+	 *   pros::adi::Motor motor ( {{ EXT_ADI_SMART_PORT ,  ADI_MOTOR_PORT}} );
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
 	 *   delay(1000);
@@ -802,7 +802,7 @@ class Motor : private Port {
 	 * #define MOTOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Motor motor (MOTOR_PORT);
+	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
 	 *   delay(1000);
@@ -831,7 +831,7 @@ class Motor : private Port {
 	 * #define MOTOR_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Motor motor (MOTOR_PORT);
+	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
 	 *   delay(1000);
@@ -855,7 +855,7 @@ class Motor : private Port {
 	 * #define MOTOR_PORT 1
 	 * 
 	 * void opcontrol() { 
-	 *   pros::Motor motor (MOTOR_PORT);
+	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
 	 *   delay(1000);
@@ -898,7 +898,7 @@ class Encoder : private Port {
 	 * #define PORT_BOTTOM 2
 	 * 
 	 * void opcontrol() {
-	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   pros::adi::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -927,7 +927,7 @@ class Encoder : private Port {
 	 * #define SMART_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Encoder sensor ({ SMART_PORT, PORT_TOP, PORT_BOTTOM }, false);
+	 *   pros::adi::Encoder sensor ({ SMART_PORT, PORT_TOP, PORT_BOTTOM }, false);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -953,7 +953,7 @@ class Encoder : private Port {
 	 * #define PORT_BOTTOM 2
 	 * 
 	 * void opcontrol() {
-	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   pros::adi::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
 	 *   delay(1000); // Move the encoder around in this time
 	 *   sensor.reset(); // The encoder is now zero again
 	 * }
@@ -978,7 +978,7 @@ class Encoder : private Port {
 	 * #define PORT_BOTTOM 2
 	 * 
 	 * void opcontrol() {
-	 *   pros::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
+	 *   pros::adi::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
 	 *   while (true) {
 	 *     std::cout << "Encoder Value: " << sensor.get_value();
 	 *     pros::delay(10);
@@ -1021,7 +1021,7 @@ class Ultrasonic : private Port {
 	 * #define PORT_ECHO 2
 	 * 
 	 * void opcontrol() {
-	 *   pros::Ultrasonic sensor (PORT_PING, PORT_ECHO);
+	 *   pros::adi::Ultrasonic sensor (PORT_PING, PORT_ECHO);
 	 *   while (true) {
 	 *     // Print the distance read by the ultrasonic
 	 *     std::cout << "Distance: " << sensor.get_value();
@@ -1053,7 +1053,7 @@ class Ultrasonic : private Port {
 	 * #define SMART_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Ultrasonic sensor ( {{ SMART_PORT, PORT_PING, PORT_ECHO }} );
+	 *   pros::adi::Ultrasonic sensor ( {{ SMART_PORT, PORT_PING, PORT_ECHO }} );
 	 *   while (true) {
 	 *     // Print the distance read by the ultrasonic
 	 *     std::cout << "Distance: " << sensor.get_value();
@@ -1084,7 +1084,7 @@ class Ultrasonic : private Port {
 	 * #define PORT_ECHO 2
 	 * 
 	 * void opcontrol() {
-	 *   pros::Ultrasonic sensor (PORT_PING, PORT_ECHO);
+	 *   pros::adi::Ultrasonic sensor (PORT_PING, PORT_ECHO);
 	 *   while (true) {
 	 *     // Print the distance read by the ultrasonic
 	 *     std::cout << "Distance: " << sensor.get_value();
@@ -1134,7 +1134,7 @@ class Gyro : private Port {
 	 * #define GYRO_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   pros::adi::Gyro gyro (GYRO_PORT);
 	 *   while (true) {
 	 *     // Get the gyro heading
 	 *     std::cout << "Distance: " << gyro.get_value();
@@ -1150,8 +1150,8 @@ class Gyro : private Port {
 	 * port has not previously been configured as a gyro, then this function starts
 	 * a 1300ms calibration period.
 	 *
-	 * It is highly recommended that an ADIGyro object be created in initialize()
-	 * when the robot is stationary to ensure proper calibration. If an ADIGyro
+	 * It is highly recommended that an adi::Gyro object be created in initialize()
+	 * when the robot is stationary to ensure proper calibration. If an adi::Gyro
 	 * object is declared at the global scope, a hardcoded 1300ms delay at the
 	 * beginning of initialize will be necessary to ensure that the gyro's
 	 * returned values are correct at the beginning of autonomous/opcontrol.
@@ -1174,7 +1174,7 @@ class Gyro : private Port {
 	 * #define SMART_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Gyro gyro ({{ SMART_PORT , ADI_GYRO_PORT }});
+	 *   pros::adi::Gyro gyro ({{ SMART_PORT , ADI_GYRO_PORT }});
 	 *   while (true) {
 	 *     // Get the gyro heading
 	 *   std::cout << "Distance: " << gyro.get_value();
@@ -1204,7 +1204,7 @@ class Gyro : private Port {
 	 * #define GYRO_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   pros::adi::Gyro gyro (GYRO_PORT);
 	 *   while (true) {
 	 *   // Get the gyro heading
 	 *   std::cout << "Distance: " << gyro.get_value();
@@ -1230,7 +1230,7 @@ class Gyro : private Port {
 	 * #define GYRO_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Gyro gyro (GYRO_PORT);
+	 *   pros::adi::Gyro gyro (GYRO_PORT);
 	 *   std::uint32_t now = pros::millis();
 	 *   while (true) {
 	 *     // Get the gyro heading
@@ -1280,10 +1280,10 @@ class Potentiometer : public AnalogIn {
 	  * #define POTENTIOMETER_TYPE pros::E_ADI_POT_EDR
 	  * 
 	  * void opcontrol() {
-	  *   pros::Potentiometer potentiometer (POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
+	  *   pros::adi::Potentiometer potentiometer (POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
 	  *   while (true) {
 	  *     // Get the potentiometer angle
-	  *     std::cout << "Angle: " << potnetiometer.get_angle();
+	  *     std::cout << "Angle: " << potentiometer.get_angle();
 	  *     pros::delay(10);
 	  *   }
 	  * }
@@ -1311,7 +1311,7 @@ class Potentiometer : public AnalogIn {
 	 * #define SMART_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
+	 *   pros::adi::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
 	 *   while (true) {
 	 *     // Get the potentiometer angle
 	 *     std::cout << "Angle: " << potentiometer.get_angle();
@@ -1341,7 +1341,7 @@ class Potentiometer : public AnalogIn {
 	 * #define SMART_PORT 1
 	 * 
 	 * void opcontrol() {
-	 *   pros::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
+	 *   pros::adi::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
 	 *   while (true) {
 	 *     // Get the potentiometer angle
 	 *     std::cout << "Angle: " << potentiometer.get_angle();
@@ -1376,7 +1376,7 @@ class Potentiometer : public AnalogIn {
 	 * this time and computes an average from approximately 500 samples, 1 ms
 	 * apart, for a 0.5 s period of calibration. The average value thus calculated
 	 * is returned and stored for later calls to the
-	 * pros::ADIPotentiometer::get_value_calibrated() function. This function
+	 * pros::adi::Potentiometer::get_value_calibrated() function. This function
 	 * will return the difference between this value and the current sensor value
 	 * when called.
 	 *
@@ -1393,7 +1393,7 @@ class Potentiometer : public AnalogIn {
 	/**
 	 * Gets the 12 bit calibrated value of a potentiometer port.
 	 *
-	 * The pros::ADIPotentiometer::calibrate() function must be run first.
+	 * The pros::adi::Potentiometer::calibrate() function must be run first.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
