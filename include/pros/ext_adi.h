@@ -66,6 +66,18 @@ namespace c {
  *        the configuration
  *
  * \return The ADI configuration for the given port
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+
+ * void initialize() {
+ *   ext_adi_port_set_config(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+ *   // Displays the value of E_ADI_ANALOG_IN
+ *   printf("Port Type: %d\n", ext_adi_port_get_config(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ * }
+ * \endcode
  */
 adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port);
 
@@ -84,6 +96,18 @@ adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port
  *        the configuration
  *
  * \return The value stored for the given port
+ *
+ * \b Example
+ * \code
+ *
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+
+ * void opcontrol() {
+ *   ext_adi_port_set_config(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+ *  printf("Port Value: %d\n", ext_adi_get_value(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ * }
+ * \endcode
  */
 int32_t ext_adi_port_get_value(uint8_t smart_port, uint8_t adi_port);
 
@@ -104,6 +128,16 @@ int32_t ext_adi_port_get_value(uint8_t smart_port, uint8_t adi_port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void initialize() {
+ *   ext_adi_port_set_config(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+ * }
+ * \endcode
  */
 int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_config_e_t type);
 
@@ -128,6 +162,17 @@ int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_c
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define DIGITAL_SENSOR_PORT 1
+ *
+ * void initialize() {
+ *   ext_adi_port_set_config(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
+ *   ext_adi_set_value(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, HIGH);
+ * }
+ * \endcode
  */
 int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t value);
 
@@ -156,6 +201,19 @@ int32_t ext_adi_port_set_value(uint8_t smart_port, uint8_t adi_port, int32_t val
  *	      The ADI port to calibrate (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The average sensor value computed by this function
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void initialize() {
+ *   ext_adi_analog_calibrate(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT);
+ *   printf("Calibrated Reading: %d\n",
+ *         ext_adi_analog_read_calibrated(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ *   // All readings from then on will be calibrated
+ * }
+ * \endcode
  */
 int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
 
@@ -179,6 +237,19 @@ int32_t ext_adi_analog_calibrate(uint8_t smart_port, uint8_t adi_port);
  *
  * \return The analog sensor value, where a value of 0 reflects an input voltage
  * of nearly 0 V and a value of 4095 reflects an input voltage of nearly 5 V
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Sensor Reading: %d\n", ext_adi_analog_read(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port);
 
@@ -204,6 +275,19 @@ int32_t ext_adi_analog_read(uint8_t smart_port, uint8_t adi_port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -4095 to 4095
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Sensor Reading: %d\n", ext_adi_analog_read_calibrated(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
 
@@ -234,6 +318,21 @@ int32_t ext_adi_analog_read_calibrated(uint8_t smart_port, uint8_t adi_port);
  *
  * \return The difference of the sensor value from its calibrated default from
  * -16384 to 16384
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     ext_adi_analog_calibrate(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT);
+ *
+ *     printf("Sensor Reading: %d\n", ext_adi_analog_read_calibrated_HR(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
 
@@ -257,6 +356,18 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  *	      The ADI port to read (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return True if the pin is HIGH, or false if it is LOW
+ *
+ * \b Example
+ * \code
+ * define ADI_EXPANDER_PORT 20 #define DIGITAL_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     printf(“Sensor Value: %dn”, ext_adi_digital_read(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port);
 
@@ -284,6 +395,21 @@ int32_t ext_adi_digital_read(uint8_t smart_port, uint8_t adi_port);
  *
  * \return 1 if the button is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define DIGITAL_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     if (ext_adi_digital_get_new_press(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT)) {
+ *       // Toggle pneumatics or other state operations
+ *     }
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port);
 
@@ -308,6 +434,22 @@ int32_t ext_adi_digital_get_new_press(uint8_t smart_port, uint8_t adi_port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define DIGITAL_SENSOR_PORT 1
+ *
+ * void opcontrol() {
+ *   bool state = LOW;
+ *   while (true) {
+ *     state != state;
+ *     ext_adi_digital_write(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, state);
+ *
+ *     delay(5); // toggle the sensor value every 50ms
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, bool value);
 
@@ -328,6 +470,16 @@ int32_t ext_adi_digital_write(uint8_t smart_port, uint8_t adi_port, bool value);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define ANALOG_SENSOR_PORT 1
+ *
+ * void initialize() {
+ *   ext_adi_pin_mode(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT, INPUT_ANALOG);
+ * }
+ * \encode
  */
 int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode);
 
@@ -350,6 +502,18 @@ int32_t ext_adi_pin_mode(uint8_t smart_port, uint8_t adi_port, uint8_t mode);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define MOTOR_PORT 1
+ *
+ * void opcontrol() {
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 127); // Go full speed forward
+ *   delay(1000);
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 0); // Stop the motor
+ * }
+ * \endcode
  */
 int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
 
@@ -368,6 +532,18 @@ int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
  *	      The ADI port to get (from 1-8, 'a'-'h', 'A'-'H')
  *
  * \return The last set speed of the motor on the given port
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20 #define MOTOR_PORT 1
+ *
+ * void opcontrol() {
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 127); // Go full speed forward
+ *   printf(“Commanded Motor Power: %dn”, ext_adi_motor_get(ADI_EXPANDER_PORT, MOTOR_PORT)); // Will display 127
+ *   delay(1000);
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 0); // Stop the motor
+ * }
+ * \endcode
  */
 int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port);
 
@@ -387,6 +563,19 @@ int32_t ext_adi_motor_get(uint8_t smart_port, uint8_t adi_port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define MOTOR_PORT 1
+ *
+ * void opcontrol() {
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 127); // Go full speed forward
+ *   delay(1000);
+ *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 0); // Stop the motor
+ *   ext_adi_motor_stop(ADI_EXPANDER_PORT, MOTOR_PORT); // use this instead
+ * }
+ * \endcode
  */
 int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port);
 
@@ -414,6 +603,19 @@ typedef int32_t ext_adi_encoder_t;
  *
  * \return The signed and cumulative number of counts since the last start or
  * reset
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20 #define PORT_TOP 1 #define PORT_BOTTOM 2
+ *
+ * void opcontrol() {
+ *   ext_adi_encoder_t enc = ext_adi_encoder_init(ADI_EXPANDER_PORT, PORT_TOP, PORT_BOTTOM, false);
+ *   while (true) {
+ *     printf(“Encoder Value: %dn”, ext_adi_encoder_get(enc));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
 
@@ -438,6 +640,21 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc);
  *
  * \return An adi_encoder_t object to be stored and used for later calls to
  * encoder functions
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define PORT_TOP 1
+ * #define PORT_BOTTOM 2
+ *
+ * void opcontrol() {
+ *   ext_adi_encoder_t enc = ext_adi_encoder_init(ADI_EXPANDER_PORT, PORT_TOP, PORT_BOTTOM, false);
+ *   while (true) {
+ *     printf("Encoder Value: %d\n", ext_adi_encoder_get(enc));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top, uint8_t adi_port_bottom, bool reverse);
 
@@ -458,6 +675,19 @@ ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top,
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define PORT_TOP 1
+ * #define PORT_BOTTOM 2
+ *
+ * void opcontrol() {
+ *   ext_adi_encoder_t enc = ext_adi_encoder_init(ADI_EXPANDER_PORT, PORT_TOP, PORT_BOTTOM, false);
+ *   delay(1000); // Move the encoder around in this time
+ *   ext_adi_encoder_reset(enc); // The encoder is now zero again
+ * }
+ * \endcode
  */
 int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc);
 
@@ -475,6 +705,19 @@ int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define ADI_EXPANDER_PORT 20
+ * #define PORT_TOP 1
+ * #define PORT_BOTTOM 2
+ *
+ * void opcontrol() {
+ *   ext_adi_encoder_t enc = ext_adi_encoder_init(ADI_EXPANDER_PORT, PORT_TOP, PORT_BOTTOM, false);
+ *   // Use the encoder
+ *   ext_adi_encoder_shutdown(enc);
+ * }
+ * \endcode
  */
 int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc);
 
@@ -504,6 +747,22 @@ typedef int32_t ext_adi_ultrasonic_t;
  *
  * \return The distance to the nearest object in m^-4 (10000 indicates 1 meter),
  * measured from the sensor's mounting points.
+ *
+ * \b Example
+ * \code
+ * #define PORT_PING 1
+ * #define PORT_ECHO 2
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_ultrasonic_t ult = ext_adi_ultrasonic_init(ADI_EXPANDER_PORT, PORT_PING, PORT_ECHO);
+ *   while (true) {
+ *     // Print the distance read by the ultrasonic
+ *     printf("Distance: %d\n", ext_adi_ultrasonic_get(ult));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
 
@@ -527,6 +786,22 @@ int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult);
  *
  * \return An adi_ultrasonic_t object to be stored and used for later calls to
  * ultrasonic functions
+ *
+ * \b Example
+ * \code
+ * #define PORT_PING 1
+ * #define PORT_ECHO 2
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_ultrasonic_t ult = ext_adi_ultrasonic_init(ADI_EXPANDER_PORT, PORT_PING, PORT_ECHO);
+ *   while (true) {
+ *     // Print the distance read by the ultrasonic
+ *     printf("Distance: %d\n", ext_adi_ultrasonic_get(ult));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo);
 
@@ -544,6 +819,23 @@ ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_por
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define PORT_PING 1
+ * #define PORT_ECHO 2
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_ultrasonic_t ult = ext_adi_ultrasonic_init(ADI_EXPANDER_PORT, PORT_PING, PORT_ECHO);
+ *   while (true) {
+ *     // Print the distance read by the ultrasonic
+ *     printf("Distance: %d\n", ext_adi_ultrasonic_get(ult));
+ *     delay(5);
+ *   }
+ *   ext_adi_ultrasonic_shutdown(ult);
+ * }
+ * \endcode
  */
 int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
 
@@ -575,6 +867,22 @@ typedef int32_t ext_adi_gyro_t;
  *        The adi_gyro_t object for which the angle will be returned
  *
  * \return The gyro angle in degrees.
+ *
+ * \b Example
+ * \code
+ * #define GYRO_PORT 1
+ * #define GYRO_MULTIPLIER 1 // Standard behavior
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_gyro_t gyro = ext_adi_gyro_init(ADI_EXPANDER_PORT, GYRO_PORT, GYRO_MULTIPLIER);
+ *   while (true) {
+ *     // Print the gyro's heading
+ *     printf("Heading: %lf\n", ext_adi_gyro_get(gyro));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 double ext_adi_gyro_get(ext_adi_gyro_t gyro);
 
@@ -602,6 +910,22 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro);
  *
  * \return An adi_gyro_t object containing the given port, or PROS_ERR if the
  * initialization failed.
+ *
+ * \b Example
+ * \code
+ * #define GYRO_PORT 1
+ * #define GYRO_MULTIPLIER 1 // Standard behavior
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_gyro_t gyro = ext_adi_gyro_init(ADI_EXPANDER_PORT, GYRO_PORT, GYRO_MULTIPLIER);
+ *   while (true) {
+ *     // Print the gyro's heading
+ *     printf("Heading: %lf\n", ext_adi_gyro_get(gyro));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double multiplier);
 
@@ -619,6 +943,30 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define GYRO_PORT 1
+ * #define GYRO_MULTIPLIER 1 // Standard behavior
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_gyro_t gyro = ext_adi_gyro_init(ADI_EXPANDER_PORT, GYRO_PORT, GYRO_MULTIPLIER);
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     // Print the gyro's heading
+ *     printf("Heading: %lf\n", ext_adi_gyro_get(gyro));
+ *
+ *     if (millis() - now > 2000) {
+ *       // Reset the gyro every 2 seconds
+ *       ext_adi_gyro_reset(gyro);
+ *       now = millis();
+ *     }
+ *
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
 
@@ -636,6 +984,30 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example
+ * \code
+ * #define GYRO_PORT 1
+ * #define GYRO_MULTIPLIER 1 // Standard behavior
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_gyro_t gyro = ext_adi_gyro_init(ADI_EXPANDER_PORT, GYRO_PORT, GYRO_MULTIPLIER);
+ *   uint32_t now = millis();
+ *   while (true) {
+ *     // Print the gyro's heading
+ *     printf("Heading: %lf\n", ext_adi_gyro_get(gyro));
+ *
+ *     if (millis() - now > 2000) {
+ *       ext_adi_gyro_shutdown(gyro);
+ *       // Shut down the gyro after two seconds
+ *       break;
+ *     }
+ *
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 
@@ -648,7 +1020,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 typedef int32_t ext_adi_potentiometer_t;
 
 /**
- * Initializes a potentiometer on the given port. 
+ * Initializes a potentiometer on the given port.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -662,8 +1034,24 @@ typedef int32_t ext_adi_potentiometer_t;
  *
  * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
  * initialization failed.
+ *
+ * \b Example
+ * \code
+ * #define POTENTIOMETER_PORT 1
+ * #define POTENTIOMETER_TYPE E_ADI_POT_EDR
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_potentiometer_init potentiometer = ext_adi_potentiometer_init(ADI_EXPANDER_PORT, POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
+ *   while (true) {
+ *     // Print the potentiometer's angle
+ *     printf("Angle: %lf\n", ext_adi_potentiometer_get_angle(potentiometer));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
-ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type); 
+ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type);
 
 /**
  * Gets the current potentiometer angle in tenths of a degree.
@@ -680,6 +1068,22 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
  *        The adi_potentiometer_t object for which the angle will be returned
  *
  * \return The potentiometer angle in degrees.
+ *
+ * \b Example
+ * \code
+ * #define POTENTIOMETER_PORT 1
+ * #define POTENTIOMETER_TYPE E_ADI_POT_EDR
+ * #define ADI_EXPANDER_PORT 20
+ *
+ * void opcontrol() {
+ *   ext_adi_potentiometer_init potentiometer = ext_adi_potentiometer_init(ADI_EXPANDER_PORT, POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
+ *   while (true) {
+ *     // Print the potentiometer's angle
+ *     printf("Angle: %lf\n", ext_adi_potentiometer_get_angle(potentiometer));
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer);
 
