@@ -1,7 +1,7 @@
 /**
  * \file pros/colors.h
  *
- * Contains macro definitions of colors (as `uint32_t`)
+ * Contains enum definitions of colors
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
