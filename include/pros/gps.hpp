@@ -288,7 +288,7 @@ class Gps {
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::gps_accel_s_t get_accel() const;
-
+///@}
 };  // Gps Class
 }
 
