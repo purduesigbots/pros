@@ -858,6 +858,23 @@ class MotorGroup {
 	public:
 	explicit MotorGroup(const std::initializer_list<Motor> motors);
 
+	/**
+	 	* Sets the voltage for all the motors in the motor group from -128 to 127.
+	 	*
+	 	* This is designed to map easily to the input from the controller's analog
+	 	* stick for simple opcontrol use. The actual behavior of the motor is
+	 	* analogous to use of pros::Motor::move() on each motor individually
+	 	*
+	 	* This function uses the following values of errno when an error state is
+	 	* reached:
+	 	* ENODEV - The port cannot be configured as a motor
+	 	*
+	 	* \param voltage
+	 	*        The new motor voltage from -127 to 127
+	 	*
+	 	* \return 1 if the operation was successful or PROS_ERR if the operation
+	 	* failed, setting errno.
+	 	*/
 	std::int32_t operator=(std::int32_t);
 	std::int32_t move(std::int32_t voltage);
 	std::int32_t move_absolute(const double position, const std::int32_t velocity);
