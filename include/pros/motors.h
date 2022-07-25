@@ -601,10 +601,10 @@ typedef enum motor_gearset_e {
 	E_MOTOR_GEAR_100 = 0,
 	E_MOTOR_GEARSET_18 = 1,  // 18:1, 200 RPM, Green gear set
 	E_MOTOR_GEAR_GREEN = 1,
-	E_MOTOR_GEAR_200 = 0,
+	E_MOTOR_GEAR_200 = 1,
 	E_MOTOR_GEARSET_06 = 2,  // 6:1, 600 RPM, Blue gear set
 	E_MOTOR_GEAR_BLUE  = 2,
-	E_MOTOR_GEAR_600 = 0,
+	E_MOTOR_GEAR_600 = 2,
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
 
