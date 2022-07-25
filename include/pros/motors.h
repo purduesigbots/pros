@@ -602,6 +602,10 @@ typedef enum motor_gearset_e {
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
 
+motor_gearset_e E_MOTOR_GEAR_RED = E_MOTOR_GEARSET_36;
+motor_gearset_e E_MOTOR_GEAR_GREEN = E_MOTOR_GEARSET_18;
+motor_gearset_e E_MOTOR_GEAR_BLUE = E_MOTOR_GEARSET_06;
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define MOTOR_BRAKE_COAST pros::E_MOTOR_BRAKE_COAST
