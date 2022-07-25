@@ -28,7 +28,6 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-namespace c {
 #endif
 
 /**
@@ -94,9 +93,13 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
+#ifdef __cplusplus
+namespace c {
+#endif
 /**
  * \def IMU_MINIMUM_DATA_RATE
  */
+
 #define IMU_MINIMUM_DATA_RATE 5
 
 /**
@@ -233,6 +236,7 @@ double imu_get_rotation(uint8_t port);
  */
 double imu_get_heading(uint8_t port);
 
+
 /**
  * Get a quaternion representing the Inertial Sensor's orientation
  *
@@ -294,7 +298,7 @@ quaternion_s_t imu_get_quaternion(uint8_t port);
 euler_s_t imu_get_euler(uint8_t port);
 
 /**
- * Get the Inertial Sensor's pitch angle bounded by (-180,180)
+ * Get the Inertial Sensor's raw gyroscope values
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -319,10 +323,10 @@ euler_s_t imu_get_euler(uint8_t port);
  * }
  * \endcode
  */
-double imu_get_pitch(uint8_t port);
+imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
 
 /**
- * Get the Inertial Sensor's roll angle bounded by (-180,180)
+ * Get the Inertial Sensor's raw acceleroneter values
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -346,10 +350,10 @@ double imu_get_pitch(uint8_t port);
  * }
  * \endcode
  */
-double imu_get_roll(uint8_t port);
+imu_accel_s_t imu_get_accel(uint8_t port);
 
 /**
- * Get the Inertial Sensor's yaw angle bounded by (-180,180)
+ * Get the Inertial Sensor's status
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -373,10 +377,12 @@ double imu_get_roll(uint8_t port);
  * }
  * \endcode
  */
-double imu_get_yaw(uint8_t port);
+imu_status_e_t imu_get_status(uint8_t port);
 
+//Value set functions:
 /**
- * Get the Inertial Sensor's raw gyroscope values
+ * Sets the current reading of the Inertial Sensor's euler values to
+ * target euler values. Will default to +/- 180 if target exceeds +/- 180.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -402,10 +408,11 @@ double imu_get_yaw(uint8_t port);
  * }
  * \endcode
  */
-imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
+int32_t imu_set_euler(uint8_t port, euler_s_t target);
+
 
 /**
- * Get the Inertial Sensor's raw acceleroneter values
+ * Get the Inertial Sensor's pitch angle bounded by (-180,180)
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -431,10 +438,10 @@ imu_gyro_s_t imu_get_gyro_rate(uint8_t port);
  * }
  * \endcode
  */
-imu_accel_s_t imu_get_accel(uint8_t port);
+double imu_get_pitch(uint8_t port);
 
 /**
- * Get the Inertial Sensor's status
+ * Get the Inertial Sensor's roll angle bounded by (-180,180)
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -465,7 +472,25 @@ imu_accel_s_t imu_get_accel(uint8_t port);
  * }
  * \endcode
  */
-imu_status_e_t imu_get_status(uint8_t port);
+double imu_get_roll(uint8_t port);
+
+/**
+ * Get the Inertial Sensor's yaw angle bounded by (-180,180)
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \return The yaw angle, or PROS_ERR_F if the operation failed, setting errno.
+ */
+double imu_get_yaw(uint8_t port);
+
+
+
 
 // NOTE: not used
 // void imu_set_mode(uint8_t port, uint32_t mode);

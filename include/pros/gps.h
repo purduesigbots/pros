@@ -29,8 +29,7 @@
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
-namespace c {
-#endif
+#endif	
 
 /**
  * \ingroup c-gps
@@ -80,6 +79,11 @@ typedef struct gps_raw_s gps_accel_s_t;
  * 
  */
 typedef struct gps_raw_s gps_gyro_s_t;
+
+#ifdef __cplusplus
+namespace c {
+#endif
+
 
 /**
  * Set the GPS's offset relative to the center of turning in meters,
@@ -153,6 +157,56 @@ int32_t gps_initialize_full(uint8_t port, double xInitial, double yInitial, doub
  * \endcode
  */
 int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
+
+/**
+ * Gets the position and roll, yaw, and pitch of the GPS.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ *
+ * \return A struct (gps_status_s_t) containing values mentioned above.
+ * If the operation failed, all the structure's members are filled with
+ * PROS_ERR_F and errno is set.
+ */
+gps_status_s_t gps_get_status(uint8_t port);
+
+/**
+ * Get the GPS's raw gyroscope values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \return The raw gyroscope values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ */
+gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
+
+/**
+ * Get the GPS's raw accelerometer values
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS's port number from 1-21
+ * \return The raw accelerometer values. If the operation failed, all the
+ * structure's members are filled with PROS_ERR_F and errno is set.
+ */
+gps_accel_s_t gps_get_accel(uint8_t port);
 
 /**
  * Get the GPS's location relative to the center of turning/origin in meters.

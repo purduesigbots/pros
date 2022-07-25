@@ -184,7 +184,7 @@ class Gps {
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_status_s_t get_status() const;
+	virtual pros::gps_status_s_t get_status() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
@@ -271,7 +271,7 @@ class Gps {
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_gyro_s_t get_gyro_rate() const;
+	virtual pros::gps_gyro_s_t get_gyro_rate() const;
 
 	/**
 	 * Get the GPS's raw accelerometer values
@@ -287,7 +287,7 @@ class Gps {
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_accel_s_t get_accel() const;
+	virtual pros::gps_accel_s_t get_accel() const;
 ///@}
 };  // Gps Class
 }
