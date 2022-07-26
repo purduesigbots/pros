@@ -44,6 +44,14 @@ namespace c {
  * \addtogroup c-optical
  *  @{
  */
+typedef enum optical_direction_e { 
+	NO_GESTURE = 0, 
+	UP = 1, 
+	DOWN = 2, 
+	RIGHT = 3, 
+	LEFT = 4, 
+	ERROR = PROS_ERR 
+} optical_direction_e_t;
 
 /**
  * \enum optical_direction_e_t
