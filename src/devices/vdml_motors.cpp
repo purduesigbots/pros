@@ -662,7 +662,7 @@ std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
 		}
 		out.resize(_motors.size());
 		out.shrink_to_fit();
-		return PROS_ERR;
+		return out;
 	}
 	for(Motor motor : _motors) {
 		std::int32_t temp = motor.get_current_limit();
