@@ -36,24 +36,21 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
 
 // internal wrapper for initialization
 static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
-    // claim_port_i(port - 1, E_DEVICE_RADIO); is not used because it's a generic serial device 
-    // the reason behind why it can be a radio or a serial device is because
-    // a radio is not the highest port radio, it will not be registered with vexos.
-	if (!VALIDATE_PORT_NO(port - 1)) {
-		errno = EINVAL;
-		return PROS_ERR;
-	}
+    // TODO: PROS does not currently support using multiple radios on one brain
+    // claim_port_i(port - 1, E_DEVICE_RADIO); is invalid for a radio that is not in the highest port
+    // as it will not be registered with vexos
     // by default, the vexlink radio in the lower port should be E_DEVICE_NONE
     // or, the only radio on the brain
+
     v5_device_e_t plugged_device = registry_get_plugged_type(port - 1);
-    if(plugged_device != E_DEVICE_NONE && plugged_device != E_DEVICE_RADIO) {
+    if(plugged_device != E_DEVICE_RADIO) {
+        if(plugged_device == E_DEVICE_SERIAL) {
+            kprint("PROS does not currently support the use of more than one radio per brain.");
+        }
+        errno = ENODEV;
         return PROS_ERR;
     }
-	v5_smart_device_s_t* device = registry_get_device(port - 1);
-	if (!port_mutex_take(port - 1)) {
-		errno = EACCES;
-		return PROS_ERR;
-	}
+    claim_port_i(port - 1, E_DEVICE_RADIO);
     vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
     return_port(port - 1, 1);
 }
