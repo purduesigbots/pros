@@ -44,7 +44,7 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
         return PROS_ERR;
     }
     claim_port_i(port - 1, E_DEVICE_RADIO);
-    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
+    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, false);
     return_port(port - 1, 1);
 }
 
