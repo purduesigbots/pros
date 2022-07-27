@@ -34,18 +34,11 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
     vexDeviceGenericRadioReceiveAvail(device->device_info));
 }
 
-// internal wrapper for initialization
-static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
-    // TODO: PROS does not currently support using multiple radios on one brain
-    // claim_port_i(port - 1, E_DEVICE_RADIO); is invalid for a radio that is not in the highest port
-    // as it will not be registered with vexos
-    // by default, the vexlink radio in the lower port should be E_DEVICE_NONE
-    // or, the only radio on the brain
-
-    v5_device_e_t plugged_device = registry_get_plugged_type(port - 1);
+uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
+    v5_device_e_t plugged_device = registry_get_plugged_type(port);
     if(plugged_device != E_DEVICE_RADIO) {
         if(plugged_device == E_DEVICE_SERIAL) {
-            kprint("PROS does not currently support the use of more than one radio per brain.");
+            kprintf("PROS does not currently support the use of multiple radios.");
         }
         errno = ENODEV;
         return PROS_ERR;
@@ -55,12 +48,18 @@ static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
     return_port(port - 1, 1);
 }
 
-uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
-    return _link_init_wrapper(port, link_id, type, false);
-}
-
 uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t type) {
-    return _link_init_wrapper(port, link_id, type, true);
+    v5_device_e_t plugged_device = registry_get_plugged_type(port);
+    if(plugged_device != E_DEVICE_RADIO) {
+        if(plugged_device == E_DEVICE_SERIAL) {
+            kprintf("PROS does not currently support the use of multiple radios.");
+        }
+        errno = ENODEV;
+        return PROS_ERR;
+    }
+    claim_port_i(port - 1, E_DEVICE_RADIO)
+    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, true);
+    return_port(port - 1, 1);
 }
 
 bool link_connected(uint8_t port) {
