@@ -29,7 +29,16 @@
 
 namespace pros {
 inline namespace v5 {
-
+typedef enum motor_gearset_e {
+	/// 36:1, 100 RPM, Red gear set
+	E_MOTOR_GEAR_RED = 0,
+	/// 18:1, 200 RPM, Green gear set
+	E_MOTOR_GEAR_GREEN = 1,
+	/// 6:1, 600 RPM, Blue gear set
+	E_MOTOR_GEAR_BLUE = 2,
+	///Error return code
+	E_MOTOR_GEARSET_INVALID = INT32_MAX
+} motor_gearset_e_t;
 /**
  * \ingroup cpp-motors
  */
