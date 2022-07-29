@@ -31,11 +31,11 @@ namespace pros {
 inline namespace v5 {
 typedef enum motor_gearset_e {
 	/// 36:1, 100 RPM, Red gear set
-	E_MOTOR_GEAR_RED = 0,
+	E_MOTOR_GEAR_RED = motor_gearset_e.E_MOTOR_GEARSET_36,
 	/// 18:1, 200 RPM, Green gear set
-	E_MOTOR_GEAR_GREEN = 1,
+	E_MOTOR_GEAR_GREEN = motor_gearset_e.E_MOTOR_GEARSET_18,
 	/// 6:1, 600 RPM, Blue gear set
-	E_MOTOR_GEAR_BLUE = 2,
+	E_MOTOR_GEAR_BLUE = motor_gearset_e.E_MOTOR_GEARSET_06,
 	///Error return code
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
