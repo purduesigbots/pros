@@ -666,6 +666,7 @@ using pros::c::micros;
  * 		  The number of milliseconds to wait (1000 milliseconds per second)
  */
 using pros::c::delay;
+}  // namespace rtos
 }  // namespace pros
 
 #endif  // _PROS_RTOS_HPP_
