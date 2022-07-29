@@ -34,16 +34,39 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
     vexDeviceGenericRadioReceiveAvail(device->device_info));
 }
 
+//custom claim_port style wrapper for link_init due to type mismatching otherwise, limit of one radio per brain
+uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type, bool ov)
+{
+    v5_device_e_t plugged_type = registry_get_plugged_type(port);
+    if (plugged_type == E_DEVICE_SERIAL || plugged_type == E_DEVICE_RADIO) {
+        if (!VALIDATE_PORT_NO(port)) {
+		    errno = ENXIO;
+		    return PROS_ERR;
+	    }
+        v5_device_e_t bound_type = registry_get_bound_type(port);
+        if (bound_type == E_DEVICE_NONE) {
+            registry_bind_port(port, plugged_type);
+        }
+        v5_smart_device_s_t* device = registry_get_device(port);
+        if (!port_mutex_take(port)) {
+            errno = EACCES;                                       
+            return PROS_ERR;
+        }
+        vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
+        return_port(port, 1);
+    }
+    else {
+        errno = ENODEV;
+        return PROS_ERR;
+    }
+}
+
 uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
-    claim_port_i(port - 1, E_DEVICE_RADIO);
-    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, false);
-    return_port(port - 1, 1);
+    return _link_init(port - 1, link_id, type, false);
 }
 
 uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t type) {
-    claim_port_i(port - 1, E_DEVICE_RADIO)
-    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, true);
-    return_port(port - 1, 1);
+    return _link_init(port - 1, link_id, type, true);
 }
 
 bool link_connected(uint8_t port) {
