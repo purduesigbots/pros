@@ -897,13 +897,13 @@ typedef enum motor_brake_mode_e {
 typedef enum motor_gear_e {
 	/// 36:1, 100 RPM, Red gear set
 	E_MOTOR_GEAR_RED = 0,
-	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED
+	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED,
 	/// 18:1, 200 RPM, Green gear set
 	E_MOTOR_GEAR_GREEN = 1,
-	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN
+	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN,
 	/// 6:1, 600 RPM, Blue gear set
 	E_MOTOR_GEAR_BLUE = 2,
-	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE
+	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE,
 	///Error return code
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gear_e_t;
