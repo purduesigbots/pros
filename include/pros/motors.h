@@ -905,7 +905,7 @@ typedef enum motor_gear_e {
 	E_MOTOR_GEAR_BLUE = 2,
 	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE,
 	///Error return code
-	E_MOTOR_GEARSET_INVALID = INT32_MAX
+	E_MOTOR_GEAR_INVALID = INT32_MAX
 } motor_gear_e_t;
 
 /**
