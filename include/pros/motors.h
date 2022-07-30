@@ -926,13 +926,13 @@ typedef enum motor_gearset_e {
 
 typedef enum motor_gear_e {
 	/// 36:1, 100 RPM, Red gear set
-	E_MOTOR_GEAR_RED = motor_gearset_e.E_MOTOR_GEARSET_36,
+	E_MOTOR_GEAR_RED = 0,
 	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED,
 	/// 18:1, 200 RPM, Green gear set
-	E_MOTOR_GEAR_GREEN = motor_gearset_e.E_MOTOR_GEARSET_18,
+	E_MOTOR_GEAR_GREEN = 1,
 	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN,
 	/// 6:1, 600 RPM, Blue gear set
-	E_MOTOR_GEAR_BLUE = motor_gearset_e.E_MOTOR_GEARSET_06,
+	E_MOTOR_GEAR_BLUE = 2,
 	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE,
 	///Error return code
 	E_MOTOR_GEAR_INVALID = INT32_MAX
@@ -1206,8 +1206,6 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  * \endcode
  */
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
-
-int32_t motor_set_gearing(uint8_t port, const motor_gear_e_t gearset);
 
 /**
  * Takes in floating point values and returns a properly formatted pid struct.

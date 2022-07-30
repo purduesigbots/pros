@@ -224,7 +224,7 @@ std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
 }
 
 std::int32_t Motor::set_gearing(const motor_gear_e_t gearset) const {
-	return motor_set_gearing(_port, gearset);
+	return motor_set_gearing(_port, (motor_gearset_e_t) gearset);
 }
 
 motor_pid_s_t Motor::convert_pid(double kf, double kp, double ki, double kd) {
