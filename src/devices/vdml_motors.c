@@ -247,6 +247,12 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset) {
 	return_port(port - 1, 1);
 }
 
+int32_t motor_set_gearing(uint8_t port, const motor_gear_e_t gearset) {
+	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)gearset);
+	return_port(port - 1, 1);
+}
+
 motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
                                           double threshold, double loopspeed) {
 	motor_pid_full_s_t rtn;

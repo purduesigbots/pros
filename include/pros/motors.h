@@ -894,20 +894,6 @@ typedef enum motor_brake_mode_e {
 	E_MOTOR_BRAKE_INVALID = INT32_MAX
 } motor_brake_mode_e_t;
 
-typedef enum motor_gear_e {
-	/// 36:1, 100 RPM, Red gear set
-	E_MOTOR_GEAR_RED = 0,
-	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED,
-	/// 18:1, 200 RPM, Green gear set
-	E_MOTOR_GEAR_GREEN = 1,
-	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN,
-	/// 6:1, 600 RPM, Blue gear set
-	E_MOTOR_GEAR_BLUE = 2,
-	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE,
-	///Error return code
-	E_MOTOR_GEAR_INVALID = INT32_MAX
-} motor_gear_e_t;
-
 /**
  * \enum motor_encoder_units_e_t
  * Indicates the units used by the motor encoders.
@@ -937,6 +923,20 @@ typedef enum motor_gearset_e {
 	///Error return code
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
 } motor_gearset_e_t;
+
+typedef enum motor_gear_e {
+	/// 36:1, 100 RPM, Red gear set
+	E_MOTOR_GEAR_RED = 0,
+	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED,
+	/// 18:1, 200 RPM, Green gear set
+	E_MOTOR_GEAR_GREEN = 1,
+	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN,
+	/// 6:1, 600 RPM, Blue gear set
+	E_MOTOR_GEAR_BLUE = 2,
+	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE,
+	///Error return code
+	E_MOTOR_GEAR_INVALID = INT32_MAX
+} motor_gear_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -1206,6 +1206,8 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  * \endcode
  */
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
+
+int32_t motor_set_gearing(uint8_t port, const motor_gear_e_t gearset);
 
 /**
  * Takes in floating point values and returns a properly formatted pid struct.
