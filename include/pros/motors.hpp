@@ -29,16 +29,19 @@
 
 namespace pros {
 inline namespace v5 {
-typedef enum motor_gearset_e {
+typedef enum motor_gear_e {
 	/// 36:1, 100 RPM, Red gear set
-	E_MOTOR_GEAR_RED = motor_gearset_e.E_MOTOR_GEARSET_36,
+	E_MOTOR_GEAR_RED = 0,
+	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_RED
 	/// 18:1, 200 RPM, Green gear set
-	E_MOTOR_GEAR_GREEN = motor_gearset_e.E_MOTOR_GEARSET_18,
+	E_MOTOR_GEAR_GREEN = 1,
+	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_GREEN
 	/// 6:1, 600 RPM, Blue gear set
-	E_MOTOR_GEAR_BLUE = motor_gearset_e.E_MOTOR_GEARSET_06,
+	E_MOTOR_GEAR_BLUE = 2,
+	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_BLUE
 	///Error return code
 	E_MOTOR_GEARSET_INVALID = INT32_MAX
-} motor_gearset_e_t;
+} motor_gear_e_t;
 /**
  * \ingroup cpp-motors
  */
@@ -80,9 +83,16 @@ class Motor {
 	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
+	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse,
+	               const motor_encoder_units_e_t encoder_units);
+
 	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse);
 
+	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse);
+
 	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset);
+
+	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset);
 
 	explicit Motor(const std::uint8_t port, const bool reverse);
 
@@ -915,6 +925,8 @@ class Motor {
 	 */
 	virtual motor_gearset_e_t get_gearing(void) const;
 
+	virtual motor_gear_e_t get_gearing(void) const;
+
 	/**
 	 * Gets the port number of the motor.
 	 *
@@ -1075,6 +1087,8 @@ class Motor {
 	 * \endcode
 	 */
 	virtual std::int32_t set_gearing(const motor_gearset_e_t gearset) const;
+
+	virtual std::int32_t set_gearing(const motor_gear_e_t gearset) const;
 
 	/**
 	 * Sets the reverse flag for the motor.

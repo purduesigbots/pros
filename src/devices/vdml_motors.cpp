@@ -25,12 +25,29 @@ Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const boo
 	set_encoder_units(encoder_units);
 }
 
+Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse,
+             const motor_encoder_units_e_t encoder_units)
+    : _port(port) {
+	set_gearing(gearset);
+	set_reversed(reverse);
+	set_encoder_units(encoder_units);
+}
+
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
+Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse) : _port(port) {
+	set_gearing(gearset);
+	set_reversed(reverse);
+}
+
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+	set_gearing(gearset);
+}
+
+Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset) : _port(port) {
 	set_gearing(gearset);
 }
 
@@ -113,6 +130,10 @@ std::uint32_t Motor::get_flags(void) const {
 }
 
 motor_gearset_e_t Motor::get_gearing(void) const {
+	return motor_get_gearing(_port);
+}
+
+motor_gear_e_t Motor::get_gearing(void) const {
 	return motor_get_gearing(_port);
 }
 
@@ -203,6 +224,10 @@ std::int32_t Motor::set_encoder_units(const motor_encoder_units_e_t units) const
 }
 
 std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
+	return motor_set_gearing(_port, gearset);
+}
+
+std::int32_t Motor::set_gearing(const motor_gear_e_t gearset) const {
 	return motor_set_gearing(_port, gearset);
 }
 
