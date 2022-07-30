@@ -912,8 +912,6 @@ class Motor {
 	 */
 	virtual motor_gearset_e_t get_gearing(void) const;
 
-	virtual motor_gear_e_t get_gearing(void) const;
-
 	/**
 	 * Gets the port number of the motor.
 	 *

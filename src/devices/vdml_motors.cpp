@@ -133,10 +133,6 @@ motor_gearset_e_t Motor::get_gearing(void) const {
 	return motor_get_gearing(_port);
 }
 
-motor_gear_e_t Motor::get_gearing(void) const {
-	return motor_get_gearing(_port);
-}
-
 motor_pid_full_s_t Motor::get_pos_pid(void) const {
 	#pragma GCC diagnostic push
   	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
