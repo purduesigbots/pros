@@ -73,7 +73,7 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 	}
 
 	vexDeviceImuDataRateSet(device->device_info, rate);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 double imu_get_rotation(uint8_t port) {
@@ -245,7 +245,7 @@ int32_t imu_tare(uint8_t port){
 	data->pitch_offset = -euler_values.pitch;
 	data->roll_offset = -euler_values.roll;
 	data->yaw_offset = -euler_values.yaw;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_tare_euler(uint8_t port){
@@ -283,7 +283,7 @@ int32_t imu_set_rotation(uint8_t port, double target){
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	data->rotation_offset = target - vexDeviceImuHeadingGet(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_heading(uint8_t port, double target){
@@ -298,7 +298,7 @@ int32_t imu_set_heading(uint8_t port, double target){
 	if (target > IMU_HEADING_MAX) target = IMU_HEADING_MAX;
 	if (target < 0) target = 0;
 	data->heading_offset = target - vexDeviceImuDegreesGet(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_pitch(uint8_t port, double target){
@@ -313,7 +313,7 @@ int32_t imu_set_pitch(uint8_t port, double target){
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
 	data->pitch_offset = target - euler_values.pitch;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_roll(uint8_t port, double target){
@@ -328,7 +328,7 @@ int32_t imu_set_roll(uint8_t port, double target){
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
 	data->roll_offset = target - euler_values.roll;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_yaw(uint8_t port, double target){
@@ -343,7 +343,7 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	data->yaw_offset = target - euler_values.yaw;
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_euler(uint8_t port, euler_s_t target){
@@ -363,5 +363,5 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target){
 	data->pitch_offset = target.pitch - euler_values.pitch;
 	data->roll_offset = target.roll - euler_values.roll;
 	data->yaw_offset = target.yaw - euler_values.yaw;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
