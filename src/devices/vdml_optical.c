@@ -44,7 +44,7 @@ int32_t optical_get_proximity(uint8_t port) {
 int32_t optical_set_led_pwm(uint8_t port, uint8_t value) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalLedPwmSet(device->device_info, value);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t optical_get_led_pwm(uint8_t port) {
@@ -126,11 +126,11 @@ optical_gesture_s_t optical_get_gesture_raw(uint8_t port) {
 int32_t optical_enable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalGestureEnable(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t optical_disable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalGestureDisable(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
