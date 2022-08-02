@@ -55,7 +55,7 @@ static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_
 		return PROS_ERR;
 	}
     vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
-    return_port(port - 1, 1);
+    return_port(port - 1, PROS_SUCCESS);
 }
 
 uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {

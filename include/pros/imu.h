@@ -56,6 +56,16 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
+#ifdef PROS_USE_SIMPLE_NAMES
+#ifdef __cplusplus
+#define IMU_STATUS_CALIBRATING pros::E_IMU_STATUS_CALIBRATING
+#define IMU_STATUS_ERROR pros::E_IMU_STATUS_ERROR
+#else
+#define IMU_STATUS_CALIBRATING E_IMU_STATUS_CALIBRATING
+#define IMU_STATUS_ERROR E_IMU_STATUS_ERROR
+#endif
+#endif
+
 #define IMU_MINIMUM_DATA_RATE 5
 
 /**
