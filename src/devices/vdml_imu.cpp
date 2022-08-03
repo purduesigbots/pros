@@ -13,8 +13,8 @@
 #include "pros/imu.hpp"
 
 namespace pros {
-std::int32_t Imu::reset() const {
-	return pros::c::imu_reset(_port);
+std::int32_t Imu::reset(bool blocking /*= false*/) const {
+	return blocking ? pros::c::imu_reset_blocking(_port) : pros::c::imu_reset(_port);
 }
 
 std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
