@@ -906,4 +906,23 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace pros
+#define take_motor_group_mutex_int 						 \
+	if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
+		return PROS_ERR;													 \
+	}																						 
+
+#define give_motor_group_mutex_int						 \
+	if (!_motor_group_mutex.give()) {            \
+		return PROS_ERR;                           \
+	}
+
+#define motor_group_loop(function_call) \
+	for(Motor motor : _motors) {
+		if (out != PROS_ERR && motor.function_call != PROS_ERR) {
+			out = 1;
+		}
+		else {
+			out = PROS_ERR;
+		}
+	}
 #endif  // _PROS_MOTORS_HPP_

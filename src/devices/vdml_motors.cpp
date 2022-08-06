@@ -14,6 +14,7 @@
 #include "pros/motors.hpp"
 
 #include <vector>
+
 namespace pros {
 using namespace pros::c;
 
@@ -267,7 +268,7 @@ std::int32_t MotorGroup::move(std::int32_t voltage) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.move(voltage) != PROS_ERR) {
 			out = 1;
@@ -286,7 +287,7 @@ std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.move(voltage) != PROS_ERR) {
 			out = 1;
@@ -343,7 +344,7 @@ std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.move_velocity(velocity) != PROS_ERR) {
@@ -365,7 +366,7 @@ std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
-	}
+	std::}
 	int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.move_voltage(voltage) != PROS_ERR) {
@@ -388,7 +389,7 @@ std::int32_t MotorGroup::brake(void) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.brake() != PROS_ERR) {
 			out = 1;
@@ -410,7 +411,7 @@ std::int32_t MotorGroup::set_zero_position(const double position) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.set_zero_position(position) != PROS_ERR) {
 			out = 1;
@@ -432,7 +433,7 @@ std::int32_t MotorGroup::set_reversed(const bool reversed) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.set_reversed(reversed) != PROS_ERR) {
 			out = 1;
@@ -444,8 +445,6 @@ std::int32_t MotorGroup::set_reversed(const bool reversed) {
 	
 	if (!_motor_group_mutex.give()) {
 		return PROS_ERR;
-	} else {
-		return out;
 	}
 	return out;
 }
@@ -455,7 +454,7 @@ std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 		errno = EACCES;
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.set_voltage_limit(limit) != PROS_ERR) {
 			out = 1;
@@ -474,24 +473,10 @@ std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 }
 
 std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
-	int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.set_gearing(gearset) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	take_motor_group_mutex_int;
+	std::int32_t out = 0;
+	motor_group_loop(set_gearing(gearset));
+	give_motor_group_mutex_int;
 	return out;
 }
 
@@ -499,7 +484,7 @@ std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) 
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
 	}
-	int32_t out = 0;
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.set_encoder_units(units) != PROS_ERR) {
 			out = 1;
