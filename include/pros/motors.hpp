@@ -916,13 +916,13 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m);
 		return PROS_ERR;                           \
 	}
 
-#define motor_group_loop(function_call) \
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.function_call != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
+#define motor_group_loop(function_call)                       \
+	for(Motor motor : _motors) {                                \
+		if (out != PROS_ERR && motor.function_call != PROS_ERR) { \
+			out = 1;                                                \
+		}                                                         \
+		else {                                                    \
+			out = PROS_ERR;                                         \
+		}                                                         \
 	}
 #endif  // _PROS_MOTORS_HPP_
