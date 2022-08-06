@@ -376,21 +376,15 @@ std::vector<double> MotorGroup::get_target_positions(void) {
 			out.push_back(temp);
 		}
 	}
+	out.resize(_motors.size());
+	out.shrink_to_fit();
 	give_motor_group_mutex_vector(PROS_ERR_F);
 	return out;
 }
 
 std::vector<double> MotorGroup::get_actual_velocities(void) {
 	std::vector<double> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR_F);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
 		double temp = motor.get_target_position();
 		if (temp == PROS_ERR_F) {
@@ -406,26 +400,13 @@ std::vector<double> MotorGroup::get_actual_velocities(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR_F);
-		}
-	}
+	give_motor_group_mutex_vector(PROS_ERR_F);
 	return out;
 }
 
 std::vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
 	std::vector<pros::motor_brake_mode_e_t> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(E_MOTOR_BRAKE_INVALID);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(E_MOTOR_BRAKE_INVALID);
 	for(Motor motor : _motors) {
 		pros::motor_brake_mode_e_t temp = motor.get_brake_mode();
 		if (temp == E_MOTOR_BRAKE_INVALID) {
@@ -441,26 +422,13 @@ std::vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(E_MOTOR_BRAKE_INVALID);
-		}
-	}
+	give_motor_group_mutex_vector(E_MOTOR_BRAKE_INVALID);
 	return out;
 }
 
 std::vector<std::int32_t> MotorGroup::get_current_draws(void) {
 	std::vector<std::int32_t> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
 		std::int32_t temp = motor.get_current_draw();
 		if (temp == PROS_ERR) {
@@ -475,26 +443,13 @@ std::vector<std::int32_t> MotorGroup::get_current_draws(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-	}
+	give_motor_group_mutex_vector(PROS_ERR);
 	return out;
 }
 
 std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
 	std::vector<std::int32_t> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
 		std::int32_t temp = motor.get_current_limit();
 		if (temp == PROS_ERR) {
@@ -510,12 +465,7 @@ std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-	}
+	give_motor_group_mutex_vector(PROS_ERR);
 	return out;
 }
 
@@ -531,15 +481,7 @@ std::vector<std::uint8_t> MotorGroup::get_ports(void) {
 
 std::vector<std::int32_t> MotorGroup::get_directions(void) {
 	std::vector<std::int32_t> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
 		std::int32_t temp = motor.get_direction();
 		if (temp == PROS_ERR) {
@@ -555,27 +497,14 @@ std::vector<std::int32_t> MotorGroup::get_directions(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR);
-		}
-	}
+	give_motor_group_mutex_vector(PROS_ERR);
 	return out;
 }
 
 std::vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
 	std::vector<pros::motor_encoder_units_e_t> out;
 
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(E_MOTOR_ENCODER_INVALID);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(E_MOTOR_ENCODER_INVALID);
 	for(Motor motor : _motors) {
 		pros::motor_encoder_units_e_t temp = motor.get_encoder_units();
 		if (temp == E_MOTOR_ENCODER_INVALID) {
@@ -590,12 +519,7 @@ std::vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
 	}
 	out.resize(_motors.size());
 	out.shrink_to_fit();
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(E_MOTOR_ENCODER_INVALID);
-		}
-	}
+	give_motor_group_mutex_vector(E_MOTOR_ENCODER_INVALID);
 	return out;
 }
 
