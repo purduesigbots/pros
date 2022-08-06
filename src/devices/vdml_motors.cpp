@@ -366,8 +366,8 @@ std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
 		return PROS_ERR;
-	std::}
-	int32_t out = 0;
+	}
+	std::int32_t out = 0;
 	for(Motor motor : _motors) {
 		if (out != PROS_ERR && motor.move_voltage(voltage) != PROS_ERR) {
 			out = 1;
