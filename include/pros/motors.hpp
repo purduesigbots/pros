@@ -925,4 +925,23 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m);
 			out = PROS_ERR;                                         \
 		}                                                         \
 	}
+
+#define take_motor_group_mutex_vector(error) \
+if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
+		out.clear();														 \
+		for (Motor m : _motors) {								 \
+			out.push_back(error);						       \
+		}																				 \
+		out.resize(_motors.size());							 \
+		out.shrink_to_fit();                     \
+		return out;                              \
+	}
+
+#define give_motor_group_mutex_vector(error) \
+	if (!_motor_group_mutex.give()) {					 \
+		out.clear();														 \
+		for (Motor m : _motors) {								 \
+			out.push_back(error);									 \
+		}																				 \
+	}
 #endif  // _PROS_MOTORS_HPP_

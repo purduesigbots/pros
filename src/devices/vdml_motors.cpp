@@ -362,15 +362,7 @@ std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) 
 
 std::vector<double> MotorGroup::get_target_positions(void) {
 	std::vector<double> out;
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR_F);
-		}
-		out.resize(_motors.size());
-		out.shrink_to_fit();
-		return out;
-	}
+	take_motor_group_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
 		double temp = motor.get_target_position();
 		if (temp == PROS_ERR_F) {
@@ -384,12 +376,7 @@ std::vector<double> MotorGroup::get_target_positions(void) {
 			out.push_back(temp);
 		}
 	}
-	if (!_motor_group_mutex.give()) {
-		out.clear();
-		for (Motor m : _motors) {
-			out.push_back(PROS_ERR_F);
-		}
-	}
+	give_motor_group_mutex_vector(PROS_ERR_F);
 	return out;
 }
 
