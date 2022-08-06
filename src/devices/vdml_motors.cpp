@@ -265,210 +265,82 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex()) {}
 
 std::int32_t MotorGroup::move(std::int32_t voltage) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move(voltage) != PROS_ERR) {
-			out = 1;
-		} else {
-			out = PROS_ERR;
-		}
-	}
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(move(voltage));
+	give_motor_group_mutex_int;
+	return out;
 }
 
 std::int32_t MotorGroup::operator=(std::int32_t voltage) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move(voltage) != PROS_ERR) {
-			out = 1;
-		} else {
-			out = PROS_ERR;
-		}
-	}
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(move(voltage));
+	give_motor_group_mutex_int;
+	return out;
 }
 
 std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
-	int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move_absolute(position, velocity) != PROS_ERR) {
-			out = 1;
-		} else {
-			out = PROS_ERR;
-		}
-	}
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	take_motor_group_mutex_int;
+	std::int32_t out = 0;
+	motor_group_loop(move_absolute(position, velocity));
+	give_motor_group_mutex_int;
+	return out;
 }
 
 std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
-if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
-	int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move_relative(position, velocity) != PROS_ERR) {
-			out = 1;
-		} else {
-			out = PROS_ERR;
-		}
-	}
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+take_motor_group_mutex_int;
+	std::int32_t out = 0;
+	motor_group_loop(move_relative(position, velocity));
+	give_motor_group_mutex_int;
+	return out;
 }
 
 std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move_velocity(velocity) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(move_velocity(velocity));
+	give_motor_group_mutex_int;
 	return out;
 }
 
 std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.move_voltage(voltage) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(move_voltage(voltage));
+	give_motor_group_mutex_int;
 	return out;
 }
 
 std::int32_t MotorGroup::brake(void) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.brake() != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(brake());
+	give_motor_group_mutex_int;
 	return out;
 }
 
 std::int32_t MotorGroup::set_zero_position(const double position) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.set_zero_position(position) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(set_zero_position(position));
+	give_motor_group_mutex_int;
 	return out;
 }
 
 std::int32_t MotorGroup::set_reversed(const bool reversed) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.set_reversed(reversed) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	}
+	motor_group_loop(set_reversed(reversed));
+	give_motor_group_mutex_int;
 	return out;
 }
 
 std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		errno = EACCES;
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.set_voltage_limit(limit) != PROS_ERR) {
-			out = 1;
-		}
-		else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(set_voltage_limit(limit));
+	give_motor_group_mutex_int;
 	return out;
 }
 
@@ -481,23 +353,10 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 }
 
 std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) {
-	if (!_motor_group_mutex.take(TIMEOUT_MAX)) {
-		return PROS_ERR;
-	}
+	take_motor_group_mutex_int;
 	std::int32_t out = 0;
-	for(Motor motor : _motors) {
-		if (out != PROS_ERR && motor.set_encoder_units(units) != PROS_ERR) {
-			out = 1;
-		} else {
-			out = PROS_ERR;
-		}
-	}
-	
-	if (!_motor_group_mutex.give()) {
-		return PROS_ERR;
-	} else {
-		return out;
-	}
+	motor_group_loop(set_encoder_units(units));
+	give_motor_group_mutex_int;
 	return out;
 }
 
