@@ -1093,7 +1093,7 @@ class MotorGroup {
 	 */
 	std::int32_t set_encoder_units(const motor_encoder_units_e_t units);
 
- /****************************************************************************/
+  /****************************************************************************/
 	/**                        Motor telemetry functions                       **/
 	/**                                                                        **/
 	/** These functions let programmers to collect telemetry from motor groups **/
@@ -1169,19 +1169,65 @@ class MotorGroup {
 	std::vector<std::int32_t> are_over_current(void);
 	
 	/**
-	 * Gets the temperature limit flag for the motor.
+	 * Gets the temperature limit flag for the motors.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
-	 * below the limit, or PROS_ERR if the operation failed, setting errno.
+	 * \return A vector with for each motor a 1 if the temperature limit is 
+	 * exceeded and 0 if the temperature is below the limit, 
+	 * or a vector filled with PROS_ERR if the operation failed, setting errno.
 	 */
 	std::vector<std::int32_t> are_over_temp(void);
+
+	/**
+	 * Gets the brake mode that was set for the motors.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return A Vector with for each motor one of motor_brake_mode_e_t, 
+	 * according to what was set for the motor, or a vector filled with
+	 * E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 */
 	std::vector<pros::motor_brake_mode_e_t> get_brake_modes(void);
+
+	/**
+	 * Gets the current drawn by each motor in mA.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \return A vector containing each motor's current in mA 
+	 * or a vector filled with PROS_ERR if the operation failed, setting errno.
+	 */
 	std::vector<std::int32_t> get_current_draws(void);
-	std::vector<std::int32_t> get_current_limits(void);
+
+	/**
+	 * Gets the current limit for each motor in mA.
+	 *
+	 * The default value is 2500 mA.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \return A vector with each motor's current limit in mA or a vector filled 
+	 * with PROS_ERR if the operation failed, setting errno.
+	 */
+	std::vector<std::int32_t> get_current_limits(void);\
+
+	/**
+	 * Gets the port number of each motor.
+	 *
+	 * \return a vector with each motor's port number.
+	 */
 	std::vector<std::uint8_t> get_ports(void);
 	/**
 	 * Gets the direction of movement for the motors.
@@ -1194,6 +1240,19 @@ class MotorGroup {
 	 * negative direction, and PROS_ERR if the operation failed, setting errno.
 	 */
 	std::vector<std::int32_t> get_directions(void);
+
+	/**
+	 * Gets the encoder units that were set for each motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return A vector filled with one of motor_encoder_units_e_t for each motor 
+	 * according to what is set for the motor or a vector filled with 
+	 * E_MOTOR_ENCODER_INVALID if the operation failed.
+	 */
 	std::vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
 
 	private:
@@ -1206,16 +1265,29 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace pros
+/**
+ * Macro to claim the motor group mutex with the error code being PROS_ERR
+ * 
+ */
 #define take_motor_group_mutex_int 						 \
 	if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
 		return PROS_ERR;													 \
 	}																						 
 
+/**
+ * Macro to free the motor group mutex with the error value being PROS_ERR
+ * 
+ */
 #define give_motor_group_mutex_int						 \
 	if (!_motor_group_mutex.give()) {            \
 		return PROS_ERR;                           \
 	}
 
+/**
+ * Macro to loop through a function call for each motor in a motor group
+ * with an error value of PROS_ERR
+ * 
+ */
 #define motor_group_loop(function_call)                       \
 	for(Motor motor : _motors) {                                \
 		if (out != PROS_ERR && motor.function_call != PROS_ERR) { \
@@ -1226,6 +1298,10 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m);
 		}                                                         \
 	}
 
+/**
+ * Macro to take the motor group mutex with a vector of error as the error value
+ * 
+ */
 #define take_motor_group_mutex_vector(error) \
 if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
 		out.clear();														 \
@@ -1237,6 +1313,10 @@ if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
 		return out;                              \
 	}
 
+/**
+ * Macro to free the motor group mutex with a vector of error as the error value
+ * 
+ */
 #define give_motor_group_mutex_vector(error) \
 	if (!_motor_group_mutex.give()) {					 \
 		out.clear();														 \
