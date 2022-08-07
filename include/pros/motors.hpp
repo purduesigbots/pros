@@ -1178,7 +1178,7 @@ class MotorGroup {
 	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
 	 * below the limit, or PROS_ERR if the operation failed, setting errno.
 	 */
-	std::vector<std::int32_t> are_over_temp(void) const;
+	std::vector<std::int32_t> are_over_temp(void);
 	std::vector<pros::motor_brake_mode_e_t> get_brake_modes(void);
 	std::vector<std::int32_t> get_current_draws(void);
 	std::vector<std::int32_t> get_current_limits(void);
