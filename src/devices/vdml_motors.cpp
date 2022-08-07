@@ -540,7 +540,7 @@ std::vector<std::int32_t> MotorGroup::get_directions(void) {
 	return out;
 }
 
-std::vector<std::int32_t> get_target_velocities(void) {
+std::vector<std::int32_t> MotorGroup::get_target_velocities(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -562,7 +562,7 @@ std::vector<std::int32_t> get_target_velocities(void) {
 	return out;
 }
 
-std::vector<std::int32_t> are_over_temp(void) {
+std::vector<std::int32_t> MotorGroup::are_over_temp(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
