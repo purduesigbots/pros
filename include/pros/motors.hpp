@@ -68,19 +68,19 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
+	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
-	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse,
+	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse);
+	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse);
+	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset);
+	explicit Motor(const std::uint8_t port, const pros::Color color);
 
-	explicit Motor(const std::uint8_t port, const motor_gear_e_t gearset);
+	explicit Motor(const std::uint8_t port, const pros::Color color);
 
 	explicit Motor(const std::uint8_t port, const bool reverse);
 
@@ -1074,7 +1074,7 @@ class Motor {
 	 */
 	virtual std::int32_t set_gearing(const motor_gearset_e_t gearset) const;
 
-	virtual std::int32_t set_gearing(const motor_gear_e_t gearset) const;
+	virtual std::int32_t set_gearing(const pros::Color color) const;
 
 	/**
 	 * Sets the reverse flag for the motor.

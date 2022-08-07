@@ -25,29 +25,34 @@ Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const boo
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse,
+Motor::Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color color, const bool reverse) : _port(port) {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color color, const bool reverse) : _port(port) {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color color) : _port(port) {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gear_e_t gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color color) : _port(port) {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 }
 
@@ -223,7 +228,8 @@ std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
 	return motor_set_gearing(_port, gearset);
 }
 
-std::int32_t Motor::set_gearing(const motor_gear_e_t gearset) const {
+std::int32_t Motor::set_gearing(const pros::Color color) const {
+	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	return motor_set_gearing(_port, (motor_gearset_e_t) gearset);
 }
 
@@ -280,6 +286,20 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
+}
+
+e_motor_gear_e_t convert_to_gear_color(pros::Color color) {
+	const short blue = color & 0xff;
+	const short green = (color >> 8) & 0xff;
+	const short red = (color >> 16) & 0xff;
+	const short alpha = (color >> 24) & 0xff;
+	if (red>100 && red>green*2 && red>blue*2)
+    	return motor_gear_e_t.E_MOTOR_GEAR_RED;
+	if (green>100 && green>red*2 && green>blue*2)
+    	return motor_gear_e_t.E_MOTOR_GEAR_GREEN;
+	if (blue>100 && blue>green*2 && blue>red*2)
+    	return motor_gear_e_t.E_MOTOR_GEAR_BLUE;
+	return motor_gear_e_t.E_MOTOR_GEAR_INVALID;
 }
 
 namespace literals {
