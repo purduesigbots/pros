@@ -288,7 +288,7 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
 
-e_motor_gear_e_t convert_to_gear_color(pros::Color color) {
+motor_gear_e_t convert_to_gear_color(const pros::Color color) {
 	const short blue = color & 0xff;
 	const short green = (color >> 8) & 0xff;
 	const short red = (color >> 16) & 0xff;
