@@ -544,7 +544,7 @@ std::vector<std::int32_t> get_target_velocities(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
-		std::int32_t temp = motor.get_actual_velocity();
+		std::int32_t temp = motor.get_target_velocity();
 		if (temp == PROS_ERR) {
 			out.clear();
 			for (Motor m : _motors) {
