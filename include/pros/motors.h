@@ -1207,8 +1207,6 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  */
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
 
-e_motor_gear_e_t convert_to_gear_color(pros::Color color);
-
 /**
  * Takes in floating point values and returns a properly formatted pid struct.
  * The motor_pid_s_t struct is in 4.4 format, i.e. 0x20 is 2.0, 0x21 is 2.0625,

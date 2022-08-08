@@ -45,6 +45,8 @@ inline namespace v5 {
 	///Error return code
 	E_MOTOR_GEAR_INVALID = INT32_MAX
 } motor_gear_e_t;
+
+motor_gear_e_t convert_to_gear_color(pros::Color color);
 	
 /**
  * \ingroup cpp-motors
