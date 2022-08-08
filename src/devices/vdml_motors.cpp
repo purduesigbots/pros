@@ -29,31 +29,29 @@ Motor::Motor(const std::uint8_t port, const pros::Color color, const bool revers
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
 	const motor_gear_e_t gearset = convert_to_gear_color(color);
-	set_gearing(gearset);
+	set_gearing((motor_gearset_e_t)gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
-	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
 Motor::Motor(const std::uint8_t port, const pros::Color color, const bool reverse) : _port(port) {
 	const motor_gear_e_t gearset = convert_to_gear_color(color);
-	set_gearing(gearset);
+	set_gearing((motor_gearset_e_t)gearset);
 	set_reversed(reverse);
 }
 
 Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
-	const motor_gear_e_t gearset = convert_to_gear_color(color);
 	set_gearing(gearset);
 }
 
 Motor::Motor(const std::uint8_t port, const pros::Color color) : _port(port) {
 	const motor_gear_e_t gearset = convert_to_gear_color(color);
-	set_gearing(gearset);
+	set_gearing((motor_gearset_e_t)gearset);
 }
 
 Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
