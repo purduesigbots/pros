@@ -291,11 +291,11 @@ motor_gear_e_t convert_to_gear_color(const pros::Color color) {
 	const short green = ((int)color >> 8) & 0xff;
 	const short red = ((int)color >> 16) & 0xff;
 	const short alpha = ((int)color >> 24) & 0xff;
-	if (red>100 && red>green*2 && red>blue*2)
+	if (red>=green && red>=blue)
     	return motor_gear_e_t::E_MOTOR_GEAR_RED;
-	if (green>100 && green>red*2 && green>blue*2)
+	if (green>=red && green>=blue)
     	return motor_gear_e_t::E_MOTOR_GEAR_GREEN;
-	if (blue>100 && blue>green*2 && blue>red*2)
+	if (blue>=green && blue>=red)
     	return motor_gear_e_t::E_MOTOR_GEAR_BLUE;
 	return motor_gear_e_t::E_MOTOR_GEAR_INVALID;
 }
