@@ -15,6 +15,66 @@
 
 #include <vector>
 
+/**
+ * Macro to claim the motor group mutex with the error code being PROS_ERR
+ * 
+ */
+#define take_motor_group_mutex_int 						 \
+	if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
+		return PROS_ERR;													 \
+	}																						 
+
+/**
+ * Macro to free the motor group mutex with the error value being PROS_ERR
+ * 
+ */
+#define give_motor_group_mutex_int						 \
+	if (!_motor_group_mutex.give()) {            \
+		return PROS_ERR;                           \
+	}
+
+/**
+ * Macro to loop through a function call for each motor in a motor group
+ * with an error value of PROS_ERR
+ * 
+ */
+#define motor_group_loop(function_call)                       \
+	for(Motor motor : _motors) {                                \
+		if (out != PROS_ERR && motor.function_call != PROS_ERR) { \
+			out = 1;                                                \
+		}                                                         \
+		else {                                                    \
+			out = PROS_ERR;                                         \
+		}                                                         \
+	}
+
+/**
+ * Macro to take the motor group mutex with a vector of error as the error value
+ * 
+ */
+#define take_motor_group_mutex_vector(error) \
+if (!_motor_group_mutex.take(TIMEOUT_MAX)) { \
+		out.clear();														 \
+		for (Motor m : _motors) {								 \
+			out.push_back(error);						       \
+		}																				 \
+		out.resize(_motors.size());							 \
+		out.shrink_to_fit();                     \
+		return out;                              \
+	}
+
+/**
+ * Macro to free the motor group mutex with a vector of error as the error value
+ * 
+ */
+#define give_motor_group_mutex_vector(error) \
+	if (!_motor_group_mutex.give()) {					 \
+		out.clear();														 \
+		for (Motor m : _motors) {								 \
+			out.push_back(error);									 \
+		}																				 \
+	}
+
 namespace pros {
 using namespace pros::c;
 
