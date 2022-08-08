@@ -287,17 +287,17 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 }
 
 motor_gear_e_t convert_to_gear_color(const pros::Color color) {
-	const short blue = color & 0xff;
-	const short green = (color >> 8) & 0xff;
-	const short red = (color >> 16) & 0xff;
-	const short alpha = (color >> 24) & 0xff;
+	const short blue = (static_cast<int>)color & 0xff;
+	const short green = ((static_cast<int>)color >> 8) & 0xff;
+	const short red = ((static_cast<int>)color >> 16) & 0xff;
+	const short alpha = ((static_cast<int>)color >> 24) & 0xff;
 	if (red>100 && red>green*2 && red>blue*2)
-    	return motor_gear_e_t.E_MOTOR_GEAR_RED;
+    	return motor_gear_e_t::E_MOTOR_GEAR_RED;
 	if (green>100 && green>red*2 && green>blue*2)
-    	return motor_gear_e_t.E_MOTOR_GEAR_GREEN;
+    	return motor_gear_e_t::E_MOTOR_GEAR_GREEN;
 	if (blue>100 && blue>green*2 && blue>red*2)
-    	return motor_gear_e_t.E_MOTOR_GEAR_BLUE;
-	return motor_gear_e_t.E_MOTOR_GEAR_INVALID;
+    	return motor_gear_e_t::E_MOTOR_GEAR_BLUE;
+	return motor_gear_e_t::E_MOTOR_GEAR_INVALID;
 }
 
 namespace literals {
