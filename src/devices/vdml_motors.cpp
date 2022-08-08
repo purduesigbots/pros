@@ -287,10 +287,10 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 }
 
 motor_gear_e_t convert_to_gear_color(const pros::Color color) {
-	const short blue = (static_cast<int>)color & 0xff;
-	const short green = ((static_cast<int>)color >> 8) & 0xff;
-	const short red = ((static_cast<int>)color >> 16) & 0xff;
-	const short alpha = ((static_cast<int>)color >> 24) & 0xff;
+	const short blue = (int)color & 0xff;
+	const short green = ((int)color >> 8) & 0xff;
+	const short red = ((int)color >> 16) & 0xff;
+	const short alpha = ((int)color >> 24) & 0xff;
 	if (red>100 && red>green*2 && red>blue*2)
     	return motor_gear_e_t::E_MOTOR_GEAR_RED;
 	if (green>100 && green>red*2 && green>blue*2)
