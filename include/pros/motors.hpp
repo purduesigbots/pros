@@ -86,17 +86,17 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
+	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
 	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
-	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse);
+	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse);
 
 	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const pros::Color color);
+	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset);
 
 	explicit Motor(const std::uint8_t port, const pros::Color color);
 
