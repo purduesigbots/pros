@@ -29,24 +29,22 @@
 
 namespace pros {
 inline namespace v5 {
-	typedef enum class motor_gear_e {
-	/// 36:1, 100 RPM, Red gear set
-	E_MOTOR_GEAR_36 = 0,
-	E_MOTOR_GEAR_RED = E_MOTOR_GEAR_36,
-	E_MOTOR_GEAR_100 = E_MOTOR_GEAR_36,
-	/// 18:1, 200 RPM, Green gear set
-	E_MOTOR_GEAR_18 = 1,
-	E_MOTOR_GEAR_GREEN = E_MOTOR_GEAR_18,
-	E_MOTOR_GEAR_200 = E_MOTOR_GEAR_18,
-	/// 6:1, 600 RPM, Blue gear set
-	E_MOTOR_GEAR_06 = 2,
-	E_MOTOR_GEAR_BLUE = E_MOTOR_GEAR_06,
-	E_MOTOR_GEAR_600 = E_MOTOR_GEAR_06,
-	///Error return code
-	E_MOTOR_GEAR_INVALID = INT32_MAX
-} motor_gear_e_t;
-
-motor_gear_e_t convert_to_gear_color(pros::Color color);
+	enum class Motor_Gears {
+		/// 36:1, 100 RPM, Red gear set
+		ratio_36_to_1 = 0,
+		red = ratio_36_to_1,
+		rpm_100 = ratio_36_to_1,
+		/// 18:1, 200 RPM, Green gear set
+		ratio_18_to_1 = 1,
+		green = ratio_18_to_1,
+		rpm_200 = ratio_18_to_1,
+		/// 6:1, 600 RPM, Blue gear set
+		ratio_6_to_1 = 2,
+		blue = ratio_6_to_1,
+		rpm_600 = ratio_6_to_1,
+		///Error return code
+		invalid = INT32_MAX
+	};
 	
 /**
  * \ingroup cpp-motors
@@ -86,19 +84,19 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
+	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
-	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse,
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
 	               const motor_encoder_units_e_t encoder_units);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse);
+	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const pros::Color color, const bool reverse);
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset);
+	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset);
 
-	explicit Motor(const std::uint8_t port, const pros::Color color);
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color);
 
 	explicit Motor(const std::uint8_t port, const bool reverse);
 
@@ -918,8 +916,8 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of motor_gearset_e_t according to what is set for the motor,
-	 * or E_GEARSET_INVALID if the operation failed.
+	 * \return One of pros::v5::Motor_Gears according to what is set for the motor,
+	 * or pros::Motor_Gears::invalid if the operation failed.
 	 * 
 	 * \b Example
 	 * \code
@@ -929,7 +927,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual motor_gearset_e_t get_gearing(void) const;
+	virtual pros::v5::Motor_Gears get_gearing(void) const;
 
 	/**
 	 * Gets the port number of the motor.
@@ -1069,7 +1067,7 @@ class Motor {
 	virtual std::int32_t set_encoder_units(const motor_encoder_units_e_t units) const;
 
 	/**
-	 * Sets one of motor_gearset_e_t for the motor.
+	 * Sets one of the gear cartridge (red, green, blue) for the motor.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1090,9 +1088,9 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_gearing(const motor_gearset_e_t gearset) const;
+	virtual std::int32_t set_gearing(const pros::v5::Motor_Gears gearset) const;
 
-	virtual std::int32_t set_gearing(const pros::Color color) const;
+	virtual std::int32_t set_gearing(const pros::Color gearset_color) const;
 
 	/**
 	 * Sets the reverse flag for the motor.
