@@ -94,7 +94,8 @@ int _gettimeofday(struct timeval* tp, void* tzvp) {
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
 	else {
-		return 0;
+		tp->tv_sec = _PROS_COMPILE_TIMESTAMP_INT;
+		tp->tv_usec = (suseconds_t)tp->tv_sec * 1000000;
 	}
 
 	return strlen(_PROS_COMPILE_TIMESTAMP);
