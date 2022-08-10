@@ -94,7 +94,7 @@ double Motor::get_actual_velocity(void) const {
 }
 
 pros::v5::Motor_Brake Motor::get_brake_mode(void) const {
-	return motor_get_brake_mode(_port);
+	return static_cast<Motor_Brake>(motor_get_brake_mode(_port));
 }
 
 std::int32_t Motor::get_current_draw(void) const {
@@ -118,7 +118,7 @@ double Motor::get_efficiency(void) const {
 }
 
 pros::v5::Motor_Units Motor::get_encoder_units(void) const {
-	return motor_get_encoder_units(_port);
+	return static_cast<Motor_Units>(motor_get_encoder_units(_port));
 }
 
 std::uint32_t Motor::get_faults(void) const {
