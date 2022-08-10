@@ -83,9 +83,12 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 
 // The value for this variable is added by the common.mk makefile so that the
 // timestamp is up to date with the hot package's latest compilation
+extern char const* _PROS_COMPILE_TIMESTAMP;
 extern const int _PROS_COMPILE_TIMESTAMP_INT;
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
+	const char* test = _PROS_COMPILE_TIMESTAMP;
+
 	if (competition_is_connected()) {
 		tp->tv_sec = vexSystemTimeGet() * 1000;
 		tp->tv_usec = vexSystemHighResTimeGet();
