@@ -18,6 +18,7 @@ uint32_t const volatile* const MAGIC_ADDR = MAGIC;
 // regenerates that function with the call to the correct (user-written) C++ version
 extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
+extern const int   _PROS_COMPILE_TIMESTAMP_INT;
 
 extern unsigned __exidx_start;
 extern unsigned __exidx_end;
