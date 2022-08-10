@@ -17,7 +17,7 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
 	set_gearing(gearset);
@@ -28,27 +28,27 @@ Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const boo
 Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(port) {
-	set_gearing((motor_gearset_e_t)gearset_color);
+	set_gearing(gearset_color);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse) : _port(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
 Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse) : _port(port) {
-	set_gearing((motor_gearset_e_t)gearset_color);
+	set_gearing(gearset_color);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset) : _port(port) {
 	set_gearing(gearset);
 }
 
 Motor::Motor(const std::uint8_t port, const pros::Color gearset_color) : _port(port) {
-	set_gearing((motor_gearset_e_t)gearset_color);
+	set_gearing(gearset_color);
 }
 
 Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
@@ -129,8 +129,8 @@ std::uint32_t Motor::get_flags(void) const {
 	return motor_get_flags(_port);
 }
 
-motor_gearset_e_t Motor::get_gearing(void) const {
-	return motor_get_gearing(_port);
+pros::v5::Motor_Gears Motor::get_gearing(void) const {
+	return static_cast<pros::v5::Motor_Gears>(motor_get_gearing(_port));
 }
 
 motor_pid_full_s_t Motor::get_pos_pid(void) const {
@@ -221,6 +221,10 @@ std::int32_t Motor::set_encoder_units(const motor_encoder_units_e_t units) const
 
 std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
 	return motor_set_gearing(_port, gearset);
+}
+
+std::int32_t Motor::set_gearing(const Motor_Gear gearset) const {
+	return motor_set_gearing(_port, (motor_gearset_e_t)gearset);
 }
 
 std::int32_t Motor::set_gearing(const pros::Color gearset_color) const {

@@ -26,26 +26,34 @@
 #include <cstdint>
 
 #include "pros/motors.h"
+#include "pros/colors.hpp"
 
 namespace pros {
 inline namespace v5 {
-	enum class Motor_Gears {
-		/// 36:1, 100 RPM, Red gear set
-		ratio_36_to_1 = 0,
-		red = ratio_36_to_1,
-		rpm_100 = ratio_36_to_1,
-		/// 18:1, 200 RPM, Green gear set
-		ratio_18_to_1 = 1,
-		green = ratio_18_to_1,
-		rpm_200 = ratio_18_to_1,
-		/// 6:1, 600 RPM, Blue gear set
-		ratio_6_to_1 = 2,
-		blue = ratio_6_to_1,
-		rpm_600 = ratio_6_to_1,
-		///Error return code
-		invalid = INT32_MAX
-	};
-	
+
+enum class Motor_Gears {
+	/// 36:1, 100 RPM, Red gear set
+	ratio_36_to_1 = 0,
+	red = ratio_36_to_1,
+	rpm_100 = ratio_36_to_1,
+	/// 18:1, 200 RPM, Green gear set
+	ratio_18_to_1 = 1,
+	green = ratio_18_to_1,
+	rpm_200 = ratio_18_to_1,
+	/// 6:1, 600 RPM, Blue gear set
+	ratio_6_to_1 = 2,
+	blue = ratio_6_to_1,
+	rpm_600 = ratio_6_to_1,
+	///Error return code
+	invalid = INT32_MAX
+};
+
+// Provide Aliases for Motor_Gears
+using Motor_Gearset = Motor_Gears;
+using Motor_Cart = Motor_Gears;
+using Motor_Cartridge = Motor_Gears;
+using Motor_Gear = Motor_Gears;
+
 /**
  * \ingroup cpp-motors
  */
@@ -1067,7 +1075,8 @@ class Motor {
 	virtual std::int32_t set_encoder_units(const motor_encoder_units_e_t units) const;
 
 	/**
-	 * Sets one of the gear cartridge (red, green, blue) for the motor.
+	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with 
+	 * the C++ enum class and the C enum.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1084,12 +1093,35 @@ class Motor {
 	 * void initialize() {
 	 *   pros::Motor motor (1);
 	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
-	 *   std::cout << "Brake Mode: " << motor.get_gearing();
+	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
 	 */
 	virtual std::int32_t set_gearing(const pros::v5::Motor_Gears gearset) const;
+	virtual std::int32_t set_gearing(const pros::c::motor_gearset_e_t gearset) const;
 
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for the motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \param gearset
+	 *        The new motor gearset
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::Motor motor (1);
+	 *   motor.set_gearing(pros::Color::red);
+	 *   std::cout << "Gearset: " << motor.get_gearing();
+	 * }
+	 * \endcode
+	 */
 	virtual std::int32_t set_gearing(const pros::Color gearset_color) const;
 
 	/**
