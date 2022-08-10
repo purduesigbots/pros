@@ -83,7 +83,7 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 
 // The value for this variable is added by the common.mk makefile so that the
 // timestamp is up to date with the hot package's latest compilation
-extern char const* _PROS_COMPILE_TIMESTAMP_INT;
+extern const int _PROS_COMPILE_TIMESTAMP_INT;
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
 	if (competition_is_connected()) {
@@ -92,7 +92,7 @@ int _gettimeofday(struct timeval* tp, void* tzvp) {
 	}
 	else {
 		tp->tv_sec = _PROS_COMPILE_TIMESTAMP_INT;
-		tp->tv_usec = tp->tv_sec* 1000;
+		tp->tv_usec = (suseconds_t)tp->tv_sec * 1000000;
 	}
 
 	return 1;

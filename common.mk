@@ -273,7 +273,7 @@ $(VV)mkdir -p $(dir $(LDTIMEOBJ))
 @# which allows compilation from stdin. We define _PROS_COMPILE_DIRECTORY using a command line-defined macro
 @# which is the pwd | tail bit, which will truncate the path to the last 23 characters
 
-$(call test_output_2,Adding timestamp ,echo 'char const * const _PROS_COMPILE_TIMESTAMP_INT = "$(shell date +%s)"; char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = "$(shell pwd | tail -c 23)";' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -o $(LDTIMEOBJ) -,$(OK_STRING))
+$(call test_output_2,Adding timestamp ,echo 'const int _PROS_COMPILE_TIMESTAMP_INT = $(shell date +%s); char const * const _PROS_COMPILE_TIMESTAMP = __DATE__ " " __TIME__; char const * const _PROS_COMPILE_DIRECTORY = "$(shell pwd | tail -c 23)";' | $(CC) -c -x c $(CFLAGS) $(EXTRA_CFLAGS) -o $(LDTIMEOBJ) -,$(OK_STRING))
 endef
 
 # these rules are for build-compile-commands, which just print out sysroot information
