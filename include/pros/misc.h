@@ -153,6 +153,10 @@ failed to connect or an invalid id is given.
 /******************************************************************************/
 /**                              Date and Time                               **/
 /******************************************************************************/
+
+extern const char* baked_date;
+extern const char* baked_time;
+
 typedef struct {
 	uint16_t year; // Year - 1980
 	uint8_t day;

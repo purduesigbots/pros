@@ -77,9 +77,22 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
-int _gettimeofday(struct timeval* tp, void* tzvp) {
-	tp->tv_sec = vexSystemTimeGet() * 1000;
-	tp->tv_usec = vexSystemHighResTimeGet();
 
-	return 1;
+int _gettimeofday(struct timeval* tp, void* tzvp) {
+	if (pros::competition::is_connected()) {
+		tp->tv_sec = vexSystemTimeGet() * 1000;
+		tp->tv_usec = vexSystemHighResTimeGet();
+
+		return 1;
+	}
+	else {
+		if (secs >= 0) {
+			tp->tv_sec = _PROS_COMPILE_TIMESTAMP_INT;
+			tp->tv_usec = tp->tv_sec* 1000;
+
+			return 1;
+		}
+	}
+
+	return 0;
 }

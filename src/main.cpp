@@ -4,6 +4,14 @@
 #include <ctime>
 
 /**
+ * 
+ */
+namespace pros {
+	const char* start_date = __DATE__;
+	const char* start_time = __TIME__;
+}
+
+/**
  * A callback function for LLEMU's center button.
  *
  * When this callback is fired, it will toggle line 2 of the LCD text between
