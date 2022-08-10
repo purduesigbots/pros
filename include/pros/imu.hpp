@@ -25,8 +25,21 @@
 #include "pros/imu.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-imu
+ * */
 
-enum class imu_status {
+/**
+ * \addtogroup cpp-imu
+ *  @{
+ */
+
+/**
+ * \enum Imu_Status
+ * @brief Indicates IMU status.
+ */
+
+enum class Imu_Status {
 	imu_status_calibrating = 0x01,
 	imu_status_error = 0xFF,
 };
