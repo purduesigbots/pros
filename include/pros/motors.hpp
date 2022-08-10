@@ -1098,7 +1098,7 @@ class Motor {
 	 * \endcode
 	 */
 	virtual std::int32_t set_gearing(const pros::v5::Motor_Gears gearset) const;
-	virtual std::int32_t set_gearing(const pros::c::motor_gearset_e_t gearset) const;
+	virtual std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
 
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor.
