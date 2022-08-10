@@ -23,7 +23,8 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
-#include "hot.c"
+#include "hot.h"
+#include "pros/misc.h"
 
 #define SEC_TO_MSEC 1000
 
@@ -79,10 +80,13 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
-extern bool pros::competition::is_connected();
+
+// The value for this variable is added by the common.mk makefile so that the
+// timestamp is up to date with the hot package's latest compilation
+extern char const* _PROS_COMPILE_TIMESTAMP_INT;
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
-	if (pros::competition::is_connected()) {
+	if (competition_is_connected()) {
 		tp->tv_sec = vexSystemTimeGet() * 1000;
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
