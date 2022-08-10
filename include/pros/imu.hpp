@@ -26,7 +26,7 @@
 
 namespace pros {
 
-enum class imu_status {
+enum class imu_status_e_c {
 	imu_status_calibrating = 0x01,
 	imu_status_error = 0xFF,
 };

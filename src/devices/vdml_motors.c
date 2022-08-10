@@ -68,31 +68,31 @@ int32_t motor_brake(uint8_t port) {
 int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorRelativeTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_velocity(uint8_t port, const int32_t velocity) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVelocitySet(device->device_info, velocity);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_voltage(uint8_t port, const int32_t voltage) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVelocityUpdate(device->device_info, velocity);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 double motor_get_target_position(uint8_t port) {
@@ -214,37 +214,37 @@ int32_t motor_get_voltage(uint8_t port) {
 int32_t motor_set_zero_position(uint8_t port, const double position) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorPositionSet(device->device_info, position);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_tare_position(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorPositionReset(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorBrakeModeSet(device->device_info, (V5MotorBrakeMode)mode);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_current_limit(uint8_t port, const int32_t limit) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorCurrentLimitSet(device->device_info, limit);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorEncoderUnitsSet(device->device_info, (V5MotorEncoderUnits)units);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)gearset);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 motor_pid_full_s_t motor_convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit,
@@ -279,7 +279,7 @@ int32_t motor_set_pos_pid(uint8_t port, const motor_pid_s_t pid) {
 	out.kd = pid.kd;
 	set_pos_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
@@ -295,7 +295,7 @@ int32_t motor_set_pos_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
 	out.loopspeed = pid.loopspeed;
 	set_pos_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid) {
@@ -307,7 +307,7 @@ int32_t motor_set_vel_pid(uint8_t port, const motor_pid_s_t pid) {
 	out.kd = pid.kd;
 	set_vel_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
@@ -323,19 +323,19 @@ int32_t motor_set_vel_pid_full(uint8_t port, const motor_pid_full_s_t pid) {
 	out.loopspeed = pid.loopspeed;
 	set_vel_pid(port - 1, out);
 	vexDeviceMotorPositionPidSet(device->device_info, &out);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_reversed(uint8_t port, const bool reverse) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorReverseFlagSet(device->device_info, reverse);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	vexDeviceMotorVoltageLimitSet(device->device_info, limit);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 motor_brake_mode_e_t motor_get_brake_mode(uint8_t port) {

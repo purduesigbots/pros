@@ -1,9 +1,8 @@
 jobs:
 - job: BuildTemplate
   variables:
-    toolchain_update_short: 8-2019q3
-    toolchain_update: 8-2019-q3
-    toolchain: https://developer.arm.com/-/media/Files/downloads/gnu-rm/$(toolchain_update_short)/RC1.1/gcc-arm-none-eabi-$(toolchain_update)-update-linux.tar.bz2
+    toolchain_update: 10.3-2021.10
+    toolchain: https://developer.arm.com/-/media/Files/downloads/gnu-rm/$(toolchain_update)/gcc-arm-none-eabi-$(toolchain_update)-x86_64-linux.tar.bz2
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -16,7 +15,7 @@ jobs:
   - bash: |
       curl -LSso toolchain.tar.bz2 $(toolchain)
       tar -xjvf toolchain.tar.bz2
-      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)-update/bin"
+      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)/bin"
     displayName: Install gcc-arm-embedded
   - task: UsePythonVersion@0
     inputs:
@@ -27,7 +26,7 @@ jobs:
       artifactFeeds: 'pros-cli'
       # use official PyPi registry first and fall back to internal feed as needed
       onlyAddExtraIndex: true
-  - bash: pip install pros-cli==3.2.3
+  - bash: pip install pros-cli
     displayName: Install CLI
   - bash: |
       make template
