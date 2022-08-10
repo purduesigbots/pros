@@ -127,17 +127,17 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
-	               const pros::v5::Motor_Units encoder_units);
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset, const bool reverse,
+	               const Motor_Units encoder_units);
 
 	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
-	               const pros::v5::Motor_Units encoder_units);
+	               const Motor_Units encoder_units);
 
-	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse);
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset, const bool reverse);
 
 	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse);
 
-	explicit Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset);
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset);
 
 	explicit Motor(const std::uint8_t port, const pros::Color gearset_color);
 
@@ -893,7 +893,7 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of pros::v5::Motor_Brake, according to what was set for the
+	 * \return One of Motor_Brake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 * 
 	 * \b Example
@@ -905,7 +905,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual pros::v5::Motor_Brake get_brake_mode(void) const;
+	virtual Motor_Brake get_brake_mode(void) const;
 
 	/**
 	 * Gets the current limit for the motor in mA.
@@ -939,7 +939,7 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of pros::v5::Motor_Units according to what is set for the
+	 * \return One of Motor_Units according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 * 
 	 * \b Example
@@ -950,7 +950,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual pros::v5::Motor_Units get_encoder_units(void) const;
+	virtual Motor_Units get_encoder_units(void) const;
 
 	/**
 	 * Gets the gearset that was set for the motor.
@@ -959,7 +959,7 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of pros::v5::Motor_Gears according to what is set for the motor,
+	 * \return One of Motor_Gears according to what is set for the motor,
 	 * or pros::Motor_Gears::invalid if the operation failed.
 	 * 
 	 * \b Example
@@ -970,7 +970,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual pros::v5::Motor_Gears get_gearing(void) const;
+	virtual Motor_Gears get_gearing(void) const;
 
 	/**
 	 * Gets the port number of the motor.
@@ -1032,7 +1032,7 @@ class Motor {
 	virtual std::int32_t is_reversed(void) const;
 
 	 /**
-	 * Sets one of pros::v5::Motor_Brake to the motor. Works with the C enum
+	 * Sets one of Motor_Brake to the motor. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1040,7 +1040,7 @@ class Motor {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param mode
-	 *        The pros::v5::Motor_Brake to set for the motor
+	 *        The Motor_Brake to set for the motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -1054,7 +1054,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_brake_mode(const pros::v5::Motor_Brake mode) const;
+	virtual std::int32_t set_brake_mode(const Motor_Brake mode) const;
 	virtual std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode) const;
 
 	/**
@@ -1088,7 +1088,7 @@ class Motor {
 	virtual std::int32_t set_current_limit(const std::int32_t limit) const;
 
 	/**
-	 * Sets one of pros::v5::Motor_Units for the motor encoder. Works with the C
+	 * Sets one of Motor_Units for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1110,7 +1110,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_encoder_units(const pros::v5::Motor_Units units) const;
+	virtual std::int32_t set_encoder_units(const Motor_Units units) const;
 	virtual std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units) const;
 
 	/**
@@ -1136,7 +1136,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_gearing(const pros::v5::Motor_Gears gearset) const;
+	virtual std::int32_t set_gearing(const Motor_Gears gearset) const;
 	virtual std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
 
 	/**
