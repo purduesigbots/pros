@@ -23,6 +23,8 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
+#include "hot.c"
+
 #define SEC_TO_MSEC 1000
 
 void _exit(int status) {
@@ -77,22 +79,17 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
+extern bool pros::competition::is_connected();
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
 	if (pros::competition::is_connected()) {
 		tp->tv_sec = vexSystemTimeGet() * 1000;
 		tp->tv_usec = vexSystemHighResTimeGet();
-
-		return 1;
 	}
 	else {
-		if (secs >= 0) {
-			tp->tv_sec = _PROS_COMPILE_TIMESTAMP_INT;
-			tp->tv_usec = tp->tv_sec* 1000;
-
-			return 1;
-		}
+		tp->tv_sec = _PROS_COMPILE_TIMESTAMP_INT;
+		tp->tv_usec = tp->tv_sec* 1000;
 	}
 
-	return 0;
+	return 1;
 }
