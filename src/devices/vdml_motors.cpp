@@ -322,9 +322,9 @@ std::int32_t Motor::set_reversed(const bool reverse) const {
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
-MotorGroup::MotorGroup(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex()) {}
+Motor_Group::Motor_Group(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex()) {}
 
-std::int32_t MotorGroup::move(std::int32_t voltage) {
+std::int32_t Motor_Group::move(std::int32_t voltage) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move(voltage));
@@ -332,7 +332,7 @@ std::int32_t MotorGroup::move(std::int32_t voltage) {
 	return out;
 }
 
-std::int32_t MotorGroup::operator=(std::int32_t voltage) {
+std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move(voltage));
@@ -340,7 +340,7 @@ std::int32_t MotorGroup::operator=(std::int32_t voltage) {
 	return out;
 }
 
-std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t velocity) {
+std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move_absolute(position, velocity));
@@ -348,7 +348,7 @@ std::int32_t MotorGroup::move_absolute(const double position, const std::int32_t
 	return out;
 }
 
-std::int32_t MotorGroup::move_relative(const double position, const std::int32_t velocity) {
+std::int32_t Motor_Group::move_relative(const double position, const std::int32_t velocity) {
 take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move_relative(position, velocity));
@@ -356,7 +356,7 @@ take_motor_group_mutex_int;
 	return out;
 }
 
-std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
+std::int32_t Motor_Group::move_velocity(const std::int32_t velocity) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move_velocity(velocity));
@@ -364,7 +364,7 @@ std::int32_t MotorGroup::move_velocity(const std::int32_t velocity) {
 	return out;
 }
 
-std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
+std::int32_t Motor_Group::move_voltage(const std::int32_t voltage) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(move_voltage(voltage));
@@ -372,7 +372,7 @@ std::int32_t MotorGroup::move_voltage(const std::int32_t voltage) {
 	return out;
 }
 
-std::int32_t MotorGroup::brake(void) {
+std::int32_t Motor_Group::brake(void) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(brake());
@@ -380,7 +380,7 @@ std::int32_t MotorGroup::brake(void) {
 	return out;
 }
 
-std::int32_t MotorGroup::set_zero_position(const double position) {
+std::int32_t Motor_Group::set_zero_position(const double position) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(set_zero_position(position));
@@ -388,7 +388,7 @@ std::int32_t MotorGroup::set_zero_position(const double position) {
 	return out;
 }
 
-std::int32_t MotorGroup::set_reversed(const bool reversed) {
+std::int32_t Motor_Group::set_reversed(const bool reversed) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(set_reversed(reversed));
@@ -396,7 +396,7 @@ std::int32_t MotorGroup::set_reversed(const bool reversed) {
 	return out;
 }
 
-std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
+std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(set_voltage_limit(limit));
@@ -404,7 +404,7 @@ std::int32_t MotorGroup::set_voltage_limit(const std::int32_t limit) {
 	return out;
 }
 
-std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
+std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(set_gearing(gearset));
@@ -412,7 +412,7 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset) {
 	return out;
 }
 
-std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) {
+std::int32_t Motor_Group::set_encoder_units(const motor_encoder_units_e_t units) {
 	take_motor_group_mutex_int;
 	std::int32_t out = 0;
 	motor_group_loop(set_encoder_units(units));
@@ -420,7 +420,7 @@ std::int32_t MotorGroup::set_encoder_units(const motor_encoder_units_e_t units) 
 	return out;
 }
 
-std::vector<double> MotorGroup::get_target_positions(void) {
+std::vector<double> Motor_Group::get_target_positions(void) {
 	std::vector<double> out;
 	take_motor_group_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
@@ -441,7 +441,7 @@ std::vector<double> MotorGroup::get_target_positions(void) {
 	give_motor_group_mutex_vector(PROS_ERR_F);
 	return out;
 }
-std::vector<double> MotorGroup::get_efficiencies(void) {
+std::vector<double> Motor_Group::get_efficiencies(void) {
 	std::vector<double> out;
 	take_motor_group_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
@@ -462,7 +462,7 @@ std::vector<double> MotorGroup::get_efficiencies(void) {
 	give_motor_group_mutex_vector(PROS_ERR_F);
 	return out;
 }
-std::vector<double> MotorGroup::get_actual_velocities(void) {
+std::vector<double> Motor_Group::get_actual_velocities(void) {
 	std::vector<double> out;
 	take_motor_group_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
@@ -484,7 +484,7 @@ std::vector<double> MotorGroup::get_actual_velocities(void) {
 	return out;
 }
 
-std::vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
+std::vector<pros::motor_brake_mode_e_t> Motor_Group::get_brake_modes(void) {
 	std::vector<pros::motor_brake_mode_e_t> out;
 	take_motor_group_mutex_vector(E_MOTOR_BRAKE_INVALID);
 	for(Motor motor : _motors) {
@@ -505,7 +505,7 @@ std::vector<pros::motor_brake_mode_e_t> MotorGroup::get_brake_modes(void) {
 	give_motor_group_mutex_vector(E_MOTOR_BRAKE_INVALID);
 	return out;
 }
-std::vector<std::int32_t> MotorGroup::are_over_current(void) {
+std::vector<std::int32_t> Motor_Group::are_over_current(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -525,7 +525,7 @@ std::vector<std::int32_t> MotorGroup::are_over_current(void) {
 	give_motor_group_mutex_vector(PROS_ERR);
 	return out;
 }
-std::vector<std::int32_t> MotorGroup::get_current_draws(void) {
+std::vector<std::int32_t> Motor_Group::get_current_draws(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -546,7 +546,7 @@ std::vector<std::int32_t> MotorGroup::get_current_draws(void) {
 	return out;
 }
 
-std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
+std::vector<std::int32_t> Motor_Group::get_current_limits(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -568,7 +568,7 @@ std::vector<std::int32_t> MotorGroup::get_current_limits(void) {
 	return out;
 }
 
-std::vector<std::uint8_t> MotorGroup::get_ports(void) {
+std::vector<std::uint8_t> Motor_Group::get_ports(void) {
 	std::vector<std::uint8_t> out;
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_port());
@@ -578,7 +578,7 @@ std::vector<std::uint8_t> MotorGroup::get_ports(void) {
 	return out;
 }
 
-std::vector<std::int32_t> MotorGroup::get_directions(void) {
+std::vector<std::int32_t> Motor_Group::get_directions(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -600,7 +600,7 @@ std::vector<std::int32_t> MotorGroup::get_directions(void) {
 	return out;
 }
 
-std::vector<std::int32_t> MotorGroup::get_target_velocities(void) {
+std::vector<std::int32_t> Motor_Group::get_target_velocities(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -622,7 +622,7 @@ std::vector<std::int32_t> MotorGroup::get_target_velocities(void) {
 	return out;
 }
 
-std::vector<std::int32_t> MotorGroup::are_over_temp(void) {
+std::vector<std::int32_t> Motor_Group::are_over_temp(void) {
 	std::vector<std::int32_t> out;
 	take_motor_group_mutex_vector(PROS_ERR);
 	for(Motor motor : _motors) {
@@ -644,7 +644,7 @@ std::vector<std::int32_t> MotorGroup::are_over_temp(void) {
 	return out;
 }
 
-std::vector<pros::motor_encoder_units_e_t> MotorGroup::get_encoder_units(void) {
+std::vector<pros::motor_encoder_units_e_t> Motor_Group::get_encoder_units(void) {
 	std::vector<pros::motor_encoder_units_e_t> out;
 
 	take_motor_group_mutex_vector(E_MOTOR_ENCODER_INVALID);
