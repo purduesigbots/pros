@@ -18,7 +18,7 @@ inline namespace v5 {
 using namespace pros::c;
 
 Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
-             const motor_encoder_units_e_t encoder_units)
+             const pros::v5::Motor_Units encoder_units)
     : _port(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
@@ -26,7 +26,7 @@ Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const
 }
 
 Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
-             const motor_encoder_units_e_t encoder_units)
+             const pros::v5::Motor_Units encoder_units)
     : _port(port) {
 	set_gearing(gearset_color);
 	set_reversed(reverse);
@@ -93,7 +93,7 @@ double Motor::get_actual_velocity(void) const {
 	return motor_get_actual_velocity(_port);
 }
 
-motor_brake_mode_e_t Motor::get_brake_mode(void) const {
+pros::v5::Motor_Brake Motor::get_brake_mode(void) const {
 	return motor_get_brake_mode(_port);
 }
 
@@ -117,7 +117,7 @@ double Motor::get_efficiency(void) const {
 	return motor_get_efficiency(_port);
 }
 
-motor_encoder_units_e_t Motor::get_encoder_units(void) const {
+pros::v5::Motor_Units Motor::get_encoder_units(void) const {
 	return motor_get_encoder_units(_port);
 }
 
@@ -207,16 +207,24 @@ std::int32_t Motor::tare_position(void) const {
 	return motor_tare_position(_port);
 }
 
-std::int32_t Motor::set_brake_mode(const motor_brake_mode_e_t mode) const {
+std::int32_t Motor::set_brake_mode(const pros::motor_brake_mode_e_t mode) const {
 	return motor_set_brake_mode(_port, mode);
+}
+
+std::int32_t Motor::set_brake_mode(const pros::v5::Motor_Brake mode) const {
+	return motor_set_brake_mode(_port, static_cast<pros::motor_brake_mode_e_t>(mode));
 }
 
 std::int32_t Motor::set_current_limit(const std::int32_t limit) const {
 	return motor_set_current_limit(_port, limit);
 }
 
-std::int32_t Motor::set_encoder_units(const motor_encoder_units_e_t units) const {
+std::int32_t Motor::set_encoder_units(const pros::motor_encoder_units_e_t units) const {
 	return motor_set_encoder_units(_port, units);
+}
+
+std::int32_t Motor::set_encoder_units(const pros::v5::Motor_Units units) const {
+	return motor_set_encoder_units(_port, static_cast<motor_encoder_units_e_t>(units));
 }
 
 std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
