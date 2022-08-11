@@ -41,10 +41,6 @@
  *        The error code that return if error checking failed
  */
 #define claim_port(port, device_type, error_code)          \
-  if (!VALIDATE_PORT_NO(port)) {                           \
-    errno = ENXIO;                                         \
-    return error_code;                                     \
-  }                                                        \
   if (registry_validate_binding(port, device_type) != 0) { \
     return error_code;                                     \
   }                                                        \
