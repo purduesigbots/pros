@@ -59,8 +59,8 @@ pros::imu_accel_s_t Imu::get_accel() const {
 	return pros::c::imu_get_accel(_port);
 }
 
-pros::imu_status_e_t Imu::get_status() const {
-	return pros::c::imu_get_status(_port);
+pros::Imu_Status Imu::get_status() const; {
+	return static_cast<pros::Imu_Status> (pros::c::imu_get_status(_port));
 }
 
 bool Imu::is_calibrating() const {

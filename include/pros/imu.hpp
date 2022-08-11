@@ -40,7 +40,10 @@ namespace pros {
  */
 
 enum class Imu_Status {
+	/** The IMU is calibrating */
 	imu_status_calibrating = 0x01,
+	/** Used to indicate that an error state was reached in the imu_get_status function,\
+	not that the IMU is necessarily in an error state */
 	imu_status_error = 0xFF,
 };
 
@@ -467,7 +470,7 @@ class Imu {
 	 * \return The Inertial Sensor's status code, or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual pros::imu_status_e_t get_status() const;
+	virtual pros::Imu_Status get_status() const;
 	/**
 	 * Check whether the IMU is calibrating
 	 *
