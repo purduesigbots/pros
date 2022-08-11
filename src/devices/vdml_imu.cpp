@@ -60,11 +60,11 @@ pros::imu_accel_s_t Imu::get_accel() const {
 }
 
 pros::Imu_Status get_status() const {
-	return static_cast<pros::Imu_Status> (pros::c::imu_get_status(_port));
+	return static_cast<pros::Imu_Status> (pros::c::imu_get_status(Imu::_port));
 }
 
 bool Imu::is_calibrating() const {
-	return get_status() & (Imu_Status::imu_status_calibrating);
+	return get_status() & (Imu_Status::calibrating);
 }
 
 std::int32_t Imu::tare_heading() const {
