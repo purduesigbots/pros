@@ -26,9 +26,68 @@
 #include <cstdint>
 
 #include "pros/motors.h"
+#include "pros/colors.hpp"
 
 namespace pros {
 inline namespace v5 {
+
+/**
+ * \enum motor_brake
+ * Indicates the current 'brake mode' of a motor.
+ */
+enum class Motor_Brake {
+	/// Motor coasts when stopped, traditional behavior
+	coast = 0,
+	/// Motor brakes when stopped
+	brake = 1,
+	/// Motor actively holds position when stopped
+	hold = 2,
+	/// Invalid brake mode
+	invalid = INT32_MAX
+};
+
+/**
+ * \enum Motor_Encoder_Units
+ * Indicates the units used by the motor encoders.
+ */
+enum class Motor_Encoder_Units {
+	/// Position is recorded as angle in degrees as a floating point number
+	degrees = 0,
+	/// Position is recorded as angle in degrees as a floating point number
+	deg = 0,
+	/// Position is recorded as angle in rotations as a floating point number
+	rotations = 1,
+	/// Position is recorded as raw encoder ticks as a whole number
+	counts = 2,     
+	///Invalid motor encoder units
+	invalid = INT32_MAX
+};
+
+// Alias for Motor_Encoder_Units
+using Motor_Units = Motor_Encoder_Units;
+
+enum class Motor_Gears {
+	/// 36:1, 100 RPM, Red gear set
+	ratio_36_to_1 = 0,
+	red = ratio_36_to_1,
+	rpm_100 = ratio_36_to_1,
+	/// 18:1, 200 RPM, Green gear set
+	ratio_18_to_1 = 1,
+	green = ratio_18_to_1,
+	rpm_200 = ratio_18_to_1,
+	/// 6:1, 600 RPM, Blue gear set
+	ratio_6_to_1 = 2,
+	blue = ratio_6_to_1,
+	rpm_600 = ratio_6_to_1,
+	///Error return code
+	invalid = INT32_MAX
+};
+
+// Provide Aliases for Motor_Gears
+using Motor_Gearset = Motor_Gears;
+using Motor_Cart = Motor_Gears;
+using Motor_Cartridge = Motor_Gears;
+using Motor_Gear = Motor_Gears;
 
 /**
  * \ingroup cpp-motors
@@ -68,12 +127,19 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
-	               const motor_encoder_units_e_t encoder_units);
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset, const bool reverse,
+	               const Motor_Units encoder_units);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse);
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
+	               const Motor_Units encoder_units);
 
-	explicit Motor(const std::uint8_t port, const motor_gearset_e_t gearset);
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset, const bool reverse);
+
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse);
+
+	explicit Motor(const std::uint8_t port, const Motor_Gears gearset);
+
+	explicit Motor(const std::uint8_t port, const pros::Color gearset_color);
 
 	explicit Motor(const std::uint8_t port, const bool reverse);
 
@@ -827,7 +893,7 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of motor_brake_mode_e_t, according to what was set for the
+	 * \return One of Motor_Brake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 * 
 	 * \b Example
@@ -839,7 +905,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual motor_brake_mode_e_t get_brake_mode(void) const;
+	virtual Motor_Brake get_brake_mode(void) const;
 
 	/**
 	 * Gets the current limit for the motor in mA.
@@ -873,7 +939,7 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of motor_encoder_units_e_t according to what is set for the
+	 * \return One of Motor_Units according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 * 
 	 * \b Example
@@ -884,7 +950,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual motor_encoder_units_e_t get_encoder_units(void) const;
+	virtual Motor_Units get_encoder_units(void) const;
 
 	/**
 	 * Gets the gearset that was set for the motor.
@@ -893,8 +959,8 @@ class Motor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of motor_gearset_e_t according to what is set for the motor,
-	 * or E_GEARSET_INVALID if the operation failed.
+	 * \return One of Motor_Gears according to what is set for the motor,
+	 * or pros::Motor_Gears::invalid if the operation failed.
 	 * 
 	 * \b Example
 	 * \code
@@ -904,7 +970,7 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual motor_gearset_e_t get_gearing(void) const;
+	virtual Motor_Gears get_gearing(void) const;
 
 	/**
 	 * Gets the port number of the motor.
@@ -965,15 +1031,16 @@ class Motor {
 	 */
 	virtual std::int32_t is_reversed(void) const;
 
-		/**
-	 * Sets one of motor_brake_mode_e_t to the motor.
+	 /**
+	 * Sets one of Motor_Brake to the motor. Works with the C enum
+	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param mode
-	 *        The motor_brake_mode_e_t to set for the motor
+	 *        The Motor_Brake to set for the motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -987,7 +1054,8 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_brake_mode(const motor_brake_mode_e_t mode) const;
+	virtual std::int32_t set_brake_mode(const Motor_Brake mode) const;
+	virtual std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode) const;
 
 	/**
 	 * Sets the current limit for the motor in mA.
@@ -1020,7 +1088,8 @@ class Motor {
 	virtual std::int32_t set_current_limit(const std::int32_t limit) const;
 
 	/**
-	 * Sets one of motor_encoder_units_e_t for the motor encoder.
+	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1041,10 +1110,12 @@ class Motor {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_encoder_units(const motor_encoder_units_e_t units) const;
+	virtual std::int32_t set_encoder_units(const Motor_Units units) const;
+	virtual std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units) const;
 
 	/**
-	 * Sets one of motor_gearset_e_t for the motor.
+	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with 
+	 * the C++ enum class and the C enum.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1061,11 +1132,36 @@ class Motor {
 	 * void initialize() {
 	 *   pros::Motor motor (1);
 	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
-	 *   std::cout << "Brake Mode: " << motor.get_gearing();
+	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_gearing(const motor_gearset_e_t gearset) const;
+	virtual std::int32_t set_gearing(const Motor_Gears gearset) const;
+	virtual std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
+
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for the motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \param gearset
+	 *        The new motor gearset
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::Motor motor (1);
+	 *   motor.set_gearing(pros::Color::red);
+	 *   std::cout << "Gearset: " << motor.get_gearing();
+	 * }
+	 * \endcode
+	 */
+	virtual std::int32_t set_gearing(const pros::Color gearset_color) const;
 
 	/**
 	 * Sets the reverse flag for the motor.

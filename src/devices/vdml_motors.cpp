@@ -17,21 +17,38 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
-             const motor_encoder_units_e_t encoder_units)
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
+             const pros::v5::Motor_Units encoder_units)
     : _port(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
+             const pros::v5::Motor_Units encoder_units)
+    : _port(port) {
+	set_gearing(gearset_color);
+	set_reversed(reverse);
+	set_encoder_units(encoder_units);
+}
+
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse) : _port(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse) : _port(port) {
+	set_gearing(gearset_color);
+	set_reversed(reverse);
+}
+
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset) : _port(port) {
 	set_gearing(gearset);
+}
+
+Motor::Motor(const std::uint8_t port, const pros::Color gearset_color) : _port(port) {
+	set_gearing(gearset_color);
 }
 
 Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
@@ -76,8 +93,8 @@ double Motor::get_actual_velocity(void) const {
 	return motor_get_actual_velocity(_port);
 }
 
-motor_brake_mode_e_t Motor::get_brake_mode(void) const {
-	return motor_get_brake_mode(_port);
+pros::v5::Motor_Brake Motor::get_brake_mode(void) const {
+	return static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_port));
 }
 
 std::int32_t Motor::get_current_draw(void) const {
@@ -100,8 +117,8 @@ double Motor::get_efficiency(void) const {
 	return motor_get_efficiency(_port);
 }
 
-motor_encoder_units_e_t Motor::get_encoder_units(void) const {
-	return motor_get_encoder_units(_port);
+pros::v5::Motor_Units Motor::get_encoder_units(void) const {
+	return static_cast<pros::v5::Motor_Units>(motor_get_encoder_units(_port));
 }
 
 std::uint32_t Motor::get_faults(void) const {
@@ -112,8 +129,8 @@ std::uint32_t Motor::get_flags(void) const {
 	return motor_get_flags(_port);
 }
 
-motor_gearset_e_t Motor::get_gearing(void) const {
-	return motor_get_gearing(_port);
+pros::v5::Motor_Gears Motor::get_gearing(void) const {
+	return static_cast<pros::v5::Motor_Gears>(motor_get_gearing(_port));
 }
 
 motor_pid_full_s_t Motor::get_pos_pid(void) const {
@@ -190,20 +207,36 @@ std::int32_t Motor::tare_position(void) const {
 	return motor_tare_position(_port);
 }
 
-std::int32_t Motor::set_brake_mode(const motor_brake_mode_e_t mode) const {
+std::int32_t Motor::set_brake_mode(const pros::motor_brake_mode_e_t mode) const {
 	return motor_set_brake_mode(_port, mode);
+}
+
+std::int32_t Motor::set_brake_mode(const pros::v5::Motor_Brake mode) const {
+	return motor_set_brake_mode(_port, static_cast<pros::motor_brake_mode_e_t>(mode));
 }
 
 std::int32_t Motor::set_current_limit(const std::int32_t limit) const {
 	return motor_set_current_limit(_port, limit);
 }
 
-std::int32_t Motor::set_encoder_units(const motor_encoder_units_e_t units) const {
+std::int32_t Motor::set_encoder_units(const pros::motor_encoder_units_e_t units) const {
 	return motor_set_encoder_units(_port, units);
+}
+
+std::int32_t Motor::set_encoder_units(const pros::v5::Motor_Units units) const {
+	return motor_set_encoder_units(_port, static_cast<motor_encoder_units_e_t>(units));
 }
 
 std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
 	return motor_set_gearing(_port, gearset);
+}
+
+std::int32_t Motor::set_gearing(const pros::v5::Motor_Gear gearset) const {
+	return motor_set_gearing(_port, (motor_gearset_e_t)gearset);
+}
+
+std::int32_t Motor::set_gearing(const pros::Color gearset_color) const {
+	return motor_set_gearing(_port, (motor_gearset_e_t)gearset_color);
 }
 
 motor_pid_s_t Motor::convert_pid(double kf, double kp, double ki, double kd) {
