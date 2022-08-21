@@ -21,7 +21,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "api.h"
+#include "error.h"
 
 #define OPT_GESTURE_ERR (INT8_MAX)
 #define OPT_COUNT_ERR (INT16_MAX)

@@ -31,9 +31,11 @@ class Imu {
 	/**
 	 * Calibrate IMU
 	 *
-	 * Calibration takes approximately 2 seconds, but this function only blocks
- 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
-	 * with a minimum blocking time of 5ms.
+	 * Calibration takes approximately 2 seconds and blocks during this period if 
+	 * the blocking param is true, with a timeout for this operation being set a 3 
+	 * seconds as a safety margin. This function also blocks until the IMU 
+	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
+	 * blocking time of 5ms and a timeout of 1 second if it's never set.
 	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -41,10 +43,12 @@ class Imu {
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
 	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
+	 * \param blocking 
+	 *			Whether this function blocks during calibration.
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset() const;
+	virtual std::int32_t reset(bool blocking = false) const;
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
@@ -63,7 +67,8 @@ class Imu {
 	* ENODEV - The port cannot be configured as an Inertial Sensor
 	* EAGAIN - The sensor is still calibrating
 	*
-	* \param rate The data refresh interval in milliseconds
+	* \param rate 
+	*			The data refresh interval in milliseconds
 	* \return 1 if the operation was successful or PROS_ERR if the operation
 	* failed, setting errno.
 	*/

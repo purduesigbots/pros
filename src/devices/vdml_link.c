@@ -35,7 +35,7 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
 }
 
 //custom claim_port style wrapper for link_init due to type mismatching otherwise, limit of one radio per brain
-uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type, bool ov)
+static uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type, bool ov)
 {
     if (!port_mutex_take(port)) {
             errno = EACCES;                                       
@@ -51,7 +51,7 @@ uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type, bool 
         vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
         // Hack: Force v5 to recognize the plugged type as a serial device the next time we touch the device
         registry_unbind_port(port);
-        return_port(port, 1);
+        return_port(port, PROS_SUCCESS);
     }
     errno = ENODEV;
     return_port(port, PROS_ERR);
