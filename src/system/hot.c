@@ -33,6 +33,7 @@ __attribute__((section(".hot_init"))) void install_hot_table(struct hot_table* c
 	// printf("Hot initializing\n");
 	tbl->compile_timestamp = _PROS_COMPILE_TIMESTAMP;
 	tbl->compile_directory = _PROS_COMPILE_DIRECTORY;
+	tbl->compile_timestamp_int = _PROS_COMPILE_TIMESTAMP_INT;
 	tbl->__exidx_start = &__exidx_start;
 	tbl->__exidx_end = &__exidx_end;
 
