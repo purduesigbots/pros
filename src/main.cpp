@@ -75,18 +75,26 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor left_mtr(1);
-	pros::Motor right_mtr(2);
 
+	pros::Motor right_mtr_1(8);
+	pros::Motor right_mtr_2(9);
+	pros::Motor right_mtr_3(11);
+	// pros::Motor_Group left_mg({left_mtr_1, left_mtr_2, left_mtr_3});
+	pros::Motor_Group right_mg({right_mtr_1, right_mtr_2, right_mtr_3});
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
+		// pros::lcd::print(3, "%d", left);
+		// left_mtr = left;
+		pros::lcd::print(5, "Ports: %d %d %d", right_mg.get_ports()[0], right_mg.get_ports()[1], right_mg.get_ports()[2]);
+		pros::lcd::print(4, "Ports: %d %d %d", right_mtr_1.get_port(), right_mtr_2.get_port(), right_mtr_3.get_port());
 
-		left_mtr = left;
-		right_mtr = right;
+		right_mg = right;
+		// left_mg = left;
+		// right_mg = right;
 		pros::delay(20);
 	}
 }

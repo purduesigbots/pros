@@ -326,7 +326,7 @@ Motor_Group::Motor_Group(const std::initializer_list<Motor> motors) : _motors(mo
 
 std::int32_t Motor_Group::move(std::int32_t voltage) {
 	claim_mg_mutex(PROS_ERR);
-	std::int32_t out = 0;
+	int out = 0;
 	mg_foreach(move(voltage), _motors);
 	give_mg_mutex(PROS_ERR);
 	return out;
@@ -436,8 +436,6 @@ std::vector<double> Motor_Group::get_target_positions(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
 	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
 }
@@ -457,8 +455,7 @@ std::vector<double> Motor_Group::get_efficiencies(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
 }
@@ -478,8 +475,7 @@ std::vector<double> Motor_Group::get_actual_velocities(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
 }
@@ -500,8 +496,7 @@ std::vector<pros::motor_brake_mode_e_t> Motor_Group::get_brake_modes(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(E_MOTOR_BRAKE_INVALID);
 	return out;
 }
@@ -520,8 +515,7 @@ std::vector<std::int32_t> Motor_Group::are_over_current(void) {
 			out.push_back(PROS_ERR);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -540,8 +534,7 @@ std::vector<std::int32_t> Motor_Group::get_current_draws(void) {
 			out.push_back(PROS_ERR);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -562,8 +555,7 @@ std::vector<std::int32_t> Motor_Group::get_current_limits(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -573,8 +565,6 @@ std::vector<std::uint8_t> Motor_Group::get_ports(void) {
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_port());
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
 	return out;
 }
 
@@ -594,8 +584,7 @@ std::vector<std::int32_t> Motor_Group::get_directions(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -616,8 +605,7 @@ std::vector<std::int32_t> Motor_Group::get_target_velocities(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -638,8 +626,7 @@ std::vector<std::int32_t> Motor_Group::are_over_temp(void) {
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
@@ -660,8 +647,7 @@ std::vector<pros::motor_encoder_units_e_t> Motor_Group::get_encoder_units(void) 
 			out.push_back(temp);
 		}
 	}
-	out.resize(_motors.size());
-	out.shrink_to_fit();
+	
 	give_mg_mutex_vector(E_MOTOR_ENCODER_INVALID);
 	return out;
 }
