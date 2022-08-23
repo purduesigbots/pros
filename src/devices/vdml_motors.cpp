@@ -39,8 +39,8 @@
  * 
  */
 #define mg_foreach(func_call, motors)                       	\
-	for(Motor motor : motors) {                                	\
-		if (out != PROS_ERR && motor.func_call != PROS_ERR) { 		\
+	for(int i = 0; i < motors.size();i++) {                                	\
+		if (motors[i].func_call != PROS_ERR) { 		\
 			out = 1;                                                \
 		}                                                         \
 		else {                                                    \
