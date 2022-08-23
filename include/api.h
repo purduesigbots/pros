@@ -44,12 +44,10 @@
 #define PROS_VERSION_PATCH 3
 #define PROS_VERSION_STRING "3.6.3-dirty.37.f92df7d"
 
-#define PROS_ERR (INT32_MAX)
-#define PROS_ERR_F (INFINITY)
-
 #include "pros/adi.h"
 #include "pros/colors.h"
 #include "pros/distance.h"
+#include "pros/error.h"
 #include "pros/ext_adi.h"
 #include "pros/gps.h"
 #include "pros/imu.h"

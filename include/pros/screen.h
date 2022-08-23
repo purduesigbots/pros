@@ -83,7 +83,7 @@ typedef struct screen_touch_status_s {
 #endif
 #endif
 
-typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
+typedef void (*touch_event_cb_fn_t)();
 
 #ifdef __cplusplus
 namespace c {

@@ -56,6 +56,16 @@ typedef struct __attribute__((__packed__)) euler_s {
 	double yaw;
 } euler_s_t;
 
+#ifdef PROS_USE_SIMPLE_NAMES
+#ifdef __cplusplus
+#define IMU_STATUS_CALIBRATING pros::E_IMU_STATUS_CALIBRATING
+#define IMU_STATUS_ERROR pros::E_IMU_STATUS_ERROR
+#else
+#define IMU_STATUS_CALIBRATING E_IMU_STATUS_CALIBRATING
+#define IMU_STATUS_ERROR E_IMU_STATUS_ERROR
+#endif
+#endif
+
 #define IMU_MINIMUM_DATA_RATE 5
 
 /**
@@ -78,6 +88,27 @@ typedef struct __attribute__((__packed__)) euler_s {
  */
 int32_t imu_reset(uint8_t port);
 
+/**
+ * Calibrate IMU and Blocks while Calibrating
+ *
+ * Calibration takes approximately 2 seconds and blocks during this period, 
+ * with a timeout for this operation being set a 3 seconds as a safety margin.
+ * Like the other reset function, this function also blocks until the IMU 
+ * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
+ * blocking time of 5ms and a timeout of 1 second if it's never set.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
+ *
+ * \param port
+ *        The V5 Inertial Sensor port number from 1-21
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed (timing out or port claim failure), setting errno.
+ */
+int32_t imu_reset_blocking(uint8_t port);
 
 /**
  * Set the Inertial Sensor's refresh interval in milliseconds.

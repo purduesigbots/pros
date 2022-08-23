@@ -39,19 +39,19 @@ int32_t serial_enable(uint8_t port) {
 		return PROS_ERR;
 	}
 	vexDeviceGenericSerialEnable(device->device_info, 0);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t serial_set_baudrate(uint8_t port, int32_t baudrate) {
 	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	vexDeviceGenericSerialBaudrate(device->device_info, baudrate);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t serial_flush(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_SERIAL);
 	vexDeviceGenericSerialFlush(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 // Telemetry functions

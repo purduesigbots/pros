@@ -245,7 +245,7 @@ int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_si
 
 	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionSignatureSet(device->device_info, (V5_DeviceVisionSignature*)signature_ptr);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 vision_signature_s_t vision_signature_from_utility(const int32_t id, const int32_t u_min, const int32_t u_max,
@@ -295,20 +295,20 @@ int32_t vision_set_led(uint8_t port, const int32_t rgb) {
 	vexDeviceVisionLedModeSet(device->device_info, 1);
 	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionLedColorSet(device->device_info, _rgb);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_clear_led(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionLedModeSet(device->device_info, 0);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_set_exposure(uint8_t port, const uint8_t percent) {
 	claim_port_i(port - 1, E_DEVICE_VISION);
 	// This translation comes from VEX to match the brightness represented in vision utility
 	vexDeviceVisionBrightnessSet(device->device_info, (((int)((percent * 100) + 50)) / 255));
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_get_exposure(uint8_t port) {
@@ -325,7 +325,7 @@ int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable) {
 	}
 	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWhiteBalanceModeSet(device->device_info, enable + 1);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_set_white_balance(uint8_t port, const int32_t rgb) {
@@ -333,7 +333,7 @@ int32_t vision_set_white_balance(uint8_t port, const int32_t rgb) {
 	vexDeviceVisionWhiteBalanceModeSet(device->device_info, 2);
 	V5_DeviceVisionRgb _rgb = {.red = COLOR2R(rgb), .blue = COLOR2B(rgb), .green = COLOR2G(rgb), .brightness = 255};
 	vexDeviceVisionWhiteBalanceSet(device->device_info, _rgb);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_get_white_balance(uint8_t port) {
@@ -356,13 +356,13 @@ int32_t vision_set_zero_point(uint8_t port, vision_zero_e_t zero_point) {
 		return PROS_ERR;
 	}
 	set_zero_point(port - 1, zero_point);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_set_wifi_mode(uint8_t port, const uint8_t enable) {
 	claim_port_i(port - 1, E_DEVICE_VISION);
 	vexDeviceVisionWifiModeSet(device->device_info, !!enable);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t vision_print_signature(const vision_signature_s_t sig) {

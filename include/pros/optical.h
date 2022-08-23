@@ -21,7 +21,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "api.h"
+#include "error.h"
 
 #define OPT_GESTURE_ERR (INT8_MAX)
 #define OPT_COUNT_ERR (INT16_MAX)
@@ -34,7 +34,14 @@ namespace c {
 #endif
 
 
-typedef enum optical_direction_e { NO_GESTURE = 0, UP = 1, DOWN = 2, RIGHT = 3, LEFT = 4, ERROR = PROS_ERR } optical_direction_e_t;
+typedef enum optical_direction_e { 
+	NO_GESTURE = 0, 
+	UP = 1, 
+	DOWN = 2, 
+	RIGHT = 3, 
+	LEFT = 4, 
+	ERROR = PROS_ERR 
+} optical_direction_e_t;
 
 typedef struct optical_rgb_s {
 	double red;

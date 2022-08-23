@@ -27,7 +27,8 @@
 		return_port(port - 1, err_return);                                         \
 	}
 
-#define IMU_RESET_TIMEOUT 1000
+#define IMU_RESET_FLAG_SET_TIMEOUT 1000
+#define IMU_RESET_TIMEOUT 3000 // Canonically this should be 2s, but 3s for good margin
 
 typedef struct __attribute__ ((packed)) imu_reset_data { 
 	double heading_offset;
@@ -50,13 +51,51 @@ int32_t imu_reset(uint8_t port) {
 		task_delay(5);
 		timeoutCount += 5;
 		claim_port_i(port - 1, E_DEVICE_IMU);
-		if (timeoutCount >= IMU_RESET_TIMEOUT) {
+		if (timeoutCount >= IMU_RESET_FLAG_SET_TIMEOUT) {
 			port_mutex_give(port - 1);
 			errno = EAGAIN;
 			return PROS_ERR;
 		}
 		device = device; // suppressing compiler warning
 	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+	port_mutex_give(port - 1);
+	return 1;
+}
+
+int32_t imu_reset_blocking(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_IMU);
+	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR);
+	vexDeviceImuReset(device->device_info);
+	// delay for vexos to set calibration flag, background processing must be called for flag
+	// to be set.
+	uint16_t timeoutCount = 0;
+	// releasing mutex so vexBackgroundProcessing can run without being blocked.
+	do {
+		port_mutex_give(port - 1);
+		task_delay(5);
+		timeoutCount += 5;
+		claim_port_i(port - 1, E_DEVICE_IMU);
+		if (timeoutCount >= IMU_RESET_FLAG_SET_TIMEOUT) {
+			port_mutex_give(port - 1);
+			errno = EAGAIN;
+			return PROS_ERR;
+		}
+		device = device; // suppressing compiler warning
+	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+	// same concept here, we add a blocking delay for the blocking version to wait
+	// until the IMU calibrating flag is cleared
+	do {
+		port_mutex_give(port - 1);
+		task_delay(5);
+		timeoutCount += 5;
+		claim_port_i(port - 1, E_DEVICE_IMU);
+		if (timeoutCount >= IMU_RESET_TIMEOUT) {
+			port_mutex_give(port - 1);
+			errno = EAGAIN;
+			return PROS_ERR;
+		}
+		device = device; // suppressing compiler warning
+	} while(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING);
 	port_mutex_give(port - 1);
 	return 1;
 }
@@ -73,7 +112,7 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 	}
 
 	vexDeviceImuDataRateSet(device->device_info, rate);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 double imu_get_rotation(uint8_t port) {
@@ -245,7 +284,7 @@ int32_t imu_tare(uint8_t port){
 	data->pitch_offset = -euler_values.pitch;
 	data->roll_offset = -euler_values.roll;
 	data->yaw_offset = -euler_values.yaw;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_tare_euler(uint8_t port){
@@ -283,7 +322,7 @@ int32_t imu_set_rotation(uint8_t port, double target){
 	vexDeviceImuAttitudeGet(device->device_info, (V5_DeviceImuAttitude*)&euler_values);
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	data->rotation_offset = target - vexDeviceImuHeadingGet(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_heading(uint8_t port, double target){
@@ -298,7 +337,7 @@ int32_t imu_set_heading(uint8_t port, double target){
 	if (target > IMU_HEADING_MAX) target = IMU_HEADING_MAX;
 	if (target < 0) target = 0;
 	data->heading_offset = target - vexDeviceImuDegreesGet(device->device_info);
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_pitch(uint8_t port, double target){
@@ -313,7 +352,7 @@ int32_t imu_set_pitch(uint8_t port, double target){
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
 	data->pitch_offset = target - euler_values.pitch;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_roll(uint8_t port, double target){
@@ -328,7 +367,7 @@ int32_t imu_set_roll(uint8_t port, double target){
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
 	data->roll_offset = target - euler_values.roll;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_yaw(uint8_t port, double target){
@@ -343,7 +382,7 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	data->yaw_offset = target - euler_values.yaw;
 	if (target > IMU_EULER_LIMIT) target = IMU_EULER_LIMIT;
 	if (target < -IMU_EULER_LIMIT) target = -IMU_EULER_LIMIT;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t imu_set_euler(uint8_t port, euler_s_t target){
@@ -363,5 +402,5 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target){
 	data->pitch_offset = target.pitch - euler_values.pitch;
 	data->roll_offset = target.roll - euler_values.roll;
 	data->yaw_offset = target.yaw - euler_values.yaw;
-	return_port(port - 1, 1);
+	return_port(port - 1, PROS_SUCCESS);
 }
