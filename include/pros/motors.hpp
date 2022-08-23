@@ -1002,7 +1002,7 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::int32_t brake(void);
-  /****************************************************************************/
+  	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
 	/** These functions let programmers configure the behavior of motor groups **/
@@ -1256,7 +1256,7 @@ class Motor_Group {
 	std::vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
 
 	private:
-	std::initializer_list<Motor> _motors;
+	std::vector<Motor> _motors;
 	pros::Mutex _motor_group_mutex;
 };
 
