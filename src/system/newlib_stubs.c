@@ -87,14 +87,12 @@ extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_TIMESTAMP_INT;
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
-	const char* test = HOT_TABLE->compile_timestamp_int;
-
 	if (competition_is_connected()) {
 		tp->tv_sec = vexSystemTimeGet() / 1000;
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
 	else {
-		tp->tv_sec = atoi(test);
+		tp->tv_sec = atoi(_PROS_COMPILE_TIMESTAMP_INT);
 		tp->tv_usec = (suseconds_t)tp->tv_sec * 1000000;
 	}
 
