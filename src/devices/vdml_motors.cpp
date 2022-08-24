@@ -38,10 +38,10 @@
  * with an error value of PROS_ERR
  * 
  */
-#define mg_foreach(func_call, motors)                       	\
-	for(int i = 0; i < motors.size();i++) {                                	\
-		if (motors[i].func_call != PROS_ERR) { 		\
-			out = 1;                                                \
+#define mg_foreach(func_call, motors, out)                   	\
+	for(int i = 0; i < motors.size();i++) {                    	\
+		if (motors[i].func_call != PROS_ERR) { 										\
+			out = PROS_SUCCESS;                                     \
 		}                                                         \
 		else {                                                    \
 			out = PROS_ERR;                                         \
@@ -323,11 +323,18 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
 Motor_Group::Motor_Group(const std::initializer_list<Motor> motors) : _motors(motors), _motor_group_mutex(pros::Mutex()) {}
-
+Motor_Group::Motor_Group(const std::vector<std::uint8_t> motor_ports): _motor_group_mutex(pros::Mutex()) {
+	std::vector<Motor> motors;
+	for (std::uint8_t port :motor_ports ) {
+		Motor motor = Motor(port);
+		motors.push_back(motor);
+	}
+	_motors = motors;
+}
 std::int32_t Motor_Group::move(std::int32_t voltage) {
 	claim_mg_mutex(PROS_ERR);
 	int out = 0;
-	mg_foreach(move(voltage), _motors);
+	mg_foreach(move(voltage), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -335,7 +342,7 @@ std::int32_t Motor_Group::move(std::int32_t voltage) {
 std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(move(voltage), _motors);
+	mg_foreach(move(voltage), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -343,7 +350,7 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(move_absolute(position, velocity), _motors);
+	mg_foreach(move_absolute(position, velocity), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -351,7 +358,7 @@ std::int32_t Motor_Group::move_absolute(const double position, const std::int32_
 std::int32_t Motor_Group::move_relative(const double position, const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(move_relative(position, velocity), _motors);
+	mg_foreach(move_relative(position, velocity), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -359,7 +366,7 @@ std::int32_t Motor_Group::move_relative(const double position, const std::int32_
 std::int32_t Motor_Group::move_velocity(const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(move_velocity(velocity), _motors);
+	mg_foreach(move_velocity(velocity), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -367,7 +374,7 @@ std::int32_t Motor_Group::move_velocity(const std::int32_t velocity) {
 std::int32_t Motor_Group::move_voltage(const std::int32_t voltage) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(move_voltage(voltage), _motors);
+	mg_foreach(move_voltage(voltage), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -375,7 +382,7 @@ std::int32_t Motor_Group::move_voltage(const std::int32_t voltage) {
 std::int32_t Motor_Group::brake(void) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(brake(), _motors);
+	mg_foreach(brake(), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -383,7 +390,7 @@ std::int32_t Motor_Group::brake(void) {
 std::int32_t Motor_Group::set_zero_position(const double position) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(set_zero_position(position), _motors);
+	mg_foreach(set_zero_position(position), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -391,7 +398,7 @@ std::int32_t Motor_Group::set_zero_position(const double position) {
 std::int32_t Motor_Group::set_reversed(const bool reversed) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(set_reversed(reversed), _motors);
+	mg_foreach(set_reversed(reversed), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -399,7 +406,7 @@ std::int32_t Motor_Group::set_reversed(const bool reversed) {
 std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(set_voltage_limit(limit), _motors);
+	mg_foreach(set_voltage_limit(limit), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -407,7 +414,7 @@ std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) {
 std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(set_gearing(gearset), _motors);
+	mg_foreach(set_gearing(gearset), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
@@ -415,7 +422,7 @@ std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) {
 std::int32_t Motor_Group::set_encoder_units(const motor_encoder_units_e_t units) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = 0;
-	mg_foreach(set_encoder_units(units), _motors);
+	mg_foreach(set_encoder_units(units), _motors, out);
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
