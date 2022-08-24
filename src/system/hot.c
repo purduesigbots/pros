@@ -86,5 +86,5 @@ void invoke_install_hot_table() {
 }
 
 static const int get_timestamp_int(void) {
-	return _PROS_COMPILE_TIMESTAMP;
+	return _PROS_COMPILE_TIMESTAMP_INT;
 }
