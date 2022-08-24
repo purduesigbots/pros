@@ -3,7 +3,6 @@
 struct hot_table {
 	char const* compile_timestamp;
 	char const* compile_directory;
-	char const* compile_timestamp_int; 
 
 	void* __exidx_start;
 	void* __exidx_end;
