@@ -27,7 +27,7 @@
 
 __attribute__((weak)) char const* const _PROS_COMPILE_TIMESTAMP = "Unknown";
 __attribute__((weak)) char const* const _PROS_COMPILE_DIRECTORY = "Unknown";
-__attribute__((weak)) char const* const _PROS_COMPILE_TIEMSTAMP_INT = "Unknown";
+__attribute__((weak)) const int         _PROS_COMPILE_TIEMSTAMP_INT = 0;
 
 void print_small_banner(void) {
 	uint32_t uptime = millis();
