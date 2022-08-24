@@ -78,14 +78,15 @@ void opcontrol() {
 
 // pros::Motor left_mtr_1(1);
 // 	pros::Motor left_mtr_2(2);
-// 	pros::Motor left_mtr_3(3);
+pros::Motor left_mtr_3(3);
 
 	pros::Motor right_mtr_1(8);
 	pros::Motor right_mtr_2(9);
 	pros::Motor right_mtr_3(10);
-	 pros::Motor_Group left_mg({1, 2, 3});
+	pros::delay(1000);
+	 pros::Motor_Group left_mg({-1, 2, 3});
 	pros::Motor_Group right_mg({right_mtr_1, right_mtr_2, right_mtr_3});
-	left_mg.set_reversed(true);
+	
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
@@ -93,21 +94,20 @@ void opcontrol() {
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
 		// pros::lcd::print(3, "%d", left);
-		left_mg = left;
-		pros::lcd::print(5, "Right Ports: %d %d %d", left_mg.get_current_limits()[0], left_mg.get_current_limits()[1], left_mg.get_current_limits()[2]);
+		left_mg.move_velocity(left);
+		right_mtr_3.move_velocity(right);
+		// pros::lcd::print(5, "Right Ports: %d %d %d", left_mg.get_current_limits()[0], left_mg.get_current_limits()[1], left_mg.get_current_limits()[2]);
 		pros::lcd::print(4, "Left Ports: %d %d %d", left_mg.get_ports()[0], left_mg.get_ports()[1], left_mg.get_ports()[2]);
-		//pros::controller_digital_e_t button;
-		// button = DIGITAL_A;
-		// if (master.get_digital(button)) {
-		// 	left_mg.set_reversed(false);
-		// }
-		// pros::controller_digital_e_t button2;
-		// button2 = DIGITAL_B;
-		// if (master.get_digital(button2)) {
-		// 	left_mg.set_reversed(true);
-		// }
-		// left_mg.move_voltage(10000);
-		
+		/*
+		if (master.get_digital_new_press(DIGITAL_A)) {
+			right_mtr_3.set_reversed(false);
+			left_mg.set_reversed(false);
+		}
+		if (master.get_digital_new_press(DIGITAL_B)) {
+			left_mg.set_reversed(true);
+			right_mtr_3.set_reversed(true);
+		}
+		*/
 		// right_mg = right;
 		pros::delay(20);
 	}
