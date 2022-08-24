@@ -10,7 +10,7 @@ struct hot_table* const HOT_TABLE = &__HOT_TABLE;
 #define MAGIC1 0x8CEF7310
 
 extern void set_get_timestamp_int_func(const int (*func)(void));
-const int get_timestamp_int(void);
+static const int get_timestamp_int(void);
 
 __attribute__((section(".hot_magic"))) uint32_t MAGIC[] = {MAGIC0, MAGIC1};
 uint32_t const volatile* const MAGIC_ADDR = MAGIC;
@@ -85,6 +85,6 @@ void invoke_install_hot_table() {
 	}
 }
 
-const int get_timestamp_int(void) {
+static const int get_timestamp_int(void) {
 	return _PROS_COMPILE_TIMESTAMP;
 }

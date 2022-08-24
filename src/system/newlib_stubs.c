@@ -80,10 +80,9 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
-
 static const int (*get_timestamp_int_func)(void);
 
-void set_get_timestamp_int_func(const int (*func)(void));
+void set_get_timestamp_int_func(const int (*func)(void))
 {
 	get_timestamp_int_func = func;
 }
