@@ -80,16 +80,13 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
-/*
+
 static const int (*get_timestamp_int_func)(void);
 
 void set_get_timestamp_int_func(const int (*func)(void));
 {
 	get_timestamp_int_func = func;
 }
-*/
-
-extern const int get_timestamp_int(void);
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
 	if (competition_is_connected()) {
@@ -98,7 +95,7 @@ int _gettimeofday(struct timeval* tp, void* tzvp) {
 	}
 	else {
 		//tp->tv_sec = atoi(get_timestamp_int_func());
-		tp->tv_sec = get_timestmap_int();
+		tp->tv_sec = get_timestmap_int_func();
 		tp->tv_usec = (suseconds_t)tp->tv_sec * 1000000;
 	}
 

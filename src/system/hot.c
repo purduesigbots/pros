@@ -9,8 +9,8 @@ struct hot_table* const HOT_TABLE = &__HOT_TABLE;
 #define MAGIC0 0x52616368
 #define MAGIC1 0x8CEF7310
 
-//extern void set_get_timestamp_int_func(const int (*func)(void));
-//const int fetch_timestamp_int(void);
+extern void set_get_timestamp_int_func(const int (*func)(void));
+const int get_timestamp_int(void);
 
 __attribute__((section(".hot_magic"))) uint32_t MAGIC[] = {MAGIC0, MAGIC1};
 uint32_t const volatile* const MAGIC_ADDR = MAGIC;
@@ -68,8 +68,7 @@ __attribute__((section(".hot_init"))) void install_hot_table(struct hot_table* c
 		(*ctor)();
 	}
 
-
-	//set_get_timestamp_int_func(fetch_timestamp_int);
+	set_get_timestamp_int_func(get_timestamp_int);
 }
 
 // this function really exists on the cold section! Called by pros_init
@@ -86,6 +85,6 @@ void invoke_install_hot_table() {
 	}
 }
 
-int get_timestamp_int(void) {
+static int get_timestamp_int(void) {
 	return _PROS_COMPILE_TIMESTAMP;
 }
