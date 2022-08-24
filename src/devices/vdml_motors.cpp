@@ -471,7 +471,7 @@ std::vector<double> Motor_Group::get_actual_velocities(void) {
 	std::vector<double> out;
 	claim_mg_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
-		double temp = motor.get_target_position();
+		double temp = motor.get_actual_velocity();
 		if (temp == PROS_ERR_F) {
 			out.clear();
 			for (uint8_t i = 0; i < _motor_count; i++) {
