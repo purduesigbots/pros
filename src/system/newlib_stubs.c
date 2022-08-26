@@ -94,7 +94,7 @@ int _gettimeofday(struct timeval* tp, void* tzvp) {
 	}
 	else {
 		tp->tv_sec = get_timestamp_int_func();
-		tp->tv_usec = (suseconds_t)tp->tv_sec * 1000000;
+		tp->tv_usec = vexSystemHighResTimeGet();
 	}
 
 	return 1;
