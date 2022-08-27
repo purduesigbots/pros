@@ -80,6 +80,13 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
+// This function pointer serves as a callback so that _gettimeofday() can call
+// a function inside the hot package. Without this, _gettimeofday() cannot
+// access any symbols in the hot package (where _PROS_COMPILE_TIMESTAMP_INT 
+// lives), and linker errors occur. 
+//
+// When the hot package is initialized, it calls set_get_timestamp_int_func()
+// and sets the callback to a function that returns the unix timestamp.
 static const int (*get_timestamp_int_func)(void) = NULL;
 
 void set_get_timestamp_int_func(const int (*func)(void))

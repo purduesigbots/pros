@@ -68,6 +68,8 @@ __attribute__((section(".hot_init"))) void install_hot_table(struct hot_table* c
 		(*ctor)();
 	}
 
+	// Set the function pointer in newlib_stubs so that it can fetch the
+	// timestamp in the hot package. 
 	set_get_timestamp_int_func(get_timestamp_int);
 }
 
@@ -85,6 +87,10 @@ void invoke_install_hot_table() {
 	}
 }
 
+// This is a callback function used by newlib to get the unix timestamp
+// newlib cannot access any symbols in the hot package, so we have the hot
+// package pass a function pointer to this function. Newlib then uses that
+// function pointer. 
 static const int get_timestamp_int(void) {
 	return _PROS_COMPILE_TIMESTAMP_INT;
 }
