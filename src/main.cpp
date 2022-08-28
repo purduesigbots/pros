@@ -1,8 +1,5 @@
 #include "main.h"
 
-#include <chrono>
-#include <ctime>
-
 /**
  * A callback function for LLEMU's center button.
  *
@@ -30,12 +27,6 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
-
-	auto time = std::chrono::system_clock::now();
-
-	std::time_t c_time = std::chrono::system_clock::to_time_t(time);
-
-	std::cout << "Initialized at " << std::ctime(&c_time);
 }
 
 /**

@@ -326,7 +326,6 @@ namespace usd {
  */
 std::int32_t is_installed(void);
 }  // namespace usd
-
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_
