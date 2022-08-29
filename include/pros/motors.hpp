@@ -1152,7 +1152,7 @@ class Motor_Group {
 	std::vector<double> get_target_positions(void);
 
 
-   /**
+       /**
 	 * Gets the absolute position of the motor in its encoder units.
 	 *
 	 * This function uses the following values of errno when an error state is
