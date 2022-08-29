@@ -18,7 +18,7 @@
 
 #define RGB2COLOR(R, G, B) ((R & 0xff) << 16 | (G & 0xff) << 8 | (B & 0xff))
 #define COLOR2R(COLOR) ((COLOR >> 16) & 0xff)
-#define COLOR2G(COLOR) ((COLOR >> 8) && 0xff)
+#define COLOR2G(COLOR) ((COLOR >> 8) & 0xff)
 #define COLOR2B(COLOR) (COLOR & 0xff)
 
 #define COLOR_ALICE_BLUE 0x00F0F8FF

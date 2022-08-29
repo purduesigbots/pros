@@ -34,36 +34,35 @@ static uint32_t _clear_rx_buf(v5_smart_device_s_t* device) {
     vexDeviceGenericRadioReceiveAvail(device->device_info));
 }
 
-// internal wrapper for initialization
-static uint32_t _link_init_wrapper(uint8_t port, const char* link_id, link_type_e_t type, bool ov) {
-    // claim_port_i(port - 1, E_DEVICE_RADIO); is not used because it's a generic serial device 
-    // the reason behind why it can be a radio or a serial device is because
-    // a radio is not the highest port radio, it will not be registered with vexos.
-	if (!VALIDATE_PORT_NO(port - 1)) {
-		errno = EINVAL;
-		return PROS_ERR;
-	}
-    // by default, the vexlink radio in the lower port should be E_DEVICE_NONE
-    // or, the only radio on the brain
-    v5_device_e_t plugged_device = registry_get_plugged_type(port - 1);
-    if(plugged_device != E_DEVICE_NONE && plugged_device != E_DEVICE_RADIO) {
-        return PROS_ERR;
+//custom claim_port style wrapper for link_init due to type mismatching otherwise, limit of one radio per brain
+static uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type, bool ov)
+{
+    if (!port_mutex_take(port)) {
+            errno = EACCES;                                       
+            return PROS_ERR;
     }
-	v5_smart_device_s_t* device = registry_get_device(port - 1);
-	if (!port_mutex_take(port - 1)) {
-		errno = EACCES;
-		return PROS_ERR;
-	}
-    vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
-    return_port(port - 1, 1);
+    v5_device_e_t plugged_type = registry_get_plugged_type(port);
+    if (plugged_type == E_DEVICE_RADIO) {
+        if (!VALIDATE_PORT_NO(port)) {
+		    errno = ENXIO;
+		    return PROS_ERR;
+	    }
+        v5_smart_device_s_t* device = registry_get_device(port);
+        vexDeviceGenericRadioConnection(device->device_info, (char* )link_id, type, ov);
+        // Hack: Force v5 to recognize the plugged type as a serial device the next time we touch the device
+        registry_unbind_port(port);
+        return_port(port, PROS_SUCCESS);
+    }
+    errno = ENODEV;
+    return_port(port, PROS_ERR);
 }
 
 uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type) {
-    return _link_init_wrapper(port, link_id, type, false);
+    return _link_init(port - 1, link_id, type, false);
 }
 
 uint32_t link_init_override(uint8_t port, const char* link_id, link_type_e_t type) {
-    return _link_init_wrapper(port, link_id, type, true);
+    return _link_init(port - 1, link_id, type, true);
 }
 
 bool link_connected(uint8_t port) {

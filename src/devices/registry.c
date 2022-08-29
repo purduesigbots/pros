@@ -141,7 +141,7 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t) {
 	} else {
 		// Warn about a mismatch
 		if (!vdml_get_port_error(port)) {
-			kprintf("[VDML][WARNING] Device mistmatch in port %d.\n", port + 1);
+			kprintf("[VDML][WARNING] Device mismatch in port %d.\n", port + 1);
 			vdml_set_port_error(port);
 		}
 		errno = EADDRINUSE;
