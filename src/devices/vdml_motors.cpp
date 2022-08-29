@@ -427,12 +427,29 @@ std::int32_t Motor_Group::set_encoder_units(const motor_encoder_units_e_t units)
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
+std::int32_t Motor_Group::tare_position(void) {
+	claim_mg_mutex(PROS_ERR);
+	std::int32_t out = PROS_SUCCESS;
+	mg_foreach(tare_position(), _motors, out);
+	give_mg_mutex(PROS_ERR);
+	return out;
+}
 
 std::vector<double> Motor_Group::get_target_positions(void) {
 	std::vector<double> out;
 	claim_mg_mutex_vector(PROS_ERR_F);
 	for(Motor motor : _motors) {
 		out.push_back(motor.get_target_position());
+	}
+	give_mg_mutex_vector(PROS_ERR_F);
+	return out;
+}
+
+std::vector<double> Motor_Group::get_positions(void) {
+	std::vector<double> out;
+	claim_mg_mutex_vector(PROS_ERR_F);
+	for(Motor motor : _motors) {
+		out.push_back(motor.get_position());
 	}
 	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
