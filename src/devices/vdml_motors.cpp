@@ -454,6 +454,7 @@ std::vector<double> Motor_Group::get_positions(void) {
 	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
 }
+
 std::vector<double> Motor_Group::get_efficiencies(void) {
 	std::vector<double> out;
 	claim_mg_mutex_vector(PROS_ERR_F);
