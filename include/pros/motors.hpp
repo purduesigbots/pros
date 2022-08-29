@@ -1094,6 +1094,19 @@ class Motor_Group {
 	 */
 	std::int32_t set_encoder_units(const motor_encoder_units_e_t units);
 
+	/**
+	 * Sets the "absolute" zero position of the motor group to its current position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	std::int32_t tare_position(void);
+
   /****************************************************************************/
 	/**                        Motor telemetry functions                       **/
 	/**                                                                        **/
@@ -1138,6 +1151,18 @@ class Motor_Group {
 	 */
 	std::vector<double> get_target_positions(void);
 
+
+/**
+	 * Gets the absolute position of the motor in its encoder units.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return The motor's absolute position in its encoder units or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 */
+	std::vector<double> get_positions(void);
 /**
 	 * Gets the efficiency of the motors in percent.
 	 *
