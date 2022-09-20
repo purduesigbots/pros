@@ -20,11 +20,11 @@
 #define _PROS_MOTORS_HPP_
 
 #include <cstdint>
-#include <vector>
 #include <initializer_list>
+#include <vector>
 
-#include "pros/rtos.hpp"
 #include "pros/motors.h"
+#include "pros/rtos.hpp"
 
 namespace pros {
 class Motor {
@@ -578,8 +578,9 @@ class Motor {
 	 *
 	 * \return A motor_pid_s_t struct formatted properly in 4.4.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
-	static motor_pid_s_t convert_pid(double kf, double kp, double ki, double kd);
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor damage.")]] static motor_pid_s_t
+	convert_pid(double kf, double kp, double ki, double kd);
 
 	/**
 	 * Takes in floating point values and returns a properly formatted pid struct.
@@ -608,8 +609,10 @@ class Motor {
 	 *
 	 * \return A motor_pid_s_t struct formatted properly in 4.4.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]] 
-	static motor_pid_full_s_t convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit, double threshold,
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor "
+	    "damage.")]] static motor_pid_full_s_t
+	convert_pid_full(double kf, double kp, double ki, double kd, double filter, double limit, double threshold,
 	                 double loopspeed);
 
 	/**
@@ -629,8 +632,9 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
-	virtual std::int32_t set_pos_pid(const motor_pid_s_t pid) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor damage.")]] virtual std::int32_t
+	set_pos_pid(const motor_pid_s_t pid) const;
 
 	/**
 	 * Sets one of motor_pid_full_s_t for the motor.
@@ -648,8 +652,9 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]] 
-	virtual std::int32_t set_pos_pid_full(const motor_pid_full_s_t pid) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor damage.")]] virtual std::int32_t
+	set_pos_pid_full(const motor_pid_full_s_t pid) const;
 
 	/**
 	 * Sets one of motor_pid_s_t for the motor. This intended to just modify the
@@ -668,8 +673,9 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]] 
-	virtual std::int32_t set_vel_pid(const motor_pid_s_t pid) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor damage.")]] virtual std::int32_t
+	set_vel_pid(const motor_pid_s_t pid) const;
 
 	/**
 	 * Sets one of motor_pid_full_s_t for the motor.
@@ -687,8 +693,9 @@ class Motor {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]] 
-	virtual std::int32_t set_vel_pid_full(const motor_pid_full_s_t pid) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor damage.")]] virtual std::int32_t
+	set_vel_pid_full(const motor_pid_full_s_t pid) const;
 
 	/**
 	 * Sets the reverse flag for the motor.
@@ -787,8 +794,10 @@ class Motor {
 	 * \return A motor_pid_full_s_t containing the position PID constants last set
 	 * to the given motor
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]] 
-	virtual motor_pid_full_s_t get_pos_pid(void) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor "
+	    "damage.")]] virtual motor_pid_full_s_t
+	get_pos_pid(void) const;
 
 	/**
 	 * Gets the velocity PID that was set for the motor. This function will return
@@ -805,8 +814,10 @@ class Motor {
 	 * \return A motor_pid_full_s_t containing the velocity PID constants last set
 	 * to the given motor
 	 */
-	[[deprecated("Changing these values is not supported by VEX and may lead to permanent motor damage.")]]
-	virtual motor_pid_full_s_t get_vel_pid(void) const;
+	[[deprecated(
+	    "Changing these values is not supported by VEX and may lead to permanent motor "
+	    "damage.")]] virtual motor_pid_full_s_t
+	get_vel_pid(void) const;
 
 	/**
 	 * Gets the operation direction of the motor as set by the user.
@@ -856,38 +867,38 @@ class Motor_Group {
 	/**       These functions allow programmers to make motor groups move      **/
 	/****************************************************************************/
 	/**
-	 	* Sets the voltage for all the motors in the motor group from -128 to 127.
-	 	*
-	 	* This is designed to map easily to the input from the controller's analog
-	 	* stick for simple opcontrol use. The actual behavior of the motor is
-	 	* analogous to use of pros::Motor::move() on each motor individually
-	 	*
-	 	* This function uses the following values of errno when an error state is
-	 	* reached:
-	 	* ENODEV - One of the ports cannot be configured as a motor
-	 	* EACCESS - The Motor group mutex can't be taken or given
-		*
-	 	* \param voltage
-	 	*        The new motor voltage from -127 to 127
-	 	*
-	 	* \return 1 if the operation was successful or PROS_ERR if the operation
-	 	* failed, setting errno.
-	 	*/
+	 * Sets the voltage for all the motors in the motor group from -128 to 127.
+	 *
+	 * This is designed to map easily to the input from the controller's analog
+	 * stick for simple opcontrol use. The actual behavior of the motor is
+	 * analogous to use of pros::Motor::move() on each motor individually
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - One of the ports cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \param voltage
+	 *        The new motor voltage from -127 to 127
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
 	std::int32_t operator=(std::int32_t);
-	
+
 	/**
 	 * Sets the voltage for the motors in the motor group from -127 to 127.
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of motor_move(), or motorSet() from the 
+	 * analogous to use of motor_move(), or motorSet() from the
 	 * PROS 2 API on each motor.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-   *
+	 *
 	 * \param voltage
 	 *        The new motor voltage from -127 to 127
 	 *
@@ -909,7 +920,7 @@ class Motor_Group {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
- 	 * EACCESS - The Motor group mutex can't be taken or given
+	 * EACCESS - The Motor group mutex can't be taken or given
 	 *
 	 * \param position
 	 *        The absolute position to move to in the motors' encoder units
@@ -960,7 +971,7 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \param velocity
 	 *        The new motor velocity from -+-100, +-200, or +-600 depending on the
 	 *        motor's gearset
@@ -969,7 +980,7 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::int32_t move_velocity(const std::int32_t velocity);
-	
+
 	/**
 	 * Sets the output voltage for the motors from -12000 to 12000 in millivolts.
 	 *
@@ -977,7 +988,7 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \param voltage
 	 *        The new voltage value from -12000 to 12000
 	 *
@@ -998,12 +1009,12 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
 	std::int32_t brake(void);
-  	/****************************************************************************/
+	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
 	/** These functions let programmers configure the behavior of motor groups **/
@@ -1027,6 +1038,21 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::int32_t set_zero_position(const double position);
+	/**
+	 * Sets one of motor_brake_mode_e_t to the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \param mode
+	 *        The motor_brake_mode_e_t to set for the motor
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
+	std::int32_t set_brake_modes(motor_brake_mode_e_t mode);
 
 	/**
 	 * Sets the reverse flag for all the motors in the motor group.
@@ -1037,7 +1063,7 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \param reverse
 	 *        True reverses the motor, false is default
 	 *
@@ -1053,7 +1079,7 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \param limit
 	 *        The new voltage limit in Volts
 	 *
@@ -1078,14 +1104,14 @@ class Motor_Group {
 	std::int32_t set_gearing(const motor_gearset_e_t gearset);
 
 	/**
-	 * Sets one of motor_encoder_units_e_t for the all the motor encoders 
+	 * Sets one of motor_encoder_units_e_t for the all the motor encoders
 	 * in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \param units
 	 *        The new motor encoder units
 	 *
@@ -1101,13 +1127,13 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
 	std::int32_t tare_position(void);
 
-  /****************************************************************************/
+	/****************************************************************************/
 	/**                        Motor telemetry functions                       **/
 	/**                                                                        **/
 	/** These functions let programmers to collect telemetry from motor groups **/
@@ -1124,7 +1150,7 @@ class Motor_Group {
 	 * or a vector filled with PROS_ERR_F if the operation failed, setting errno.
 	 */
 	std::vector<double> get_actual_velocities(void);
-	
+
 	/**
 	 * Gets the velocity commanded to the motor by the user.
 	 *
@@ -1146,13 +1172,12 @@ class Motor_Group {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
 	 *
-	 * \return A vector filled with the target position in its encoder units 
+	 * \return A vector filled with the target position in its encoder units
 	 * or a vector filled with PROS_ERR_F if the operation failed, setting errno.
 	 */
 	std::vector<double> get_target_positions(void);
 
-
-       /**
+	/**
 	 * Gets the absolute position of the motor in its encoder units.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1163,7 +1188,7 @@ class Motor_Group {
 	 * if the operation failed, setting errno.
 	 */
 	std::vector<double> get_positions(void);
-/**
+	/**
 	 * Gets the efficiency of the motors in percent.
 	 *
 	 * An efficiency of 100% means that the motor is moving electrically while
@@ -1179,7 +1204,7 @@ class Motor_Group {
 	 * or a vector filled with PROS_ERR_F if the operation failed, setting errno.
 	 */
 	std::vector<double> get_efficiencies(void);
-	
+
 	/**
 	 * Checks if the motors are drawing over its current limit.
 	 *
@@ -1187,13 +1212,13 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
+	 *
 	 * \return 1 if the motor's current limit is being exceeded and 0 if the
 	 * current limit is not exceeded, or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
 	std::vector<std::int32_t> are_over_current(void);
-	
+
 	/**
 	 * Gets the temperature limit flag for the motors.
 	 *
@@ -1201,8 +1226,8 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return A vector with for each motor a 1 if the temperature limit is 
-	 * exceeded and 0 if the temperature is below the limit, 
+	 * \return A vector with for each motor a 1 if the temperature limit is
+	 * exceeded and 0 if the temperature is below the limit,
 	 * or a vector filled with PROS_ERR if the operation failed, setting errno.
 	 */
 	std::vector<std::int32_t> are_over_temp(void);
@@ -1214,12 +1239,25 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
-	 * \return A Vector with for each motor one of motor_brake_mode_e_t, 
+	 *
+	 * \return A Vector with for each motor one of motor_brake_mode_e_t,
 	 * according to what was set for the motor, or a vector filled with
 	 * E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	std::vector<pros::motor_brake_mode_e_t> get_brake_modes(void);
+
+	/**
+	 * Gets the gearset that was set for the motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \return One of motor_gearset_e_t according to what is set for the motor,
+	 * or E_GEARSET_INVALID if the operation failed.
+	 */
+	std::vector<motor_gearset_e_t> get_gearing(void);
 
 	/**
 	 * Gets the current drawn by each motor in mA.
@@ -1229,7 +1267,7 @@ class Motor_Group {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
 	 *
-	 * \return A vector containing each motor's current in mA 
+	 * \return A vector containing each motor's current in mA
 	 * or a vector filled with PROS_ERR if the operation failed, setting errno.
 	 */
 	std::vector<std::int32_t> get_current_draws(void);
@@ -1244,10 +1282,10 @@ class Motor_Group {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
 	 *
-	 * \return A vector with each motor's current limit in mA or a vector filled 
+	 * \return A vector with each motor's current limit in mA or a vector filled
 	 * with PROS_ERR if the operation failed, setting errno.
 	 */
-	std::vector<std::int32_t> get_current_limits(void);\
+	std::vector<std::int32_t> get_current_limits(void);
 
 	/**
 	 * Gets the port number of each motor.
@@ -1274,9 +1312,9 @@ class Motor_Group {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EACCESS - The Motor group mutex can't be taken or given
-	 * 
-	 * \return A vector filled with one of motor_encoder_units_e_t for each motor 
-	 * according to what is set for the motor or a vector filled with 
+	 *
+	 * \return A vector filled with one of motor_encoder_units_e_t for each motor
+	 * according to what is set for the motor or a vector filled with
 	 * E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	std::vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
