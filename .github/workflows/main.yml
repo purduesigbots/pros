@@ -4,9 +4,9 @@ name: run clang-format
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on PRs for develop
+  # Triggers the workflow on PRs for all branches
   pull_request:
-    branches: [ 'develop' ]
+    branches: [ '**' ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
