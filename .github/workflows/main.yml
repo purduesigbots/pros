@@ -4,24 +4,29 @@ name: run clang-format
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on PRs for all branches
+  # Triggers the workflow on PRs for develop
   pull_request:
-    branches: [ '**' ]
+    branches: [ 'develop' ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  format:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      
-      - name: clang-format action
-        uses: purduesigbots/clang-format-action@1.0.2
+      # check out HEAD on the branch
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      # format the latest commit
+      - uses: purduesigbots/clang-format-action@1
+        # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
+        with:
+          style: file
+      # commit the changes
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4.1.2
+        with:
+          commit_message: 🎨 apply clang-format changes
+          branch: ${{ github.head_ref }}
