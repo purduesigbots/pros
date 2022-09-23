@@ -38,10 +38,10 @@ typedef struct ser_file_arg {
 	enum { E_NOBLK_WRITE = 1 } flags;
 } ser_file_s_t;
 
-#define STDIN_STREAM_ID 0x706e6973   // 'sinp' little endian
+#define STDIN_STREAM_ID 0x706e6973  // 'sinp' little endian
 #define STDOUT_STREAM_ID 0x74756f73  // 'sout' little endian
 #define STDERR_STREAM_ID 0x72726573  // 'serr' little endian
-#define KDBG_STREAM_ID 0x6762646b    // 'kdbg' little endian
+#define KDBG_STREAM_ID 0x6762646b  // 'kdbg' little endian
 
 // This array contains the serial driver's arguments for the 4 reserved file
 // descriptors. The fact that this array matches the order of the 4 reserved
