@@ -17,8 +17,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
+        with:
+          ref: ${{ github.head_ref }}
           
     - name: Format
       uses: DoozyX/clang-format-lint-action@v0.11
