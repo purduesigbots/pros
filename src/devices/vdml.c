@@ -14,13 +14,12 @@
  */
 
 #include "vdml/vdml.h"
-
-#include <errno.h>
-#include <stdio.h>
-
 #include "kapi.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
+
+#include <errno.h>
+#include <stdio.h>
 
 /**
  * Bitmap to indicate if a port has had an error printed or not.

@@ -1,6 +1,5 @@
-#include "semphr.h"
-
 #include "FreeRTOS.h"
+#include "semphr.h"
 
 /**
  * semphr. h
@@ -68,7 +67,7 @@
  * \ingroup Semaphores
  */
 uint8_t sem_wait(sem_t sem, uint32_t timeout) {
-	return xQueueSemaphoreTake((sem), (timeout));
+	return xQueueSemaphoreTake( ( sem ), ( timeout ) );
 }
 
 /**
@@ -200,11 +199,11 @@ uint8_t mutex_give(mutex_t mutex) {
 }
 
 uint8_t mutex_take(mutex_t mutex, uint32_t timeout) {
-	return xQueueSemaphoreTake((mutex), (timeout));
+	return xQueueSemaphoreTake( ( mutex ), ( timeout ) );
 }
 
-void mutex_delete(mutex_t mutex) {
-	sem_delete((sem_t)(mutex));
+void mutex_delete(mutex_t mutex){
+  sem_delete((sem_t)(mutex));
 }
 
 /**
