@@ -5,8 +5,6 @@ name: Clang Format
 on:
   push:
     branches: [ "**" ]
-  pull_request:
-    branches: [ "**" ]
 
   workflow_dispatch:
 
@@ -17,8 +15,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
+      with:
+        ref: ${{ github.head_ref }}
           
     - name: Format
       uses: DoozyX/clang-format-lint-action@v0.11
@@ -27,9 +25,9 @@ jobs:
         clangFormatVersion: 11
         inplace: True
         
-    - name: Commit
-      uses: EndBug/add-and-commit@v4
+# commit the changes (if there are any)
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v4.1.2
       with:
-        author_name: Clang Robot
-        author_email: robot@example.com
-        message: '🎨 Apply clang-format changes'
+        commit_message: 🎨 Apply clang-format changes
+        branch: ${{ github.head_ref }}
