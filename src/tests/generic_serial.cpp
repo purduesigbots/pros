@@ -13,8 +13,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-#include "main.h"
 #include <stdarg.h>
+
+#include "main.h"
 #include "pros/apix.h"
 
 pros::Serial *serial_w = nullptr, *serial_r = nullptr;
@@ -24,7 +25,7 @@ constexpr bool VERBOSE_OUTPUT = false;
 constexpr uint32_t BUF_SIZE = 65536;
 uint8_t out_buf[BUF_SIZE], in_buf[BUF_SIZE];
 
-void verbose_printf(const char *format, ...) {
+void verbose_printf(const char* format, ...) {
 	if (VERBOSE_OUTPUT) {
 		va_list va;
 		va_start(va, format);
@@ -34,7 +35,8 @@ void verbose_printf(const char *format, ...) {
 }
 
 bool test_send_recv_byte(const uint32_t interval, const uint32_t bytes) {
-	printf("%07d Starting send/recv byte test with an interval of %dms for %d bytes...\n", pros::millis(), interval, bytes);
+	printf("%07d Starting send/recv byte test with an interval of %dms for %d bytes...\n", pros::millis(), interval,
+	       bytes);
 
 	uint8_t count = 0, expected = 0;
 	uint32_t last_send_time = 0, cur_time, recv_count = 0;
@@ -49,8 +51,7 @@ bool test_send_recv_byte(const uint32_t interval, const uint32_t bytes) {
 				pass = false;
 				printf("%07d Write failed with error %d\n", cur_time, errno);
 				break;
-			}
-			else if (w) {
+			} else if (w) {
 				count++;
 				last_send_time = cur_time;
 			}
@@ -61,13 +62,11 @@ bool test_send_recv_byte(const uint32_t interval, const uint32_t bytes) {
 			pass = false;
 			printf("%07d Read failed with error %d\n", cur_time, errno);
 			break;
-		}
-		else if (read >= 0) {
+		} else if (read >= 0) {
 			if (read != expected) {
 				printf("%07d ERR Read: 0x%02x, Expt: 0x%02x\n", cur_time, read, expected);
 				pass = false;
-			}
-			else {
+			} else {
 				verbose_printf("%07d 0x%02x\n", cur_time, read);
 			}
 			expected++;
@@ -103,8 +102,7 @@ bool test_send_recv_block() {
 			pass = false;
 			printf("%07d Read failed with error %d\n", cur_time, errno);
 			break;
-		}
-		else if (r) {
+		} else if (r) {
 			verbose_printf("%07d R %d [", cur_time, r);
 			for (int32_t i = 0; i < r; i++) {
 				verbose_printf("%02x", in_buf[read + i]);
@@ -112,8 +110,7 @@ bool test_send_recv_block() {
 					pass = false;
 					verbose_printf(" (%02x)", out_buf[read + i]);
 				}
-				if (i < r - 1)
-					verbose_printf(", ");
+				if (i < r - 1) verbose_printf(", ");
 			}
 			verbose_printf("]\n");
 
@@ -125,8 +122,7 @@ bool test_send_recv_block() {
 			pass = false;
 			printf("%07d Write failed with error %d\n", cur_time, errno);
 			break;
-		}
-		else if (w) {
+		} else if (w) {
 			verbose_printf("%07d, W %d\n", cur_time, w);
 			written += w;
 		}
@@ -181,7 +177,10 @@ bool run_tests() {
 }
 
 void opcontrol() {
-	printf("---Generic Serial Test---\nPlease ensure a cable is plugged into port 1 and port 2, connecting them together\n\n%07d Starting serial tests...\n", pros::millis());
+	printf(
+	    "---Generic Serial Test---\nPlease ensure a cable is plugged into port 1 and port 2, connecting them "
+	    "together\n\n%07d Starting serial tests...\n",
+	    pros::millis());
 
 	init_ports(1, 2);
 	if (!run_tests()) return;

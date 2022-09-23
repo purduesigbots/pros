@@ -43,7 +43,6 @@ std::int32_t ADIPort::get_value() const {
 	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
 
-
 ADIAnalogIn::ADIAnalogIn(std::uint8_t adi_port) : ADIPort(adi_port, E_ADI_ANALOG_IN) {}
 ADIAnalogIn::ADIAnalogIn(ext_adi_port_pair_t port_pair) : ADIPort(port_pair, E_ADI_ANALOG_IN) {}
 
@@ -98,7 +97,6 @@ ADIEncoder::ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed) : ADIPort
 	std::int32_t _port =
 	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
 	get_ports(_port, _smart_port, _adi_port);
-
 }
 
 std::int32_t ADIEncoder::reset() const {
@@ -142,16 +140,18 @@ std::int32_t ADIGyro::reset() const {
 	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
-ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(adi_port) { 
+ADIPotentiometer::ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type)
+    : ADIAnalogIn(adi_port) {
 	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
+	_smart_port++;  // for inherited functions this is necessary
 }
 
-ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : ADIAnalogIn(std::get<1>(port_pair)) { 
- 	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
+ADIPotentiometer::ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type)
+    : ADIAnalogIn(std::get<1>(port_pair)) {
+	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
+	_smart_port++;  // for inherited functions this is necessary
 }
 
 double ADIPotentiometer::get_angle() const {
