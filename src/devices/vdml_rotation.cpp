@@ -13,7 +13,7 @@
 #include "pros/rotation.hpp"
 
 namespace pros {
-
+    
 Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : _port(port) {
 	pros::c::rotation_init_reverse(port, reverse_flag);
 }
@@ -35,27 +35,27 @@ std::int32_t Rotation::reset_position(void) {
 }
 
 std::int32_t Rotation::get_position(void) {
-	return pros::c::rotation_get_position(_port);
+    return pros::c::rotation_get_position(_port);
 }
 
 std::int32_t Rotation::get_velocity(void) {
-	return pros::c::rotation_get_velocity(_port);
+    return pros::c::rotation_get_velocity(_port);
 }
 
 std::int32_t Rotation::get_angle(void) {
-	return pros::c::rotation_get_angle(_port);
+    return pros::c::rotation_get_angle(_port);
 }
 
 std::int32_t Rotation::set_reversed(bool value) {
-	return pros::c::rotation_set_reversed(_port, value);
+    return pros::c::rotation_set_reversed(_port, value);
 }
 
 std::int32_t Rotation::reverse(void) {
-	return pros::c::rotation_reverse(_port);
+    return pros::c::rotation_reverse(_port);
 }
 
 std::int32_t Rotation::get_reversed(void) {
-	return pros::c::rotation_get_reversed(_port);
+    return pros::c::rotation_get_reversed(_port);
 }
 
 }  // namespace pros

@@ -16,8 +16,8 @@
 
 #include <errno.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #include "rtos/task.h"
 #include "v5_api.h"
@@ -25,28 +25,28 @@
 #define SEC_TO_MSEC 1000
 
 void _exit(int status) {
-	if (status != 0) dprintf(3, "Error %d\n", status);  // kprintf
+	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
 	vexSystemExitRequest();
 }
 
-int usleep(useconds_t period) {
+int usleep( useconds_t period ) {
 	// Compromise: If the delay is in microsecond range, it will block threads.
 	// if not, it will not block threads but not be accurate to the microsecond range.
-	if (period >= 1000) {
-		task_delay(period / SEC_TO_MSEC);
+	if(period >= 1000) {
+		task_delay (period / SEC_TO_MSEC);
 		return 0;
 	}
 	uint64_t endTime = vexSystemHighResTimeGet() + period;
-	while (vexSystemHighResTimeGet() < endTime) asm("YIELD");
+	while(vexSystemHighResTimeGet() < endTime) asm("YIELD");
 	return 0;
 }
 
-unsigned sleep(unsigned period) {
+unsigned sleep( unsigned period ) {
 	task_delay(period * SEC_TO_MSEC);
 	return 1;
 }
 
-int getentropy(void* _buffer, size_t _length) {
+int getentropy(void *_buffer, size_t _length) {
 	errno = ENOSYS;
 	return -1;
 }

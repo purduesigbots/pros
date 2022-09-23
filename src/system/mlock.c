@@ -15,10 +15,10 @@
 
 #include "rtos/task.h"
 
-void __malloc_lock(void) {
-	rtos_suspend_all();
-}
+ void __malloc_lock(void) {
+ 	rtos_suspend_all();
+ }
 
-void __malloc_unlock(void) {
-	rtos_resume_all();
-}
+ void __malloc_unlock(void) {
+ 	rtos_resume_all();
+ }
