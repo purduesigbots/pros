@@ -1,5 +1,10 @@
 repos:
-  - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v14.0.6
+  - repo: local
     hooks:
-    - id: clang-format
+      - id: clang-format
+        stages: [commit, push]
+        name: Clang format
+        entry: clang-format -i -style=file
+        language: system
+        types: [file]
+        files: \.(c|cpp|h|hpp)$
