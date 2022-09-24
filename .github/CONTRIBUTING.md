@@ -26,3 +26,12 @@ Here are a few tips that can help expedite your pull request being accepted:
 - Keep your change as focused as possible. If you have multiple independent changes, make a pull request for each.
 - If you did some testing, describe your procedure and results.
 - If you're fixing an issue, reference it by number.
+
+  ## Pre-commit hooks
+
+Code formatting and linting is enforced by git pre-commit hooks, set up by
+[pre-commit](https://pre-commit.com/).
+
+- Install `pre-commit` with `pip install pre-commit`.
+- Configure your local hooks by running `pre-commit install` in your local pros repository.
+  
