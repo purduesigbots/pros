@@ -1,0 +1,32 @@
+name: Clang Format
+on:
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Fetch latest
+      uses: actions/checkout@v2
+      with:
+        # check out HEAD on the branch
+        ref: ${{ github.head_ref }}
+        # make sure the parent commit is grabbed as well, because
+        # that's what will get formatted (i.e. the most recent commit)
+        fetch-depth: 2
+
+    - name: Format
+      uses: DoozyX/clang-format-lint-action@v0.11
+      with:
+        source: './src'       
+        clangFormatVersion: 11
+        inplace: True
+
+    - name: Commit
+      uses: EndBug/add-and-commit@v4
+      with:
+        author_name: Clang Robot
+        author_email: robot@example.com
+        message: '🎨 Apply clang-format changes'
+        branch: ${{ github.head_ref }}
