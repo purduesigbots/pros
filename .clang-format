@@ -13,3 +13,4 @@ AccessModifierOffset: 0
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Empty
+CommentPragmas:  '^\\.+'
