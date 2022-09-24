@@ -11,6 +11,7 @@
  */
 
 #include <errno.h>
+
 #include "pros/imu.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
@@ -28,9 +29,9 @@
 	}
 
 #define IMU_RESET_FLAG_SET_TIMEOUT 1000
-#define IMU_RESET_TIMEOUT 3000 // Canonically this should be 2s, but 3s for good margin
+#define IMU_RESET_TIMEOUT 3000  // Canonically this should be 2s, but 3s for good margin
 
-typedef struct __attribute__ ((packed)) imu_reset_data { 
+typedef struct __attribute__((packed)) imu_reset_data {
 	double heading_offset;
 	double rotation_offset;
 	double pitch_offset;
@@ -56,8 +57,8 @@ int32_t imu_reset(uint8_t port) {
 			errno = EAGAIN;
 			return PROS_ERR;
 		}
-		device = device; // suppressing compiler warning
-	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+		device = device;  // suppressing compiler warning
+	} while (!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
 	port_mutex_give(port - 1);
 	return 1;
 }
@@ -80,8 +81,8 @@ int32_t imu_reset_blocking(uint8_t port) {
 			errno = EAGAIN;
 			return PROS_ERR;
 		}
-		device = device; // suppressing compiler warning
-	} while(!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
+		device = device;  // suppressing compiler warning
+	} while (!(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING));
 	// same concept here, we add a blocking delay for the blocking version to wait
 	// until the IMU calibrating flag is cleared
 	do {
@@ -94,8 +95,8 @@ int32_t imu_reset_blocking(uint8_t port) {
 			errno = EAGAIN;
 			return PROS_ERR;
 		}
-		device = device; // suppressing compiler warning
-	} while(vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING);
+		device = device;  // suppressing compiler warning
+	} while (vexDeviceImuStatusGet(device->device_info) & E_IMU_STATUS_CALIBRATING);
 	port_mutex_give(port - 1);
 	return 1;
 }
@@ -118,16 +119,18 @@ int32_t imu_set_data_rate(uint8_t port, uint32_t rate) {
 double imu_get_rotation(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuHeadingGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->rotation_offset;
+	double rtn = vexDeviceImuHeadingGet(device->device_info) +
+	             ((imu_data_s_t*)registry_get_device(port - 1)->pad)->rotation_offset;
 	return_port(port - 1, rtn);
 }
 
 double imu_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_IMU);
 	ERROR_IMU_STILL_CALIBRATING(port, device, PROS_ERR_F);
-	double rtn = vexDeviceImuDegreesGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->heading_offset;
+	double rtn =
+	    vexDeviceImuDegreesGet(device->device_info) + ((imu_data_s_t*)registry_get_device(port - 1)->pad)->heading_offset;
 	// Restricting value to raw boundaries
-	return_port(port - 1, fmod((rtn + IMU_HEADING_MAX), (double) IMU_HEADING_MAX));
+	return_port(port - 1, fmod((rtn + IMU_HEADING_MAX), (double)IMU_HEADING_MAX));
 }
 
 #define QUATERNION_ERR_INIT \
@@ -154,7 +157,7 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	double cp = cos(DEGTORAD * pitch * 0.5);
 	double sp = sin(DEGTORAD * pitch * 0.5);
 	double cr = cos(DEGTORAD * roll * 0.5);
-	double sr = sin(DEGTORAD * roll * 0.5); 
+	double sr = sin(DEGTORAD * roll * 0.5);
 
 	rtn.w = cr * cp * cy + sr * sp * sy;
 	rtn.x = sr * cp * cy - cr * sp * sy;
@@ -270,9 +273,9 @@ imu_status_e_t imu_get_status(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-//Reset Functions:
-int32_t imu_tare(uint8_t port){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+// Reset Functions:
+int32_t imu_tare(uint8_t port) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -287,33 +290,33 @@ int32_t imu_tare(uint8_t port){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_tare_euler(uint8_t port){
-    return imu_set_euler(port, (euler_s_t){0,0,0});
+int32_t imu_tare_euler(uint8_t port) {
+	return imu_set_euler(port, (euler_s_t){0, 0, 0});
 }
 
-int32_t imu_tare_heading(uint8_t port){
-    return imu_set_heading(port, 0);
+int32_t imu_tare_heading(uint8_t port) {
+	return imu_set_heading(port, 0);
 }
 
-int32_t imu_tare_rotation(uint8_t port){
-    return imu_set_rotation(port, 0);
+int32_t imu_tare_rotation(uint8_t port) {
+	return imu_set_rotation(port, 0);
 }
 
-int32_t imu_tare_pitch(uint8_t port){
-    return imu_set_pitch(port, 0);
+int32_t imu_tare_pitch(uint8_t port) {
+	return imu_set_pitch(port, 0);
 }
 
-int32_t imu_tare_roll(uint8_t port){
-    return imu_set_roll(port, 0);
+int32_t imu_tare_roll(uint8_t port) {
+	return imu_set_roll(port, 0);
 }
 
-int32_t imu_tare_yaw(uint8_t port){
-    return imu_set_yaw(port, 0);
+int32_t imu_tare_yaw(uint8_t port) {
+	return imu_set_yaw(port, 0);
 }
 
-//Setter Functions:
-int32_t imu_set_rotation(uint8_t port, double target){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+// Setter Functions:
+int32_t imu_set_rotation(uint8_t port, double target) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -325,8 +328,8 @@ int32_t imu_set_rotation(uint8_t port, double target){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_set_heading(uint8_t port, double target){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+int32_t imu_set_heading(uint8_t port, double target) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -340,8 +343,8 @@ int32_t imu_set_heading(uint8_t port, double target){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_set_pitch(uint8_t port, double target){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+int32_t imu_set_pitch(uint8_t port, double target) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -355,8 +358,8 @@ int32_t imu_set_pitch(uint8_t port, double target){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_set_roll(uint8_t port, double target){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+int32_t imu_set_roll(uint8_t port, double target) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -370,8 +373,8 @@ int32_t imu_set_roll(uint8_t port, double target){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_set_yaw(uint8_t port, double target){
-    if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
+int32_t imu_set_yaw(uint8_t port, double target) {
+	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
 	v5_smart_device_s_t* device = registry_get_device(port - 1);
@@ -385,7 +388,7 @@ int32_t imu_set_yaw(uint8_t port, double target){
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t imu_set_euler(uint8_t port, euler_s_t target){
+int32_t imu_set_euler(uint8_t port, euler_s_t target) {
 	if (!claim_port_try(port - 1, E_DEVICE_IMU)) {
 		return PROS_ERR;
 	}
