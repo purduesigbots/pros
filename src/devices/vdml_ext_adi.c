@@ -61,26 +61,26 @@ typedef union adi_data {
 		return PROS_ERR;                   \
 	}
 
-#define validate_type(device, adi_port, smart_port, type)                                                                 		\
-	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); 			\
-	if (config != type) {     													\
-		errno = EADDRINUSE;          												\
-		printf("Error: validate_type\n"); 											\
-		return_port(smart_port, PROS_ERR);                                                                                      \
+#define validate_type(device, adi_port, smart_port, type)                                                     \
+	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
+	if (config != type) {                                                                                       \
+		errno = EADDRINUSE;                                                                                       \
+		printf("Error: validate_type\n");                                                                         \
+		return_port(smart_port, PROS_ERR);                                                                        \
 	}
 
-#define validate_type_f(device, adi_port, smart_port, type)                                                                 \
+#define validate_type_f(device, adi_port, smart_port, type)                                                   \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
-	if (config != type) {                                                                                   \
-		errno = EADDRINUSE;                                                                                   \
-		return_port(smart_port, PROS_ERR_F);                                                                                     \
+	if (config != type) {                                                                                       \
+		errno = EADDRINUSE;                                                                                       \
+		return_port(smart_port, PROS_ERR_F);                                                                      \
 	}
 
-#define validate_motor(device, adi_port, smart_port)                                                                      \
+#define validate_motor(device, adi_port, smart_port)                                                          \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
-	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                       \
-		errno = EADDRINUSE;                                                                                   \
-		return_port(smart_port, PROS_ERR);                                                                                   \
+	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                           \
+		errno = EADDRINUSE;                                                                                       \
+		return_port(smart_port, PROS_ERR);                                                                        \
 	}
 
 /*

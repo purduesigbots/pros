@@ -12,6 +12,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "vdml/registry.h"
+
 #include <errno.h>
 #include <stdio.h>
 
@@ -19,7 +21,6 @@
 #include "kapi.h"
 #include "pros/misc.h"
 #include "v5_api.h"
-#include "vdml/registry.h"
 #include "vdml/vdml.h"
 
 static v5_smart_device_s_t registry[V5_MAX_DEVICE_PORTS];

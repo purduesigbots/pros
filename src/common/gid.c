@@ -14,10 +14,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "common/gid.h"
+
 #include <limits.h>
 #include <stdint.h>
 
-#include "common/gid.h"
 #include "kapi.h"
 
 // Note: the V5 is a 32-bit architecture, so we'll use 32-bit integers

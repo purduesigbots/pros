@@ -10,16 +10,16 @@
 #include "lv_ufs.h"
 #if USE_LV_FILESYSTEM
 
-#include "lv_ll.h"
-#include <string.h>
-#include <stdio.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "lv_gc.h"
+#include "lv_ll.h"
 
 #if defined(LV_GC_INCLUDE)
-#   include LV_GC_INCLUDE
+#include LV_GC_INCLUDE
 #endif /* LV_ENABLE_GC */
-
 
 /*********************
  *      DEFINES
@@ -32,8 +32,8 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static lv_ufs_ent_t * lv_ufs_ent_get(const char * fn);
-static lv_ufs_ent_t * lv_ufs_ent_new(const char * fn);
+static lv_ufs_ent_t* lv_ufs_ent_get(const char* fn);
+static lv_ufs_ent_t* lv_ufs_ent_new(const char* fn);
 
 /**********************
  *  STATIC VARIABLES
@@ -51,45 +51,43 @@ static bool inited = false;
 /**
  * Create a driver for ufs and initialize it.
  */
-void lv_ufs_init(void)
-{
-    lv_ll_init(&LV_GC_ROOT(_lv_file_ll), sizeof(lv_ufs_ent_t));
+void lv_ufs_init(void) {
+	lv_ll_init(&LV_GC_ROOT(_lv_file_ll), sizeof(lv_ufs_ent_t));
 
-    lv_fs_drv_t ufs_drv;
-    memset(&ufs_drv, 0, sizeof(lv_fs_drv_t));    /*Initialization*/
+	lv_fs_drv_t ufs_drv;
+	memset(&ufs_drv, 0, sizeof(lv_fs_drv_t)); /*Initialization*/
 
-    ufs_drv.file_size = sizeof(lv_ufs_file_t);
-    ufs_drv.rddir_size = sizeof(lv_ufs_dir_t);
-    ufs_drv.letter = UFS_LETTER;
-    ufs_drv.ready = lv_ufs_ready;
+	ufs_drv.file_size = sizeof(lv_ufs_file_t);
+	ufs_drv.rddir_size = sizeof(lv_ufs_dir_t);
+	ufs_drv.letter = UFS_LETTER;
+	ufs_drv.ready = lv_ufs_ready;
 
-    ufs_drv.open = lv_ufs_open;
-    ufs_drv.close = lv_ufs_close;
-    ufs_drv.remove = lv_ufs_remove;
-    ufs_drv.read = lv_ufs_read;
-    ufs_drv.write = lv_ufs_write;
-    ufs_drv.seek = lv_ufs_seek;
-    ufs_drv.tell = lv_ufs_tell;
-    ufs_drv.size = lv_ufs_size;
-    ufs_drv.trunc = lv_ufs_trunc;
-    ufs_drv.free = lv_ufs_free;
+	ufs_drv.open = lv_ufs_open;
+	ufs_drv.close = lv_ufs_close;
+	ufs_drv.remove = lv_ufs_remove;
+	ufs_drv.read = lv_ufs_read;
+	ufs_drv.write = lv_ufs_write;
+	ufs_drv.seek = lv_ufs_seek;
+	ufs_drv.tell = lv_ufs_tell;
+	ufs_drv.size = lv_ufs_size;
+	ufs_drv.trunc = lv_ufs_trunc;
+	ufs_drv.free = lv_ufs_free;
 
-    ufs_drv.dir_open = lv_ufs_dir_open;
-    ufs_drv.dir_read = lv_ufs_dir_read;
-    ufs_drv.dir_close = lv_ufs_dir_close;
+	ufs_drv.dir_open = lv_ufs_dir_open;
+	ufs_drv.dir_read = lv_ufs_dir_read;
+	ufs_drv.dir_close = lv_ufs_dir_close;
 
-    lv_fs_add_drv(&ufs_drv);
+	lv_fs_add_drv(&ufs_drv);
 
-    inited = true;
+	inited = true;
 }
 
 /**
  * Give the state of the ufs
  * @return true if ufs is initialized and can be used else false
  */
-bool lv_ufs_ready(void)
-{
-    return inited;
+bool lv_ufs_ready(void) {
+	return inited;
 }
 
 /**
@@ -100,39 +98,37 @@ bool lv_ufs_ready(void)
  * @return LV_FS_RES_OK: no error, the file is opened
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_open(void * file_p, const char * fn, lv_fs_mode_t mode)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
-    lv_ufs_ent_t * ent = lv_ufs_ent_get(fn);
+lv_fs_res_t lv_ufs_open(void* file_p, const char* fn, lv_fs_mode_t mode) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
+	lv_ufs_ent_t* ent = lv_ufs_ent_get(fn);
 
-    fp->ent = NULL;
+	fp->ent = NULL;
 
-    /*If the file not exists ...*/
-    if(ent == NULL) {
-        if((mode & LV_FS_MODE_WR) != 0) {  /*Create the file if opened for write*/
-            ent = lv_ufs_ent_new(fn);
-            if(ent == NULL) return LV_FS_RES_FULL; /*No space for the new file*/
-        } else {
-            return LV_FS_RES_NOT_EX;       /*Can not read not existing file*/
-        }
-    }
+	/*If the file not exists ...*/
+	if (ent == NULL) {
+		if ((mode & LV_FS_MODE_WR) != 0) { /*Create the file if opened for write*/
+			ent = lv_ufs_ent_new(fn);
+			if (ent == NULL) return LV_FS_RES_FULL; /*No space for the new file*/
+		} else {
+			return LV_FS_RES_NOT_EX; /*Can not read not existing file*/
+		}
+	}
 
-    /*Can not write already opened and const data files*/
-    if((mode & LV_FS_MODE_WR) != 0) {
-        if(ent->oc != 0) return LV_FS_RES_LOCKED;
-        if(ent->const_data != 0) return LV_FS_RES_DENIED;
-    }
+	/*Can not write already opened and const data files*/
+	if ((mode & LV_FS_MODE_WR) != 0) {
+		if (ent->oc != 0) return LV_FS_RES_LOCKED;
+		if (ent->const_data != 0) return LV_FS_RES_DENIED;
+	}
 
-    /*No error, the file can be opened*/
-    fp->ent = ent;
-    fp->ar = mode & LV_FS_MODE_RD ? 1 : 0;
-    fp->aw = mode & LV_FS_MODE_WR ? 1 : 0;
-    fp->rwp = 0;
-    ent->oc ++;
+	/*No error, the file can be opened*/
+	fp->ent = ent;
+	fp->ar = mode & LV_FS_MODE_RD ? 1 : 0;
+	fp->aw = mode & LV_FS_MODE_WR ? 1 : 0;
+	fp->rwp = 0;
+	ent->oc++;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
-
 
 /**
  * Create a file with a constant data
@@ -142,35 +138,34 @@ lv_fs_res_t lv_ufs_open(void * file_p, const char * fn, lv_fs_mode_t mode)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_create_const(const char * fn, const void * const_p, uint32_t len)
-{
-    lv_ufs_file_t file;
-    lv_fs_res_t res;
+lv_fs_res_t lv_ufs_create_const(const char* fn, const void* const_p, uint32_t len) {
+	lv_ufs_file_t file;
+	lv_fs_res_t res;
 
-    /*Error if the file already exists*/
-    res = lv_ufs_open(&file, fn, LV_FS_MODE_RD);
-    if(res == LV_FS_RES_OK) {
-        lv_ufs_close(&file);
-        return LV_FS_RES_DENIED;
-    }
+	/*Error if the file already exists*/
+	res = lv_ufs_open(&file, fn, LV_FS_MODE_RD);
+	if (res == LV_FS_RES_OK) {
+		lv_ufs_close(&file);
+		return LV_FS_RES_DENIED;
+	}
 
-    lv_ufs_close(&file);
+	lv_ufs_close(&file);
 
-    res = lv_ufs_open(&file, fn, LV_FS_MODE_WR);
-    if(res != LV_FS_RES_OK) return res;
+	res = lv_ufs_open(&file, fn, LV_FS_MODE_WR);
+	if (res != LV_FS_RES_OK) return res;
 
-    lv_ufs_ent_t * ent = file.ent;
+	lv_ufs_ent_t* ent = file.ent;
 
-    if(ent->data_d != NULL) return LV_FS_RES_DENIED;
+	if (ent->data_d != NULL) return LV_FS_RES_DENIED;
 
-    ent->data_d = (void *) const_p;
-    ent->size = len;
-    ent->const_data = 1;
+	ent->data_d = (void*)const_p;
+	ent->size = len;
+	ent->const_data = 1;
 
-    res = lv_ufs_close(&file);
-    if(res != LV_FS_RES_OK) return res;
+	res = lv_ufs_close(&file);
+	if (res != LV_FS_RES_OK) return res;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -179,18 +174,17 @@ lv_fs_res_t lv_ufs_create_const(const char * fn, const void * const_p, uint32_t 
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_close(void * file_p)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
+lv_fs_res_t lv_ufs_close(void* file_p) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
 
-    if(fp->ent == NULL) return LV_FS_RES_OK;
+	if (fp->ent == NULL) return LV_FS_RES_OK;
 
-    /*Decrement the Open counter*/
-    if(fp->ent->oc > 0) {
-        fp->ent->oc--;
-    }
+	/*Decrement the Open counter*/
+	if (fp->ent->oc > 0) {
+		fp->ent->oc--;
+	}
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -199,25 +193,24 @@ lv_fs_res_t lv_ufs_close(void * file_p)
  * @return LV_FS_RES_OK: no error, the file is removed
  *         LV_FS_RES_DENIED: the file was opened, remove failed
  */
-lv_fs_res_t lv_ufs_remove(const char * fn)
-{
-    lv_ufs_ent_t * ent = lv_ufs_ent_get(fn);
-    if(ent == NULL) return LV_FS_RES_DENIED;    /*File not exists*/
+lv_fs_res_t lv_ufs_remove(const char* fn) {
+	lv_ufs_ent_t* ent = lv_ufs_ent_get(fn);
+	if (ent == NULL) return LV_FS_RES_DENIED; /*File not exists*/
 
-    /*Can not be deleted is opened*/
-    if(ent->oc != 0) return LV_FS_RES_DENIED;
+	/*Can not be deleted is opened*/
+	if (ent->oc != 0) return LV_FS_RES_DENIED;
 
-    lv_ll_rem(&LV_GC_ROOT(_lv_file_ll), ent);
-    lv_mem_free(ent->fn_d);
-    ent->fn_d = NULL;
-    if(ent->const_data == 0) {
-        lv_mem_free(ent->data_d);
-        ent->data_d = NULL;
-    }
+	lv_ll_rem(&LV_GC_ROOT(_lv_file_ll), ent);
+	lv_mem_free(ent->fn_d);
+	ent->fn_d = NULL;
+	if (ent->const_data == 0) {
+		lv_mem_free(ent->data_d);
+		ent->data_d = NULL;
+	}
 
-    lv_mem_free(ent);
+	lv_mem_free(ent);
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -229,40 +222,39 @@ lv_fs_res_t lv_ufs_remove(const char * fn)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_read(void * file_p, void * buf, uint32_t btr, uint32_t * br)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
+lv_fs_res_t lv_ufs_read(void* file_p, void* buf, uint32_t btr, uint32_t* br) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
 
-    lv_ufs_ent_t * ent = fp->ent;
-    *br = 0;
+	lv_ufs_ent_t* ent = fp->ent;
+	*br = 0;
 
-    if(ent->data_d == NULL || ent->size == 0) { /*Don't read empty files*/
-        return LV_FS_RES_OK;
-    } else if(fp->ar == 0) {    /*The file is not opened for read*/
-        return LV_FS_RES_DENIED;
-    }
+	if (ent->data_d == NULL || ent->size == 0) { /*Don't read empty files*/
+		return LV_FS_RES_OK;
+	} else if (fp->ar == 0) { /*The file is not opened for read*/
+		return LV_FS_RES_DENIED;
+	}
 
-    /*No error, read the file*/
-    if(fp->rwp + btr > ent->size) {  /*Check too much bytes read*/
-        *br =  ent->size - fp->rwp;
-    } else {
-        *br = btr;
-    }
+	/*No error, read the file*/
+	if (fp->rwp + btr > ent->size) { /*Check too much bytes read*/
+		*br = ent->size - fp->rwp;
+	} else {
+		*br = btr;
+	}
 
-    /*Read the data*/
-    uint8_t * data8_p;
-    if(ent->const_data == 0) {
-        data8_p = (uint8_t *) ent->data_d;
-    } else {
-        data8_p = ent->data_d;
-    }
+	/*Read the data*/
+	uint8_t* data8_p;
+	if (ent->const_data == 0) {
+		data8_p = (uint8_t*)ent->data_d;
+	} else {
+		data8_p = ent->data_d;
+	}
 
-    data8_p += fp->rwp;
-    memcpy(buf, data8_p, *br);
+	data8_p += fp->rwp;
+	memcpy(buf, data8_p, *br);
 
-    fp->rwp += *br; /*Refresh the read write pointer*/
+	fp->rwp += *br; /*Refresh the read write pointer*/
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -274,34 +266,33 @@ lv_fs_res_t lv_ufs_read(void * file_p, void * buf, uint32_t btr, uint32_t * br)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_write(void * file_p, const void * buf, uint32_t btw, uint32_t * bw)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
-    *bw = 0;
+lv_fs_res_t lv_ufs_write(void* file_p, const void* buf, uint32_t btw, uint32_t* bw) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
+	*bw = 0;
 
-    if(fp->aw == 0) return LV_FS_RES_DENIED; /*Not opened for write*/
+	if (fp->aw == 0) return LV_FS_RES_DENIED; /*Not opened for write*/
 
-    lv_ufs_ent_t * ent = fp->ent;
+	lv_ufs_ent_t* ent = fp->ent;
 
-    /*Reallocate data array if it necessary*/
-    uint32_t new_size = fp->rwp + btw;
-    if(new_size > ent->size) {
-        uint8_t * new_data = lv_mem_realloc(ent->data_d, new_size);
-        lv_mem_assert(new_data);
-        if(new_data == NULL) return LV_FS_RES_FULL; /*Cannot allocate the new memory*/
+	/*Reallocate data array if it necessary*/
+	uint32_t new_size = fp->rwp + btw;
+	if (new_size > ent->size) {
+		uint8_t* new_data = lv_mem_realloc(ent->data_d, new_size);
+		lv_mem_assert(new_data);
+		if (new_data == NULL) return LV_FS_RES_FULL; /*Cannot allocate the new memory*/
 
-        ent->data_d = new_data;
-        ent->size = new_size;
-    }
+		ent->data_d = new_data;
+		ent->size = new_size;
+	}
 
-    /*Write the file*/
-    uint8_t * data8_p = (uint8_t *) ent->data_d;
-    data8_p += fp->rwp;
-    memcpy(data8_p, buf, btw);
-    *bw = btw;
-    fp->rwp += *bw;
+	/*Write the file*/
+	uint8_t* data8_p = (uint8_t*)ent->data_d;
+	data8_p += fp->rwp;
+	memcpy(data8_p, buf, btw);
+	*bw = btw;
+	fp->rwp += *bw;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -311,27 +302,26 @@ lv_fs_res_t lv_ufs_write(void * file_p, const void * buf, uint32_t btw, uint32_t
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_seek(void * file_p, uint32_t pos)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
-    lv_ufs_ent_t * ent = fp->ent;
+lv_fs_res_t lv_ufs_seek(void* file_p, uint32_t pos) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
+	lv_ufs_ent_t* ent = fp->ent;
 
-    /*Simply move the rwp before EOF*/
-    if(pos < ent->size) {
-        fp->rwp = pos;
-    } else { /*Expand the file size*/
-        if(fp->aw == 0) return LV_FS_RES_DENIED;       /*Not opened for write*/
+	/*Simply move the rwp before EOF*/
+	if (pos < ent->size) {
+		fp->rwp = pos;
+	} else {                                    /*Expand the file size*/
+		if (fp->aw == 0) return LV_FS_RES_DENIED; /*Not opened for write*/
 
-        uint8_t * new_data = lv_mem_realloc(ent->data_d, pos);
-        lv_mem_assert(new_data);
-        if(new_data == NULL) return LV_FS_RES_FULL; /*Out of memory*/
+		uint8_t* new_data = lv_mem_realloc(ent->data_d, pos);
+		lv_mem_assert(new_data);
+		if (new_data == NULL) return LV_FS_RES_FULL; /*Out of memory*/
 
-        ent->data_d = new_data;
-        ent->size = pos;
-        fp->rwp = pos;
-    }
+		ent->data_d = new_data;
+		ent->size = pos;
+		fp->rwp = pos;
+	}
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -341,13 +331,12 @@ lv_fs_res_t lv_ufs_seek(void * file_p, uint32_t pos)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_tell(void * file_p, uint32_t * pos_p)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
+lv_fs_res_t lv_ufs_tell(void* file_p, uint32_t* pos_p) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
 
-    *pos_p = fp->rwp;
+	*pos_p = fp->rwp;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -356,21 +345,20 @@ lv_fs_res_t lv_ufs_tell(void * file_p, uint32_t * pos_p)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_trunc(void * file_p)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
-    lv_ufs_ent_t * ent = fp->ent;
+lv_fs_res_t lv_ufs_trunc(void* file_p) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
+	lv_ufs_ent_t* ent = fp->ent;
 
-    if(fp->aw == 0) return LV_FS_RES_DENIED; /*Not opened for write*/
+	if (fp->aw == 0) return LV_FS_RES_DENIED; /*Not opened for write*/
 
-    void * new_data = lv_mem_realloc(ent->data_d, fp->rwp);
-    lv_mem_assert(new_data);
-    if(new_data == NULL) return LV_FS_RES_FULL; /*Out of memory*/
+	void* new_data = lv_mem_realloc(ent->data_d, fp->rwp);
+	lv_mem_assert(new_data);
+	if (new_data == NULL) return LV_FS_RES_FULL; /*Out of memory*/
 
-    ent->data_d = new_data;
-    ent->size = fp->rwp;
+	ent->data_d = new_data;
+	ent->size = fp->rwp;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -380,14 +368,13 @@ lv_fs_res_t lv_ufs_trunc(void * file_p)
  * @return LV_FS_RES_OK: no error, the file is read
  *         any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_size(void * file_p, uint32_t * size_p)
-{
-    lv_ufs_file_t * fp = file_p;    /*Convert type*/
-    lv_ufs_ent_t * ent = fp->ent;
+lv_fs_res_t lv_ufs_size(void* file_p, uint32_t* size_p) {
+	lv_ufs_file_t* fp = file_p; /*Convert type*/
+	lv_ufs_ent_t* ent = fp->ent;
 
-    *size_p = ent->size;
+	*size_p = ent->size;
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -396,14 +383,15 @@ lv_fs_res_t lv_ufs_size(void * file_p, uint32_t * size_p)
  * @param path uFS doesn't support folders so it has to be ""
  * @return LV_FS_RES_OK or any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_dir_open(void * rddir_p, const char * path)
-{
-    lv_ufs_dir_t * lv_ufs_rddir_p = rddir_p;
+lv_fs_res_t lv_ufs_dir_open(void* rddir_p, const char* path) {
+	lv_ufs_dir_t* lv_ufs_rddir_p = rddir_p;
 
-    lv_ufs_rddir_p->last_ent = NULL;
+	lv_ufs_rddir_p->last_ent = NULL;
 
-    if(path[0] != '\0') return LV_FS_RES_NOT_EX;       /*Must be "" */
-    else return LV_FS_RES_OK;
+	if (path[0] != '\0')
+		return LV_FS_RES_NOT_EX; /*Must be "" */
+	else
+		return LV_FS_RES_OK;
 }
 
 /**
@@ -412,23 +400,22 @@ lv_fs_res_t lv_ufs_dir_open(void * rddir_p, const char * path)
  * @param fn pointer to buffer to sore the file name
  * @return LV_FS_RES_OK or any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_dir_read(void * dir_p, char * fn)
-{
-    lv_ufs_dir_t * ufs_dir_p = dir_p;
+lv_fs_res_t lv_ufs_dir_read(void* dir_p, char* fn) {
+	lv_ufs_dir_t* ufs_dir_p = dir_p;
 
-    if(ufs_dir_p->last_ent == NULL) {
-        ufs_dir_p->last_ent = lv_ll_get_head(&LV_GC_ROOT(_lv_file_ll));
-    } else {
-        ufs_dir_p->last_ent = lv_ll_get_next(&LV_GC_ROOT(_lv_file_ll), ufs_dir_p->last_ent);
-    }
+	if (ufs_dir_p->last_ent == NULL) {
+		ufs_dir_p->last_ent = lv_ll_get_head(&LV_GC_ROOT(_lv_file_ll));
+	} else {
+		ufs_dir_p->last_ent = lv_ll_get_next(&LV_GC_ROOT(_lv_file_ll), ufs_dir_p->last_ent);
+	}
 
-    if(ufs_dir_p->last_ent != NULL) {
-        strcpy(fn, ufs_dir_p->last_ent->fn_d);
-    } else {
-        fn[0] = '\0';
-    }
+	if (ufs_dir_p->last_ent != NULL) {
+		strcpy(fn, ufs_dir_p->last_ent->fn_d);
+	} else {
+		fn[0] = '\0';
+	}
 
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -436,10 +423,9 @@ lv_fs_res_t lv_ufs_dir_read(void * dir_p, char * fn)
  * @param rddir_p pointer to an initialized 'ufs_dir_t' variable
  * @return LV_FS_RES_OK or any error from lv__fs_res_t enum
  */
-lv_fs_res_t lv_ufs_dir_close(void * rddir_p)
-{
-    (void)rddir_p;
-    return LV_FS_RES_OK;
+lv_fs_res_t lv_ufs_dir_close(void* rddir_p) {
+	(void)rddir_p;
+	return LV_FS_RES_OK;
 }
 
 /**
@@ -448,19 +434,17 @@ lv_fs_res_t lv_ufs_dir_close(void * rddir_p)
  * @param free_p pointer to store the free site [kB]
  * @return LV_FS_RES_OK or any error from 'lv_fs_res_t'
  */
-lv_fs_res_t lv_ufs_free(uint32_t * total_p, uint32_t * free_p)
-{
-
+lv_fs_res_t lv_ufs_free(uint32_t* total_p, uint32_t* free_p) {
 #if LV_MEM_CUSTOM == 0
-    lv_mem_monitor_t mon;
+	lv_mem_monitor_t mon;
 
-    lv_mem_monitor(&mon);
-    *total_p = LV_MEM_SIZE >> 10;    /*Convert bytes to kB*/
-    *free_p = mon.free_size >> 10;
+	lv_mem_monitor(&mon);
+	*total_p = LV_MEM_SIZE >> 10; /*Convert bytes to kB*/
+	*free_p = mon.free_size >> 10;
 #else
-    *free_p = 0;
+	*free_p = 0;
 #endif
-    return LV_FS_RES_OK;
+	return LV_FS_RES_OK;
 }
 
 /**********************
@@ -473,17 +457,16 @@ lv_fs_res_t lv_ufs_free(uint32_t * total_p, uint32_t * free_p)
  * @return pointer to the dynamically allocated entry with 'fn' filename.
  *         NULL if no entry found with that name.
  */
-static lv_ufs_ent_t * lv_ufs_ent_get(const char * fn)
-{
-    lv_ufs_ent_t * fp;
+static lv_ufs_ent_t* lv_ufs_ent_get(const char* fn) {
+	lv_ufs_ent_t* fp;
 
-    LL_READ(LV_GC_ROOT(_lv_file_ll), fp) {
-        if(strcmp(fp->fn_d, fn) == 0) {
-            return fp;
-        }
-    }
+	LL_READ(LV_GC_ROOT(_lv_file_ll), fp) {
+		if (strcmp(fp->fn_d, fn) == 0) {
+			return fp;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /**
@@ -492,25 +475,23 @@ static lv_ufs_ent_t * lv_ufs_ent_get(const char * fn)
  * @return pointer to the dynamically allocated new entry.
  *         NULL if no space for the entry.
  */
-static lv_ufs_ent_t * lv_ufs_ent_new(const char * fn)
-{
-    lv_ufs_ent_t * new_ent = NULL;
-    new_ent = lv_ll_ins_head(&LV_GC_ROOT(_lv_file_ll));                 /*Create a new file*/
-    lv_mem_assert(new_ent);
-    if(new_ent == NULL) return NULL;
+static lv_ufs_ent_t* lv_ufs_ent_new(const char* fn) {
+	lv_ufs_ent_t* new_ent = NULL;
+	new_ent = lv_ll_ins_head(&LV_GC_ROOT(_lv_file_ll)); /*Create a new file*/
+	lv_mem_assert(new_ent);
+	if (new_ent == NULL) return NULL;
 
-    new_ent->fn_d = lv_mem_alloc(strlen(fn)  + 1); /*Save the name*/
-    lv_mem_assert(new_ent->fn_d);
-    if(new_ent->fn_d == NULL) return NULL;
+	new_ent->fn_d = lv_mem_alloc(strlen(fn) + 1); /*Save the name*/
+	lv_mem_assert(new_ent->fn_d);
+	if (new_ent->fn_d == NULL) return NULL;
 
-    strcpy(new_ent->fn_d, fn);
-    new_ent->data_d = NULL;
-    new_ent->size = 0;
-    new_ent->oc = 0;
-    new_ent->const_data = 0;
+	strcpy(new_ent->fn_d, fn);
+	new_ent->data_d = NULL;
+	new_ent->size = 0;
+	new_ent->oc = 0;
+	new_ent->const_data = 0;
 
-    return new_ent;
+	return new_ent;
 }
 
 #endif /*USE_LV_FILESYSTEM*/
-
