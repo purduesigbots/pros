@@ -1,9 +1,10 @@
 #include <stdexcept>
 #include <string>
 
+#include "v5_api.h"
+
 #include "rtos/FreeRTOS.h"
 #include "rtos/task.h"
-#include "v5_api.h"
 
 extern "C" void throw_it() {
 	throw std::runtime_error("RT err in function");

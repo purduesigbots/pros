@@ -1,11 +1,11 @@
 
 #include "display/lv_misc/lv_font.h"
 
-#if USE_LV_FONT_DEJAVU_10_LATIN_SUP != 0 /*Can be enabled in lv_conf.h*/
+#if USE_LV_FONT_DEJAVU_10_LATIN_SUP != 0    /*Can be enabled in lv_conf.h*/
 
 /***********************************************************************************
  * DejaVuSans.ttf 10 px Font in U+00a0 ( ) .. U+00ff (ÿ)  range with 1 bpp
- ***********************************************************************************/
+***********************************************************************************/
 
 /*Store the image of the letters (glyph)*/
 static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
@@ -22,6 +22,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a1 (¡) , Width: 1 */
     0x00,  //.
     0x00,  //.
@@ -34,6 +35,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@
     0x00,  //.
 
+
     /*Unicode: U+00a2 (¢) , Width: 3 */
     0x00,  //...
     0x00,  //...
@@ -45,6 +47,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x40,  //.@.
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00a3 (£) , Width: 4 */
     0x00,  //....
@@ -58,6 +61,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00a4 (¤) , Width: 5 */
     0x00,  //.....
     0x00,  //.....
@@ -69,6 +73,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00a5 (¥) , Width: 5 */
     0x00,  //.....
@@ -82,6 +87,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00a6 (¦) , Width: 1 */
     0x00,  //.
     0x80,  //@
@@ -93,6 +99,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@
     0x00,  //.
     0x00,  //.
+
 
     /*Unicode: U+00a7 (§) , Width: 3 */
     0x00,  //...
@@ -106,6 +113,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a8 (¨) , Width: 3 */
     0x00,  //...
     0xa0,  //@.@
@@ -118,6 +126,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a9 (©) , Width: 6 */
     0x00,  //......
     0x78,  //.%@@%.
@@ -129,6 +138,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //......
     0x00,  //......
     0x00,  //......
+
 
     /*Unicode: U+00aa (ª) , Width: 4 */
     0x00,  //....
@@ -142,6 +152,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00ab («) , Width: 4 */
     0x00,  //....
     0x00,  //....
@@ -153,6 +164,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ac (¬) , Width: 5 */
     0x00,  //.....
@@ -166,6 +178,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00ad (­) , Width: 2 */
     0x00,  //..
     0x00,  //..
@@ -177,6 +190,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ae (®) , Width: 6 */
     0x00,  //......
@@ -190,6 +204,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //......
     0x00,  //......
 
+
     /*Unicode: U+00af (¯) , Width: 2 */
     0x00,  //..
     0xc0,  //@@
@@ -201,6 +216,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b0 (°) , Width: 2 */
     0x00,  //..
@@ -214,6 +230,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b1 (±) , Width: 5 */
     0x00,  //.....
     0x20,  //..@..
@@ -225,6 +242,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00b2 (²) , Width: 3 */
     0x00,  //...
@@ -238,6 +256,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00b3 (³) , Width: 2 */
     0x00,  //..
     0xc0,  //@@
@@ -250,6 +269,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b4 (´) , Width: 2 */
     0x00,  //..
     0x00,  //++
@@ -261,6 +281,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b5 (µ) , Width: 5 */
     0x00,  //.....
@@ -274,6 +295,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@....
     0x00,  //.....
 
+
     /*Unicode: U+00b6 (¶) , Width: 4 */
     0x00,  //....
     0xf0,  //%@@@
@@ -285,6 +307,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x50,  //.@.@
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00b7 (·) , Width: 1 */
     0x00,  //.
@@ -298,6 +321,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.
     0x00,  //.
 
+
     /*Unicode: U+00b8 (¸) , Width: 2 */
     0x00,  //..
     0x00,  //..
@@ -309,6 +333,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x40,  //.@
     0xc0,  //@@
     0x00,  //..
+
 
     /*Unicode: U+00b9 (¹) , Width: 3 */
     0x00,  //...
@@ -322,6 +347,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00ba (º) , Width: 3 */
     0x00,  //...
     0xe0,  //%@%
@@ -333,6 +359,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00bb (») , Width: 4 */
     0x00,  //....
@@ -346,6 +373,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00bc (¼) , Width: 8 */
     0x00,  //........
     0xc8,  //@@.+@...
@@ -357,6 +385,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //........
     0x00,  //........
     0x00,  //........
+
 
     /*Unicode: U+00bd (½) , Width: 8 */
     0x00,  //........
@@ -370,6 +399,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //........
     0x00,  //........
 
+
     /*Unicode: U+00be (¾) , Width: 8 */
     0x00,  //........
     0xc8,  //@@.+@...
@@ -381,6 +411,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //........
     0x00,  //........
     0x00,  //........
+
 
     /*Unicode: U+00bf (¿) , Width: 3 */
     0x00,  //...
@@ -394,6 +425,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xe0,  //%@@
     0x00,  //...
 
+
     /*Unicode: U+00c0 (À) , Width: 5 */
     0x30,  //..%@.
     0x20,  //..@..
@@ -405,6 +437,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00c1 (Á) , Width: 5 */
     0x30,  //..%%.
@@ -418,6 +451,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00c2 (Â) , Width: 5 */
     0x00,  //..+..
     0x20,  //..@..
@@ -429,6 +463,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00c3 (Ã) , Width: 5 */
     0x70,  //.@@@.
@@ -442,6 +477,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00c4 (Ä) , Width: 5 */
     0x50,  //.@.@.
     0x20,  //..@..
@@ -453,6 +489,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00c5 (Å) , Width: 5 */
     0x20,  //..@..
@@ -466,6 +503,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00c6 (Æ) , Width: 7 */
     0x00,  //.......
     0x3e,  //..@@@@@
@@ -477,6 +515,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.......
     0x00,  //.......
     0x00,  //.......
+
 
     /*Unicode: U+00c7 (Ç) , Width: 5 */
     0x00,  //.....
@@ -490,6 +529,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x60,  //.@@..
     0x00,  //.....
 
+
     /*Unicode: U+00c8 (È) , Width: 4 */
     0x60,  //.%@.
     0xf0,  //@@@@
@@ -501,6 +541,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00c9 (É) , Width: 4 */
     0x60,  //.%%.
@@ -514,6 +555,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00ca (Ê) , Width: 4 */
     0x00,  //.++.
     0xf0,  //@@@@
@@ -526,6 +568,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00cb (Ë) , Width: 4 */
     0x50,  //.@.@
     0xf0,  //@@@@
@@ -537,6 +580,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00cc (Ì) , Width: 3 */
     0xc0,  //%@.
@@ -550,6 +594,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00cd (Í) , Width: 2 */
     0xc0,  //%%
     0x40,  //.@
@@ -561,6 +606,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ce (Î) , Width: 3 */
     0x40,  //+%+
@@ -574,6 +620,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00cf (Ï) , Width: 3 */
     0xa0,  //@.@
     0x40,  //.@.
@@ -585,6 +632,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00d0 (Ð) , Width: 6 */
     0x00,  //......
@@ -598,6 +646,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //......
     0x00,  //......
 
+
     /*Unicode: U+00d1 (Ñ) , Width: 4 */
     0x60,  //.@@.
     0x90,  //@+.@
@@ -609,6 +658,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00d2 (Ò) , Width: 5 */
     0x60,  //.%@..
@@ -622,6 +672,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00d3 (Ó) , Width: 5 */
     0x60,  //.%%..
     0x70,  //.%@%.
@@ -633,6 +684,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00d4 (Ô) , Width: 5 */
     0x00,  //..+..
@@ -646,6 +698,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00d5 (Õ) , Width: 5 */
     0x70,  //.@@@.
     0x70,  //.%@%.
@@ -657,6 +710,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00d6 (Ö) , Width: 5 */
     0x50,  //.@.@.
@@ -670,6 +724,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00d7 (×) , Width: 5 */
     0x00,  //.....
     0x00,  //.....
@@ -681,6 +736,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
     0x00,  //.....
+
 
     /*Unicode: U+00d8 (Ø) , Width: 5 */
     0x00,  //.....
@@ -694,6 +750,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00d9 (Ù) , Width: 4 */
     0x60,  //.%@.
     0x90,  //@..@
@@ -705,6 +762,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00da (Ú) , Width: 4 */
     0x60,  //.%%.
@@ -718,6 +776,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00db (Û) , Width: 4 */
     0x00,  //.++.
     0x90,  //@..@
@@ -730,6 +789,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00dc (Ü) , Width: 4 */
     0x90,  //@..@
     0x90,  //@..@
@@ -741,6 +801,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00dd (Ý) , Width: 5 */
     0x60,  //.%%..
@@ -754,6 +815,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00de (Þ) , Width: 4 */
     0x00,  //....
     0x80,  //@...
@@ -765,6 +827,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00df (ß) , Width: 4 */
     0x60,  //+@@+
@@ -778,6 +841,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e0 (à) , Width: 4 */
     0x00,  //....
     0x00,  //++..
@@ -789,6 +853,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e1 (á) , Width: 4 */
     0x00,  //....
@@ -802,6 +867,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e2 (â) , Width: 4 */
     0x00,  //....
     0x00,  //.++.
@@ -813,6 +879,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e3 (ã) , Width: 4 */
     0x00,  //....
@@ -826,6 +893,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e4 (ä) , Width: 4 */
     0x00,  //....
     0x60,  //.@@.
@@ -838,6 +906,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e5 (å) , Width: 4 */
     0x60,  //.@@.
     0x60,  //.@@.
@@ -849,6 +918,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e6 (æ) , Width: 7 */
     0x00,  //.......
@@ -862,6 +932,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.......
     0x00,  //.......
 
+
     /*Unicode: U+00e7 (ç) , Width: 3 */
     0x00,  //...
     0x00,  //...
@@ -873,6 +944,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x20,  //..@
     0x60,  //.@@
     0x00,  //...
+
 
     /*Unicode: U+00e8 (è) , Width: 4 */
     0x00,  //....
@@ -886,6 +958,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e9 (é) , Width: 4 */
     0x00,  //....
     0x00,  //.++.
@@ -897,6 +970,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ea (ê) , Width: 4 */
     0x00,  //....
@@ -910,6 +984,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00eb (ë) , Width: 4 */
     0x00,  //....
     0x50,  //.@.@
@@ -921,6 +996,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ec (ì) , Width: 2 */
     0x00,  //..
@@ -934,6 +1010,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00ed (í) , Width: 2 */
     0x00,  //..
     0x00,  //++
@@ -945,6 +1022,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ee (î) , Width: 3 */
     0x00,  //...
@@ -958,6 +1036,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00ef (ï) , Width: 3 */
     0x00,  //...
     0xa0,  //@.@
@@ -969,6 +1048,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00f0 (ð) , Width: 4 */
     0x00,  //....
@@ -982,6 +1062,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f1 (ñ) , Width: 4 */
     0x00,  //....
     0xa0,  //%+@.
@@ -993,6 +1074,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f2 (ò) , Width: 4 */
     0x00,  //....
@@ -1006,6 +1088,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f3 (ó) , Width: 4 */
     0x00,  //....
     0x00,  //++..
@@ -1017,6 +1100,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f4 (ô) , Width: 4 */
     0x00,  //....
@@ -1030,6 +1114,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f5 (õ) , Width: 4 */
     0x00,  //....
     0x60,  //.%%.
@@ -1042,6 +1127,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f6 (ö) , Width: 4 */
     0x00,  //....
     0x90,  //@..@
@@ -1053,6 +1139,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f7 (÷) , Width: 5 */
     0x00,  //.....
@@ -1066,6 +1153,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.....
     0x00,  //.....
 
+
     /*Unicode: U+00f8 (ø) , Width: 6 */
     0x00,  //......
     0x00,  //......
@@ -1077,6 +1165,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //......
     0x00,  //......
     0x00,  //......
+
 
     /*Unicode: U+00f9 (ù) , Width: 4 */
     0x00,  //....
@@ -1090,6 +1179,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00fa (ú) , Width: 4 */
     0x00,  //....
     0x00,  //++..
@@ -1101,6 +1191,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00fb (û) , Width: 4 */
     0x00,  //....
@@ -1114,6 +1205,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00fc (ü) , Width: 4 */
     0x00,  //....
     0x60,  //.@@.
@@ -1125,6 +1217,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00fd (ý) , Width: 4 */
     0x00,  //....
@@ -1138,6 +1231,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@+..
     0x00,  //....
 
+
     /*Unicode: U+00fe (þ) , Width: 4 */
     0x80,  //@...
     0x80,  //@...
@@ -1149,6 +1243,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@...
     0x80,  //@...
     0x00,  //....
+
 
     /*Unicode: U+00ff (ÿ) , Width: 4 */
     0x00,  //....
@@ -1162,6 +1257,8 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x80,  //@+..
     0x00,  //....
 
+
+
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 2
     /*Unicode: U+00a0 ( ) , Width: 3 */
     0x00,  //...
@@ -1175,6 +1272,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a1 (¡) , Width: 1 */
     0x00,  //.
     0x00,  //.
@@ -1187,6 +1285,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xc0,  //@
     0x00,  //.
 
+
     /*Unicode: U+00a2 (¢) , Width: 3 */
     0x00,  //...
     0x00,  //...
@@ -1198,6 +1297,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x30,  //.@.
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00a3 (£) , Width: 4 */
     0x00,  //....
@@ -1211,6 +1311,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00a4 (¤) , Width: 5 */
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
@@ -1222,6 +1323,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00a5 (¥) , Width: 5 */
     0x00, 0x00,  //.....
@@ -1235,6 +1337,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00a6 (¦) , Width: 1 */
     0x00,  //.
     0xc0,  //@
@@ -1246,6 +1349,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xc0,  //@
     0x00,  //.
     0x00,  //.
+
 
     /*Unicode: U+00a7 (§) , Width: 3 */
     0x00,  //...
@@ -1259,6 +1363,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a8 (¨) , Width: 3 */
     0x00,  //...
     0xcc,  //@.@
@@ -1271,6 +1376,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00a9 (©) , Width: 6 */
     0x00, 0x00,  //......
     0x2f, 0x80,  //.%@@%.
@@ -1282,6 +1388,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //......
     0x00, 0x00,  //......
     0x00, 0x00,  //......
+
 
     /*Unicode: U+00aa (ª) , Width: 4 */
     0x00,  //....
@@ -1295,6 +1402,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00ab («) , Width: 4 */
     0x00,  //....
     0x00,  //....
@@ -1306,6 +1414,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ac (¬) , Width: 5 */
     0x00, 0x00,  //.....
@@ -1319,6 +1428,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00ad (­) , Width: 2 */
     0x00,  //..
     0x00,  //..
@@ -1330,6 +1440,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ae (®) , Width: 6 */
     0x00, 0x00,  //......
@@ -1343,6 +1454,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //......
     0x00, 0x00,  //......
 
+
     /*Unicode: U+00af (¯) , Width: 2 */
     0x00,  //..
     0xf0,  //@@
@@ -1354,6 +1466,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b0 (°) , Width: 2 */
     0x00,  //..
@@ -1367,6 +1480,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b1 (±) , Width: 5 */
     0x00, 0x00,  //.....
     0x0c, 0x00,  //..@..
@@ -1378,6 +1492,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00b2 (²) , Width: 3 */
     0x00,  //...
@@ -1391,6 +1506,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00b3 (³) , Width: 2 */
     0x00,  //..
     0xf0,  //@@
@@ -1403,6 +1519,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b4 (´) , Width: 2 */
     0x00,  //..
     0x50,  //++
@@ -1414,6 +1531,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b5 (µ) , Width: 5 */
     0x00, 0x00,  //.....
@@ -1427,6 +1545,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xc0, 0x00,  //@....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00b6 (¶) , Width: 4 */
     0x00,  //....
     0xbf,  //%@@@
@@ -1438,6 +1557,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x33,  //.@.@
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00b7 (·) , Width: 1 */
     0x00,  //.
@@ -1451,6 +1571,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.
     0x00,  //.
 
+
     /*Unicode: U+00b8 (¸) , Width: 2 */
     0x00,  //..
     0x00,  //..
@@ -1462,6 +1583,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x30,  //.@
     0xf0,  //@@
     0x00,  //..
+
 
     /*Unicode: U+00b9 (¹) , Width: 3 */
     0x00,  //...
@@ -1475,6 +1597,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00ba (º) , Width: 3 */
     0x00,  //...
     0xb8,  //%@%
@@ -1486,6 +1609,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00bb (») , Width: 4 */
     0x00,  //....
@@ -1499,6 +1623,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00bc (¼) , Width: 8 */
     0x00, 0x00,  //........
     0xf1, 0xc0,  //@@.+@...
@@ -1510,6 +1635,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //........
     0x00, 0x00,  //........
     0x00, 0x00,  //........
+
 
     /*Unicode: U+00bd (½) , Width: 8 */
     0x00, 0x00,  //........
@@ -1523,6 +1649,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //........
     0x00, 0x00,  //........
 
+
     /*Unicode: U+00be (¾) , Width: 8 */
     0x00, 0x00,  //........
     0xf1, 0xc0,  //@@.+@...
@@ -1534,6 +1661,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //........
     0x00, 0x00,  //........
     0x00, 0x00,  //........
+
 
     /*Unicode: U+00bf (¿) , Width: 3 */
     0x00,  //...
@@ -1547,6 +1675,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xbc,  //%@@
     0x00,  //...
 
+
     /*Unicode: U+00c0 (À) , Width: 5 */
     0x0b, 0x00,  //..%@.
     0x0c, 0x00,  //..@..
@@ -1558,6 +1687,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c1 (Á) , Width: 5 */
     0x0a, 0x00,  //..%%.
@@ -1571,6 +1701,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c2 (Â) , Width: 5 */
     0x04, 0x00,  //..+..
     0x0c, 0x00,  //..@..
@@ -1582,6 +1713,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c3 (Ã) , Width: 5 */
     0x3f, 0x00,  //.@@@.
@@ -1595,6 +1727,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c4 (Ä) , Width: 5 */
     0x33, 0x00,  //.@.@.
     0x0c, 0x00,  //..@..
@@ -1606,6 +1739,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c5 (Å) , Width: 5 */
     0x0c, 0x00,  //..@..
@@ -1619,6 +1753,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c6 (Æ) , Width: 7 */
     0x00, 0x00,  //.......
     0x0f, 0xfc,  //..@@@@@
@@ -1630,6 +1765,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.......
     0x00, 0x00,  //.......
     0x00, 0x00,  //.......
+
 
     /*Unicode: U+00c7 (Ç) , Width: 5 */
     0x00, 0x00,  //.....
@@ -1643,6 +1779,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x3c, 0x00,  //.@@..
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c8 (È) , Width: 4 */
     0x2c,  //.%@.
     0xff,  //@@@@
@@ -1654,6 +1791,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00c9 (É) , Width: 4 */
     0x28,  //.%%.
@@ -1667,6 +1805,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00ca (Ê) , Width: 4 */
     0x14,  //.++.
     0xff,  //@@@@
@@ -1679,6 +1818,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00cb (Ë) , Width: 4 */
     0x33,  //.@.@
     0xff,  //@@@@
@@ -1690,6 +1830,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00cc (Ì) , Width: 3 */
     0xb0,  //%@.
@@ -1703,6 +1844,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00cd (Í) , Width: 2 */
     0xa0,  //%%
     0x30,  //.@
@@ -1714,6 +1856,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ce (Î) , Width: 3 */
     0x64,  //+%+
@@ -1727,6 +1870,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00cf (Ï) , Width: 3 */
     0xcc,  //@.@
     0x30,  //.@.
@@ -1738,6 +1882,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00d0 (Ð) , Width: 6 */
     0x00, 0x00,  //......
@@ -1751,6 +1896,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //......
     0x00, 0x00,  //......
 
+
     /*Unicode: U+00d1 (Ñ) , Width: 4 */
     0x3c,  //.@@.
     0xd3,  //@+.@
@@ -1762,6 +1908,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00d2 (Ò) , Width: 5 */
     0x2c, 0x00,  //.%@..
@@ -1775,6 +1922,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d3 (Ó) , Width: 5 */
     0x28, 0x00,  //.%%..
     0x2e, 0x00,  //.%@%.
@@ -1786,6 +1934,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d4 (Ô) , Width: 5 */
     0x04, 0x00,  //..+..
@@ -1799,6 +1948,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d5 (Õ) , Width: 5 */
     0x3f, 0x00,  //.@@@.
     0x2e, 0x00,  //.%@%.
@@ -1810,6 +1960,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d6 (Ö) , Width: 5 */
     0x33, 0x00,  //.@.@.
@@ -1823,6 +1974,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d7 (×) , Width: 5 */
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
@@ -1834,6 +1986,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d8 (Ø) , Width: 5 */
     0x00, 0x00,  //.....
@@ -1847,6 +2000,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d9 (Ù) , Width: 4 */
     0x2c,  //.%@.
     0xc3,  //@..@
@@ -1858,6 +2012,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00da (Ú) , Width: 4 */
     0x28,  //.%%.
@@ -1871,6 +2026,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00db (Û) , Width: 4 */
     0x14,  //.++.
     0xc3,  //@..@
@@ -1883,6 +2039,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00dc (Ü) , Width: 4 */
     0xc3,  //@..@
     0xc3,  //@..@
@@ -1894,6 +2051,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00dd (Ý) , Width: 5 */
     0x28, 0x00,  //.%%..
@@ -1907,6 +2065,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00de (Þ) , Width: 4 */
     0x00,  //....
     0xc0,  //@...
@@ -1918,6 +2077,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00df (ß) , Width: 4 */
     0x7d,  //+@@+
@@ -1931,6 +2091,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e0 (à) , Width: 4 */
     0x00,  //....
     0x50,  //++..
@@ -1942,6 +2103,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e1 (á) , Width: 4 */
     0x00,  //....
@@ -1955,6 +2117,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e2 (â) , Width: 4 */
     0x00,  //....
     0x14,  //.++.
@@ -1966,6 +2129,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e3 (ã) , Width: 4 */
     0x00,  //....
@@ -1979,6 +2143,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e4 (ä) , Width: 4 */
     0x00,  //....
     0x3c,  //.@@.
@@ -1991,6 +2156,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e5 (å) , Width: 4 */
     0x3c,  //.@@.
     0x3c,  //.@@.
@@ -2002,6 +2168,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00e6 (æ) , Width: 7 */
     0x00, 0x00,  //.......
@@ -2015,6 +2182,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.......
     0x00, 0x00,  //.......
 
+
     /*Unicode: U+00e7 (ç) , Width: 3 */
     0x00,  //...
     0x00,  //...
@@ -2026,6 +2194,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0c,  //..@
     0x3c,  //.@@
     0x00,  //...
+
 
     /*Unicode: U+00e8 (è) , Width: 4 */
     0x00,  //....
@@ -2039,6 +2208,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00e9 (é) , Width: 4 */
     0x00,  //....
     0x14,  //.++.
@@ -2050,6 +2220,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ea (ê) , Width: 4 */
     0x00,  //....
@@ -2063,6 +2234,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00eb (ë) , Width: 4 */
     0x00,  //....
     0x33,  //.@.@
@@ -2074,6 +2246,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00ec (ì) , Width: 2 */
     0x00,  //..
@@ -2087,6 +2260,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00ed (í) , Width: 2 */
     0x00,  //..
     0x50,  //++
@@ -2098,6 +2272,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ee (î) , Width: 3 */
     0x00,  //...
@@ -2111,6 +2286,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
 
+
     /*Unicode: U+00ef (ï) , Width: 3 */
     0x00,  //...
     0xcc,  //@.@
@@ -2122,6 +2298,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //...
     0x00,  //...
     0x00,  //...
+
 
     /*Unicode: U+00f0 (ð) , Width: 4 */
     0x00,  //....
@@ -2135,6 +2312,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f1 (ñ) , Width: 4 */
     0x00,  //....
     0x9c,  //%+@.
@@ -2146,6 +2324,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f2 (ò) , Width: 4 */
     0x00,  //....
@@ -2159,6 +2338,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f3 (ó) , Width: 4 */
     0x00,  //....
     0x50,  //++..
@@ -2170,6 +2350,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f4 (ô) , Width: 4 */
     0x00,  //....
@@ -2183,6 +2364,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f5 (õ) , Width: 4 */
     0x00,  //....
     0x28,  //.%%.
@@ -2195,6 +2377,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00f6 (ö) , Width: 4 */
     0x00,  //....
     0xc3,  //@..@
@@ -2206,6 +2389,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00f7 (÷) , Width: 5 */
     0x00, 0x00,  //.....
@@ -2219,6 +2403,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //.....
     0x00, 0x00,  //.....
 
+
     /*Unicode: U+00f8 (ø) , Width: 6 */
     0x00, 0x00,  //......
     0x00, 0x00,  //......
@@ -2230,6 +2415,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //......
     0x00, 0x00,  //......
     0x00, 0x00,  //......
+
 
     /*Unicode: U+00f9 (ù) , Width: 4 */
     0x00,  //....
@@ -2243,6 +2429,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00fa (ú) , Width: 4 */
     0x00,  //....
     0x50,  //++..
@@ -2254,6 +2441,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00fb (û) , Width: 4 */
     0x00,  //....
@@ -2267,6 +2455,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
 
+
     /*Unicode: U+00fc (ü) , Width: 4 */
     0x00,  //....
     0x3c,  //.@@.
@@ -2278,6 +2467,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //....
     0x00,  //....
     0x00,  //....
+
 
     /*Unicode: U+00fd (ý) , Width: 4 */
     0x00,  //....
@@ -2291,6 +2481,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xd0,  //@+..
     0x00,  //....
 
+
     /*Unicode: U+00fe (þ) , Width: 4 */
     0xc0,  //@...
     0xc0,  //@...
@@ -2302,6 +2493,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xc0,  //@...
     0xc0,  //@...
     0x00,  //....
+
 
     /*Unicode: U+00ff (ÿ) , Width: 4 */
     0x00,  //....
@@ -2315,6 +2507,8 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xd0,  //@+..
     0x00,  //....
 
+
+
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 4
     /*Unicode: U+00a0 ( ) , Width: 3 */
     0x00, 0x00,  //...
@@ -2327,6 +2521,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00a1 (¡) , Width: 1 */
     0x00,  //.
@@ -2340,6 +2535,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xf0,  //@
     0x00,  //.
 
+
     /*Unicode: U+00a2 (¢) , Width: 3 */
     0x00, 0x00,  //...
     0x00, 0x00,  //...
@@ -2351,6 +2547,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0f, 0x00,  //.@.
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00a3 (£) , Width: 4 */
     0x00, 0x00,  //....
@@ -2364,6 +2561,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00a4 (¤) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
@@ -2375,6 +2573,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00a5 (¥) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -2388,6 +2587,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00a6 (¦) , Width: 1 */
     0x00,  //.
     0xf0,  //@
@@ -2399,6 +2599,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xf0,  //@
     0x00,  //.
     0x00,  //.
+
 
     /*Unicode: U+00a7 (§) , Width: 3 */
     0x00, 0x00,  //...
@@ -2412,6 +2613,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00a8 (¨) , Width: 3 */
     0x00, 0x00,  //...
     0xf0, 0xf0,  //@.@
@@ -2423,6 +2625,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00a9 (©) , Width: 6 */
     0x00, 0x00, 0x00,  //......
@@ -2436,6 +2639,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
 
+
     /*Unicode: U+00aa (ª) , Width: 4 */
     0x00, 0x00,  //....
     0x0f, 0xb0,  //.@%.
@@ -2447,6 +2651,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00ab («) , Width: 4 */
     0x00, 0x00,  //....
@@ -2460,6 +2665,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00ac (¬) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
@@ -2471,6 +2677,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00ad (­) , Width: 2 */
     0x00,  //..
@@ -2484,6 +2691,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00ae (®) , Width: 6 */
     0x00, 0x00, 0x00,  //......
     0x08, 0xee, 0x80,  //.%@@%.
@@ -2495,6 +2703,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
+
 
     /*Unicode: U+00af (¯) , Width: 2 */
     0x00,  //..
@@ -2508,6 +2717,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b0 (°) , Width: 2 */
     0x00,  //..
     0xcc,  //@%
@@ -2519,6 +2729,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b1 (±) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -2532,6 +2743,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00b2 (²) , Width: 3 */
     0x00, 0x00,  //...
     0xfd, 0x00,  //@@.
@@ -2543,6 +2755,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00b3 (³) , Width: 2 */
     0x00,  //..
@@ -2556,6 +2769,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00b4 (´) , Width: 2 */
     0x00,  //..
     0x55,  //++
@@ -2567,6 +2781,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00b5 (µ) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -2580,6 +2795,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xf0, 0x00, 0x00,  //@....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00b6 (¶) , Width: 4 */
     0x00, 0x00,  //....
     0x9f, 0xff,  //%@@@
@@ -2591,6 +2807,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0f, 0x0f,  //.@.@
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00b7 (·) , Width: 1 */
     0x00,  //.
@@ -2604,6 +2821,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.
     0x00,  //.
 
+
     /*Unicode: U+00b8 (¸) , Width: 2 */
     0x00,  //..
     0x00,  //..
@@ -2615,6 +2833,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0f,  //.@
     0xec,  //@@
     0x00,  //..
+
 
     /*Unicode: U+00b9 (¹) , Width: 3 */
     0x00, 0x00,  //...
@@ -2628,6 +2847,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00ba (º) , Width: 3 */
     0x00, 0x00,  //...
     0x9f, 0x90,  //%@%
@@ -2639,6 +2859,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00bb (») , Width: 4 */
     0x00, 0x00,  //....
@@ -2652,6 +2873,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00bc (¼) , Width: 8 */
     0x00, 0x00, 0x00, 0x00,  //........
     0xff, 0x05, 0xc0, 0x00,  //@@.+@...
@@ -2663,6 +2885,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00,  //........
+
 
     /*Unicode: U+00bd (½) , Width: 8 */
     0x00, 0x00, 0x00, 0x00,  //........
@@ -2676,6 +2899,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00,  //........
 
+
     /*Unicode: U+00be (¾) , Width: 8 */
     0x00, 0x00, 0x00, 0x00,  //........
     0xfc, 0x05, 0xc0, 0x00,  //@@.+@...
@@ -2687,6 +2911,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00,  //........
+
 
     /*Unicode: U+00bf (¿) , Width: 3 */
     0x00, 0x00,  //...
@@ -2700,6 +2925,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x9f, 0xf0,  //%@@
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00c0 (À) , Width: 5 */
     0x00, 0x8c, 0x00,  //..%@.
     0x01, 0xf1, 0x00,  //..@..
@@ -2711,6 +2937,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c1 (Á) , Width: 5 */
     0x00, 0x9a, 0x00,  //..%%.
@@ -2724,6 +2951,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c2 (Â) , Width: 5 */
     0x00, 0x70, 0x00,  //..+..
     0x01, 0xf1, 0x00,  //..@..
@@ -2735,6 +2963,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c3 (Ã) , Width: 5 */
     0x0c, 0xfc, 0x00,  //.@@@.
@@ -2748,6 +2977,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c4 (Ä) , Width: 5 */
     0x0f, 0x0f, 0x00,  //.@.@.
     0x01, 0xf1, 0x00,  //..@..
@@ -2759,6 +2989,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c5 (Å) , Width: 5 */
     0x00, 0xf0, 0x00,  //..@..
@@ -2772,6 +3003,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c6 (Æ) , Width: 7 */
     0x00, 0x00, 0x00, 0x00,  //.......
     0x01, 0xff, 0xff, 0xf0,  //..@@@@@
@@ -2783,6 +3015,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00,  //.......
+
 
     /*Unicode: U+00c7 (Ç) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -2796,6 +3029,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0e, 0xc0, 0x00,  //.@@..
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c8 (È) , Width: 4 */
     0x08, 0xc0,  //.%@.
     0xff, 0xff,  //@@@@
@@ -2807,6 +3041,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00c9 (É) , Width: 4 */
     0x09, 0xa0,  //.%%.
@@ -2820,6 +3055,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00ca (Ê) , Width: 4 */
     0x07, 0x70,  //.++.
     0xff, 0xff,  //@@@@
@@ -2831,6 +3067,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00cb (Ë) , Width: 4 */
     0x0f, 0x0f,  //.@.@
@@ -2844,6 +3081,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00cc (Ì) , Width: 3 */
     0x8c, 0x00,  //%@.
     0x0f, 0x00,  //.@.
@@ -2855,6 +3093,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00cd (Í) , Width: 2 */
     0x9a,  //%%
@@ -2868,6 +3107,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00ce (Î) , Width: 3 */
     0x78, 0x60,  //+%+
     0x0f, 0x00,  //.@.
@@ -2879,6 +3119,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00cf (Ï) , Width: 3 */
     0xf0, 0xf0,  //@.@
@@ -2892,6 +3133,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00d0 (Ð) , Width: 6 */
     0x00, 0x00, 0x00,  //......
     0x0f, 0xfe, 0x91,  //.@@@%.
@@ -2903,6 +3145,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
+
 
     /*Unicode: U+00d1 (Ñ) , Width: 4 */
     0x0d, 0xd0,  //.@@.
@@ -2916,6 +3159,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00d2 (Ò) , Width: 5 */
     0x08, 0xc0, 0x00,  //.%@..
     0x1b, 0xfb, 0x10,  //.%@%.
@@ -2927,6 +3171,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d3 (Ó) , Width: 5 */
     0x09, 0xa0, 0x00,  //.%%..
@@ -2940,6 +3185,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d4 (Ô) , Width: 5 */
     0x00, 0x70, 0x00,  //..+..
     0x1b, 0xfb, 0x10,  //.%@%.
@@ -2951,6 +3197,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d5 (Õ) , Width: 5 */
     0x0c, 0xfc, 0x00,  //.@@@.
@@ -2964,6 +3211,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d6 (Ö) , Width: 5 */
     0x0f, 0x0f, 0x00,  //.@.@.
     0x1b, 0xfb, 0x10,  //.%@%.
@@ -2975,6 +3223,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d7 (×) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -2988,6 +3237,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d8 (Ø) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
     0x2c, 0xe7, 0xa0,  //.@@+%
@@ -2999,6 +3249,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d9 (Ù) , Width: 4 */
     0x08, 0xc0,  //.%@.
@@ -3012,6 +3263,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00da (Ú) , Width: 4 */
     0x09, 0xa0,  //.%%.
     0xf0, 0x0f,  //@..@
@@ -3023,6 +3275,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00db (Û) , Width: 4 */
     0x07, 0x70,  //.++.
@@ -3036,6 +3289,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00dc (Ü) , Width: 4 */
     0xf0, 0x0f,  //@..@
     0xf0, 0x0f,  //@..@
@@ -3047,6 +3301,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00dd (Ý) , Width: 5 */
     0x09, 0xa0, 0x00,  //.%%..
@@ -3060,6 +3315,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00de (Þ) , Width: 4 */
     0x00, 0x00,  //....
     0xf0, 0x00,  //@...
@@ -3071,6 +3327,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00df (ß) , Width: 4 */
     0x5e, 0xe5,  //+@@+
@@ -3084,6 +3341,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00e0 (à) , Width: 4 */
     0x00, 0x00,  //....
     0x55, 0x00,  //++..
@@ -3095,6 +3353,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00e1 (á) , Width: 4 */
     0x00, 0x00,  //....
@@ -3108,6 +3367,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00e2 (â) , Width: 4 */
     0x00, 0x00,  //....
     0x06, 0x60,  //.++.
@@ -3119,6 +3379,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00e3 (ã) , Width: 4 */
     0x00, 0x00,  //....
@@ -3132,6 +3393,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00e4 (ä) , Width: 4 */
     0x00, 0x00,  //....
     0x0f, 0xf0,  //.@@.
@@ -3143,6 +3405,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00e5 (å) , Width: 4 */
     0x0c, 0xc0,  //.@@.
@@ -3156,6 +3419,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00e6 (æ) , Width: 7 */
     0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00,  //.......
@@ -3167,6 +3431,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00,  //.......
+
 
     /*Unicode: U+00e7 (ç) , Width: 3 */
     0x00, 0x00,  //...
@@ -3180,6 +3445,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0e, 0xc0,  //.@@
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00e8 (è) , Width: 4 */
     0x00, 0x00,  //....
     0x05, 0x50,  //.++.
@@ -3191,6 +3457,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00e9 (é) , Width: 4 */
     0x00, 0x00,  //....
@@ -3204,6 +3471,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00ea (ê) , Width: 4 */
     0x00, 0x00,  //....
     0x48, 0x85,  //+%%+
@@ -3215,6 +3483,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00eb (ë) , Width: 4 */
     0x00, 0x00,  //....
@@ -3228,6 +3497,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00ec (ì) , Width: 2 */
     0x00,  //..
     0x55,  //++
@@ -3239,6 +3509,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
     0x00,  //..
+
 
     /*Unicode: U+00ed (í) , Width: 2 */
     0x00,  //..
@@ -3252,6 +3523,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //..
     0x00,  //..
 
+
     /*Unicode: U+00ee (î) , Width: 3 */
     0x00, 0x00,  //...
     0x68, 0x60,  //+%+
@@ -3263,6 +3535,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
     0x00, 0x00,  //...
+
 
     /*Unicode: U+00ef (ï) , Width: 3 */
     0x00, 0x00,  //...
@@ -3276,6 +3549,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //...
     0x00, 0x00,  //...
 
+
     /*Unicode: U+00f0 (ð) , Width: 4 */
     0x00, 0x20,  //....
     0x3e, 0xf3,  //.@@.
@@ -3287,6 +3561,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00f1 (ñ) , Width: 4 */
     0x00, 0x00,  //....
@@ -3300,6 +3575,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00f2 (ò) , Width: 4 */
     0x00, 0x00,  //....
     0x55, 0x00,  //++..
@@ -3311,6 +3587,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00f3 (ó) , Width: 4 */
     0x00, 0x00,  //....
@@ -3324,6 +3601,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00f4 (ô) , Width: 4 */
     0x00, 0x00,  //....
     0x06, 0x60,  //.++.
@@ -3335,6 +3613,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00f5 (õ) , Width: 4 */
     0x00, 0x00,  //....
@@ -3348,6 +3627,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00f6 (ö) , Width: 4 */
     0x00, 0x00,  //....
     0xf0, 0x0f,  //@..@
@@ -3359,6 +3639,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00f7 (÷) , Width: 5 */
     0x00, 0x00, 0x00,  //.....
@@ -3372,6 +3653,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00f8 (ø) , Width: 6 */
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
@@ -3383,6 +3665,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x01, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00,  //......
+
 
     /*Unicode: U+00f9 (ù) , Width: 4 */
     0x00, 0x00,  //....
@@ -3396,6 +3679,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00fa (ú) , Width: 4 */
     0x00, 0x00,  //....
     0x55, 0x00,  //++..
@@ -3407,6 +3691,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00fb (û) , Width: 4 */
     0x00, 0x00,  //....
@@ -3420,6 +3705,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00fc (ü) , Width: 4 */
     0x00, 0x00,  //....
     0x0f, 0xf0,  //.@@.
@@ -3431,6 +3717,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //....
     0x00, 0x00,  //....
     0x00, 0x00,  //....
+
 
     /*Unicode: U+00fd (ý) , Width: 4 */
     0x00, 0x00,  //....
@@ -3444,6 +3731,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xf7, 0x00,  //@+..
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00fe (þ) , Width: 4 */
     0xf0, 0x00,  //@...
     0xf0, 0x00,  //@...
@@ -3456,6 +3744,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xf0, 0x00,  //@...
     0x00, 0x00,  //....
 
+
     /*Unicode: U+00ff (ÿ) , Width: 4 */
     0x00, 0x00,  //....
     0xf0, 0xf0,  //@.@.
@@ -3467,6 +3756,8 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x0e, 0x00,  //.@..
     0xf7, 0x00,  //@+..
     0x00, 0x00,  //....
+
+
 
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 8
     /*Unicode: U+00a0 ( ) , Width: 3 */
@@ -3481,6 +3772,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00a1 (¡) , Width: 1 */
     0x00,  //.
     0x00,  //.
@@ -3492,6 +3784,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xff,  //@
     0xff,  //@
     0x00,  //.
+
 
     /*Unicode: U+00a2 (¢) , Width: 3 */
     0x00, 0x00, 0x00,  //...
@@ -3505,6 +3798,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00a3 (£) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x72, 0xf2, 0xff,  //.+@@
@@ -3516,6 +3810,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00a4 (¤) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
@@ -3529,6 +3824,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00a5 (¥) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0xae, 0x66, 0x00, 0x68, 0xac,  //%+.+%
@@ -3540,6 +3836,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00a6 (¦) , Width: 1 */
     0x00,  //.
@@ -3553,6 +3850,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.
     0x00,  //.
 
+
     /*Unicode: U+00a7 (§) , Width: 3 */
     0x00, 0x00, 0x00,  //...
     0x9a, 0xf8, 0xff,  //%@@
@@ -3564,6 +3862,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xff, 0xf8, 0x96,  //@@%
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00a8 (¨) , Width: 3 */
     0x00, 0x00, 0x00,  //...
@@ -3577,6 +3876,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00a9 (©) , Width: 6 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x04, 0x88, 0xe6, 0xe6, 0x86, 0x04,  //.%@@%.
@@ -3588,6 +3888,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
+
 
     /*Unicode: U+00aa (ª) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -3601,6 +3902,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00ab («) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
@@ -3612,6 +3914,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00ac (¬) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
@@ -3625,6 +3928,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00ad (­) , Width: 2 */
     0x00, 0x00,  //..
     0x00, 0x00,  //..
@@ -3636,6 +3940,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
     0x00, 0x00,  //..
+
 
     /*Unicode: U+00ae (®) , Width: 6 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
@@ -3649,6 +3954,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
 
+
     /*Unicode: U+00af (¯) , Width: 2 */
     0x00, 0x00,  //..
     0xff, 0xff,  //@@
@@ -3660,6 +3966,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
     0x00, 0x00,  //..
+
 
     /*Unicode: U+00b0 (°) , Width: 2 */
     0x00, 0x00,  //..
@@ -3673,6 +3980,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
 
+
     /*Unicode: U+00b1 (±) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0xff, 0x00, 0x00,  //..@..
@@ -3684,6 +3992,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00b2 (²) , Width: 3 */
     0x00, 0x00, 0x00,  //...
@@ -3697,6 +4006,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00b3 (³) , Width: 2 */
     0x00, 0x00,  //..
     0xff, 0xc6,  //@@
@@ -3708,6 +4018,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
     0x00, 0x00,  //..
+
 
     /*Unicode: U+00b4 (´) , Width: 2 */
     0x00, 0x00,  //..
@@ -3721,6 +4032,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
 
+
     /*Unicode: U+00b5 (µ) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
@@ -3732,6 +4044,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xff, 0x00, 0x00, 0x00, 0x00,  //@....
     0xff, 0x00, 0x00, 0x00, 0x00,  //@....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00b6 (¶) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -3745,6 +4058,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00b7 (·) , Width: 1 */
     0x00,  //.
     0x00,  //.
@@ -3756,6 +4070,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00,  //.
     0x00,  //.
     0x00,  //.
+
 
     /*Unicode: U+00b8 (¸) , Width: 2 */
     0x00, 0x00,  //..
@@ -3769,6 +4084,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xee, 0xcc,  //@@
     0x00, 0x00,  //..
 
+
     /*Unicode: U+00b9 (¹) , Width: 3 */
     0x00, 0x00, 0x00,  //...
     0xff, 0xff, 0x00,  //@@.
@@ -3780,6 +4096,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00ba (º) , Width: 3 */
     0x00, 0x00, 0x00,  //...
@@ -3793,6 +4110,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00bb (») , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
@@ -3804,6 +4122,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00bc (¼) , Width: 8 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
@@ -3817,6 +4136,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
 
+
     /*Unicode: U+00bd (½) , Width: 8 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
     0xff, 0xff, 0x00, 0x58, 0xc2, 0x00, 0x00, 0x00,  //@@.+@...
@@ -3828,6 +4148,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
+
 
     /*Unicode: U+00be (¾) , Width: 8 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
@@ -3841,6 +4162,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //........
 
+
     /*Unicode: U+00bf (¿) , Width: 3 */
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
@@ -3852,6 +4174,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xde, 0x18, 0x00,  //@..
     0x9e, 0xfa, 0xff,  //%@@
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00c0 (À) , Width: 5 */
     0x00, 0x00, 0x8a, 0xc2, 0x08,  //..%@.
@@ -3865,6 +4188,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c1 (Á) , Width: 5 */
     0x00, 0x00, 0x9c, 0xa2, 0x00,  //..%%.
     0x00, 0x18, 0xfa, 0x18, 0x00,  //..@..
@@ -3876,6 +4200,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c2 (Â) , Width: 5 */
     0x00, 0x00, 0x76, 0x00, 0x00,  //..+..
@@ -3889,6 +4214,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c3 (Ã) , Width: 5 */
     0x00, 0xca, 0xff, 0xca, 0x00,  //.@@@.
     0x00, 0x18, 0xfa, 0x18, 0x00,  //..@..
@@ -3900,6 +4226,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c4 (Ä) , Width: 5 */
     0x00, 0xff, 0x00, 0xff, 0x00,  //.@.@.
@@ -3913,6 +4240,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00c5 (Å) , Width: 5 */
     0x00, 0x00, 0xff, 0x00, 0x00,  //..@..
     0x00, 0x00, 0x8e, 0x00, 0x00,  //..%..
@@ -3924,6 +4252,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c6 (Æ) , Width: 7 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
@@ -3937,6 +4266,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
 
+
     /*Unicode: U+00c7 (Ç) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x0c, 0x9a, 0xe8, 0xea, 0x6e,  //.%@@+
@@ -3948,6 +4278,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x08, 0xff, 0x00, 0x00,  //..@..
     0x00, 0xee, 0xcc, 0x00, 0x00,  //.@@..
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00c8 (È) , Width: 4 */
     0x00, 0x8a, 0xc2, 0x08,  //.%@.
@@ -3961,6 +4292,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00c9 (É) , Width: 4 */
     0x00, 0x9c, 0xa2, 0x00,  //.%%.
     0xff, 0xff, 0xff, 0xff,  //@@@@
@@ -3972,6 +4304,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00ca (Ê) , Width: 4 */
     0x00, 0x76, 0x76, 0x00,  //.++.
@@ -3985,6 +4318,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00cb (Ë) , Width: 4 */
     0x00, 0xff, 0x00, 0xff,  //.@.@
     0xff, 0xff, 0xff, 0xff,  //@@@@
@@ -3996,6 +4330,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00cc (Ì) , Width: 3 */
     0x8a, 0xc2, 0x08,  //%@.
@@ -4009,6 +4344,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00cd (Í) , Width: 2 */
     0x9c, 0xa2,  //%%
     0x00, 0xff,  //.@
@@ -4020,6 +4356,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
     0x00, 0x00,  //..
+
 
     /*Unicode: U+00ce (Î) , Width: 3 */
     0x70, 0x86, 0x6e,  //+%+
@@ -4033,6 +4370,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00cf (Ï) , Width: 3 */
     0xff, 0x00, 0xff,  //@.@
     0x00, 0xff, 0x00,  //.@.
@@ -4044,6 +4382,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00d0 (Ð) , Width: 6 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
@@ -4057,6 +4396,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
 
+
     /*Unicode: U+00d1 (Ñ) , Width: 4 */
     0x00, 0xda, 0xda, 0x00,  //.@@.
     0xff, 0x72, 0x00, 0xff,  //@+.@
@@ -4068,6 +4408,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00d2 (Ò) , Width: 5 */
     0x00, 0x8a, 0xc2, 0x08, 0x00,  //.%@..
@@ -4081,6 +4422,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d3 (Ó) , Width: 5 */
     0x00, 0x9c, 0xa2, 0x00, 0x00,  //.%%..
     0x1a, 0xba, 0xf2, 0xba, 0x18,  //.%@%.
@@ -4092,6 +4434,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d4 (Ô) , Width: 5 */
     0x00, 0x00, 0x76, 0x00, 0x00,  //..+..
@@ -4105,6 +4448,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d5 (Õ) , Width: 5 */
     0x00, 0xca, 0xff, 0xca, 0x00,  //.@@@.
     0x1a, 0xba, 0xf2, 0xba, 0x18,  //.%@%.
@@ -4116,6 +4460,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d6 (Ö) , Width: 5 */
     0x00, 0xff, 0x00, 0xff, 0x00,  //.@.@.
@@ -4129,6 +4474,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d7 (×) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
@@ -4140,6 +4486,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00d8 (Ø) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x04,  //.....
@@ -4153,6 +4500,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
 
+
     /*Unicode: U+00d9 (Ù) , Width: 4 */
     0x00, 0x8a, 0xc2, 0x08,  //.%@.
     0xff, 0x00, 0x00, 0xff,  //@..@
@@ -4164,6 +4512,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00da (Ú) , Width: 4 */
     0x00, 0x9c, 0xa2, 0x00,  //.%%.
@@ -4177,6 +4526,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00db (Û) , Width: 4 */
     0x00, 0x76, 0x76, 0x00,  //.++.
     0xff, 0x00, 0x00, 0xff,  //@..@
@@ -4188,6 +4538,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00dc (Ü) , Width: 4 */
     0xff, 0x00, 0x00, 0xff,  //@..@
@@ -4201,6 +4552,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00dd (Ý) , Width: 5 */
     0x00, 0x9c, 0xa2, 0x00, 0x00,  //.%%..
     0xac, 0x80, 0x00, 0x80, 0xac,  //%+.+%
@@ -4212,6 +4564,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00de (Þ) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4225,6 +4578,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00df (ß) , Width: 4 */
     0x56, 0xe6, 0xea, 0x56,  //+@@+
     0xe6, 0x38, 0x3e, 0xe0,  //@..@
@@ -4236,6 +4590,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00e0 (à) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4249,6 +4604,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00e1 (á) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x5e, 0x5a, 0x00, 0x00,  //++..
@@ -4260,6 +4616,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00e2 (â) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4273,6 +4630,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00e3 (ã) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0xb6, 0xb2, 0x00,  //.%%.
@@ -4284,6 +4642,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00e4 (ä) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4297,6 +4656,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00e5 (å) , Width: 4 */
     0x00, 0xc4, 0xc2, 0x00,  //.@@.
     0x00, 0xc6, 0xc4, 0x00,  //.@@.
@@ -4308,6 +4668,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00e6 (æ) , Width: 7 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
@@ -4321,6 +4682,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //.......
 
+
     /*Unicode: U+00e7 (ç) , Width: 3 */
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
@@ -4332,6 +4694,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x08, 0xff,  //..@
     0x00, 0xee, 0xcc,  //.@@
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00e8 (è) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4345,6 +4708,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00e9 (é) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x5e, 0x5a, 0x00,  //.++.
@@ -4356,6 +4720,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00ea (ê) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4369,6 +4734,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00eb (ë) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0xff, 0x00, 0xff,  //.@.@
@@ -4380,6 +4746,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00ec (ì) , Width: 2 */
     0x00, 0x00,  //..
@@ -4393,6 +4760,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
 
+
     /*Unicode: U+00ed (í) , Width: 2 */
     0x00, 0x00,  //..
     0x5e, 0x5a,  //++
@@ -4404,6 +4772,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00,  //..
     0x00, 0x00,  //..
     0x00, 0x00,  //..
+
 
     /*Unicode: U+00ee (î) , Width: 3 */
     0x00, 0x00, 0x00,  //...
@@ -4417,6 +4786,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
 
+
     /*Unicode: U+00ef (ï) , Width: 3 */
     0x00, 0x00, 0x00,  //...
     0xff, 0x00, 0xff,  //@.@
@@ -4428,6 +4798,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
     0x00, 0x00, 0x00,  //...
+
 
     /*Unicode: U+00f0 (ð) , Width: 4 */
     0x00, 0x00, 0x22, 0x0a,  //....
@@ -4441,6 +4812,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00f1 (ñ) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0xac, 0x7c, 0xf2, 0x00,  //%+@.
@@ -4452,6 +4824,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00f2 (ò) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4465,6 +4838,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00f3 (ó) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x5e, 0x5a, 0x00, 0x00,  //++..
@@ -4476,6 +4850,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00f4 (ô) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4489,6 +4864,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00f5 (õ) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0xb6, 0xb2, 0x00,  //.%%.
@@ -4500,6 +4876,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00f6 (ö) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4513,6 +4890,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00f7 (÷) , Width: 5 */
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
@@ -4524,6 +4902,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
     0x00, 0x00, 0x00, 0x00, 0x00,  //.....
+
 
     /*Unicode: U+00f8 (ø) , Width: 6 */
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
@@ -4537,6 +4916,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  //......
 
+
     /*Unicode: U+00f9 (ù) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x5a, 0x5e, 0x00, 0x00,  //++..
@@ -4548,6 +4928,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00fa (ú) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4561,6 +4942,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00fb (û) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x6c, 0x6c, 0x00,  //.++.
@@ -4572,6 +4954,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00fc (ü) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
@@ -4585,6 +4968,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x00, 0x00, 0x00, 0x00,  //....
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00fd (ý) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0x5e, 0x5a, 0x00, 0x00,  //++..
@@ -4596,6 +4980,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0x04, 0xe4, 0x08, 0x00,  //.@..
     0xfa, 0x78, 0x00, 0x00,  //@+..
     0x00, 0x00, 0x00, 0x00,  //....
+
 
     /*Unicode: U+00fe (þ) , Width: 4 */
     0xff, 0x00, 0x00, 0x00,  //@...
@@ -4609,6 +4994,7 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xff, 0x00, 0x00, 0x00,  //@...
     0x00, 0x00, 0x00, 0x00,  //....
 
+
     /*Unicode: U+00ff (ÿ) , Width: 4 */
     0x00, 0x00, 0x00, 0x00,  //....
     0xff, 0x00, 0xff, 0x00,  //@.@.
@@ -4621,427 +5007,430 @@ static const uint8_t lv_font_dejavu_10_latin_sup_glyph_bitmap[] = {
     0xfa, 0x78, 0x00, 0x00,  //@+..
     0x00, 0x00, 0x00, 0x00,  //....
 
+
+
 #endif
 };
+
 
 /*Store the glyph descriptions*/
 static const lv_font_glyph_dsc_t lv_font_dejavu_10_latin_sup_glyph_dsc[] = {
 #if USE_LV_FONT_DEJAVU_10_LATIN_SUP == 1
-    {.w_px = 3, .glyph_index = 0},   /*Unicode: U+00a0 ( )*/
-    {.w_px = 1, .glyph_index = 10},  /*Unicode: U+00a1 (¡)*/
-    {.w_px = 3, .glyph_index = 20},  /*Unicode: U+00a2 (¢)*/
-    {.w_px = 4, .glyph_index = 30},  /*Unicode: U+00a3 (£)*/
-    {.w_px = 5, .glyph_index = 40},  /*Unicode: U+00a4 (¤)*/
-    {.w_px = 5, .glyph_index = 50},  /*Unicode: U+00a5 (¥)*/
-    {.w_px = 1, .glyph_index = 60},  /*Unicode: U+00a6 (¦)*/
-    {.w_px = 3, .glyph_index = 70},  /*Unicode: U+00a7 (§)*/
-    {.w_px = 3, .glyph_index = 80},  /*Unicode: U+00a8 (¨)*/
-    {.w_px = 6, .glyph_index = 90},  /*Unicode: U+00a9 (©)*/
-    {.w_px = 4, .glyph_index = 100}, /*Unicode: U+00aa (ª)*/
-    {.w_px = 4, .glyph_index = 110}, /*Unicode: U+00ab («)*/
-    {.w_px = 5, .glyph_index = 120}, /*Unicode: U+00ac (¬)*/
-    {.w_px = 2, .glyph_index = 130}, /*Unicode: U+00ad (­)*/
-    {.w_px = 6, .glyph_index = 140}, /*Unicode: U+00ae (®)*/
-    {.w_px = 2, .glyph_index = 150}, /*Unicode: U+00af (¯)*/
-    {.w_px = 2, .glyph_index = 160}, /*Unicode: U+00b0 (°)*/
-    {.w_px = 5, .glyph_index = 170}, /*Unicode: U+00b1 (±)*/
-    {.w_px = 3, .glyph_index = 180}, /*Unicode: U+00b2 (²)*/
-    {.w_px = 2, .glyph_index = 190}, /*Unicode: U+00b3 (³)*/
-    {.w_px = 2, .glyph_index = 200}, /*Unicode: U+00b4 (´)*/
-    {.w_px = 5, .glyph_index = 210}, /*Unicode: U+00b5 (µ)*/
-    {.w_px = 4, .glyph_index = 220}, /*Unicode: U+00b6 (¶)*/
-    {.w_px = 1, .glyph_index = 230}, /*Unicode: U+00b7 (·)*/
-    {.w_px = 2, .glyph_index = 240}, /*Unicode: U+00b8 (¸)*/
-    {.w_px = 3, .glyph_index = 250}, /*Unicode: U+00b9 (¹)*/
-    {.w_px = 3, .glyph_index = 260}, /*Unicode: U+00ba (º)*/
-    {.w_px = 4, .glyph_index = 270}, /*Unicode: U+00bb (»)*/
-    {.w_px = 8, .glyph_index = 280}, /*Unicode: U+00bc (¼)*/
-    {.w_px = 8, .glyph_index = 290}, /*Unicode: U+00bd (½)*/
-    {.w_px = 8, .glyph_index = 300}, /*Unicode: U+00be (¾)*/
-    {.w_px = 3, .glyph_index = 310}, /*Unicode: U+00bf (¿)*/
-    {.w_px = 5, .glyph_index = 320}, /*Unicode: U+00c0 (À)*/
-    {.w_px = 5, .glyph_index = 330}, /*Unicode: U+00c1 (Á)*/
-    {.w_px = 5, .glyph_index = 340}, /*Unicode: U+00c2 (Â)*/
-    {.w_px = 5, .glyph_index = 350}, /*Unicode: U+00c3 (Ã)*/
-    {.w_px = 5, .glyph_index = 360}, /*Unicode: U+00c4 (Ä)*/
-    {.w_px = 5, .glyph_index = 370}, /*Unicode: U+00c5 (Å)*/
-    {.w_px = 7, .glyph_index = 380}, /*Unicode: U+00c6 (Æ)*/
-    {.w_px = 5, .glyph_index = 390}, /*Unicode: U+00c7 (Ç)*/
-    {.w_px = 4, .glyph_index = 400}, /*Unicode: U+00c8 (È)*/
-    {.w_px = 4, .glyph_index = 410}, /*Unicode: U+00c9 (É)*/
-    {.w_px = 4, .glyph_index = 420}, /*Unicode: U+00ca (Ê)*/
-    {.w_px = 4, .glyph_index = 430}, /*Unicode: U+00cb (Ë)*/
-    {.w_px = 3, .glyph_index = 440}, /*Unicode: U+00cc (Ì)*/
-    {.w_px = 2, .glyph_index = 450}, /*Unicode: U+00cd (Í)*/
-    {.w_px = 3, .glyph_index = 460}, /*Unicode: U+00ce (Î)*/
-    {.w_px = 3, .glyph_index = 470}, /*Unicode: U+00cf (Ï)*/
-    {.w_px = 6, .glyph_index = 480}, /*Unicode: U+00d0 (Ð)*/
-    {.w_px = 4, .glyph_index = 490}, /*Unicode: U+00d1 (Ñ)*/
-    {.w_px = 5, .glyph_index = 500}, /*Unicode: U+00d2 (Ò)*/
-    {.w_px = 5, .glyph_index = 510}, /*Unicode: U+00d3 (Ó)*/
-    {.w_px = 5, .glyph_index = 520}, /*Unicode: U+00d4 (Ô)*/
-    {.w_px = 5, .glyph_index = 530}, /*Unicode: U+00d5 (Õ)*/
-    {.w_px = 5, .glyph_index = 540}, /*Unicode: U+00d6 (Ö)*/
-    {.w_px = 5, .glyph_index = 550}, /*Unicode: U+00d7 (×)*/
-    {.w_px = 5, .glyph_index = 560}, /*Unicode: U+00d8 (Ø)*/
-    {.w_px = 4, .glyph_index = 570}, /*Unicode: U+00d9 (Ù)*/
-    {.w_px = 4, .glyph_index = 580}, /*Unicode: U+00da (Ú)*/
-    {.w_px = 4, .glyph_index = 590}, /*Unicode: U+00db (Û)*/
-    {.w_px = 4, .glyph_index = 600}, /*Unicode: U+00dc (Ü)*/
-    {.w_px = 5, .glyph_index = 610}, /*Unicode: U+00dd (Ý)*/
-    {.w_px = 4, .glyph_index = 620}, /*Unicode: U+00de (Þ)*/
-    {.w_px = 4, .glyph_index = 630}, /*Unicode: U+00df (ß)*/
-    {.w_px = 4, .glyph_index = 640}, /*Unicode: U+00e0 (à)*/
-    {.w_px = 4, .glyph_index = 650}, /*Unicode: U+00e1 (á)*/
-    {.w_px = 4, .glyph_index = 660}, /*Unicode: U+00e2 (â)*/
-    {.w_px = 4, .glyph_index = 670}, /*Unicode: U+00e3 (ã)*/
-    {.w_px = 4, .glyph_index = 680}, /*Unicode: U+00e4 (ä)*/
-    {.w_px = 4, .glyph_index = 690}, /*Unicode: U+00e5 (å)*/
-    {.w_px = 7, .glyph_index = 700}, /*Unicode: U+00e6 (æ)*/
-    {.w_px = 3, .glyph_index = 710}, /*Unicode: U+00e7 (ç)*/
-    {.w_px = 4, .glyph_index = 720}, /*Unicode: U+00e8 (è)*/
-    {.w_px = 4, .glyph_index = 730}, /*Unicode: U+00e9 (é)*/
-    {.w_px = 4, .glyph_index = 740}, /*Unicode: U+00ea (ê)*/
-    {.w_px = 4, .glyph_index = 750}, /*Unicode: U+00eb (ë)*/
-    {.w_px = 2, .glyph_index = 760}, /*Unicode: U+00ec (ì)*/
-    {.w_px = 2, .glyph_index = 770}, /*Unicode: U+00ed (í)*/
-    {.w_px = 3, .glyph_index = 780}, /*Unicode: U+00ee (î)*/
-    {.w_px = 3, .glyph_index = 790}, /*Unicode: U+00ef (ï)*/
-    {.w_px = 4, .glyph_index = 800}, /*Unicode: U+00f0 (ð)*/
-    {.w_px = 4, .glyph_index = 810}, /*Unicode: U+00f1 (ñ)*/
-    {.w_px = 4, .glyph_index = 820}, /*Unicode: U+00f2 (ò)*/
-    {.w_px = 4, .glyph_index = 830}, /*Unicode: U+00f3 (ó)*/
-    {.w_px = 4, .glyph_index = 840}, /*Unicode: U+00f4 (ô)*/
-    {.w_px = 4, .glyph_index = 850}, /*Unicode: U+00f5 (õ)*/
-    {.w_px = 4, .glyph_index = 860}, /*Unicode: U+00f6 (ö)*/
-    {.w_px = 5, .glyph_index = 870}, /*Unicode: U+00f7 (÷)*/
-    {.w_px = 6, .glyph_index = 880}, /*Unicode: U+00f8 (ø)*/
-    {.w_px = 4, .glyph_index = 890}, /*Unicode: U+00f9 (ù)*/
-    {.w_px = 4, .glyph_index = 900}, /*Unicode: U+00fa (ú)*/
-    {.w_px = 4, .glyph_index = 910}, /*Unicode: U+00fb (û)*/
-    {.w_px = 4, .glyph_index = 920}, /*Unicode: U+00fc (ü)*/
-    {.w_px = 4, .glyph_index = 930}, /*Unicode: U+00fd (ý)*/
-    {.w_px = 4, .glyph_index = 940}, /*Unicode: U+00fe (þ)*/
-    {.w_px = 4, .glyph_index = 950}, /*Unicode: U+00ff (ÿ)*/
+    {.w_px = 3,   .glyph_index = 0},  /*Unicode: U+00a0 ( )*/
+    {.w_px = 1,   .glyph_index = 10}, /*Unicode: U+00a1 (¡)*/
+    {.w_px = 3,   .glyph_index = 20}, /*Unicode: U+00a2 (¢)*/
+    {.w_px = 4,   .glyph_index = 30}, /*Unicode: U+00a3 (£)*/
+    {.w_px = 5,   .glyph_index = 40}, /*Unicode: U+00a4 (¤)*/
+    {.w_px = 5,   .glyph_index = 50}, /*Unicode: U+00a5 (¥)*/
+    {.w_px = 1,   .glyph_index = 60}, /*Unicode: U+00a6 (¦)*/
+    {.w_px = 3,   .glyph_index = 70}, /*Unicode: U+00a7 (§)*/
+    {.w_px = 3,   .glyph_index = 80}, /*Unicode: U+00a8 (¨)*/
+    {.w_px = 6,   .glyph_index = 90}, /*Unicode: U+00a9 (©)*/
+    {.w_px = 4,   .glyph_index = 100},    /*Unicode: U+00aa (ª)*/
+    {.w_px = 4,   .glyph_index = 110},    /*Unicode: U+00ab («)*/
+    {.w_px = 5,   .glyph_index = 120},    /*Unicode: U+00ac (¬)*/
+    {.w_px = 2,   .glyph_index = 130},    /*Unicode: U+00ad (­)*/
+    {.w_px = 6,   .glyph_index = 140},    /*Unicode: U+00ae (®)*/
+    {.w_px = 2,   .glyph_index = 150},    /*Unicode: U+00af (¯)*/
+    {.w_px = 2,   .glyph_index = 160},    /*Unicode: U+00b0 (°)*/
+    {.w_px = 5,   .glyph_index = 170},    /*Unicode: U+00b1 (±)*/
+    {.w_px = 3,   .glyph_index = 180},    /*Unicode: U+00b2 (²)*/
+    {.w_px = 2,   .glyph_index = 190},    /*Unicode: U+00b3 (³)*/
+    {.w_px = 2,   .glyph_index = 200},    /*Unicode: U+00b4 (´)*/
+    {.w_px = 5,   .glyph_index = 210},    /*Unicode: U+00b5 (µ)*/
+    {.w_px = 4,   .glyph_index = 220},    /*Unicode: U+00b6 (¶)*/
+    {.w_px = 1,   .glyph_index = 230},    /*Unicode: U+00b7 (·)*/
+    {.w_px = 2,   .glyph_index = 240},    /*Unicode: U+00b8 (¸)*/
+    {.w_px = 3,   .glyph_index = 250},    /*Unicode: U+00b9 (¹)*/
+    {.w_px = 3,   .glyph_index = 260},    /*Unicode: U+00ba (º)*/
+    {.w_px = 4,   .glyph_index = 270},    /*Unicode: U+00bb (»)*/
+    {.w_px = 8,   .glyph_index = 280},    /*Unicode: U+00bc (¼)*/
+    {.w_px = 8,   .glyph_index = 290},    /*Unicode: U+00bd (½)*/
+    {.w_px = 8,   .glyph_index = 300},    /*Unicode: U+00be (¾)*/
+    {.w_px = 3,   .glyph_index = 310},    /*Unicode: U+00bf (¿)*/
+    {.w_px = 5,   .glyph_index = 320},    /*Unicode: U+00c0 (À)*/
+    {.w_px = 5,   .glyph_index = 330},    /*Unicode: U+00c1 (Á)*/
+    {.w_px = 5,   .glyph_index = 340},    /*Unicode: U+00c2 (Â)*/
+    {.w_px = 5,   .glyph_index = 350},    /*Unicode: U+00c3 (Ã)*/
+    {.w_px = 5,   .glyph_index = 360},    /*Unicode: U+00c4 (Ä)*/
+    {.w_px = 5,   .glyph_index = 370},    /*Unicode: U+00c5 (Å)*/
+    {.w_px = 7,   .glyph_index = 380},    /*Unicode: U+00c6 (Æ)*/
+    {.w_px = 5,   .glyph_index = 390},    /*Unicode: U+00c7 (Ç)*/
+    {.w_px = 4,   .glyph_index = 400},    /*Unicode: U+00c8 (È)*/
+    {.w_px = 4,   .glyph_index = 410},    /*Unicode: U+00c9 (É)*/
+    {.w_px = 4,   .glyph_index = 420},    /*Unicode: U+00ca (Ê)*/
+    {.w_px = 4,   .glyph_index = 430},    /*Unicode: U+00cb (Ë)*/
+    {.w_px = 3,   .glyph_index = 440},    /*Unicode: U+00cc (Ì)*/
+    {.w_px = 2,   .glyph_index = 450},    /*Unicode: U+00cd (Í)*/
+    {.w_px = 3,   .glyph_index = 460},    /*Unicode: U+00ce (Î)*/
+    {.w_px = 3,   .glyph_index = 470},    /*Unicode: U+00cf (Ï)*/
+    {.w_px = 6,   .glyph_index = 480},    /*Unicode: U+00d0 (Ð)*/
+    {.w_px = 4,   .glyph_index = 490},    /*Unicode: U+00d1 (Ñ)*/
+    {.w_px = 5,   .glyph_index = 500},    /*Unicode: U+00d2 (Ò)*/
+    {.w_px = 5,   .glyph_index = 510},    /*Unicode: U+00d3 (Ó)*/
+    {.w_px = 5,   .glyph_index = 520},    /*Unicode: U+00d4 (Ô)*/
+    {.w_px = 5,   .glyph_index = 530},    /*Unicode: U+00d5 (Õ)*/
+    {.w_px = 5,   .glyph_index = 540},    /*Unicode: U+00d6 (Ö)*/
+    {.w_px = 5,   .glyph_index = 550},    /*Unicode: U+00d7 (×)*/
+    {.w_px = 5,   .glyph_index = 560},    /*Unicode: U+00d8 (Ø)*/
+    {.w_px = 4,   .glyph_index = 570},    /*Unicode: U+00d9 (Ù)*/
+    {.w_px = 4,   .glyph_index = 580},    /*Unicode: U+00da (Ú)*/
+    {.w_px = 4,   .glyph_index = 590},    /*Unicode: U+00db (Û)*/
+    {.w_px = 4,   .glyph_index = 600},    /*Unicode: U+00dc (Ü)*/
+    {.w_px = 5,   .glyph_index = 610},    /*Unicode: U+00dd (Ý)*/
+    {.w_px = 4,   .glyph_index = 620},    /*Unicode: U+00de (Þ)*/
+    {.w_px = 4,   .glyph_index = 630},    /*Unicode: U+00df (ß)*/
+    {.w_px = 4,   .glyph_index = 640},    /*Unicode: U+00e0 (à)*/
+    {.w_px = 4,   .glyph_index = 650},    /*Unicode: U+00e1 (á)*/
+    {.w_px = 4,   .glyph_index = 660},    /*Unicode: U+00e2 (â)*/
+    {.w_px = 4,   .glyph_index = 670},    /*Unicode: U+00e3 (ã)*/
+    {.w_px = 4,   .glyph_index = 680},    /*Unicode: U+00e4 (ä)*/
+    {.w_px = 4,   .glyph_index = 690},    /*Unicode: U+00e5 (å)*/
+    {.w_px = 7,   .glyph_index = 700},    /*Unicode: U+00e6 (æ)*/
+    {.w_px = 3,   .glyph_index = 710},    /*Unicode: U+00e7 (ç)*/
+    {.w_px = 4,   .glyph_index = 720},    /*Unicode: U+00e8 (è)*/
+    {.w_px = 4,   .glyph_index = 730},    /*Unicode: U+00e9 (é)*/
+    {.w_px = 4,   .glyph_index = 740},    /*Unicode: U+00ea (ê)*/
+    {.w_px = 4,   .glyph_index = 750},    /*Unicode: U+00eb (ë)*/
+    {.w_px = 2,   .glyph_index = 760},    /*Unicode: U+00ec (ì)*/
+    {.w_px = 2,   .glyph_index = 770},    /*Unicode: U+00ed (í)*/
+    {.w_px = 3,   .glyph_index = 780},    /*Unicode: U+00ee (î)*/
+    {.w_px = 3,   .glyph_index = 790},    /*Unicode: U+00ef (ï)*/
+    {.w_px = 4,   .glyph_index = 800},    /*Unicode: U+00f0 (ð)*/
+    {.w_px = 4,   .glyph_index = 810},    /*Unicode: U+00f1 (ñ)*/
+    {.w_px = 4,   .glyph_index = 820},    /*Unicode: U+00f2 (ò)*/
+    {.w_px = 4,   .glyph_index = 830},    /*Unicode: U+00f3 (ó)*/
+    {.w_px = 4,   .glyph_index = 840},    /*Unicode: U+00f4 (ô)*/
+    {.w_px = 4,   .glyph_index = 850},    /*Unicode: U+00f5 (õ)*/
+    {.w_px = 4,   .glyph_index = 860},    /*Unicode: U+00f6 (ö)*/
+    {.w_px = 5,   .glyph_index = 870},    /*Unicode: U+00f7 (÷)*/
+    {.w_px = 6,   .glyph_index = 880},    /*Unicode: U+00f8 (ø)*/
+    {.w_px = 4,   .glyph_index = 890},    /*Unicode: U+00f9 (ù)*/
+    {.w_px = 4,   .glyph_index = 900},    /*Unicode: U+00fa (ú)*/
+    {.w_px = 4,   .glyph_index = 910},    /*Unicode: U+00fb (û)*/
+    {.w_px = 4,   .glyph_index = 920},    /*Unicode: U+00fc (ü)*/
+    {.w_px = 4,   .glyph_index = 930},    /*Unicode: U+00fd (ý)*/
+    {.w_px = 4,   .glyph_index = 940},    /*Unicode: U+00fe (þ)*/
+    {.w_px = 4,   .glyph_index = 950},    /*Unicode: U+00ff (ÿ)*/
 
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 2
-    {.w_px = 3, .glyph_index = 0},    /*Unicode: U+00a0 ( )*/
-    {.w_px = 1, .glyph_index = 10},   /*Unicode: U+00a1 (¡)*/
-    {.w_px = 3, .glyph_index = 20},   /*Unicode: U+00a2 (¢)*/
-    {.w_px = 4, .glyph_index = 30},   /*Unicode: U+00a3 (£)*/
-    {.w_px = 5, .glyph_index = 40},   /*Unicode: U+00a4 (¤)*/
-    {.w_px = 5, .glyph_index = 60},   /*Unicode: U+00a5 (¥)*/
-    {.w_px = 1, .glyph_index = 80},   /*Unicode: U+00a6 (¦)*/
-    {.w_px = 3, .glyph_index = 90},   /*Unicode: U+00a7 (§)*/
-    {.w_px = 3, .glyph_index = 100},  /*Unicode: U+00a8 (¨)*/
-    {.w_px = 6, .glyph_index = 110},  /*Unicode: U+00a9 (©)*/
-    {.w_px = 4, .glyph_index = 130},  /*Unicode: U+00aa (ª)*/
-    {.w_px = 4, .glyph_index = 140},  /*Unicode: U+00ab («)*/
-    {.w_px = 5, .glyph_index = 150},  /*Unicode: U+00ac (¬)*/
-    {.w_px = 2, .glyph_index = 170},  /*Unicode: U+00ad (­)*/
-    {.w_px = 6, .glyph_index = 180},  /*Unicode: U+00ae (®)*/
-    {.w_px = 2, .glyph_index = 200},  /*Unicode: U+00af (¯)*/
-    {.w_px = 2, .glyph_index = 210},  /*Unicode: U+00b0 (°)*/
-    {.w_px = 5, .glyph_index = 220},  /*Unicode: U+00b1 (±)*/
-    {.w_px = 3, .glyph_index = 240},  /*Unicode: U+00b2 (²)*/
-    {.w_px = 2, .glyph_index = 250},  /*Unicode: U+00b3 (³)*/
-    {.w_px = 2, .glyph_index = 260},  /*Unicode: U+00b4 (´)*/
-    {.w_px = 5, .glyph_index = 270},  /*Unicode: U+00b5 (µ)*/
-    {.w_px = 4, .glyph_index = 290},  /*Unicode: U+00b6 (¶)*/
-    {.w_px = 1, .glyph_index = 300},  /*Unicode: U+00b7 (·)*/
-    {.w_px = 2, .glyph_index = 310},  /*Unicode: U+00b8 (¸)*/
-    {.w_px = 3, .glyph_index = 320},  /*Unicode: U+00b9 (¹)*/
-    {.w_px = 3, .glyph_index = 330},  /*Unicode: U+00ba (º)*/
-    {.w_px = 4, .glyph_index = 340},  /*Unicode: U+00bb (»)*/
-    {.w_px = 8, .glyph_index = 350},  /*Unicode: U+00bc (¼)*/
-    {.w_px = 8, .glyph_index = 370},  /*Unicode: U+00bd (½)*/
-    {.w_px = 8, .glyph_index = 390},  /*Unicode: U+00be (¾)*/
-    {.w_px = 3, .glyph_index = 410},  /*Unicode: U+00bf (¿)*/
-    {.w_px = 5, .glyph_index = 420},  /*Unicode: U+00c0 (À)*/
-    {.w_px = 5, .glyph_index = 440},  /*Unicode: U+00c1 (Á)*/
-    {.w_px = 5, .glyph_index = 460},  /*Unicode: U+00c2 (Â)*/
-    {.w_px = 5, .glyph_index = 480},  /*Unicode: U+00c3 (Ã)*/
-    {.w_px = 5, .glyph_index = 500},  /*Unicode: U+00c4 (Ä)*/
-    {.w_px = 5, .glyph_index = 520},  /*Unicode: U+00c5 (Å)*/
-    {.w_px = 7, .glyph_index = 540},  /*Unicode: U+00c6 (Æ)*/
-    {.w_px = 5, .glyph_index = 560},  /*Unicode: U+00c7 (Ç)*/
-    {.w_px = 4, .glyph_index = 580},  /*Unicode: U+00c8 (È)*/
-    {.w_px = 4, .glyph_index = 590},  /*Unicode: U+00c9 (É)*/
-    {.w_px = 4, .glyph_index = 600},  /*Unicode: U+00ca (Ê)*/
-    {.w_px = 4, .glyph_index = 610},  /*Unicode: U+00cb (Ë)*/
-    {.w_px = 3, .glyph_index = 620},  /*Unicode: U+00cc (Ì)*/
-    {.w_px = 2, .glyph_index = 630},  /*Unicode: U+00cd (Í)*/
-    {.w_px = 3, .glyph_index = 640},  /*Unicode: U+00ce (Î)*/
-    {.w_px = 3, .glyph_index = 650},  /*Unicode: U+00cf (Ï)*/
-    {.w_px = 6, .glyph_index = 660},  /*Unicode: U+00d0 (Ð)*/
-    {.w_px = 4, .glyph_index = 680},  /*Unicode: U+00d1 (Ñ)*/
-    {.w_px = 5, .glyph_index = 690},  /*Unicode: U+00d2 (Ò)*/
-    {.w_px = 5, .glyph_index = 710},  /*Unicode: U+00d3 (Ó)*/
-    {.w_px = 5, .glyph_index = 730},  /*Unicode: U+00d4 (Ô)*/
-    {.w_px = 5, .glyph_index = 750},  /*Unicode: U+00d5 (Õ)*/
-    {.w_px = 5, .glyph_index = 770},  /*Unicode: U+00d6 (Ö)*/
-    {.w_px = 5, .glyph_index = 790},  /*Unicode: U+00d7 (×)*/
-    {.w_px = 5, .glyph_index = 810},  /*Unicode: U+00d8 (Ø)*/
-    {.w_px = 4, .glyph_index = 830},  /*Unicode: U+00d9 (Ù)*/
-    {.w_px = 4, .glyph_index = 840},  /*Unicode: U+00da (Ú)*/
-    {.w_px = 4, .glyph_index = 850},  /*Unicode: U+00db (Û)*/
-    {.w_px = 4, .glyph_index = 860},  /*Unicode: U+00dc (Ü)*/
-    {.w_px = 5, .glyph_index = 870},  /*Unicode: U+00dd (Ý)*/
-    {.w_px = 4, .glyph_index = 890},  /*Unicode: U+00de (Þ)*/
-    {.w_px = 4, .glyph_index = 900},  /*Unicode: U+00df (ß)*/
-    {.w_px = 4, .glyph_index = 910},  /*Unicode: U+00e0 (à)*/
-    {.w_px = 4, .glyph_index = 920},  /*Unicode: U+00e1 (á)*/
-    {.w_px = 4, .glyph_index = 930},  /*Unicode: U+00e2 (â)*/
-    {.w_px = 4, .glyph_index = 940},  /*Unicode: U+00e3 (ã)*/
-    {.w_px = 4, .glyph_index = 950},  /*Unicode: U+00e4 (ä)*/
-    {.w_px = 4, .glyph_index = 960},  /*Unicode: U+00e5 (å)*/
-    {.w_px = 7, .glyph_index = 970},  /*Unicode: U+00e6 (æ)*/
-    {.w_px = 3, .glyph_index = 990},  /*Unicode: U+00e7 (ç)*/
-    {.w_px = 4, .glyph_index = 1000}, /*Unicode: U+00e8 (è)*/
-    {.w_px = 4, .glyph_index = 1010}, /*Unicode: U+00e9 (é)*/
-    {.w_px = 4, .glyph_index = 1020}, /*Unicode: U+00ea (ê)*/
-    {.w_px = 4, .glyph_index = 1030}, /*Unicode: U+00eb (ë)*/
-    {.w_px = 2, .glyph_index = 1040}, /*Unicode: U+00ec (ì)*/
-    {.w_px = 2, .glyph_index = 1050}, /*Unicode: U+00ed (í)*/
-    {.w_px = 3, .glyph_index = 1060}, /*Unicode: U+00ee (î)*/
-    {.w_px = 3, .glyph_index = 1070}, /*Unicode: U+00ef (ï)*/
-    {.w_px = 4, .glyph_index = 1080}, /*Unicode: U+00f0 (ð)*/
-    {.w_px = 4, .glyph_index = 1090}, /*Unicode: U+00f1 (ñ)*/
-    {.w_px = 4, .glyph_index = 1100}, /*Unicode: U+00f2 (ò)*/
-    {.w_px = 4, .glyph_index = 1110}, /*Unicode: U+00f3 (ó)*/
-    {.w_px = 4, .glyph_index = 1120}, /*Unicode: U+00f4 (ô)*/
-    {.w_px = 4, .glyph_index = 1130}, /*Unicode: U+00f5 (õ)*/
-    {.w_px = 4, .glyph_index = 1140}, /*Unicode: U+00f6 (ö)*/
-    {.w_px = 5, .glyph_index = 1150}, /*Unicode: U+00f7 (÷)*/
-    {.w_px = 6, .glyph_index = 1170}, /*Unicode: U+00f8 (ø)*/
-    {.w_px = 4, .glyph_index = 1190}, /*Unicode: U+00f9 (ù)*/
-    {.w_px = 4, .glyph_index = 1200}, /*Unicode: U+00fa (ú)*/
-    {.w_px = 4, .glyph_index = 1210}, /*Unicode: U+00fb (û)*/
-    {.w_px = 4, .glyph_index = 1220}, /*Unicode: U+00fc (ü)*/
-    {.w_px = 4, .glyph_index = 1230}, /*Unicode: U+00fd (ý)*/
-    {.w_px = 4, .glyph_index = 1240}, /*Unicode: U+00fe (þ)*/
-    {.w_px = 4, .glyph_index = 1250}, /*Unicode: U+00ff (ÿ)*/
+    {.w_px = 3,   .glyph_index = 0},  /*Unicode: U+00a0 ( )*/
+    {.w_px = 1,   .glyph_index = 10}, /*Unicode: U+00a1 (¡)*/
+    {.w_px = 3,   .glyph_index = 20}, /*Unicode: U+00a2 (¢)*/
+    {.w_px = 4,   .glyph_index = 30}, /*Unicode: U+00a3 (£)*/
+    {.w_px = 5,   .glyph_index = 40}, /*Unicode: U+00a4 (¤)*/
+    {.w_px = 5,   .glyph_index = 60}, /*Unicode: U+00a5 (¥)*/
+    {.w_px = 1,   .glyph_index = 80}, /*Unicode: U+00a6 (¦)*/
+    {.w_px = 3,   .glyph_index = 90}, /*Unicode: U+00a7 (§)*/
+    {.w_px = 3,   .glyph_index = 100},    /*Unicode: U+00a8 (¨)*/
+    {.w_px = 6,   .glyph_index = 110},    /*Unicode: U+00a9 (©)*/
+    {.w_px = 4,   .glyph_index = 130},    /*Unicode: U+00aa (ª)*/
+    {.w_px = 4,   .glyph_index = 140},    /*Unicode: U+00ab («)*/
+    {.w_px = 5,   .glyph_index = 150},    /*Unicode: U+00ac (¬)*/
+    {.w_px = 2,   .glyph_index = 170},    /*Unicode: U+00ad (­)*/
+    {.w_px = 6,   .glyph_index = 180},    /*Unicode: U+00ae (®)*/
+    {.w_px = 2,   .glyph_index = 200},    /*Unicode: U+00af (¯)*/
+    {.w_px = 2,   .glyph_index = 210},    /*Unicode: U+00b0 (°)*/
+    {.w_px = 5,   .glyph_index = 220},    /*Unicode: U+00b1 (±)*/
+    {.w_px = 3,   .glyph_index = 240},    /*Unicode: U+00b2 (²)*/
+    {.w_px = 2,   .glyph_index = 250},    /*Unicode: U+00b3 (³)*/
+    {.w_px = 2,   .glyph_index = 260},    /*Unicode: U+00b4 (´)*/
+    {.w_px = 5,   .glyph_index = 270},    /*Unicode: U+00b5 (µ)*/
+    {.w_px = 4,   .glyph_index = 290},    /*Unicode: U+00b6 (¶)*/
+    {.w_px = 1,   .glyph_index = 300},    /*Unicode: U+00b7 (·)*/
+    {.w_px = 2,   .glyph_index = 310},    /*Unicode: U+00b8 (¸)*/
+    {.w_px = 3,   .glyph_index = 320},    /*Unicode: U+00b9 (¹)*/
+    {.w_px = 3,   .glyph_index = 330},    /*Unicode: U+00ba (º)*/
+    {.w_px = 4,   .glyph_index = 340},    /*Unicode: U+00bb (»)*/
+    {.w_px = 8,   .glyph_index = 350},    /*Unicode: U+00bc (¼)*/
+    {.w_px = 8,   .glyph_index = 370},    /*Unicode: U+00bd (½)*/
+    {.w_px = 8,   .glyph_index = 390},    /*Unicode: U+00be (¾)*/
+    {.w_px = 3,   .glyph_index = 410},    /*Unicode: U+00bf (¿)*/
+    {.w_px = 5,   .glyph_index = 420},    /*Unicode: U+00c0 (À)*/
+    {.w_px = 5,   .glyph_index = 440},    /*Unicode: U+00c1 (Á)*/
+    {.w_px = 5,   .glyph_index = 460},    /*Unicode: U+00c2 (Â)*/
+    {.w_px = 5,   .glyph_index = 480},    /*Unicode: U+00c3 (Ã)*/
+    {.w_px = 5,   .glyph_index = 500},    /*Unicode: U+00c4 (Ä)*/
+    {.w_px = 5,   .glyph_index = 520},    /*Unicode: U+00c5 (Å)*/
+    {.w_px = 7,   .glyph_index = 540},    /*Unicode: U+00c6 (Æ)*/
+    {.w_px = 5,   .glyph_index = 560},    /*Unicode: U+00c7 (Ç)*/
+    {.w_px = 4,   .glyph_index = 580},    /*Unicode: U+00c8 (È)*/
+    {.w_px = 4,   .glyph_index = 590},    /*Unicode: U+00c9 (É)*/
+    {.w_px = 4,   .glyph_index = 600},    /*Unicode: U+00ca (Ê)*/
+    {.w_px = 4,   .glyph_index = 610},    /*Unicode: U+00cb (Ë)*/
+    {.w_px = 3,   .glyph_index = 620},    /*Unicode: U+00cc (Ì)*/
+    {.w_px = 2,   .glyph_index = 630},    /*Unicode: U+00cd (Í)*/
+    {.w_px = 3,   .glyph_index = 640},    /*Unicode: U+00ce (Î)*/
+    {.w_px = 3,   .glyph_index = 650},    /*Unicode: U+00cf (Ï)*/
+    {.w_px = 6,   .glyph_index = 660},    /*Unicode: U+00d0 (Ð)*/
+    {.w_px = 4,   .glyph_index = 680},    /*Unicode: U+00d1 (Ñ)*/
+    {.w_px = 5,   .glyph_index = 690},    /*Unicode: U+00d2 (Ò)*/
+    {.w_px = 5,   .glyph_index = 710},    /*Unicode: U+00d3 (Ó)*/
+    {.w_px = 5,   .glyph_index = 730},    /*Unicode: U+00d4 (Ô)*/
+    {.w_px = 5,   .glyph_index = 750},    /*Unicode: U+00d5 (Õ)*/
+    {.w_px = 5,   .glyph_index = 770},    /*Unicode: U+00d6 (Ö)*/
+    {.w_px = 5,   .glyph_index = 790},    /*Unicode: U+00d7 (×)*/
+    {.w_px = 5,   .glyph_index = 810},    /*Unicode: U+00d8 (Ø)*/
+    {.w_px = 4,   .glyph_index = 830},    /*Unicode: U+00d9 (Ù)*/
+    {.w_px = 4,   .glyph_index = 840},    /*Unicode: U+00da (Ú)*/
+    {.w_px = 4,   .glyph_index = 850},    /*Unicode: U+00db (Û)*/
+    {.w_px = 4,   .glyph_index = 860},    /*Unicode: U+00dc (Ü)*/
+    {.w_px = 5,   .glyph_index = 870},    /*Unicode: U+00dd (Ý)*/
+    {.w_px = 4,   .glyph_index = 890},    /*Unicode: U+00de (Þ)*/
+    {.w_px = 4,   .glyph_index = 900},    /*Unicode: U+00df (ß)*/
+    {.w_px = 4,   .glyph_index = 910},    /*Unicode: U+00e0 (à)*/
+    {.w_px = 4,   .glyph_index = 920},    /*Unicode: U+00e1 (á)*/
+    {.w_px = 4,   .glyph_index = 930},    /*Unicode: U+00e2 (â)*/
+    {.w_px = 4,   .glyph_index = 940},    /*Unicode: U+00e3 (ã)*/
+    {.w_px = 4,   .glyph_index = 950},    /*Unicode: U+00e4 (ä)*/
+    {.w_px = 4,   .glyph_index = 960},    /*Unicode: U+00e5 (å)*/
+    {.w_px = 7,   .glyph_index = 970},    /*Unicode: U+00e6 (æ)*/
+    {.w_px = 3,   .glyph_index = 990},    /*Unicode: U+00e7 (ç)*/
+    {.w_px = 4,   .glyph_index = 1000},   /*Unicode: U+00e8 (è)*/
+    {.w_px = 4,   .glyph_index = 1010},   /*Unicode: U+00e9 (é)*/
+    {.w_px = 4,   .glyph_index = 1020},   /*Unicode: U+00ea (ê)*/
+    {.w_px = 4,   .glyph_index = 1030},   /*Unicode: U+00eb (ë)*/
+    {.w_px = 2,   .glyph_index = 1040},   /*Unicode: U+00ec (ì)*/
+    {.w_px = 2,   .glyph_index = 1050},   /*Unicode: U+00ed (í)*/
+    {.w_px = 3,   .glyph_index = 1060},   /*Unicode: U+00ee (î)*/
+    {.w_px = 3,   .glyph_index = 1070},   /*Unicode: U+00ef (ï)*/
+    {.w_px = 4,   .glyph_index = 1080},   /*Unicode: U+00f0 (ð)*/
+    {.w_px = 4,   .glyph_index = 1090},   /*Unicode: U+00f1 (ñ)*/
+    {.w_px = 4,   .glyph_index = 1100},   /*Unicode: U+00f2 (ò)*/
+    {.w_px = 4,   .glyph_index = 1110},   /*Unicode: U+00f3 (ó)*/
+    {.w_px = 4,   .glyph_index = 1120},   /*Unicode: U+00f4 (ô)*/
+    {.w_px = 4,   .glyph_index = 1130},   /*Unicode: U+00f5 (õ)*/
+    {.w_px = 4,   .glyph_index = 1140},   /*Unicode: U+00f6 (ö)*/
+    {.w_px = 5,   .glyph_index = 1150},   /*Unicode: U+00f7 (÷)*/
+    {.w_px = 6,   .glyph_index = 1170},   /*Unicode: U+00f8 (ø)*/
+    {.w_px = 4,   .glyph_index = 1190},   /*Unicode: U+00f9 (ù)*/
+    {.w_px = 4,   .glyph_index = 1200},   /*Unicode: U+00fa (ú)*/
+    {.w_px = 4,   .glyph_index = 1210},   /*Unicode: U+00fb (û)*/
+    {.w_px = 4,   .glyph_index = 1220},   /*Unicode: U+00fc (ü)*/
+    {.w_px = 4,   .glyph_index = 1230},   /*Unicode: U+00fd (ý)*/
+    {.w_px = 4,   .glyph_index = 1240},   /*Unicode: U+00fe (þ)*/
+    {.w_px = 4,   .glyph_index = 1250},   /*Unicode: U+00ff (ÿ)*/
 
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 4
-    {.w_px = 3, .glyph_index = 0},    /*Unicode: U+00a0 ( )*/
-    {.w_px = 1, .glyph_index = 20},   /*Unicode: U+00a1 (¡)*/
-    {.w_px = 3, .glyph_index = 30},   /*Unicode: U+00a2 (¢)*/
-    {.w_px = 4, .glyph_index = 50},   /*Unicode: U+00a3 (£)*/
-    {.w_px = 5, .glyph_index = 70},   /*Unicode: U+00a4 (¤)*/
-    {.w_px = 5, .glyph_index = 100},  /*Unicode: U+00a5 (¥)*/
-    {.w_px = 1, .glyph_index = 130},  /*Unicode: U+00a6 (¦)*/
-    {.w_px = 3, .glyph_index = 140},  /*Unicode: U+00a7 (§)*/
-    {.w_px = 3, .glyph_index = 160},  /*Unicode: U+00a8 (¨)*/
-    {.w_px = 6, .glyph_index = 180},  /*Unicode: U+00a9 (©)*/
-    {.w_px = 4, .glyph_index = 210},  /*Unicode: U+00aa (ª)*/
-    {.w_px = 4, .glyph_index = 230},  /*Unicode: U+00ab («)*/
-    {.w_px = 5, .glyph_index = 250},  /*Unicode: U+00ac (¬)*/
-    {.w_px = 2, .glyph_index = 280},  /*Unicode: U+00ad (­)*/
-    {.w_px = 6, .glyph_index = 290},  /*Unicode: U+00ae (®)*/
-    {.w_px = 2, .glyph_index = 320},  /*Unicode: U+00af (¯)*/
-    {.w_px = 2, .glyph_index = 330},  /*Unicode: U+00b0 (°)*/
-    {.w_px = 5, .glyph_index = 340},  /*Unicode: U+00b1 (±)*/
-    {.w_px = 3, .glyph_index = 370},  /*Unicode: U+00b2 (²)*/
-    {.w_px = 2, .glyph_index = 390},  /*Unicode: U+00b3 (³)*/
-    {.w_px = 2, .glyph_index = 400},  /*Unicode: U+00b4 (´)*/
-    {.w_px = 5, .glyph_index = 410},  /*Unicode: U+00b5 (µ)*/
-    {.w_px = 4, .glyph_index = 440},  /*Unicode: U+00b6 (¶)*/
-    {.w_px = 1, .glyph_index = 460},  /*Unicode: U+00b7 (·)*/
-    {.w_px = 2, .glyph_index = 470},  /*Unicode: U+00b8 (¸)*/
-    {.w_px = 3, .glyph_index = 480},  /*Unicode: U+00b9 (¹)*/
-    {.w_px = 3, .glyph_index = 500},  /*Unicode: U+00ba (º)*/
-    {.w_px = 4, .glyph_index = 520},  /*Unicode: U+00bb (»)*/
-    {.w_px = 8, .glyph_index = 540},  /*Unicode: U+00bc (¼)*/
-    {.w_px = 8, .glyph_index = 580},  /*Unicode: U+00bd (½)*/
-    {.w_px = 8, .glyph_index = 620},  /*Unicode: U+00be (¾)*/
-    {.w_px = 3, .glyph_index = 660},  /*Unicode: U+00bf (¿)*/
-    {.w_px = 5, .glyph_index = 680},  /*Unicode: U+00c0 (À)*/
-    {.w_px = 5, .glyph_index = 710},  /*Unicode: U+00c1 (Á)*/
-    {.w_px = 5, .glyph_index = 740},  /*Unicode: U+00c2 (Â)*/
-    {.w_px = 5, .glyph_index = 770},  /*Unicode: U+00c3 (Ã)*/
-    {.w_px = 5, .glyph_index = 800},  /*Unicode: U+00c4 (Ä)*/
-    {.w_px = 5, .glyph_index = 830},  /*Unicode: U+00c5 (Å)*/
-    {.w_px = 7, .glyph_index = 860},  /*Unicode: U+00c6 (Æ)*/
-    {.w_px = 5, .glyph_index = 900},  /*Unicode: U+00c7 (Ç)*/
-    {.w_px = 4, .glyph_index = 930},  /*Unicode: U+00c8 (È)*/
-    {.w_px = 4, .glyph_index = 950},  /*Unicode: U+00c9 (É)*/
-    {.w_px = 4, .glyph_index = 970},  /*Unicode: U+00ca (Ê)*/
-    {.w_px = 4, .glyph_index = 990},  /*Unicode: U+00cb (Ë)*/
-    {.w_px = 3, .glyph_index = 1010}, /*Unicode: U+00cc (Ì)*/
-    {.w_px = 2, .glyph_index = 1030}, /*Unicode: U+00cd (Í)*/
-    {.w_px = 3, .glyph_index = 1040}, /*Unicode: U+00ce (Î)*/
-    {.w_px = 3, .glyph_index = 1060}, /*Unicode: U+00cf (Ï)*/
-    {.w_px = 6, .glyph_index = 1080}, /*Unicode: U+00d0 (Ð)*/
-    {.w_px = 4, .glyph_index = 1110}, /*Unicode: U+00d1 (Ñ)*/
-    {.w_px = 5, .glyph_index = 1130}, /*Unicode: U+00d2 (Ò)*/
-    {.w_px = 5, .glyph_index = 1160}, /*Unicode: U+00d3 (Ó)*/
-    {.w_px = 5, .glyph_index = 1190}, /*Unicode: U+00d4 (Ô)*/
-    {.w_px = 5, .glyph_index = 1220}, /*Unicode: U+00d5 (Õ)*/
-    {.w_px = 5, .glyph_index = 1250}, /*Unicode: U+00d6 (Ö)*/
-    {.w_px = 5, .glyph_index = 1280}, /*Unicode: U+00d7 (×)*/
-    {.w_px = 5, .glyph_index = 1310}, /*Unicode: U+00d8 (Ø)*/
-    {.w_px = 4, .glyph_index = 1340}, /*Unicode: U+00d9 (Ù)*/
-    {.w_px = 4, .glyph_index = 1360}, /*Unicode: U+00da (Ú)*/
-    {.w_px = 4, .glyph_index = 1380}, /*Unicode: U+00db (Û)*/
-    {.w_px = 4, .glyph_index = 1400}, /*Unicode: U+00dc (Ü)*/
-    {.w_px = 5, .glyph_index = 1420}, /*Unicode: U+00dd (Ý)*/
-    {.w_px = 4, .glyph_index = 1450}, /*Unicode: U+00de (Þ)*/
-    {.w_px = 4, .glyph_index = 1470}, /*Unicode: U+00df (ß)*/
-    {.w_px = 4, .glyph_index = 1490}, /*Unicode: U+00e0 (à)*/
-    {.w_px = 4, .glyph_index = 1510}, /*Unicode: U+00e1 (á)*/
-    {.w_px = 4, .glyph_index = 1530}, /*Unicode: U+00e2 (â)*/
-    {.w_px = 4, .glyph_index = 1550}, /*Unicode: U+00e3 (ã)*/
-    {.w_px = 4, .glyph_index = 1570}, /*Unicode: U+00e4 (ä)*/
-    {.w_px = 4, .glyph_index = 1590}, /*Unicode: U+00e5 (å)*/
-    {.w_px = 7, .glyph_index = 1610}, /*Unicode: U+00e6 (æ)*/
-    {.w_px = 3, .glyph_index = 1650}, /*Unicode: U+00e7 (ç)*/
-    {.w_px = 4, .glyph_index = 1670}, /*Unicode: U+00e8 (è)*/
-    {.w_px = 4, .glyph_index = 1690}, /*Unicode: U+00e9 (é)*/
-    {.w_px = 4, .glyph_index = 1710}, /*Unicode: U+00ea (ê)*/
-    {.w_px = 4, .glyph_index = 1730}, /*Unicode: U+00eb (ë)*/
-    {.w_px = 2, .glyph_index = 1750}, /*Unicode: U+00ec (ì)*/
-    {.w_px = 2, .glyph_index = 1760}, /*Unicode: U+00ed (í)*/
-    {.w_px = 3, .glyph_index = 1770}, /*Unicode: U+00ee (î)*/
-    {.w_px = 3, .glyph_index = 1790}, /*Unicode: U+00ef (ï)*/
-    {.w_px = 4, .glyph_index = 1810}, /*Unicode: U+00f0 (ð)*/
-    {.w_px = 4, .glyph_index = 1830}, /*Unicode: U+00f1 (ñ)*/
-    {.w_px = 4, .glyph_index = 1850}, /*Unicode: U+00f2 (ò)*/
-    {.w_px = 4, .glyph_index = 1870}, /*Unicode: U+00f3 (ó)*/
-    {.w_px = 4, .glyph_index = 1890}, /*Unicode: U+00f4 (ô)*/
-    {.w_px = 4, .glyph_index = 1910}, /*Unicode: U+00f5 (õ)*/
-    {.w_px = 4, .glyph_index = 1930}, /*Unicode: U+00f6 (ö)*/
-    {.w_px = 5, .glyph_index = 1950}, /*Unicode: U+00f7 (÷)*/
-    {.w_px = 6, .glyph_index = 1980}, /*Unicode: U+00f8 (ø)*/
-    {.w_px = 4, .glyph_index = 2010}, /*Unicode: U+00f9 (ù)*/
-    {.w_px = 4, .glyph_index = 2030}, /*Unicode: U+00fa (ú)*/
-    {.w_px = 4, .glyph_index = 2050}, /*Unicode: U+00fb (û)*/
-    {.w_px = 4, .glyph_index = 2070}, /*Unicode: U+00fc (ü)*/
-    {.w_px = 4, .glyph_index = 2090}, /*Unicode: U+00fd (ý)*/
-    {.w_px = 4, .glyph_index = 2110}, /*Unicode: U+00fe (þ)*/
-    {.w_px = 4, .glyph_index = 2130}, /*Unicode: U+00ff (ÿ)*/
+    {.w_px = 3,   .glyph_index = 0},  /*Unicode: U+00a0 ( )*/
+    {.w_px = 1,   .glyph_index = 20}, /*Unicode: U+00a1 (¡)*/
+    {.w_px = 3,   .glyph_index = 30}, /*Unicode: U+00a2 (¢)*/
+    {.w_px = 4,   .glyph_index = 50}, /*Unicode: U+00a3 (£)*/
+    {.w_px = 5,   .glyph_index = 70}, /*Unicode: U+00a4 (¤)*/
+    {.w_px = 5,   .glyph_index = 100},    /*Unicode: U+00a5 (¥)*/
+    {.w_px = 1,   .glyph_index = 130},    /*Unicode: U+00a6 (¦)*/
+    {.w_px = 3,   .glyph_index = 140},    /*Unicode: U+00a7 (§)*/
+    {.w_px = 3,   .glyph_index = 160},    /*Unicode: U+00a8 (¨)*/
+    {.w_px = 6,   .glyph_index = 180},    /*Unicode: U+00a9 (©)*/
+    {.w_px = 4,   .glyph_index = 210},    /*Unicode: U+00aa (ª)*/
+    {.w_px = 4,   .glyph_index = 230},    /*Unicode: U+00ab («)*/
+    {.w_px = 5,   .glyph_index = 250},    /*Unicode: U+00ac (¬)*/
+    {.w_px = 2,   .glyph_index = 280},    /*Unicode: U+00ad (­)*/
+    {.w_px = 6,   .glyph_index = 290},    /*Unicode: U+00ae (®)*/
+    {.w_px = 2,   .glyph_index = 320},    /*Unicode: U+00af (¯)*/
+    {.w_px = 2,   .glyph_index = 330},    /*Unicode: U+00b0 (°)*/
+    {.w_px = 5,   .glyph_index = 340},    /*Unicode: U+00b1 (±)*/
+    {.w_px = 3,   .glyph_index = 370},    /*Unicode: U+00b2 (²)*/
+    {.w_px = 2,   .glyph_index = 390},    /*Unicode: U+00b3 (³)*/
+    {.w_px = 2,   .glyph_index = 400},    /*Unicode: U+00b4 (´)*/
+    {.w_px = 5,   .glyph_index = 410},    /*Unicode: U+00b5 (µ)*/
+    {.w_px = 4,   .glyph_index = 440},    /*Unicode: U+00b6 (¶)*/
+    {.w_px = 1,   .glyph_index = 460},    /*Unicode: U+00b7 (·)*/
+    {.w_px = 2,   .glyph_index = 470},    /*Unicode: U+00b8 (¸)*/
+    {.w_px = 3,   .glyph_index = 480},    /*Unicode: U+00b9 (¹)*/
+    {.w_px = 3,   .glyph_index = 500},    /*Unicode: U+00ba (º)*/
+    {.w_px = 4,   .glyph_index = 520},    /*Unicode: U+00bb (»)*/
+    {.w_px = 8,   .glyph_index = 540},    /*Unicode: U+00bc (¼)*/
+    {.w_px = 8,   .glyph_index = 580},    /*Unicode: U+00bd (½)*/
+    {.w_px = 8,   .glyph_index = 620},    /*Unicode: U+00be (¾)*/
+    {.w_px = 3,   .glyph_index = 660},    /*Unicode: U+00bf (¿)*/
+    {.w_px = 5,   .glyph_index = 680},    /*Unicode: U+00c0 (À)*/
+    {.w_px = 5,   .glyph_index = 710},    /*Unicode: U+00c1 (Á)*/
+    {.w_px = 5,   .glyph_index = 740},    /*Unicode: U+00c2 (Â)*/
+    {.w_px = 5,   .glyph_index = 770},    /*Unicode: U+00c3 (Ã)*/
+    {.w_px = 5,   .glyph_index = 800},    /*Unicode: U+00c4 (Ä)*/
+    {.w_px = 5,   .glyph_index = 830},    /*Unicode: U+00c5 (Å)*/
+    {.w_px = 7,   .glyph_index = 860},    /*Unicode: U+00c6 (Æ)*/
+    {.w_px = 5,   .glyph_index = 900},    /*Unicode: U+00c7 (Ç)*/
+    {.w_px = 4,   .glyph_index = 930},    /*Unicode: U+00c8 (È)*/
+    {.w_px = 4,   .glyph_index = 950},    /*Unicode: U+00c9 (É)*/
+    {.w_px = 4,   .glyph_index = 970},    /*Unicode: U+00ca (Ê)*/
+    {.w_px = 4,   .glyph_index = 990},    /*Unicode: U+00cb (Ë)*/
+    {.w_px = 3,   .glyph_index = 1010},   /*Unicode: U+00cc (Ì)*/
+    {.w_px = 2,   .glyph_index = 1030},   /*Unicode: U+00cd (Í)*/
+    {.w_px = 3,   .glyph_index = 1040},   /*Unicode: U+00ce (Î)*/
+    {.w_px = 3,   .glyph_index = 1060},   /*Unicode: U+00cf (Ï)*/
+    {.w_px = 6,   .glyph_index = 1080},   /*Unicode: U+00d0 (Ð)*/
+    {.w_px = 4,   .glyph_index = 1110},   /*Unicode: U+00d1 (Ñ)*/
+    {.w_px = 5,   .glyph_index = 1130},   /*Unicode: U+00d2 (Ò)*/
+    {.w_px = 5,   .glyph_index = 1160},   /*Unicode: U+00d3 (Ó)*/
+    {.w_px = 5,   .glyph_index = 1190},   /*Unicode: U+00d4 (Ô)*/
+    {.w_px = 5,   .glyph_index = 1220},   /*Unicode: U+00d5 (Õ)*/
+    {.w_px = 5,   .glyph_index = 1250},   /*Unicode: U+00d6 (Ö)*/
+    {.w_px = 5,   .glyph_index = 1280},   /*Unicode: U+00d7 (×)*/
+    {.w_px = 5,   .glyph_index = 1310},   /*Unicode: U+00d8 (Ø)*/
+    {.w_px = 4,   .glyph_index = 1340},   /*Unicode: U+00d9 (Ù)*/
+    {.w_px = 4,   .glyph_index = 1360},   /*Unicode: U+00da (Ú)*/
+    {.w_px = 4,   .glyph_index = 1380},   /*Unicode: U+00db (Û)*/
+    {.w_px = 4,   .glyph_index = 1400},   /*Unicode: U+00dc (Ü)*/
+    {.w_px = 5,   .glyph_index = 1420},   /*Unicode: U+00dd (Ý)*/
+    {.w_px = 4,   .glyph_index = 1450},   /*Unicode: U+00de (Þ)*/
+    {.w_px = 4,   .glyph_index = 1470},   /*Unicode: U+00df (ß)*/
+    {.w_px = 4,   .glyph_index = 1490},   /*Unicode: U+00e0 (à)*/
+    {.w_px = 4,   .glyph_index = 1510},   /*Unicode: U+00e1 (á)*/
+    {.w_px = 4,   .glyph_index = 1530},   /*Unicode: U+00e2 (â)*/
+    {.w_px = 4,   .glyph_index = 1550},   /*Unicode: U+00e3 (ã)*/
+    {.w_px = 4,   .glyph_index = 1570},   /*Unicode: U+00e4 (ä)*/
+    {.w_px = 4,   .glyph_index = 1590},   /*Unicode: U+00e5 (å)*/
+    {.w_px = 7,   .glyph_index = 1610},   /*Unicode: U+00e6 (æ)*/
+    {.w_px = 3,   .glyph_index = 1650},   /*Unicode: U+00e7 (ç)*/
+    {.w_px = 4,   .glyph_index = 1670},   /*Unicode: U+00e8 (è)*/
+    {.w_px = 4,   .glyph_index = 1690},   /*Unicode: U+00e9 (é)*/
+    {.w_px = 4,   .glyph_index = 1710},   /*Unicode: U+00ea (ê)*/
+    {.w_px = 4,   .glyph_index = 1730},   /*Unicode: U+00eb (ë)*/
+    {.w_px = 2,   .glyph_index = 1750},   /*Unicode: U+00ec (ì)*/
+    {.w_px = 2,   .glyph_index = 1760},   /*Unicode: U+00ed (í)*/
+    {.w_px = 3,   .glyph_index = 1770},   /*Unicode: U+00ee (î)*/
+    {.w_px = 3,   .glyph_index = 1790},   /*Unicode: U+00ef (ï)*/
+    {.w_px = 4,   .glyph_index = 1810},   /*Unicode: U+00f0 (ð)*/
+    {.w_px = 4,   .glyph_index = 1830},   /*Unicode: U+00f1 (ñ)*/
+    {.w_px = 4,   .glyph_index = 1850},   /*Unicode: U+00f2 (ò)*/
+    {.w_px = 4,   .glyph_index = 1870},   /*Unicode: U+00f3 (ó)*/
+    {.w_px = 4,   .glyph_index = 1890},   /*Unicode: U+00f4 (ô)*/
+    {.w_px = 4,   .glyph_index = 1910},   /*Unicode: U+00f5 (õ)*/
+    {.w_px = 4,   .glyph_index = 1930},   /*Unicode: U+00f6 (ö)*/
+    {.w_px = 5,   .glyph_index = 1950},   /*Unicode: U+00f7 (÷)*/
+    {.w_px = 6,   .glyph_index = 1980},   /*Unicode: U+00f8 (ø)*/
+    {.w_px = 4,   .glyph_index = 2010},   /*Unicode: U+00f9 (ù)*/
+    {.w_px = 4,   .glyph_index = 2030},   /*Unicode: U+00fa (ú)*/
+    {.w_px = 4,   .glyph_index = 2050},   /*Unicode: U+00fb (û)*/
+    {.w_px = 4,   .glyph_index = 2070},   /*Unicode: U+00fc (ü)*/
+    {.w_px = 4,   .glyph_index = 2090},   /*Unicode: U+00fd (ý)*/
+    {.w_px = 4,   .glyph_index = 2110},   /*Unicode: U+00fe (þ)*/
+    {.w_px = 4,   .glyph_index = 2130},   /*Unicode: U+00ff (ÿ)*/
 
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 8
-    {.w_px = 3, .glyph_index = 0},    /*Unicode: U+00a0 ( )*/
-    {.w_px = 1, .glyph_index = 30},   /*Unicode: U+00a1 (¡)*/
-    {.w_px = 3, .glyph_index = 40},   /*Unicode: U+00a2 (¢)*/
-    {.w_px = 4, .glyph_index = 70},   /*Unicode: U+00a3 (£)*/
-    {.w_px = 5, .glyph_index = 110},  /*Unicode: U+00a4 (¤)*/
-    {.w_px = 5, .glyph_index = 160},  /*Unicode: U+00a5 (¥)*/
-    {.w_px = 1, .glyph_index = 210},  /*Unicode: U+00a6 (¦)*/
-    {.w_px = 3, .glyph_index = 220},  /*Unicode: U+00a7 (§)*/
-    {.w_px = 3, .glyph_index = 250},  /*Unicode: U+00a8 (¨)*/
-    {.w_px = 6, .glyph_index = 280},  /*Unicode: U+00a9 (©)*/
-    {.w_px = 4, .glyph_index = 340},  /*Unicode: U+00aa (ª)*/
-    {.w_px = 4, .glyph_index = 380},  /*Unicode: U+00ab («)*/
-    {.w_px = 5, .glyph_index = 420},  /*Unicode: U+00ac (¬)*/
-    {.w_px = 2, .glyph_index = 470},  /*Unicode: U+00ad (­)*/
-    {.w_px = 6, .glyph_index = 490},  /*Unicode: U+00ae (®)*/
-    {.w_px = 2, .glyph_index = 550},  /*Unicode: U+00af (¯)*/
-    {.w_px = 2, .glyph_index = 570},  /*Unicode: U+00b0 (°)*/
-    {.w_px = 5, .glyph_index = 590},  /*Unicode: U+00b1 (±)*/
-    {.w_px = 3, .glyph_index = 640},  /*Unicode: U+00b2 (²)*/
-    {.w_px = 2, .glyph_index = 670},  /*Unicode: U+00b3 (³)*/
-    {.w_px = 2, .glyph_index = 690},  /*Unicode: U+00b4 (´)*/
-    {.w_px = 5, .glyph_index = 710},  /*Unicode: U+00b5 (µ)*/
-    {.w_px = 4, .glyph_index = 760},  /*Unicode: U+00b6 (¶)*/
-    {.w_px = 1, .glyph_index = 800},  /*Unicode: U+00b7 (·)*/
-    {.w_px = 2, .glyph_index = 810},  /*Unicode: U+00b8 (¸)*/
-    {.w_px = 3, .glyph_index = 830},  /*Unicode: U+00b9 (¹)*/
-    {.w_px = 3, .glyph_index = 860},  /*Unicode: U+00ba (º)*/
-    {.w_px = 4, .glyph_index = 890},  /*Unicode: U+00bb (»)*/
-    {.w_px = 8, .glyph_index = 930},  /*Unicode: U+00bc (¼)*/
-    {.w_px = 8, .glyph_index = 1010}, /*Unicode: U+00bd (½)*/
-    {.w_px = 8, .glyph_index = 1090}, /*Unicode: U+00be (¾)*/
-    {.w_px = 3, .glyph_index = 1170}, /*Unicode: U+00bf (¿)*/
-    {.w_px = 5, .glyph_index = 1200}, /*Unicode: U+00c0 (À)*/
-    {.w_px = 5, .glyph_index = 1250}, /*Unicode: U+00c1 (Á)*/
-    {.w_px = 5, .glyph_index = 1300}, /*Unicode: U+00c2 (Â)*/
-    {.w_px = 5, .glyph_index = 1350}, /*Unicode: U+00c3 (Ã)*/
-    {.w_px = 5, .glyph_index = 1400}, /*Unicode: U+00c4 (Ä)*/
-    {.w_px = 5, .glyph_index = 1450}, /*Unicode: U+00c5 (Å)*/
-    {.w_px = 7, .glyph_index = 1500}, /*Unicode: U+00c6 (Æ)*/
-    {.w_px = 5, .glyph_index = 1570}, /*Unicode: U+00c7 (Ç)*/
-    {.w_px = 4, .glyph_index = 1620}, /*Unicode: U+00c8 (È)*/
-    {.w_px = 4, .glyph_index = 1660}, /*Unicode: U+00c9 (É)*/
-    {.w_px = 4, .glyph_index = 1700}, /*Unicode: U+00ca (Ê)*/
-    {.w_px = 4, .glyph_index = 1740}, /*Unicode: U+00cb (Ë)*/
-    {.w_px = 3, .glyph_index = 1780}, /*Unicode: U+00cc (Ì)*/
-    {.w_px = 2, .glyph_index = 1810}, /*Unicode: U+00cd (Í)*/
-    {.w_px = 3, .glyph_index = 1830}, /*Unicode: U+00ce (Î)*/
-    {.w_px = 3, .glyph_index = 1860}, /*Unicode: U+00cf (Ï)*/
-    {.w_px = 6, .glyph_index = 1890}, /*Unicode: U+00d0 (Ð)*/
-    {.w_px = 4, .glyph_index = 1950}, /*Unicode: U+00d1 (Ñ)*/
-    {.w_px = 5, .glyph_index = 1990}, /*Unicode: U+00d2 (Ò)*/
-    {.w_px = 5, .glyph_index = 2040}, /*Unicode: U+00d3 (Ó)*/
-    {.w_px = 5, .glyph_index = 2090}, /*Unicode: U+00d4 (Ô)*/
-    {.w_px = 5, .glyph_index = 2140}, /*Unicode: U+00d5 (Õ)*/
-    {.w_px = 5, .glyph_index = 2190}, /*Unicode: U+00d6 (Ö)*/
-    {.w_px = 5, .glyph_index = 2240}, /*Unicode: U+00d7 (×)*/
-    {.w_px = 5, .glyph_index = 2290}, /*Unicode: U+00d8 (Ø)*/
-    {.w_px = 4, .glyph_index = 2340}, /*Unicode: U+00d9 (Ù)*/
-    {.w_px = 4, .glyph_index = 2380}, /*Unicode: U+00da (Ú)*/
-    {.w_px = 4, .glyph_index = 2420}, /*Unicode: U+00db (Û)*/
-    {.w_px = 4, .glyph_index = 2460}, /*Unicode: U+00dc (Ü)*/
-    {.w_px = 5, .glyph_index = 2500}, /*Unicode: U+00dd (Ý)*/
-    {.w_px = 4, .glyph_index = 2550}, /*Unicode: U+00de (Þ)*/
-    {.w_px = 4, .glyph_index = 2590}, /*Unicode: U+00df (ß)*/
-    {.w_px = 4, .glyph_index = 2630}, /*Unicode: U+00e0 (à)*/
-    {.w_px = 4, .glyph_index = 2670}, /*Unicode: U+00e1 (á)*/
-    {.w_px = 4, .glyph_index = 2710}, /*Unicode: U+00e2 (â)*/
-    {.w_px = 4, .glyph_index = 2750}, /*Unicode: U+00e3 (ã)*/
-    {.w_px = 4, .glyph_index = 2790}, /*Unicode: U+00e4 (ä)*/
-    {.w_px = 4, .glyph_index = 2830}, /*Unicode: U+00e5 (å)*/
-    {.w_px = 7, .glyph_index = 2870}, /*Unicode: U+00e6 (æ)*/
-    {.w_px = 3, .glyph_index = 2940}, /*Unicode: U+00e7 (ç)*/
-    {.w_px = 4, .glyph_index = 2970}, /*Unicode: U+00e8 (è)*/
-    {.w_px = 4, .glyph_index = 3010}, /*Unicode: U+00e9 (é)*/
-    {.w_px = 4, .glyph_index = 3050}, /*Unicode: U+00ea (ê)*/
-    {.w_px = 4, .glyph_index = 3090}, /*Unicode: U+00eb (ë)*/
-    {.w_px = 2, .glyph_index = 3130}, /*Unicode: U+00ec (ì)*/
-    {.w_px = 2, .glyph_index = 3150}, /*Unicode: U+00ed (í)*/
-    {.w_px = 3, .glyph_index = 3170}, /*Unicode: U+00ee (î)*/
-    {.w_px = 3, .glyph_index = 3200}, /*Unicode: U+00ef (ï)*/
-    {.w_px = 4, .glyph_index = 3230}, /*Unicode: U+00f0 (ð)*/
-    {.w_px = 4, .glyph_index = 3270}, /*Unicode: U+00f1 (ñ)*/
-    {.w_px = 4, .glyph_index = 3310}, /*Unicode: U+00f2 (ò)*/
-    {.w_px = 4, .glyph_index = 3350}, /*Unicode: U+00f3 (ó)*/
-    {.w_px = 4, .glyph_index = 3390}, /*Unicode: U+00f4 (ô)*/
-    {.w_px = 4, .glyph_index = 3430}, /*Unicode: U+00f5 (õ)*/
-    {.w_px = 4, .glyph_index = 3470}, /*Unicode: U+00f6 (ö)*/
-    {.w_px = 5, .glyph_index = 3510}, /*Unicode: U+00f7 (÷)*/
-    {.w_px = 6, .glyph_index = 3560}, /*Unicode: U+00f8 (ø)*/
-    {.w_px = 4, .glyph_index = 3620}, /*Unicode: U+00f9 (ù)*/
-    {.w_px = 4, .glyph_index = 3660}, /*Unicode: U+00fa (ú)*/
-    {.w_px = 4, .glyph_index = 3700}, /*Unicode: U+00fb (û)*/
-    {.w_px = 4, .glyph_index = 3740}, /*Unicode: U+00fc (ü)*/
-    {.w_px = 4, .glyph_index = 3780}, /*Unicode: U+00fd (ý)*/
-    {.w_px = 4, .glyph_index = 3820}, /*Unicode: U+00fe (þ)*/
-    {.w_px = 4, .glyph_index = 3860}, /*Unicode: U+00ff (ÿ)*/
+    {.w_px = 3,   .glyph_index = 0},  /*Unicode: U+00a0 ( )*/
+    {.w_px = 1,   .glyph_index = 30}, /*Unicode: U+00a1 (¡)*/
+    {.w_px = 3,   .glyph_index = 40}, /*Unicode: U+00a2 (¢)*/
+    {.w_px = 4,   .glyph_index = 70}, /*Unicode: U+00a3 (£)*/
+    {.w_px = 5,   .glyph_index = 110},    /*Unicode: U+00a4 (¤)*/
+    {.w_px = 5,   .glyph_index = 160},    /*Unicode: U+00a5 (¥)*/
+    {.w_px = 1,   .glyph_index = 210},    /*Unicode: U+00a6 (¦)*/
+    {.w_px = 3,   .glyph_index = 220},    /*Unicode: U+00a7 (§)*/
+    {.w_px = 3,   .glyph_index = 250},    /*Unicode: U+00a8 (¨)*/
+    {.w_px = 6,   .glyph_index = 280},    /*Unicode: U+00a9 (©)*/
+    {.w_px = 4,   .glyph_index = 340},    /*Unicode: U+00aa (ª)*/
+    {.w_px = 4,   .glyph_index = 380},    /*Unicode: U+00ab («)*/
+    {.w_px = 5,   .glyph_index = 420},    /*Unicode: U+00ac (¬)*/
+    {.w_px = 2,   .glyph_index = 470},    /*Unicode: U+00ad (­)*/
+    {.w_px = 6,   .glyph_index = 490},    /*Unicode: U+00ae (®)*/
+    {.w_px = 2,   .glyph_index = 550},    /*Unicode: U+00af (¯)*/
+    {.w_px = 2,   .glyph_index = 570},    /*Unicode: U+00b0 (°)*/
+    {.w_px = 5,   .glyph_index = 590},    /*Unicode: U+00b1 (±)*/
+    {.w_px = 3,   .glyph_index = 640},    /*Unicode: U+00b2 (²)*/
+    {.w_px = 2,   .glyph_index = 670},    /*Unicode: U+00b3 (³)*/
+    {.w_px = 2,   .glyph_index = 690},    /*Unicode: U+00b4 (´)*/
+    {.w_px = 5,   .glyph_index = 710},    /*Unicode: U+00b5 (µ)*/
+    {.w_px = 4,   .glyph_index = 760},    /*Unicode: U+00b6 (¶)*/
+    {.w_px = 1,   .glyph_index = 800},    /*Unicode: U+00b7 (·)*/
+    {.w_px = 2,   .glyph_index = 810},    /*Unicode: U+00b8 (¸)*/
+    {.w_px = 3,   .glyph_index = 830},    /*Unicode: U+00b9 (¹)*/
+    {.w_px = 3,   .glyph_index = 860},    /*Unicode: U+00ba (º)*/
+    {.w_px = 4,   .glyph_index = 890},    /*Unicode: U+00bb (»)*/
+    {.w_px = 8,   .glyph_index = 930},    /*Unicode: U+00bc (¼)*/
+    {.w_px = 8,   .glyph_index = 1010},   /*Unicode: U+00bd (½)*/
+    {.w_px = 8,   .glyph_index = 1090},   /*Unicode: U+00be (¾)*/
+    {.w_px = 3,   .glyph_index = 1170},   /*Unicode: U+00bf (¿)*/
+    {.w_px = 5,   .glyph_index = 1200},   /*Unicode: U+00c0 (À)*/
+    {.w_px = 5,   .glyph_index = 1250},   /*Unicode: U+00c1 (Á)*/
+    {.w_px = 5,   .glyph_index = 1300},   /*Unicode: U+00c2 (Â)*/
+    {.w_px = 5,   .glyph_index = 1350},   /*Unicode: U+00c3 (Ã)*/
+    {.w_px = 5,   .glyph_index = 1400},   /*Unicode: U+00c4 (Ä)*/
+    {.w_px = 5,   .glyph_index = 1450},   /*Unicode: U+00c5 (Å)*/
+    {.w_px = 7,   .glyph_index = 1500},   /*Unicode: U+00c6 (Æ)*/
+    {.w_px = 5,   .glyph_index = 1570},   /*Unicode: U+00c7 (Ç)*/
+    {.w_px = 4,   .glyph_index = 1620},   /*Unicode: U+00c8 (È)*/
+    {.w_px = 4,   .glyph_index = 1660},   /*Unicode: U+00c9 (É)*/
+    {.w_px = 4,   .glyph_index = 1700},   /*Unicode: U+00ca (Ê)*/
+    {.w_px = 4,   .glyph_index = 1740},   /*Unicode: U+00cb (Ë)*/
+    {.w_px = 3,   .glyph_index = 1780},   /*Unicode: U+00cc (Ì)*/
+    {.w_px = 2,   .glyph_index = 1810},   /*Unicode: U+00cd (Í)*/
+    {.w_px = 3,   .glyph_index = 1830},   /*Unicode: U+00ce (Î)*/
+    {.w_px = 3,   .glyph_index = 1860},   /*Unicode: U+00cf (Ï)*/
+    {.w_px = 6,   .glyph_index = 1890},   /*Unicode: U+00d0 (Ð)*/
+    {.w_px = 4,   .glyph_index = 1950},   /*Unicode: U+00d1 (Ñ)*/
+    {.w_px = 5,   .glyph_index = 1990},   /*Unicode: U+00d2 (Ò)*/
+    {.w_px = 5,   .glyph_index = 2040},   /*Unicode: U+00d3 (Ó)*/
+    {.w_px = 5,   .glyph_index = 2090},   /*Unicode: U+00d4 (Ô)*/
+    {.w_px = 5,   .glyph_index = 2140},   /*Unicode: U+00d5 (Õ)*/
+    {.w_px = 5,   .glyph_index = 2190},   /*Unicode: U+00d6 (Ö)*/
+    {.w_px = 5,   .glyph_index = 2240},   /*Unicode: U+00d7 (×)*/
+    {.w_px = 5,   .glyph_index = 2290},   /*Unicode: U+00d8 (Ø)*/
+    {.w_px = 4,   .glyph_index = 2340},   /*Unicode: U+00d9 (Ù)*/
+    {.w_px = 4,   .glyph_index = 2380},   /*Unicode: U+00da (Ú)*/
+    {.w_px = 4,   .glyph_index = 2420},   /*Unicode: U+00db (Û)*/
+    {.w_px = 4,   .glyph_index = 2460},   /*Unicode: U+00dc (Ü)*/
+    {.w_px = 5,   .glyph_index = 2500},   /*Unicode: U+00dd (Ý)*/
+    {.w_px = 4,   .glyph_index = 2550},   /*Unicode: U+00de (Þ)*/
+    {.w_px = 4,   .glyph_index = 2590},   /*Unicode: U+00df (ß)*/
+    {.w_px = 4,   .glyph_index = 2630},   /*Unicode: U+00e0 (à)*/
+    {.w_px = 4,   .glyph_index = 2670},   /*Unicode: U+00e1 (á)*/
+    {.w_px = 4,   .glyph_index = 2710},   /*Unicode: U+00e2 (â)*/
+    {.w_px = 4,   .glyph_index = 2750},   /*Unicode: U+00e3 (ã)*/
+    {.w_px = 4,   .glyph_index = 2790},   /*Unicode: U+00e4 (ä)*/
+    {.w_px = 4,   .glyph_index = 2830},   /*Unicode: U+00e5 (å)*/
+    {.w_px = 7,   .glyph_index = 2870},   /*Unicode: U+00e6 (æ)*/
+    {.w_px = 3,   .glyph_index = 2940},   /*Unicode: U+00e7 (ç)*/
+    {.w_px = 4,   .glyph_index = 2970},   /*Unicode: U+00e8 (è)*/
+    {.w_px = 4,   .glyph_index = 3010},   /*Unicode: U+00e9 (é)*/
+    {.w_px = 4,   .glyph_index = 3050},   /*Unicode: U+00ea (ê)*/
+    {.w_px = 4,   .glyph_index = 3090},   /*Unicode: U+00eb (ë)*/
+    {.w_px = 2,   .glyph_index = 3130},   /*Unicode: U+00ec (ì)*/
+    {.w_px = 2,   .glyph_index = 3150},   /*Unicode: U+00ed (í)*/
+    {.w_px = 3,   .glyph_index = 3170},   /*Unicode: U+00ee (î)*/
+    {.w_px = 3,   .glyph_index = 3200},   /*Unicode: U+00ef (ï)*/
+    {.w_px = 4,   .glyph_index = 3230},   /*Unicode: U+00f0 (ð)*/
+    {.w_px = 4,   .glyph_index = 3270},   /*Unicode: U+00f1 (ñ)*/
+    {.w_px = 4,   .glyph_index = 3310},   /*Unicode: U+00f2 (ò)*/
+    {.w_px = 4,   .glyph_index = 3350},   /*Unicode: U+00f3 (ó)*/
+    {.w_px = 4,   .glyph_index = 3390},   /*Unicode: U+00f4 (ô)*/
+    {.w_px = 4,   .glyph_index = 3430},   /*Unicode: U+00f5 (õ)*/
+    {.w_px = 4,   .glyph_index = 3470},   /*Unicode: U+00f6 (ö)*/
+    {.w_px = 5,   .glyph_index = 3510},   /*Unicode: U+00f7 (÷)*/
+    {.w_px = 6,   .glyph_index = 3560},   /*Unicode: U+00f8 (ø)*/
+    {.w_px = 4,   .glyph_index = 3620},   /*Unicode: U+00f9 (ù)*/
+    {.w_px = 4,   .glyph_index = 3660},   /*Unicode: U+00fa (ú)*/
+    {.w_px = 4,   .glyph_index = 3700},   /*Unicode: U+00fb (û)*/
+    {.w_px = 4,   .glyph_index = 3740},   /*Unicode: U+00fc (ü)*/
+    {.w_px = 4,   .glyph_index = 3780},   /*Unicode: U+00fd (ý)*/
+    {.w_px = 4,   .glyph_index = 3820},   /*Unicode: U+00fe (þ)*/
+    {.w_px = 4,   .glyph_index = 3860},   /*Unicode: U+00ff (ÿ)*/
 
 #endif
 };
 
 lv_font_t lv_font_dejavu_10_latin_sup = {
-    .unicode_first = 160,                                     /*First Unicode letter in this font*/
-    .unicode_last = 255,                                      /*Last Unicode letter in this font*/
-    .h_px = 10,                                               /*Font height in pixels*/
-    .glyph_bitmap = lv_font_dejavu_10_latin_sup_glyph_bitmap, /*Bitmap of glyphs*/
-    .glyph_dsc = lv_font_dejavu_10_latin_sup_glyph_dsc,       /*Description of glyphs*/
-    .glyph_cnt = 96,                                          /*Number of glyphs in the font*/
-    .unicode_list = NULL,                        /*Every character in the font from 'unicode_first' to 'unicode_last'*/
-    .get_bitmap = lv_font_get_bitmap_continuous, /*Function pointer to get glyph's bitmap*/
-    .get_width = lv_font_get_width_continuous,   /*Function pointer to get glyph's width*/
+    .unicode_first = 160,   /*First Unicode letter in this font*/
+    .unicode_last = 255,    /*Last Unicode letter in this font*/
+    .h_px = 10,             /*Font height in pixels*/
+    .glyph_bitmap = lv_font_dejavu_10_latin_sup_glyph_bitmap,   /*Bitmap of glyphs*/
+    .glyph_dsc = lv_font_dejavu_10_latin_sup_glyph_dsc,     /*Description of glyphs*/
+    .glyph_cnt = 96,            /*Number of glyphs in the font*/
+    .unicode_list = NULL,   /*Every character in the font from 'unicode_first' to 'unicode_last'*/
+    .get_bitmap = lv_font_get_bitmap_continuous,    /*Function pointer to get glyph's bitmap*/
+    .get_width = lv_font_get_width_continuous,  /*Function pointer to get glyph's width*/
 #if USE_LV_FONT_DEJAVU_10_LATIN_SUP == 1
-    .bpp = 1, /*Bit per pixel*/
+    .bpp = 1,               /*Bit per pixel*/
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 2
-    .bpp = 2, /*Bit per pixel*/
+    .bpp = 2,               /*Bit per pixel*/
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 4
-    .bpp = 4, /*Bit per pixel*/
+    .bpp = 4,               /*Bit per pixel*/
 #elif USE_LV_FONT_DEJAVU_10_LATIN_SUP == 8
-    .bpp = 8, /*Bit per pixel*/
+    .bpp = 8,               /*Bit per pixel*/
 #endif
     .monospace = 0,
-    .next_page = NULL, /*Pointer to a font extension*/
+    .next_page = NULL,      /*Pointer to a font extension*/
 };
 
 #endif /*USE_LV_FONT_DEJAVU_10_LATIN_SUP*/

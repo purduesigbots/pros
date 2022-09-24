@@ -20,12 +20,11 @@
 #undef _GNU_SOURCE
 #include <stdarg.h>
 #include <string.h>
-
 #include "kapi.h"
 #include "pros/llemu.h"
 
-#define LCD_WIDTH 480
-#define LCD_HEIGHT 240
+#define LCD_WIDTH	480 
+#define LCD_HEIGHT 	240
 #define LLEMU_LINES 8
 
 static lv_style_t frame_style;

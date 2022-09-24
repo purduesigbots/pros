@@ -13,13 +13,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "common/linkedlist.h"
-
 #include <stddef.h>  // NULL
 
+#include "common/linkedlist.h"
 #include "kapi.h"
 
-// NOTE: Do not intermix data and function payloads. This may cause data to be
+// NOTE: Do not intermix data and function payloads. This may cause data to be 
 // re-evaluated as a pointer to an area in memory and a false free or add.
 
 ll_node_s_t* linked_list_init_func_node(generic_fn_t func) {
