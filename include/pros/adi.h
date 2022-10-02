@@ -701,7 +701,7 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
  * Reference type for an initialized potentiometer.
  *
  * This merely contains the port number for the potentiometer, unlike its use as an
- * object to store gyro data in PROS 2.
+ * object to store potentiometer data in PROS 2.
  */
 typedef int32_t adi_potentiometer_t;
 
@@ -756,6 +756,50 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
  * \return The potentiometer angle in degrees.
  */
 double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer);
+
+/**
+ * Reference type for an initialized addressable led.
+ *
+ * This merely contains the port number for the led, unlike its use as an
+ * object to store led data in PROS 2.
+ */
+typedef int32_t adi_led_t;
+
+/**
+ * Initializes a led on the given port of the original led.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EADDRINUSE - The port is not configured as a led
+ *
+ * \param port
+ *        The ADI port to initialize as a led (from 1-8, 'a'-'h', 'A'-'H')
+ *
+ * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
+ * initialization failed.
+ */
+adi_led_t adi_led_init(uint8_t port);
+
+/**
+ * @brief Set pixels in led to colors using an array of uint32_t colors
+ * 
+ * @param led port of type ext_adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
+ * @param buffer_length length of color array
+ * @param offset amount of offset from first pixel in led to apply color
+ * @return int32_t PROS_SUCCESS if success
+ */
+int32_t adi_led_set_color_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
+
+/**
+ * @brief Clears buffer of led
+ * 
+ * @param led port of type ext_adi_led_t
+ * @param buffer_length length of buffer to clear
+ * 
+ */
+int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length);
 
 #ifdef __cplusplus
 }  // namespace c

@@ -128,3 +128,15 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
 double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer) {
 	return ext_adi_potentiometer_get_angle((ext_adi_potentiometer_t)potentiometer);
 }
+
+adi_led_t adi_led_init(uint8_t port) {
+	return (adi_led_t)ext_adi_led_init(INTERNAL_ADI_PORT, port);
+}
+
+int32_t adi_led_set_color_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
+	return ext_adi_led_set_color_buffer((ext_adi_led_t)led, buffer, buffer_length, offset);
+}
+
+int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length) {
+	return ext_adi_led_clear_buffer((ext_adi_led_t)led, buffer_length);
+}

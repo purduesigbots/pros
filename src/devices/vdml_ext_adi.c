@@ -29,6 +29,7 @@
 // Theoretical calibration time is 1024ms, but in practice this seemed to be the
 // actual time that it takes.
 #define GYRO_CALIBRATION_TIME 1300
+#define MAX_LED 64 //maximum number of LEDs supported in one port
 
 typedef union adi_data {
 	struct {
@@ -442,4 +443,60 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			rtn = PROS_ERR_F;
 	}
 	return_port(smart_port, rtn);
+}
+
+ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_DIGITAL_OUT); //digital out according to sample code
+	
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+}
+
+int32_t ext_adi_led_set_color_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
+	uint8_t smart_port, adi_port;
+	get_ports(led, smart_port, adi_port);
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
+
+	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
+
+	if(buffer == NULL) {
+        errno = EINVAL;
+        return PROS_ERR;
+    }
+	for (int i = 0; i < buffer_length; i++) {
+		//TBD: validate color, RGB values should not exceed 0x80 to limit current
+	}
+
+	if (offset < 0) {
+		offset = 0;
+	}
+	else if (offset >= MAX_LED)
+	{
+		offset = MAX_LED - 1;
+	}
+	
+	vexAdiAddrLedSet(device->device_info, adi_port, buffer, offset, buffer_length, 0);
+
+	return_port(smart_port, PROS_SUCCESS);
+}
+
+int32_t ext_adi_led_clear_buffer(ext_adi_led_t led, uint32_t buffer_length) {
+	if (buffer_length > MAX_LED) {
+		buffer_length = MAX_LED;
+	}
+	else if (buffer_length < 1)
+	{
+		buffer_length = 1;
+	}
+	uint32_t buf[buffer_length];
+	for (int i = 0; i < buffer_length; i++) {
+		buf[i] = 0;
+	}
+	ext_adi_led_set_color_buffer(led, buf, buffer_length, 0);
 }
