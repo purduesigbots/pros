@@ -169,7 +169,7 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair) : ADIDigitalOut(std::get<1>(port_p
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-std::int32_t ADILed::state(std::bool value) {
+std::int32_t ADILed::state(bool value) {
 	return adi_led_state(merge_adi_ports(_smart_port, _adi_port), value);
 }
 

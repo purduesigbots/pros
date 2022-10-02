@@ -796,7 +796,7 @@ class ADILed : public ADIDigitalOut {
 	 * @param value boolean
 	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
 	 */
-	std::int32_t state(std::bool value);
+	std::int32_t state(bool value);
 
 	/**
 	 * @brief Set pixels in led to colors using an array of uint32_t colors
@@ -816,8 +816,7 @@ class ADILed : public ADIDigitalOut {
 	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
 	 */
 	std::int32_t clear_buffer(std::uint32_t buffer_length);
-	
-}
+};
 using ADILED = ADILed;
 
 }  // namespace pros
