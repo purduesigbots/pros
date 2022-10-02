@@ -11,7 +11,7 @@
 void initialize() {
 	pros::lcd::initialize();
 
-	pros::ADILed led = pros::ADILed::ADILed(LED_PORT);
+	pros::ADILed led = pros::ADILed(LED_PORT);
 
 	uint32_t buffer[LED_MAX];
 	for (int i = 0; i < LED_MAX; i++)
