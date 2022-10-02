@@ -162,27 +162,31 @@ double ADIPotentiometer::get_angle() const {
 ADILed::ADILed(std::uint8_t adi_port) : ADIDigitalOut(adi_port) {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
 }
 
 ADILed::ADILed(ext_adi_port_pair_t port_pair) : ADIDigitalOut(std::get<1>(port_pair)) {
 	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
 	get_ports(_port, _smart_port, _adi_port);
+	_smart_port++; // for inherited functions this is necessary
 }
 
-std::int32_t ADILed::set_state(bool value) {
-	return adi_led_get_state(merge_adi_ports(_smart_port, _adi_port), value);
+std::int32_t ADILed::set_state(bool value) const {
+	return adi_led_set_state(merge_adi_ports(_smart_port, _adi_port), value);
 }
 
-bool ADILed::get_state() {
-	return adi_led_set_state(merge_adi_ports(_smart_port, _adi_port));
+bool ADILed::get_state() const {
+	return adi_led_get_state(merge_adi_ports(_smart_port, _adi_port));
 }
 
-std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) {
-	return adi_led_set_buffer(merge_adi_ports(_smart_port, _adi_port), buffer, buffer_length, offset);
+std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const {
+	uint8_t temp_smart = _smart_port - 1;
+	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), buffer, buffer_length, offset);
 }
 
-std::int32_t ADILed::clear_buffer(std::uint32_t buffer_length) {
-	return adi_led_clear_buffer(merge_adi_ports(_smart_port, _adi_port), buffer_length);
+std::int32_t ADILed::clear_buffer(std::uint32_t buffer_length) const {
+	uint8_t temp_smart = _smart_port - 1;
+	return adi_led_clear_buffer(merge_adi_ports(temp_smart, _adi_port), buffer_length);
 }
 
 }  // namespace pros
