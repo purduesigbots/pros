@@ -703,7 +703,7 @@ ext_adi_led_t adi_led_init(uint8_t smart_port, uint8_t adi_port);
  * @brief Set pixels in led to colors using an array of uint32_t colors
  * 
  * @param led port of type ext_adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of color array
  * @param offset amount of offset from first pixel in led to apply color
  * @return  PROS_SUCCESS if successful, PROS_ERROR if not, setting errno

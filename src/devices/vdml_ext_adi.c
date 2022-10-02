@@ -469,10 +469,6 @@ int32_t ext_adi_led_set_color_buffer(ext_adi_led_t led, uint32_t* buffer, uint32
         errno = EINVAL;
         return PROS_ERR;
     }
-	for (int i = 0; i < buffer_length; i++) {
-		//TBD: validate color, RGB values should not exceed 0x80 to limit current
-	}
-
 	if (offset < 0) {
 		offset = 0;
 	}
@@ -480,7 +476,7 @@ int32_t ext_adi_led_set_color_buffer(ext_adi_led_t led, uint32_t* buffer, uint32
 	{
 		offset = MAX_LED - 1;
 	}
-	
+	//TBD: what is the behavior of vexAdiAddrLedSet with a buffer too long (beyond INT_MAX?)
 	vexAdiAddrLedSet(device->device_info, adi_port, buffer, offset, buffer_length, 0);
 
 	return_port(smart_port, PROS_SUCCESS);
