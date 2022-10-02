@@ -134,7 +134,7 @@ adi_led_t adi_led_init(uint8_t port) {
 }
 
 int32_t adi_led_set_state(adi_led_t led, bool value) {
-	return ext_adi_led_get_state((ext_adi_led_t)led, value);
+	return ext_adi_led_set_state((ext_adi_led_t)led, value);
 }
 
 int32_t adi_led_get_state(adi_led_t led) {
