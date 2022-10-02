@@ -786,9 +786,17 @@ adi_led_t adi_led_init(uint8_t port);
  * 
  * @param led port of type adi_led_t
  * @param value boolean LOW or HIGH
- * @return int32_t 
+ * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
  */
-int32_t adi_led_state(adi_led_t led, bool value);
+int32_t adi_led_set_state(adi_led_t led, bool value);
+
+/**
+ * @brief Get the state of the LED string
+ * 
+ * @param led port of type adi_led_t
+ * @return bool HIGH or LOW if successful, PROS_ERR if failure setting errno
+ */
+int32_t adi_led_get_state(adi_led_t led);
 
 /**
  * @brief Set pixels in led to colors using an array of uint32_t colors

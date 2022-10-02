@@ -1,20 +1,6 @@
 #include "main.h"
-
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+#define LED_PORT 1
+#define LED_MAX 64
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -24,9 +10,32 @@ void on_center_button() {
  */
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
 
-	pros::lcd::register_btn1_cb(on_center_button);
+	pros::ADILed led = pros::ADILed::ADILed(LED_PORT);
+
+	uint32_t buffer[LED_MAX];
+	for (int i = 0; i < LED_MAX; i++)
+	{
+		if (i % 3 == 0) {
+			buffer[i] = 0x800000;
+		}
+		else if (i % 3 == 1) {
+			buffer[i] = 0x008000;
+		}
+		else if (i % 3 == 2) {
+			buffer[i] = 0x000080;
+		}
+	}
+
+	led.set_buffer(buffer, LED_MAX, 0);
+	led.set_state(HIGH);
+
+	while (true)
+	{
+		led.set_state(!(led.get_state()));
+		pros::Task::delay(2000);
+	}
+	
 }
 
 /**

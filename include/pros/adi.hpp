@@ -796,7 +796,14 @@ class ADILed : public ADIDigitalOut {
 	 * @param value boolean
 	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
 	 */
-	std::int32_t state(bool value);
+	std::int32_t set_state(bool value);
+
+	/**
+	 * @brief Get the state of the LED string
+	 * 
+	 * @return bool HIGH or LOW if successful, PROS_ERR if failure setting errno
+	 */
+	std::int32_t get_state();
 
 	/**
 	 * @brief Set pixels in led to colors using an array of uint32_t colors
