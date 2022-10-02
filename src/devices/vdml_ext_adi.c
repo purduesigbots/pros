@@ -452,11 +452,18 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_DIGITAL_OUT); //digital out according to sample code
+	vexDeviceAdiValueSet(device->device_info, adi_port, (int32_t)LOW);
 	
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-int32_t ext_adi_led_set_color_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
+int32_t ext_adi_led_state(ext_adi_led_t led, bool value) {
+	uint8_t smart_port, adi_port;
+	get_ports(led, smart_port, adi_port);
+	return ext_adi_digital_write(smart_port, adi_port, value);
+}
+
+int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
 	transform_adi_port(adi_port);
@@ -494,5 +501,5 @@ int32_t ext_adi_led_clear_buffer(ext_adi_led_t led, uint32_t buffer_length) {
 	for (int i = 0; i < buffer_length; i++) {
 		buf[i] = 0;
 	}
-	ext_adi_led_set_color_buffer(led, buf, buffer_length, 0);
+	ext_adi_led_set_buffer(led, buf, buffer_length, 0);
 }

@@ -133,8 +133,12 @@ adi_led_t adi_led_init(uint8_t port) {
 	return (adi_led_t)ext_adi_led_init(INTERNAL_ADI_PORT, port);
 }
 
-int32_t adi_led_set_color_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
-	return ext_adi_led_set_color_buffer((ext_adi_led_t)led, buffer, buffer_length, offset);
+int32_t adi_led_state(adi_led_t led, bool value) {
+	return ext_adi_led_state((ext_adi_led_t)led, value);
+}
+
+int32_t adi_led_set_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
+	return ext_adi_led_set_buffer((ext_adi_led_t)led, buffer, buffer_length, offset);
 }
 
 int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length) {

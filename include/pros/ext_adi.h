@@ -697,7 +697,16 @@ typedef int32_t ext_adi_led_t;
  * \return An ext_adi_led_t object containing the given port, or PROS_ERR if the
  * initialization failed.
  */
-ext_adi_led_t adi_led_init(uint8_t smart_port, uint8_t adi_port);
+ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port);
+
+/**
+ * @brief Turn the entire LED string on or off.
+ * 
+ * @param led port of type ext_adi_led_t
+ * @param value boolean HIGH or LOW
+ * @return PROS_SUCCESS if successful, PROS_ERR if not, setting errno
+ */
+int32_t ext_adi_led_state(ext_adi_led_t led, bool value);
 
 /**
  * @brief Set pixels in led to colors using an array of uint32_t colors
@@ -706,16 +715,16 @@ ext_adi_led_t adi_led_init(uint8_t smart_port, uint8_t adi_port);
  * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of color array
  * @param offset amount of offset from first pixel in led to apply color
- * @return  PROS_SUCCESS if successful, PROS_ERROR if not, setting errno
+ * @return  PROS_SUCCESS if successful, PROS_ERR if not, setting errno
  */
-int32_t ext_adi_led_set_color_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
+int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
 
 /**
  * @brief Clear entire buffer
  * 
  * @param led port of type ext_adi_led_t
  * @param buffer_length length of buffer to clear
- * @return PROS_SUCCESS if successful, PROS_ERROR if not, setting errno
+ * @return PROS_SUCCESS if successful, PROS_ERR if not, setting errno
  */
 int32_t ext_adi_led_clear_buffer(ext_adi_led_t led, uint32_t buffer_length);
 

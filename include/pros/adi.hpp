@@ -760,6 +760,66 @@ class ADIPotentiometer : public ADIAnalogIn {
 	using ADIAnalogIn::get_value_calibrated;
 };
 
+class ADILed : public ADIDigitalOut {
+	public:
+
+	/**
+	 * @brief Configures an ADI port to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 */
+	ADILed(std::uint8_t adi_port);
+
+	/**
+	 * @brief Configures an ADI port on a adi_expander to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 */
+	ADILed(ext_adi_port_pair_t port_pair);
+
+	/**
+	 * @brief Turns the entire LED string on or off.
+	 * 
+	 * @param value boolean
+	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
+	 */
+	std::int32_t state(std::bool value);
+
+	/**
+	 * @brief Set pixels in led to colors using an array of uint32_t colors
+	 * 
+	 * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
+	 * @param buffer_length length of color array
+	 * @param offset amount of offset from first pixel in led to apply color
+	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
+	 */
+	std::int32_t set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset);
+
+	/**
+	 * @brief Clears buffer of led
+	 * 
+	 * @param led port of type adi_led_t
+	 * @param buffer_length length of buffer to clear
+	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
+	 */
+	std::int32_t clear_buffer(std::uint32_t buffer_length);
+	
+}
+using ADILED = ADILed;
+
 }  // namespace pros
 
 #endif  // _PROS_ADI_HPP_

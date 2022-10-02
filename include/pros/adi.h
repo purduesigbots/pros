@@ -776,28 +776,37 @@ typedef int32_t adi_led_t;
  * \param port
  *        The ADI port to initialize as a led (from 1-8, 'a'-'h', 'A'-'H')
  *
- * \return An adi_potentiometer_t object containing the given port, or PROS_ERR if the
- * initialization failed.
+ * \return An adi_led_t object containing the given port, or PROS_ERR if the
+ * initialization failed, setting errno
  */
 adi_led_t adi_led_init(uint8_t port);
 
 /**
+ * @brief Turn the entire LED string on or off.
+ * 
+ * @param led port of type adi_led_t
+ * @param value boolean LOW or HIGH
+ * @return int32_t 
+ */
+int32_t adi_led_state(adi_led_t led, bool value);
+
+/**
  * @brief Set pixels in led to colors using an array of uint32_t colors
  * 
- * @param led port of type ext_adi_led_t
+ * @param led port of type adi_led_t
  * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
  * @param buffer_length length of color array
  * @param offset amount of offset from first pixel in led to apply color
- * @return int32_t PROS_SUCCESS if success
+ * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
  */
-int32_t adi_led_set_color_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
+int32_t adi_led_set_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
 
 /**
  * @brief Clears buffer of led
  * 
- * @param led port of type ext_adi_led_t
+ * @param led port of type adi_led_t
  * @param buffer_length length of buffer to clear
- * 
+ * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
  */
 int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length);
 

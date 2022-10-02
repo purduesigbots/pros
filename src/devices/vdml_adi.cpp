@@ -159,4 +159,26 @@ double ADIPotentiometer::get_angle() const {
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
 
+ADILed::ADILed(std::uint8_t adi_port) : ADIDigitalOut(adi_port) {
+	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
+	get_ports(_port, _smart_port, _adi_port);
+}
+
+ADILed::ADILed(ext_adi_port_pair_t port_pair) : ADIDigitalOut(std::get<1>(port_pair)) {
+	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
+	get_ports(_port, _smart_port, _adi_port);
+}
+
+std::int32_t ADILed::state(std::bool value) {
+	return adi_led_state(merge_adi_ports(_smart_port, _adi_port), value);
+}
+
+std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) {
+	return adi_led_set_buffer(merge_adi_ports(_smart_port, _adi_port), buffer, buffer_length, offset);
+}
+
+std::int32_t ADILed::clear_buffer(std::uint32_t buffer_length) {
+	return adi_led_clear_buffer(merge_adi_ports(_smart_port, _adi_port), buffer_length);
+}
+
 }  // namespace pros
