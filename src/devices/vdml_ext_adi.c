@@ -449,8 +449,6 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 
-	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_DIGITAL_OUT); //digital out according to sample code
 	vexDeviceAdiValueSet(device->device_info, adi_port, (int32_t)LOW);
 	
@@ -475,8 +473,6 @@ int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buf
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
-
-	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 
 	if(buffer == NULL) {
         errno = EINVAL;
@@ -507,5 +503,5 @@ int32_t ext_adi_led_clear_buffer(ext_adi_led_t led, uint32_t buffer_length) {
 	for (int i = 0; i < buffer_length; i++) {
 		buf[i] = 0;
 	}
-	ext_adi_led_set_buffer(led, buf, buffer_length, 0);
+	return ext_adi_led_set_buffer(led, buf, buffer_length, 0);
 }

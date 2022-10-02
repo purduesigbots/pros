@@ -760,7 +760,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	using ADIAnalogIn::get_value_calibrated;
 };
 
-class ADILed : public ADIDigitalOut {
+class ADILed : protected ADIPort {
 	public:
 	/**
 	 * @brief Configures an ADI port to act as a LED.
