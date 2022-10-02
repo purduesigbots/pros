@@ -760,9 +760,8 @@ class ADIPotentiometer : public ADIAnalogIn {
 	using ADIAnalogIn::get_value_calibrated;
 };
 
-class ADILed : private ADIDigitalOut {
+class ADILed : public ADIDigitalOut {
 	public:
-
 	/**
 	 * @brief Configures an ADI port to act as a LED.
 	 * 
@@ -796,14 +795,14 @@ class ADILed : private ADIDigitalOut {
 	 * @param value boolean
 	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
 	 */
-	std::int32_t set_state(bool value);
+	std::int32_t set_state(bool value) const;
 
 	/**
 	 * @brief Get the state of the LED string
 	 * 
 	 * @return bool HIGH or LOW if successful, PROS_ERR if failure setting errno
 	 */
-	std::int32_t get_state();
+	bool get_state() const;
 
 	/**
 	 * @brief Set pixels in led to colors using an array of uint32_t colors
@@ -813,7 +812,7 @@ class ADILed : private ADIDigitalOut {
 	 * @param offset amount of offset from first pixel in led to apply color
 	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
 	 */
-	std::int32_t set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset);
+	std::int32_t set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const;
 
 	/**
 	 * @brief Clears buffer of led
@@ -822,7 +821,7 @@ class ADILed : private ADIDigitalOut {
 	 * @param buffer_length length of buffer to clear
 	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
 	 */
-	std::int32_t clear_buffer(std::uint32_t buffer_length);
+	std::int32_t clear_buffer(std::uint32_t buffer_length) const;
 };
 using ADILED = ADILed;
 

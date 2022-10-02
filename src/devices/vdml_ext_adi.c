@@ -463,10 +463,10 @@ int32_t ext_adi_led_set_state(ext_adi_led_t led, bool value) {
 	return ext_adi_digital_write(smart_port, adi_port, value);
 }
 
-int32_t ext_adi_led_get_state(ext_adi_led_t led) {
+bool ext_adi_led_get_state(ext_adi_led_t led) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
-	return ext_adi_digital_read(smart_port, adi_port);
+	return (bool)ext_adi_digital_read(smart_port, adi_port);
 }
 
 int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {

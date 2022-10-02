@@ -137,8 +137,8 @@ int32_t adi_led_set_state(adi_led_t led, bool value) {
 	return ext_adi_led_set_state((ext_adi_led_t)led, value);
 }
 
-int32_t adi_led_get_state(adi_led_t led) {
-	return ext_adi_led_get_state((ext_adi_led_t)led);
+bool adi_led_get_state(adi_led_t led) {
+	return (bool)ext_adi_led_get_state((ext_adi_led_t)led);
 }
 
 int32_t adi_led_set_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {

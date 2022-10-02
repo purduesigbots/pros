@@ -714,7 +714,7 @@ int32_t ext_adi_led_set_state(ext_adi_led_t led, bool value);
  * @param led port of type ext_adi_led_t
  * @return Boolean  HIGH or LOW if successful, PROS_ERR if not, setting errno
  */
-int32_t ext_adi_led_get_state(ext_adi_led_t led);
+bool ext_adi_led_get_state(ext_adi_led_t led);
 
 /**
  * @brief Set pixels in led to colors using an array of uint32_t colors
