@@ -19,6 +19,7 @@
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
+#include "pros/colors.h"
 
 #define MOTOR_MOVE_RANGE 127
 #define MOTOR_VOLTAGE_RANGE 12000
@@ -243,7 +244,19 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
 
 int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
-	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)gearset);
+	motor_gearset_e_t final_gearset = gearset;
+	// in the case that the motor gearset is actually a color, we need to handle this too:
+	if(gearset > E_MOTOR_GEAR_BLUE) {
+		switch(gearset) {
+			case COLOR_RED: 	final_gearset = E_MOTOR_GEAR_RED; break;
+			case COLOR_GREEN: 	final_gearset = E_MOTOR_GEAR_GREEN; break;
+			case COLOR_BLUE: 	final_gearset = E_MOTOR_GEAR_BLUE; break;
+			default: 		 	errno = EINVAL; 
+								return_port(port - 1, PROS_ERR);
+		}
+	}
+
+	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)final_gearset);
 	return_port(port - 1, PROS_SUCCESS);
 }
 

@@ -1,5 +1,6 @@
 /**
  * \file pros/gps.hpp
+ * \ingroup cpp-gps
  *
  * Contains prototypes for functions related to the VEX GPS.
  *
@@ -9,11 +10,14 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-gps VEX GPS Sensor C API
+ * \note For a pros-specific usage guide on the GPS, please check out our article [here.](@ref gps)
  */
 
 #ifndef _PROS_GPS_HPP_
@@ -26,7 +30,16 @@
 #include "pros/gps.h"
 
 namespace pros {
+inline namespace v5 {
+/**
+ * \ingroup cpp-gps
+ *  @{
+ */
 class Gps {
+	/**
+	 * \addtogroup cpp-gps
+	 *  @{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -171,7 +184,7 @@ class Gps {
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_status_s_t get_status() const;
+	virtual pros::gps_status_s_t get_status() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
@@ -258,7 +271,7 @@ class Gps {
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_gyro_s_t get_gyro_rate() const;
+	virtual pros::gps_gyro_s_t get_gyro_rate() const;
 
 	/**
 	 * Get the GPS's raw accelerometer values
@@ -274,9 +287,10 @@ class Gps {
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::gps_accel_s_t get_accel() const;
-
+	virtual pros::gps_accel_s_t get_accel() const;
+///@}
 };  // Gps Class
+}
 
 using GPS = Gps;
 

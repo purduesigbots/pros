@@ -1,5 +1,6 @@
 /**
  * \file pros/imu.hpp
+ * \ingroup cpp-imu
  *
  * Contains prototypes for functions related to the VEX Inertial sensor.
  *
@@ -9,11 +10,13 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-imu VEX Inertial Sensor C++ API
  */
 #ifndef _PROS_IMU_HPP_
 #define _PROS_IMU_HPP_
@@ -22,7 +25,37 @@
 #include "pros/imu.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-imu
+ * */
+
+/**
+ * \addtogroup cpp-imu
+ *  @{
+ */
+
+/**
+ * \enum Imu_Status
+ * @brief Indicates IMU status.
+ */
+
+enum class Imu_Status {
+	/** The IMU is calibrating */
+	calibrating = 0x01,
+	/** Used to indicate that an error state was reached in the imu_get_status function,\
+	not that the IMU is necessarily in an error state */
+	error = 0xFF,
+};
+
+inline namespace v5 {
+/**
+ * \ingroup cpp-imu
+ */
 class Imu {
+	/**
+	 * \addtogroup cpp-imu
+	 * ///@{
+	 */
 	const std::uint8_t _port;
 
 	public:
@@ -31,11 +64,9 @@ class Imu {
 	/**
 	 * Calibrate IMU
 	 *
-	 * Calibration takes approximately 2 seconds and blocks during this period if 
-	 * the blocking param is true, with a timeout for this operation being set a 3 
-	 * seconds as a safety margin. This function also blocks until the IMU 
-	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
-	 * blocking time of 5ms and a timeout of 1 second if it's never set.
+	 * Calibration takes approximately 2 seconds, but this function only blocks
+ 	 * until the IMU status flag is set properly to E_IMU_STATUS_CALIBRATING,
+	 * with a minimum blocking time of 5ms.
 	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -43,12 +74,10 @@ class Imu {
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
 	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
-	 * \param blocking 
-	 *			Whether this function blocks during calibration.
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset(bool blocking = false) const;
+	virtual std::int32_t reset() const;
 	/**
 	* Set the Inertial Sensor's refresh interval in milliseconds.
 	*
@@ -67,8 +96,7 @@ class Imu {
 	* ENODEV - The port cannot be configured as an Inertial Sensor
 	* EAGAIN - The sensor is still calibrating
 	*
-	* \param rate 
-	*			The data refresh interval in milliseconds
+	* \param rate The data refresh interval in milliseconds
 	* \return 1 if the operation was successful or PROS_ERR if the operation
 	* failed, setting errno.
 	*/
@@ -127,7 +155,7 @@ class Imu {
 	 * operation failed, all the quaternion's members are filled with PROS_ERR_F and
 	 * errno is set.
 	 */
-	virtual pros::c::quaternion_s_t get_quaternion() const;
+	virtual pros::quaternion_s_t get_quaternion() const;
 	/**
 	 * Get the Euler angles representing the Inertial Sensor's orientation
 	 *
@@ -143,7 +171,7 @@ class Imu {
 	 * operation failed, all the structure's members are filled with PROS_ERR_F and
 	 * errno is set.
 	 */
-	virtual pros::c::euler_s_t get_euler() const;
+	virtual pros::euler_s_t get_euler() const;
 	/**
 	 * Get the Inertial Sensor's pitch angle bounded by (-180,180)
 	 *
@@ -201,7 +229,7 @@ class Imu {
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::imu_gyro_s_t get_gyro_rate() const;
+	virtual pros::imu_gyro_s_t get_gyro_rate() const;
 	/**
 	 * Resets the current reading of the Inertial Sensor's rotation to zero
 	 *
@@ -412,7 +440,7 @@ class Imu {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t set_euler(const pros::c::euler_s_t target) const;
+	virtual std::int32_t set_euler(const pros::euler_s_t target) const;
 	/**
 	 * Get the Inertial Sensor's raw accelerometer values
 	 *
@@ -427,7 +455,7 @@ class Imu {
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
-	virtual pros::c::imu_accel_s_t get_accel() const;
+	virtual pros::imu_accel_s_t get_accel() const;
 	/**
 	 * Get the Inertial Sensor's status
 	 *
@@ -442,7 +470,7 @@ class Imu {
 	 * \return The Inertial Sensor's status code, or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual pros::c::imu_status_e_t get_status() const;
+	virtual pros::Imu_Status get_status() const;
 	/**
 	 * Check whether the IMU is calibrating
 	 *
@@ -450,10 +478,12 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+	///@}
 };
-
+  
 using IMU = Imu;
-
+  
+}  //namespace v5
 }  // namespace pros
 
 #endif

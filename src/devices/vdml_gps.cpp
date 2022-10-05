@@ -13,6 +13,7 @@
 #include "pros/gps.hpp"
 
 namespace pros {
+inline namespace v5 {
 
 std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
                                   double yOffset) const {
@@ -39,7 +40,7 @@ double Gps::get_error() const {
 	return pros::c::gps_get_error(_port);
 }
 
-pros::c::gps_status_s_t Gps::get_status() const {
+pros::gps_status_s_t Gps::get_status() const {
 	return pros::c::gps_get_status(_port);
 }
 
@@ -63,12 +64,13 @@ std::int32_t Gps::tare_rotation() const {
 	return pros::c::gps_tare_rotation(_port);
 }
 
-pros::c::gps_gyro_s_t Gps::get_gyro_rate() const {
+pros::gps_gyro_s_t Gps::get_gyro_rate() const {
 	return pros::c::gps_get_gyro_rate(_port);
 }
 
-pros::c::gps_accel_s_t Gps::get_accel() const {
+pros::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
 }
 
+}
 }  // namespace pros

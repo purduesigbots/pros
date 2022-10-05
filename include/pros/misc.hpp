@@ -1,5 +1,6 @@
 /**
  * \file pros/misc.hpp
+ * \ingroup cpp-pros
  *
  * Contains prototypes for miscellaneous functions pertaining to the controller,
  * battery, and competition control.
@@ -10,12 +11,15 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-misc Miscellaneous C++ API
+ * \note Additional example code for this module can be found in its [Tutorial.](@ref controller)
  */
 
 #ifndef _PROS_MISC_HPP_
@@ -27,7 +31,16 @@
 #include <string>
 
 namespace pros {
+inline namespace v5 {
+/**
+ * \ingroup cpp-misc
+ * 
+ */
 class Controller {
+	/**
+	 * \addtogroup cpp-misc
+	 * ///@{
+	 */
 	public:
 	/**
 	 * Creates a controller object for the given controller id.
@@ -257,9 +270,15 @@ class Controller {
 
 	private:
 	controller_id_e_t _id;
+	///@}
 };
+} //  namespace v5
 
 namespace battery {
+/**
+ * \addtogroup cpp-misc
+ * ///@{
+ */
 /**
  * Gets the current voltage of the battery, as reported by VEXos.
  *
@@ -303,6 +322,7 @@ double get_temperature(void);
  * \return The current capacity of the battery
  */
 int32_t get_voltage(void);
+///@}
 }  // namespace battery
 
 namespace competition {

@@ -1,5 +1,6 @@
 /**
  * \file pros/serial.hpp
+ * \ingroup cpp-serial
  *
  * Contains prototypes for the V5 Generic Serial related functions.
  *
@@ -14,6 +15,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * 
+ * \defgroup cpp-serial Generic Serial C++ API
  */
 
 #ifndef _PROS_SERIAL_HPP_
@@ -23,7 +26,15 @@
 #include "pros/serial.h"
 
 namespace pros {
+/**
+ * \ingroup cpp-serial
+ *  @{
+ */
 class Serial {
+	/**
+	 * \addtogroup cpp-serial
+	 *  @{
+	 */
 	public:
 	/**
 	 * Creates a Serial object for the given port and specifications.
@@ -219,6 +230,7 @@ class Serial {
 
 	private:
 	const std::uint8_t _port;
+	///@}
 };
 
 namespace literals {

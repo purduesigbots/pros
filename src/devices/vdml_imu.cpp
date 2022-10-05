@@ -13,8 +13,10 @@
 #include "pros/imu.hpp"
 
 namespace pros {
-std::int32_t Imu::reset(bool blocking /*= false*/) const {
-	return blocking ? pros::c::imu_reset_blocking(_port) : pros::c::imu_reset(_port);
+inline namespace v5 {
+	
+std::int32_t Imu::reset() const {
+	return pros::c::imu_reset(_port);
 }
 
 std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
@@ -29,11 +31,11 @@ double Imu::get_heading() const {
 	return pros::c::imu_get_heading(_port);
 }
 
-pros::c::quaternion_s_t Imu::get_quaternion() const {
+pros::quaternion_s_t Imu::get_quaternion() const {
 	return pros::c::imu_get_quaternion(_port);
 }
 
-pros::c::euler_s_t Imu::get_euler() const {
+pros::euler_s_t Imu::get_euler() const {
 	return pros::c::imu_get_euler(_port);
 }
 
@@ -49,20 +51,20 @@ double Imu::get_yaw() const {
 	return get_euler().yaw;
 }
 
-pros::c::imu_gyro_s_t Imu::get_gyro_rate() const {
+pros::imu_gyro_s_t Imu::get_gyro_rate() const {
 	return pros::c::imu_get_gyro_rate(_port);
 }
 
-pros::c::imu_accel_s_t Imu::get_accel() const {
+pros::imu_accel_s_t Imu::get_accel() const {
 	return pros::c::imu_get_accel(_port);
 }
 
-pros::c::imu_status_e_t Imu::get_status() const {
-	return pros::c::imu_get_status(_port);
+pros::Imu_Status Imu::get_status() const {
+	return static_cast<pros::Imu_Status> (pros::c::imu_get_status(_port));
 }
 
 bool Imu::is_calibrating() const {
-	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
+	return (int) get_status() & (int) (pros::Imu_Status::calibrating);
 }
 
 std::int32_t Imu::tare_heading() const {
@@ -109,7 +111,7 @@ std::int32_t Imu::set_roll(double target) const {
 	return pros::c::imu_set_roll(_port, target);
 }
 
-std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
+std::int32_t Imu::set_euler(pros::euler_s_t target) const {
 	return pros::c::imu_set_euler(_port, target);
 }
 
@@ -117,4 +119,5 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
+}  // namespace v5
 }  // namespace pros
