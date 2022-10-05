@@ -382,26 +382,29 @@ uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16
 /**                    information about screen touches                      **/
 /******************************************************************************/
 
-static const screen_touch_status_s_t PROS_SCREEN_ERR = {.touch_status = E_TOUCH_ERROR, .x = -1, .y = -1, .press_count = -1, .release_count = -1};
-
 screen_touch_status_s_t screen_touch_status(void){
-	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
-		errno = EACCES;
-		return PROS_SCREEN_ERR;
-	}
 	V5_TouchStatus v5_touch_status;
-	screen_touch_status_s_t rtv;
+	bool mutex_take_failed = 1;
+	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
+		mutex_take_failed = 0;
+	}
 	vexTouchDataGet(&v5_touch_status);
+	screen_touch_status_s_t rtv;
 	rtv.touch_status = (last_touch_e_t)v5_touch_status.lastEvent;
 	rtv.x = v5_touch_status.lastXpos;
 	rtv.y = v5_touch_status.lastYpos;
 	rtv.press_count = v5_touch_status.pressCount;
 	rtv.release_count = v5_touch_status.releaseCount;
-	if (!mutex_give(_screen_mutex)) {
-		errno = EACCES;
-		return PROS_SCREEN_ERR;
-	} 
-	return rtv;
+	if (mutex_take_failed == 1 || !mutex_give(_screen_mutex)) {
+		rtv.touch_status = E_TOUCH_ERROR;
+		rtv.x = -1;
+		rtv.y = -1;
+		rtv.press_count = -1;
+		rtv.release_count = -1;
+		return rtv;
+	} else {
+		return rtv;
+	}
 }
 
 static linked_list_s_t* _touch_event_release_handler_list = NULL;
@@ -444,9 +447,9 @@ static task_stack_t touch_handle_task_stack[TASK_STACK_DEPTH_DEFAULT];
 static static_task_s_t touch_handle_task_buffer;
 static task_t touch_handle_task;
 
-// volatile because some linters think this is going to be optimized out
-static volatile void _handle_cb(ll_node_s_t* current, void* extra_data) {
-	(current->payload.func)();
+static void _handle_cb(ll_node_s_t* current, void* data) {
+	((touch_event_cb_fn_t)(current->payload.func))(((touch_event_position_data_s_t*)(data))->x,
+	                                               ((touch_event_position_data_s_t*)(data))->y);
 }
 
 static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) {
@@ -458,21 +461,23 @@ void _touch_handle_task(void* ignore) {
 	while (true) {
 		mutex_take(_screen_mutex, TIMEOUT_MAX);
         vexTouchDataGet(&current);
-		mutex_give(_screen_mutex);
 		if (!_touch_status_equivalent(current, last)) {
+			touch_event_position_data_s_t event_data = { .x = current.lastXpos, .y = current.lastYpos };
 			switch (current.lastEvent) {
 			case E_TOUCH_RELEASED:
-				linked_list_foreach(_touch_event_release_handler_list, _handle_cb, NULL);
+				linked_list_foreach(_touch_event_release_handler_list, _handle_cb, (void*)&event_data);
 				break;
 			case E_TOUCH_PRESSED:
-				linked_list_foreach(_touch_event_press_handler_list, _handle_cb, NULL);
+				linked_list_foreach(_touch_event_press_handler_list, _handle_cb, (void*)&event_data);
 				break;
 			case E_TOUCH_HELD:
-				linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb, NULL);
+				linked_list_foreach(_touch_event_press_auto_handler_list, _handle_cb,
+				                    (void*)&event_data);
 				break;
 			}
 			last = current;
 		}
+        mutex_give(_screen_mutex);
 		delay(10);
 	}
 }
