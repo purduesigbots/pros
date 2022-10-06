@@ -28,11 +28,11 @@ void initialize() {
 	}
 
 	led.set_buffer(buffer, LED_MAX, 0);
-	led.set_state(HIGH);
+	led.turn_on();
 
 	while (true)
 	{
-		led.set_state(!(led.get_state()));
+		led.turn(!(led.get_state()));
 		pros::Task::delay(2000);
 	}
 	

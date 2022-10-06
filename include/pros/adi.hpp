@@ -773,7 +773,7 @@ class ADILed : protected ADIPort {
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 */
-	ADILed(std::uint8_t adi_port);
+	ADILed(std::uint8_t adi_port, std::uint32_t buffer_length);
 
 	/**
 	 * @brief Configures an ADI port on a adi_expander to act as a LED.
@@ -787,7 +787,7 @@ class ADILed : protected ADIPort {
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 */
-	ADILed(ext_adi_port_pair_t port_pair);
+	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length);
 
 	/**
 	 * @brief Turns the entire LED string on or off.
@@ -836,6 +836,9 @@ class ADILed : protected ADIPort {
 	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
 	 */
 	std::int32_t clear_buffer(std::uint32_t buffer_length) const;
+
+	protected:
+	std::uint32_t _buffer_length;
 };
 using ADILED = ADILed;
 

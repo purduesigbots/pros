@@ -159,13 +159,13 @@ double ADIPotentiometer::get_angle() const {
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
 
-ADILed::ADILed(std::uint8_t adi_port) : ADIPort(adi_port) {
+ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi_port), _buffer_length {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
 	_smart_port++; // for inherited functions this is necessary
 }
 
-ADILed::ADILed(ext_adi_port_pair_t port_pair) : ADIPort(std::get<1>(port_pair)) {
+ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADIPort(std::get<1>(port_pair)), _buffer_length {
 	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
 	get_ports(_port, _smart_port, _adi_port);
 	_smart_port++; // for inherited functions this is necessary

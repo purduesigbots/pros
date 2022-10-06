@@ -485,6 +485,12 @@ int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buf
 	{
 		offset = MAX_LED - 1;
 	}
+	if (buffer_length < 0) {
+		buffer_length = 0;
+	}
+	if (offset + buffer_length > MAX_LED) {
+		buffer_length = MAX_LED - offset;
+	}
 	vexAdiAddrLedSet(device->device_info, adi_port, buffer, offset, buffer_length, 0);
 
 	return_port(smart_port, PROS_SUCCESS);
