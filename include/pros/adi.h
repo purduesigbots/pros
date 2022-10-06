@@ -788,7 +788,23 @@ adi_led_t adi_led_init(uint8_t port);
  * @param value boolean LOW or HIGH
  * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
  */
-int32_t adi_led_set_state(adi_led_t led, bool value);
+int32_t adi_led_turn(adi_led_t led, bool value);
+
+/**
+ * @brief Turn the entire LED string off.
+ * 
+ * @param led port of type adi_led_t
+ * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
+ */
+int32_t adi_led_turn_off(adi_led_t led);
+
+/**
+ * @brief Turn the entire LED string off.
+ * 
+ * @param led port of type adi_led_t
+ * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
+ */
+int32_t adi_led_turn_on(adi_led_t led);
 
 /**
  * @brief Get the state of the LED string

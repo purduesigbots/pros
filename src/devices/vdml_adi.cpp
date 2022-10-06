@@ -171,8 +171,16 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair) : ADIPort(std::get<1>(port_pair)) 
 	_smart_port++; // for inherited functions this is necessary
 }
 
-std::int32_t ADILed::set_state(bool value) const {
-	return adi_led_set_state(merge_adi_ports(_smart_port, _adi_port), value);
+std::int32_t ADILed::turn(bool value) const {
+	return adi_led_turn(merge_adi_ports(_smart_port, _adi_port), value);
+}
+
+std::int32_t ADILed::turn_off() const {
+	return adi_led_turn_off(merge_adi_ports(_smart_port, _adi_port));
+}
+
+std::int32_t ADILed::turn_on() const {
+	return adi_led_turn_on(merge_adi_ports(_smart_port, _adi_port));
 }
 
 bool ADILed::get_state() const {

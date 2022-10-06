@@ -133,8 +133,16 @@ adi_led_t adi_led_init(uint8_t port) {
 	return (adi_led_t)ext_adi_led_init(INTERNAL_ADI_PORT, port);
 }
 
-int32_t adi_led_set_state(adi_led_t led, bool value) {
-	return ext_adi_led_set_state((ext_adi_led_t)led, value);
+int32_t adi_led_turn(adi_led_t led, bool value) {
+	return ext_adi_led_turn((ext_adi_led_t)led, value);
+}
+
+int32_t adi_led_turn_off(adi_led_t led) {
+	return ext_adi_led_turn((ext_adi_led_t)led, LOW);
+}
+
+int32_t adi_led_turn_on(adi_led_t led) {
+	return ext_adi_led_turn((ext_adi_led_t)led, HIGH);
 }
 
 bool adi_led_get_state(adi_led_t led) {

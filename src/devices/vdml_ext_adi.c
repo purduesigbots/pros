@@ -455,7 +455,7 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-int32_t ext_adi_led_set_state(ext_adi_led_t led, bool value) {
+int32_t ext_adi_led_turn(ext_adi_led_t led, bool value) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
 	return ext_adi_digital_write(smart_port, adi_port, value);
@@ -475,9 +475,9 @@ int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buf
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
 
 	if(buffer == NULL) {
-        errno = EINVAL;
-        return PROS_ERR;
-    }
+		errno = EINVAL;
+		return PROS_ERR;
+	}
 	if (offset < 0) {
 		offset = 0;
 	}
@@ -485,7 +485,6 @@ int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buf
 	{
 		offset = MAX_LED - 1;
 	}
-	//TBD: what is the behavior of vexAdiAddrLedSet with a buffer too long (beyond INT_MAX?)
 	vexAdiAddrLedSet(device->device_info, adi_port, buffer, offset, buffer_length, 0);
 
 	return_port(smart_port, PROS_SUCCESS);

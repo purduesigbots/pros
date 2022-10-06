@@ -706,7 +706,7 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port);
  * @param value boolean HIGH or LOW
  * @return PROS_SUCCESS if successful, PROS_ERR if not, setting errno
  */
-int32_t ext_adi_led_set_state(ext_adi_led_t led, bool value);
+int32_t ext_adi_led_turn(ext_adi_led_t led, bool value);
 
 /**
  * @brief Get the LED state on or off

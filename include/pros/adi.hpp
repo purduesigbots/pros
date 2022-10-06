@@ -795,7 +795,21 @@ class ADILed : protected ADIPort {
 	 * @param value boolean
 	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
 	 */
-	std::int32_t set_state(bool value) const;
+	std::int32_t turn(bool value) const;
+
+	/**
+	 * @brief Turns the entire LED string on.
+	 * 
+	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
+	 */
+	std::int32_t turn_off() const;
+
+	/**
+	 * @brief Turns the entire LED string off.
+	 * 
+	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
+	 */
+	std::int32_t turn_on() const;
 
 	/**
 	 * @brief Get the state of the LED string
