@@ -11,23 +11,12 @@
 void initialize() {
 	pros::lcd::initialize();
 
-	pros::ADILed led = pros::ADILed(LED_PORT);
+	pros::ADILed led = pros::ADILed(LED_PORT, LED_MAX);
 
-	uint32_t buffer[LED_MAX];
-	for (int i = 0; i < LED_MAX; i++)
-	{
-		if (i % 3 == 0) {
-			buffer[i] = 0x800000;
-		}
-		else if (i % 3 == 1) {
-			buffer[i] = 0x008000;
-		}
-		else if (i % 3 == 2) {
-			buffer[i] = 0x000080;
-		}
+	for (int i = 0; i < LED_MAX; i++) {
+		led[i] = (i % 2) ? 0x800000 : 0x008000;
 	}
-
-	led.set_buffer(buffer, LED_MAX, 0);
+	led.update();
 	led.turn_on();
 
 	while (true)

@@ -14,6 +14,8 @@
 #include "pros/adi.hpp"
 #include "vdml/port.h"
 
+#define MAX_LED 64
+
 namespace pros {
 using namespace pros::c;
 
@@ -170,10 +172,9 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi
 		buffer_length = MAX_LED;
 	}
 	_buffer_length = buffer_length;
-	_buffer = malloc(sizeof(std::uint32_t) * buffer_length);
+	_buffer = (std::uint32_t*)malloc(sizeof(std::uint32_t) * buffer_length);
 	if (_buffer == NULL) {
 		errno = EACCES;
-		return PROS_ERR
 	}
 	for (std::uint32_t i = 0; i < buffer_length; i++) {
 		_buffer[i] = 0x000000;
@@ -191,10 +192,9 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADI
 		buffer_length = MAX_LED;
 	}
 	_buffer_length = buffer_length;
-	_buffer = malloc(sizeof(std::uint32_t) * buffer_length);
+	_buffer = (std::uint32_t*)malloc(sizeof(std::uint32_t) * buffer_length);
 	if (_buffer == NULL) {
 		errno = EACCES;
-		return PROS_ERR
 	}
 	for (std::uint32_t i = 0; i < buffer_length; i++) {
 		_buffer[i] = 0x000000;
@@ -218,7 +218,7 @@ bool ADILed::get_state() const {
 }
 
 uint32_t& ADILed::operator[] (size_t i) {
-	return buffer[i];
+	return _buffer[i];
 }
 
 std::int32_t ADILed::update() const {
