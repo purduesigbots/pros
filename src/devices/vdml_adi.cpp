@@ -159,16 +159,46 @@ double ADIPotentiometer::get_angle() const {
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
 
-ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi_port), _buffer_length {
+ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi_port) {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
 	_smart_port++; // for inherited functions this is necessary
+	if (buffer_length < 1) {
+		buffer_length = 1;
+	}
+	if (buffer_length > MAX_LED) {
+		buffer_length = MAX_LED;
+	}
+	_buffer_length = buffer_length;
+	_buffer = malloc(sizeof(std::uint32_t) * buffer_length);
+	if (_buffer == NULL) {
+		errno = EACCES;
+		return PROS_ERR
+	}
+	for (int i = 0; i < buffer_length; i++) {
+		_buffer[i] = 0x000000;
+	}
 }
 
-ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADIPort(std::get<1>(port_pair)), _buffer_length {
+ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADIPort(std::get<1>(port_pair)) {
 	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
 	get_ports(_port, _smart_port, _adi_port);
 	_smart_port++; // for inherited functions this is necessary
+	if (buffer_length < 1) {
+		buffer_length = 1;
+	}
+	if (buffer_length > MAX_LED) {
+		buffer_length = MAX_LED;
+	}
+	_buffer_length = buffer_length;
+	_buffer = malloc(sizeof(std::uint32_t) * buffer_length);
+	if (_buffer == NULL) {
+		errno = EACCES;
+		return PROS_ERR
+	}
+	for (int i = 0; i < buffer_length; i++) {
+		_buffer[i] = 0x000000;
+	}
 }
 
 std::int32_t ADILed::turn(bool value) const {
@@ -185,6 +215,15 @@ std::int32_t ADILed::turn_on() const {
 
 bool ADILed::get_state() const {
 	return adi_led_get_state(merge_adi_ports(_smart_port, _adi_port));
+}
+
+uint32_t& ADILed::operator[] (size_t i) {
+	return buffer[i];
+}
+
+std::int32_t ADILed::update() const {
+	uint8_t temp_smart = _smart_port - 1;
+	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), _buffer, _buffer_length, 0);
 }
 
 std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const {

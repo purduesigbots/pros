@@ -819,6 +819,13 @@ class ADILed : protected ADIPort {
 	bool get_state() const;
 
 	/**
+	 * @brief Update the LEDs with the object buffer
+	 * 
+	 * @return std::int32_t PROS_SUCCESS if success, PROS_ERR if failure setting errno
+	 */
+	std::int32_t ADILed::update() const;
+
+	/**
 	 * @brief Set pixels in led to colors using an array of uint32_t colors
 	 * 
 	 * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
@@ -839,6 +846,7 @@ class ADILed : protected ADIPort {
 
 	protected:
 	std::uint32_t _buffer_length;
+	std::uint32_t* _buffer;
 };
 using ADILED = ADILed;
 
