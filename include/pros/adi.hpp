@@ -824,7 +824,7 @@ class ADILed : protected ADIPort {
 	 * @param i index of the buffer
 	 * @return uint32_t& the address of the buffer at i to modify
 	 */
-	uint32_t& operator[] (size_t i)
+	uint32_t& operator[] (size_t i);
 
 	/**
 	 * @brief Update the LEDs with the object buffer
