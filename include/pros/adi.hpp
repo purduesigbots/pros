@@ -823,7 +823,7 @@ class ADILed : protected ADIPort {
 	 * 
 	 * @return std::int32_t PROS_SUCCESS if success, PROS_ERR if failure setting errno
 	 */
-	std::int32_t ADILed::update() const;
+	std::int32_t update() const;
 
 	/**
 	 * @brief Set pixels in led to colors using an array of uint32_t colors
