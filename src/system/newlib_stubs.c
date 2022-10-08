@@ -20,6 +20,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include "kapi.h"
+
 #include "rtos/task.h"
 #include "v5_api.h"
 
@@ -96,10 +98,12 @@ void set_get_timestamp_int_func(const int (*func)(void))
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
 	if (competition_is_connected()) {
-		tp->tv_sec = vexSystemTimeGet() / 1000;
+		kprintf("Using competition calculation");
+		tp->tv_sec = get_timestamp_int_func();
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
 	else {
+		kprintf("Using other calculation");
 		tp->tv_sec = get_timestamp_int_func();
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
