@@ -819,6 +819,14 @@ class ADILed : protected ADIPort {
 	bool get_state() const;
 
 	/**
+	 * @brief Operator overload to access the buffer in the ADILed class
+	 * 
+	 * @param i index of the buffer
+	 * @return uint32_t& the address of the buffer at i to modify
+	 */
+	uint32_t& operator[] (size_t i)
+
+	/**
 	 * @brief Update the LEDs with the object buffer
 	 * 
 	 * @return std::int32_t PROS_SUCCESS if success, PROS_ERR if failure setting errno

@@ -175,7 +175,7 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi
 		errno = EACCES;
 		return PROS_ERR
 	}
-	for (int i = 0; i < buffer_length; i++) {
+	for (std::uint32_t i = 0; i < buffer_length; i++) {
 		_buffer[i] = 0x000000;
 	}
 }
@@ -196,7 +196,7 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADI
 		errno = EACCES;
 		return PROS_ERR
 	}
-	for (int i = 0; i < buffer_length; i++) {
+	for (std::uint32_t i = 0; i < buffer_length; i++) {
 		_buffer[i] = 0x000000;
 	}
 }
