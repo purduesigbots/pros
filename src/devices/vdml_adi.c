@@ -10,6 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "pros/adi.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
@@ -133,26 +134,22 @@ adi_led_t adi_led_init(uint8_t port) {
 	return (adi_led_t)ext_adi_led_init(INTERNAL_ADI_PORT, port);
 }
 
-int32_t adi_led_turn(adi_led_t led, bool value) {
-	return ext_adi_led_turn((ext_adi_led_t)led, value);
+int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set(led, buffer, buffer_length);
 }
 
-int32_t adi_led_turn_off(adi_led_t led) {
-	return ext_adi_led_turn((ext_adi_led_t)led, LOW);
+int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel((ext_adi_led_t)led, buffer, buffer_length, color, pixel_position);
 }
 
-int32_t adi_led_turn_on(adi_led_t led) {
-	return ext_adi_led_turn((ext_adi_led_t)led, HIGH);
+int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
+	return ext_adi_led_set_all((ext_adi_led_t)led, buffer, buffer_length, color);
 }
 
-bool adi_led_get_state(adi_led_t led) {
-	return (bool)ext_adi_led_get_state((ext_adi_led_t)led);
+int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set_all((ext_adi_led_t)led, buffer, buffer_length, 0);
 }
 
-int32_t adi_led_set_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
-	return ext_adi_led_set_buffer((ext_adi_led_t)led, buffer, buffer_length, offset);
-}
-
-int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length) {
-	return ext_adi_led_clear_buffer((ext_adi_led_t)led, buffer_length);
+int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel((ext_adi_led_t)led, buffer, buffer_length, 0, pixel_position);
 }

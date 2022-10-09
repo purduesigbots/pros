@@ -18,6 +18,7 @@
 #include "pros/adi.h"
 #include "pros/ext_adi.h"
 #include "v5_api.h"
+#include "v5_apitypes.h"
 #include "vdml/port.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
@@ -404,7 +405,6 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
-
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
 }
@@ -417,7 +417,6 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
-
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
@@ -428,9 +427,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	transform_adi_port(adi_port);
 	claim_port_f(smart_port, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_ANALOG_IN);
-
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
-
 	switch (adi_data->potentiometer_data.potentiometer_type) {
 		case E_ADI_POT_EDR:
 			rtn = vexDeviceAdiValueGet(device->device_info, adi_port) * 250 / 4095.0;
@@ -448,65 +445,52 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
-
-	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_DIGITAL_OUT); //digital out according to sample code
-	vexDeviceAdiValueSet(device->device_info, adi_port, (int32_t)LOW);
-	
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
 	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
-int32_t ext_adi_led_turn(ext_adi_led_t led, bool value) {
+int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
-	return ext_adi_digital_write(smart_port, adi_port, value);
-}
-
-bool ext_adi_led_get_state(ext_adi_led_t led) {
-	uint8_t smart_port, adi_port;
-	get_ports(led, smart_port, adi_port);
-	return (bool)ext_adi_digital_read(smart_port, adi_port);
-}
-
-int32_t ext_adi_led_set_buffer(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset) {
-	uint8_t smart_port, adi_port;
-	get_ports(led, smart_port, adi_port);
-	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
+	transform_adi_port(adi_port);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
-
-	if(buffer == NULL) {
-		errno = EINVAL;
-		return PROS_ERR;
-	}
-	if (offset < 0) {
-		offset = 0;
-	}
-	else if (offset >= MAX_LED)
-	{
-		offset = MAX_LED - 1;
-	}
-	if (buffer_length < 0) {
-		buffer_length = 0;
-	}
-	if (offset + buffer_length > MAX_LED) {
-		buffer_length = MAX_LED - offset;
-	}
-	vexAdiAddrLedSet(device->device_info, adi_port, buffer, offset, buffer_length, 0);
-
-	return_port(smart_port, PROS_SUCCESS);
-}
-
-int32_t ext_adi_led_clear_buffer(ext_adi_led_t led, uint32_t buffer_length) {
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
 	}
-	else if (buffer_length < 1)
+	else if (buffer == NULL || buffer_length < 1 || buffer_length)
 	{
-		buffer_length = 1;
+		errno = EINVAL;
+		return PROS_ERR;
 	}
-	uint32_t buf[buffer_length];
-	for (int i = 0; i < buffer_length; i++) {
-		buf[i] = 0;
+	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
+	return_port(smart_port, rtv);
+}
+
+int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
+	uint8_t smart_port, adi_port;
+	get_ports(led, smart_port, adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI);
+	transform_adi_port(adi_port);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
+	if(buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 || pixel_position > buffer_length - 1) {
+		errno = EINVAL;
+		return_port(smart_port - 1, PROS_ERR);
 	}
-	return ext_adi_led_set_buffer(led, buf, buffer_length, 0);
+	buffer[pixel_position] = color;
+	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
+	return_port(smart_port, rtv);
+}
+
+int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
+	memset(buffer, color, buffer_length * sizeof(uint32_t));
+	return ext_adi_led_set(led, buffer, buffer_length);
+}
+
+int32_t ext_adi_led_clear_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set_all(led, buffer, buffer_length, 0);
+}
+
+int32_t ext_adi_led_clear_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel(led, buffer, buffer_length, 0, pixel_position);
 }

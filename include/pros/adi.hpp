@@ -773,8 +773,10 @@ class ADILed : protected ADIPort {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 *        The number of LEDs in the chain
 	 */
-	ADILed(std::uint8_t adi_port, std::uint32_t buffer_length);
+	ADILed(std::uint8_t adi_port, std::uint32_t length);
 
 	/**
 	 * @brief Configures an ADI port on a adi_expander to act as a LED.
@@ -787,75 +789,104 @@ class ADILed : protected ADIPort {
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 * 	  The number of LEDs in the chain
 	 */
-	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length);
+	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length);
 
 	/**
-	 * @brief Turns the entire LED string on or off.
+	 * @brief Operator overload to access the buffer in the ADILed class, it is 
+	 * recommended that you call .update(); after doing any operations with this.
 	 * 
-	 * @param value boolean
-	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
-	 */
-	std::int32_t turn(bool value) const;
-
-	/**
-	 * @brief Turns the entire LED string on.
-	 * 
-	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
-	 */
-	std::int32_t turn_off() const;
-
-	/**
-	 * @brief Turns the entire LED string off.
-	 * 
-	 * @return PROS_SUCCESS if successful, PROS_ERR if failure, setting errno
-	 */
-	std::int32_t turn_on() const;
-
-	/**
-	 * @brief Get the state of the LED string
-	 * 
-	 * @return bool HIGH or LOW if successful, PROS_ERR if failure setting errno
-	 */
-	bool get_state() const;
-
-	/**
-	 * @brief Operator overload to access the buffer in the ADILed class
-	 * 
-	 * @param i index of the buffer
+	 * @param i 0 indexed pixel of the lED
 	 * @return uint32_t& the address of the buffer at i to modify
 	 */
-	uint32_t& operator[] (size_t i);
+	std::uint32_t& operator[] (size_t i);
 
 	/**
-	 * @brief Update the LEDs with the object buffer
-	 * 
-	 * @return std::int32_t PROS_SUCCESS if success, PROS_ERR if failure setting errno
-	 */
+	* @brief Clear the entire led strip of color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* ENXIO - The given value is not within the range of ADI Ports
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t clear_all();
+	std::int32_t clear();
+	
+	/**
+	* @brief Force the LED strip to update with the current buffered values, this
+	* should be called after any changes to the buffer using the [] operator.
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
 	std::int32_t update() const;
 
 	/**
-	 * @brief Set pixels in led to colors using an array of uint32_t colors
-	 * 
-	 * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
-	 * @param buffer_length length of color array
-	 * @param offset amount of offset from first pixel in led to apply color
-	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
-	 */
-	std::int32_t set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const;
+	* @brief Set the entire led strip to one color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to set all the led strip value to
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t set_all(uint32_t color);
 
 	/**
-	 * @brief Clears buffer of led
-	 * 
-	 * @param led port of type adi_led_t
-	 * @param buffer_length length of buffer to clear
-	 * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
-	 */
-	std::int32_t clear_buffer(std::uint32_t buffer_length) const;
+	* @brief Set one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to clear all the led strip to
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t set_pixel(uint32_t color, uint32_t pixel_position);
+
+	/**
+	* @brief Clear one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t clear_pixel(uint32_t pixel_position);
+
+	/**
+	* @brief Get the length of the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return The length (in pixels) of the LED strip
+	*/
+	std::int32_t length();
 
 	protected:
 	std::vector<uint32_t> _buffer;
 };
+
+// Alias for ADILed
 using ADILED = ADILed;
 
 }  // namespace pros

@@ -771,7 +771,8 @@ typedef int32_t adi_led_t;
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of ADI Ports
- * EADDRINUSE - The port is not configured as a led
+ * EINVAL - The ADI port given is not a valid port as defined below
+ * EADDRINUSE - The port is not configured for ADI output
  *
  * \param port
  *        The ADI port to initialize as a led (from 1-8, 'a'-'h', 'A'-'H')
@@ -782,57 +783,88 @@ typedef int32_t adi_led_t;
 adi_led_t adi_led_init(uint8_t port);
 
 /**
- * @brief Turn the entire LED string on or off.
- * 
+ * @brief Clear the entire led strip of color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EINVAL - A given value is not correct, or the buffer is null
+ * EADDRINUSE - The port is not configured for ADI output
+ *
  * @param led port of type adi_led_t
- * @param value boolean LOW or HIGH
- * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
- */
-int32_t adi_led_turn(adi_led_t led, bool value);
-
-/**
- * @brief Turn the entire LED string off.
- * 
- * @param led port of type adi_led_t
- * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
- */
-int32_t adi_led_turn_off(adi_led_t led);
-
-/**
- * @brief Turn the entire LED string off.
- * 
- * @param led port of type adi_led_t
- * @return PROS_SUCCESS if successful, PROS_ERR if failure setting errno
- */
-int32_t adi_led_turn_on(adi_led_t led);
-
-/**
- * @brief Get the state of the LED string
- * 
- * @param led port of type adi_led_t
- * @return bool HIGH or LOW if successful, PROS_ERR if failure setting errno
- */
-bool adi_led_get_state(adi_led_t led);
-
-/**
- * @brief Set pixels in led to colors using an array of uint32_t colors
- * 
- * @param led port of type adi_led_t
- * @param buffer array of colors in format 0xRRGGBB, each individual RGB value not to exceed 0x80
- * @param buffer_length length of color array
- * @param offset amount of offset from first pixel in led to apply color
- * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
- */
-int32_t adi_led_set_buffer(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t offset);
-
-/**
- * @brief Clears buffer of led
- * 
- * @param led port of type adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
- * @return PROS_SUCCESS if success, PROS_ERR if failure setting errno
+ * @return PROS_SUCCESS if successful, PROS_ERR if not
  */
-int32_t adi_led_clear_buffer(adi_led_t led, uint32_t buffer_length);
+int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
+
+/**
+ * @brief Set the entire led strip using the colors contained in the buffer
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EINVAL - A given value is not correct, or the buffer is null
+ * EADDRINUSE - The port is not configured for ADI output
+ *
+ * @param led port of type adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer_length length of buffer to clear
+ * @return PROS_SUCCESS if successful, PROS_ERR if not
+ */
+int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
+
+/**
+ * @brief Set the entire led strip to one color
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EINVAL - A given value is not correct, or the buffer is null
+ * EADDRINUSE - The port is not configured for ADI output
+ *
+ * @param led port of type adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer_length length of buffer to clear
+ * @param color color to set all the led strip value to
+ * @return PROS_SUCCESS if successful, PROS_ERR if not
+ */
+int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color);
+
+/**
+ * @brief Set one pixel on the led strip
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EINVAL - A given value is not correct, or the buffer is null
+ * EADDRINUSE - The port is not configured for ADI output
+ *
+ * @param led port of type adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer_length length of the input buffer
+ * @param color color to clear all the led strip to
+ * @param pixel_position position of the pixel to clear
+ * @return PROS_SUCCESS if successful, PROS_ERR if not
+ */
+int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position);
+
+/**
+ * @brief Clear one pixel on the led strip
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of ADI Ports
+ * EINVAL - A given value is not correct, or the buffer is null
+ * EADDRINUSE - The port is not configured for ADI output
+ *
+ * @param led port of type adi_led_t
+ * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
+ * @param buffer_length length of the input buffer
+ * @param pixel_position position of the pixel to clear
+ * @return PROS_SUCCESS if successful, PROS_ERR if not
+ */
+int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
 
 #ifdef __cplusplus
 }  // namespace c
