@@ -202,23 +202,23 @@ std::int32_t ADILed::length() {
 }
 
 std::int32_t ADILed::set_all(uint32_t color) {
-	adi_led_set_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), color);
+	return adi_led_set_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), color);
 }
 
 std::int32_t ADILed::set_pixel(uint32_t color, uint32_t pixel_position) {
-	adi_led_set_pixel((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), color, pixel_position);
+	return adi_led_set_pixel((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), color, pixel_position);
 }
 
 std::int32_t ADILed::clear_all() {
-	adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size());
+	return adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size());
 }
 
 std::int32_t ADILed::clear() {
-	adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size());
+	return adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size());
 }
 
 std::int32_t ADILed::clear_pixel(uint32_t pixel_position) {
-	adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), pixel_position);
+	return adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.size(), pixel_position);
 }
 
 }  // namespace pros
