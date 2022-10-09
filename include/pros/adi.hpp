@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "pros/adi.h"
 
@@ -853,8 +854,7 @@ class ADILed : protected ADIPort {
 	std::int32_t clear_buffer(std::uint32_t buffer_length) const;
 
 	protected:
-	std::uint32_t _buffer_length;
-	std::uint32_t* _buffer;
+	std::vector<uint32_t> _buffer;
 };
 using ADILED = ADILed;
 

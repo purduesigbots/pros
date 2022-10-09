@@ -171,14 +171,9 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
 	}
-	_buffer_length = buffer_length;
-	_buffer = (std::uint32_t*)malloc(sizeof(std::uint32_t) * buffer_length);
-	if (_buffer == NULL) {
-		errno = EACCES;
-	}
-	for (std::uint32_t i = 0; i < buffer_length; i++) {
-		_buffer[i] = 0x000000;
-	}
+	_buffer.resize(buffer_length);
+	fill(_buffer.begin(), _buffer.end(), 0x000000);
+	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), &_buffer[0], _buffer.max_size(), 0);
 }
 
 ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADIPort(std::get<1>(port_pair)) {
@@ -191,14 +186,9 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADI
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
 	}
-	_buffer_length = buffer_length;
-	_buffer = (std::uint32_t*)malloc(sizeof(std::uint32_t) * buffer_length);
-	if (_buffer == NULL) {
-		errno = EACCES;
-	}
-	for (std::uint32_t i = 0; i < buffer_length; i++) {
-		_buffer[i] = 0x000000;
-	}
+	_buffer.resize(buffer_length);
+	fill(_buffer.begin(), _buffer.end(), 0x000000);
+	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), &_buffer[0], _buffer.max_size(), 0);
 }
 
 std::int32_t ADILed::turn(bool value) const {
@@ -223,7 +213,7 @@ uint32_t& ADILed::operator[] (size_t i) {
 
 std::int32_t ADILed::update() const {
 	uint8_t temp_smart = _smart_port - 1;
-	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), _buffer, _buffer_length, 0);
+	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), (uint32_t*)&_buffer[0], _buffer.max_size(), 0);
 }
 
 std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const {
