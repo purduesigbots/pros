@@ -213,7 +213,7 @@ uint32_t& ADILed::operator[] (size_t index) {
 
 std::int32_t ADILed::update() const {
 	uint8_t temp_smart = _smart_port - 1;
-	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), _buffer.data(), _buffer.max_size(), 0);
+	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), (uint32_t*)_buffer.data(), _buffer.max_size(), 0);
 }
 
 std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const {
