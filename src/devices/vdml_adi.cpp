@@ -173,7 +173,7 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t buffer_length) : ADIPort(adi
 	}
 	_buffer.resize(buffer_length);
 	fill(_buffer.begin(), _buffer.end(), 0x000000);
-	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), &_buffer[0], _buffer.max_size(), 0);
+	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.max_size(), 0);
 }
 
 ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADIPort(std::get<1>(port_pair)) {
@@ -188,7 +188,7 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t buffer_length) : ADI
 	}
 	_buffer.resize(buffer_length);
 	fill(_buffer.begin(), _buffer.end(), 0x000000);
-	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), &_buffer[0], _buffer.max_size(), 0);
+	adi_led_set_buffer(merge_adi_ports(_smart_port - 1, _adi_port), _buffer.data(), _buffer.max_size(), 0);
 }
 
 std::int32_t ADILed::turn(bool value) const {
@@ -207,13 +207,13 @@ bool ADILed::get_state() const {
 	return adi_led_get_state(merge_adi_ports(_smart_port, _adi_port));
 }
 
-uint32_t& ADILed::operator[] (size_t i) {
-	return _buffer[i];
+uint32_t& ADILed::operator[] (size_t index) {
+	return _buffer[index];
 }
 
 std::int32_t ADILed::update() const {
 	uint8_t temp_smart = _smart_port - 1;
-	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), (uint32_t*)&_buffer[0], _buffer.max_size(), 0);
+	return adi_led_set_buffer(merge_adi_ports(temp_smart, _adi_port), _buffer.data(), _buffer.max_size(), 0);
 }
 
 std::int32_t ADILed::set_buffer(std::uint32_t* buffer, std::uint32_t buffer_length, std::uint32_t offset) const {
