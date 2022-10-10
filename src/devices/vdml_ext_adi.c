@@ -462,10 +462,10 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 
 int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
 	uint8_t smart_port, adi_port;
-	get_ports(led, smart_port, adi_port);
+	get_ports(led, smart_port - 1, adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 	transform_adi_port(adi_port);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);//subtracted 1 from smart_port
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
 	}
@@ -477,13 +477,13 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 	}
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
 	printf("rtv: %d", rtv);
-	return_port(smart_port, rtv);
+	return_port(smart_port - 1, rtv); //subtracted 1 from smart_port
 }
 
 int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI); //subtracted 1 from smart_port
 	transform_adi_port(adi_port);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
 	if(buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 || pixel_position > buffer_length - 1) {
@@ -492,7 +492,7 @@ int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buff
 	}
 	buffer[pixel_position] = color;
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
-	return_port(smart_port, rtv);
+	return_port(smart_port - 1, rtv); //subtracted 1 from smart_port
 }
 
 int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
