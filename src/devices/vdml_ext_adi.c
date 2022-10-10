@@ -368,7 +368,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 	adi_data->gyro_data.multiplier = multiplier;
 	adi_data->gyro_data.tare_value = 0;
 
-	adi_port_config_e_t config = vexDeviceAdiPortConfigGet(device->device_info, adi_port);
+	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port);
 	if (config == E_ADI_LEGACY_GYRO) {
 		// Port has already been calibrated, no need to do that again
 		return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
@@ -457,7 +457,7 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
 int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {

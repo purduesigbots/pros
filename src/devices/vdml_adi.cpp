@@ -171,7 +171,6 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) 
 	if (length > MAX_LED) {
 		length = MAX_LED;
 	}
-	std::cout << __LINE__ << std::endl << std::flush;
 	_buffer.resize(length, 0);
 }
 
