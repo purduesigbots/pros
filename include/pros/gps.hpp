@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/gps.h"
 
@@ -288,6 +289,9 @@ class Gps {
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::gps_accel_s_t get_accel() const;
+
+	// todo: document what this does. (Relevant link: https://learn.microsoft.com/en-us/cpp/standard-library/overloading-the-output-operator-for-your-own-classes?view=msvc-170)
+	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 ///@}
 };  // Gps Class
 }

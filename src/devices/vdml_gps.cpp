@@ -72,5 +72,17 @@ pros::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
 }
 
+std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
+	pros::gps_status_s_t data = gps.get_status();
+	os << "Gps [";
+	os << "port: " << gps._port;
+	os << ", x: " << data.x;
+	os << ", y: " << data.y;
+	os << ", heading: " << gps.get_heading();
+	os << ", rotation: " << gps.get_rotation();
+	os << "]";
+	return os;
+}
+
 }
 }  // namespace pros
