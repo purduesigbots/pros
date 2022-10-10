@@ -166,8 +166,9 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) 
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
 	_smart_port++; // for inherited functions this is necessary
-	std::cout << "Line: " << __LINE__ <<  " Smart Port: " << _smart_port << std::endl << std::flush;
-	std::cout << " Smart Port (pls print...): " << _smart_port << std::endl << std::flush;
+	int temp_smart_port = _smart_port;
+	std::cout << "Line: " << __LINE__ <<  " Smart Port: " << (int)_smart_port << std::endl << std::flush;
+	std::cout << " Smart Port (pls print...): " << temp_smart_port << std::endl << std::flush;
 	if (length < 1) {
 		length = 0;
 	}
@@ -206,6 +207,7 @@ std::int32_t ADILed::length() {
 }
 
 std::int32_t ADILed::set_all(uint32_t color) {
+	std::cout << "Entered set_all, Smart Port: " << (int)_smart_port << std::endl << std::flush;
 	return ext_adi_led_set_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), color);
 }
 
