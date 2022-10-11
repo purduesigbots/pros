@@ -842,7 +842,7 @@ class Motor {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
-	 * setting errno.Motor_Group
+	 * setting errno.
 	 */
 	virtual std::int32_t get_voltage_limit(void) const;
 
