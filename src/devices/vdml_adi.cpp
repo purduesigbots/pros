@@ -177,7 +177,6 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) 
 ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length) : ADIPort(std::get<1>(port_pair)) {
 	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
 	if (length < 1) {
 		length = 0;
 	}

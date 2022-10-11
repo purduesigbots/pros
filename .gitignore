@@ -13,3 +13,10 @@ temp.errors
 .d/
 .clangd/
 .cache/
+include/v5_api.h
+include/v5_apiprivate.h
+include/v5_apitypes.h
+include/v5_apiuser.h
+include/v5_color.h
+include/v5.h
+firmware/libv5rts
