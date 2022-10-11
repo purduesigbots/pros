@@ -27,35 +27,35 @@ std::int32_t Rotation::set_data_rate(std::uint32_t rate) const {
 	return pros::c::rotation_set_data_rate(_port, rate);
 }
 
-std::int32_t Rotation::set_position(std::uint32_t position) {
+std::int32_t Rotation::set_position(std::uint32_t position) const {
 	return pros::c::rotation_set_position(_port, position);
 }
 
-std::int32_t Rotation::reset_position(void) {
+std::int32_t Rotation::reset_position(void) const {
 	return pros::c::rotation_reset_position(_port);
 }
 
-std::int32_t Rotation::get_position(void) {
+std::int32_t Rotation::get_position(void) const {
     return pros::c::rotation_get_position(_port);
 }
 
-std::int32_t Rotation::get_velocity(void) {
+std::int32_t Rotation::get_velocity(void) const {
     return pros::c::rotation_get_velocity(_port);
 }
 
-std::int32_t Rotation::get_angle(void) {
+std::int32_t Rotation::get_angle(void) const {
     return pros::c::rotation_get_angle(_port);
 }
 
-std::int32_t Rotation::set_reversed(bool value) {
+std::int32_t Rotation::set_reversed(bool value) const {
     return pros::c::rotation_set_reversed(_port, value);
 }
 
-std::int32_t Rotation::reverse(void) {
+std::int32_t Rotation::reverse(void) const {
     return pros::c::rotation_reverse(_port);
 }
 
-std::int32_t Rotation::get_reversed(void) {
+std::int32_t Rotation::get_reversed(void) const {
     return pros::c::rotation_get_reversed(_port);
 }
 
