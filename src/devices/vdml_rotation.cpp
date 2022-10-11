@@ -59,9 +59,10 @@ std::int32_t Rotation::get_reversed(void) {
     return pros::c::rotation_get_reversed(_port);
 }
 
-std::ostream& operator<<(std::ostream& os, pros::Rotation& rotation) {
+std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
     os << "Rotation [";
-    os << "position: " << rotation.get_position();
+    os << "port: " << rotation._port;
+    os << ", position: " << rotation.get_position();
     os << ", velocity: " << rotation.get_velocity();
     os << ", angle: " << rotation.get_angle();
     os << ", reversed: " << rotation.get_reversed();
