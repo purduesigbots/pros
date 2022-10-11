@@ -22,6 +22,7 @@
 #define _PROS_ROTATION_HPP_
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/rotation.h"
 
@@ -196,6 +197,9 @@ class Rotation {
 	 */
 	virtual std::int32_t get_reversed();
 	///@}
+
+	//todo: document what this does
+	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 };
 }
 }  // namespace pros
