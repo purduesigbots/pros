@@ -198,7 +198,12 @@ class Rotation {
 	virtual std::int32_t get_reversed();
 	///@}
 
-	//todo: document what this does
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * Prints in format(this below is all in one line with no new line):
+	 * Rotation [position: (rotation position), velocity: (rotation velocity), 
+	 * angle: (rotation angle), reversed: (reversed boolean)]
+	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 };
 }
