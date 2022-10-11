@@ -305,13 +305,13 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m) {
 std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << "Motor [";
 	os << "port: " << motor.get_port();
-	os << ", brake mode: " << motor.get_brake_mode();
+	os << ", brake mode: " << (int)motor.get_brake_mode();
 	os << ", current draw: " << motor.get_current_draw();
 	os << ", current limit: " << motor.get_current_limit();
 	os << ", direction: " << motor.get_direction()  << std::endl;
 	os << ", efficiency: " << motor.get_efficiency();
-	os << ", encoder units: " << motor.get_encoder_units();
-	os << ", gearing: " << motor.get_gearing();
+	os << ", encoder units: " << (int)motor.get_encoder_units();
+	os << ", gearing: " << (int)motor.get_gearing();
 	os << ", over temp: " << motor.is_over_temp(); 
 	os << ", position: " << motor.get_position();
 	os << ", reversed: " << motor.is_reversed()  << std::endl;
