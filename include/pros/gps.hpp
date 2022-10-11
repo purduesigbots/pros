@@ -292,6 +292,7 @@ class Gps {
 
 	/**
 	 * This is the overload for the << operator for printing to streams
+	 * 
 	 * Prints in format:
 	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
 	 */

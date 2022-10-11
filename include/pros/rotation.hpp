@@ -200,6 +200,7 @@ class Rotation {
 
 	/**
 	 * This is the overload for the << operator for printing to streams
+	 * 
 	 * Prints in format(this below is all in one line with no new line):
 	 * Rotation [port: rotation._port, position: (rotation position), velocity: (rotation velocity), 
 	 * angle: (rotation angle), reversed: (reversed boolean)]

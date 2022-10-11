@@ -24,6 +24,7 @@
 #define _PROS_MOTORS_HPP_
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/motors.h"
 #include "pros/colors.hpp"
@@ -1441,6 +1442,18 @@ class Motor {
 	virtual std::int32_t set_vel_pid_full(const motor_pid_full_s_t pid) const;
 
 	///@}
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * 
+	 * Prints in format(three lines total):
+	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw), 
+	 * current limit: (current limit), direction: (direction)\n, efficiency: (efficiency), 
+	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
+	 * position: (position), reversed: (reversed boolean)\n, temperature: (temperature),
+	 * torque: (torque), voltage: (voltage), voltage limit: (voltage limit)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, const pros::Motor& motor);
 
 	private:
 	const std::uint8_t _port;

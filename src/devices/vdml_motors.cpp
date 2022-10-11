@@ -302,6 +302,27 @@ const pros::Motor operator"" _rmtr(const unsigned long long int m) {
 	return pros::Motor(m, true);
 }
 
+std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
+	os << "Motor [";
+	os << "port: " << motor.get_port();
+	os << ", brake mode: " << motor.get_brake_mode();
+	os << ", current draw: " << motor.get_current_draw();
+	os << ", current limit: " << motor.get_current_limit();
+	os << ", direction: " << motor.get_direction()  << std::endl;
+	os << ", efficiency: " << motor.get_efficiency();
+	os << ", encoder units: " << motor.get_encoder_units();
+	os << ", gearing: " << motor.get_gearing();
+	os << ", over temp: " << motor.is_over_temp(); 
+	os << ", position: " << motor.get_position();
+	os << ", reversed: " << motor.is_reversed()  << std::endl;
+	os << ", temperature: " << motor.get_temperature();
+	os << ", torque: " << motor.get_torque();
+	os << ", voltage: " << motor.get_voltage(); 
+	os << ", voltage limit: " << motor.get_voltage_limit();
+	os << "]";
+	return os;
+}
+
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros
