@@ -842,7 +842,7 @@ class Motor {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
-	 * setting errno.
+	 * setting errno.Motor_Group
 	 */
 	virtual std::int32_t get_voltage_limit(void) const;
 
@@ -1324,6 +1324,8 @@ class Motor_Group {
 	pros::Mutex _motor_group_mutex;
 	std::uint8_t _motor_count;
 };
+
+using MotorGroup = Motor_Group; //alias
 
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
