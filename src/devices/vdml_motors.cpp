@@ -339,8 +339,7 @@ Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
 Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
 	for (std::uint8_t i = 0; i < _motor_count; ++i) {
-		_motors.push_back(Motor(std::abs(motor_ports[i]), (motor_ports[i] < 0)));
-		// std::cout << "Motor " << motor_ports[i] << "Reversed: " << (bool)(motor_ports[i] < 0) << std::endl;
+		_motors.push_back(Motor(motor_ports[i]));
 	}
 }
 
