@@ -70,5 +70,18 @@ std::uint8_t Optical::get_port(){
   return _port;
 }
 
+std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
+  os << "Optical [";
+  os << "port: " << optical.get_port();
+  os << ", hue: " << optical.get_hue();
+  os << ", saturation: " << optical.get_saturation();
+  os << ", brightness: " << optical.get_brightness();
+  os << ", proximity: " << optical.get_proximity();
+  os << ", rgb: " << optical.get_rgb(); 
+  os << "]";
+
+  return os;
+}
+
 } // namespace v5
 } // namespace pros
