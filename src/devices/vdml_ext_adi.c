@@ -13,7 +13,6 @@
 #include <errno.h>
 #include <math.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "kapi.h"
 #include "pros/adi.h"
