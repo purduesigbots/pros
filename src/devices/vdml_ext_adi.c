@@ -458,7 +458,7 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port+1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
 }
 
 int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
