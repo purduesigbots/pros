@@ -71,15 +71,15 @@ std::uint8_t Optical::get_port(){
 }
 
 std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
+  pros::c::optical_rgb_s_t rgb = optical.get_rgb(); 
   os << "Optical [";
   os << "port: " << optical.get_port();
   os << ", hue: " << optical.get_hue();
   os << ", saturation: " << optical.get_saturation();
   os << ", brightness: " << optical.get_brightness();
   os << ", proximity: " << optical.get_proximity();
-  os << ", rgb: " << optical.get_rgb(); 
+  os << ", rgb: " << "{" << rgb.red << ","<< rgb.green << "," << rgb.blue << "}"; 
   os << "]";
-
   return os;
 }
 

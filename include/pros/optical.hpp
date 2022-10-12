@@ -243,7 +243,7 @@ class Optical {
      *
      * Prints in format(this below is all in one line with no new line):
 	 * Optical [port: (port number), hue: (hue), saturation: (saturation), 
-	 * brightness: (brightness), proximity: (proximity), rgb: (rgb value)]
+	 * brightness: (brightness), proximity: (proximity), rgb: {red, green, blue}]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
 
