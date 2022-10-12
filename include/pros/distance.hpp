@@ -62,7 +62,7 @@ class Distance {
 	 * \return The distance value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get() const;
+	virtual std::int32_t get();
 
 	/**
 	 * Get the confidence in the distance reading
@@ -79,7 +79,7 @@ class Distance {
 	 * \return The confidence value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get_confidence() const;
+	virtual std::int32_t get_confidence();
 
 	/**
 	 * Get the current guess at relative object size
@@ -96,7 +96,7 @@ class Distance {
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get_object_size() const;
+	virtual std::int32_t get_object_size();
 
 	/**
 	 * Get the object velocity in m/s
@@ -109,14 +109,14 @@ class Distance {
 	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual double get_object_velocity() const;
+	virtual double get_object_velocity();
 
 	/**
 	 * Gets the port number of the distance sensor.
 	 *
 	 * \return The distance sensor's port number.
 	 */
-	std::uint8_t get_port() const;
+	std::uint8_t get_port();
 
     /**
      *This is the overload for the << operator for printing to streams
@@ -125,7 +125,7 @@ class Distance {
      * Distance [port: distance._port, distance: (distance), confidence: (confidence),
      * object size: (object size), object velocity: (object velocity)]
      */
-	friend std::ostream& operator<<(std::ostream& os, const pros:Distance& distance);
+	friend std::ostream& operator<<(std::ostream& os, const pros::Distance& distance);
 
 	private:
 	const std::uint8_t _port;
