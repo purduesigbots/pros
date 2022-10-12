@@ -17,24 +17,35 @@ inline namespace v5{
 	
 Distance::Distance(const std::uint8_t port) : _port(port) {}
 
-std::int32_t Distance::get() {
+std::int32_t Distance::get() const {
 	return pros::c::distance_get(_port);
 }
 
-std::int32_t Distance::get_confidence() {
+std::int32_t Distance::get_confidence() const {
 	return pros::c::distance_get_confidence(_port);
 }
 
-std::int32_t Distance::get_object_size() {
+std::int32_t Distance::get_object_size() const {
 	return pros::c::distance_get_object_size(_port);
 }
 
-double Distance::get_object_velocity() {
+double Distance::get_object_velocity() const {
 	return pros::c::distance_get_object_velocity(_port);
 }
 
-std::uint8_t Distance::get_port() {
+std::uint8_t Distance::get_port() const {
 	return _port;
+}
+
+std::ostream& operator<<(std::ostream& os, const pros:Distance& distance) {
+    os << "Distance [";
+    os << "port: " << distance._port;
+    os << ", distance: " << distance.get();
+    os << ", confidence: " << distance.get_confidence();
+    os << ", object size: " << distance.get_object_size();
+    os << ", object velocity: " << distance.get_object_velocity();
+    os << "]";
+    return os;
 }
 
 }
