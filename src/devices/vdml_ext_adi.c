@@ -494,8 +494,8 @@ int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buff
 }
 
 int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
-	for(int i = 0;i<buffer_length;i++){
-      	buffer[i] = color;
+	for(int i = 0; i < buffer_length; i++){
+		buffer[i] = color;
   	}
 	return ext_adi_led_set(led, buffer, buffer_length);
 }
