@@ -25,6 +25,7 @@
 #include <stdbool.h>
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/optical.h"
 
@@ -236,6 +237,15 @@ class Optical {
 	 * \return The Optical Sensor's port number.
 	 */
 	virtual std::uint8_t get_port();
+
+	/**
+     * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * Optical [port: (port number), hue: (hue), saturation: (saturation), 
+	 * brightness: (brightness), proximity: (proximity), rgb: (rgb value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
 
 	private:
 	const std::uint8_t _port;
