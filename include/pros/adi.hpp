@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "pros/adi.h"
 
@@ -759,6 +760,134 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 */
 	using ADIAnalogIn::get_value_calibrated;
 };
+
+class ADILed : protected ADIPort {
+	public:
+	/**
+	 * @brief Configures an ADI port to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 *        The number of LEDs in the chain
+	 */
+	ADILed(std::uint8_t adi_port, std::uint32_t length);
+
+	/**
+	 * @brief Configures an ADI port on a adi_expander to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 * 	  The number of LEDs in the chain
+	 */
+	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length);
+
+	/**
+	 * @brief Operator overload to access the buffer in the ADILed class, it is 
+	 * recommended that you call .update(); after doing any operations with this.
+	 * 
+	 * @param i 0 indexed pixel of the lED
+	 * @return uint32_t& the address of the buffer at i to modify
+	 */
+	std::uint32_t& operator[] (size_t i);
+
+	/**
+	* @brief Clear the entire led strip of color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* ENXIO - The given value is not within the range of ADI Ports
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t clear_all();
+	std::int32_t clear();
+	
+	/**
+	* @brief Force the LED strip to update with the current buffered values, this
+	* should be called after any changes to the buffer using the [] operator.
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t update() const;
+
+	/**
+	* @brief Set the entire led strip to one color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to set all the led strip value to
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t set_all(uint32_t color);
+
+	/**
+	* @brief Set one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to clear all the led strip to
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t set_pixel(uint32_t color, uint32_t pixel_position);
+
+	/**
+	* @brief Clear one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*/
+	std::int32_t clear_pixel(uint32_t pixel_position);
+
+	/**
+	* @brief Get the length of the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return The length (in pixels) of the LED strip
+	*/
+	std::int32_t length();
+
+	protected:
+	std::vector<uint32_t> _buffer;
+};
+
+// Alias for ADILed
+using ADILED = ADILed;
 
 }  // namespace pros
 
