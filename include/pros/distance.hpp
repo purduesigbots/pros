@@ -125,7 +125,7 @@ class Distance {
      * Distance [port: distance._port, distance: (distance), confidence: (confidence),
      * object size: (object size), object velocity: (object velocity)]
      */
-	friend std::ostream& operator<<(std::ostream& os, const pros::Distance& distance);
+	friend std::ostream& operator<<(std::ostream& os, pros::Distance& distance);
 
 	private:
 	const std::uint8_t _port;
