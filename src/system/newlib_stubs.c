@@ -63,6 +63,26 @@ void __sync_synchronize(void) {
 	__sync_synchronize();
 }
 
+static bool user_time_set = false;
+static struct timespec user_time_point;
+static int64_t set_microseconds = 0;
+
+int clock_settime(clockid_t clock_id, const struct timespec *tp) {
+	int retval = -1;
+
+	switch(clock_id) {
+	case CLOCK_REALTIME:
+		user_time_set = true;
+		user_time_point = *tp;
+		set_microseconds = vexSystemHighResTimeGet();
+		retval = 0;
+	default:
+		errno = EINVAL;
+	}
+
+	return retval;
+}
+
 int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	struct timeval tv;
 	int retval = -1;
@@ -82,6 +102,8 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 	return retval;
 }
 
+// HACK:
+//
 // This function pointer serves as a callback so that _gettimeofday() can call
 // a function inside the hot package. Without this, _gettimeofday() cannot
 // access any symbols in the hot package (where _PROS_COMPILE_TIMESTAMP_INT 
@@ -89,6 +111,12 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 //
 // When the hot package is initialized, it calls set_get_timestamp_int_func()
 // and sets the callback to a function that returns the unix timestamp.
+//
+// Essentially, when the hot process starts:
+//   1) Pass the get_timestamp_int_func to the cold package
+//   2) When the cold package (this library) needs to access the timestamp,
+//      call the callback
+//   3) Then the cold package 
 static const int (*get_timestamp_int_func)(void) = NULL;
 
 void set_get_timestamp_int_func(const int (*func)(void))
@@ -97,13 +125,27 @@ void set_get_timestamp_int_func(const int (*func)(void))
 }
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
-	if (competition_is_connected()) {
-		kprintf("Using competition calculation");
-		tp->tv_sec = get_timestamp_int_func();
-		tp->tv_usec = vexSystemHighResTimeGet();
+	// The callback function should never be null, but just for extra
+	// pedanticness
+	kassert(get_timestamp_int_func != NULL);
+
+	if(user_time_set) {
+		*tp = user_time_point;
+		*tp->tv_usec += vexSystemHighResTimeGet() - set_microseconds;
+	}
+	else if (competition_is_connected()) {
+		/* Need to go back and test the SDK functions for time through 
+		 * Field control
+		 */
+
+		//tp->tv_sec = get_timestamp_int_func();
+		//tp->tv_usec = vexSystemHighResTimeGet();
 	}
 	else {
-		kprintf("Using other calculation");
+		// When competition isn't connected, the vex's date/time functions do
+		// not work. Here we use a timestamp compiled into the program and then
+		// add the number of microseconds the program has been running to get 
+		// the best estimate.
 		tp->tv_sec = get_timestamp_int_func();
 		tp->tv_usec = vexSystemHighResTimeGet();
 	}
