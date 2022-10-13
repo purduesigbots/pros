@@ -23,6 +23,7 @@
 
 #include <cstdint>
 #include "pros/imu.h"
+#include <iostream>
 
 namespace pros {
 /**
@@ -478,6 +479,17 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+
+	/**
+     * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * Imu [port: imu._port, rotation: (rotation), heading: (heading), 
+	 * pitch: (pitch angle), roll: (roll angle), yaw: (yaw angle), gyro rate: (gyro rate), 
+	 * get accel: (accel values), calibrating: (calibrating boolean)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
+
 	///@}
 };
   

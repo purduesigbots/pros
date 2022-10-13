@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <tuple>
 #include <utility>
+#include <iostream>
 
 #include "pros/adi.h"
 

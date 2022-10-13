@@ -119,5 +119,20 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
+std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
+	os << "Imu [";
+	os << "port: " << imu._port;
+	os << ", rotation: " << imu.get_rotation();
+	os << ", heading: " << imu.get_heading();
+	os << ", pitch: " << imu.get_pitch();
+	os << ", roll: " << imu.get_roll();
+	os << ", yaw: " << imu.get_yaw();
+	os << ", gyro rate: " << imu.get_gyro_rate();
+	os << ", get accel: " << imu.get_accel();
+	os << ", calibrating: " << imu.is_calibrating();
+	os << "]";
+	return os;
+}
+
 }  // namespace v5
 }  // namespace pros
