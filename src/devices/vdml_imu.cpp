@@ -130,7 +130,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	os << ", roll: " << imu.get_roll();
 	os << ", yaw: " << imu.get_yaw();
 	os << ", gyro rate: " << "{" << gyro.x << "," << gyro.y << "," << gyro.z << "}";
-	os << ", get accel: " << "{" << accel.x << "," << accel.y << "," << accel.z << "}"
+	os << ", get accel: " << "{" << accel.x << "," << accel.y << "," << accel.z << "}";
 	os << ", calibrating: " << imu.is_calibrating();
 	os << "]";
 	return os;
