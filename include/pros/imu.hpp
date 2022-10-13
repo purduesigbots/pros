@@ -485,8 +485,8 @@ class Imu {
      *
      * Prints in format(this below is all in one line with no new line):
 	 * Imu [port: imu._port, rotation: (rotation), heading: (heading), 
-	 * pitch: (pitch angle), roll: (roll angle), yaw: (yaw angle), gyro rate: (gyro rate), 
-	 * get accel: (accel values), calibrating: (calibrating boolean)]
+	 * pitch: (pitch angle), roll: (roll angle), yaw: (yaw angle), 
+	 * gyro rate: {x,y,z}, get accel: {x,y,z}, calibrating: (calibrating boolean)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
 
