@@ -120,6 +120,8 @@ std::int32_t Imu::tare() const {
 }
 
 std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
+	pros::imu_gyro_s_t gyro = imu.get_gyro_rate();
+	pros::imu_accel_s_t accel = imu.get_accel();
 	os << "Imu [";
 	os << "port: " << imu._port;
 	os << ", rotation: " << imu.get_rotation();
@@ -127,8 +129,8 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	os << ", pitch: " << imu.get_pitch();
 	os << ", roll: " << imu.get_roll();
 	os << ", yaw: " << imu.get_yaw();
-	os << ", gyro rate: " << imu.get_gyro_rate();
-	os << ", get accel: " << imu.get_accel();
+	os << ", gyro rate: " << "{" << gyro.x << "," << gyro.y << "," << gyro.z << "}";
+	os << ", get accel: " << "{" << accel.x << "," << accel.y << "," << accel.z << "}"
 	os << ", calibrating: " << imu.is_calibrating();
 	os << "]";
 	return os;
