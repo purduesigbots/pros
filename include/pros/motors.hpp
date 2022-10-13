@@ -1325,6 +1325,8 @@ class Motor_Group {
 	std::uint8_t _motor_count;
 };
 
+using MotorGroup = Motor_Group; //alias
+
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
