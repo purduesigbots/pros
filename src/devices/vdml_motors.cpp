@@ -10,6 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <stdint.h>
 #include <vector>
 
 #include "kapi.h"
@@ -77,28 +78,39 @@
 namespace pros {
 using namespace pros::c;
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse,
+Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
-    : _port(port) {
+    : _port(abs(port)) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
+	if (port < 0) 
+		set_reversed(true);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(abs(port)) {
 	set_gearing(gearset);
 	set_reversed(reverse);
+	if (port < 0) 
+		set_reversed(true);
 }
 
-Motor::Motor(const std::uint8_t port, const motor_gearset_e_t gearset) : _port(port) {
+Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset) : _port(abs(port)) {
 	set_gearing(gearset);
+	if (port < 0) 
+		set_reversed(true);
 }
 
-Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
+Motor::Motor(const std::int8_t port, const bool reverse) : _port(abs(port)) {
 	set_reversed(reverse);
+	if (port < 0) 
+		set_reversed(true);
 }
 
-Motor::Motor(const std::uint8_t port) : _port(port) {}
+Motor::Motor(const std::int8_t port) : _port(abs(port)) {
+	if (port < 0) 
+		set_reversed(true);
+}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
@@ -327,8 +339,7 @@ Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
 Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
 	for (std::uint8_t i = 0; i < _motor_count; ++i) {
-		_motors.push_back(Motor(std::abs(motor_ports[i]), (motor_ports[i] < 0)));
-		// std::cout << "Motor " << motor_ports[i] << "Reversed: " << (bool)(motor_ports[i] < 0) << std::endl;
+		_motors.push_back(Motor(motor_ports[i]));
 	}
 }
 
