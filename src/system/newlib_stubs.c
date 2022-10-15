@@ -63,6 +63,11 @@ void __sync_synchronize(void) {
 	__sync_synchronize();
 }
 
+// These variables are used to store the user-set time.
+// When user_time_set is false, the realtime clock will use the timestamp as the
+// base time. When it is true will use user_time_spec as the base time instead.
+// set_microseconds stores the value of the microsecond timer when the user set
+// the time.
 static bool user_time_set = false;
 static struct timespec user_time_spec;
 static int64_t set_microseconds = 0;
