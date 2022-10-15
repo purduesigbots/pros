@@ -74,6 +74,16 @@ std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in) {
 AnalogOut::AnalogOut(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_OUT) {}
 AnalogOut::AnalogOut(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_OUT) {}
 
+std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out) {
+	os << "AnalogOut [";
+	os << "smart_port: " << analog_out._smart_port;
+	os << ", adi_port: " << analog_out._adi_port;
+	os << ", value: " << analog_out.get_value();
+	os << "]";
+
+	return os;
+}
+
 DigitalIn::DigitalIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_DIGITAL_IN) {}
 DigitalIn::DigitalIn(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_DIGITAL_IN) {}
 

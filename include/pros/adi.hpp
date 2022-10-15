@@ -487,6 +487,15 @@ class AnalogOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * AnalogOut [smart_port: analog_out._smart_port, adi_port: analog_out._adi_port,
+	 * value: (value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out);
 };
 
 ///@}
