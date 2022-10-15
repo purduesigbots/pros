@@ -27,6 +27,8 @@
 #include "pros/misc.h"
 
 #define SEC_TO_MSEC 1000
+#define SEC_TO_MICRO 1000000
+#define MICRO_TO_NANO 1000
 
 void _exit(int status) {
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
@@ -91,7 +93,15 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 		retval = gettimeofday(&tv, NULL);
 		if (!retval) TIMEVAL_TO_TIMESPEC(&tv, tp);
 		break;
+	case CLOCK_MONOTONIC: {
+		uint64_t totalTime = vexSystemHighResTimeGet();
+		uint64_t secs = totalTime / SEC_TO_MICRO;
+		uint64_t micros = totalTime - secs * SEC_TO_MICRO;
 
+		tp->tv_sec = secs;
+		tp->tv_nsec = micros * MICRO_TO_NANO;
+		break;
+	}
 	default:
 		errno = EINVAL;
 		break;
