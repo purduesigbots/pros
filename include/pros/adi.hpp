@@ -389,6 +389,16 @@ class AnalogIn : protected Port {
 	 * \endcode
 	 */
 	using Port::get_value;
+
+	/**
+     * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * AnalogIn [smart_port: analog_in._smart_port, adi_port: analog_in._adi_port,
+	 * value calibrated: (12 bit calibrated value), 
+	 * value calibrated HR: (16 bit calibrated value), value: (12 bit value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in);
 };
 
 ///@}

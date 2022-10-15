@@ -59,6 +59,18 @@ std::int32_t AnalogIn::get_value_calibrated_HR() const {
 	return ext_adi_analog_read_calibrated_HR(_smart_port, _adi_port);
 }
 
+std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in) {
+	os << "AnalogIn [";
+	os << "smart_port: " << analog_in._smart_port;
+	os << ", adi_port: " << analog_in._adi_port;
+	os << ", value calibrated: " << analog_in.get_value_calibrated();
+	os << ", value calibrated HR: " << analog_in.get_value_calibrated_HR();
+	os << ", value: " << analog_in.get_value();
+	os << "]";
+
+	return os;
+}
+
 AnalogOut::AnalogOut(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_OUT) {}
 AnalogOut::AnalogOut(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_OUT) {}
 
