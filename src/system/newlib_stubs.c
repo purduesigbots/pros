@@ -20,8 +20,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#include "kapi.h"
-
 #include "rtos/task.h"
 #include "v5_api.h"
 
@@ -64,7 +62,7 @@ void __sync_synchronize(void) {
 }
 
 static bool user_time_set = false;
-static struct timespec user_time_point;
+static struct timespec user_time_spec;
 static int64_t set_microseconds = 0;
 
 int clock_settime(clockid_t clock_id, const struct timespec *tp) {
@@ -73,7 +71,7 @@ int clock_settime(clockid_t clock_id, const struct timespec *tp) {
 	switch(clock_id) {
 	case CLOCK_REALTIME:
 		user_time_set = true;
-		user_time_point = *tp;
+		user_time_spec	 = *tp;
 		set_microseconds = vexSystemHighResTimeGet();
 		retval = 0;
 	default:
@@ -93,7 +91,7 @@ int clock_gettime(clockid_t clock_id, struct timespec* tp) {
 		retval = gettimeofday(&tv, NULL);
 		if (!retval) TIMEVAL_TO_TIMESPEC(&tv, tp);
 		break;
-	
+
 	default:
 		errno = EINVAL;
 		break;
@@ -125,21 +123,22 @@ void set_get_timestamp_int_func(const int (*func)(void))
 }
 
 int _gettimeofday(struct timeval* tp, void* tzvp) {
-	// The callback function should never be null, but just for extra
-	// pedanticness
-	kassert(get_timestamp_int_func != NULL);
+	if(get_timestamp_int_func == NULL) {
+		return -1;
+	}
 
 	if(user_time_set) {
-		*tp = user_time_point;
-		*tp->tv_usec += vexSystemHighResTimeGet() - set_microseconds;
+		tp->tv_sec = user_time_spec.tv_sec;
+		tp->tv_usec = user_time_spec.tv_nsec * 1000;
+		tp->tv_usec += vexSystemHighResTimeGet() - set_microseconds;
 	}
 	else if (competition_is_connected()) {
-		/* Need to go back and test the SDK functions for time through 
-		 * Field control
-		 */
-
-		//tp->tv_sec = get_timestamp_int_func();
-		//tp->tv_usec = vexSystemHighResTimeGet();
+		// TODO: update this to get the date/time through VexOS. Apparently,
+		// the time is kept properly only when competition controls are
+		// connected. I haven't had time to check or confirm this.
+		//https://github.com/purduesigbots/pros/pull/127#issuecomment-1095361338
+		tp->tv_sec = get_timestamp_int_func();
+		tp->tv_usec = vexSystemHighResTimeGet();
 	}
 	else {
 		// When competition isn't connected, the vex's date/time functions do

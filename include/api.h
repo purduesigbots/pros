@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 3
 #define PROS_VERSION_MINOR 7
 #define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "3.7.2-dirty.33.32a5dc4e"
+#define PROS_VERSION_STRING "3.7.2-dirty.45.d183773a"
 
 #include "pros/adi.h"
 #include "pros/colors.h"
