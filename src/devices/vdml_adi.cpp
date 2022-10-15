@@ -91,6 +91,16 @@ std::int32_t DigitalIn::get_new_press() const {
 	return ext_adi_digital_get_new_press(_smart_port, _adi_port);
 }
 
+std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out) {
+	os << "DigitalOut [";
+	os << "smart_port: " << digital_out._smart_port;
+	os << ", adi_port: " << digital_out._adi_port;
+	os << ", value: " << digital_out.get_value();
+	os << "]";
+
+	return os;
+}
+
 DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
