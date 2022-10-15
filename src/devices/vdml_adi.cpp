@@ -91,11 +91,11 @@ std::int32_t DigitalIn::get_new_press() const {
 	return ext_adi_digital_get_new_press(_smart_port, _adi_port);
 }
 
-std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out) {
-	os << "DigitalOut [";
-	os << "smart_port: " << digital_out._smart_port;
-	os << ", adi_port: " << digital_out._adi_port;
-	os << ", value: " << digital_out.get_value();
+std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in) {
+	os << "DigitalIn [";
+	os << "smart_port: " << digital_in._smart_port;
+	os << ", adi_port: " << digital_in._adi_port;
+	os << ", value: " << digital_in.get_value();
 	os << "]";
 
 	return os;
@@ -107,6 +107,16 @@ DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, 
 
 DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
 	set_value(init_state);
+}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out) {
+	os << "DigitalOut [";
+	os << "smart_port: " << digital_out._smart_port;
+	os << ", adi_port: " << digital_out._adi_port;
+	os << ", value: " << digital_out.get_value();
+	os << "]";
+
+	return os;
 }
 
 Motor::Motor(std::uint8_t adi_port) : Port(adi_port, E_ADI_LEGACY_PWM) {
