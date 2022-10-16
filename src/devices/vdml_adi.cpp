@@ -151,6 +151,16 @@ std::int32_t Encoder::get_value() const {
 	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
+std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder) {
+	os << "Encoder [";
+	os << "smart_port: " << encoder._smart_port;
+	os << ", adi_port: " << encoder._adi_port;
+	os << ", value: " << encoder.get_value();
+	os << "]";
+
+	return os;
+}
+
 Ultrasonic::Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo) : Port(adi_port_ping) {
 	std::int32_t _port = ext_adi_ultrasonic_init(INTERNAL_ADI_PORT, adi_port_ping, adi_port_echo);
 	get_ports(_port, _smart_port, _adi_port);
@@ -199,6 +209,16 @@ Potentiometer::Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_ty
 double Potentiometer::get_angle() const {
 	uint8_t temp_smart = _smart_port - 1;
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
+}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
+	os << "Potentiometer [";
+	os << "value: " << potentiometer.get_value();
+	os << ", value calibrated: " << potentiometer.get_value_calibrated();
+	os << ", angle: " << potentiometer.get_angle();
+	os << "]";
+
+	return os;
 }
 }  // namespace adi
 }  // namespace pros

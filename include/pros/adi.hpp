@@ -999,6 +999,15 @@ class Encoder : private Port {
 	 * \endcode
 	 */
 	std::int32_t get_value() const;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format(this below is all in one line with no new line):
+	 * Encoder [smart_port: encoder._smart_port, adi_port: encoder._adi_port,
+	 * value: (value)]
+	 */ 
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder);
 };
 
 ///@}
@@ -1406,6 +1415,14 @@ class Potentiometer : public AnalogIn {
 	 * -4095 to 4095
 	 */
 	using AnalogIn::get_value_calibrated;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * Potentiometer [value: (value), value calibrated: (calibrated value), 
+	 * angle: (angle)]
+	 * Prints in format(this below is all in one line with no new line):
+	 */ 
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
 };
 }  // namespace adi
 
