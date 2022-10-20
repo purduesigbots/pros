@@ -58,79 +58,96 @@ Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
 Motor::Motor(const std::uint8_t port) : _port(port) {}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
+    push_motor_configuration();
 	return motor_move(_port, voltage);
 }
 
 std::int32_t Motor::move(std::int32_t voltage) const {
+    push_motor_configuration();
 	return motor_move(_port, voltage);
 }
 
 std::int32_t Motor::move_absolute(const double position, const std::int32_t velocity) const {
+    push_motor_configuration();
 	return motor_move_absolute(_port, position, velocity);
 }
 
 std::int32_t Motor::move_relative(const double position, const std::int32_t velocity) const {
+    push_motor_configuration();
 	return motor_move_relative(_port, position, velocity);
 }
 
 std::int32_t Motor::move_velocity(const std::int32_t velocity) const {
+    push_motor_configuration();
 	return motor_move_velocity(_port, velocity);
 }
 
 std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
+    push_motor_configuration();
 	return motor_move_voltage(_port, voltage);
 }
 
 std::int32_t Motor::brake(void) const {
+    push_motor_configuration();
 	return motor_brake(_port);
 }
 
 std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {
+    push_motor_configuration();
 	return motor_modify_profiled_velocity(_port, velocity);
 }
 
 double Motor::get_actual_velocity(void) const {
+    push_motor_configuration();
 	return motor_get_actual_velocity(_port);
 }
 
 pros::v5::Motor_Brake Motor::get_brake_mode(void) const {
+    push_motor_configuration();
 	return static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_port));
 }
 
 std::int32_t Motor::get_current_draw(void) const {
+    push_motor_configuration();
 	return motor_get_current_draw(_port);
 }
 
 std::int32_t Motor::get_current_limit(void) const {
+    push_motor_configuration();
 	return motor_get_current_limit(_port);
 }
 
 std::int32_t Motor::is_over_current(void) const {
+    push_motor_configuration();
 	return motor_is_over_current(_port);
 }
 
 std::int32_t Motor::get_direction(void) const {
+    push_motor_configuration();
 	return motor_get_direction(_port);
 }
 
 double Motor::get_efficiency(void) const {
+    push_motor_configuration();
 	return motor_get_efficiency(_port);
 }
 
 pros::v5::Motor_Units Motor::get_encoder_units(void) const {
-	return static_cast<pros::v5::Motor_Units>(motor_get_encoder_units(_port));
+	return _encoder_units;
 }
 
 std::uint32_t Motor::get_faults(void) const {
+    push_motor_configuration();
 	return motor_get_faults(_port);
 }
 
 std::uint32_t Motor::get_flags(void) const {
+    push_motor_configuration();
 	return motor_get_flags(_port);
 }
 
 pros::v5::Motor_Gears Motor::get_gearing(void) const {
-	return static_cast<pros::v5::Motor_Gears>(motor_get_gearing(_port));
+    return _gearset;
 }
 
 motor_pid_full_s_t Motor::get_pos_pid(void) const {
@@ -148,54 +165,66 @@ motor_pid_full_s_t Motor::get_vel_pid(void) const {
 }
 
 std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp) const {
+    push_motor_configuration();
 	return motor_get_raw_position(_port, timestamp);
 }
 
 std::int32_t Motor::is_over_temp(void) const {
+    push_motor_configuration();
 	return motor_is_over_temp(_port);
 }
 
 std::int32_t Motor::is_stopped(void) const {
+    push_motor_configuration();
 	return motor_is_stopped(_port);
 }
 
 std::int32_t Motor::get_zero_position_flag(void) const {
+    push_motor_configuration();
 	return motor_get_zero_position_flag(_port);
 }
 
 double Motor::get_position(void) const {
+    push_motor_configuration();
 	return motor_get_position(_port);
 }
 
 double Motor::get_power(void) const {
+    push_motor_configuration();
 	return motor_get_power(_port);
 }
 
 std::int32_t Motor::is_reversed(void) const {
-	return motor_is_reversed(_port);
+    return _reverse;
 }
 
 double Motor::get_temperature(void) const {
+    push_motor_configuration();
 	return motor_get_temperature(_port);
 }
 
 double Motor::get_target_position(void) const {
+    push_motor_configuration();
 	return motor_get_target_position(_port);
 }
 
 double Motor::get_torque(void) const {
+    push_motor_configuration();
 	return motor_get_torque(_port);
 }
 
 std::int32_t Motor::get_target_velocity(void) const {
+    push_motor_configuration();
 	return motor_get_target_velocity(_port);
 }
 
 std::int32_t Motor::get_voltage(void) const {
+    push_motor_configuration();
 	return motor_get_voltage(_port);
 }
 
 std::int32_t Motor::get_voltage_limit(void) const {
+    push_motor_configuration();
 	return motor_get_voltage_limit(_port);
 }
 
@@ -204,38 +233,47 @@ std::uint8_t Motor::get_port(void) const {
 }
 
 std::int32_t Motor::tare_position(void) const {
+    push_motor_configuration();
 	return motor_tare_position(_port);
 }
 
 std::int32_t Motor::set_brake_mode(const pros::motor_brake_mode_e_t mode) const {
+    push_motor_configuration();
 	return motor_set_brake_mode(_port, mode);
 }
 
 std::int32_t Motor::set_brake_mode(const pros::v5::Motor_Brake mode) const {
+    push_motor_configuration();
 	return motor_set_brake_mode(_port, static_cast<pros::motor_brake_mode_e_t>(mode));
 }
 
 std::int32_t Motor::set_current_limit(const std::int32_t limit) const {
+    push_motor_configuration();
 	return motor_set_current_limit(_port, limit);
 }
 
 std::int32_t Motor::set_encoder_units(const pros::motor_encoder_units_e_t units) const {
+    _encoder_units = static_cast<pros::v5::Motor_Units>(units);
 	return motor_set_encoder_units(_port, units);
 }
 
 std::int32_t Motor::set_encoder_units(const pros::v5::Motor_Units units) const {
+    _encoder_units = units;
 	return motor_set_encoder_units(_port, static_cast<motor_encoder_units_e_t>(units));
 }
 
 std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset) const {
+    _gearset = static_cast<pros::v5::Motor_Gear>(gearset);
 	return motor_set_gearing(_port, gearset);
 }
 
 std::int32_t Motor::set_gearing(const pros::v5::Motor_Gear gearset) const {
+    _gearset = gearset;
 	return motor_set_gearing(_port, (motor_gearset_e_t)gearset);
 }
 
 std::int32_t Motor::set_gearing(const pros::Color gearset_color) const {
+    _gearset = static_cast<pros::v5::Motor_Gear>(gearset_color);
 	return motor_set_gearing(_port, (motor_gearset_e_t)gearset_color);
 }
 
@@ -283,15 +321,26 @@ std::int32_t Motor::set_vel_pid_full(const motor_pid_full_s_t pid) const {
 }
 
 std::int32_t Motor::set_zero_position(const double position) const {
+    push_motor_configuration();
 	return motor_set_zero_position(_port, position);
 }
 
 std::int32_t Motor::set_reversed(const bool reverse) const {
+    _reverse = reverse;
 	return motor_set_reversed(_port, reverse);
 }
 
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
+    push_motor_configuration();
 	return motor_set_voltage_limit(_port, limit);
+}
+
+void Motor::push_motor_configuration() const {
+    _motor_mutex.take();
+    set_gearing(_gearset);
+    set_reversed(_reverse);
+    set_encoder_units(_encoder_units);
+	_motor_mutex.give();
 }
 
 namespace literals {

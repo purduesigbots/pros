@@ -27,6 +27,7 @@
 
 #include "pros/motors.h"
 #include "pros/colors.hpp"
+#include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -1444,6 +1445,11 @@ class Motor {
 
 	private:
 	const std::uint8_t _port;
+    mutable bool _reverse;
+    mutable pros::Mutex _motor_mutex;
+    mutable pros::v5::Motor_Gear _gearset;
+    mutable pros::v5::Motor_Units _encoder_units;
+    virtual void push_motor_configuration(void) const;
 };
 
 ///@}
