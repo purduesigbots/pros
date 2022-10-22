@@ -25,6 +25,7 @@
 #include <cstdint>
 
 #include "pros/distance.h"
+#include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -61,7 +62,7 @@ class Distance {
 	 * \return The distance value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get();
+	virtual std::int32_t get() const;
 
 	/**
 	 * Get the confidence in the distance reading
@@ -78,7 +79,7 @@ class Distance {
 	 * \return The confidence value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get_confidence();
+	virtual std::int32_t get_confidence() const;
 
 	/**
 	 * Get the current guess at relative object size
@@ -95,7 +96,7 @@ class Distance {
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get_object_size();
+	virtual std::int32_t get_object_size() const;
 
 	/**
 	 * Get the object velocity in m/s
@@ -108,17 +109,18 @@ class Distance {
 	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual double get_object_velocity();
+	virtual double get_object_velocity() const;
 
 	/**
 	 * Gets the port number of the distance sensor.
 	 *
 	 * \return The distance sensor's port number.
 	 */
-	std::uint8_t get_port();
+	std::uint8_t get_port() const;
 
 	private:
 	const std::uint8_t _port;
+	virtual void push_distance_configuration(void) const;
 	///@}
 };
 
