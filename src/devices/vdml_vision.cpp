@@ -30,7 +30,7 @@ vision_signature_s_t Vision::signature_from_utility(const std::int32_t id, const
                                                     const std::int32_t v_min, const std::int32_t v_max,
                                                     const std::int32_t v_mean, const float range,
                                                     const std::int32_t type) {
-	push_vision_configuration();
+	Vision::push_vision_configuration();
 	return c::vision_signature_from_utility(id, u_min, u_max, u_mean, v_min, v_max, v_mean, range, type);
 }
 
@@ -100,7 +100,7 @@ vision_signature_s_t Vision::get_signature(const std::uint8_t signature_id) cons
 }
 
 std::int32_t Vision::print_signature(const vision_signature_s_t sig) {
-	push_vision_configuration();
+	Vision::push_vision_configuration();
 	return vision_print_signature(sig);
 }
 
