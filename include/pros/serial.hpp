@@ -230,6 +230,9 @@ class Serial {
 
 	private:
 	const std::uint8_t _port;
+	std::int32_t _baudrate;
+	mutable pros::Mutex _serial_mutex;
+	virtual void push_serial_configuration(void) const;
 	///@}
 };
 
