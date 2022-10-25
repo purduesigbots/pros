@@ -26,43 +26,59 @@ Serial::Serial(std::uint8_t port) : _port(port) {
 }
 
 std::int32_t Serial::set_baudrate(std::int32_t baudrate) const {
+	_baudrate = baudrate;
 	return serial_set_baudrate(_port, baudrate);
 }
 
 std::int32_t Serial::flush() const {
+	push_serial_configuration();
 	return serial_flush(_port);
 }
 
 std::int32_t Serial::get_read_avail() const {
+	push_serial_configuration();
 	return serial_get_read_avail(_port);
 }
 
 std::int32_t Serial::get_write_free() const {
+	push_serial_configuration();
 	return serial_get_write_free(_port);
 }
 
 std::uint8_t Serial::get_port() const {
+	push_serial_configuration();
 	return _port;
 }
 
 std::int32_t Serial::peek_byte() const {
+	push_serial_configuration();
 	return serial_peek_byte(_port);
 }
 
 std::int32_t Serial::read_byte() const {
+	push_serial_configuration();
 	return serial_read_byte(_port);
 }
 
 std::int32_t Serial::read(std::uint8_t* buffer, std::int32_t length) const {
+	push_serial_configuration();
 	return serial_read(_port, buffer, length);
 }
 
 std::int32_t Serial::write_byte(std::uint8_t buffer) const {
+	push_serial_configuration();
 	return serial_write_byte(_port, buffer);
 }
 
 std::int32_t Serial::write(std::uint8_t* buffer, std::int32_t length) const {
+	push_serial_configuration();
 	return serial_write(_port, buffer, length);
+}
+
+void Serial::push_serial_configuration() const {
+	_serial_mutex.take();
+	set_baudrate(_baudrate);
+	_serial_mutex.give();
 }
 
 namespace literals {
