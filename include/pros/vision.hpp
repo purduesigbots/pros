@@ -452,6 +452,9 @@ class Vision {
 
 	private:
 	std::uint8_t _port;
+	mutable pros::Mutex _vision_mutex;
+	mutable vision_zero_e_t _zero_point;
+	virtual void push_vision_configuration(void) const;
 	///@}
 };
 }  // namespace v5
