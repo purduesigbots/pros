@@ -294,14 +294,6 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
 
-namespace literals {
-const pros::Motor operator"" _mtr(const unsigned long long int m) {
-	return pros::Motor(m, false);
-}
-const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-	return pros::Motor(m, true);
-}
-
 std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << "Motor [";
 	os << "port: " << motor.get_port();
@@ -321,6 +313,14 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << ", voltage limit: " << motor.get_voltage_limit();
 	os << "]";
 	return os;
+}
+
+namespace literals {
+const pros::Motor operator"" _mtr(const unsigned long long int m) {
+	return pros::Motor(m, false);
+}
+const pros::Motor operator"" _rmtr(const unsigned long long int m) {
+	return pros::Motor(m, true);
 }
 
 }  // namespace literals
