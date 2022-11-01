@@ -17,58 +17,72 @@ inline namespace v5 {
 
 std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
                                   double yOffset) const {
+	push_gps_configuration();
 	return pros::c::gps_initialize_full(_port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 }
 
 std::int32_t Gps::set_offset(double xOffset, double yOffset) const {
+	push_gps_configuration();
 	return pros::c::gps_set_offset(_port, xOffset, yOffset);
 }
 
 std::int32_t Gps::get_offset(double* xOffset, double* yOffset) const {
+	push_gps_configuration();
 	return pros::c::gps_get_offset(_port, xOffset, yOffset);
 }
 
 std::int32_t Gps::set_position(double xInitial, double yInitial, double headingInitial) const {
+	push_gps_configuration();
 	return pros::c::gps_set_position(_port, xInitial, yInitial, headingInitial);
 }
 
 std::int32_t Gps::set_data_rate(std::uint32_t rate) const {
+	push_gps_configuration();
 	return pros::c::gps_set_data_rate(_port, rate);
 }
 
 double Gps::get_error() const {
+	push_gps_configuration();
 	return pros::c::gps_get_error(_port);
 }
 
 pros::gps_status_s_t Gps::get_status() const {
+	push_gps_configuration();
 	return pros::c::gps_get_status(_port);
 }
 
 double Gps::get_heading() const {
+	push_gps_configuration();
 	return pros::c::gps_get_heading(_port);
 }
 
 double Gps::get_heading_raw() const {
+	push_gps_configuration();
 	return pros::c::gps_get_heading_raw(_port);
 }
 
 double Gps::get_rotation() const {
+	push_gps_configuration();
 	return pros::c::gps_get_rotation(_port);
 }
 
 std::int32_t Gps::set_rotation(double target) const {
+	push_gps_configuration();
 	return pros::c::gps_set_rotation(_port, target);
 }
 
 std::int32_t Gps::tare_rotation() const {
+	push_gps_configuration();
 	return pros::c::gps_tare_rotation(_port);
 }
 
 pros::gps_gyro_s_t Gps::get_gyro_rate() const {
+	push_gps_configuration();
 	return pros::c::gps_get_gyro_rate(_port);
 }
 
 pros::gps_accel_s_t Gps::get_accel() const {
+	push_gps_configuration();
 	return pros::c::gps_get_accel(_port);
 }
 
