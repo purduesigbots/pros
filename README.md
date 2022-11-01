@@ -42,7 +42,7 @@ Drop us a line
 ### I think I found a bug!
 We maintain GitHub repositories for the three major components of the PROS ecosystem:
 - The Command Line Interface (cli) at [purduesigbots/pros-cli](https://github.com/purduesigbots/pros-cli)
-- The VS Code plugin at [purduesigbots/pros-vsc](https://github.com/purduesigbots/pros-vsc)
+- The Atom plugin at [purduesigbots/pros-atom3](https://github.com/purduesigbots/pros-atom3)
 - The kernel [here](https://github.com/purduesigbots/pros)
 
 If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](https://github.com/purduesigbots/pros-docs).
