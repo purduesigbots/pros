@@ -1283,10 +1283,10 @@ class Motor {
 	 * 
 	 * Prints in format(three lines total):
 	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw), 
-	 * current limit: (current limit), direction: (direction)\n, efficiency: (efficiency), 
+	 * current limit: (current limit), direction: (direction), efficiency: (efficiency), 
 	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
-	 * position: (position), reversed: (reversed boolean)\n, temperature: (temperature),
-	 * torque: (torque), voltage: (voltage), voltage limit: (voltage limit)]
+	 * position: (position), reversed: (reversed boolean), temperature: (temperature),
+	 * torque: (torque), voltage: (voltage)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Motor& motor);
 
