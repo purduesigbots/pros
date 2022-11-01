@@ -11,22 +11,22 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup c-screen Simplified Brain Screen C API
- * 
+ *
  */
 
 #ifndef _PROS_SCREEN_H_
 #define _PROS_SCREEN_H_
 
-#include <stdarg.h>   
-#include <stdbool.h>  
+#include <stdarg.h>
+#include <stdbool.h>
 #define _GNU_SOURCE
-#include <stdio.h>  
+#include <stdio.h>
 #undef _GNU_SOURCE
 #include <stdint.h>
 
-#include "pros/colors.h"     // c color macros
+#include "pros/colors.h"  // c color macros
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,16 +47,16 @@ namespace pros {
  * Different font sizes that can be used in printing text.
  */
 typedef enum {
-    /// Small text font size
-    E_TEXT_SMALL = 0,
-    /// Normal/Medium text font size
-    E_TEXT_MEDIUM,
-    /// Large text font size
-    E_TEXT_LARGE,
-    /// Medium centered text
-    E_TEXT_MEDIUM_CENTER,
-    /// Large centered text 
-    E_TEXT_LARGE_CENTER
+	/// Small text font size
+	E_TEXT_SMALL = 0,
+	/// Normal/Medium text font size
+	E_TEXT_MEDIUM,
+	/// Large text font size
+	E_TEXT_LARGE,
+	/// Medium centered text
+	E_TEXT_MEDIUM_CENTER,
+	/// Large centered text
+	E_TEXT_LARGE_CENTER
 } text_format_e_t;
 
 /**
@@ -64,14 +64,14 @@ typedef enum {
  * Enum indicating what the current touch status is for the touchscreen.
  */
 typedef enum {
-    /// Last interaction with screen was a quick press
-    E_TOUCH_RELEASED = 0,
-    /// Last interaction with screen was a release
-    E_TOUCH_PRESSED,
-    /// User is holding screen down
-    E_TOUCH_HELD,
-    /// An error occured while taking/returning the mutex
-    E_TOUCH_ERROR
+	/// Last interaction with screen was a quick press
+	E_TOUCH_RELEASED = 0,
+	/// Last interaction with screen was a release
+	E_TOUCH_PRESSED,
+	/// User is holding screen down
+	E_TOUCH_HELD,
+	/// An error occured while taking/returning the mutex
+	E_TOUCH_ERROR
 } last_touch_e_t;
 
 /**
@@ -79,16 +79,16 @@ typedef enum {
  *  Struct representing screen touch status, screen last x, screen last y, press count, release count.
  */
 typedef struct screen_touch_status_s {
-    /// Represents if the screen is being held, released, or pressed.
-    last_touch_e_t touch_status;
-    /// Represents the x value of the location of the touch.
-    int16_t x;
-    /// Represents the y value of the location of the touch.
-    int16_t y;
-    /// Represents how many times the screen has be pressed.
-    int32_t press_count;
-    /// Represents how many times the user released after a touch on the screen.
-    int32_t release_count;
+	/// Represents if the screen is being held, released, or pressed.
+	last_touch_e_t touch_status;
+	/// Represents the x value of the location of the touch.
+	int16_t x;
+	/// Represents the y value of the location of the touch.
+	int16_t y;
+	/// Represents how many times the screen has be pressed.
+	int32_t press_count;
+	/// Represents how many times the user released after a touch on the screen.
+	int32_t release_count;
 } screen_touch_status_s_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -113,11 +113,7 @@ typedef struct screen_touch_status_s {
 #endif
 #endif
 
-/**
- * \fn
- * A callback function for a screen callback. This will be called each time its corresponding touch type happens.
- */
-typedef void (*touch_event_cb_fn_t)(int16_t, int16_t);
+typedef void (*touch_event_cb_fn_t)();
 
 #ifdef __cplusplus
 namespace c {
@@ -129,23 +125,23 @@ namespace c {
 
 /**
  * Set the pen color for subsequent graphics operations
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param color	The pen color to set (it is recommended to use values
  * 		 from the enum defined in colors.h)
- * 
- * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
+ *
+ * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if
  *         there was an error either taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
  *   screen_set_pen(COLOR_RED);
  * }
- * 
+ *
  * void opcontrol() {
  *   int iter = 0;
  *   while(1){
@@ -163,19 +159,19 @@ uint32_t screen_set_pen(color_e_t color);
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
+ *
  * \param color	The background color to set (it is recommended to use values
  * 					from the enum defined in colors.h)
- * 
- * \return Returns 1 if the mutex was successfully returned, or 
+ *
+ * \return Returns 1 if the mutex was successfully returned, or
  * PROS_ERR if there was an error either taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
  *   screen_set_eraser(COLOR_RED);
  * }
- * 
+ *
  * void opcontrol() {
  *   while(1){
  *     // This should turn the screen red.
@@ -192,17 +188,17 @@ uint32_t screen_set_eraser(color_e_t color);
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
- * \return The current pen color in the form of a value from the enum defined 
- *         in colors.h, or PROS_ERR if there was an error taking or returning 
+ *
+ * \return The current pen color in the form of a value from the enum defined
+ *         in colors.h, or PROS_ERR if there was an error taking or returning
  *         the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
  *   screen_set_pen(COLOR_RED);
  * }
- * 
+ *
  * void opcontrol() {
  *   while(1){
  *     // Should print number equivalent to COLOR_RED defined in colors.h.
@@ -220,16 +216,16 @@ uint32_t screen_get_pen(void);
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
  *
- * \return The current eraser color in the form of a value from the enum 
- *         defined in colors.h, or PROS_ERR if there was an error taking or 
+ * \return The current eraser color in the form of a value from the enum
+ *         defined in colors.h, or PROS_ERR if there was an error taking or
  *         returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
  *   screen_set_pen(COLOR_RED);
  * }
- * 
+ *
  * void opcontrol() {
  *   while(1){
  *     // Should print number equivalent to COLOR_RED defined in colors.h.
@@ -246,16 +242,16 @@ uint32_t screen_get_eraser(void);
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
  *   screen_set_eraser(COLOR_RED);
  * }
- * 
+ *
  * void opcontrol() {
  *   while(1){
  *     // This should turn the screen red.
@@ -275,10 +271,10 @@ uint32_t screen_erase(void);
  *
  * \param start_line    The line from which scrolling will start
  * \param lines			The number of lines to scroll up
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -306,10 +302,10 @@ uint32_t screen_scroll(int16_t start_line, int16_t lines);
  * \param x1, y1	The (x,y) coordinates of the second corner of the
  * 						rectangular region
  * \param lines 	The number of lines to scroll upwards
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *           taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -322,7 +318,7 @@ uint32_t screen_scroll(int16_t start_line, int16_t lines);
 uint32_t screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t lines);
 
 /**
- * Copy a screen region (designated by a rectangle) from an off-screen buffer 
+ * Copy a screen region (designated by a rectangle) from an off-screen buffer
  * to the screen
  *
  * This function uses the following values of errno when an error state is
@@ -336,10 +332,10 @@ uint32_t screen_scroll_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int1
  * \param buf		Off-screen buffer containing screen data
  * \param stride	Off-screen buffer width in pixels, such that image size
  * 						is stride-padding
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -362,10 +358,10 @@ uint32_t screen_copy_area(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint32
  *
  * \param x The (x,y) coordinates of the pixel
  * \param y The (x,y) coordinates of the pixel
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * int i = 0;
@@ -388,10 +384,10 @@ uint32_t screen_draw_pixel(int16_t x, int16_t y);
  * EACCESS - Another resource is currently trying to access the screen mutex.
  *
  * \param x, y 	The (x,y) coordinates of the erased
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -418,10 +414,10 @@ uint32_t screen_erase_pixel(int16_t x, int16_t y);
  *
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -441,10 +437,10 @@ uint32_t screen_draw_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  *
  * \param x0, y0	The (x, y) coordinates of the first point of the line
  * \param x1, y1 	The (x, y) coordinates of the second point of the line
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -467,10 +463,10 @@ uint32_t screen_erase_line(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -491,10 +487,10 @@ uint32_t screen_draw_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -516,10 +512,10 @@ uint32_t screen_erase_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  *
  * \param x0, y0 	The (x,y) coordinates of the first point of the rectangle
  * \param x1, y1 	The (x,y) coordinates of the second point of the rectangle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -540,10 +536,10 @@ uint32_t screen_fill_rect(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -564,10 +560,10 @@ uint32_t screen_draw_circle(int16_t x, int16_t y, int16_t radius);
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -591,10 +587,10 @@ uint32_t screen_erase_circle(int16_t x, int16_t y, int16_t radius);
  *
  * \param x, y 	The (x,y) coordinates of the center of the circle
  * \param r 	The radius of the circle
- * 
-  * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *         taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -616,22 +612,21 @@ uint32_t screen_fill_circle(int16_t x, int16_t y, int16_t radius);
 
 /**
  * Print a formatted string to the screen on the specified line
- * 
+ *
  * Will default to a medium sized font by default if invalid txt_fmt is given.
- * 
- * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
- * \param line The line number on which to print
- * \param text  Format string
- * \param ...  Optional list of arguments for the format string
- * 
- *  \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES
+ * NOT SUPPORT SMALL) \param line The line number on which to print \param text  Format string \param ...  Optional list
+ * of arguments for the format string
+ *
+ *  \return 1 if there were no errors, or PROS_ERR if an error occured
  *          taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
  *   int i = 0;
- *   
+ *
  *   screen_set_pen(COLOR_BLUE);
  *   while(1){
  *     // Will print seconds started since program started on line 3
@@ -645,25 +640,25 @@ uint32_t screen_print(text_format_e_t txt_fmt, const int16_t line, const char* t
 
 /**
  * Print a formatted string to the screen at the specified point
- * 
+ *
  * Will default to a medium sized font by default if invalid txt_fmt is given.
- * 
+ *
  * Text formats medium_center and large_center will default to medium and large respectively.
- * 
+ *
  * \param txt_fmt Text format enum that determines if the text is small, medium, or large.
  * \param x The y coordinate of the top left corner of the string
  * \param y The x coordinate of the top left corner of the string
  * \param text  Format string
  * \param ...  Optional list of arguments for the format string
- * 
- *  \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ *  \return 1 if there were no errors, or PROS_ERR if an error occured
  *          taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
  *   int i = 0;
- *   
+ *
  *   screen_set_pen(COLOR_BLUE);
  *   while(1){
  *     // Will print seconds started since program started.
@@ -680,22 +675,21 @@ uint32_t screen_print_at(text_format_e_t txt_fmt, const int16_t x, const int16_t
  *
  * Same as `display_printf` except that this uses a `va_list` instead of the
  * ellipsis operator so this can be used by other functions.
- * 
+ *
  * Will default to a medium sized font by default if invalid txt_fmt is given.
  * Exposed mostly for writing libraries and custom functions.
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
- * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES NOT SUPPORT SMALL)
- * \param line The line number on which to print
- * \param text  Format string
- * \param args List of arguments for the format string
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \param txt_fmt Text format enum that determines if the text is medium, large, medium_center, or large_center. (DOES
+ * NOT SUPPORT SMALL) \param line The line number on which to print \param text  Format string \param args List of
+ * arguments for the format string
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *          while taking or returning the screen mutex.
- * 
+ *
  */
 uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char* text, va_list args);
 
@@ -704,24 +698,24 @@ uint32_t screen_vprintf(text_format_e_t txt_fmt, const int16_t line, const char*
  *
  * Same as `display_printf_at` except that this uses a `va_list` instead of the
  * ellipsis operator so this can be used by other functions.
- * 
+ *
  * Will default to a medium sized font by default if invalid txt_fmt is given.
- * 
+ *
  * Text formats medium_center and large_center will default to medium and large respectively.
  * Exposed mostly for writing libraries and custom functions.
  *
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
+ *
  * \param txt_fmt Text format enum that determines if the text is small, medium, or large.
  * \param x, y The (x,y) coordinates of the top left corner of the string
  * \param text  Format string
  * \param args List of arguments for the format string
- *  
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *          while taking or returning the screen mutex.
- * 
+ *
  */
 uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16_t y, const char* text, va_list args);
 
@@ -733,12 +727,12 @@ uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16
 
 /**
  * Gets the touch status of the last touch of the screen.
- * 
- * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
- * This will be released by default if no action was taken. 
- * If an error occured, the screen_touch_status_s_t will have its last_touch_e_t
- *  enum specifier set to E_TOUCH_ERR, and other values set to -1.
- * 
+ *
+ * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE,
+ * E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD). This will be released by default if no action was taken. If an
+ * error occured, the screen_touch_status_s_t will have its last_touch_e_t enum specifier set to E_TOUCH_ERR, and other
+ * values set to -1.
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -746,7 +740,7 @@ uint32_t screen_vprintf_at(text_format_e_t txt_fmt, const int16_t x, const int16
  *   screen_touch_status_s_t status;
  *   while(1){
  *     status = screen_touch_status();
- * 
+ *
  *     // Will print various information about the last touch
  *     screen_print(TEXT_MEDIUM, 1, "Touch Status (Type): %d", status.touch_status);
  *     screen_print(TEXT_MEDIUM, 2, "Last X: %d", status.x);
@@ -766,13 +760,13 @@ screen_touch_status_s_t screen_touch_status(void);
  * This function uses the following values of errno when an error state is
  * reached:
  * EACCESS - Another resource is currently trying to access the screen mutex.
- * 
+ *
  * \param cb Function pointer to callback when event type happens
  * \param event_type Touch event that will trigger the callback.
- * 
- * \return 1 if there were no errors, or PROS_ERR if an error occured 
+ *
+ * \return 1 if there were no errors, or PROS_ERR if an error occured
  *          while taking or returning the screen mutex.
- * 
+ *
  * \b Example
  * \code
  * touch_event_cb_fn_t changePixel(){
@@ -780,7 +774,7 @@ screen_touch_status_s_t screen_touch_status(void);
  *   screen_draw_pixel(status.x,status.y);
  *   return NULL;
  * }
- * 
+ *
  * void opcontrol() {
  *   screen_touch_callback(changePixel(), TOUCH_PRESSED);
  *   while(1) delay(20);
@@ -794,9 +788,9 @@ uint32_t screen_touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type
 ///@}
 
 #ifdef __cplusplus
-} //namespace c
-} //namespace pros
+}  // namespace c
+}  // namespace pros
 }
-#endif  
+#endif
 
-#endif 
+#endif

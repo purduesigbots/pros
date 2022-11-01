@@ -14,9 +14,9 @@
 
 namespace pros {
 inline namespace v5 {
-	
-std::int32_t Imu::reset() const {
-	return pros::c::imu_reset(_port);
+
+std::int32_t Imu::reset(bool blocking /*= false*/) const {
+	return blocking ? pros::c::imu_reset_blocking(_port) : pros::c::imu_reset(_port);
 }
 
 std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
@@ -24,7 +24,7 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 double Imu::get_rotation() const {
-    return pros::c::imu_get_rotation(_port);
+	return pros::c::imu_get_rotation(_port);
 }
 
 double Imu::get_heading() const {
@@ -60,11 +60,11 @@ pros::imu_accel_s_t Imu::get_accel() const {
 }
 
 pros::Imu_Status Imu::get_status() const {
-	return static_cast<pros::Imu_Status> (pros::c::imu_get_status(_port));
+	return static_cast<pros::Imu_Status>(pros::c::imu_get_status(_port));
 }
 
 bool Imu::is_calibrating() const {
-	return (int) get_status() & (int) (pros::Imu_Status::calibrating);
+	return (int)get_status() & (int)(pros::Imu_Status::calibrating);
 }
 
 std::int32_t Imu::tare_heading() const {
