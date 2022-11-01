@@ -28,7 +28,6 @@
 #include <cstdint>
 
 #include "pros/gps.h"
-#include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -290,9 +289,6 @@ class Gps {
 	 */
 	virtual pros::gps_accel_s_t get_accel() const;
 ///@}
-
-	private:
-	virtual void push_gps_configuration(void) const;
 };  // Gps Class
 }
 
