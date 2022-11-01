@@ -51,20 +51,12 @@ std::uint8_t read_buttons(void) {
 	return lcd_read_buttons();
 }
 
-void set_background_color(lv_color_t color) {
-	lcd_set_background_color(color);
-}
-
 void set_background_color(uint8_t r, uint8_t g, uint8_t b) {
-	lcd_set_background_color(LV_COLOR_MAKE(r, g, b));
-}
-
-void set_text_color(lv_color_t color) {
-	lcd_set_text_color(color);
+	lcd_set_background_color();
 }
 
 void set_text_color(uint8_t r, uint8_t g, uint8_t b) {
-	lcd_set_text_color(LV_COLOR_MAKE(r, g, b));
+	lcd_set_text_color();
 }
 
 }  // namespace lcd

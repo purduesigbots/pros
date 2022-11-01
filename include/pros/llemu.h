@@ -29,7 +29,6 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
-#include "display/lvgl.h"
 #pragma GCC diagnostic pop
 
 #ifdef __cplusplus
@@ -44,11 +43,6 @@ typedef void (*lcd_btn_cb_fn_t)(void);
 #define LCD_BTN_RIGHT 1
 
 typedef struct lcd_s {
-	lv_obj_t* frame;
-	lv_obj_t* screen;
-	lv_obj_t* lcd_text[8];
-	lv_obj_t* btn_container;
-	lv_obj_t* btns[3];             // < 0 => left; 1 => center; 2 => right
 	lcd_btn_cb_fn_t callbacks[3];  // < 0 => left; 1 => center; 2 => right
 	volatile uint8_t touch_bits;   // < 4 => left; 2 => center; 1 => right (no
 	                               // multitouch support)
@@ -225,27 +219,6 @@ bool lcd_register_btn2_cb(lcd_btn_cb_fn_t cb);
  */
 uint8_t lcd_read_buttons(void);
 
-/**
- * Changes the color of the LCD background to a provided color expressed in
- * type lv_color_t.
- * 
- * \param color
- *        A color of type lv_color_t
- * 
- * \return void
- */
-void lcd_set_background_color(lv_color_t color);
-
-/**
- * Changes the text color of the LCD to a provided color expressed in
- * type lv_color_t.
- *
- * \param color
- *        A color of type lv_color_t
- *
- * \return void
- */
-void lcd_set_text_color(lv_color_t color);
 
 #ifdef __cplusplus
 }  // namespace c

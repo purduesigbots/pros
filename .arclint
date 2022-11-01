@@ -2,18 +2,16 @@
 	"linters": {
 		"clang-format": {
 			"type": "clang-format",
-			"include": "(.*\\.(c|cpp|h|hpp)$)",
-			"exclude": "(^(src|include)/(rtos/|display/lv_.+))"
+			"include": "(.*\\.(c|cpp|h|hpp)$)"
 		},
 		"spelling": {
 			"type": "spelling",
-			"include": "(.*)",
-			"exclude": "(^(src|include)|(rtos/|display/lv_.*))"
+			"include": "(.*)"
 		},
 		"text": {
 			"type": "text",
 			"include": "(.*)",
-			"exclude": "(^(src|include)/(((rtos)/)|(system/dev/banners.h)|(display/((lv_.+)|(licence.txt)))))",
+			"exclude": "(^(src|include)/(((rtos)/)|(system/dev/banners.h)|(licence.txt)))))",
 			"severity": {
 				"2": "disabled",
 				"3": "disabled"
