@@ -297,6 +297,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << ", voltage limit: " << motor.get_voltage_limit();
 	os << "]";
 	return os;
+}
 
 void Motor::push_motor_configuration() const {
 	_motor_mutex.take();
