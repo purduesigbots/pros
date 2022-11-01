@@ -1281,7 +1281,7 @@ class Motor {
 	/**
 	 * This is the overload for the << operator for printing to streams
 	 * 
-	 * Prints in format(three lines total):
+	 * Prints in format:
 	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw), 
 	 * current limit: (current limit), direction: (direction), efficiency: (efficiency), 
 	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
