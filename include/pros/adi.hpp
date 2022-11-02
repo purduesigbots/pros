@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <tuple>
 #include <utility>
+#include <iostream>
 
 #include "pros/adi.h"
 
@@ -388,6 +389,16 @@ class AnalogIn : protected Port {
 	 * \endcode
 	 */
 	using Port::get_value;
+
+	/**
+     * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * AnalogIn [smart_port: analog_in._smart_port, adi_port: analog_in._adi_port,
+	 * value calibrated: (12 bit calibrated value), 
+	 * value calibrated HR: (16 bit calibrated value), value: (12 bit value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in);
 };
 
 ///@}
@@ -476,6 +487,15 @@ class AnalogOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+	 * AnalogOut [smart_port: analog_out._smart_port, adi_port: analog_out._adi_port,
+	 * value: (value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out);
 };
 
 ///@}
@@ -578,6 +598,15 @@ class DigitalOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format(this below is all in one line with no new line):
+	 * DigitalOut [smart_port: digital_out._smart_port, adi_port: digital_out._adi_port,
+	 * value: (value)]
+	 */  
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out);
 };
 ///@}
 
@@ -697,6 +726,15 @@ class DigitalIn : private Port {
 	 * \endcode
 	 */
 	using Port::get_value;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format(this below is all in one line with no new line):
+	 * DigitalIn [smart_port: digital_in._smart_port, adi_port: digital_in._adi_port,
+	 * value: (value)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in);
 };
 
 ///@}
@@ -961,6 +999,15 @@ class Encoder : private Port {
 	 * \endcode
 	 */
 	std::int32_t get_value() const;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format(this below is all in one line with no new line):
+	 * Encoder [smart_port: encoder._smart_port, adi_port: encoder._adi_port,
+	 * value: (value)]
+	 */ 
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder);
 };
 
 ///@}
@@ -1368,6 +1415,14 @@ class Potentiometer : public AnalogIn {
 	 * -4095 to 4095
 	 */
 	using AnalogIn::get_value_calibrated;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * Potentiometer [value: (value), value calibrated: (calibrated value), 
+	 * angle: (angle)]
+	 * Prints in format(this below is all in one line with no new line):
+	 */ 
+	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
 };
 }  // namespace adi
 

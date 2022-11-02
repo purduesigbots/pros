@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/gps.h"
 
@@ -288,6 +289,14 @@ class Gps {
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::gps_accel_s_t get_accel() const;
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * 
+	 * Prints in format:
+	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 ///@}
 };  // Gps Class
 }

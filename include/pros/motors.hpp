@@ -24,6 +24,7 @@
 #define _PROS_MOTORS_HPP_
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/motors.h"
 #include "pros/colors.hpp"
@@ -1276,6 +1277,18 @@ class Motor {
 	virtual std::int32_t tare_position(void) const;
 	
 	///@}
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 * 
+	 * Prints in format:
+	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw), 
+	 * current limit: (current limit), direction: (direction), efficiency: (efficiency), 
+	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
+	 * position: (position), reversed: (reversed boolean), temperature: (temperature),
+	 * torque: (torque), voltage: (voltage)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, const pros::Motor& motor);
 
 	private:
 	const std::uint8_t _port;

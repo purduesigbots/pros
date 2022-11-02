@@ -59,8 +59,30 @@ std::int32_t AnalogIn::get_value_calibrated_HR() const {
 	return ext_adi_analog_read_calibrated_HR(_smart_port, _adi_port);
 }
 
+std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in) {
+	os << "AnalogIn [";
+	os << "smart_port: " << analog_in._smart_port;
+	os << ", adi_port: " << analog_in._adi_port;
+	os << ", value calibrated: " << analog_in.get_value_calibrated();
+	os << ", value calibrated HR: " << analog_in.get_value_calibrated_HR();
+	os << ", value: " << analog_in.get_value();
+	os << "]";
+
+	return os;
+}
+
 AnalogOut::AnalogOut(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_OUT) {}
 AnalogOut::AnalogOut(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_OUT) {}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out) {
+	os << "AnalogOut [";
+	os << "smart_port: " << analog_out._smart_port;
+	os << ", adi_port: " << analog_out._adi_port;
+	os << ", value: " << analog_out.get_value();
+	os << "]";
+
+	return os;
+}
 
 DigitalIn::DigitalIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_DIGITAL_IN) {}
 DigitalIn::DigitalIn(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_DIGITAL_IN) {}
@@ -69,12 +91,32 @@ std::int32_t DigitalIn::get_new_press() const {
 	return ext_adi_digital_get_new_press(_smart_port, _adi_port);
 }
 
+std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in) {
+	os << "DigitalIn [";
+	os << "smart_port: " << digital_in._smart_port;
+	os << ", adi_port: " << digital_in._adi_port;
+	os << ", value: " << digital_in.get_value();
+	os << "]";
+
+	return os;
+}
+
 DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
 DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
 	set_value(init_state);
+}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out) {
+	os << "DigitalOut [";
+	os << "smart_port: " << digital_out._smart_port;
+	os << ", adi_port: " << digital_out._adi_port;
+	os << ", value: " << digital_out.get_value();
+	os << "]";
+
+	return os;
 }
 
 Motor::Motor(std::uint8_t adi_port) : Port(adi_port, E_ADI_LEGACY_PWM) {
@@ -107,6 +149,16 @@ std::int32_t Encoder::reset() const {
 
 std::int32_t Encoder::get_value() const {
 	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
+}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder) {
+	os << "Encoder [";
+	os << "smart_port: " << encoder._smart_port;
+	os << ", adi_port: " << encoder._adi_port;
+	os << ", value: " << encoder.get_value();
+	os << "]";
+
+	return os;
 }
 
 Ultrasonic::Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo) : Port(adi_port_ping) {
@@ -157,6 +209,16 @@ Potentiometer::Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_ty
 double Potentiometer::get_angle() const {
 	uint8_t temp_smart = _smart_port - 1;
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
+}
+
+std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
+	os << "Potentiometer [";
+	os << "value: " << potentiometer.get_value();
+	os << ", value calibrated: " << potentiometer.get_value_calibrated();
+	os << ", angle: " << potentiometer.get_angle();
+	os << "]";
+
+	return os;
 }
 }  // namespace adi
 }  // namespace pros

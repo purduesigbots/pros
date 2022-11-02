@@ -37,5 +37,16 @@ std::uint8_t Distance::get_port() {
 	return _port;
 }
 
+std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
+    os << "Distance [";
+    os << "port: " << distance.get_port();
+    os << ", distance: " << distance.get();
+    os << ", confidence: " << distance.get_confidence();
+    os << ", object size: " << distance.get_object_size();
+    os << ", object velocity: " << distance.get_object_velocity();
+    os << "]";
+    return os;
+}
+
 }
 }  // namespace pros
