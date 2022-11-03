@@ -380,6 +380,38 @@ const char* convert_args(const std::string& arg) {
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
 
 } //namespace screen
-} //namespace pros
+
+  /******************************************************************************/
+  /**                                 LLEMU Weak Stubs                         **/
+  /**                                                                          **/
+  /**   These functions allow main.cpp to be compiled without LVGL present     **/
+  /******************************************************************************/
+namespace lcd {
+  using lcd_btn_cb_fn_t = void (*)(void);
+
+  extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
+  extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
+  extern __attribute__((weak)) bool initialize(void) {return false;}
+  extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
+  extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
+
+  template <typename... Params>
+  extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
+
+  #ifndef LCD_BTN_LEFT
+    #define LCD_BTN_LEFT 4
+  #endif
+
+  #ifndef LCD_BTN_CENTER
+    #define LCD_BTN_CENTER 2
+  #endif
+
+  #ifndef LCD_BTN_RIGHT
+    #define LCD_BTN_RIGHT 1
+  #endif
+} // namespace LCD
+} // namespace pros
+
+extern __attribute__((weak)) void lvgl_init() {}
 
 #endif //header guard
