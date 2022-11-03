@@ -24,11 +24,11 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 double Imu::get_rotation() const {
-	return pros::c::imu_get_rotation(_port);
+	return _rotation;
 }
 
 double Imu::get_heading() const {
-	return pros::c::imu_get_heading(_port);
+	return _heading;
 }
 
 pros::quaternion_s_t Imu::get_quaternion() const {
@@ -36,19 +36,19 @@ pros::quaternion_s_t Imu::get_quaternion() const {
 }
 
 pros::euler_s_t Imu::get_euler() const {
-	return pros::c::imu_get_euler(_port);
+	return _euler;
 }
 
 double Imu::get_pitch() const {
-	return get_euler().pitch;
+	return _pitch;
 }
 
 double Imu::get_roll() const {
-	return get_euler().roll;
+	return _roll;
 }
 
 double Imu::get_yaw() const {
-	return get_euler().yaw;
+	return _yaw;
 }
 
 pros::imu_gyro_s_t Imu::get_gyro_rate() const {
@@ -92,31 +92,48 @@ std::int32_t Imu::tare_euler() const {
 }
 
 std::int32_t Imu::set_heading(double target) const {
+	_heading = target;
 	return pros::c::imu_set_heading(_port, target);
 }
 
 std::int32_t Imu::set_rotation(double target) const {
+	_rotation = target;
 	return pros::c::imu_set_rotation(_port, target);
 }
 
 std::int32_t Imu::set_pitch(double target) const {
+	_pitch = target;
 	return pros::c::imu_set_pitch(_port, target);
 }
 
 std::int32_t Imu::set_yaw(double target) const {
+	_yaw = target;
 	return pros::c::imu_set_yaw(_port, target);
 }
 
 std::int32_t Imu::set_roll(double target) const {
+	_roll = target;
 	return pros::c::imu_set_roll(_port, target);
 }
 
 std::int32_t Imu::set_euler(pros::euler_s_t target) const {
+	_euler = target;
 	return pros::c::imu_set_euler(_port, target);
 }
 
 std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
+}
+
+void Imu::push_imu_configuration() const {
+	_imu_mutex.take();
+	set_heading(_heading);
+	set_rotation(_rotation);
+	set_yaw(_yaw);
+	set_pitch(_pitch);
+	set_roll(_roll);
+	set_euler(_euler);
+	_imu_mutex.give();
 }
 
 }  // namespace v5

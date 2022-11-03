@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include "pros/imu.h"
+#include "rtos.hpp"
 
 namespace pros {
 /**
@@ -57,7 +58,6 @@ class Imu {
 	 * \addtogroup cpp-imu
 	 * ///@{
 	 */
-	const std::uint8_t _port;
 
 	public:
 	Imu(const std::uint8_t port) : _port(port){};
@@ -484,6 +484,17 @@ class Imu {
 	 */
 	virtual bool is_calibrating() const;
 	///@}
+
+	private:
+	const std::uint8_t _port;
+	mutable double _heading;
+	mutable double _rotation;
+	mutable double _yaw;
+	mutable double _pitch;
+	mutable double _roll;
+	mutable pros::euler_s_t _euler;
+	mutable pros::Mutex _imu_mutex;
+	virtual void push_imu_configuration(void) const;
 };
 
 using IMU = Imu;
