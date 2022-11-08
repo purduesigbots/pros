@@ -298,6 +298,14 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	return os;
 }
 
+pros::Motor& pros::Motor::operator=(const pros::Motor& other) {
+  _port = other._port;
+  _reverse = other._reverse;
+  _gearset = other._gearset;
+  _encoder_units = other._encoder_units;
+  return *this;
+}
+
 void Motor::push_motor_configuration() const {
 	_motor_mutex.take();
 	set_gearing(_gearset);
