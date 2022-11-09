@@ -1292,7 +1292,7 @@ class Motor {
 	pros::Motor& operator=(const pros::Motor& other);
 
 	private:
-	const std::uint8_t _port;
+	std::uint8_t _port;
     mutable bool _reverse;
     mutable pros::Mutex _motor_mutex;
     mutable pros::v5::Motor_Gear _gearset;
