@@ -22,9 +22,9 @@
 #define _PROS_ROTATION_HPP_
 
 #include <cstdint>
-#include <iostream>
 
 #include "pros/rotation.h"
+#include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -36,7 +36,7 @@ class Rotation {
 	 * \ingroup cpp-rotation
 	 *  @{
 	 */
-	const std::uint8_t _port;
+	std::uint8_t _port;
 
 	public:
 	Rotation(const std::uint8_t port) : _port(port){};
@@ -57,7 +57,7 @@ class Rotation {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t reset();
+	virtual std::int32_t reset() const;
 
 	/**
 	 * Set the Rotation Sensor's refresh interval in milliseconds.
@@ -195,17 +195,15 @@ class Rotation {
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-	virtual std::int32_t get_reversed() const;
+	virtual std::int32_t get_reversed() const ;
 	///@}
 
-	/**
-	 * This is the overload for the << operator for printing to streams
-	 * 
-	 * Prints in format(this below is all in one line with no new line):
-	 * Rotation [port: rotation._port, position: (rotation position), velocity: (rotation velocity), 
-	 * angle: (rotation angle), reversed: (reversed boolean)]
-	 */
-	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
+	pros::Rotation& operator=(const pros::Rotation& other);
+    
+    private:
+    mutable bool _reverse_flag;
+	mutable pros::Mutex _rotation_mutex;
+    virtual void push_rotation_configuration(void) const;
 };
 }
 }  // namespace pros
