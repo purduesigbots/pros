@@ -500,6 +500,9 @@ class Imu {
 
 using IMU = Imu;
 
+namespace literals {
+const pros::Imu operator"" _imu(unsigned long long int i);
+}  // namespace literals
 }  // namespace v5
 }  // namespace pros
 

@@ -136,5 +136,10 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	return os;
 }
 
+namespace literals {
+pros::Imu operator"" _imu(unsigned long long int i) {
+	return pros::Imu(i);
+}
+}  // namespace literals
 }  // namespace v5
 }  // namespace pros
