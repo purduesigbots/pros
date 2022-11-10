@@ -359,6 +359,23 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	return out;
 }
 
+pros::Motor& operator[](int i) {
+	if (_motors.empty()) {
+		errno = ENXIO;
+		return null;
+	}
+	if (_motors.size() - 1 > i) {
+		errno = ENXIO;
+		return null;
+	}
+	return motors.at(i);
+}
+
+std::int32_t Motor_Group::size() {
+	return motors.size();
+}
+
+
 std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = PROS_SUCCESS;

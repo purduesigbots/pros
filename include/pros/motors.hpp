@@ -1021,6 +1021,25 @@ class Motor_Group {
 	/****************************************************************************/
 
 	/**
+	 * Indexes Motor in the Motor_Group in the same way as an array.
+	 * 
+	 * \param i
+	 *        The index value in the motor group.
+	 *
+	 * \return the appropriate Motor reference, return null and set errno on error.
+	 */ 
+	pros::Motor& operator[](int i);
+
+
+	/**
+	 * Indexes Motor in the Motor_Group in the same way as an array.
+	 * 
+	 *
+	 * \return the size of the vector containing motors
+	 */ 
+	std::int32_t size();
+
+	/**
 	 * Sets the position for the motor in its encoder units.
 	 *
 	 * This will be the future reference point for the motors' "absolute"
