@@ -137,7 +137,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 }
 
 namespace literals {
-pros::Imu operator"" _imu(unsigned long long int i) {
+const pros::Imu operator"" _imu(const unsigned long long int i) {
 	return pros::Imu(i);
 }
 }  // namespace literals

@@ -498,11 +498,11 @@ class Imu {
 	///@}
 };
 
-using IMU = Imu;
-
 namespace literals {
-const pros::Imu operator"" _imu(unsigned long long int i);
+const pros::Imu operator"" _imu(const unsigned long long int i);
 }  // namespace literals
+
+using IMU = Imu;
 }  // namespace v5
 }  // namespace pros
 
