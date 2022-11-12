@@ -1026,7 +1026,7 @@ class Motor_Group {
 	 * \param i
 	 *        The index value in the motor group.
 	 *
-	 * \return the appropriate Motor reference, return null and set errno on error.
+	 * \return the appropriate Motor reference, return first motor and set errno on error.
 	 */ 
 	pros::Motor& operator[](int i);
 
