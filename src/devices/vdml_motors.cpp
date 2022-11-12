@@ -335,12 +335,12 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 
 Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
     : _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {
-    	static_assert(_motor_count > 0);
-    }
+    static_assert(motors.size() > 0);
+}
 
 Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
-    static_assert(_motor_count > 0);
+    static_assert(motors.size() > 0);
 	for (std::uint8_t i = 0; i < _motor_count; ++i) {
 		_motors.push_back(Motor(motor_ports[i]));
 	}
@@ -362,7 +362,7 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	return out;
 }
 
-pros::Motor& operator[](int i) {
+pros::Motor& Motor_Group::operator[](int i) {
 	if (_motors.empty()) {
 		errno = ENXIO;
 		return _motors[0];
