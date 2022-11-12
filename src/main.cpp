@@ -23,6 +23,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
+	lvgl_init();
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
 
