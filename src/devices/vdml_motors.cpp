@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <cassert>
 
 #include "kapi.h"
 #include "pros/motors.hpp"
