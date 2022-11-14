@@ -16,7 +16,7 @@
 namespace pros {
 using namespace pros::c;
 
-Serial::Serial(std::uint8_t port, std::int32_t baudrate) : _port(port) {
+Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port) {
 	serial_enable(port);
 	set_baudrate(baudrate);
 }
@@ -63,6 +63,10 @@ std::int32_t Serial::write_byte(std::uint8_t buffer) const {
 
 std::int32_t Serial::write(std::uint8_t* buffer, std::int32_t length) const {
 	return serial_write(_port, buffer, length);
+}
+
+pros::DeviceType Device::get_type() const {
+	return pros::DeviceType::E_DEVICE_SERIAL;
 }
 
 namespace literals {

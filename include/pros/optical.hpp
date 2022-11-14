@@ -28,13 +28,14 @@
 #include <iostream>
 
 #include "pros/optical.h"
+#include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
 /**
  * \ingroup cpp-optical
  */
-class Optical {
+class Optical : public Device {
 	/**
 	 * \addtogroup cpp-optical
 	 *  @{
@@ -247,8 +248,13 @@ class Optical {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	const pros::DeviceType get_type();
+
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 }

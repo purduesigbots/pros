@@ -29,6 +29,7 @@
 #include "pros/motors.h"
 #include "pros/colors.hpp"
 #include "rtos.hpp"
+#include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -1290,8 +1291,13 @@ class Motor {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Motor& motor);
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	const pros::DeviceType get_type();
+
 	private:
-	const std::uint8_t _port;
     mutable bool _reverse;
     mutable pros::Mutex _motor_mutex;
     mutable pros::v5::Motor_Gear _gearset;

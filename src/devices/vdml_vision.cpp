@@ -16,7 +16,7 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port) {
+Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port) {
 	vision_set_zero_point(port, zero_point);
 }
 
@@ -115,6 +115,10 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
+}
+
+pros::DeviceType Device::get_type() const {
+	return pros::DeviceType::E_DEVICE_VISION;
 }
 
 }  // namespace v5 

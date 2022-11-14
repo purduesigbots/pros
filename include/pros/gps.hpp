@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include "pros/gps.h"
+#include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -36,7 +37,7 @@ inline namespace v5 {
  * \ingroup cpp-gps
  *  @{
  */
-class Gps {
+class Gps : public Device {
 	/**
 	 * \addtogroup cpp-gps
 	 *  @{
@@ -44,18 +45,18 @@ class Gps {
 	const std::uint8_t _port;
 
 	public:
-	Gps(const std::uint8_t port) : _port(port){};
+	Gps(const std::uint8_t port) : Device(port){};
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : _port(port) {
+	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port){
 		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
 	};
 
-	Gps(const std::uint8_t port, double xOffset, double yOffset) : _port(port) {
+	Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port){
 		pros::c::gps_set_offset(port, xOffset, yOffset);
 	};
 
 	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
-	    : _port(port) {
+	     : Device(port){
 		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 	};
 
@@ -297,6 +298,12 @@ class Gps {
 	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
+
+	/**
+     * Returns the type of device
+     *
+	 */
+	const pros::DeviceType get_type();
 ///@}
 };  // Gps Class
 }

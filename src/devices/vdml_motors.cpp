@@ -19,7 +19,7 @@ using namespace pros::c;
 
 Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
              const pros::v5::Motor_Units encoder_units)
-    : _port(port) {
+    : Device(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
@@ -27,35 +27,35 @@ Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const
 
 Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse,
              const pros::v5::Motor_Units encoder_units)
-    : _port(port) {
+    : Device(port) {
 	set_gearing(gearset_color);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
 }
 
-Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset, const bool reverse) : Device(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color gearset_color, const bool reverse) : Device(port) {
 	set_gearing(gearset_color);
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::v5::Motor_Gears gearset) : Device(port) {
 	set_gearing(gearset);
 }
 
-Motor::Motor(const std::uint8_t port, const pros::Color gearset_color) : _port(port) {
+Motor::Motor(const std::uint8_t port, const pros::Color gearset_color) : Device(port) {
 	set_gearing(gearset_color);
 }
 
-Motor::Motor(const std::uint8_t port, const bool reverse) : _port(port) {
+Motor::Motor(const std::uint8_t port, const bool reverse) : Device(port) {
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port) : _port(port) {}
+Motor::Motor(const std::uint8_t port) : Device(port) {}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
 	push_motor_configuration();
@@ -296,6 +296,10 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << ", voltage: " << motor.get_voltage(); 
 	os << "]";
 	return os;
+}
+
+pros::DeviceType Device::get_type() const {
+	return pros::DeviceType::E_DEVICE_MOTOR;
 }
 
 void Motor::push_motor_configuration() const {

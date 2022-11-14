@@ -15,7 +15,7 @@
 namespace pros {
 inline namespace v5{ 
 	
-Distance::Distance(const std::uint8_t port) : _port(port) {}
+Distance::Distance(const std::uint8_t port) : Device(port) {}
 
 std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);
@@ -46,6 +46,10 @@ std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
     os << ", object velocity: " << distance.get_object_velocity();
     os << "]";
     return os;
+}
+
+pros::DeviceType Device::get_type() const {
+	return pros::DeviceType::E_DEVICE_DISTANCE;
 }
 
 }

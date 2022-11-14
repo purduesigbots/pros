@@ -24,13 +24,14 @@
 
 #include <cstdint>
 #include "pros/serial.h"
+#include "pros/device.hpp"
 
 namespace pros {
 /**
  * \ingroup cpp-serial
  *  @{
  */
-class Serial {
+class Serial : public Device {
 	/**
 	 * \addtogroup cpp-serial
 	 *  @{
@@ -228,8 +229,13 @@ class Serial {
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	const pros::DeviceType get_type();
+
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 

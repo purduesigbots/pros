@@ -19,7 +19,7 @@
 #include "pros/link.hpp"
 
 namespace pros {
-    Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : _port(port) {
+    Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : Device(port) {
         (ov) ? pros::c::link_init_override(_port, link_id.c_str(), type) : pros::c::link_init(_port, link_id.c_str(), type);
     }
 
@@ -53,5 +53,9 @@ namespace pros {
 
     std::uint32_t Link::clear_receive_buf() {
         return pros::c::link_clear_receive_buf(_port);
+    }
+
+    const pros::DeviceType Link::get_type() {
+	    return pros::DeviceType::link;
     }
 }
