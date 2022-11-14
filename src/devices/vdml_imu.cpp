@@ -136,5 +136,9 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	return os;
 }
 
+const pros::DeviceType Imu::get_type() {
+	return pros::DeviceType::E_DEVICE_IMU;
+}
+
 }  // namespace v5
 }  // namespace pros
