@@ -42,7 +42,6 @@ class Gps : public Device {
 	 * \addtogroup cpp-gps
 	 *  @{
 	 */
-	const std::uint8_t _port;
 
 	public:
 	Gps(const std::uint8_t port) : Device(port){};
