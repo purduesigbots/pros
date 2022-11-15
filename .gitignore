@@ -13,3 +13,4 @@ temp.errors
 .d/
 .clangd/
 .cache/
+.DS_Store

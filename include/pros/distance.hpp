@@ -23,6 +23,7 @@
 #define _PROS_DISTANCE_HPP_
 
 #include <cstdint>
+#include <iostream>
 
 #include "pros/distance.h"
 
@@ -116,6 +117,15 @@ class Distance {
 	 * \return The distance sensor's port number.
 	 */
 	std::uint8_t get_port();
+
+    /**
+     * This is the overload for the << operator for printing to streams
+     *
+     * Prints in format(this below is all in one line with no new line):
+     * Distance [port: (port number), distance: (distance), confidence: (confidence),
+     * object size: (object size), object velocity: (object velocity)]
+     */
+	friend std::ostream& operator<<(std::ostream& os, pros::Distance& distance);
 
 	private:
 	const std::uint8_t _port;

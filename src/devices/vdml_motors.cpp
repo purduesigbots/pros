@@ -278,6 +278,26 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
 
+std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
+	os << "Motor [";
+	os << "port: " << motor.get_port();
+	os << ", brake mode: " << (int)motor.get_brake_mode();
+	os << ", current draw: " << motor.get_current_draw();
+	os << ", current limit: " << motor.get_current_limit();
+	os << ", direction: " << motor.get_direction();
+	os << ", efficiency: " << motor.get_efficiency();
+	os << ", encoder units: " << (int)motor.get_encoder_units();
+	os << ", gearing: " << (int)motor.get_gearing();
+	os << ", over temp: " << motor.is_over_temp(); 
+	os << ", position: " << motor.get_position();
+	os << ", reversed: " << motor.is_reversed();
+	os << ", temperature: " << motor.get_temperature();
+	os << ", torque: " << motor.get_torque();
+	os << ", voltage: " << motor.get_voltage(); 
+	os << "]";
+	return os;
+}
+
 void Motor::push_motor_configuration() const {
 	_motor_mutex.take();
 	set_gearing(_gearset);
