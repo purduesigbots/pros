@@ -36,7 +36,7 @@ class Device {
 	 *
 	 * \return The device type as an enum.
 	 */
-    virtual const pros::DeviceType get_type() = 0;
+    virtual pros::DeviceType get_type() const  = 0;
 
     protected:
     /**
