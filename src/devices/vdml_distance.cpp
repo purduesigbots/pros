@@ -49,9 +49,9 @@ std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
 }
 
 namespace literals {
-const pros::Distance operator"" _distance(const unsigned long long int d) {
+const pros::Distance operator"" _dist(const unsigned long long int d) {
     return pros::Distance(d);
 }
-}
+} // namespace literals
 }
 }  // namespace pros
