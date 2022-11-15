@@ -91,7 +91,7 @@ class Vision {
 	 *
 	 * \return A vision_signature_s_t that can be set using Vision::set_signature
 	 */
-	vision_signature_s_t signature_from_utility(const std::int32_t id, const std::int32_t u_min,
+	static vision_signature_s_t signature_from_utility(const std::int32_t id, const std::int32_t u_min,
 	                                                   const std::int32_t u_max, const std::int32_t u_mean,
 	                                                   const std::int32_t v_min, const std::int32_t v_max,
 	                                                   const std::int32_t v_mean, const float range,
@@ -332,7 +332,7 @@ class Vision {
 	 *
 	 * \return 1 if no errors occured, PROS_ERR otherwise
 	 */
-	std::int32_t print_signature(const vision_signature_s_t sig);
+	static std::int32_t print_signature(const vision_signature_s_t sig);
 
 	/**
 	 * Enables/disables auto white-balancing on the Vision Sensor.
@@ -452,9 +452,6 @@ class Vision {
 
 	private:
 	std::uint8_t _port;
-	mutable pros::Mutex _vision_mutex;
-	mutable vision_zero_e_t _zero_point;
-	virtual void push_vision_configuration(void) const;
 	///@}
 };
 }  // namespace v5
