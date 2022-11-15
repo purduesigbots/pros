@@ -21,7 +21,7 @@ Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port) {
 	set_baudrate(baudrate);
 }
 
-Serial::Serial(std::uint8_t port) : _port(port) {
+Serial::Serial(std::uint8_t port) : Device(port) {
 	serial_enable(port);
 }
 

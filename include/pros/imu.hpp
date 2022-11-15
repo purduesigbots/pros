@@ -500,7 +500,7 @@ class Imu : public Device {
      * Returns the type of device
      *
 	 */
-	const pros::DeviceType get_type();
+	pros::DeviceType get_type() const;
 	///@}
 };
 
