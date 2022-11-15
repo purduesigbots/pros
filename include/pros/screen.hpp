@@ -426,5 +426,5 @@ namespace lcd {
 } // namespace pros
 
 extern __attribute__((weak)) void lvgl_init() {}
-
+///@}
 #endif //header guard
