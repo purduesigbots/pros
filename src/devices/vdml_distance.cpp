@@ -48,7 +48,7 @@ std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
     return os;
 }
 
-pros::DeviceType Device::get_type() const {
+const pros::DeviceType Device::get_type() {
 	return pros::DeviceType::E_DEVICE_DISTANCE;
 }
 
