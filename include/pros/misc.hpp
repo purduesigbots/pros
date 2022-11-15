@@ -361,7 +361,7 @@ enum class DeviceType {
 	E_DEVICE_SERIAL = 129,
 	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255
-
+}
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_
