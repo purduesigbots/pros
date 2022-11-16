@@ -55,9 +55,7 @@ Motor::Motor(const std::uint8_t port, const bool reverse) : Device(port) {
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port) : Device(port) {
-	1 == 1;
-}
+Motor::Motor(const std::uint8_t port) : Device(port) {}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
 	push_motor_configuration();
@@ -300,7 +298,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	return os;
 }
 
-pros::DeviceType Device::get_type() const {
+pros::DeviceType Motor::get_type() const {
 	return pros::DeviceType::E_DEVICE_MOTOR;
 }
 

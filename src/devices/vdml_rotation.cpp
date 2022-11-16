@@ -14,7 +14,7 @@
 
 namespace pros {
 inline namespace v5 {
-    
+
 Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(port) {
 	pros::c::rotation_init_reverse(port, reverse_flag);
 }
@@ -36,43 +36,43 @@ std::int32_t Rotation::reset_position(void) const {
 }
 
 std::int32_t Rotation::get_position(void) const {
-    return pros::c::rotation_get_position(_port);
+	return pros::c::rotation_get_position(_port);
 }
 
 std::int32_t Rotation::get_velocity(void) const {
-    return pros::c::rotation_get_velocity(_port);
+	return pros::c::rotation_get_velocity(_port);
 }
 
 std::int32_t Rotation::get_angle(void) const {
-    return pros::c::rotation_get_angle(_port);
+	return pros::c::rotation_get_angle(_port);
 }
 
 std::int32_t Rotation::set_reversed(bool value) const {
-    return pros::c::rotation_set_reversed(_port, value);
+	return pros::c::rotation_set_reversed(_port, value);
 }
 
 std::int32_t Rotation::reverse(void) const {
-    return pros::c::rotation_reverse(_port);
+	return pros::c::rotation_reverse(_port);
 }
 
 std::int32_t Rotation::get_reversed(void) const {
-    return pros::c::rotation_get_reversed(_port);
+	return pros::c::rotation_get_reversed(_port);
 }
 
 std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
-    os << "Rotation [";
-    os << "port: " << rotation._port;
-    os << ", position: " << rotation.get_position();
-    os << ", velocity: " << rotation.get_velocity();
-    os << ", angle: " << rotation.get_angle();
-    os << ", reversed: " << rotation.get_reversed();
-    os << "]";
-    return os;
+	os << "Rotation [";
+	os << "port: " << rotation._port;
+	os << ", position: " << rotation.get_position();
+	os << ", velocity: " << rotation.get_velocity();
+	os << ", angle: " << rotation.get_angle();
+	os << ", reversed: " << rotation.get_reversed();
+	os << "]";
+	return os;
 }
 
-pros::DeviceType Device::get_type() const {
+pros::DeviceType Rotation::get_type() const {
 	return pros::DeviceType::E_DEVICE_ROTATION;
 }
 
-}
+}  // namespace v5
 }  // namespace pros

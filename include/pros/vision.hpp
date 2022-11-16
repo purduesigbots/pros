@@ -450,8 +450,13 @@ class Vision : public Device {
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
 
+	/**
+	 * Returns the type of device
+	 *
+	 */
+	pros::DeviceType get_type() const;
+
 	private:
-	std::uint8_t _port;
 	///@}
 };
 }  // namespace v5

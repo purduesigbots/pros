@@ -30,7 +30,9 @@ class Device {
 	 *
 	 * \return The smart device's port number.
 	 */
-	virtual std::uint8_t get_port(void);
+	std::uint8_t get_port(void) {
+		return _port;
+	}
 
 	/**
 	 * Gets the type of device.
@@ -46,7 +48,7 @@ class Device {
 	 * \param port The V5 port number from 1-21
 	 *
 	 */
-	explicit Device(const std::uint8_t port);
+	explicit Device(const std::uint8_t port) : _port(port) {}
 
 	protected:
 	const std::uint8_t _port;
