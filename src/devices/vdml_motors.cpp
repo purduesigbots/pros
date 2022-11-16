@@ -368,7 +368,7 @@ pros::Motor& Motor_Group::operator[](int i) {
 		errno = ENXIO;
 		return _motors[0];
 	}
-	if (_motor_count >= i) {
+	if (i >= _motor_count) {
 		errno = ENXIO;
 		return _motors[0];
 	}
