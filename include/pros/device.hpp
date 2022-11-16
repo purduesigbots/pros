@@ -3,7 +3,7 @@
  *
  * Base class for all smart devices.
  *
- * 
+ *
  *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
@@ -22,34 +22,36 @@
 #include "pros/rtos.hpp"
 
 namespace pros {
+inline namespace v5 {
 class Device {
-    public:
-    /**
+	public:
+	/**
 	 * Gets the port number of the Smart Device.
 	 *
 	 * \return The smart device's port number.
 	 */
-    virtual std::uint8_t get_port(void);
+	virtual std::uint8_t get_port(void);
 
-    /**
+	/**
 	 * Gets the type of device.
 	 *
 	 * \return The device type as an enum.
 	 */
-    virtual pros::DeviceType get_type() const = 0;
+	virtual pros::DeviceType get_type() const = 0;
 
-    protected:
-    /**
+	protected:
+	/**
 	 * Creates a Device object.
 	 *
-     * \param port The V5 port number from 1-21
-	 *  
+	 * \param port The V5 port number from 1-21
+	 *
 	 */
-    explicit Device(const std::uint8_t port);
+	explicit Device(const std::uint8_t port);
 
-    protected:
-    const std::uint8_t _port;
+	protected:
+	const std::uint8_t _port;
 };
-}
+}  // namespace v5
+}  // namespace pros
 
 #endif

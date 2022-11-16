@@ -129,14 +129,16 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	os << ", pitch: " << imu.get_pitch();
 	os << ", roll: " << imu.get_roll();
 	os << ", yaw: " << imu.get_yaw();
-	os << ", gyro rate: " << "{" << gyro.x << "," << gyro.y << "," << gyro.z << "}";
-	os << ", get accel: " << "{" << accel.x << "," << accel.y << "," << accel.z << "}";
+	os << ", gyro rate: "
+	   << "{" << gyro.x << "," << gyro.y << "," << gyro.z << "}";
+	os << ", get accel: "
+	   << "{" << accel.x << "," << accel.y << "," << accel.z << "}";
 	os << ", calibrating: " << imu.is_calibrating();
 	os << "]";
 	return os;
 }
 
-const pros::DeviceType Imu::get_type() {
+pros::DeviceType Imu::get_type() const {
 	return pros::DeviceType::E_DEVICE_IMU;
 }
 
