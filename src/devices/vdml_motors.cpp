@@ -55,7 +55,9 @@ Motor::Motor(const std::uint8_t port, const bool reverse) : Device(port) {
 	set_reversed(reverse);
 }
 
-Motor::Motor(const std::uint8_t port) : Device(port) {}
+Motor::Motor(const std::uint8_t port) : Device(port) {
+	1 == 1;
+}
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {
 	push_motor_configuration();
@@ -288,12 +290,12 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << ", efficiency: " << motor.get_efficiency();
 	os << ", encoder units: " << (int)motor.get_encoder_units();
 	os << ", gearing: " << (int)motor.get_gearing();
-	os << ", over temp: " << motor.is_over_temp(); 
+	os << ", over temp: " << motor.is_over_temp();
 	os << ", position: " << motor.get_position();
 	os << ", reversed: " << motor.is_reversed();
 	os << ", temperature: " << motor.get_temperature();
 	os << ", torque: " << motor.get_torque();
-	os << ", voltage: " << motor.get_voltage(); 
+	os << ", voltage: " << motor.get_voltage();
 	os << "]";
 	return os;
 }
