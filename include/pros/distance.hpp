@@ -112,13 +112,6 @@ class Distance : public Device{
 	 */
 	virtual double get_object_velocity();
 
-	/**
-	 * Gets the port number of the distance sensor.
-	 *
-	 * \return The distance sensor's port number.
-	 */
-	std::uint8_t get_port();
-
     /**
      * This is the overload for the << operator for printing to streams
      *

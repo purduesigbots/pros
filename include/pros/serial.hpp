@@ -132,13 +132,6 @@ class Serial : public Device {
 	virtual std::int32_t get_write_free() const;
 
 	/**
-	 * Gets the port number of the serial port.
-	 *
-	 * \return The serial port's port number.
-	 */
-	std::uint8_t get_port() const;
-
-	/**
 	 * Reads the next byte avaliable in the port's input buffer without removing it.
 	 *
 	 * This function uses the following values of errno when an error state is

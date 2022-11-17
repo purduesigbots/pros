@@ -975,20 +975,6 @@ class Motor : public Device {
 	 */
 	virtual Motor_Gears get_gearing(void) const;
 
-	/**
-	 * Gets the port number of the motor.
-	 *
-	 * \return The motor's port number.
-	 *
-	 * \b Example
-	 * \code
-	 * void autonomous() {
-	 *   pros::Motor motor (1);
-	 *   std::uint8_t port = motor.get_port(); // Returns 1
-	 * }
-	 * \endcode
-	 */
-	virtual std::uint8_t get_port(void) const;
 
 	/**
 	 * Gets the voltage limit set by the user.

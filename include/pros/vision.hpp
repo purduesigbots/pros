@@ -233,12 +233,6 @@ class Vision : public Device {
 	 */
 	std::int32_t get_white_balance(void) const;
 
-	/**
-	 * Gets the port number of the Vision Sensor.
-	 *
-	 * \return The vision sensor's port number.
-	 */
-	std::uint8_t get_port(void) const;
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.

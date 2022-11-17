@@ -232,12 +232,6 @@ class Optical : public Device {
 	 */
 	virtual std::int32_t disable_gesture();
 
-	/**
-	 * Gets the port number of the Optical Sensor.
-	 *
-	 * \return The Optical Sensor's port number.
-	 */
-	virtual std::uint8_t get_port();
 
 	/**
      * This is the overload for the << operator for printing to streams
