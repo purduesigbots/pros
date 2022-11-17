@@ -66,9 +66,6 @@ std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
-std::uint8_t Optical::get_port(){
-  return _port;
-}
 
 std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   pros::c::optical_rgb_s_t rgb = optical.get_rgb(); 
