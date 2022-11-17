@@ -33,9 +33,6 @@ double Distance::get_object_velocity() {
 	return pros::c::distance_get_object_velocity(_port);
 }
 
-std::uint8_t Distance::get_port() {
-	return _port;
-}
 
 std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
 	os << "Distance [";
