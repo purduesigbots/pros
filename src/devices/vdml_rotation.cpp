@@ -72,7 +72,6 @@ void Rotation::push_rotation_configuration() const {
 	_rotation_mutex.take();
 	set_reversed(_reverse_flag);
 	_rotation_mutex.give();
-    return pros::c::rotation_get_position(_port);
 }
 
 std::int32_t Rotation::get_velocity(void) const {
@@ -83,16 +82,8 @@ std::int32_t Rotation::get_angle(void) const {
     return pros::c::rotation_get_angle(_port);
 }
 
-std::int32_t Rotation::set_reversed(bool value) const {
-    return pros::c::rotation_set_reversed(_port, value);
-}
-
 std::int32_t Rotation::reverse(void) const {
     return pros::c::rotation_reverse(_port);
-}
-
-std::int32_t Rotation::get_reversed(void) const {
-    return pros::c::rotation_get_reversed(_port);
 }
 
 std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
