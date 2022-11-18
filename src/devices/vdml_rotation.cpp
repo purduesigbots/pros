@@ -85,7 +85,5 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
     return os;
 }
 
-}
-
 }  // namespace v5
 }  // namespace pros
