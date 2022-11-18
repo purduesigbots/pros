@@ -15,7 +15,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup cpp-rotation VEX Rotation Sensor C++ API
  */
 #ifndef _PROS_ROTATION_HPP_
@@ -196,28 +196,26 @@ class Rotation {
 	 * \return Reversed value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 */
-  
-	virtual std::int32_t get_reversed() const ;
+
+	virtual std::int32_t get_reversed() const;
 	///@}
-    
-    private:
-    mutable bool _reverse_flag;
-	  mutable pros::Mutex _rotation_mutex;
-    virtual void push_rotation_configuration(void) const;
-	  virtual std::int32_t get_reversed() const;
+
+	private:
+	mutable bool _reverse_flag;
+	mutable pros::Mutex _rotation_mutex;
+	virtual void push_rotation_configuration(void) const;
 	///@}
 
 	/**
 	 * This is the overload for the << operator for printing to streams
-	 * 
+	 *
 	 * Prints in format(this below is all in one line with no new line):
-	 * Rotation [port: rotation._port, position: (rotation position), velocity: (rotation velocity), 
+	 * Rotation [port: rotation._port, position: (rotation position), velocity: (rotation velocity),
 	 * angle: (rotation angle), reversed: (reversed boolean)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
-
 };
-}
+}  // namespace v5
 }  // namespace pros
 
 #endif
