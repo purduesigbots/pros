@@ -74,18 +74,6 @@ void Rotation::push_rotation_configuration() const {
 	_rotation_mutex.give();
 }
 
-std::int32_t Rotation::get_velocity(void) const {
-    return pros::c::rotation_get_velocity(_port);
-}
-
-std::int32_t Rotation::get_angle(void) const {
-    return pros::c::rotation_get_angle(_port);
-}
-
-std::int32_t Rotation::reverse(void) const {
-    return pros::c::rotation_reverse(_port);
-}
-
 std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
     os << "Rotation [";
     os << "port: " << rotation._port;
