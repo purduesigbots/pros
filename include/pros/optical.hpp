@@ -253,7 +253,7 @@ class Optical {
 };
 
 namespace literals {
-const pros::Optical operator"" _o(const unsigned long long int o);
+const pros::Optical operator"" _opt(const unsigned long long int o);
 }  // namespace literals
 }
 }  // namespace pros
