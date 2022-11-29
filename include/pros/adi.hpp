@@ -1424,6 +1424,76 @@ class Potentiometer : public AnalogIn {
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
 };
+
+class Pneumatics : public DigitalOut {
+	public:
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param initial_state
+	 *        The initial state of the pneumatic solenoid
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	explicit Pneumatic(int adi_port, bool initial_state = false);
+
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param initial_state
+	 *        The initial state of the pneumatic solenoid
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 * #define SMART_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics ({{ SMART_PORT , ADI_PNEUMATICS_PORT }});
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	explicit Pneumatic(pros::port_pair pair, bool initial_state = false);
+
+	void extend() const;
+
+	void retract() const;
+
+	void toggle() const;
+	
+	bool get_state() const;
+};
+
 }  // namespace adi
 
 /*
