@@ -1026,7 +1026,9 @@ class Motor_Group {
 	 * \param i
 	 *        The index value in the motor group.
 	 *
-	 * \return the appropriate Motor reference, return first motor and set errno on error.
+	 * \return the appropriate Motor reference, 
+	 * 			return first motor and set errno on error.
+	 * 			errno set to ENXIO for indexing out of bounds
 	 */ 
 	pros::Motor& operator[](int i);
 
