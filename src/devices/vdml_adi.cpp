@@ -216,8 +216,8 @@ Pneumatics::Pneumatics(std::uint8_t adi_port, bool initial_state) : DigitalOut(a
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state) : DigitalOut(std::get<1>(port_pair)) {
-	std::int32_t _port = ext_adi_pneumatics_init(port_pair.first, port_pair.second, initial_state);
+Pneumatics::Pneumatics(pros::port_pair pair, bool initial_state) : DigitalOut(pair.second) {
+	std::int32_t _port = ext_adi_pneumatics_init(pair.first, pair.second, initial_state);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
