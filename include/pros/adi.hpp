@@ -1453,7 +1453,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatic(int adi_port, bool initial_state = false);
+	explicit Pneumatics(int adi_port, bool initial_state = false);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1483,14 +1483,14 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatic(pros::port_pair pair, bool initial_state = false);
+	explicit Pneumatics(pros::port_pair pair, bool initial_state = false);
 
 	void extend() const;
 
 	void retract() const;
 
 	void toggle() const;
-	
+
 	bool get_state() const;
 };
 
