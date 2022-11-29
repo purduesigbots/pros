@@ -1023,12 +1023,15 @@ class Motor_Group {
 	/**
 	 * Indexes Motor in the Motor_Group in the same way as an array.
 	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Out of bounds on indexing the motor groups.
+	 * 
 	 * \param i
 	 *        The index value in the motor group.
 	 *
-	 * \return the appropriate Motor reference, 
-	 * 			return first motor and set errno on error.
-	 * 			errno set to ENXIO for indexing out of bounds
+	 * \return the appropriate Motor reference or the erno if the operation
+	 *  failed
 	 */ 
 	pros::Motor& operator[](int i);
 
@@ -1036,7 +1039,6 @@ class Motor_Group {
 	/**
 	 * Indexes Motor in the Motor_Group in the same way as an array.
 	 * 
-	 *
 	 * \return the size of the vector containing motors
 	 */ 
 	std::int32_t size();
