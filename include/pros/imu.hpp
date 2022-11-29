@@ -1,4 +1,4 @@
-    /**
+/**
  * \file pros/imu.hpp
  * \ingroup cpp-imu
  *
