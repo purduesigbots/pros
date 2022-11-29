@@ -274,6 +274,9 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
 
+std::uint8_t Motor::get_port(void) const {
+	return _port;
+}
 
 std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 	os << "Motor [";
