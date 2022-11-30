@@ -500,7 +500,7 @@ class AnalogOut : private Port {
 
 ///@}
 
-class DigitalOut : private Port {
+class DigitalOut : protected Port {
 	/**
 	 * \addtogroup cpp-adi
 	 *  @{
