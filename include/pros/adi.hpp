@@ -1485,11 +1485,11 @@ class Pneumatics : public DigitalOut {
 	 */
 	Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state = false);
 
-	int32_t extend() const;
+	std::int32_t extend() const;
 
-	int32_t retract() const;
+	std::int32_t retract() const;
 
-	void toggle() const;
+	std::int32_t toggle() const;
 
 	bool get_state() const;
 
