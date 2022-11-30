@@ -1492,6 +1492,10 @@ class Pneumatics : public DigitalOut {
 	void toggle() const;
 
 	bool get_state() const;
+
+	private : 
+	
+	bool state;
 };
 
 }  // namespace adi
