@@ -159,17 +159,6 @@ sem_t sem_create_static(uint32_t max_count, uint32_t init_count, static_sem_s_t*
 queue_t queue_create_static(uint32_t length, uint32_t item_size, uint8_t* storage_buffer,
                             static_queue_s_t* queue_buffer);
 
-/**
- * Display a non-fatal error to the built-in LCD/touch screen.
- *
- * Note that this function is thread-safe, which requires that the scheduler be
- * in a functioning state. For situations in which it is unclear whether the
- * scheduler is working, use `display_fatal_error` instead.
- *
- * \param[in] text
- *            The text string to display to the screen
- */
-void display_error(const char* text);
 
 /**
  * Display a fatal error to the built-in LCD/touch screen.
