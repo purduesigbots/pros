@@ -500,7 +500,7 @@ class AnalogOut : private Port {
 
 ///@}
 
-class DigitalOut : protected Port {
+class DigitalOut : private Port {
 	/**
 	 * \addtogroup cpp-adi
 	 *  @{
@@ -1453,7 +1453,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(int adi_port, bool initial_state = false);
+	Pneumatics(int adi_port, bool initial_state = false);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1483,7 +1483,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state = false);
+	Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state = false);
 
 	void extend() const;
 
