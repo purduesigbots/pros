@@ -1483,7 +1483,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(pros::port_pair pair, bool initial_state = false);
+	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state = false);
 
 	void extend() const;
 
