@@ -1453,7 +1453,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	Pneumatics(int adi_port, bool initial_state = false);
+	Pneumatics(std::uint8_t adi_port, bool initial_state = false);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
