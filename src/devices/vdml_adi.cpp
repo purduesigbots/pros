@@ -217,14 +217,14 @@ Pneumatics::Pneumatics(std::uint8_t adi_port, bool initial_state) : DigitalOut(a
 Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state) : DigitalOut(std::get<1>(port_pair)), state(initial_state) {
 }
 
-Pneumatics::extend() const {
+int32_t Pneumatics::extend() const {
 	state = true;
-	set_value(state);
+	return set_value(state);
 }
 
-Pneumatics::retract() const {
+int32_t Pneumatics::retract() const {
 	state = false;
-	set_value(state);
+	return set_value(state);
 }
 
 std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
