@@ -164,7 +164,6 @@ double ADIPotentiometer::get_angle() const {
 ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
 	if (length < 1) {
 		length = 0;
 	}
