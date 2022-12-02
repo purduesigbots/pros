@@ -20,7 +20,7 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       addToPath: true
-      versionSpec: '3.6'
+      versionSpec: '3'
   - task: PipAuthenticate@1
     inputs:
       artifactFeeds: 'pros-cli'
