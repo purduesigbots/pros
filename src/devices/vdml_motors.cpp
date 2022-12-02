@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <cassert>
 
 #include "kapi.h"
 #include "pros/motors.hpp"
@@ -334,10 +335,13 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 }
 
 Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
-    : _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {}
+    : _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {
+    assert(_motor_count > 0);
+}
 
 Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
+    assert(_motor_count > 0);
 	for (std::uint8_t i = 0; i < _motor_count; ++i) {
 		_motors.push_back(Motor(motor_ports[i]));
 	}
@@ -358,6 +362,23 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
+
+pros::Motor& Motor_Group::operator[](int i) {
+	if (_motors.empty()) {
+		errno = ENXIO;
+		return _motors[0];
+	}
+	if (i >= _motor_count) {
+		errno = ENXIO;
+		return _motors[0];
+	}
+	return _motors.at(i);
+}
+
+std::int32_t Motor_Group::size() {
+	return _motor_count;
+}
+
 
 std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);
