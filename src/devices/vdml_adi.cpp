@@ -227,6 +227,15 @@ std::int32_t Pneumatics::retract() const {
 	return set_value(state);
 }
 
+std::int32_t Pneumatics::toggle() const {
+	state = !state;
+	return set_value(state);
+}
+
+bool Pneumatics::get_state() const {
+	return state;
+}
+
 std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
 	os << "Potentiometer [";
 	os << "value: " << potentiometer.get_value();
