@@ -1485,12 +1485,25 @@ class Pneumatics : public DigitalOut {
 	 */
 	Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state = false);
 
+	/* 
+	* Extends the piston, if not already extended.
+	*/
 	std::int32_t extend();
 
+	/*
+	* Retracts the piston, if not already retracted.
+	*/
 	std::int32_t retract();
 
+	/*
+	* Puts the piston into the opposite state of its current state.
+	* If it is retracted, it will extend. If it is extended, it will retract.
+	*/
 	std::int32_t toggle();
 
+	/*
+	* Returns the current state of the piston.
+	*/
 	bool get_state() const;
 
 	private : 
