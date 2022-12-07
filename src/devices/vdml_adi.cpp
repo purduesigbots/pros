@@ -217,17 +217,17 @@ Pneumatics::Pneumatics(std::uint8_t adi_port, bool initial_state) : DigitalOut(a
 Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool initial_state) : DigitalOut(std::get<1>(port_pair)), state(initial_state) {
 }
 
-std::int32_t Pneumatics::extend() const {
+std::int32_t Pneumatics::extend() {
 	state = true;
 	return set_value(state);
 }
 
-std::int32_t Pneumatics::retract() const {
+std::int32_t Pneumatics::retract() {
 	state = false;
 	return set_value(state);
 }
 
-std::int32_t Pneumatics::toggle() const {
+std::int32_t Pneumatics::toggle() {
 	state = !state;
 	return set_value(state);
 }
