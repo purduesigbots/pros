@@ -1487,22 +1487,91 @@ class Pneumatics : public DigitalOut {
 
 	/* 
 	* Extends the piston, if not already extended.
+	* 
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Extend the piston
+	*     pneumatics.extend();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
 	*/
 	std::int32_t extend();
 
 	/*
 	* Retracts the piston, if not already retracted.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Retract the piston
+	*     pneumatics.retract();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
 	*/
 	std::int32_t retract();
 
 	/*
 	* Puts the piston into the opposite state of its current state.
 	* If it is retracted, it will extend. If it is extended, it will retract.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Toggle the piston
+	*     pneumatics.toggle();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
 	*/
 	std::int32_t toggle();
 
 	/*
 	* Returns the current state of the piston.
+	*
+	* \return true if the piston is extended, false if it is retracted.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Check if the piston is extended
+	*     if (pneumatics.get_state()) {
+	*       // Do something
+	*     }
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
 	*/
 	bool get_state() const;
 
