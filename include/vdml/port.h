@@ -5,17 +5,19 @@
  * used mostly for the adi expander.
  *
  * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+#ifndef _VDML_PORT_H_
+#define _VDML_PORT_H_
 
-SMART_PORT_BITS 16
+#define SMART_PORT_BITS 16
 #define SMART_PORT_MASK ((1 << SMART_PORT_BITS) - 1)
 
 /**
- * @brief 
  * Macro Description: Given a merged ports variable, it sets the smart port and adi port to the values inside the
  * int32_t.
  */
@@ -29,3 +31,5 @@ SMART_PORT_BITS 16
 static inline uint32_t merge_adi_ports(uint8_t smart_port, uint8_t adi_port) {
 	return (adi_port << SMART_PORT_BITS) | smart_port;
 }
+
+#endif
