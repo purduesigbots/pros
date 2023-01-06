@@ -3,7 +3,7 @@
  *
  * Competition control daemon responsible for invoking the user tasks.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
