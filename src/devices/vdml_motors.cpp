@@ -305,7 +305,6 @@ pros::Motor& pros::Motor::operator=(const pros::Motor& other) {
   _gearset = other._gearset;
   _encoder_units = other._encoder_units;
   _motor_mutex.give();
-  push_motor_configuration();
   return *this;
 }
 
