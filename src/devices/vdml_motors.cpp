@@ -189,6 +189,7 @@ std::uint32_t Motor_Group::get_faults(void) const {
 }
 
 std::uint32_t Motor_Group::get_flags(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_flags(_ports[0]);
 }
@@ -198,74 +199,90 @@ pros::v5::Motor_Gears Motor_Group::get_gearing(void) const {
 }
 
 std::int32_t Motor_Group::get_raw_position(std::uint32_t* const timestamp) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_raw_position(_ports[0], timestamp);
 }
 
 std::int32_t Motor_Group::is_over_temp(void) const {
+	empty_motor_group_check(PROS_ERR);
+
 	push_motor_configuration();
 	return motor_is_over_temp(_ports[0]);
 }
 
-std::int32_t Motor_Group::is_stopped(void) const {
-	push_motor_configuration();
-	return motor_is_stopped(_ports[0]);
-}
+// std::int32_t Motor_Group::is_stopped(void) const {
+// 	empty_motor_group_check(PROS_ERR);
+// 	push_motor_configuration();
+// 	return motor_is_stopped(_ports[0]);
+// }
 
-std::int32_t Motor_Group::get_zero_position_flag(void) const {
-	push_motor_configuration();
-	return motor_get_zero_position_flag(_ports[0]);
-}
+// std::int32_t Motor_Group::get_zero_position_flag(void) const {
+// 	empty_motor_group_check(PROS_ERR);
+// 	push_motor_configuration();
+// 	return motor_get_zero_position_flag(_ports[0]);
+// }
 
 double Motor_Group::get_position(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_position(_ports[0]);
 }
 
 double Motor_Group::get_power(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_power(_ports[0]);
 }
 
 std::int32_t Motor_Group::is_reversed(void) const {
+	empty_motor_group_check(PROS_ERR);
 	return _reverse;
 }
 
 double Motor_Group::get_temperature(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_temperature(_ports[0]);
 }
 
 double Motor_Group::get_target_position(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_target_position(_ports[0]);
 }
 
 double Motor_Group::get_torque(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_torque(_ports[0]);
 }
 
 std::int32_t Motor_Group::get_target_velocity(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_target_velocity(_ports[0]);
 }
 
 std::int32_t Motor_Group::get_voltage(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_voltage(_ports[0]);
 }
 
 std::int32_t Motor_Group::get_voltage_limit(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_voltage_limit(_ports[0]);
 }
 
 std::uint8_t Motor_Group::get_port(void) const {
+	empty_motor_group_check(PROS_ERR_BYTE);
 	return _ports[0];
 }
 
 std::int32_t Motor_Group::tare_position(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_tare_position(_ports[i]);
@@ -274,6 +291,7 @@ std::int32_t Motor_Group::tare_position(void) const {
 }
 
 std::int32_t Motor_Group::set_brake_mode(const pros::motor_brake_mode_e_t mode) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_brake_mode(_ports[i], mode);
@@ -282,6 +300,7 @@ std::int32_t Motor_Group::set_brake_mode(const pros::motor_brake_mode_e_t mode) 
 }
 
 std::int32_t Motor_Group::set_brake_mode(const pros::v5::Motor_Brake mode) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_brake_mode(_ports[i], static_cast<pros::motor_brake_mode_e_t>(mode));
@@ -290,6 +309,7 @@ std::int32_t Motor_Group::set_brake_mode(const pros::v5::Motor_Brake mode) const
 }
 
 std::int32_t Motor_Group::set_current_limit(const std::int32_t limit) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_current_limit(_ports[i], limit);
@@ -298,6 +318,7 @@ std::int32_t Motor_Group::set_current_limit(const std::int32_t limit) const {
 }
 
 std::int32_t Motor_Group::set_encoder_units(const pros::motor_encoder_units_e_t units) const {
+	empty_motor_group_check(PROS_ERR);
 	_encoder_units = static_cast<pros::v5::Motor_Units>(units);
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_encoder_units(_ports[i], units);
@@ -306,6 +327,7 @@ std::int32_t Motor_Group::set_encoder_units(const pros::motor_encoder_units_e_t 
 }
 
 std::int32_t Motor_Group::set_encoder_units(const pros::v5::Motor_Units units) const {
+	empty_motor_group_check(PROS_ERR);
 	_encoder_units = units;
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_encoder_units(_ports[i], static_cast<motor_encoder_units_e_t>(units));
@@ -314,6 +336,7 @@ std::int32_t Motor_Group::set_encoder_units(const pros::v5::Motor_Units units) c
 }
 
 std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) const {
+	empty_motor_group_check(PROS_ERR);
 	_gearset = static_cast<pros::v5::Motor_Gear>(gearset);
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_gearing(_ports[i], gearset);
@@ -322,6 +345,7 @@ std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) const {
 }
 
 std::int32_t Motor_Group::set_gearing(const pros::v5::Motor_Gear gearset) const {
+	empty_motor_group_check(PROS_ERR);
 	_gearset = gearset;
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_gearing(_ports[i], (motor_gearset_e_t)gearset);
@@ -330,6 +354,7 @@ std::int32_t Motor_Group::set_gearing(const pros::v5::Motor_Gear gearset) const 
 }
 
 std::int32_t Motor_Group::set_gearing(const pros::Color gearset_color) const {
+	empty_motor_group_check(PROS_ERR);
 	_gearset = static_cast<pros::v5::Motor_Gear>(gearset_color);
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_gearing(_ports[i], (motor_gearset_e_t)_gearset);
@@ -338,6 +363,7 @@ std::int32_t Motor_Group::set_gearing(const pros::Color gearset_color) const {
 }
 
 std::int32_t Motor_Group::set_zero_position(const double position) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_zero_position(_ports[i], position);
@@ -346,27 +372,30 @@ std::int32_t Motor_Group::set_zero_position(const double position) const {
 }
 
 std::int32_t Motor_Group::set_reversed(const bool reverse) const {
+	empty_motor_group_check(PROS_ERR);
 	_reverse = reverse;
 	for (int i = 1; i < _ports.size(); i++) {
-		std::uint8_t port = _ports[i];
-		if (_ports[i] < 0) {
-			port = (-_ports[i]);
-		}
-		motor_set_reversed(port, reverse ^ _ports[i] < 0);
+		motor_set_reversed(_ports[i], reverse ^ _ports[i] < 0);
 	}
-	std::uint8_t port = _ports[0];
-	if (_ports[0] < 0) {
-		port = (-_ports[0]);
-	}
-	return motor_set_reversed(port, reverse ^ _ports[0] < 0);
+
+	return motor_set_reversed(_ports[0], reverse ^ _ports[0] < 0);
 }
 
 std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_set_voltage_limit(_ports[i], limit);
 	}
 	return motor_set_voltage_limit(_ports[0], limit);
+}
+
+std::vector<std::int8_t> Motor_Group::get_ports() {
+	return _ports;
+}
+
+std::int8_t Motor_Group::size() {
+	return _ports.size();
 }
 
 // std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {

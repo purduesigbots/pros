@@ -140,22 +140,7 @@ int32_t motor_is_over_temp(uint8_t port) {
 	return_port(port - 1, rtn);
 }
 
-int32_t motor_is_stopped(uint8_t port) {
-	
-	errno = ENOSYS;
-	return PROS_ERR;
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
-	int rtn = vexDeviceMotorZeroVelocityFlagGet(device->device_info);
-	return_port(port - 1, rtn);
-}
 
-int32_t motor_get_zero_position_flag(uint8_t port) {
-	errno = ENOSYS;
-	return PROS_ERR;
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
-	int rtn = vexDeviceMotorZeroPositionFlagGet(device->device_info);
-	return_port(port - 1, rtn);
-}
 
 uint32_t motor_get_faults(uint8_t port) {
 	port = abs((int8_t) port);

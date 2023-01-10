@@ -800,7 +800,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_zero_position_flag(void) const;
+	// virtual std::int32_t get_zero_position_flag(void) const;
 
 	/**
 	 * Checks if the motor is stopped.
@@ -829,7 +829,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t is_stopped(void) const;
+	// virtual std::int32_t is_stopped(void) const;
 
 	/**
 	 * Checks if the motor is drawing over its current limit.
@@ -1277,6 +1277,10 @@ class Motor_Group {
 	virtual std::int32_t tare_position(void) const;
 
 	///@}
+
+	std::int8_t size(void);
+
+	std::vector<std::int8_t> get_ports(void);
 
 	/**
 	 * This is the overload for the << operator for printing to streams
