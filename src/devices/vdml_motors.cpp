@@ -17,6 +17,12 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
+#define empty_motor_group_check(error) \
+	if (_ports.size() <= 0) {            \
+		errno = EDOM;                      \
+		return error;                      \
+	}
+
 Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports, const pros::v5::Motor_Gears gearset,
                          const bool reverse, const pros::v5::Motor_Units encoder_units)
     : _ports(ports) {
@@ -64,6 +70,7 @@ Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports, const b
 Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports) : _ports(ports) {}
 
 std::int32_t Motor_Group::operator=(std::int32_t voltage) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move(_ports[i], voltage);
@@ -72,6 +79,7 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) const {
 }
 
 std::int32_t Motor_Group::move(std::int32_t voltage) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move(_ports[i], voltage);
@@ -80,6 +88,7 @@ std::int32_t Motor_Group::move(std::int32_t voltage) const {
 }
 
 std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move_absolute(_ports[i], position, velocity);
@@ -88,6 +97,7 @@ std::int32_t Motor_Group::move_absolute(const double position, const std::int32_
 }
 
 std::int32_t Motor_Group::move_relative(const double position, const std::int32_t velocity) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move_relative(_ports[i], position, velocity);
@@ -96,6 +106,7 @@ std::int32_t Motor_Group::move_relative(const double position, const std::int32_
 }
 
 std::int32_t Motor_Group::move_velocity(const std::int32_t velocity) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move_velocity(_ports[i], velocity);
@@ -104,6 +115,7 @@ std::int32_t Motor_Group::move_velocity(const std::int32_t velocity) const {
 }
 
 std::int32_t Motor_Group::move_voltage(const std::int32_t voltage) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_move_voltage(_ports[i], voltage);
@@ -112,6 +124,7 @@ std::int32_t Motor_Group::move_voltage(const std::int32_t voltage) const {
 }
 
 std::int32_t Motor_Group::brake(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_brake(_ports[i]);
@@ -120,6 +133,7 @@ std::int32_t Motor_Group::brake(void) const {
 }
 
 std::int32_t Motor_Group::modify_profiled_velocity(const std::int32_t velocity) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	for (int i = 1; i < _ports.size(); i++) {
 		motor_modify_profiled_velocity(_ports[i], velocity);
@@ -128,6 +142,7 @@ std::int32_t Motor_Group::modify_profiled_velocity(const std::int32_t velocity) 
 }
 
 double Motor_Group::get_actual_velocity(void) const {
+	empty_motor_group_check(PROS_ERR_F);
 	push_motor_configuration();
 	return motor_get_actual_velocity(_ports[0]);
 }
@@ -138,6 +153,7 @@ pros::v5::Motor_Brake Motor_Group::get_brake_mode(void) const {
 }
 
 std::int32_t Motor_Group::get_current_draw(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_current_draw(_ports[0]);
 }
@@ -167,6 +183,7 @@ pros::v5::Motor_Units Motor_Group::get_encoder_units(void) const {
 }
 
 std::uint32_t Motor_Group::get_faults(void) const {
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_faults(_ports[0]);
 }
