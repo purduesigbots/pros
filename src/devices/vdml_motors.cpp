@@ -335,13 +335,13 @@ std::int32_t Motor_Group::set_reversed(const bool reverse) const {
 		if (_ports[i] < 0) {
 			port = (-_ports[i]);
 		}
-		motor_set_reversed(port, reverse && _ports[i] < 0);
+		motor_set_reversed(port, reverse ^ _ports[i] < 0);
 	}
 	std::uint8_t port = _ports[0];
 	if (_ports[0] < 0) {
 		port = (-_ports[0]);
 	}
-	return motor_set_reversed(port, reverse && _ports[0] < 0);
+	return motor_set_reversed(port, reverse ^ _ports[0] < 0);
 }
 
 std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) const {
