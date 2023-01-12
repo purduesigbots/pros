@@ -1289,10 +1289,9 @@ class Motor {
 	 * torque: (torque), voltage: (voltage)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Motor& motor);
-	pros::Motor& operator=(const pros::Motor& other);
 
 	private:
-	std::uint8_t _port;
+	const std::uint8_t _port;
     mutable bool _reverse;
     mutable pros::Mutex _motor_mutex;
     mutable pros::v5::Motor_Gear _gearset;
