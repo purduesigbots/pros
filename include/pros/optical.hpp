@@ -41,6 +41,8 @@ class Optical {
 	 */
 	explicit Optical(const std::uint8_t port);
 
+	explicit Optical(std::uint8_t port, double time);
+
 	/**
 	 * Get the detected color hue
 	 *

@@ -17,6 +17,10 @@ using namespace pros::c;
 
 Optical::Optical(std::uint8_t port): _port(port){}
 
+Optical::Optical(std::uint8_t port, double time): _port(port){
+  set_integration_time(time);
+}
+
 double Optical::get_hue(){
   return optical_get_hue(_port);
 }
