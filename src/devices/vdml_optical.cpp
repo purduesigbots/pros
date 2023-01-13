@@ -80,7 +80,7 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   return os;
 }
 
-pros::DeviceType Device::get_type() const {
+pros::DeviceType Optical::get_type() const {
 	return pros::DeviceType::E_DEVICE_OPTICAL;
 }
 
