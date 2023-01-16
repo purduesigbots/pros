@@ -68,6 +68,47 @@ Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports, const b
 }
 
 Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports) : _ports(ports) {}
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::v5::Motor_Gears gearset, const bool reverse,
+                         const pros::v5::Motor_Units encoder_units)
+    : _ports(ports) {
+	set_gearing(gearset);
+	set_reversed(reverse);
+	set_encoder_units(encoder_units);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
+                         const pros::v5::Motor_Units encoder_units)
+    : _ports(ports) {
+	set_gearing(gearset_color);
+	set_reversed(reverse);
+	set_encoder_units(encoder_units);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::v5::Motor_Gears gearset, const bool reverse)
+    : _ports(ports) {
+	set_gearing(gearset);
+	set_reversed(reverse);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse)
+    : _ports(ports) {
+	set_gearing(gearset_color);
+	set_reversed(reverse);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::v5::Motor_Gears gearset) : _ports(ports) {
+	set_gearing(gearset);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const pros::Color gearset_color) : _ports(ports) {
+	set_gearing(gearset_color);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports, const bool reverse) : _ports(ports) {
+	set_reversed(reverse);
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t> ports) : _ports(ports) {}
 
 std::int32_t Motor_Group::operator=(std::int32_t voltage) const {
 	empty_motor_group_check(PROS_ERR);
@@ -394,8 +435,18 @@ std::vector<std::int8_t> Motor_Group::get_ports() {
 	return _ports;
 }
 
-std::int8_t Motor_Group::size() {
+std::int8_t Motor_Group::size() const {
 	return _ports.size();
+}
+
+void Motor_Group::operator+=(Motor_Group& other) {
+	for (int i = 0; i < other._ports.size(); i++) {
+		_ports.emplace_back(other._ports[i]);
+	}
+}
+
+void Motor_Group::append(Motor_Group& other) {
+	(*this) += other;
 }
 
 // std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
@@ -426,6 +477,27 @@ void Motor_Group::push_motor_configuration() const {
 	_motor_group_mutex.give();
 }
 
+Motor::Motor(const std::int8_t port) : Motor_Group({port}) {}
+
+Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
+             const pros::v5::Motor_Units encoder_units)
+    : Motor_Group({port}, gearset, reverse, encoder_units) {}
+
+Motor::Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse,
+             const pros::v5::Motor_Units encoder_units)
+    : Motor_Group({port}, gearset_color, reverse, encoder_units) {}
+
+Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse)
+    : Motor_Group({port}, gearset, reverse) {}
+
+Motor::Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse)
+    : Motor_Group({port}, gearset_color, reverse) {}
+
+Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset) : Motor_Group({port}, gearset) {}
+
+Motor::Motor(const std::int8_t port, const pros::Color gearset_color) : Motor_Group({port}, gearset_color) {}
+
+Motor::Motor(const std::int8_t port, const bool reverse) : Motor_Group({port}, reverse) {}
 // namespace literals {
 // const pros::Motor operator"" _mtr(const unsigned long long int m) {
 // 	return pros::Motor(m, false);

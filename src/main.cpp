@@ -76,8 +76,8 @@ void autonomous() {}
  */
 void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::Motor_Group left_mtr({1});
-	pros::Motor_Group right_mtr({2});
+	pros::Motor left_mtr({1});
+	pros::Motor right_mtr({2});
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,

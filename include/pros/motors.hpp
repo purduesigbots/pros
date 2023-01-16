@@ -147,6 +147,24 @@ class Motor_Group {
 
 	explicit Motor_Group(std::initializer_list<std::int8_t> ports);
 
+	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse,
+	                     const Motor_Units encoder_units);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
+	                     const Motor_Units encoder_units);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports, const bool reverse);
+
+	explicit Motor_Group(std::vector<std::int8_t> ports);
+
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -1278,10 +1296,13 @@ class Motor_Group {
 
 	///@}
 
-	std::int8_t size(void);
+	std::int8_t size(void) const;
 
 	std::vector<std::int8_t> get_ports(void);
 
+	void operator+=(Motor_Group&);
+
+	void append(Motor_Group&);
 	/**
 	 * This is the overload for the << operator for printing to streams
 	 *
@@ -1295,7 +1316,7 @@ class Motor_Group {
 	friend std::ostream& operator<<(std::ostream& os, const pros::Motor_Group& motor);
 
 	private:
-	const std::vector<std::int8_t> _ports;
+	std::vector<std::int8_t> _ports;
 	mutable bool _reverse;
 	mutable pros::Mutex _motor_group_mutex;
 	mutable pros::v5::Motor_Gear _gearset;
@@ -1304,10 +1325,35 @@ class Motor_Group {
 };
 
 ///@}
+class Motor : public Motor_Group {
+	public:
+	explicit Motor(const std::int8_t port);
 
+	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
+	               const pros::v5::Motor_Units encoder_units);
+
+	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse,
+	               const pros::v5::Motor_Units encoder_units);
+
+	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse);
+
+	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse);
+
+	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset);
+
+	explicit Motor(const std::int8_t port, const pros::Color gearset_color);
+
+	explicit Motor(const std::int8_t port, const bool reverse);
+
+	using Motor_Group::operator=;
+
+	private:
+	using Motor_Group::operator+=;
+	using Motor_Group::get_ports;
+};
 namespace literals {
-const pros::Motor_Group operator"" _mtr(const unsigned long long int m);
-const pros::Motor_Group operator"" _rmtr(const unsigned long long int m);
+const pros::Motor operator"" _mtr(const unsigned long long int m);
+const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros
