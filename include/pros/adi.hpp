@@ -1575,8 +1575,8 @@ class Pneumatics : public DigitalOut {
 	*/
 	bool get_state() const;
 
-	private : 
-	
+private: 
+	bool initial_state;
 	bool state;
 };
 
