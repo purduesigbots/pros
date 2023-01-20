@@ -251,6 +251,10 @@ class Optical {
 	const std::uint8_t _port;
 	///@}
 };
+
+namespace literals {
+const pros::Optical operator"" _opt(const unsigned long long int o);
+}  // namespace literals
 }
 }  // namespace pros
 

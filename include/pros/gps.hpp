@@ -299,8 +299,12 @@ class Gps {
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 ///@}
 };  // Gps Class
-}
 
+namespace literals {
+const pros::Gps operator""_gps(const unsigned long long int g);
+}  // namespace literals
+
+}
 using GPS = Gps;
 
 }  // namespace pros

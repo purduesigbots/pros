@@ -132,6 +132,9 @@ class Distance {
 	///@}
 };
 
+namespace literals {
+const pros::Distance operator"" _dist(const unsigned long long int d);
+}  // namespace literals
 }
 }  // namespace pros
 
