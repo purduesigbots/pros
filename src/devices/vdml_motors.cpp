@@ -375,6 +375,14 @@ pros::Motor& Motor_Group::operator[](int i) {
 	return _motors.at(i);
 }
 
+pros::Motor& Motor_Group::at(int i) {
+	if (i >= _motor_count || _motors.empty()) {
+		throw std::out_of_range("Out of Range! 
+			Motor_Group for at() method is out of range");
+	}
+	return _motors[i];
+}
+
 std::int32_t Motor_Group::size() {
 	return _motor_count;
 }
