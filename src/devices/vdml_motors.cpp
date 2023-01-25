@@ -23,6 +23,13 @@ using namespace pros::c;
 		return error;                      \
 	}
 
+#define empty_motor_group_check_vector(error, vector) \
+	if (_ports.size() <= 0) {                           \
+		errno = EDOM;                                     \
+		vector.emplace_back(error);                       \
+		return vector;                                    \
+	}
+
 Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> ports, const pros::v5::Motor_Gears gearset,
                          const bool reverse, const pros::v5::Motor_Units encoder_units)
     : _ports(ports) {
@@ -190,11 +197,7 @@ double Motor_Group::get_actual_velocity(void) const {
 
 std::vector<double> Motor_Group::get_actual_velocity_vector(void) const {
 	std::vector<double> return_vector;
-	// empty_motor_group_check({
-	// 	return_vector.emplace_back(PROS_ERR_F);
-	// 	return_vector;
-	// });
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_actual_velocity(_ports[i]));
@@ -210,7 +213,7 @@ pros::v5::Motor_Brake Motor_Group::get_brake_mode(void) const {
 
 std::vector<pros::v5::Motor_Brake> Motor_Group::get_brake_mode_vector(void) const {
 	std::vector<pros::v5::Motor_Brake> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(pros::v5::Motor_Brake::invalid, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_ports[i])));
@@ -225,7 +228,7 @@ std::int32_t Motor_Group::get_current_draw(void) const {
 }
 std::vector<std::int32_t> Motor_Group::get_current_draw_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_current_draw(_ports[i]));
@@ -239,7 +242,7 @@ std::int32_t Motor_Group::get_current_limit(void) const {
 }
 std::vector<std::int32_t> Motor_Group::get_current_limit_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_current_limit(_ports[i]));
@@ -254,7 +257,7 @@ std::int32_t Motor_Group::is_over_current(void) const {
 
 std::vector<std::int32_t> Motor_Group::is_over_current_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_is_over_current(_ports[i]));
@@ -263,13 +266,13 @@ std::vector<std::int32_t> Motor_Group::is_over_current_vector(void) const {
 }
 
 std::int32_t Motor_Group::get_direction(void) const {
-	empty_motor_group_check(PROS_ERR_F);
+	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
 	return motor_get_direction(_ports[0]);
 }
 std::vector<std::int32_t> Motor_Group::get_direction_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_direction(_ports[i]));
@@ -284,7 +287,7 @@ double Motor_Group::get_efficiency(void) const {
 }
 std::vector<double> Motor_Group::get_efficiency_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_efficiency(_ports[i]));
@@ -298,7 +301,7 @@ pros::v5::Motor_Units Motor_Group::get_encoder_units(void) const {
 
 std::vector<pros::v5::Motor_Units> Motor_Group::get_encoder_units_vector(void) const {
 	std::vector<pros::v5::Motor_Units> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(pros::v5::Motor_Units::invalid, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(static_cast<pros::v5::Motor_Units>(motor_get_encoder_units(_ports[i])));
@@ -314,7 +317,7 @@ std::uint32_t Motor_Group::get_faults(void) const {
 
 std::vector<std::uint32_t> Motor_Group::get_faults_vector(void) const {
 	std::vector<std::uint32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_faults(_ports[i]));
@@ -330,7 +333,7 @@ std::uint32_t Motor_Group::get_flags(void) const {
 
 std::vector<std::uint32_t> Motor_Group::get_flags_vector(void) const {
 	std::vector<std::uint32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_flags(_ports[i]));
@@ -344,7 +347,7 @@ pros::v5::Motor_Gears Motor_Group::get_gearing(void) const {
 
 std::vector<pros::v5::Motor_Gears> Motor_Group::get_gearing_vector(void) const {
 	std::vector<pros::v5::Motor_Gears> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(pros::v5::Motor_Gears::invalid, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(static_cast<pros::v5::Motor_Gears>(motor_get_gearing(_ports[i])));
@@ -360,7 +363,7 @@ std::int32_t Motor_Group::get_raw_position(std::uint32_t* const timestamp) const
 
 std::vector<std::int32_t> Motor_Group::get_raw_position_vector(std::uint32_t* const timestamp) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_raw_position(_ports[i], timestamp));
@@ -375,7 +378,7 @@ std::int32_t Motor_Group::is_over_temp(void) const {
 
 std::vector<std::int32_t> Motor_Group::is_over_temp_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_is_over_temp(_ports[i]));
@@ -390,7 +393,7 @@ double Motor_Group::get_position(void) const {
 }
 std::vector<double> Motor_Group::get_position_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_position(_ports[i]));
@@ -406,7 +409,7 @@ double Motor_Group::get_power(void) const {
 
 std::vector<double> Motor_Group::get_power_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_power(_ports[i]));
@@ -420,7 +423,7 @@ std::int32_t Motor_Group::is_reversed(void) const {
 
 std::vector<std::int32_t> Motor_Group::is_reversed_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_is_reversed(_ports[i]));
@@ -436,7 +439,7 @@ double Motor_Group::get_temperature(void) const {
 
 std::vector<double> Motor_Group::get_temperature_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_temperature(_ports[i]));
@@ -451,7 +454,7 @@ double Motor_Group::get_target_position(void) const {
 }
 std::vector<double> Motor_Group::get_target_position_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_target_position(_ports[i]));
@@ -466,7 +469,7 @@ double Motor_Group::get_torque(void) const {
 }
 std::vector<double> Motor_Group::get_torque_vector(void) const {
 	std::vector<double> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_F, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_torque(_ports[i]));
@@ -481,7 +484,7 @@ std::int32_t Motor_Group::get_target_velocity(void) const {
 }
 std::vector<std::int32_t> Motor_Group::get_target_velocity_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_target_velocity(_ports[i]));
@@ -497,7 +500,7 @@ std::int32_t Motor_Group::get_voltage(void) const {
 
 std::vector<std::int32_t> Motor_Group::get_voltage_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_voltage(_ports[i]));
@@ -512,7 +515,7 @@ std::int32_t Motor_Group::get_voltage_limit(void) const {
 
 std::vector<std::int32_t> Motor_Group::get_voltage_limit_vector(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back(motor_get_voltage_limit(_ports[i]));
@@ -526,7 +529,7 @@ std::uint8_t Motor_Group::get_port(void) const {
 
 std::vector<std::uint8_t> Motor_Group::get_port_vector(void) const {
 	std::vector<std::uint8_t> return_vector;
-	empty_motor_group_check(return_vector);
+	empty_motor_group_check_vector(PROS_ERR_BYTE, return_vector);
 	push_motor_configuration();
 	for (int i = 0; i < _ports.size(); i++) {
 		return_vector.emplace_back((uint8_t)std::abs((_ports[i])));
