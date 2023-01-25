@@ -1313,7 +1313,27 @@ class Motor : public Motor_Group {
 	private:
 	using Motor_Group::operator+=;
 	using Motor_Group::append;
+	using Motor_Group::get_actual_velocity_vector;
+	using Motor_Group::get_brake_mode_vector;
+	using Motor_Group::get_current_draw_vector;
+	using Motor_Group::get_current_limit_vector;
+	using Motor_Group::get_direction_vector;
+	using Motor_Group::get_efficiency_vector;
+	using Motor_Group::get_encoder_units_vector;
+	using Motor_Group::get_faults_vector;
+	using Motor_Group::get_flags_vector;
+	using Motor_Group::get_gearing_vector;
+	using Motor_Group::get_port_vector;
 	using Motor_Group::get_ports;
+	using Motor_Group::get_position_vector;
+	using Motor_Group::get_power_vector;
+	using Motor_Group::get_raw_position_vector;
+	using Motor_Group::get_target_position_vector;
+	using Motor_Group::get_target_velocity_vector;
+	using Motor_Group::get_temperature_vector;
+	using Motor_Group::get_torque_vector;
+	using Motor_Group::get_voltage_limit_vector;
+	using Motor_Group::get_voltage_vector;
 };
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
