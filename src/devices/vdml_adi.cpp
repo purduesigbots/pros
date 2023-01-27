@@ -146,11 +146,11 @@ Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get
 }
 
 std::int32_t Encoder::reset() const {
-	return adi_encoder_reset(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_encoder_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::int32_t Encoder::get_value() const {
-	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder) {
@@ -175,7 +175,7 @@ Ultrasonic::Ultrasonic(ext_adi_port_tuple_t port_tuple) : Port(std::get<1>(port_
 }
 
 std::int32_t Ultrasonic::get_value() const {
-	return adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 Gyro::Gyro(std::uint8_t adi_port, double multiplier) : Port(adi_port) {
@@ -189,11 +189,11 @@ Gyro::Gyro(ext_adi_port_pair_t port_pair, double multiplier) : ADIPort(std::get<
 }
 
 double Gyro::get_value() const {
-	return adi_gyro_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_gyro_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::int32_t Gyro::reset() const {
-	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
 Potentiometer::Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(adi_port) { 
