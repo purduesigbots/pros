@@ -636,7 +636,7 @@ std::int32_t Motor_Group::set_reversed(const bool reverse) const {
 
 	return motor_set_reversed(_ports[0], reverse ^ _ports[0] < 0);
 }
-	````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````
+
 std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) const {
 	empty_motor_group_check(PROS_ERR);
 	push_motor_configuration();
