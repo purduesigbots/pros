@@ -9,6 +9,9 @@ struct hot_table* const HOT_TABLE = &__HOT_TABLE;
 #define MAGIC0 0x52616368
 #define MAGIC1 0x8CEF7310
 
+extern void set_get_timestamp_int_func(const int (*func)(void));
+static const int get_timestamp_int(void);
+
 __attribute__((section(".hot_magic"))) uint32_t MAGIC[] = {MAGIC0, MAGIC1};
 uint32_t const volatile* const MAGIC_ADDR = MAGIC;
 
@@ -18,6 +21,7 @@ uint32_t const volatile* const MAGIC_ADDR = MAGIC;
 // regenerates that function with the call to the correct (user-written) C++ version
 extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
+extern const int   _PROS_COMPILE_TIMESTAMP_INT;
 
 extern unsigned __exidx_start;
 extern unsigned __exidx_end;
@@ -63,6 +67,10 @@ __attribute__((section(".hot_init"))) void install_hot_table(struct hot_table* c
 	for (void (*const* ctor)() = __init_array_start; ctor < __init_array_end; ctor++) {
 		(*ctor)();
 	}
+
+	// Set the function pointer in newlib_stubs so that it can fetch the
+	// timestamp in the hot package. 
+	set_get_timestamp_int_func(get_timestamp_int);
 }
 
 // this function really exists on the cold section! Called by pros_init
@@ -77,4 +85,12 @@ void invoke_install_hot_table() {
 	} else {
 		memset(HOT_TABLE, 0, sizeof(*HOT_TABLE));
 	}
+}
+
+// This is a callback function used by newlib to get the unix timestamp
+// newlib cannot access any symbols in the hot package, so we have the hot
+// package pass a function pointer to this function. Newlib then uses that
+// function pointer. 
+static const int get_timestamp_int(void) {
+	return _PROS_COMPILE_TIMESTAMP_INT;
 }
