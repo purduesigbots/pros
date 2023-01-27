@@ -24,6 +24,7 @@
 #define _PROS_ADI_HPP_
 
 #include <cstdint>
+#include <vector>
 #include <tuple>
 #include <utility>
 #include <iostream>
@@ -1427,7 +1428,7 @@ class Potentiometer : public AnalogIn {
 
 ///@}
 
-class ADILed : protected ADIPort {
+class Led : protected Port {
 	public:
 	/**
 	 * @brief Configures an ADI port to act as a LED.
@@ -1442,7 +1443,7 @@ class ADILed : protected ADIPort {
 	 * \param length
 	 *        The number of LEDs in the chain
 	 */
-	ADILed(std::uint8_t adi_port, std::uint32_t length);
+	Led(std::uint8_t adi_port, std::uint32_t length);
 
 	/**
 	 * @brief Configures an ADI port on a adi_expander to act as a LED.
@@ -1458,7 +1459,7 @@ class ADILed : protected ADIPort {
 	 * \param length
 	 * 	  The number of LEDs in the chain
 	 */
-	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length);
+	Led(ext_adi_port_pair_t port_pair, std::uint32_t length);
 
 	/**
 	 * @brief Operator overload to access the buffer in the ADILed class, it is 
@@ -1553,7 +1554,7 @@ class ADILed : protected ADIPort {
 };
 
 // Alias for ADILed
-using ADILED = ADILed;
+using LED = Led;
 
 }  // namespace adi
 
@@ -1572,6 +1573,7 @@ LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
 LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
 LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
 LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
+LEGACY_TYPEDEF(LED, pros::adi::Led);
 
 // Backwards Compatibility for Derived Classes
 LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);

@@ -14,6 +14,8 @@
 #include "pros/adi.hpp"
 #include "vdml/port.h"
 
+#define MAX_LED 64
+
 namespace pros {
 namespace adi {
 using namespace pros::c;
@@ -211,7 +213,7 @@ double Potentiometer::get_angle() const {
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
 
-ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) {
+Led::Led(std::uint8_t adi_port, std::uint32_t length) : Port(adi_port) {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
 	if (length < 1) {
@@ -223,7 +225,7 @@ ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) 
 	_buffer.resize(length, 0);
 }
 
-ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length) : ADIPort(std::get<1>(port_pair)) {
+Led::Led(ext_adi_port_pair_t port_pair, std::uint32_t length) : Port(std::get<1>(port_pair)) {
 	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
 	get_ports(_port, _smart_port, _adi_port);
 	if (length < 1) {
@@ -235,35 +237,35 @@ ADILed::ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length) : ADIPort(st
 	_buffer.resize(length, 0);
 }
 
-uint32_t& ADILed::operator[] (size_t index) {
+uint32_t& Led::operator[] (size_t index) {
 	return _buffer[index];
 }
 
-std::int32_t ADILed::update() const {
+std::int32_t Led::update() const {
 	return ext_adi_led_set(merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
 }
 
-std::int32_t ADILed::length() {
+std::int32_t Led::length() {
 	return _buffer.size();
 }
 
-std::int32_t ADILed::set_all(uint32_t color) {
+std::int32_t Led::set_all(uint32_t color) {
 	return ext_adi_led_set_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), color);
 }
 
-std::int32_t ADILed::set_pixel(uint32_t color, uint32_t pixel_position) {
+std::int32_t Led::set_pixel(uint32_t color, uint32_t pixel_position) {
 	return ext_adi_led_set_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), color, pixel_position);
 }
 
-std::int32_t ADILed::clear_all() {
+std::int32_t Led::clear_all() {
 	return ext_adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
 }
 
-std::int32_t ADILed::clear() {
+std::int32_t Led::clear() {
 	return ext_adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
 }
 
-std::int32_t ADILed::clear_pixel(uint32_t pixel_position) {
+std::int32_t Led::clear_pixel(uint32_t pixel_position) {
 	return ext_adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), pixel_position);
 }
 

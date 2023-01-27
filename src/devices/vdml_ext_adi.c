@@ -25,6 +25,7 @@
 #define ADI_MOTOR_MAX_SPEED 127
 #define ADI_MOTOR_MIN_SPEED -128
 #define NUM_MAX_TWOWIRE 4
+#define MAX_LED 64
 
 // Theoretical calibration time is 1024ms, but in practice this seemed to be the
 // actual time that it takes.
@@ -442,4 +443,59 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			rtn = PROS_ERR_F;
 	}
 	return_port(smart_port, rtn);
+}
+
+ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
+	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+}
+
+int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	uint8_t smart_port, adi_port;
+	get_ports(led, smart_port, adi_port);
+	transform_adi_port(adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI);
+	validate_type(device, adi_port, smart_port, E_ADI_DIGITAL_OUT);
+	if (buffer_length > MAX_LED) {
+		buffer_length = MAX_LED;
+	}
+	else if (buffer == NULL || buffer_length < 1)
+	{
+		errno = EINVAL;
+		return PROS_ERR;
+	}
+	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
+	return_port(smart_port, rtv); 
+}
+
+int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
+	uint8_t smart_port, adi_port;
+	get_ports(led, smart_port, adi_port);
+	claim_port_i(smart_port, E_DEVICE_ADI); 
+	transform_adi_port(adi_port);
+	validate_type(device, adi_port, smart_port, E_ADI_DIGITAL_OUT);
+	if(buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 || pixel_position > buffer_length - 1) {
+		errno = EINVAL;
+		return_port(smart_port, PROS_ERR);
+	}
+	buffer[pixel_position] = color;
+	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
+	return_port(smart_port - 1, rtv); 
+}
+
+int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
+	for(int i = 0; i < buffer_length; i++){
+		buffer[i] = color;
+  	}
+	return ext_adi_led_set(led, buffer, buffer_length);
+}
+
+int32_t ext_adi_led_clear_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set_all(led, buffer, buffer_length, 0);
+}
+
+int32_t ext_adi_led_clear_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel(led, buffer, buffer_length, 0, pixel_position);
 }
