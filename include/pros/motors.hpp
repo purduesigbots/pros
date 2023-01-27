@@ -963,6 +963,13 @@ class Motor_Group {
 	 * \endcode
 	 */
 	virtual std::uint8_t get_port(void) const;
+	/**
+	 * @brief Gets returns a vector with all the port numbers in the motor group.
+	 * (ALL THE PORTS WILL BE POSITIVE)
+	 * Use get_ports if you want to get the information on reversal.
+	 *
+	 * @return std::vector<std::uint8_t>
+	 */
 	std::vector<std::uint8_t> get_port_vector(void) const;
 
 	/**
@@ -1254,16 +1261,37 @@ class Motor_Group {
 	 */
 	virtual std::int32_t tare_position(void) const;
 
-	///@}
-
+	/**
+	 * @brief Returns the number of objects
+	 *
+	 * @return std::int8_t
+	 */
 	std::int8_t size(void) const;
 
+	/**
+	 * @brief Get the ports object
+	 *
+	 * @return std::vector<std::int8_t>
+	 */
 	std::vector<std::int8_t> get_ports(void);
 
+	/**
+	 * @brief Appends the other motor group reference to this motor group
+	 *
+	 */
 	void operator+=(Motor_Group&);
 
+	/**
+	 * @brief Appends the other motor group reference to this motor group
+	 *
+	 */
 	void append(Motor_Group&);
 
+	/**
+	 * @brief Removes the port (and it's reversed )
+	 *
+	 * @param port
+	 */
 	void erase_port(std::int8_t port);
 
 	/**
@@ -1277,7 +1305,7 @@ class Motor_Group {
 	 * torque: (torque), voltage: (voltage)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Motor_Group& motor);
-
+	///@}
 	private:
 	std::vector<std::int8_t> _ports;
 	mutable bool _reverse;

@@ -724,14 +724,15 @@ Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset) : Moto
 Motor::Motor(const std::int8_t port, const pros::Color gearset_color) : Motor_Group({port}, gearset_color) {}
 
 Motor::Motor(const std::int8_t port, const bool reverse) : Motor_Group({port}, reverse) {}
-// namespace literals {
-// const pros::Motor operator"" _mtr(const unsigned long long int m) {
-// 	return pros::Motor(m, false);
-// }
-// const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-// 	return pros::Motor(m, true);
-// }
 
-// }  // namespace literals
 }  // namespace v5
+namespace literals {
+const pros::Motor operator"" _mtr(const unsigned long long int m) {
+	return pros::Motor(m, false);
+}
+const pros::Motor operator"" _rmtr(const unsigned long long int m) {
+	return pros::Motor(m, true);
+}
+
+}  // namespace literals
 }  // namespace pros
