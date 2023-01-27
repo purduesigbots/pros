@@ -302,16 +302,13 @@ class Gps : public Device {
      * Returns the type of device
      *
 	 */
-	const pros::DeviceType get_type();
+	pros::DeviceType get_type() const;
 ///@}
 };  // Gps Class
-
 namespace literals {
 const pros::Gps operator""_gps(const unsigned long long int g);
 }  // namespace literals
-
-}
 using GPS = Gps;
-
+} // namespace v5
 }  // namespace pros
 #endif
