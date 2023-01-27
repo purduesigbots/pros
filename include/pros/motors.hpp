@@ -1037,6 +1037,20 @@ class Motor_Group {
 
 
 	/**
+	 * Indexes Motor in the Motor_Group.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * Throws an std::out_of_range error when indexing out of range
+	 * 
+	 * \param i
+	 *        The index value in the motor group.
+	 *
+	 * \return the appropriate Motor reference.
+	 */ 	
+	pros::Motor& at(int i);
+
+	/**
 	 * Indexes Motor in the Motor_Group in the same way as an array.
 	 * 
 	 * \return the size of the vector containing motors
