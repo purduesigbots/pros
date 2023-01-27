@@ -77,7 +77,7 @@ namespace c {
  * }
  * \endcode
  */
-int32_t motor_move(uint8_t port, int32_t voltage);
+int32_t motor_move(int8_t port, int32_t voltage);
 
 /**
  * Stops the motor using the currently configured brake mode.
@@ -103,7 +103,7 @@ int32_t motor_move(uint8_t port, int32_t voltage);
  * code
  * \endcode
  */
-int32_t motor_brake(uint8_t port);
+int32_t motor_brake(int8_t port);
 
 /**
  * Sets the target absolute position for the motor to move to.
@@ -150,7 +150,7 @@ int32_t motor_brake(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_move_absolute(uint8_t port, const double position, const int32_t velocity);
+int32_t motor_move_absolute(int8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the relative target position for the motor to move to.
@@ -195,7 +195,7 @@ int32_t motor_move_absolute(uint8_t port, const double position, const int32_t v
  * }
  * \endcode
  */
-int32_t motor_move_relative(uint8_t port, const double position, const int32_t velocity);
+int32_t motor_move_relative(int8_t port, const double position, const int32_t velocity);
 
 /**
  * Sets the velocity for the motor.
@@ -229,7 +229,7 @@ int32_t motor_move_relative(uint8_t port, const double position, const int32_t v
  * }
  * \endcode
  */
-int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
+int32_t motor_move_velocity(int8_t port, const int32_t velocity);
 
 /**
  * Sets the output voltage for the motor from -12000 to 12000 in millivolts
@@ -259,7 +259,7 @@ int32_t motor_move_velocity(uint8_t port, const int32_t velocity);
  * }
  * \endcode
  */
-int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
+int32_t motor_move_voltage(int8_t port, const int32_t voltage);
 
 /**
  * Changes the output velocity for a profiled movement (motor_move_absolute or
@@ -289,7 +289,7 @@ int32_t motor_move_voltage(uint8_t port, const int32_t voltage);
  * }
  * \endcode
  */
-int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
+int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity);
 
 /**
  * Gets the target position set for the motor by the user.
@@ -314,7 +314,7 @@ int32_t motor_modify_profiled_velocity(uint8_t port, const int32_t velocity);
  * }
  * \endcode
  */
-double motor_get_target_position(uint8_t port);
+double motor_get_target_position(int8_t port);
 
 /**
  * Gets the velocity commanded to the motor by the user.
@@ -341,7 +341,7 @@ double motor_get_target_position(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_target_velocity(uint8_t port);
+int32_t motor_get_target_velocity(int8_t port);
 
 ///@}
 
@@ -374,7 +374,7 @@ int32_t motor_get_target_velocity(uint8_t port);
  * }
  * \endcode
  */
-double motor_get_actual_velocity(uint8_t port);
+double motor_get_actual_velocity(int8_t port);
 
 /**
  * Gets the current drawn by the motor in mA.
@@ -401,7 +401,7 @@ double motor_get_actual_velocity(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_current_draw(uint8_t port);
+int32_t motor_get_current_draw(int8_t port);
 
 /**
  * Gets the direction of movement for the motor.
@@ -428,7 +428,7 @@ int32_t motor_get_current_draw(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_direction(uint8_t port);
+int32_t motor_get_direction(int8_t port);
 
 /**
  * Gets the efficiency of the motor in percent.
@@ -459,7 +459,7 @@ int32_t motor_get_direction(uint8_t port);
  * }
  * \endcode
  */
-double motor_get_efficiency(uint8_t port);
+double motor_get_efficiency(int8_t port);
 
 /**
  * Checks if the motor is drawing over its current limit.
@@ -486,7 +486,7 @@ double motor_get_efficiency(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_is_over_current(uint8_t port);
+int32_t motor_is_over_current(int8_t port);
 
 /**
  * Checks if the motor's temperature is above its limit.
@@ -513,7 +513,7 @@ int32_t motor_is_over_current(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_is_over_temp(uint8_t port);
+int32_t motor_is_over_temp(int8_t port);
 
 /**
  * Checks if the motor is stopped.
@@ -539,7 +539,7 @@ int32_t motor_is_over_temp(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_is_stopped(uint8_t port);
+int32_t motor_is_stopped(int8_t port);
 
 /**
  * Checks if the motor is at its zero position.
@@ -566,7 +566,7 @@ int32_t motor_is_stopped(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_zero_position_flag(uint8_t port);
+int32_t motor_get_zero_position_flag(int8_t port);
 
 #ifdef __cplusplus
 }  // namespace c
@@ -634,7 +634,7 @@ namespace c {
  * }
  * \endcode
  */
-uint32_t motor_get_faults(uint8_t port);
+uint32_t motor_get_faults(int8_t port);
 
 #ifdef __cplusplus
 }  // namespace c
@@ -699,7 +699,7 @@ namespace c {
  * }
  * \endcode
  */
-uint32_t motor_get_flags(uint8_t port);
+uint32_t motor_get_flags(int8_t port);
 
 /**
  * Gets the raw encoder count of the motor at a given timestamp.
@@ -731,7 +731,7 @@ uint32_t motor_get_flags(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
+int32_t motor_get_raw_position(int8_t port, uint32_t* const timestamp);
 
 /**
  * Gets the absolute position of the motor in its encoder units.
@@ -758,7 +758,7 @@ int32_t motor_get_raw_position(uint8_t port, uint32_t* const timestamp);
  * }
  * \endcode
  */
-double motor_get_position(uint8_t port);
+double motor_get_position(int8_t port);
 
 /**
  * Gets the power drawn by the motor in Watts.
@@ -786,7 +786,7 @@ double motor_get_position(uint8_t port);
  * }
  * \endcode
  */
-double motor_get_power(uint8_t port);
+double motor_get_power(int8_t port);
 
 /**
  * Gets the temperature of the motor in degrees Celsius.
@@ -813,7 +813,7 @@ double motor_get_power(uint8_t port);
  * }
  * \endcode
  */
-double motor_get_temperature(uint8_t port);
+double motor_get_temperature(int8_t port);
 
 /**
  * Gets the torque generated by the motor in Newton Meters (Nm).
@@ -840,7 +840,7 @@ double motor_get_temperature(uint8_t port);
  * }
  * \endcode
  */
-double motor_get_torque(uint8_t port);
+double motor_get_torque(int8_t port);
 
 /**
  * Gets the voltage delivered to the motor in millivolts.
@@ -867,7 +867,7 @@ double motor_get_torque(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_voltage(uint8_t port);
+int32_t motor_get_voltage(int8_t port);
 
 ///@}
 
@@ -1065,7 +1065,7 @@ namespace c {
  * }
  * \endcode
  */
-int32_t motor_set_zero_position(uint8_t port, const double position);
+int32_t motor_set_zero_position(int8_t port, const double position);
 
 /**
  * Sets the "absolute" zero position of the motor to its current position.
@@ -1102,7 +1102,7 @@ int32_t motor_set_zero_position(uint8_t port, const double position);
  * }
  * \endcode
  */
-int32_t motor_tare_position(uint8_t port);
+int32_t motor_tare_position(int8_t port);
 
 /**
  * Sets one of motor_brake_mode_e_t to the motor.
@@ -1128,7 +1128,7 @@ int32_t motor_tare_position(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
+int32_t motor_set_brake_mode(int8_t port, const motor_brake_mode_e_t mode);
 
 /**
  * Sets the current limit for the motor in mA.
@@ -1158,7 +1158,7 @@ int32_t motor_set_brake_mode(uint8_t port, const motor_brake_mode_e_t mode);
  * }
  * \endcode
  */
-int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
+int32_t motor_set_current_limit(int8_t port, const int32_t limit);
 
 /**
  * Sets one of motor_encoder_units_e_t for the motor encoder.
@@ -1184,7 +1184,7 @@ int32_t motor_set_current_limit(uint8_t port, const int32_t limit);
  * }
  * \endcode
  */
-int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t units);
+int32_t motor_set_encoder_units(int8_t port, const motor_encoder_units_e_t units);
 
 /**
  * Sets one of motor_gearset_e_t for the motor.
@@ -1210,7 +1210,7 @@ int32_t motor_set_encoder_units(uint8_t port, const motor_encoder_units_e_t unit
  * }
  * \endcode
  */
-int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
+int32_t motor_set_gearing(int8_t port, const motor_gearset_e_t gearset);
 
 /**
  * Sets the reverse flag for the motor.
@@ -1238,7 +1238,7 @@ int32_t motor_set_gearing(uint8_t port, const motor_gearset_e_t gearset);
  * }
  * \endcode
  */
-int32_t motor_set_reversed(uint8_t port, const bool reverse);
+int32_t motor_set_reversed(int8_t port, const bool reverse);
 
 /**
  * Sets the voltage limit for the motor in Volts.
@@ -1268,7 +1268,7 @@ int32_t motor_set_reversed(uint8_t port, const bool reverse);
  * }
  * \endcode
  */
-int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
+int32_t motor_set_voltage_limit(int8_t port, const int32_t limit);
 
 /**
  * Gets the brake mode that was set for the motor.
@@ -1292,7 +1292,7 @@ int32_t motor_set_voltage_limit(uint8_t port, const int32_t limit);
  * }
  * \endcode
  */
-motor_brake_mode_e_t motor_get_brake_mode(uint8_t port);
+motor_brake_mode_e_t motor_get_brake_mode(int8_t port);
 
 /**
  * Gets the current limit for the motor in mA.
@@ -1318,7 +1318,7 @@ motor_brake_mode_e_t motor_get_brake_mode(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_current_limit(uint8_t port);
+int32_t motor_get_current_limit(int8_t port);
 
 /**
  * Gets the encoder units that were set for the motor.
@@ -1334,7 +1334,7 @@ int32_t motor_get_current_limit(uint8_t port);
  * \return One of motor_encoder_units_e_t according to what is set for the motor
  * or E_MOTOR_ENCODER_INVALID if the operation failed.
  */
-motor_encoder_units_e_t motor_get_encoder_units(uint8_t port);
+motor_encoder_units_e_t motor_get_encoder_units(int8_t port);
 
 /**
  * Gets the gearset that was set for the motor.
@@ -1358,7 +1358,7 @@ motor_encoder_units_e_t motor_get_encoder_units(uint8_t port);
  * }
  * \endcode
  */
-motor_gearset_e_t motor_get_gearing(uint8_t port);
+motor_gearset_e_t motor_get_gearing(int8_t port);
 
 /**
  * Gets the operation direction of the motor as set by the user.
@@ -1382,7 +1382,7 @@ motor_gearset_e_t motor_get_gearing(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_is_reversed(uint8_t port);
+int32_t motor_is_reversed(int8_t port);
 
 /**
  * Gets the voltage limit set by the user.
@@ -1409,7 +1409,7 @@ int32_t motor_is_reversed(uint8_t port);
  * }
  * \endcode
  */
-int32_t motor_get_voltage_limit(uint8_t port);
+int32_t motor_get_voltage_limit(int8_t port);
 
 ///@}
 
