@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Distance sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -49,5 +49,10 @@ pros::DeviceType Distance::get_type() const {
 	return pros::DeviceType::E_DEVICE_DISTANCE;
 }
 
-}  // namespace v5
+namespace literals {
+const pros::Distance operator"" _dist(const unsigned long long int d) {
+    return pros::Distance(d);
+}
+} // namespace literals
+} // namespace v5
 }  // namespace pros

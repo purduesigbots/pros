@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX GPS.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -88,5 +88,10 @@ const pros::DeviceType Gps::get_type() {
 	return pros::DeviceType::E_DEVICE_GPS;
 }
 
+namespace literals {
+const pros::Gps operator""_gps(const unsigned long long int g) {
+	return pros::Gps(g);
+}
+}  // namespace literals
 }
 }  // namespace pros
