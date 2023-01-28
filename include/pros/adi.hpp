@@ -1442,6 +1442,23 @@ class Led : protected Port {
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param length
 	 *        The number of LEDs in the chain
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   while (true) {
+	 * 	   // Set entire LED strip to blue
+	 *     led.set_all(0xFF0000);
+	 * 	   led.update();
+	 * 	   pros::delay(20);
+	 * 	 }
+	 * }
+	* \endcode
+	 * 
 	 */
 	Led(std::uint8_t adi_port, std::uint32_t length);
 
@@ -1458,6 +1475,23 @@ class Led : protected Port {
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param length
 	 * 	  The number of LEDs in the chain
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define SMART_PORT 1
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led ({{ SMART_PORT , LED_PORT }}, LED_LENGTH);
+	 *   while (true) {
+	 *     // Set entire LED strip to blue
+	 *     led.set_all(0xFF0000);
+	 *     led.update();
+	 * 	   pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	Led(ext_adi_port_pair_t port_pair, std::uint32_t length);
 
@@ -1467,6 +1501,26 @@ class Led : protected Port {
 	 * 
 	 * @param i 0 indexed pixel of the lED
 	 * @return uint32_t& the address of the buffer at i to modify
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   while (true) {
+	 * 	   led.set_pixel(0xFF0000, 0);
+	 * 	   led.set_pixel(0x00FF00, 1);
+	 * 	   led.set_pixel(0x0000FF, 2);
+	 * 	   led.update();
+	 * 	   pros::delay(20);
+	 * 	   // Use the [] operator to set the first pixel to black
+	 * 	   led.operator[](0) = 0x000000;
+	 * 	   led.update();
+	 * 	   pros::delay(20);
+	 *   }
+	 * }
 	 */
 	std::uint32_t& operator[] (size_t i);
 
@@ -1480,6 +1534,28 @@ class Led : protected Port {
 	* EADDRINUSE - The port is not configured for ADI output
 	*
 	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first 3 pixels to blue, green, and red
+	* 	   led.set_pixel(0xFF0000, 0);
+	* 	   led.set_pixel(0x00FF00, 1);
+	* 	   led.set_pixel(0x0000FF, 2);
+	* 	   led.update();
+	* 	   pros::delay(20);
+	* 	   // Clear the led strip of color
+	* 	   led.clear();
+	* 	   led.update();
+	* 	   pros::delay(20);
+	*  }
+	* }
+	* \endcode
 	*/
 	std::int32_t clear_all();
 	std::int32_t clear();
@@ -1494,6 +1570,25 @@ class Led : protected Port {
 	* EADDRINUSE - The port is not configured for ADI output
 	*
 	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	* 
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first 3 pixels to blue, green, and red
+	* 	   led.set_pixel(0xFF0000, 0);
+	* 	   led.set_pixel(0x00FF00, 1);
+	* 	   led.set_pixel(0x0000FF, 2);
+	*      // Update the led strip with the new values
+	* 	   led.update();
+	* 	   pros::delay(20);
+	*   }
+	* }
+	* \endcode
 	*/
 	std::int32_t update() const;
 
@@ -1507,6 +1602,22 @@ class Led : protected Port {
 	*
 	* @param color color to set all the led strip value to
 	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the entire led strip to blue
+	* 	   led.set_all(0x0000FF);
+	* 	   led.update();
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
 	*/
 	std::int32_t set_all(uint32_t color);
 
@@ -1521,6 +1632,22 @@ class Led : protected Port {
 	* @param color color to clear all the led strip to
 	* @param pixel_position position of the pixel to clear
 	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first pixel to blue
+	* 	   led.set_pixel(0x0000FF, 0);
+	* 	   led.update();
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
 	*/
 	std::int32_t set_pixel(uint32_t color, uint32_t pixel_position);
 
@@ -1534,6 +1661,26 @@ class Led : protected Port {
 	*
 	* @param pixel_position position of the pixel to clear
 	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first pixel to blue
+	* 	   led.set_pixel(0x0000FF, 0);
+	* 	   led.update();
+	* 	   pros::delay(20);
+	* 	   // Clear the first pixel
+	* 	   led.clear_pixel(0);
+	* 	   led.update();
+	* 	   pros::delay(20);
+	* 	}
+	* }
+	* \endcode
 	*/
 	std::int32_t clear_pixel(uint32_t pixel_position);
 
@@ -1546,6 +1693,22 @@ class Led : protected Port {
 	* EADDRINUSE - The port is not configured for ADI output
 	*
 	* @return The length (in pixels) of the LED strip
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Get the length of the led strip
+	* 	   int length = led.length();
+	* 	   pros::lcd::print(1, "Length: %d", length);
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
 	*/
 	std::int32_t length();
 
