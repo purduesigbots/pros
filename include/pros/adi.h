@@ -1194,6 +1194,20 @@ typedef int32_t adi_led_t;
  *
  * \return An adi_led_t object containing the given port, or PROS_ERR if the
  * initialization failed, setting errno
+ * 
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 	
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   while (true) {
+ *     // Set the led to red
+ *     adi_led_set(led, 0xFF0000);
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 adi_led_t adi_led_init(uint8_t port);
 
@@ -1210,6 +1224,20 @@ adi_led_t adi_led_init(uint8_t port);
  * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
+ * 
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 	
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   while (true) {
+ *     // Clear the led strip
+ *     adi_led_clear(led);
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
 
@@ -1226,6 +1254,21 @@ int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * @param buffer array of colors in format 0xRRGGBB, recommended that individual RGB value not to exceed 0x80 due to current draw
  * @param buffer_length length of buffer to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
+ * 
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 	
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
+ *   while (true) {
+ *     // Set the led strip to the colors in the buffer
+ *     adi_led_set(led, buffer, 10)
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
 
@@ -1243,6 +1286,21 @@ int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length);
  * @param buffer_length length of buffer to clear
  * @param color color to set all the led strip value to
  * @return PROS_SUCCESS if successful, PROS_ERR if not
+ * 
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 	
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
+ *   while (true) {
+ *     // Set the led strip to red
+ *     adi_led_set_all(led, buffer, 10, 0xFF0000);
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color);
 
@@ -1261,6 +1319,21 @@ int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length,
  * @param color color to clear all the led strip to
  * @param pixel_position position of the pixel to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
+ * 	
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
+ *   while (true) {
+ *     // Set the first pixel to red
+ *     adi_led_set_pixel(led, buffer, 10, 0xFF0000, 0);
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position);
 
@@ -1278,6 +1351,21 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * @param buffer_length length of the input buffer
  * @param pixel_position position of the pixel to clear
  * @return PROS_SUCCESS if successful, PROS_ERR if not
+ * 
+ * \b Example
+ * \code
+ * #define LED_PORT 1
+ * 	
+ * void opcontrol() {
+ *   adi_led_t led = adi_led_init(LED_PORT);
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
+ *   while (true) {
+ *     // Clear the first pixel
+ *     adi_led_clear_pixel(led, buffer, 10, 0);
+ *     delay(5);
+ *   }
+ * }
+ * \endcode
  */
 int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
 
