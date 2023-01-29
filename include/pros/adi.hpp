@@ -1453,7 +1453,6 @@ class Led : protected Port {
 	 *   while (true) {
 	 * 	   // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
-	 * 	   led.update();
 	 * 	   pros::delay(20);
 	 * 	 }
 	 * }
@@ -1487,7 +1486,6 @@ class Led : protected Port {
 	 *   while (true) {
 	 *     // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
-	 *     led.update();
 	 * 	   pros::delay(20);
 	 *   }
 	 * }
@@ -1514,8 +1512,8 @@ class Led : protected Port {
 	 * 	   led.set_pixel(0xFF0000, 0);
 	 * 	   led.set_pixel(0x00FF00, 1);
 	 * 	   led.set_pixel(0x0000FF, 2);
-	 * 	   led.update();
 	 * 	   pros::delay(20);
+	 * 
 	 * 	   // Use the [] operator to set the first pixel to black
 	 * 	   led.operator[](0) = 0x000000;
 	 * 	   led.update();
@@ -1548,11 +1546,10 @@ class Led : protected Port {
 	* 	   led.set_pixel(0xFF0000, 0);
 	* 	   led.set_pixel(0x00FF00, 1);
 	* 	   led.set_pixel(0x0000FF, 2);
-	* 	   led.update();
 	* 	   pros::delay(20);
+	*
 	* 	   // Clear the led strip of color
 	* 	   led.clear();
-	* 	   led.update();
 	* 	   pros::delay(20);
 	*  }
 	* }
@@ -1584,6 +1581,10 @@ class Led : protected Port {
 	* 	   led.set_pixel(0xFF0000, 0);
 	* 	   led.set_pixel(0x00FF00, 1);
 	* 	   led.set_pixel(0x0000FF, 2);
+	* 	   pros::delay(20);
+	*
+	* 	   // Use the [] operator to set the first pixel to black
+	* 	   led.operator[](0) = 0x000000;
 	*      // Update the led strip with the new values
 	* 	   led.update();
 	* 	   pros::delay(20);
@@ -1614,7 +1615,6 @@ class Led : protected Port {
 	*   while (true) {
 	* 	   // Set the entire led strip to blue
 	* 	   led.set_all(0x0000FF);
-	* 	   led.update();
 	* 	   pros::delay(20);
 	* 	 }
 	* }
@@ -1644,7 +1644,6 @@ class Led : protected Port {
 	*   while (true) {
 	* 	   // Set the first pixel to blue
 	* 	   led.set_pixel(0x0000FF, 0);
-	* 	   led.update();
 	* 	   pros::delay(20);
 	* 	 }
 	* }
@@ -1673,11 +1672,10 @@ class Led : protected Port {
 	*   while (true) {
 	* 	   // Set the first pixel to blue
 	* 	   led.set_pixel(0x0000FF, 0);
-	* 	   led.update();
 	* 	   pros::delay(20);
+	*
 	* 	   // Clear the first pixel
 	* 	   led.clear_pixel(0);
-	* 	   led.update();
 	* 	   pros::delay(20);
 	* 	}
 	* }

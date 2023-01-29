@@ -1201,9 +1201,10 @@ typedef int32_t adi_led_t;
  * 	
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
+ *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
  *   while (true) {
- *     // Set the led to red
- *     adi_led_set(led, 0xFF0000);
+ *     // Set the led to the colors in the buffer
+ *     adi_led_set(led, buffer, 10);
  *     delay(5);
  *   }
  * }
@@ -1231,7 +1232,12 @@ adi_led_t adi_led_init(uint8_t port);
  * 	
  * void opcontrol() {
  *   adi_led_t led = adi_led_init(LED_PORT);
+ * 	 uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
  *   while (true) {
+ * 	   // Set the led to the colors in the buffer
+ *     adi_led_set(led, buffer, 10);
+ *     delay(5);
+ * 
  *     // Clear the led strip
  *     adi_led_clear(led);
  *     delay(5);
@@ -1360,6 +1366,10 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  *   adi_led_t led = adi_led_init(LED_PORT);
  *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
  *   while (true) {
+ *     // Set the first pixel to red
+ *     adi_led_set_pixel(led, buffer, 10, 0xFF0000, 0);
+ *     delay(5);
+ * 
  *     // Clear the first pixel
  *     adi_led_clear_pixel(led, buffer, 10, 0);
  *     delay(5);
