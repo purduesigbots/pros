@@ -911,9 +911,9 @@ int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buff
  *     ext_adi_led_set_pixel(led, buffer, 3, 0xFF0000, 0);
  *     delay(5);
  * 
- *    // Clear the first pixel
- *    ext_adi_led_clear_pixel(led, buffer, 3, 0);
- *    delay(5);
+ *     // Clear the first pixel
+ *     ext_adi_led_clear_pixel(led, buffer, 3, 0);
+ *     delay(5);
  *   }
  * }
  * \endcode
