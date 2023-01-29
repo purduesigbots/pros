@@ -1264,7 +1264,7 @@ int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  *   uint32_t buffer[10] = {0xFF0000, 0x00FF00, 0x0000FF, 0xFFFF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF, 0x000000, 0x000000, 0x000000};
  *   while (true) {
  *     // Set the led strip to the colors in the buffer
- *     adi_led_set(led, buffer, 10)
+ *     adi_led_set(led, buffer, 10);
  *     delay(5);
  *   }
  * }

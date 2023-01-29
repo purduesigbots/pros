@@ -1451,7 +1451,7 @@ class Led : protected Port {
 	 * void opcontrol() {
 	 *   pros::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
-	 * 	   // Set entire LED strip to blue
+	 * 	   // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
 	 * 	   led.update();
 	 * 	   pros::delay(20);
@@ -1485,7 +1485,7 @@ class Led : protected Port {
 	 * void opcontrol() {
 	 *   pros::Led led ({{ SMART_PORT , LED_PORT }}, LED_LENGTH);
 	 *   while (true) {
-	 *     // Set entire LED strip to blue
+	 *     // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
 	 *     led.update();
 	 * 	   pros::delay(20);
@@ -1510,6 +1510,7 @@ class Led : protected Port {
 	 * void opcontrol() {
 	 *   pros::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
+	 * 	   // Set the first 3 pixels to red, green, and blue
 	 * 	   led.set_pixel(0xFF0000, 0);
 	 * 	   led.set_pixel(0x00FF00, 1);
 	 * 	   led.set_pixel(0x0000FF, 2);
@@ -1543,7 +1544,7 @@ class Led : protected Port {
 	* void opcontrol() {
 	*   pros::Led led (LED_PORT, LED_LENGTH);
 	*   while (true) {
-	* 	   // Set the first 3 pixels to blue, green, and red
+	* 	   // Set the first 3 pixels to red, green, and blue
 	* 	   led.set_pixel(0xFF0000, 0);
 	* 	   led.set_pixel(0x00FF00, 1);
 	* 	   led.set_pixel(0x0000FF, 2);
@@ -1579,7 +1580,7 @@ class Led : protected Port {
 	* void opcontrol() {
 	*   pros::Led led (LED_PORT, LED_LENGTH);
 	*   while (true) {
-	* 	   // Set the first 3 pixels to blue, green, and red
+	* 	   // Set the first 3 pixels to red, green, and blue
 	* 	   led.set_pixel(0xFF0000, 0);
 	* 	   led.set_pixel(0x00FF00, 1);
 	* 	   led.set_pixel(0x0000FF, 2);
