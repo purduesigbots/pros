@@ -1308,10 +1308,10 @@ class Motor_Group {
 	///@}
 	private:
 	std::vector<std::int8_t> _ports;
-	mutable bool _reverse;
+	bool _reverse;
 	mutable pros::Mutex _motor_group_mutex;
-	mutable pros::v5::Motor_Gear _gearset;
-	mutable pros::v5::Motor_Units _encoder_units;
+	pros::v5::Motor_Gear _gearset;
+	pros::v5::Motor_Units _encoder_units;
 	void push_motor_configuration(void) const;
 };
 
