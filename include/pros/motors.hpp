@@ -198,7 +198,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t operator=(std::int32_t voltage) const;
+	std::int32_t operator=(std::int32_t voltage) const;
 
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
@@ -229,7 +229,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t move(std::int32_t voltage) const;
+	std::int32_t move(std::int32_t voltage) const;
 
 	/**
 	 * Sets the target absolute position for the motor to move to.
@@ -274,7 +274,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t move_absolute(const double position, const std::int32_t velocity) const;
+	std::int32_t move_absolute(const double position, const std::int32_t velocity) const;
 
 	/**
 	 * Sets the relative target position for the motor to move to.
@@ -315,7 +315,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t move_relative(const double position, const std::int32_t velocity) const;
+	std::int32_t move_relative(const double position, const std::int32_t velocity) const;
 
 	/**
 	 * Sets the velocity for the motor.
@@ -347,7 +347,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t move_velocity(const std::int32_t velocity) const;
+	std::int32_t move_velocity(const std::int32_t velocity) const;
 
 	/**
 	 * Sets the output voltage for the motor from -12000 to 12000 in millivolts.
@@ -373,7 +373,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t move_voltage(const std::int32_t voltage) const;
+	std::int32_t move_voltage(const std::int32_t voltage) const;
 
 	/**
 	 * Stops the motor using the currently configured brake mode.
@@ -390,7 +390,7 @@ class Motor_Group {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	virtual std::int32_t brake(void) const;
+	std::int32_t brake(void) const;
 
 	/**
 	 * Changes the output velocity for a profiled movement (motor_move_absolute()
@@ -418,7 +418,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
+	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 
 	/**
 	 * Gets the target position set for the motor by the user.
@@ -440,7 +440,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_target_position(void) const;
+	double get_target_position(void) const;
 	std::vector<double> get_every_target_position(void) const;
 
 	/**
@@ -467,7 +467,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_target_velocity(void) const;
+	std::int32_t get_target_velocity(void) const;
 	std::vector<std::int32_t> get_every_target_velocity(void) const;
 
 	///@}
@@ -498,7 +498,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_actual_velocity(void) const;
+	double get_actual_velocity(void) const;
 	std::vector<double> get_every_actual_velocity(void) const;
 
 	/**
@@ -524,7 +524,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_current_draw(void) const;
+	std::int32_t get_current_draw(void) const;
 	std::vector<std::int32_t> get_every_current_draw(void) const;
 
 	/**
@@ -550,7 +550,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_direction(void) const;
+	std::int32_t get_direction(void) const;
 	std::vector<std::int32_t> get_every_direction(void) const;
 
 	/**
@@ -580,7 +580,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_efficiency(void) const;
+	double get_efficiency(void) const;
 	std::vector<double> get_every_efficiency(void) const;
 
 	/**
@@ -609,7 +609,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::uint32_t get_faults(void) const;
+	std::uint32_t get_faults(void) const;
 	std::vector<std::uint32_t> get_every_faults(void) const;
 	/**
 	 * Gets the flags set by the motor's operation.
@@ -638,7 +638,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::uint32_t get_flags(void) const;
+	std::uint32_t get_flags(void) const;
 	std::vector<std::uint32_t> get_every_flags(void) const;
 
 	/**
@@ -664,7 +664,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_position(void) const;
+	double get_position(void) const;
 	std::vector<double> get_every_position(void) const;
 
 	/**
@@ -690,7 +690,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_power(void) const;
+	double get_power(void) const;
 	std::vector<double> get_every_power(void) const;
 	/**
 	 * Gets the raw encoder count of the motor at a given timestamp.
@@ -721,7 +721,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_raw_position(std::uint32_t* const timestamp) const;
+	std::int32_t get_raw_position(std::uint32_t* const timestamp) const;
 	std::vector<std::int32_t> get_every_raw_position(std::uint32_t* const timestamp) const;
 
 	/**
@@ -747,7 +747,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_temperature(void) const;
+	double get_temperature(void) const;
 	std::vector<double> get_every_temperature(void) const;
 	/**
 	 * Gets the torque generated by the motor in Newton Meters (Nm).
@@ -772,7 +772,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual double get_torque(void) const;
+	double get_torque(void) const;
 	std::vector<double> get_every_torque(void) const;
 	/**
 	 * Gets the voltage delivered to the motor in millivolts.
@@ -797,7 +797,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_voltage(void) const;
+	std::int32_t get_voltage(void) const;
 	std::vector<std::int32_t> get_every_voltage(void) const;
 
 	/**
@@ -824,7 +824,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t is_over_current(void) const;
+	std::int32_t is_over_current(void) const;
 	std::vector<std::int32_t> every_is_over_current(void) const;
 
 	/**
@@ -850,7 +850,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t is_over_temp(void) const;
+	std::int32_t is_over_temp(void) const;
 	std::vector<std::int32_t> every_is_over_temp(void) const;
 
 	///@}
@@ -878,7 +878,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual Motor_Brake get_brake_mode(void) const;
+	Motor_Brake get_brake_mode(void) const;
 	std::vector<Motor_Brake> get_every_brake_mode(void) const;
 
 	/**
@@ -904,7 +904,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_current_limit(void) const;
+	std::int32_t get_current_limit(void) const;
 	std::vector<std::int32_t> get_every_current_limit(void) const;
 
 	/**
@@ -925,7 +925,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual Motor_Units get_encoder_units(void) const;
+	Motor_Units get_encoder_units(void) const;
 	std::vector<Motor_Units> get_every_encoder_units(void) const;
 
 	/**
@@ -946,7 +946,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual Motor_Gears get_gearing(void) const;
+	Motor_Gears get_gearing(void) const;
 	std::vector<Motor_Gears> get_every_gearing(void) const;
 
 	/**
@@ -962,7 +962,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::uint8_t get_port(void) const;
+	std::uint8_t get_port(void) const;
 	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
 	 * (ALL THE PORTS WILL BE POSITIVE)
@@ -993,7 +993,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t get_voltage_limit(void) const;
+	std::int32_t get_voltage_limit(void) const;
 	std::vector<std::int32_t> get_every_voltage_limit(void) const;
 
 	/**
@@ -1015,7 +1015,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t is_reversed(void) const;
+	std::int32_t is_reversed(void) const;
 	std::vector<std::int32_t> every_is_reversed(void) const;
 
 	/**
@@ -1041,8 +1041,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_brake_mode(const Motor_Brake mode) const;
-	virtual std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode) const;
+	std::int32_t set_brake_mode(const Motor_Brake mode) const;
+	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode) const;
 
 	/**
 	 * Sets the current limit for the motor in mA.
@@ -1072,7 +1072,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_current_limit(const std::int32_t limit) const;
+	std::int32_t set_current_limit(const std::int32_t limit) const;
 
 	/**
 	 * Sets one of Motor_Units for the motor encoder. Works with the C
@@ -1097,8 +1097,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_encoder_units(const Motor_Units units) const;
-	virtual std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units) const;
+	std::int32_t set_encoder_units(const Motor_Units units) const;
+	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units) const;
 
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
@@ -1123,8 +1123,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_gearing(const Motor_Gears gearset) const;
-	virtual std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
+	std::int32_t set_gearing(const Motor_Gears gearset) const;
+	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
 
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor.
@@ -1148,7 +1148,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_gearing(const pros::Color gearset_color) const;
+	std::int32_t set_gearing(const pros::Color gearset_color) const;
 
 	/**
 	 * Sets the reverse flag for the motor.
@@ -1174,7 +1174,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_reversed(const bool reverse) const;
+	std::int32_t set_reversed(const bool reverse) const;
 
 	/**
 	 * Sets the voltage limit for the motor in Volts.
@@ -1204,7 +1204,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_voltage_limit(const std::int32_t limit) const;
+	std::int32_t set_voltage_limit(const std::int32_t limit) const;
 
 	/**
 	 * Sets the position for the motor in its encoder units.
@@ -1235,7 +1235,7 @@ class Motor_Group {
 	 * \endcode
 	 *
 	 */
-	virtual std::int32_t set_zero_position(const double position) const;
+	std::int32_t set_zero_position(const double position) const;
 
 	/**
 	 * Sets the "absolute" zero position of the motor to its current position.
@@ -1259,7 +1259,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t tare_position(void) const;
+	std::int32_t tare_position(void) const;
 
 	/**
 	 * @brief Returns the number of objects
@@ -1312,7 +1312,7 @@ class Motor_Group {
 	mutable pros::Mutex _motor_group_mutex;
 	mutable pros::v5::Motor_Gear _gearset;
 	mutable pros::v5::Motor_Units _encoder_units;
-	virtual void push_motor_configuration(void) const;
+	void push_motor_configuration(void) const;
 };
 
 ///@}
