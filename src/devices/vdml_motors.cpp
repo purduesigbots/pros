@@ -573,7 +573,7 @@ std::int32_t Motor_Group::set_current_limit(const std::int32_t limit) const {
 	return motor_set_current_limit(_ports[0], limit);
 }
 
-std::int32_t Motor_Group::set_encoder_units(const pros::motor_encoder_units_e_t units) const {
+std::int32_t Motor_Group::set_encoder_units(const pros::motor_encoder_units_e_t units) {
 	empty_motor_group_check(PROS_ERR);
 	_encoder_units = static_cast<pros::v5::Motor_Units>(units);
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -582,7 +582,7 @@ std::int32_t Motor_Group::set_encoder_units(const pros::motor_encoder_units_e_t 
 	return motor_set_encoder_units(_ports[0], units);
 }
 
-std::int32_t Motor_Group::set_encoder_units(const pros::v5::Motor_Units units) const {
+std::int32_t Motor_Group::set_encoder_units(const pros::v5::Motor_Units units) {
 	empty_motor_group_check(PROS_ERR);
 	_encoder_units = units;
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -591,7 +591,7 @@ std::int32_t Motor_Group::set_encoder_units(const pros::v5::Motor_Units units) c
 	return motor_set_encoder_units(_ports[0], static_cast<motor_encoder_units_e_t>(units));
 }
 
-std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) const {
+std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) {
 	empty_motor_group_check(PROS_ERR);
 	_gearset = static_cast<pros::v5::Motor_Gear>(gearset);
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -600,7 +600,7 @@ std::int32_t Motor_Group::set_gearing(const motor_gearset_e_t gearset) const {
 	return motor_set_gearing(_ports[0], gearset);
 }
 
-std::int32_t Motor_Group::set_gearing(const pros::v5::Motor_Gear gearset) const {
+std::int32_t Motor_Group::set_gearing(const pros::v5::Motor_Gear gearset) {
 	empty_motor_group_check(PROS_ERR);
 	_gearset = gearset;
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -609,7 +609,7 @@ std::int32_t Motor_Group::set_gearing(const pros::v5::Motor_Gear gearset) const 
 	return motor_set_gearing(_ports[0], (motor_gearset_e_t)gearset);
 }
 
-std::int32_t Motor_Group::set_gearing(const pros::Color gearset_color) const {
+std::int32_t Motor_Group::set_gearing(const pros::Color gearset_color) {
 	empty_motor_group_check(PROS_ERR);
 	_gearset = static_cast<pros::v5::Motor_Gear>(gearset_color);
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -627,7 +627,7 @@ std::int32_t Motor_Group::set_zero_position(const double position) const {
 	return motor_set_zero_position(_ports[0], position);
 }
 
-std::int32_t Motor_Group::set_reversed(const bool reverse) const {
+std::int32_t Motor_Group::set_reversed(const bool reverse) {
 	empty_motor_group_check(PROS_ERR);
 	_reverse = reverse;
 	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
@@ -697,9 +697,11 @@ std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
 
 void Motor_Group::push_motor_configuration() const {
 	_motor_group_mutex.take();
-	set_gearing(_gearset);
-	set_reversed(_reverse);
-	set_encoder_units(_encoder_units);
+	for (auto it = _ports.begin() + 0; it < _ports.end(); it++) {
+		motor_set_gearing(*it, (motor_gearset_e_t)_gearset);
+		motor_set_reversed(*it, _reverse ^ ((*it) < 0));
+		motor_set_encoder_units(*it, (motor_encoder_units_e_t)_encoder_units);
+	}
 	_motor_group_mutex.give();
 }
 

@@ -1097,8 +1097,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_encoder_units(const Motor_Units units) const;
-	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units) const;
+	std::int32_t set_encoder_units(const Motor_Units units);
+	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units);
 
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
@@ -1123,8 +1123,8 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const Motor_Gears gearset) const;
-	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset) const;
+	std::int32_t set_gearing(const Motor_Gears gearset);
+	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset);
 
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor.
@@ -1148,7 +1148,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const pros::Color gearset_color) const;
+	std::int32_t set_gearing(const pros::Color gearset_color);
 
 	/**
 	 * Sets the reverse flag for the motor.
@@ -1174,7 +1174,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_reversed(const bool reverse) const;
+	std::int32_t set_reversed(const bool reverse);
 
 	/**
 	 * Sets the voltage limit for the motor in Volts.
@@ -1273,7 +1273,7 @@ class Motor_Group {
 	 *
 	 * @return std::vector<std::int8_t>
 	 */
-	std::vector<std::int8_t> get_ports(void);
+	std::vector<std::int8_t> get_ports(void) const;
 
 	/**
 	 * @brief Appends the other motor group reference to this motor group
