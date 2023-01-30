@@ -691,7 +691,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer);
  * Reference type for an initialized addressable led.
  *
  * This merely contains the port number for the led, unlike its use as an
- * object to store led data in PROS 2.
+ * object to store led data in the C++ API.
  */
 typedef int32_t ext_adi_led_t;
 
