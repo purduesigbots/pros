@@ -42,3 +42,5 @@ double imu_get_yaw(uint8_t port)
 
 ## Problem Solution
 The solution to this training excercise can be found in [solution.c](solution.c)
+
+Please implement your solution before looking at this one
