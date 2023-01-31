@@ -859,8 +859,10 @@ class Motor {
 
 class Motor_Group {
 	public:
-	explicit Motor_Group(const std::initializer_list<Motor> motors);
-	explicit Motor_Group(const std::vector<std::int8_t> motor_ports);
+	Motor_Group(const std::initializer_list<Motor> motors);
+	explicit Motor_Group(const std::vector<pros::Motor>& motors);
+	explicit Motor_Group(const std::initializer_list<std::int8_t> motor_ports);
+	explicit Motor_Group(const std::vector<std::int8_t>& motor_ports);
 	/****************************************************************************/
 	/**                      Motor Group movement functions                    **/
 	/**                                                                        **/

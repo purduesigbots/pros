@@ -339,11 +339,21 @@ Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
     assert(_motor_count > 0);
 }
 
-Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
+Motor_Group::Motor_Group(const std::vector<pros::Motor>& motors) 
+	: _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {}
+
+Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> motor_ports) 
+	: _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
+	for (auto& i : motor_ports) {
+		_motors.emplace_back(i);
+	}
+}
+
+Motor_Group::Motor_Group(const std::vector<std::int8_t>& motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
     assert(_motor_count > 0);
-	for (std::uint8_t i = 0; i < _motor_count; ++i) {
-		_motors.push_back(Motor(motor_ports[i]));
+	for (auto& i: motor_ports) {
+		_motors.emplace_back(i);
 	}
 }
 
