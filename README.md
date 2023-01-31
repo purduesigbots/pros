@@ -5,7 +5,7 @@
 It is intended for training purposes only, not for development. 
 
 ## Problem Description
-The code for the IMU device currently uses if statements to keep the returned headings in a range from 0 to IMU_HEADING_MAX (inclusive). This leads to longer code, and can be slower due to the overheads of branching.
+The code for the IMU device currently uses if statements to keep the returned values within certain ranges. This leads to longer code, and can be slower due to the overheads of branching.
 
 Your task is to switch the code to use the [`fmod()`](https://en.cppreference.com/w/c/numeric/math/fmod) function instead of the if statements. This function is likely to be more optimized than our current solution and makes our code cleaner. 
 
