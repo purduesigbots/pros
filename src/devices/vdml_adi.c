@@ -128,3 +128,27 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
 double adi_potentiometer_get_angle(adi_potentiometer_t potentiometer) {
 	return ext_adi_potentiometer_get_angle((ext_adi_potentiometer_t)potentiometer);
 }
+
+adi_led_t adi_led_init(uint8_t port) {
+	return (adi_led_t)ext_adi_led_init(INTERNAL_ADI_PORT, port);
+}
+
+int32_t adi_led_set(adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set(led, buffer, buffer_length);
+}
+
+int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel((ext_adi_led_t)led, buffer, buffer_length, color, pixel_position);
+}
+
+int32_t adi_led_set_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
+	return ext_adi_led_set_all((ext_adi_led_t)led, buffer, buffer_length, color);
+}
+
+int32_t adi_led_clear_all(adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
+	return ext_adi_led_set_all((ext_adi_led_t)led, buffer, buffer_length, 0);
+}
+
+int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel((ext_adi_led_t)led, buffer, buffer_length, 0, pixel_position);
+}
