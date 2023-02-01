@@ -348,20 +348,21 @@ std::int32_t is_installed(void);
 }  // namespace usd
 
 enum class DeviceType {
-	E_DEVICE_NONE = 0,
-	E_DEVICE_MOTOR = 2,
-	E_DEVICE_ROTATION = 4,
-	E_DEVICE_IMU = 6,
-	E_DEVICE_DISTANCE = 7,
-	E_DEVICE_RADIO = 8,
-	E_DEVICE_VISION = 11,
-	E_DEVICE_ADI = 12,
-	E_DEVICE_OPTICAL = 16,
-	E_DEVICE_GPS = 20,
-	E_DEVICE_SERIAL = 129,
-	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
-	E_DEVICE_UNDEFINED = 255
+	none = 0,
+	motor = 2,
+	rotation = 4,
+	imu = 6,
+	distance = 7,
+	radio = 8,
+	vision = 11,
+	adi = 12,
+	optical = 16,
+	gps = 20,
+	serial = 129,
+	generic __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = serial,
+	undefined = 255
 };
+
 }  // namespace pros
 
 #endif  // _PROS_MISC_HPP_
