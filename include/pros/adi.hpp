@@ -24,6 +24,7 @@
 #define _PROS_ADI_HPP_
 
 #include <cstdint>
+#include <vector>
 #include <tuple>
 #include <utility>
 #include <iostream>
@@ -1424,6 +1425,461 @@ class Potentiometer : public AnalogIn {
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
 };
+
+///@}
+
+class Led : protected Port {
+	public:
+	/**
+	 * @brief Configures an ADI port to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 *        The number of LEDs in the chain
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   while (true) {
+	 * 	   // Set entire LED strip to red
+	 *     led.set_all(0xFF0000);
+	 * 	   pros::delay(20);
+	 * 	 }
+	 * }
+	* \endcode
+	 * 
+	 */
+	Led(std::uint8_t adi_port, std::uint32_t length);
+
+	/**
+	 * @brief Configures an ADI port on a adi_expander to act as a LED.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param length
+	 * 	  The number of LEDs in the chain
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define SMART_PORT 1
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led ({{ SMART_PORT , LED_PORT }}, LED_LENGTH);
+	 *   while (true) {
+	 *     // Set entire LED strip to red
+	 *     led.set_all(0xFF0000);
+	 * 	   pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	Led(ext_adi_port_pair_t port_pair, std::uint32_t length);
+
+	/**
+	 * @brief Operator overload to access the buffer in the ADILed class, it is 
+	 * recommended that you call .update(); after doing any operations with this.
+	 * 
+	 * @param i 0 indexed pixel of the lED
+	 * @return uint32_t& the address of the buffer at i to modify
+	 * 
+	 * \b Example: 
+	 * \code
+	 * #define LED_PORT 'a'
+	 * #define LED_LENGTH 3
+	 * 
+	 * void opcontrol() {
+	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   while (true) {
+	 * 	   // Set the first 3 pixels to red, green, and blue
+	 * 	   led.set_pixel(0xFF0000, 0);
+	 * 	   led.set_pixel(0x00FF00, 1);
+	 * 	   led.set_pixel(0x0000FF, 2);
+	 * 	   pros::delay(20);
+	 * 
+	 * 	   // Use the [] operator to set the first pixel to black
+	 * 	   led.operator[](0) = 0x000000;
+	 * 	   led.update();
+	 * 	   pros::delay(20);
+	 *   }
+	 * }
+	 */
+	std::uint32_t& operator[] (size_t i);
+
+	/**
+	* @brief Clear the entire led strip of color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* ENXIO - The given value is not within the range of ADI Ports
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first 3 pixels to red, green, and blue
+	* 	   led.set_pixel(0xFF0000, 0);
+	* 	   led.set_pixel(0x00FF00, 1);
+	* 	   led.set_pixel(0x0000FF, 2);
+	* 	   pros::delay(20);
+	*
+	* 	   // Clear the led strip of color
+	* 	   led.clear();
+	* 	   pros::delay(20);
+	*  }
+	* }
+	* \endcode
+	*/
+	std::int32_t clear_all();
+	std::int32_t clear();
+	
+	/**
+	* @brief Force the LED strip to update with the current buffered values, this
+	* should be called after any changes to the buffer using the [] operator.
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	* 
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first 3 pixels to red, green, and blue
+	* 	   led.set_pixel(0xFF0000, 0);
+	* 	   led.set_pixel(0x00FF00, 1);
+	* 	   led.set_pixel(0x0000FF, 2);
+	* 	   pros::delay(20);
+	*
+	* 	   // Use the [] operator to set the first pixel to black
+	* 	   led.operator[](0) = 0x000000;
+	*      // Update the led strip with the new values
+	* 	   led.update();
+	* 	   pros::delay(20);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t update() const;
+
+	/**
+	* @brief Set the entire led strip to one color
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to set all the led strip value to
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the entire led strip to blue
+	* 	   led.set_all(0x0000FF);
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
+	*/
+	std::int32_t set_all(uint32_t color);
+
+	/**
+	* @brief Set one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param color color to clear all the led strip to
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first pixel to blue
+	* 	   led.set_pixel(0x0000FF, 0);
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
+	*/
+	std::int32_t set_pixel(uint32_t color, uint32_t pixel_position);
+
+	/**
+	* @brief Clear one pixel on the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @param pixel_position position of the pixel to clear
+	* @return PROS_SUCCESS if successful, PROS_ERR if not
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Set the first pixel to blue
+	* 	   led.set_pixel(0x0000FF, 0);
+	* 	   pros::delay(20);
+	*
+	* 	   // Clear the first pixel
+	* 	   led.clear_pixel(0);
+	* 	   pros::delay(20);
+	* 	}
+	* }
+	* \endcode
+	*/
+	std::int32_t clear_pixel(uint32_t pixel_position);
+
+	/**
+	* @brief Get the length of the led strip
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* EINVAL - A parameter is out of bounds/incorrect
+	* EADDRINUSE - The port is not configured for ADI output
+	*
+	* @return The length (in pixels) of the LED strip
+	*
+	* \b Example:
+	* \code
+	* #define LED_PORT 'a'
+	* #define LED_LENGTH 3
+	*
+	* void opcontrol() {
+	*   pros::Led led (LED_PORT, LED_LENGTH);
+	*   while (true) {
+	* 	   // Get the length of the led strip
+	* 	   int length = led.length();
+	* 	   pros::lcd::print(1, "Length: %d", length);
+	* 	   pros::delay(20);
+	* 	 }
+	* }
+	* \endcode
+	*/
+	std::int32_t length();
+
+	protected:
+	std::vector<uint32_t> _buffer;
+};
+
+// Alias for ADILed
+using LED = Led;
+
+
+class Pneumatics : public DigitalOut {
+	public:
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
+	 * \param active_low
+	 *        If set to true, a value of false corresponds to the pneumatic's
+	 * 		  wire being set to high.
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
+
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
+	 * \param active_low
+	 *        If set to true, a value of false corresponds to the pneumatic's
+	 * 		  wire being set to high.
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 * #define SMART_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics ({{ SMART_PORT , ADI_PNEUMATICS_PORT }});
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
+
+	/* 
+	* Extends the piston, if not already extended.
+	* 
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Extend the piston
+	*     pneumatics.extend();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t extend();
+
+	/*
+	* Retracts the piston, if not already retracted.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Retract the piston
+	*     pneumatics.retract();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t retract();
+
+	/*
+	* Puts the piston into the opposite state of its current state.
+	* If it is retracted, it will extend. If it is extended, it will retract.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Toggle the piston
+	*     pneumatics.toggle();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t toggle();
+
+	/*
+	* Returns the current state of the piston.
+	*
+	* \return true if the piston is extended, false if it is retracted.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Check if the piston is extended
+	*     if (pneumatics.get_state()) {
+	*       // Do something
+	*     }
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	bool get_state() const;
+
+private: 
+	bool active_low;
+	bool state;
+};
+
 }  // namespace adi
 
 /*
@@ -1441,6 +1897,7 @@ LEGACY_TYPEDEF(ADIMotor, pros::adi::Motor);
 LEGACY_TYPEDEF(ADIGyro, pros::adi::Gyro);
 LEGACY_TYPEDEF(ADIEncoder, pros::adi::Encoder);
 LEGACY_TYPEDEF(ADIUltrasonic, pros::adi::Ultrasonic);
+LEGACY_TYPEDEF(LED, pros::adi::Led);
 
 // Backwards Compatibility for Derived Classes
 LEGACY_TYPEDEF(ADIPotentiometer,pros::adi::Potentiometer);

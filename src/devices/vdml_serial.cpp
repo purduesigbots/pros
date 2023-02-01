@@ -62,7 +62,7 @@ std::int32_t Serial::write(std::uint8_t* buffer, std::int32_t length) const {
 }
 
 pros::DeviceType Serial::get_type() const {
-	return pros::DeviceType::E_DEVICE_SERIAL;
+	return pros::DeviceType::serial;
 }
 
 namespace literals {

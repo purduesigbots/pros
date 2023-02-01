@@ -85,7 +85,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
 }
 
 pros::DeviceType Gps::get_type() const {
-	return pros::DeviceType::E_DEVICE_GPS;
+	return pros::DeviceType::gps;
 }
 
 namespace literals {

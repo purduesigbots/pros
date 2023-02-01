@@ -56,6 +56,6 @@ std::uint32_t Link::clear_receive_buf() {
 }
 
 pros::DeviceType Link::get_type() const {
-	return pros::DeviceType::E_DEVICE_RADIO;
+	return pros::DeviceType::radio;
 }
 }  // namespace pros
