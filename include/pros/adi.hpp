@@ -1718,6 +1718,168 @@ class Led : protected Port {
 // Alias for ADILed
 using LED = Led;
 
+
+class Pneumatics : public DigitalOut {
+	public:
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param adi_port
+	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
+	 * \param active_low
+	 *        If set to true, a value of false corresponds to the pneumatic's
+	 * 		  wire being set to high.
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
+
+	/**
+	 * Creates a Pneumatics object for the given port.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 *
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
+	 * \param active_low
+	 *        If set to true, a value of false corresponds to the pneumatic's
+	 * 		  wire being set to high.
+	 *
+	 * \b Example
+	 * \code
+	 * #define ADI_PNEUMATICS_PORT 'a'
+	 * #define SMART_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   pros::adi::Pneumatics pneumatics ({{ SMART_PORT , ADI_PNEUMATICS_PORT }});
+	 *   while (true) {
+	 *     // Set the pneumatic solenoid to true
+	 *     pneumatics.set_value(true);
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
+
+	/* 
+	* Extends the piston, if not already extended.
+	* 
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Extend the piston
+	*     pneumatics.extend();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t extend();
+
+	/*
+	* Retracts the piston, if not already retracted.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Retract the piston
+	*     pneumatics.retract();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t retract();
+
+	/*
+	* Puts the piston into the opposite state of its current state.
+	* If it is retracted, it will extend. If it is extended, it will retract.
+	*
+	* \return 1 if the operation was successful or PROS_ERR if the operation
+	* failed, setting errno.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Toggle the piston
+	*     pneumatics.toggle();
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	std::int32_t toggle();
+
+	/*
+	* Returns the current state of the piston.
+	*
+	* \return true if the piston is extended, false if it is retracted.
+	*
+	* \b Example
+	* \code
+	* #define ADI_PNEUMATICS_PORT 'a'
+	*
+	* void opcontrol() {
+	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	*   while (true) {
+	*     // Check if the piston is extended
+	*     if (pneumatics.get_state()) {
+	*       // Do something
+	*     }
+	*     pros::delay(10);
+	*   }
+	* }
+	* \endcode
+	*/
+	bool get_state() const;
+
+private: 
+	bool active_low;
+	bool state;
+};
+
 }  // namespace adi
 
 /*

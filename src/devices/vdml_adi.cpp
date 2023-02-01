@@ -269,6 +269,35 @@ std::int32_t Led::clear_pixel(uint32_t pixel_position) {
 	return ext_adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), pixel_position);
 }
 
+Pneumatics::Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low) 
+: DigitalOut(adi_port), active_low(active_low), state(start_extended) {
+	set_value(start_extended);
+}
+
+Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low) 
+: DigitalOut(port_pair), active_low(active_low), state(start_extended) {
+	set_value(start_extended);
+}
+
+std::int32_t Pneumatics::extend() {
+	state = !active_low; 
+	return set_value(state);
+}
+
+std::int32_t Pneumatics::retract() {
+	state = !active_low;
+	return set_value(state);
+}
+
+std::int32_t Pneumatics::toggle() {
+	state = !state;
+	return set_value(state);
+}
+
+bool Pneumatics::get_state() const {
+	return active_low ? state : !state;
+}
+
 std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
 	os << "Potentiometer [";
 	os << "value: " << potentiometer.get_value();
