@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Distance sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -48,5 +48,10 @@ std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
     return os;
 }
 
+namespace literals {
+const pros::Distance operator"" _dist(const unsigned long long int d) {
+    return pros::Distance(d);
+}
+} // namespace literals
 }
 }  // namespace pros

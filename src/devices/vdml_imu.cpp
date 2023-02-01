@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Inertial sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -136,5 +136,10 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	return os;
 }
 
+namespace literals {
+const pros::Imu operator"" _imu(const unsigned long long int i) {
+	return pros::Imu(i);
+}
+}  // namespace literals
 }  // namespace v5
 }  // namespace pros

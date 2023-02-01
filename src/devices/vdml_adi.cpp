@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -13,6 +13,8 @@
 #include "kapi.h"
 #include "pros/adi.hpp"
 #include "vdml/port.h"
+
+#define MAX_LED 64
 
 namespace pros {
 namespace adi {
@@ -144,11 +146,11 @@ Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get
 }
 
 std::int32_t Encoder::reset() const {
-	return adi_encoder_reset(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_encoder_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::int32_t Encoder::get_value() const {
-	return adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder) {
@@ -173,7 +175,7 @@ Ultrasonic::Ultrasonic(ext_adi_port_tuple_t port_tuple) : Port(std::get<1>(port_
 }
 
 std::int32_t Ultrasonic::get_value() const {
-	return adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_ultrasonic_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 Gyro::Gyro(std::uint8_t adi_port, double multiplier) : Port(adi_port) {
@@ -187,11 +189,11 @@ Gyro::Gyro(ext_adi_port_pair_t port_pair, double multiplier) : ADIPort(std::get<
 }
 
 double Gyro::get_value() const {
-	return adi_gyro_get(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_gyro_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
 std::int32_t Gyro::reset() const {
-	return adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
+	return ext_adi_gyro_reset(merge_adi_ports(_smart_port, _adi_port));
 }
 
 Potentiometer::Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(adi_port) { 
@@ -209,6 +211,62 @@ Potentiometer::Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_ty
 double Potentiometer::get_angle() const {
 	uint8_t temp_smart = _smart_port - 1;
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
+}
+
+Led::Led(std::uint8_t adi_port, std::uint32_t length) : Port(adi_port) {
+	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
+	get_ports(_port, _smart_port, _adi_port);
+	if (length < 1) {
+		length = 0;
+	}
+	if (length > MAX_LED) {
+		length = MAX_LED;
+	}
+	_buffer.resize(length, 0);
+}
+
+Led::Led(ext_adi_port_pair_t port_pair, std::uint32_t length) : Port(std::get<1>(port_pair)) {
+	std::int32_t _port = ext_adi_led_init(port_pair.first, port_pair.second);
+	get_ports(_port, _smart_port, _adi_port);
+	if (length < 1) {
+		length = 0;
+	}
+	if (length > MAX_LED) {
+		length = MAX_LED;
+	}
+	_buffer.resize(length, 0);
+}
+
+uint32_t& Led::operator[] (size_t index) {
+	return _buffer[index];
+}
+
+std::int32_t Led::update() const {
+	return ext_adi_led_set(merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
+}
+
+std::int32_t Led::length() {
+	return _buffer.size();
+}
+
+std::int32_t Led::set_all(uint32_t color) {
+	return ext_adi_led_set_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), color);
+}
+
+std::int32_t Led::set_pixel(uint32_t color, uint32_t pixel_position) {
+	return ext_adi_led_set_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), color, pixel_position);
+}
+
+std::int32_t Led::clear_all() {
+	return ext_adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
+}
+
+std::int32_t Led::clear() {
+	return ext_adi_led_clear_all((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size());
+}
+
+std::int32_t Led::clear_pixel(uint32_t pixel_position) {
+	return ext_adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), pixel_position);
 }
 
 Pneumatics::Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low) 

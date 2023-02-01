@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -299,8 +299,12 @@ class Gps {
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 ///@}
 };  // Gps Class
-}
 
+namespace literals {
+const pros::Gps operator""_gps(const unsigned long long int g);
+}  // namespace literals
+
+}
 using GPS = Gps;
 
 }  // namespace pros

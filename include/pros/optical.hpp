@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -251,6 +251,10 @@ class Optical {
 	const std::uint8_t _port;
 	///@}
 };
+
+namespace literals {
+const pros::Optical operator"" _opt(const unsigned long long int o);
+}  // namespace literals
 }
 }  // namespace pros
 

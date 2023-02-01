@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Rotation sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,7 +16,7 @@ namespace pros {
 inline namespace v5 {
     
 Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : _port(port) {
-	pros::c::rotation_init_reverse(port, reverse_flag);
+	pros::c::rotation_set_reversed(port, reverse_flag);
 }
 
 std::int32_t Rotation::reset() {
@@ -70,5 +70,10 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
     return os;
 }
 
+namespace literals {
+const pros::Rotation operator"" _rot(const unsigned long long int r) {
+    return pros::Rotation(r);
+}
+} // namespace literals 
 }
 }  // namespace pros

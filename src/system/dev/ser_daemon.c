@@ -7,7 +7,7 @@
  * characters and responding to any kernel commands (like printing the banner or
  * enabling COBS)
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -27,6 +27,7 @@
 
 __attribute__((weak)) char const* const _PROS_COMPILE_TIMESTAMP = "Unknown";
 __attribute__((weak)) char const* const _PROS_COMPILE_DIRECTORY = "Unknown";
+__attribute__((weak)) const int         _PROS_COMPILE_TIMESTAMP_INT = 0;
 
 void print_small_banner(void) {
 	uint32_t uptime = millis();

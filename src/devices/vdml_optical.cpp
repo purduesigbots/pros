@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Optical sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -81,6 +81,12 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   os << ", rgb: " << "{" << rgb.red << ","<< rgb.green << "," << rgb.blue << "}"; 
   os << "]";
   return os;
+}
+
+namespace literals {
+const pros::Optical operator"" _opt(const unsigned long long int o) {
+  return pros::Optical(o);
+}
 }
 
 } // namespace v5
