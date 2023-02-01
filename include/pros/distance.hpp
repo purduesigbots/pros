@@ -33,7 +33,7 @@ inline namespace v5 {
 /**
  * \ingroup cpp-distance
  */
-class Distance : public Device{
+class Distance : public Device {
 	/**
 	 * \addtogroup cpp-distance
 	 *  @{
