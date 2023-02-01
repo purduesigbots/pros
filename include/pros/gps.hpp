@@ -299,16 +299,20 @@ class Gps : public Device {
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 
 	/**
-     * Returns the type of device
-     *
+	 * Returns the type of device
+	 *
 	 */
 	pros::DeviceType get_type() const;
 ///@}
 };  // Gps Class
+
 namespace literals {
-const pros::Gps operator""_gps(const unsigned long long int g);
+	const pros::Gps operator""_gps(const unsigned long long int g);
 }  // namespace literals
+
 using GPS = Gps;
+
 } // namespace v5
-}  // namespace pros
+} // namespace pros
+
 #endif
