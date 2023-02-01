@@ -211,12 +211,14 @@ double Potentiometer::get_angle() const {
 	return ext_adi_potentiometer_get_angle(merge_adi_ports(temp_smart, _adi_port));
 }
 
-Pneumatics::Pneumatics(std::uint8_t adi_port, bool active_low) 
-: DigitalOut(adi_port), active_low(active_low), state(active_low) {
+Pneumatics::Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low) 
+: DigitalOut(adi_port), active_low(active_low), state(start_extended) {
+	set_value(start_extended);
 }
 
-Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool active_low) 
-: DigitalOut(port_pair), active_low(active_low), state(active_low) {
+Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low) 
+: DigitalOut(port_pair), active_low(active_low), state(start_extended) {
+	set_value(start_extended);
 }
 
 std::int32_t Pneumatics::extend() {

@@ -1436,6 +1436,8 @@ class Pneumatics : public DigitalOut {
 	 *
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
 	 * \param active_low
 	 *        If set to true, a value of false corresponds to the pneumatic's
 	 * 		  wire being set to high.
@@ -1454,7 +1456,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	Pneumatics(std::uint8_t adi_port, bool active_low = false);
+	Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1466,6 +1468,8 @@ class Pneumatics : public DigitalOut {
 	 * \param port_pair
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start the match extended
 	 * \param active_low
 	 *        If set to true, a value of false corresponds to the pneumatic's
 	 * 		  wire being set to high.
@@ -1485,7 +1489,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	Pneumatics(ext_adi_port_pair_t port_pair, bool active_low = false);
+	Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
 
 	/* 
 	* Extends the piston, if not already extended.
