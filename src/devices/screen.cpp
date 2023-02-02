@@ -97,5 +97,23 @@ namespace screen {
         return pros::c::screen_touch_callback(cb, event_type);
     }
 
+    /******************************************************************************/
+    /**                                 LLEMU Weak Stubs                         **/
+    /**                                                                          **/
+    /**   These functions allow main.cpp to be compiled without LVGL present     **/
+    /******************************************************************************/
+    namespace lcd {
+        using lcd_btn_cb_fn_t = void (*)(void);
+        
+        extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
+        extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
+        extern __attribute__((weak)) bool initialize(void) {return false;}
+        extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
+        extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
+
+        template <typename... Params>
+        extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
+    }  // namespace lcd
+
 }  // namespace screen
 }  // namespace pros
