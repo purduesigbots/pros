@@ -660,15 +660,7 @@ std::vector<std::int32_t> Motor_Group::get_every_voltage_limit(void) const {
 	}
 	return return_vector;
 }
-std::uint8_t Motor_Group::get_port(void) const {
-	empty_motor_group_check(PROS_ERR_BYTE);
-	return (uint8_t)std::abs(_ports[0]);
-}
-std::uint8_t Motor_Group::get_port(std::uint8_t index) const {
-	empty_motor_group_check(PROS_ERR_BYTE);
-	motor_group_index_check(PROS_ERR_BYTE, index);
-	return (uint8_t)(_ports[index]);
-}
+
 std::vector<std::uint8_t> Motor_Group::get_every_port(void) const {
 	std::vector<std::uint8_t> return_vector;
 	empty_motor_group_check_vector(PROS_ERR_BYTE, return_vector);
@@ -817,7 +809,7 @@ void Motor_Group::erase_port(std::int8_t port) {
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const pros::Motor& motor) {
+std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 	os << "Motor [";
 	os << "port: " << motor.get_port();
 	os << ", brake mode: " << (int)motor.get_brake_mode();
@@ -847,36 +839,43 @@ void Motor_Group::push_motor_configuration() const {
 	_motor_group_mutex.give();
 }
 
-Motor::Motor(const std::int8_t port) : Motor_Group({port}) {}
+Motor::Motor(const std::int8_t port) : Motor_Group({port}), Device(port) {}
 
 Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
              const pros::v5::Motor_Units encoder_units)
-    : Motor_Group({port}, gearset, reverse, encoder_units) {}
+    : Motor_Group({port}, gearset, reverse, encoder_units), Device(port) {}
 
 Motor::Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse,
              const pros::v5::Motor_Units encoder_units)
-    : Motor_Group({port}, gearset_color, reverse, encoder_units) {}
+    : Motor_Group({port}, gearset_color, reverse, encoder_units), Device(port) {}
 
 Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse)
-    : Motor_Group({port}, gearset, reverse) {}
+    : Motor_Group({port}, gearset, reverse), Device(port) {}
 
 Motor::Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse)
-    : Motor_Group({port}, gearset_color, reverse) {}
+    : Motor_Group({port}, gearset_color, reverse), Device(port) {}
 
-Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset) : Motor_Group({port}, gearset) {}
+Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset) 
+	: Motor_Group({port}, gearset), Device(port) {}
 
-Motor::Motor(const std::int8_t port, const pros::Color gearset_color) : Motor_Group({port}, gearset_color) {}
+Motor::Motor(const std::int8_t port, const pros::Color gearset_color) 
+	: Motor_Group({port}, gearset_color), Device(port) {}
 
-Motor::Motor(const std::int8_t port, const bool reverse) : Motor_Group({port}, reverse) {}
+Motor::Motor(const std::int8_t port, const bool reverse) 
+	: Motor_Group({port}, reverse), Device(port){}
+
+
+DeviceType Motor::get_type() const {
+	return DeviceType::motor;
+}
 
 }  // namespace v5
 namespace literals {
-const pros::Motor operator"" _mtr(const unsigned long long int m) {
-	return pros::Motor(m, false);
-}
-const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-	return pros::Motor(m, true);
-}
-
+	const pros::Motor operator"" _mtr(const unsigned long long int m) {
+		return pros::Motor(m, false);
+	}
+	const pros::Motor operator"" _rmtr(const unsigned long long int m) {
+		return pros::Motor(m, true);
+	}
 }  // namespace literals
 }  // namespace pros

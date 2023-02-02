@@ -16,7 +16,7 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : _port(port) {
+Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port) {
 	vision_set_zero_point(port, zero_point);
 }
 
@@ -62,9 +62,6 @@ std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
 
-std::uint8_t Vision::get_port(void) const {
-	return _port;
-}
 
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
                              vision_object_s_t* const object_arr) const {
@@ -117,5 +114,9 @@ std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
 }
 
-}  // namespace v5 
+pros::DeviceType Vision::get_type() const {
+	return pros::DeviceType::vision;
+}
+
+}  // namespace v5
 }  // namespace pros

@@ -84,10 +84,14 @@ std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
 	return os;
 }
 
+pros::DeviceType Gps::get_type() const {
+	return pros::DeviceType::gps;
+}
+
 namespace literals {
 const pros::Gps operator""_gps(const unsigned long long int g) {
 	return pros::Gps(g);
 }
 }  // namespace literals
-}
+} // namespace v5
 }  // namespace pros

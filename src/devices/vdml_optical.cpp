@@ -16,7 +16,7 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Optical::Optical(std::uint8_t port): _port(port){}
+Optical::Optical(std::uint8_t port) : Device(port) {}
 
 double Optical::get_hue(){
   return optical_get_hue(_port);
@@ -66,9 +66,6 @@ std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
-std::uint8_t Optical::get_port(){
-  return _port;
-}
 
 std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   pros::c::optical_rgb_s_t rgb = optical.get_rgb(); 
@@ -83,11 +80,14 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   return os;
 }
 
+pros::DeviceType Optical::get_type() const {
+	return pros::DeviceType::optical;
+}
 namespace literals {
 const pros::Optical operator"" _opt(const unsigned long long int o) {
   return pros::Optical(o);
 }
-}
+} //
 
 } // namespace v5
 } // namespace pros

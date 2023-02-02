@@ -13,9 +13,9 @@
 #include "pros/distance.hpp"
 
 namespace pros {
-inline namespace v5{ 
-	
-Distance::Distance(const std::uint8_t port) : _port(port) {}
+inline namespace v5 {
+
+Distance::Distance(const std::uint8_t port) : Device(port) {}
 
 std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);
@@ -33,19 +33,20 @@ double Distance::get_object_velocity() {
 	return pros::c::distance_get_object_velocity(_port);
 }
 
-std::uint8_t Distance::get_port() {
-	return _port;
-}
 
 std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
-    os << "Distance [";
-    os << "port: " << distance.get_port();
-    os << ", distance: " << distance.get();
-    os << ", confidence: " << distance.get_confidence();
-    os << ", object size: " << distance.get_object_size();
-    os << ", object velocity: " << distance.get_object_velocity();
-    os << "]";
-    return os;
+	os << "Distance [";
+	os << "port: " << distance.get_port();
+	os << ", distance: " << distance.get();
+	os << ", confidence: " << distance.get_confidence();
+	os << ", object size: " << distance.get_object_size();
+	os << ", object velocity: " << distance.get_object_velocity();
+	os << "]";
+	return os;
+}
+
+pros::DeviceType Distance::get_type() const {
+	return pros::DeviceType::distance;
 }
 
 namespace literals {
@@ -53,5 +54,5 @@ const pros::Distance operator"" _dist(const unsigned long long int d) {
     return pros::Distance(d);
 }
 } // namespace literals
-}
+} // namespace v5
 }  // namespace pros

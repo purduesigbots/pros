@@ -25,19 +25,19 @@
 #include <string>
 
 #include "pros/link.h"
+#include "pros/device.hpp"
 
 namespace pros {
 /**
  * \ingroup cpp-link
  * 
  */
-class Link {
+class Link : public Device {
 	/**
 	 * \addtogroup cpp-link
 	 * ///@{
 	 */
 	private:
-	std::uint8_t _port;
 
 	public:
 	/**
@@ -205,6 +205,12 @@ class Link {
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
 	std::uint32_t clear_receive_buf();
+
+	/**
+     * Returns the type of device
+     *
+	 */
+	pros::DeviceType get_type() const;
 	///@}
 };
 }  // namespace pros

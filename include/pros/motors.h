@@ -541,32 +541,6 @@ int32_t motor_is_over_temp(int8_t port);
  */
 int32_t motor_is_stopped(int8_t port);
 
-/**
- * Checks if the motor is at its zero position.
- *
- * \note Although this function forwards data from the motor, the motor
- * presently does not provide any value. This function returns PROS_ERR with
- * errno set to ENOSYS.
- *
- * \param port
- *        The V5 port number from 1-21
- *
- * \return 1 if the motor is at zero absolute position, 0 if the motor has
- * moved from its absolute zero, or PROS_ERR if the operation failed,
- * setting errno
- * 
- * \b Example
- * \code
- * void opcontrol() {
- *   while (true) {
- *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
- *     printf("Is the motor at its zero position? %d\n", motor_get_zero_position_flag(1));
- *     delay(2);
- *   }
- * }
- * \endcode
- */
-int32_t motor_get_zero_position_flag(int8_t port);
 
 #ifdef __cplusplus
 }  // namespace c

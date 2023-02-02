@@ -28,13 +28,14 @@
 #include <iostream>
 
 #include "pros/optical.h"
+#include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
 /**
  * \ingroup cpp-optical
  */
-class Optical {
+class Optical : public Device {
 	/**
 	 * \addtogroup cpp-optical
 	 *  @{
@@ -231,12 +232,6 @@ class Optical {
 	 */
 	virtual std::int32_t disable_gesture();
 
-	/**
-	 * Gets the port number of the Optical Sensor.
-	 *
-	 * \return The Optical Sensor's port number.
-	 */
-	virtual std::uint8_t get_port();
 
 	/**
      * This is the overload for the << operator for printing to streams
@@ -247,8 +242,13 @@ class Optical {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	pros::DeviceType get_type() const;
+
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 

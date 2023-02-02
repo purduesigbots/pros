@@ -25,6 +25,7 @@
 #include <cstdint>
 #include <iostream>
 
+#include "pros/device.hpp"
 #include "pros/distance.h"
 
 namespace pros {
@@ -32,7 +33,7 @@ inline namespace v5 {
 /**
  * \ingroup cpp-distance
  */
-class Distance {
+class Distance : public Device {
 	/**
 	 * \addtogroup cpp-distance
 	 *  @{
@@ -111,13 +112,6 @@ class Distance {
 	 */
 	virtual double get_object_velocity();
 
-	/**
-	 * Gets the port number of the distance sensor.
-	 *
-	 * \return The distance sensor's port number.
-	 */
-	std::uint8_t get_port();
-
     /**
      * This is the overload for the << operator for printing to streams
      *
@@ -127,8 +121,13 @@ class Distance {
      */
 	friend std::ostream& operator<<(std::ostream& os, pros::Distance& distance);
 
+	/**
+     * Returns the type of device
+     *
+	 */
+	pros::DeviceType get_type() const;
+
 	private:
-	const std::uint8_t _port;
 	///@}
 };
 

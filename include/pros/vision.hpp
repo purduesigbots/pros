@@ -16,7 +16,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup cpp-vision Vision Sensor C++ API
  * \note Additional example code for this module can be found in its [Tutorial.](@ref vision)
  */
@@ -24,16 +24,16 @@
 #ifndef _PROS_VISION_HPP_
 #define _PROS_VISION_HPP_
 
-#include "pros/vision.h"
-
 #include <cstdint>
+
+#include "pros/vision.h"
 
 namespace pros {
 inline namespace v5 {
 /**
  * \ingroup cpp-vision
  */
-class Vision {
+class Vision : public Device {
 	/**
 	 * \addtogroup cpp-vision
 	 *  @{
@@ -233,12 +233,6 @@ class Vision {
 	 */
 	std::int32_t get_white_balance(void) const;
 
-	/**
-	 * Gets the port number of the Vision Sensor.
-	 *
-	 * \return The vision sensor's port number.
-	 */
-	std::uint8_t get_port(void) const;
 
 	/**
 	 * Reads up to object_count object descriptors into object_arr.
@@ -450,8 +444,13 @@ class Vision {
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
 
+	/**
+	 * Returns the type of device
+	 *
+	 */
+	pros::DeviceType get_type() const;
+
 	private:
-	std::uint8_t _port;
 	///@}
 };
 }  // namespace v5

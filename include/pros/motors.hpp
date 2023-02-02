@@ -27,6 +27,8 @@
 #include <iostream>
 
 #include "pros/colors.hpp"
+#include "pros/device.hpp"
+#include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
 
@@ -973,22 +975,6 @@ class Motor_Group {
 	std::vector<Motor_Gears> get_every_gearing(void) const;
 
 	/**
-	 * Gets the port number of the motor.
-	 *
-	 * \return The motor's port number.
-	 *
-	 * \b Example
-	 * \code
-	 * void autonomous() {
-	 *   pros::Motor motor (1);
-	 *   std::uint8_t port = motor.get_port(); // Returns 1
-	 * }
-	 * \endcode
-	 */
-	std::uint8_t get_port(void) const;
-	std::uint8_t get_port(std::uint8_t) const;
-
-	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
 	 * (ALL THE PORTS WILL BE POSITIVE)
 	 * Use get_ports if you want to get the information on reversal.
@@ -1331,7 +1317,7 @@ class Motor_Group {
 	 * position: (position), reversed: (reversed boolean), temperature: (temperature),
 	 * torque: (torque), voltage: (voltage)]
 	 */
-	friend std::ostream& operator<<(std::ostream& os, const pros::Motor_Group& motor);
+	friend std::ostream& operator<<(std::ostream& os, pros::Motor_Group& motor);
 	///@}
 	private:
 	std::vector<std::int8_t> _ports;
@@ -1343,7 +1329,7 @@ class Motor_Group {
 };
 
 ///@}
-class Motor : public Motor_Group {
+class Motor : public Motor_Group, public Device {
 	public:
 	explicit Motor(const std::int8_t port);
 
@@ -1362,6 +1348,8 @@ class Motor : public Motor_Group {
 	explicit Motor(const std::int8_t port, const pros::Color gearset_color);
 
 	explicit Motor(const std::int8_t port, const bool reverse);
+
+	DeviceType get_type() const;
 
 	using Motor_Group::operator=;
 
