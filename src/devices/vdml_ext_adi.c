@@ -50,6 +50,18 @@ typedef union adi_data {
 	} gyro_data;
 } adi_data_s_t;
 
+
+// These 2 functions aren't in v5_api.h but should be... so we're going to directly expose them with an extern "C".
+#ifdef __cplusplus
+extern "C" {
+#endif
+  // private addressable LED API
+  int32_t vexDeviceAdiAddrLedSet( V5_DeviceT device, uint32_t port, uint32_t *pData, uint32_t nOffset, uint32_t nLength, uint32_t options );
+  int32_t vexAdiAddrLedSet( uint32_t index, uint32_t port, uint32_t *pData, uint32_t nOffset, uint32_t nLength, uint32_t options );
+#ifdef __cplusplus
+}
+#endif
+
 #define transform_adi_port(port)       \
 	if (port >= 'a' && port <= 'h')      \
 		port -= 'a';                       \
