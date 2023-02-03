@@ -1014,6 +1014,33 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::int32_t brake(void);
+
+	/* 
+	 * Gets the voltages delivered to the motors in millivolts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return The voltage of the motor in millivolts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 * 
+	 */
+	std::vector<std::uint32_t> get_voltages(void);
+
+	/* 
+	 * Get the voltage limits of the motors set by the user.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return The voltage limit of the motor in millivolts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 */
+	std::vector<std::uint32_t> get_voltage_limits(void);
 	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
