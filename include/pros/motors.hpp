@@ -28,7 +28,6 @@
 
 #include "pros/colors.hpp"
 #include "pros/device.hpp"
-#include "pros/colors.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
 
@@ -1356,6 +1355,7 @@ class Motor : public Motor_Group, public Device {
 	private:
 	using Motor_Group::operator+=;
 	using Motor_Group::append;
+	using Motor_Group::erase_port;
 	using Motor_Group::every_is_over_current;
 	using Motor_Group::every_is_over_temp;
 	using Motor_Group::every_is_reversed;
