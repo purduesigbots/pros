@@ -484,21 +484,32 @@ std::int32_t Motor_Group::tare_position(void) {
 
 std::vector<std::uint32_t> Motor_Group::get_voltages(void) {
 	std::vector<std::uint32_t> out;
-	claim_mg_mutex_vector(PROS_ERR_F);
+	claim_mg_mutex_vector(PROS_ERR);
 	for (Motor motor : _motors) {
 		out.push_back(motor.get_voltage());
 	}
-	give_mg_mutex_vector(PROS_ERR_F);
+	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
 
 std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
 	std::vector<std::uint32_t> out;
-	claim_mg_mutex_vector(PROS_ERR_F);
+	claim_mg_mutex_vector(PROS_ERR);
 	for (Motor motor : _motors) {
 		out.push_back(motor.get_voltage_limit());
 	}
-	give_mg_mutex_vector(PROS_ERR_F);
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
+std::vector<std::int32_t> Motor_Group::get_raw_positions(void) {
+	std::vector<std::int32_t> out;
+	std::uint32_t* const timestamp = new std::uint32_t;
+	claim_mg_mutex_vector(PROS_ERR);
+	for (Motor motor : _motors) {
+		out.push_back(motor.get_raw_position(timestamp));
+	}
+	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
 

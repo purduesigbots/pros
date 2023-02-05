@@ -1041,6 +1041,19 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::vector<std::uint32_t> get_voltage_limits(void);
+
+	/* 
+	 * Gets the raw encoder positions of a motor group at a given timestamp.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 	
+	 * \return The encoder position of the motor in ticks or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 */
+	std::vector<std::int32_t> get_raw_positions(void);
 	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
