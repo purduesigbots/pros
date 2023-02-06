@@ -26,7 +26,6 @@
 #include <cstdint>
 #include <iostream>
 
-#include "pros/colors.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
@@ -133,16 +132,9 @@ class Motor_Group {
 	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset, const bool reverse,
 	                     const Motor_Units encoder_units);
 
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
-	                     const Motor_Units encoder_units);
-
 	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset, const bool reverse);
 
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color, const bool reverse);
-
 	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const Motor_Gears gearset);
-
-	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const pros::Color gearset_color);
 
 	explicit Motor_Group(std::initializer_list<std::int8_t> ports, const bool reverse);
 
@@ -151,16 +143,9 @@ class Motor_Group {
 	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse,
 	                     const Motor_Units encoder_units);
 
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse,
-	                     const Motor_Units encoder_units);
-
 	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset, const bool reverse);
 
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color, const bool reverse);
-
 	explicit Motor_Group(std::vector<std::int8_t> ports, const Motor_Gears gearset);
-
-	explicit Motor_Group(std::vector<std::int8_t> ports, const pros::Color gearset_color);
 
 	explicit Motor_Group(std::vector<std::int8_t> ports, const bool reverse);
 
@@ -1139,30 +1124,6 @@ class Motor_Group {
 	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset);
 
 	/**
-	 * Sets one of the gear cartridge (red, green, blue) for the motor.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param gearset
-	 *        The new motor gearset
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 *
-	 * \b Example
-	 * \code
-	 * void initialize() {
-	 *   pros::Motor motor (1);
-	 *   motor.set_gearing(pros::Color::red);
-	 *   std::cout << "Gearset: " << motor.get_gearing();
-	 * }
-	 * \endcode
-	 */
-	std::int32_t set_gearing(const pros::Color gearset_color);
-
-	/**
 	 * Sets the reverse flag for the motor.
 	 *
 	 * This will invert its movements and the values returned for its position.
@@ -1335,16 +1296,9 @@ class Motor : public Motor_Group, public Device {
 	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse,
 	               const pros::v5::Motor_Units encoder_units);
 
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse,
-	               const pros::v5::Motor_Units encoder_units);
-
 	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const bool reverse);
 
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color, const bool reverse);
-
 	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset);
-
-	explicit Motor(const std::int8_t port, const pros::Color gearset_color);
 
 	explicit Motor(const std::int8_t port, const bool reverse);
 
