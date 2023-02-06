@@ -906,6 +906,21 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 		mtCOVERAGE_TEST_MARKER();
 	}
 }
+
+// If the scheduler isn't start it, start it.
+// This is intentional as if anybody calls a constructor with a 
+// delay before main.cpp, it will cause a crash.
+extern void rtos_initialize();
+
+bool rtos_start_check(void) {
+	if(xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
+	{
+		rtos_initialize();
+		return false;
+	}
+	return true;
+}
+
 /*-----------------------------------------------------------*/
 
 #if ( INCLUDE_vTaskDelete == 1 )
@@ -1869,20 +1884,6 @@ void rtos_sched_stop( void )
 	vPortEndScheduler();
 }
 /*----------------------------------------------------------*/
-
-// If the scheduler isn't start it, start it.
-// This is intentional as if anybody calls a constructor with a 
-// delay before main.cpp, it will cause a crash.
-extern void rtos_initialize();
-
-bool rtos_start_check(void) {
-	if(xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
-	{
-		rtos_initialize();
-		return false;
-	}
-	return true;
-}
 
 void rtos_suspend_all( void )
 {
