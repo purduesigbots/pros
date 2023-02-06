@@ -82,6 +82,7 @@ using namespace pros::c;
 Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool reverse,
              const motor_encoder_units_e_t encoder_units)
     : _port(abs(port)) {
+	rtos_start_check();
 	set_gearing(gearset);
 	set_reversed(reverse);
 	set_encoder_units(encoder_units);
@@ -90,6 +91,7 @@ Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool
 }
 
 Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool reverse) : _port(abs(port)) {
+	rtos_start_check();
 	set_gearing(gearset);
 	set_reversed(reverse);
 	if (port < 0) 
@@ -97,18 +99,21 @@ Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset, const bool
 }
 
 Motor::Motor(const std::int8_t port, const motor_gearset_e_t gearset) : _port(abs(port)) {
+	rtos_start_check();
 	set_gearing(gearset);
 	if (port < 0) 
 		set_reversed(true);
 }
 
 Motor::Motor(const std::int8_t port, const bool reverse) : _port(abs(port)) {
+	rtos_start_check();
 	set_reversed(reverse);
 	if (port < 0) 
 		set_reversed(true);
 }
 
 Motor::Motor(const std::int8_t port) : _port(abs(port)) {
+	rtos_start_check();
 	if (port < 0) 
 		set_reversed(true);
 }

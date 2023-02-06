@@ -17,11 +17,13 @@ namespace pros {
 using namespace pros::c;
 
 Serial::Serial(std::uint8_t port, std::int32_t baudrate) : _port(port) {
+	rtos_start_check();
 	serial_enable(port);
 	set_baudrate(baudrate);
 }
 
 Serial::Serial(std::uint8_t port) : _port(port) {
+	rtos_start_check();
 	serial_enable(port);
 }
 

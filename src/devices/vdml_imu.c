@@ -145,6 +145,10 @@ quaternion_s_t imu_get_quaternion(uint8_t port) {
 	imu_data_s_t* data = (imu_data_s_t*)device->pad;
 	// To calculate the quaternion values, we first get the euler values, add the offsets,
 	// and then do the calculations.
+
+	// Wikipedia article for future devs/maintainers: (Look at C++ code section)
+	// 
+	// https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 	double roll = fmod(euler.roll + data->roll_offset, 2.0 * IMU_EULER_LIMIT);
 	double yaw = fmod(euler.yaw + data->yaw_offset, 2.0 * IMU_EULER_LIMIT);
 	double pitch = fmod(euler.pitch + data->pitch_offset, 2.0 * IMU_EULER_LIMIT);

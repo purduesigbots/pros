@@ -1121,6 +1121,10 @@ static void prvAddNewTaskToReadyList( TCB_t *pxNewTCB )
 	void task_delay(const uint32_t milliseconds)
 	{
 	int32_t xAlreadyYielded = pdFALSE;
+	// Coverage marker in case FreeRTOS isn't started yet.
+	if(!rtos_start_check()) {
+		mtCOVERAGE_TEST_MARKER();
+	}
 
 		/* A delay time of zero just forces a reschedule. */
 		if( milliseconds > ( uint32_t ) 0U )
@@ -1865,6 +1869,20 @@ void rtos_sched_stop( void )
 	vPortEndScheduler();
 }
 /*----------------------------------------------------------*/
+
+// If the scheduler isn't start it, start it.
+// This is intentional as if anybody calls a constructor with a 
+// delay before main.cpp, it will cause a crash.
+extern void rtos_initialize();
+
+bool rtos_start_check(void) {
+	if(xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED)
+	{
+		rtos_initialize();
+		return false;
+	}
+	return true;
+}
 
 void rtos_suspend_all( void )
 {

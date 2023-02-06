@@ -54,6 +54,13 @@ extern "C" {
 typedef uint32_t task_stack_t;
 
 /**
+ * If the scheduler is not running, this function will start the scheduler and
+ * return. If the scheduler is already running, this function will return. 
+ * This is to prevent constructors called before main from crashing the v5 brain.
+ */
+void rtos_start_check(void);
+
+/**
  * Suspends the scheduler without disabling interrupts. context switches will
  * not occur while the scheduler is suspended. RTOS ticks that occur while the
  * scheduler is suspended will be held pending until the scheduler has been

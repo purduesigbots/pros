@@ -71,7 +71,12 @@ int32_t rotation_get_angle(uint8_t port) {
 
 int32_t rotation_set_reversed(uint8_t port, bool value) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
+	rtos_start_check();
 	vexDeviceAbsEncReverseFlagSet(device->device_info, value);
+	while(vexDeviceAbsEncStatusGet(device->device_info) == 0) {
+		task_delay(5);
+	}
+	
 	return_port(port - 1, PROS_SUCCESS);
 }
 
