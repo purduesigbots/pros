@@ -346,7 +346,7 @@ Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> motor_ports)
 	}	
 }
 
-Motor_Group::Motor_Group(const std::vector<std::int8_t>& motor_ports)
+Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
 	for (auto& i: motor_ports) {
 		_motors.emplace_back(i);
