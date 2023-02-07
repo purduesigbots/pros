@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <vector>
+#include <cassert>
 
 #include "kapi.h"
 #include "pros/motors.hpp"
@@ -334,7 +335,9 @@ std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 }
 
 Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
-    : _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {}
+    : _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {
+    assert(_motor_count > 0);
+}
 
 Motor_Group::Motor_Group(const std::vector<pros::Motor>& motors) 
 	: _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {}
@@ -368,6 +371,30 @@ std::int32_t Motor_Group::operator=(std::int32_t voltage) {
 	give_mg_mutex(PROS_ERR);
 	return out;
 }
+
+pros::Motor& Motor_Group::operator[](int i) {
+	if (_motors.empty()) {
+		errno = ENXIO;
+		return _motors[0];
+	}
+	if (i >= _motor_count) {
+		errno = ENXIO;
+		return _motors[0];
+	}
+	return _motors.at(i);
+}
+
+pros::Motor& Motor_Group::at(int i) {
+	if (i >= _motor_count || _motors.empty()) {
+		throw std::out_of_range("Out of Range! Motor_Group for at() method is out of range");
+	}
+	return _motors[i];
+}
+
+std::int32_t Motor_Group::size() {
+	return _motor_count;
+}
+
 
 std::int32_t Motor_Group::move_absolute(const double position, const std::int32_t velocity) {
 	claim_mg_mutex(PROS_ERR);

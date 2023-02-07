@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -164,7 +164,6 @@ double ADIPotentiometer::get_angle() const {
 ADILed::ADILed(std::uint8_t adi_port, std::uint32_t length) : ADIPort(adi_port) {
 	std::int32_t _port = ext_adi_led_init(INTERNAL_ADI_PORT, adi_port);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
 	if (length < 1) {
 		length = 0;
 	}

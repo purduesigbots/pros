@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Optical sensor.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,6 +16,11 @@
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
+
+// Source for these figures: 
+// https://www.vexforum.com/t/v5-optical-sensor-refresh-rate/109632/9
+#define MIN_INTEGRATION_TIME 3 // ms
+#define MAX_INTEGRATION_TIME 712 // ms
 
 double optical_get_hue(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
@@ -132,5 +137,22 @@ int32_t optical_enable_gesture(uint8_t port) {
 int32_t optical_disable_gesture(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_OPTICAL);
 	vexDeviceOpticalGestureDisable(device->device_info);
+	return_port(port - 1, PROS_SUCCESS);
+}
+
+double optical_get_integration_time(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_OPTICAL);
+	double rtv = vexDeviceOpticalIntegrationTimeGet(device->device_info);
+	return_port(port - 1, rtv);
+}
+
+int32_t optical_set_integration_time(uint8_t port, double time) {
+	claim_port_i(port - 1, E_DEVICE_OPTICAL);
+	// going to set the time to minimum of 3 ms, 3 ms is possible but impractical.
+	time = time < MIN_INTEGRATION_TIME ? MIN_INTEGRATION_TIME : time;
+	// also boundary limit max integration time too
+	time = time > MAX_INTEGRATION_TIME ? MAX_INTEGRATION_TIME : time;
+
+	vexDeviceOpticalIntegrationTimeSet(device->device_info, time);
 	return_port(port - 1, PROS_SUCCESS);
 }
