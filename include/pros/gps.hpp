@@ -30,17 +30,17 @@ class Gps {
 	const std::uint8_t _port;
 
 	public:
-	Gps(const std::uint8_t port) : _port(port){};
+	explicit Gps(const std::uint8_t port) : _port(port){};
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : _port(port) {
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : _port(port) {
 		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
 	};
 
-	Gps(const std::uint8_t port, double xOffset, double yOffset) : _port(port) {
+	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : _port(port) {
 		pros::c::gps_set_offset(port, xOffset, yOffset);
 	};
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
 	    : _port(port) {
 		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 	};

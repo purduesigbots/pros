@@ -64,7 +64,7 @@ class ADIPort {
 	 * \param type
 	 * 		  The configuration type for the port
 	 */
-	ADIPort(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	explicit ADIPort(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Gets the configuration for the given ADI port.
@@ -143,7 +143,7 @@ class ADIAnalogIn : protected ADIPort {
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
-	ADIAnalogIn(ext_adi_port_pair_t port_pair);
+	explicit ADIAnalogIn(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Calibrates the analog sensor on the specified port and returns the new
@@ -258,7 +258,7 @@ class ADIAnalogOut : private ADIPort {
 	 * 		  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 *
 	 */
-	ADIAnalogOut(ext_adi_port_pair_t port_pair);
+	explicit ADIAnalogOut(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -310,7 +310,7 @@ class ADIDigitalOut : private ADIPort {
 	 * \param init_state
 	 *        The initial state for the port
 	 */
-	ADIDigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
+	explicit ADIDigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
 
 	/**
 	 * Sets the value for the given ADI port.
@@ -357,7 +357,7 @@ class ADIDigitalIn : private ADIPort {
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 */
-	ADIDigitalIn(ext_adi_port_pair_t port_pair);
+	explicit ADIDigitalIn(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Gets a rising-edge case for a digital button press.
@@ -420,7 +420,7 @@ class ADIMotor : private ADIPort {
 	 *        The pair of the smart port number (from 1-22) and the
 	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 */
-	ADIMotor(ext_adi_port_pair_t port_pair);
+	explicit ADIMotor(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Stops the motor on the given port.
@@ -479,7 +479,7 @@ class ADIEncoder : private ADIPort {
 	 * \param reverse
 	 *        If "true", the sensor will count in the opposite direction
 	 */
-	ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
+	explicit ADIEncoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Encoder.
@@ -496,7 +496,7 @@ class ADIEncoder : private ADIPort {
 	 * \param reverse
 	 *        If "true", the sensor will count in theopposite direction
 	 */
-	ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
+	explicit ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
 	/**
 	 * Sets the encoder value to zero.
@@ -545,7 +545,7 @@ class ADIUltrasonic : private ADIPort {
 	 *        The port connected to the yellow INPUT cable. This should be in the
 	 *        next highest port following port_ping.
 	 */
-	ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
+	explicit ADIUltrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
@@ -561,7 +561,7 @@ class ADIUltrasonic : private ADIPort {
 	 * 		  connected to the yellow INPUT cable (the next) highest port
 	 * 		  following port_ping).
 	 */
-	ADIUltrasonic(ext_adi_port_tuple_t port_tuple);
+	explicit ADIUltrasonic(ext_adi_port_tuple_t port_tuple);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -629,7 +629,7 @@ class ADIGyro : private ADIPort {
 	 *        A scalar value that will be multiplied by the gyro heading value
 	 *        supplied by the ADI
 	 */
-	ADIGyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
+	explicit ADIGyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
 
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
@@ -675,7 +675,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * \param potentiometer_type
  	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
 	 */
-	ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit ADIPotentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Potentiometer.
@@ -691,7 +691,7 @@ class ADIPotentiometer : public ADIAnalogIn {
 	 * \param potentiometer_type
  	 *        An adi_potentiometer_type_e_t enum value specifying the potentiometer version type
 	 */
-	ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit ADIPotentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Gets the current potentiometer angle in tenths of a degree.
@@ -776,7 +776,7 @@ class ADILed : protected ADIPort {
 	 * \param length
 	 *        The number of LEDs in the chain
 	 */
-	ADILed(std::uint8_t adi_port, std::uint32_t length);
+	explicit ADILed(std::uint8_t adi_port, std::uint32_t length);
 
 	/**
 	 * @brief Configures an ADI port on a adi_expander to act as a LED.
@@ -792,7 +792,7 @@ class ADILed : protected ADIPort {
 	 * \param length
 	 * 	  The number of LEDs in the chain
 	 */
-	ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length);
+	explicit ADILed(ext_adi_port_pair_t port_pair, std::uint32_t length);
 
 	/**
 	 * @brief Operator overload to access the buffer in the ADILed class, it is 

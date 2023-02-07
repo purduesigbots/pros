@@ -59,7 +59,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
+	explicit Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
 
 	/**
@@ -81,7 +81,7 @@ class Task {
 	 *        debugging. The name may be up to 32 characters long.
 	 *
 	 */
-	Task(task_fn_t function, void* parameters, const char* name);
+	explicit Task(task_fn_t function, void* parameters, const char* name);
 
 	/**
 	 * Creates a new task and add it to the list of tasks that are ready to run.
@@ -181,7 +181,7 @@ class Task {
 	 *
 	 */
 	template <class F>
-	Task(F&& function, const char* name)
+	explicit Task(F&& function, const char* name)
 	    : Task(std::forward<F>(function), TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, name) {}
 
 	/**
@@ -406,12 +406,12 @@ class Mutex {
 	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
 
 	public:
-	Mutex();
+	explicit Mutex();
 
 	// disable copy and move construction and assignment per Mutex requirements
 	// (see https://en.cppreference.com/w/cpp/named_req/Mutex)
-	Mutex(const Mutex&) = delete;
-	Mutex(Mutex&&) = delete;
+	explicit Mutex(const Mutex&) = delete;
+	explicit Mutex(Mutex&&) = delete;
 
 	Mutex& operator=(const Mutex&) = delete;
 	Mutex& operator=(Mutex&&) = delete;
@@ -545,7 +545,7 @@ class MutexVarLock {
 
 	friend class MutexVar<Var>;
 
-	constexpr MutexVarLock(Mutex& mutex, Var& var) : mutex(mutex), var(var) {}
+	explicit constexpr MutexVarLock(Mutex& mutex, Var& var) : mutex(mutex), var(var) {}
 
 	public:
 	/**
@@ -581,7 +581,7 @@ class MutexVar {
 	          The arguments to provide to the Var constructor.
 	 */
 	template <typename... Args>
-	MutexVar(Args&&... args) : mutex(), var(std::forward<Args>(args)...) {}
+	explicit MutexVar(Args&&... args) : mutex(), var(std::forward<Args>(args)...) {}
 
 	/**
 	 * Try to lock the mutex-protected variable.
