@@ -144,9 +144,11 @@ bool vdml_get_port_error(uint8_t port) {
 	}
 }
 
+#if 0
 void vdml_reset_port_error() {
 	port_errors = 0;
 }
+#endif
 
 /**
  * Background processing function for the VDML system.
