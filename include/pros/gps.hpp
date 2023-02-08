@@ -44,17 +44,17 @@ class Gps : public Device {
 	 */
 
 	public:
-	Gps(const std::uint8_t port) : Device(port){};
+	explicit Gps(const std::uint8_t port) : Device(port){};
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port){
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port){
 		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
 	};
 
-	Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port){
+	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port){
 		pros::c::gps_set_offset(port, xOffset, yOffset);
 	};
 
-	Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
 	     : Device(port){
 		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 	};

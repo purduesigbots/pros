@@ -52,7 +52,7 @@ class Vision : public Device {
 	 * \param zero_point
 	 *        One of vision_zero_e_t to set the (0,0) coordinate for the FOV
 	 */
-	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
+	explicit Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
 
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
