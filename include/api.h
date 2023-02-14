@@ -39,10 +39,10 @@
 #include <unistd.h>
 #endif /* __cplusplus */
 
-#define PROS_VERSION_MAJOR 3
-#define PROS_VERSION_MINOR 7
-#define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "3.7.2-dirty.104.b1d0433"
+#define PROS_VERSION_MAJOR 4
+#define PROS_VERSION_MINOR 0
+#define PROS_VERSION_PATCH 0
+#define PROS_VERSION_STRING "4.0.0"
 
 #include "pros/adi.h"
 #include "pros/colors.h"
