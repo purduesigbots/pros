@@ -377,7 +377,31 @@ virtual class BaseMotor {
 	 * \endcode
 	 */
 	double get_target_position(void) const;
-	double get_target_position(std::uint8_t) const;
+
+	/**
+	 * Gets the target position set for the motor by the user, with a parameter
+	 * for the motor index.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param index The index of the motor to get the target position of.
+	 *
+	 * \return The target position in its encoder units or PROS_ERR_F if the
+	 * operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void autonomous() {
+	 *   pros::Motor motor (1);
+	 *   motor.move_absolute(100, 100);
+	 *   std::cout << "Motor Target: " << motor.get_target_position();
+	 *   // Prints 100
+	 * }
+	 * \endcode
+	 */
+	double get_target_position(std::uint8_t index) const;
 
 	std::vector<double> get_every_target_position(void) const;
 

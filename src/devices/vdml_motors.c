@@ -28,13 +28,17 @@
 // Movement functions
 
 int32_t motor_move(int8_t port, int32_t voltage) {
-	port = abs(port);
 	if (voltage > 127) {
 		voltage = 127;
 	} else if (voltage < -127) {
 		voltage = -127;
 	}
 
+	if(port < 0) {
+		voltage = -voltage;
+	}
+	
+	port = abs(port);
 	// Remap the input voltage range to the motor voltage
 	// scale to [-127, 127] -> [-12000, 12000]
 	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
@@ -43,43 +47,47 @@ int32_t motor_move(int8_t port, int32_t voltage) {
 }
 
 int32_t motor_brake(int8_t port) {
-	port = abs(port);
 	return motor_move_velocity(port, 0);
 }
 
 int32_t motor_move_absolute(int8_t port, const double position, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if(port < 0) velocity = -velocity;
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_relative(int8_t port, const double position, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if(port < 0) velocity = -velocity;
 	vexDeviceMotorRelativeTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_velocity(int8_t port, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if(port < 0) velocity = -velocity;
 	vexDeviceMotorVelocitySet(device->device_info, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_move_voltage(int8_t port, const int32_t voltage) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if(port < 0) voltage = -voltage;
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if(port < 0) velocity = -velocity;
 	vexDeviceMotorVelocityUpdate(device->device_info, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 double motor_get_target_position(int8_t port) {
