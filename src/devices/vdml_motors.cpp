@@ -130,7 +130,7 @@ double MotorGroup::get_actual_velocity(void) const {
 	return motor_get_actual_velocity(_ports[0]);
 }
 
-double MotorGroup::get_actual_velocity(std::uint8_t index) const {
+double MotorGroup::get_actual_velocity(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -151,7 +151,7 @@ pros::v5::Motor_Brake MotorGroup::get_brake_mode(void) const {
 
 	return static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_ports[0]));
 }
-pros::v5::Motor_Brake MotorGroup::get_brake_mode(std::uint8_t index) const {
+pros::v5::Motor_Brake MotorGroup::get_brake_mode(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(pros::v5::Motor_Brake::invalid);
 	MotorGroup_index_check(pros::v5::Motor_Brake::invalid, index);
 
@@ -173,7 +173,7 @@ std::int32_t MotorGroup::get_current_draw(void) const {
 
 	return motor_get_current_draw(_ports[0]);
 }
-std::int32_t MotorGroup::get_current_draw(std::uint8_t index) const {
+std::int32_t MotorGroup::get_current_draw(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -193,7 +193,7 @@ std::int32_t MotorGroup::get_current_limit(void) const {
 
 	return motor_get_current_limit(_ports[0]);
 }
-std::int32_t MotorGroup::get_current_limit(std::uint8_t index) const {
+std::int32_t MotorGroup::get_current_limit(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -213,7 +213,7 @@ std::int32_t MotorGroup::is_over_current(void) const {
 
 	return motor_is_over_current(_ports[0]);
 }
-std::int32_t MotorGroup::is_over_current(std::uint8_t index) const {
+std::int32_t MotorGroup::is_over_current(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -235,7 +235,7 @@ std::int32_t MotorGroup::get_direction(void) const {
 
 	return motor_get_direction(_ports[0]);
 }
-std::int32_t MotorGroup::get_direction(std::uint8_t index) const {
+std::int32_t MotorGroup::get_direction(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -256,7 +256,7 @@ double MotorGroup::get_efficiency(void) const {
 
 	return motor_get_efficiency(_ports[0]);
 }
-double MotorGroup::get_efficiency(std::uint8_t index) const {
+double MotorGroup::get_efficiency(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -275,7 +275,7 @@ std::vector<double> MotorGroup::get_every_efficiency(void) const {
 pros::v5::Motor_Units MotorGroup::get_encoder_units(void) const {
 	return _encoder_units;
 }
-pros::v5::Motor_Units MotorGroup::get_encoder_units(std::uint8_t index) const {
+pros::v5::Motor_Units MotorGroup::get_encoder_units(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(pros::v5::Motor_Units::invalid);
 	MotorGroup_index_check(pros::v5::Motor_Units::invalid, index);
 
@@ -297,7 +297,7 @@ std::uint32_t MotorGroup::get_faults(void) const {
 
 	return motor_get_faults(_ports[0]);
 }
-std::uint32_t MotorGroup::get_faults(std::uint8_t index) const {
+std::uint32_t MotorGroup::get_faults(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -319,7 +319,7 @@ std::uint32_t MotorGroup::get_flags(void) const {
 
 	return motor_get_flags(_ports[0]);
 }
-std::uint32_t MotorGroup::get_flags(std::uint8_t index) const {
+std::uint32_t MotorGroup::get_flags(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -340,7 +340,7 @@ pros::v5::Motor_Gears MotorGroup::get_gearing(void) const {
 	return _gearset;
 }
 
-pros::v5::Motor_Gears MotorGroup::get_gearing(std::uint8_t index) const {
+pros::v5::Motor_Gears MotorGroup::get_gearing(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(pros::v5::Motor_Gears::invalid);
 	MotorGroup_index_check(pros::v5::Motor_Gears::invalid, index);
 
@@ -361,7 +361,7 @@ std::int32_t MotorGroup::get_raw_position(std::uint32_t* const timestamp) const 
 
 	return motor_get_raw_position(_ports[0], timestamp);
 }
-std::int32_t MotorGroup::get_raw_position(std::uint32_t* const timestamp, std::uint8_t index) const {
+std::int32_t MotorGroup::get_raw_position(std::uint32_t* const timestamp, std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -382,7 +382,7 @@ std::int32_t MotorGroup::is_over_temp(void) const {
 
 	return motor_is_over_temp(_ports[0]);
 }
-std::int32_t MotorGroup::is_over_temp(std::uint8_t index) const {
+std::int32_t MotorGroup::is_over_temp(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -404,7 +404,7 @@ double MotorGroup::get_position(void) const {
 
 	return motor_get_position(_ports[0]);
 }
-double MotorGroup::get_position(std::uint8_t index) const {
+double MotorGroup::get_position(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -426,7 +426,7 @@ double MotorGroup::get_power(void) const {
 	return motor_get_power(_ports[0]);
 }
 
-double MotorGroup::get_power(std::uint8_t index) const {
+double MotorGroup::get_power(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -447,7 +447,7 @@ std::int32_t MotorGroup::is_reversed(void) const {
 	return _reverse;
 }
 
-std::int32_t MotorGroup::is_reversed(std::uint8_t index) const {
+std::int32_t MotorGroup::is_reversed(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -468,7 +468,7 @@ double MotorGroup::get_temperature(void) const {
 
 	return motor_get_temperature(_ports[0]);
 }
-double MotorGroup::get_temperature(std::uint8_t index) const {
+double MotorGroup::get_temperature(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -491,7 +491,7 @@ double MotorGroup::get_target_position(void) const {
 	return motor_get_target_position(_ports[0]);
 }
 
-double MotorGroup::get_target_position(std::uint8_t index) const {
+double MotorGroup::get_target_position(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -513,7 +513,7 @@ double MotorGroup::get_torque(void) const {
 
 	return motor_get_torque(_ports[0]);
 }
-double MotorGroup::get_torque(std::uint8_t index) const {
+double MotorGroup::get_torque(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
 
@@ -534,7 +534,7 @@ std::int32_t MotorGroup::get_target_velocity(void) const {
 
 	return motor_get_target_velocity(_ports[0]);
 }
-std::int32_t MotorGroup::get_target_velocity(std::uint8_t index) const {
+std::int32_t MotorGroup::get_target_velocity(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -555,7 +555,7 @@ std::int32_t MotorGroup::get_voltage(void) const {
 
 	return motor_get_voltage(_ports[0]);
 }
-std::int32_t MotorGroup::get_voltage(std::uint8_t index) const {
+std::int32_t MotorGroup::get_voltage(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -575,7 +575,7 @@ std::int32_t MotorGroup::get_voltage_limit(void) const {
 
 	return motor_get_voltage_limit(_ports[0]);
 }
-std::int32_t MotorGroup::get_voltage_limit(std::uint8_t index) const {
+std::int32_t MotorGroup::get_voltage_limit(std::uint8_t index = 0) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
 
@@ -750,7 +750,7 @@ std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 }
 
 Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-             const bool reverse = false, const pros::v5::Motor_Units encoder_units)
+             const bool reverse = false, const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees)
     : _port(port), Device(port) {
 	set_gearing(gearset);
 	set_reversed(reverse);
@@ -761,40 +761,69 @@ std::int32_t Motor::operator=(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
 }
 
-std::int32_t Motor::move(std::int32_t voltage) const {
+std::int32_t Motor::move(std::int32_t voltage, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_move(_port, voltage);
 }
 
-std::int32_t Motor::move_absolute(const double position, const std::int32_t velocity) const {
+std::int32_t Motor::move_absolute(const double position, const std::int32_t velocity,
+                                  const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_move_absolute(_port, position, velocity);
 }
 
-std::int32_t Motor::move_relative(const double position, const std::int32_t velocity) const {
+std::int32_t Motor::move_relative(const double position, const std::int32_t velocity,
+                                  const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_move_relative(_port, position, velocity);
 }
 
-std::int32_t Motor::move_velocity(const std::int32_t velocity) const {
+std::int32_t Motor::move_velocity(const std::int32_t velocity, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_move_velocity(_port, velocity);
 }
 
-std::int32_t Motor::move_voltage(const std::int32_t voltage) const {
+std::int32_t Motor::move_voltage(const std::int32_t voltage, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_move_voltage(_port, voltage);
 }
 
-std::int32_t Motor::brake(void) const {
+std::int32_t Motor::brake(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_brake(_port);
 }
 
-std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const {
+std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_modify_profiled_velocity(_port, velocity);
 }
 
-double Motor::get_actual_velocity(void) const {
-	return motor_get_actual_velocity(_port);
-}
-
-double Motor::get_actual_velocity(std::uint8_t index) const {
-	// TODO Decide what to do for out of bounds checks for motors
+double Motor::get_actual_velocity(std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_actual_velocity(_port);
 }
 std::vector<double> Motor::get_every_actual_velocity(void) const {
@@ -803,25 +832,25 @@ std::vector<double> Motor::get_every_actual_velocity(void) const {
 	return return_vector;
 }
 
-pros::v5::Motor_Brake Motor::get_brake_mode(void) const {
-	return static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_port));
-}
-pros::v5::Motor_Brake Motor::get_brake_mode(std::uint8_t index) const {
-	// TODO Decide what to do for out of bounds checks for motors
+pros::v5::Motor_Brake Motor::get_brake_mode(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_port));
 }
 
-std::vector<pros::v5::Motor_Brake> Motor::get_every_brake_mode(void) const {
+std::vector<pros::v5::Motor_Brake> Motor::get_every_brake_mode() const {
 	std::vector<pros::v5::Motor_Brake> return_vector;
 	return_vector.emplace_back(static_cast<pros::v5::Motor_Brake>(motor_get_brake_mode(_port)));
 	return return_vector;
 }
 
-std::int32_t Motor::get_current_draw(void) const {
-	return motor_get_current_draw(_port);
-}
-std::int32_t Motor::get_current_draw(std::uint8_t index) const {
-	// TODO Decide what to do for out of bounds checks for motors
+std::int32_t Motor::get_current_draw(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_current_draw(_port);
 }
 std::vector<std::int32_t> Motor::get_every_current_draw(void) const {
@@ -829,11 +858,11 @@ std::vector<std::int32_t> Motor::get_every_current_draw(void) const {
 	return_vector.emplace_back(motor_get_current_draw(_port));
 	return return_vector;
 }
-std::int32_t Motor::get_current_limit(void) const {
-	return motor_get_current_limit(_port);
-}
-std::int32_t Motor::get_current_limit(std::uint8_t index) const {
-	// TODO Decide what to do for out of bounds checks for motors
+std::int32_t Motor::get_current_limit(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_current_limit(_port);
 }
 std::vector<std::int32_t> Motor::get_every_current_limit(void) const {
@@ -841,48 +870,40 @@ std::vector<std::int32_t> Motor::get_every_current_limit(void) const {
 	return_vector.emplace_back(motor_get_current_limit(_port));
 	return return_vector;
 }
-std::int32_t Motor::is_over_current(void) const {
-	return motor_is_over_current(_port);
-}
-std::int32_t Motor::is_over_current(std::uint8_t index) const {
-	// TODO Decide what to do for out of bounds checks for motors
 
-	return motor_is_over_current(0);
+std::int32_t Motor::is_over_current(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_is_over_current(_port);
 }
 
 std::vector<std::int32_t> Motor::every_is_over_current(void) const {
 	std::vector<std::int32_t> return_vector;
-	empty_Motor_check_vector(PROS_ERR, return_vector);
+	return_vector.emplace_back(motor_is_over_current(_port));
 
-	for (auto it = _ports.begin(); it < _ports.end(); it++) {
-		return_vector.emplace_back(motor_is_over_current(*it));
-	}
 	return return_vector;
 }
 
-std::int32_t Motor::get_direction(void) const {
-	return motor_get_direction(_port);
-}
-std::int32_t Motor::get_direction(std::uint8_t index) const {
-	Motor_index_check(PROS_ERR, index);
-
+std::int32_t Motor::get_direction(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_direction(_port);
 }
 std::vector<std::int32_t> Motor::get_every_direction(void) const {
-	std::vector<std::int32_t> return_vector;
-	empty_Motor_check_vector(PROS_ERR, return_vector);
-
-	for (auto it = _ports.begin(); it < _ports.end(); it++) {
-		return_vector.emplace_back(motor_get_direction(*it));
-	}
+	return_vector.emplace_back(motor_get_direction(_port));
 	return return_vector;
 }
 
-double Motor::get_efficiency(void) const {
+double Motor::get_efficiency(std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_efficiency(_port);
-}
-double Motor::get_efficiency(std::uint8_t index) const {
-	static_cast<pros::v5::Motor_Units>(motor_get_encoder_units(_port)) return motor_get_efficiency(_port);
 }
 std::vector<double> Motor::get_every_efficiency(void) const {
 	std::vector<double> return_vector;
@@ -890,10 +911,7 @@ std::vector<double> Motor::get_every_efficiency(void) const {
 	return return_vector;
 }
 
-pros::v5::Motor_Units Motor::get_encoder_units(void) const {
-	return static_cast<pros::v5::Motor_Units>(motor_get_encoder_units(_port));
-}
-pros::v5::Motor_Units Motor::get_encoder_units(std::uint8_t index) const {
+pros::v5::Motor_Units Motor::get_encoder_units(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -907,10 +925,7 @@ std::vector<pros::v5::Motor_Units> Motor::get_every_encoder_units(void) const {
 	return return_vector;
 }
 
-std::uint32_t Motor::get_faults(void) const {
-	return motor_get_faults(_port);
-}
-std::uint32_t Motor::get_faults(std::uint8_t index) const {
+std::uint32_t Motor::get_faults(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -924,10 +939,7 @@ std::vector<std::uint32_t> Motor::get_every_faults(void) const {
 	return return_vector;
 }
 
-std::uint32_t Motor::get_flags(void) const {
-	return motor_get_flags(_port);
-}
-std::uint32_t Motor::get_flags(std::uint8_t index) const {
+std::uint32_t Motor::get_flags(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -941,11 +953,7 @@ std::vector<std::uint32_t> Motor::get_every_flags(void) const {
 	return return_vector;
 }
 
-pros::v5::Motor_Gears Motor::get_gearing(void) const {
-	return motor_get_gearing(_port);
-}
-
-pros::v5::Motor_Gears Motor::get_gearing(std::uint8_t index) const {
+pros::v5::Motor_Gears Motor::get_gearing(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -958,10 +966,7 @@ std::vector<pros::v5::Motor_Gears> Motor::get_every_gearing(void) const {
 	return return_vector;
 }
 
-std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp) const {
-	return motor_get_raw_position(_port, timestamp);
-}
-std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp, std::uint8_t index) const {
+std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp, std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -971,13 +976,11 @@ std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp, std::uint8_
 
 std::vector<std::int32_t> Motor::get_every_raw_position(std::uint32_t* const timestamp) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_raw_position(*it, timestamp));
+	return_vector.emplace_back(motor_get_raw_position(_port, timestamp));
 	return return_vector;
 }
-std::int32_t Motor::is_over_temp(void) const {
-	return motor_is_over_temp(_port);
-}
-std::int32_t Motor::is_over_temp(std::uint8_t index) const {
+
+std::int32_t Motor::is_over_temp(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -991,10 +994,7 @@ std::vector<std::int32_t> Motor::every_is_over_temp(void) const {
 	return return_vector;
 }
 
-double Motor::get_position(void) const {
-	return motor_get_position(_port);
-}
-double Motor::get_position(std::uint8_t index) const {
+double Motor::get_position(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1011,7 +1011,7 @@ double Motor::get_power(void) const {
 	return motor_get_power(_port);
 }
 
-double Motor::get_power(std::uint8_t index) const {
+double Motor::get_power(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1024,27 +1024,21 @@ std::vector<double> Motor::get_every_power(void) const {
 	return_vector.emplace_back(motor_get_power(_port));
 	return return_vector;
 }
-std::int32_t Motor::is_reversed(void) const {
-	return _reverse;
-}
 
-std::int32_t Motor::is_reversed(std::uint8_t index) const {
+std::int32_t Motor::is_reversed(std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
 	}
-	return motor_is_reversed(index);
+	return _port < 0;
 }
 std::vector<std::int32_t> Motor::every_is_reversed(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_is_reversed(_port));
+	return_vector.emplace_back(_port < 0);
 	return return_vector;
 }
 
-double Motor::get_temperature(void) const {
-	return motor_get_temperature(_port);
-}
-double Motor::get_temperature(std::uint8_t index) const {
+double Motor::get_temperature(const std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1058,11 +1052,7 @@ std::vector<double> Motor::get_every_temperature(void) const {
 	return return_vector;
 }
 
-double Motor::get_target_position(void) const {
-	return motor_get_target_position(_port);
-}
-
-double Motor::get_target_position(std::uint8_t index) const {
+double Motor::get_target_position(const std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1076,12 +1066,11 @@ std::vector<double> Motor::get_every_target_position(void) const {
 	return return_vector;
 }
 
-double Motor::get_torque(void) const {
-	empty_Motor_check(PROS_ERR_F);
-
-	return motor_get_torque(_port);
-}
-double Motor::get_torque(std::uint8_t index) const {
+double Motor::get_torque(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
 	return motor_get_torque(_port);
 }
 std::vector<double> Motor::get_every_torque(void) const {
@@ -1089,11 +1078,7 @@ std::vector<double> Motor::get_every_torque(void) const {
 	return_vector.emplace_back(motor_get_torque(_port));
 	return return_vector;
 }
-
-std::int32_t Motor::get_target_velocity(void) const {
-	return motor_get_target_velocity(_port);
-}
-std::int32_t Motor::get_target_velocity(std::uint8_t index) const {
+std::int32_t Motor::get_target_velocity(const std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1106,10 +1091,7 @@ std::vector<std::int32_t> Motor::get_every_target_velocity(void) const {
 	return return_vector;
 }
 
-std::int32_t Motor::get_voltage(void) const {
-	return motor_get_voltage(_port);
-}
-std::int32_t Motor::get_voltage(std::uint8_t index) const {
+std::int32_t Motor::get_voltage(const std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1121,10 +1103,8 @@ std::vector<std::int32_t> Motor::get_every_voltage(void) const {
 	return_vector.emplace_back(motor_get_voltage(_port));
 	return return_vector;
 }
-std::int32_t Motor::get_voltage_limit(void) const {
-	return motor_get_voltage_limit(_port);
-}
-std::int32_t Motor::get_voltage_limit(std::uint8_t index) const {
+
+std::int32_t Motor::get_voltage_limit(const std::uint8_t index = 0) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return PROS_ERR;
@@ -1141,6 +1121,98 @@ std::vector<std::uint8_t> Motor::get_every_port(void) const {
 	std::vector<std::uint8_t> return_vector;
 	return_vector.emplace_back((uint8_t)std::abs((_port)));
 	return return_vector;
+}
+
+std::int32_t Motor::tare_position(const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_tare_position(_port);
+}
+
+std::int32_t Motor::set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_brake_mode(_port, mode);
+}
+
+std::int32_t Motor::set_brake_mode(const pros::v5::Motor_Brake mode, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_brake_mode(_port, static_cast<pros::motor_brake_mode_e_t>(mode));
+}
+
+std::int32_t Motor::set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_current_limit(_port, limit);
+}
+
+std::int32_t Motor::set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_encoder_units(_port, units);
+}
+
+std::int32_t Motor::set_encoder_units(const pros::v5::Motor_Units units, const std::uint8_t index = 0) {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_encoder_units(_port, static_cast<motor_encoder_units_e_t>(units));
+}
+
+std::int32_t Motor::set_gearing(const motor_gearset_e_t gearset, const std::uint8_t index = 0) {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_gearing(_port, gearset);
+}
+
+std::int32_t Motor::set_gearing(const pros::v5::Motor_Gear gearset, const std::uint8_t index = 0) {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_gearing(_port, static_cast<motor_gearset_e_t>(gearset));
+}
+
+std::int32_t Motor::set_zero_position(const double position, const std::uint8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_zero_position(_port, position);
+}
+
+std::int32_t Motor::set_reversed(const bool reverse, const std::uint8_t index = 0) {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	std::int8_t abs_port = std::abs(_port);
+	if (reverse) {
+		_port = -abs_port
+	}
+	return PROS_SUCCESS;
+}
+
+std::int32_t Motor::set_voltage_limit(const std::int32_t limit, const std::int8_t index = 0) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return PROS_ERR;
+	}
+	return motor_set_voltage_limit(_port, limit);
 }
 
 std::int32_t Motor::tare_position(void) const {
@@ -1180,19 +1252,24 @@ std::int32_t Motor::set_zero_position(const double position) const {
 }
 
 std::int32_t Motor::set_reversed(const bool reverse) {
-	return motor_set_reversed(_port, reverse);
+	std::int8_t abs_port = std::abs(_port);
+	if (reverse) {
+		_port = -abs_port
+	}
+	return PROS_SUCCESS;
 }
 
 std::int32_t Motor::set_voltage_limit(const std::int32_t limit) const {
 	return motor_set_voltage_limit(_port, limit);
 }
-
 std::vector<std::int8_t> Motor::get_ports() const {
-	return _ports;
+	std::vector<std::int8_t> ports;
+	ports.emplace_back(_port);
+	return ports;
 }
 
 std::int8_t Motor::size() const {
-	return _ports.size();
+	return 1;
 }
 DeviceType Motor::get_type() const {
 	return DeviceType::motor;
