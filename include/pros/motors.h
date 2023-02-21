@@ -898,11 +898,6 @@ typedef enum motor_gearset_e {
 	E_MOTOR_GEAR_BLUE  = E_MOTOR_GEARSET_06, // 6:1, 600 RPM, Blue gear set
 	E_MOTOR_GEAR_600 = E_MOTOR_GEARSET_06, // 6:1, 600 RPM, Blue gear set
 	E_MOTOR_GEARSET_INVALID = INT32_MAX, // Error: Invalid Gearset
-
-	// Facilitates Color Handling
-	E_MOTOR_GEARSET_RED_COLOR = 0x00FF0000,
-	E_MOTOR_GEARSET_GREEN_COLOR = 0x00008000,
-	E_MOTOR_GEARSET_BLUE_COLOR = 0x000000FF
 } motor_gearset_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES

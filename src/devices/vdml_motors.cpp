@@ -29,6 +29,7 @@ std::int32_t Motor::operator=(std::int32_t voltage) const {
 
 std::int32_t Motor::move(std::int32_t voltage) const {
 	return motor_move(_port, voltage);
+
 }
 
 std::int32_t Motor::move_absolute(const double position, const std::int32_t velocity) const {
@@ -445,6 +446,7 @@ std::int32_t Motor::set_reversed(const bool reverse, const std::uint8_t index) {
 		_port = -abs_port;
 	} else {
 		_port = abs_port;
+
 	}
 	return PROS_SUCCESS;
 }
@@ -530,6 +532,7 @@ std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 	os << "]";
 	return os;
 }
+
 
 }  // namespace v5
 namespace literals {

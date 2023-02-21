@@ -26,7 +26,6 @@
 #include <cstdint>
 #include <iostream>
 
-#include "pros/colors.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
@@ -1145,6 +1144,7 @@ class BaseMotor {
 
 ///@}
 
+
 class Motor : public BaseMotor, public Device {
 	public:
 	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
@@ -2062,6 +2062,7 @@ class Motor : public BaseMotor, public Device {
 	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
 	std::int32_t set_gearing_all(const Motor_Gears gearset) const;
 	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
+
 
 	/**
 	 * Sets the reverse flag for the motor.
