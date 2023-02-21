@@ -49,42 +49,42 @@ int32_t motor_brake(int8_t port) {
 	return motor_move_velocity(port, 0);
 }
 
-int32_t motor_move_absolute(int8_t port, const double position, const int32_t velocity) {
+int32_t motor_move_absolute(int8_t port, const double position, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	// if(port < 0) velocity = -velocity;
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_relative(int8_t port, const double position, const int32_t velocity) {
+int32_t motor_move_relative(int8_t port, const double position, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	// if(port < 0) velocity = -velocity;
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorRelativeTargetSet(device->device_info, position, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_velocity(int8_t port, const int32_t velocity) {
+int32_t motor_move_velocity(int8_t port, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	// if(port < 0) velocity = -velocity;
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorVelocitySet(device->device_info, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_voltage(int8_t port, const int32_t voltage) {
+int32_t motor_move_voltage(int8_t port, int32_t voltage) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	// if(port < 0) voltage = -voltage;
+	if (port < 0) voltage = -voltage;
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity) {
+int32_t motor_modify_profiled_velocity(int8_t port, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	// if(port < 0) velocity = -velocity;
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorVelocityUpdate(device->device_info, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
