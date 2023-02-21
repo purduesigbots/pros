@@ -336,7 +336,7 @@ class BaseMotor {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index) const;
+	double get_target_position(const std::uint8_t index = 0) const;
 	std::vector<double> get_target_position_all(void) const;
 
 	/**
@@ -1389,7 +1389,7 @@ class Motor : public BaseMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index) const;
+	double get_target_position(const std::uint8_t index = 0) const;
 	std::vector<double> get_target_position_all(void) const;
 
 	/**
@@ -2190,7 +2190,7 @@ class Motor : public BaseMotor, public Device {
 	DeviceType get_type() const;
 
 	private:
-	std::int16_t _port;
+	std::int8_t _port;
 };
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m);
