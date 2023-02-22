@@ -12,7 +12,7 @@ inline namespace v5 {
 
 	
 	pros::DeviceType Device::get_type() {
-        return pros::c::registry_get_plugged_type(_port);
+        return ((pros::DeviceType) pros::c::registry_get_plugged_type(_port));
     }
 
 	Device::Device(const std::uint8_t port) : _port(port) {}
