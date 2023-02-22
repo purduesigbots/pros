@@ -67,6 +67,13 @@ class Link : public Device {
 	Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+	
+	/**
 	 * Checks if a radio link on a port is active or not.
 	 *
 	 * This function uses the following values of errno when an error state is

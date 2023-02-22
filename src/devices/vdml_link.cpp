@@ -17,10 +17,24 @@
  */
 
 #include "pros/link.hpp"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
+
 
 namespace pros {
 Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : Device(port) {
 	(ov) ? pros::c::link_init_override(_port, link_id.c_str(), type) : pros::c::link_init(_port, link_id.c_str(), type);
+}
+
+bool Link::is_installed() {
+	std::uint8_t port = this->_port;
+    c::port_mutex_take(port - 1);
+    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    c::port_mutex_give(port-1);
+    if (deviceType == c::E_DEVICE_GENERIC) {
+        return true;
+    }
+    return false;
 }
 
 bool Link::connected() {

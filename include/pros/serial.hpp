@@ -54,6 +54,13 @@ class Serial : public Device {
 
 	explicit Serial(std::uint8_t port);
 
+	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
 	/******************************************************************************/
 	/**                      Serial communication functions                      **/
 	/**                                                                          **/

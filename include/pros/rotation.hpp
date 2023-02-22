@@ -44,6 +44,13 @@ class Rotation : public Device {
 	Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Reset the Rotation Sensor
 	 *
 	 * Reset the current absolute position to be the same as the

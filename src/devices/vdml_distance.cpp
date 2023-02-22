@@ -11,11 +11,24 @@
  */
 
 #include "pros/distance.hpp"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
 
 Distance::Distance(const std::uint8_t port) : Device(port) {}
+
+bool Distance::is_installed() {
+	std::uint8_t port = this->_port;
+    c::port_mutex_take(port - 1);
+    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    c::port_mutex_give(port-1);
+    if (deviceType == c::E_DEVICE_DISTANCE) {
+        return true;
+    }
+    return false;
+}
 
 std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);

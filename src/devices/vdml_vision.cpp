@@ -11,6 +11,8 @@
  */
 
 #include "kapi.h"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
@@ -18,6 +20,17 @@ using namespace pros::c;
 
 Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port) {
 	vision_set_zero_point(port, zero_point);
+}
+
+bool Vision::is_installed() {
+	std::uint8_t port = this->_port;
+    c::port_mutex_take(port - 1);
+    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    c::port_mutex_give(port-1);
+    if (deviceType == c::E_DEVICE_VISION) {
+        return true;
+    }
+    return false;
 }
 
 std::int32_t Vision::clear_led(void) const {

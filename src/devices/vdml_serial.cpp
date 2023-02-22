@@ -12,6 +12,8 @@
 
 #include "kapi.h"
 #include "pros/serial.hpp"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 using namespace pros::c;
@@ -23,6 +25,17 @@ Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port) {
 
 Serial::Serial(std::uint8_t port) : Device(port) {
 	serial_enable(port);
+}
+
+bool Serial::is_installed() {
+	std::uint8_t port = this->_port;
+    c::port_mutex_take(port - 1);
+    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    c::port_mutex_give(port-1);
+    if (deviceType == c::E_DEVICE_SERIAL) {
+        return true;
+    }
+    return false;
 }
 
 std::int32_t Serial::set_baudrate(std::int32_t baudrate) const {

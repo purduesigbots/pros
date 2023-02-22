@@ -17,6 +17,11 @@
 #include <stdint.h>
 #include "vdml/registry.h"
 
+#ifdef __cplusplus
+extern "C" {
+namespace pros::c {
+#endif
+
 /**
  * Macro, returns true if the port is in range of user configurable ports,
  * false otherwise.
@@ -234,3 +239,8 @@ int internal_port_mutex_give(uint8_t port);
 #define V5_PORT_BATTERY 24
 #define V5_PORT_CONTROLLER_1 25
 #define V5_PORT_CONTROLLER_2 26
+
+#ifdef __cplusplus
+}
+}
+#endif

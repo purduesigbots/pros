@@ -65,6 +65,13 @@ class Imu : public Device {
 	Imu(const std::uint8_t port) : Device(port) {};
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Calibrate IMU
 	 *
 	 * Calibration takes approximately 2 seconds and blocks during this period if

@@ -41,6 +41,13 @@ class Device {
 	 */
 	virtual pros::DeviceType get_type() const = 0;
 
+	/**
+	 * Checks if the device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
 	protected:
 	/**
 	 * Creates a Device object.
