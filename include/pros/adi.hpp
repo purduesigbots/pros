@@ -498,6 +498,9 @@ class ADIEncoder : private ADIPort {
 	 */
 	ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
+	// Delete copy constructor to prevent a compilation error from the constructor above.
+	ADIEncoder(ADIEncoder &) = delete;
+	
 	/**
 	 * Sets the encoder value to zero.
 	 *
