@@ -494,10 +494,13 @@ class ADIEncoder : private ADIPort {
 	 * 		  sensor with the removable cover side up, and the "bottom" wire from
 	 * 		  the encoder sensor
 	 * \param reverse
-	 *        If "true", the sensor will count in theopposite direction
+	 *        If "true", the sensor will count in the opposite direction
 	 */
 	ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
+	// Delete copy constructor to prevent a compilation error from the constructor above.
+	ADIEncoder(ADIEncoder &) = delete;
+	
 	/**
 	 * Sets the encoder value to zero.
 	 *
