@@ -36,16 +36,16 @@ using namespace pros::c;
 	}
 
 MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports,
-                       const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-                       const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees)
+                       const pros::v5::Motor_Gears gearset,
+                       const pros::v5::Motor_Units encoder_units)
     : _ports(ports) {
 	set_gearing(gearset);
 	set_encoder_units(encoder_units);
 }
 
 MotorGroup::MotorGroup(const std::vector<std::int8_t>& ports,
-                       const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-                       const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees)
+                       const pros::v5::Motor_Gears gearset,
+                       const pros::v5::Motor_Units encoder_units)
     : _ports(ports) {
 	set_gearing(gearset);
 	set_encoder_units(encoder_units);

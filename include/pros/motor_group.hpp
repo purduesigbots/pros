@@ -40,10 +40,10 @@ class MotorGroup : public virtual BaseMotor {
 	 *  @{
 	 */
 	public:
-	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::Motor_Gears gearset,
-	                    const pros::v5::Motor_Units encoder_units);
-	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::Motor_Gears gearset,
-	                    const pros::v5::Motor_Units encoder_units);
+	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
+	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
+	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
+	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
 	std::int32_t operator=(const std::int32_t);
 
 	/// \name Motor movement functions
