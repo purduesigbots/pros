@@ -20,6 +20,7 @@
 
 #include "pros/misc.hpp"
 #include "pros/rtos.hpp"
+#include "vdml/registry.h"
 
 namespace pros {
 inline namespace v5 {
@@ -30,16 +31,14 @@ class Device {
 	 *
 	 * \return The smart device's port number.
 	 */
-	std::uint8_t get_port(void) {
-		return _port;
-	}
+	std::uint8_t get_port(void);
 
 	/**
 	 * Gets the type of device.
 	 *
 	 * \return The device type as an enum.
 	 */
-	virtual pros::DeviceType get_type() const = 0;
+	virtual pros::DeviceType get_type();
 
 	protected:
 	/**
@@ -48,7 +47,7 @@ class Device {
 	 * \param port The V5 port number from 1-21
 	 *
 	 */
-	explicit Device(const std::uint8_t port) : _port(port) {}
+	explicit Device(const std::uint8_t port);
 
 	protected:
 	const std::uint8_t _port;
