@@ -1,8 +1,6 @@
 #include "pros/device.hpp"
 
-#include "vdml/registry.h"
 #include "pros/apix.h"
-
 
 namespace pros {
 inline namespace v5 {
@@ -13,7 +11,8 @@ inline namespace v5 {
 
 	
 	pros::DeviceType Device::get_type() {
-        return ((pros::DeviceType) pros::c::registry_get_plugged_type(_port));
+		pros::c::registry_get_plugged_type(_port);
+        return DeviceType::none;
     }
 
 	Device::Device(const std::uint8_t port) : _port(port) {}
