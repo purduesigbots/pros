@@ -1,5 +1,6 @@
-
 #include "pros/device.hpp"
+
+#include "vdml/registry.h"
 
 namespace pros {
 inline namespace v5 {

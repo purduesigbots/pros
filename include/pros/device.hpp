@@ -20,7 +20,6 @@
 
 #include "pros/misc.hpp"
 #include "pros/rtos.hpp"
-#include "vdml/registry.h"
 
 namespace pros {
 inline namespace v5 {
