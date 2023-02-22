@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <iostream>
 
+#include "pros/abstract_motor.hpp"
 #include "pros/colors.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
@@ -34,7 +35,7 @@
 
 namespace pros {
 inline namespace v5 {
-class MotorGroup : public virtual BaseMotor {
+class MotorGroup : public virtual AbstractMotor {
 	/**
 	 * \addtogroup cpp-motors
 	 *  @{

@@ -59,7 +59,7 @@ std::int32_t Motor::modify_profiled_velocity(const std::int32_t velocity) const 
 double Motor::get_actual_velocity(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
-		return PROS_ERR;
+		return PROS_ERR_F;
 	}
 	return motor_get_actual_velocity(_port);
 }
@@ -139,7 +139,7 @@ std::vector<std::int32_t> Motor::get_direction_all(void) const {
 double Motor::get_efficiency(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
-		return PROS_ERR;
+		return PROS_ERR_F;
 	}
 	return motor_get_efficiency(_port);
 }
@@ -235,7 +235,7 @@ std::vector<std::int32_t> Motor::is_over_temp_all(void) const {
 double Motor::get_position(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
-		return PROS_ERR;
+		return PROS_ERR_F;
 	}
 	return motor_get_position(_port);
 }
@@ -275,7 +275,7 @@ std::vector<std::int32_t> Motor::is_reversed_all(void) const {
 double Motor::get_temperature(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
-		return PROS_ERR;
+		return PROS_ERR_F;
 	}
 	return motor_get_temperature(_port);
 }
