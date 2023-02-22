@@ -1,6 +1,7 @@
 #include "pros/device.hpp"
 
 #include "vdml/registry.h"
+#include "pros/apix.h"
 
 namespace pros {
 inline namespace v5 {
@@ -21,7 +22,7 @@ class Device {
 	 * \return The device type as an enum.
 	 */
 	virtual pros::DeviceType get_type() {
-        return registry_get_plugged_type(this.get_port());
+        return DeviceType::motor;
     }
 
 	protected:
