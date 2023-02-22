@@ -1,7 +1,7 @@
 #include "pros/device.hpp"
 
-#include "vdml/registry.h"
-#include "pros/apix.h"
+//#include "vdml/registry.h"
+//#include "pros/apix.h"
 
 namespace pros {
 inline namespace v5 {
