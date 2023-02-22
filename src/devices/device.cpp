@@ -20,7 +20,8 @@ class Device {
 	 * \return The device type as an enum.
 	 */
 	virtual pros::DeviceType get_type() {
-        registry_get_device_internal(_port);
+        v5_smart_device_s_t device = registry_get_device_internal(_port);
+        return device->device_type;
     }
 
 	protected:
