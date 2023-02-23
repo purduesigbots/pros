@@ -21,9 +21,9 @@ Distance::Distance(const std::uint8_t port) : Device(port) {}
 
 bool Distance::is_installed() {
 	std::uint8_t port = this->_port;
-    c::port_mutex_take(port - 1);
-    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    c::port_mutex_give(port-1);
+    port_mutex_take(port - 1);
+    pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    port_mutex_give(port-1);
     if (deviceType == c::E_DEVICE_DISTANCE) {
         return true;
     }

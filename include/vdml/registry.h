@@ -18,9 +18,9 @@
 #include "vdml/vdml.h"
 
 #ifdef __cplusplus
-extern "C" {
-namespace pros::c {
+#define v5_device_e_t pros::c::v5_device_e_t
 #endif
+
 
 typedef struct {
 	v5_device_e_t device_type;
@@ -93,7 +93,4 @@ v5_smart_device_s_t* registry_get_device_internal(uint8_t port);
  */
 int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t);
 
-#ifdef __cplusplus
-}
-}
-#endif
+#undef v5_device_e_t
