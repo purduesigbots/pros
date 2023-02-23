@@ -1053,7 +1053,7 @@ class Motor_Group {
 	 * \return The encoder position of the motor in ticks or PROS_ERR_F if the operation
 	 * failed, setting errno.
 	 */
-	std::vector<std::int32_t> get_raw_positions(void);
+	std::vector<std::int32_t> get_raw_positions(std::vector<std::uint32_t* const> &timestamps);
 	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
