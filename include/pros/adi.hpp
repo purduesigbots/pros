@@ -109,7 +109,7 @@ class Port {
 	 * }
 	 * \endcode
 	 */
-	Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	explicit Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Gets the configuration for the given ADI port.
@@ -461,7 +461,7 @@ class AnalogOut : private Port {
 	 * }
 	 * \endcode
 	 */
-	AnalogOut(ext_adi_port_pair_t port_pair);
+	explicit AnalogOut(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Sets the output for the Analog Output from 0 (0V) to 4095 (5V).
@@ -567,7 +567,7 @@ class DigitalOut : private Port {
 	 * }
 	 * \endcode
 	 */
-	DigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
+	explicit DigitalOut(ext_adi_port_pair_t port_pair, bool init_state = LOW);
 
 	/**
 	 * Sets the digital value (1 or 0) of a pin.
@@ -663,7 +663,7 @@ class DigitalIn : private Port {
 	 * }
 	 * \endcode
 	 */
-	DigitalIn(ext_adi_port_pair_t port_pair);
+	explicit DigitalIn(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Gets a rising-edge case for a digital button press.
@@ -801,7 +801,7 @@ class Motor : private Port {
 	 * }
 	 * \endcode
 	 */
-	Motor(ext_adi_port_pair_t port_pair);
+	explicit Motor(ext_adi_port_pair_t port_pair);
 
 	/**
 	 * Stops the motor on the given port.
@@ -916,7 +916,7 @@ class Encoder : private Port {
 	 * }
 	 * \endcode
 	 */
-	Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
+	explicit Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed = false);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Encoder.
@@ -945,7 +945,7 @@ class Encoder : private Port {
 	 * }
 	 * \endcode
 	 */
-	Encoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
+	explicit Encoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
 	/**
 	 * Sets the encoder value to zero.
@@ -1049,7 +1049,7 @@ class Ultrasonic : private Port {
 	 * }
 	 * \endcode
 	 */
-	Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
+	explicit Ultrasonic(std::uint8_t adi_port_ping, std::uint8_t adi_port_echo);
 
 	/**
 	 * Configures a set of ADI ports on an adi_expander to act as an Ultrasonic sensor.
@@ -1081,7 +1081,7 @@ class Ultrasonic : private Port {
 	 * }
 	 * \endcode
 	 */
-	Ultrasonic(ext_adi_port_tuple_t port_tuple);
+	explicit Ultrasonic(ext_adi_port_tuple_t port_tuple);
 
 	/**
 	 * Gets the current ultrasonic sensor value in centimeters.
@@ -1199,7 +1199,7 @@ class Gyro : private Port {
 	 * }
 	 * \endcode
 	 */
-	Gyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
+	explicit Gyro(ext_adi_port_pair_t port_pair, double multiplier = 1);
   
 	/**
 	 * Gets the current gyro angle in tenths of a degree. Unless a multiplier is
@@ -1302,7 +1302,7 @@ class Potentiometer : public AnalogIn {
 	  * }
 	  * \endcode
 	 */
-	Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Potentiometer.
@@ -1333,7 +1333,7 @@ class Potentiometer : public AnalogIn {
 	 * }
 	 * \endcode
 	 */
-	Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
 
 	/**
 	 * Gets the current potentiometer angle in tenths of a degree.
@@ -1459,7 +1459,7 @@ class Led : protected Port {
 	* \endcode
 	 * 
 	 */
-	Led(std::uint8_t adi_port, std::uint32_t length);
+	explicit Led(std::uint8_t adi_port, std::uint32_t length);
 
 	/**
 	 * @brief Configures an ADI port on a adi_expander to act as a LED.
@@ -1491,7 +1491,7 @@ class Led : protected Port {
 	 * }
 	 * \endcode
 	 */
-	Led(ext_adi_port_pair_t port_pair, std::uint32_t length);
+	explicit Led(ext_adi_port_pair_t port_pair, std::uint32_t length);
 
 	/**
 	 * @brief Operator overload to access the buffer in the ADILed class, it is 
@@ -1750,7 +1750,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
+	explicit Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1783,7 +1783,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
+	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
 
 	/* 
 	* Extends the piston, if not already extended.
