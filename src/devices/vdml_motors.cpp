@@ -506,7 +506,7 @@ std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32
 	claim_mg_mutex_vector(PROS_ERR);
 	// Create a vector size of the number of motors and fill it with PROS_ERR
 	std::vector<std::int32_t> out(_motors.size(), PROS_ERR);
-	if (timestamps == nullptr) {
+	if (timestamps.empty()) {
 		// If the timestamps vector is null, return a vector of PROS_ERR
 		give_mg_mutex_vector(PROS_ERR);
 		return out;
