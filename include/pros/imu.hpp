@@ -503,11 +503,6 @@ class Imu : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
 
-	/**
-     * Returns the type of device
-     *
-	 */
-	pros::DeviceType get_type() const;
 	///@}
 };
 

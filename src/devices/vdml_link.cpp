@@ -27,11 +27,11 @@ Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t typ
 }
 
 bool Link::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
-    if (deviceType == c::E_DEVICE_GENERIC) {
+    port_mutex_give(port);
+    if (deviceType == c::E_DEVICE_RADIO) {
         return true;
     }
     return false;
@@ -69,7 +69,4 @@ std::uint32_t Link::clear_receive_buf() {
 	return pros::c::link_clear_receive_buf(_port);
 }
 
-pros::DeviceType Link::get_type() const {
-	return pros::DeviceType::radio;
-}
 }  // namespace pros

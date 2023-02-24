@@ -28,11 +28,11 @@ Serial::Serial(std::uint8_t port) : Device(port) {
 }
 
 bool Serial::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
-    if (deviceType == c::E_DEVICE_SERIAL) {
+    port_mutex_give(port);
+    if (deviceType == c::E_DEVICE_GENERIC) {
         return true;
     }
     return false;
@@ -72,10 +72,6 @@ std::int32_t Serial::write_byte(std::uint8_t buffer) const {
 
 std::int32_t Serial::write(std::uint8_t* buffer, std::int32_t length) const {
 	return serial_write(_port, buffer, length);
-}
-
-pros::DeviceType Serial::get_type() const {
-	return pros::DeviceType::serial;
 }
 
 namespace literals {

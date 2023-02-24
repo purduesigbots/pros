@@ -18,10 +18,10 @@ namespace pros {
 inline namespace v5 {
 
 bool Gps::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
+    port_mutex_give(port);
     if (deviceType == c::E_DEVICE_GPS) {
         return true;
     }
@@ -95,10 +95,6 @@ std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
 	os << ", rotation: " << gps.get_rotation();
 	os << "]";
 	return os;
-}
-
-pros::DeviceType Gps::get_type() const {
-	return pros::DeviceType::gps;
 }
 
 namespace literals {

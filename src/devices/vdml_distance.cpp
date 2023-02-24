@@ -20,10 +20,10 @@ inline namespace v5 {
 Distance::Distance(const std::uint8_t port) : Device(port) {}
 
 bool Distance::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
+    port_mutex_give(port);
     if (deviceType == c::E_DEVICE_DISTANCE) {
         return true;
     }
@@ -56,10 +56,6 @@ std::ostream& operator<<(std::ostream& os, pros::Distance& distance) {
 	os << ", object velocity: " << distance.get_object_velocity();
 	os << "]";
 	return os;
-}
-
-pros::DeviceType Distance::get_type() const {
-	return pros::DeviceType::distance;
 }
 
 namespace literals {

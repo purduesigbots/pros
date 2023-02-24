@@ -249,12 +249,6 @@ class Optical : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
 
-	/**
-     * Returns the type of device
-     *
-	 */
-	pros::DeviceType get_type() const;
-
 	private:
 	///@}
 };

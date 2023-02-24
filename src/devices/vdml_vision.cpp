@@ -23,10 +23,10 @@ Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port) {
 }
 
 bool Vision::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
+    port_mutex_give(port);
     if (deviceType == c::E_DEVICE_VISION) {
         return true;
     }
@@ -125,10 +125,6 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
-}
-
-pros::DeviceType Vision::get_type() const {
-	return pros::DeviceType::vision;
 }
 
 }  // namespace v5

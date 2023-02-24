@@ -213,11 +213,6 @@ class Link : public Device {
 	 */
 	std::uint32_t clear_receive_buf();
 
-	/**
-     * Returns the type of device
-     *
-	 */
-	pros::DeviceType get_type() const;
 	///@}
 };
 }  // namespace pros

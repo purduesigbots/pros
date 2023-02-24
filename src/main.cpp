@@ -25,7 +25,22 @@ void on_center_button() {
 void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Hello PROS User!");
-
+	pros::Distance d(1);
+	pros::Gps gps(2);
+	pros::Optical op(3);
+	pros::Link radio(4, "test", pros::E_LINK_RECIEVER, false);
+	pros::Vision v(5);
+	pros::Imu imu(6);
+	pros::Rotation rot(7);
+	pros::Motor motor(8);
+	printf("Distance: %d\n", d.is_installed());
+	printf("Gps: %d\n", gps.is_installed());
+	printf("Optical: %d\n", op.is_installed());
+	printf("Link: %d\n", radio.is_installed());
+	printf("Vision: %d\n", v.is_installed());
+	printf("Imu: %d\n", imu.is_installed());
+	printf("Rotation: %d\n", rot.is_installed());
+	printf("Motor: %d\n", motor.is_installed());
 	pros::lcd::register_btn1_cb(on_center_button);
 }
 

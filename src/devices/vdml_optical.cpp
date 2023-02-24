@@ -21,10 +21,10 @@ using namespace pros::c;
 Optical::Optical(std::uint8_t port) : Device(port) {}
 
 bool Optical::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
+    port_mutex_give(port);
     if (deviceType == c::E_DEVICE_OPTICAL) {
         return true;
     }
@@ -93,9 +93,6 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   return os;
 }
 
-pros::DeviceType Optical::get_type() const {
-	return pros::DeviceType::optical;
-}
 namespace literals {
 const pros::Optical operator"" _opt(const unsigned long long int o) {
   return pros::Optical(o);

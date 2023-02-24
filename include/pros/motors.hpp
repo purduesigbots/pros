@@ -1348,6 +1348,8 @@ class Motor : public Motor_Group, public Device {
 
 	explicit Motor(const std::int8_t port, const bool reverse);
 
+	virtual bool is_installed();
+
 	DeviceType get_type() const;
 
 	using Motor_Group::operator=;

@@ -12,6 +12,8 @@
 
 #include "kapi.h"
 #include "pros/motors.hpp"
+#include "vdml/registry.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
@@ -862,6 +864,17 @@ Motor::Motor(const std::int8_t port, const pros::Color gearset_color)
     : Motor_Group({port}, gearset_color), Device(port) {}
 
 Motor::Motor(const std::int8_t port, const bool reverse) : Motor_Group({port}, reverse), Device(port) {}
+
+bool Motor::is_installed() {
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
+    pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    port_mutex_give(port);
+    if (deviceType == c::E_DEVICE_MOTOR) {
+        return true;
+    }
+    return false;
+}
 
 DeviceType Motor::get_type() const {
 	return DeviceType::motor;

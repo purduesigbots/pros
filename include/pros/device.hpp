@@ -18,6 +18,7 @@
 #ifndef _PROS_DEVICE_HPP_
 #define _PROS_DEVICE_HPP_
 
+#include "apix.h"
 #include "pros/misc.hpp"
 #include "pros/rtos.hpp"
 
@@ -39,7 +40,7 @@ class Device {
 	 *
 	 * \return The device type as an enum.
 	 */
-	virtual pros::DeviceType get_type() const = 0;
+	virtual c::v5_device_e_t get_type();
 
 	/**
 	 * Checks if the device is installed.

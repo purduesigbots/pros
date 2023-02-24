@@ -10,8 +10,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-
-
 #include "pros/device.hpp"
 #include "pros/apix.h"
 #include "vdml/vdml.h"
@@ -19,11 +17,19 @@
 namespace pros{
 inline namespace v5 {
 
+c::v5_device_e_t Device::get_type() {
+    std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
+    c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    port_mutex_give(port);
+    return deviceType;
+}
+
 bool Device::is_installed() {
-    std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+    std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port - 1);
+    port_mutex_give(port);
     if (deviceType != c::E_DEVICE_NONE && deviceType != c::E_DEVICE_UNDEFINED) {
         return true;
     }

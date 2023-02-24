@@ -22,10 +22,10 @@ Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(po
 }
 
 bool Rotation::is_installed() {
-	std::uint8_t port = this->_port;
-    port_mutex_take(port - 1);
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
     pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
-    port_mutex_give(port-1);
+    port_mutex_give(port);
     if (deviceType == c::E_DEVICE_ROTATION) {
         return true;
     }
@@ -83,9 +83,6 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
 	return os;
 }
 
-pros::DeviceType Rotation::get_type() const {
-	return pros::DeviceType::rotation;
-}
 namespace literals {
 const pros::Rotation operator"" _rot(const unsigned long long int r) {
     return pros::Rotation(r);
