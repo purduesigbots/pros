@@ -139,6 +139,7 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 	}
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
 	if (object_count + size_id >= c) {
+		port_mutex_give(port - 1);
 		errno = ERANGE;
 		return PROS_ERR;
 	}
