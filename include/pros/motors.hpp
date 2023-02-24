@@ -462,17 +462,6 @@ class Motor {
 	 * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
 	 * setting errno.
 	 * 
-	 * \b Example
-	 * \code
-	 * void opcontrol() {
-	 *   pros::Motor motor(1);
-	 *   while (true) {
-	 *     motor.move_voltage(12000);
-	 *     std::cout << "Motor voltage: " << motor.get_voltage() << std::endl;
-	 *     pros::delay(20);
-	 *   }
-	 * }
-	 * \endcode
 	 */
 	virtual std::int32_t get_voltage(void) const;
 
@@ -1041,11 +1030,13 @@ class Motor_Group {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   pros::Motor_Group motors({1, 2, 3, 4});
+	 *   pros::Motor_Group motors({1, 2});
+	 *   std::vector<std::uint32_t> voltages;
 	 *   while (true) {
-	 * 	   std::vector<std::uint32_t> voltages = motors.get_voltages();
-	 *     for (std::uint32_t i = 0; i < voltages.size(); i++) {
-	 * 	     std::cout << "Motor " << i << " voltage: " << voltages[i] << std::endl;
+	 * 	   voltages = motors.get_voltages();
+	 * 
+	 *     for (uint32_t i = 0; i < voltages.size(); i++) {
+	 * 	     printf("Voltages: %ld\n", voltages[i]);
 	 *     }
 	 *     pros::delay(20);
 	 *   }
@@ -1065,6 +1056,22 @@ class Motor_Group {
 	 * 
 	 * \return The voltage limit of the motor in millivolts or PROS_ERR_F if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor_Group motors({1, 2});
+	 *   std::vector<std::uint32_t> voltage_limits;
+	 *   while (true) {
+	 * 	   voltage_limits = motors.get_voltage_limits();
+	 * 
+	 *     for (uint32_t i = 0; i < voltage_limits.size(); i++) {
+	 * 	     printf("Voltage Limits: %ld\n", voltage_limits[i]);
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::vector<std::uint32_t> get_voltage_limits(void);
 
@@ -1086,13 +1093,17 @@ class Motor_Group {
 	 *   pros::Motor_Group motors({1, 2});
 	 *   std::vector<std::uint32_t*> timestamps;
 	 *   std::vector<std::int32_t> positions;
+	 * 	 std::uint32_t temp = 0;
+	 *   std::uint32_t temp2 = 0;
+	 *   timestamps.push_back(&temp);
+	 *   timestamps.push_back(&temp2);
+	 * 
 	 *   while (true) {
-	 *     timestamps.push_back(pros::millis());
-	 *     timestamps.push_back(pros::millis());
-	 *     positions = motors.get_raw_positions(&timestamps);
-	 *     for (std::uint32_t i = 0; i < positions.size(); i++) {
-	 *       std::cout << "Motor " << i << " position: " << positions[i] << std::endl;
-	 *     }
+	 *     positions = motors.get_raw_positions(timestamps);
+	 * 
+	 *     printf("Position: %ld, Time: %ln\n", positions[0], timestamps[0]);
+     *	   printf("Position: %ld, Time: %ln\n", positions[1], timestamps[1]);
+	 *
 	 *     pros::delay(20);
 	 *   }
 	 * }
