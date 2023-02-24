@@ -1098,7 +1098,7 @@ class Motor_Group {
 	 * }
 	 * \endcode
 	 */
-	std::vector<std::int32_t> get_raw_positions(std::vector<std::uint32_t* const> &timestamps);
+	std::vector<std::int32_t> get_raw_positions(std::vector<std::uint32_t*> &timestamps);
 	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/

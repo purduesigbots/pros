@@ -502,10 +502,10 @@ std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
 	return out;
 }
 
-std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32_t* const> &timestamps) {
-	claim_mg_mutex_vector(PROS_ERR);
+std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32_t*> &timestamps) {
 	// Create a vector size of the number of motors and fill it with PROS_ERR
 	std::vector<std::int32_t> out(_motors.size(), PROS_ERR);
+	claim_mg_mutex_vector(PROS_ERR);
 	if (timestamps.empty()) {
 		// If the timestamps vector is null, return a vector of PROS_ERR
 		give_mg_mutex_vector(PROS_ERR);
