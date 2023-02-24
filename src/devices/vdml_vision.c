@@ -138,6 +138,10 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 		object_arr[i].signature = VISION_OBJECT_ERR_SIG;
 	}
 	uint32_t c = vexDeviceVisionObjectCountGet(device->device_info);
+	if (object_count + size_id >= c) {
+		errno = ERANGE;
+		return PROS_ERR;
+	}
 	if (c <= size_id) {
 		port_mutex_give(port - 1);
 		errno = EDOM;
@@ -145,7 +149,6 @@ int32_t vision_read_by_size(uint8_t port, const uint32_t size_id, const uint32_t
 	} else if (c > object_count + size_id) {
 		c = object_count + size_id;
 	}
-
 	for (uint32_t i = size_id; i < c; i++) {
 		if (!vexDeviceVisionObjectGet(device->device_info, i, (V5_DeviceVisionObject*)(object_arr + i))) {
 			errno = EAGAIN;
