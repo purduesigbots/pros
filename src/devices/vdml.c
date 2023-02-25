@@ -144,9 +144,11 @@ bool vdml_get_port_error(uint8_t port) {
 	}
 }
 
+#if 0
 void vdml_reset_port_error() {
 	port_errors = 0;
 }
+#endif
 
 /**
  * Background processing function for the VDML system.
@@ -161,6 +163,10 @@ void vdml_reset_port_error() {
  * On warnings, no operation is performed.
  */
 void vdml_background_processing() {
+
+// We're not removing this outright since we want to revisit the idea of logging
+// the errors with devices in the future
+#if 0
 	static int32_t last_port_errors = 0;
 	static int cycle = 0;
 	cycle++;
@@ -168,10 +174,12 @@ void vdml_background_processing() {
 		vdml_reset_port_error();
 		last_port_errors = 0;
 	}
+#endif
 
-	// Refresh actual device types
+	// Refresh actual device types.
 	registry_update_types();
 
+#if 0
 	// Validate the ports. Warn if mismatch.
 	uint8_t error_arr[NUM_V5_PORTS];
 	int num_errors = 0;
@@ -257,4 +265,5 @@ void vdml_background_processing() {
 	end_render_errors:
 		last_port_errors = port_errors;
 	}
+#endif
 }

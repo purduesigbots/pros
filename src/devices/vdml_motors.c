@@ -15,26 +15,29 @@
 #include <stdio.h>
 
 #include "kapi.h"
+#include "pros/colors.h"
 #include "pros/motors.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
-#include "pros/colors.h"
 
 #define MOTOR_MOVE_RANGE 127
 #define MOTOR_VOLTAGE_RANGE 12000
 
-
 // Movement functions
 
 int32_t motor_move(int8_t port, int32_t voltage) {
-	port = abs(port);
 	if (voltage > 127) {
 		voltage = 127;
 	} else if (voltage < -127) {
 		voltage = -127;
 	}
 
+	if (port < 0) {
+		voltage = -voltage;
+	}
+
+	port = abs(port);
 	// Remap the input voltage range to the motor voltage
 	// scale to [-127, 127] -> [-12000, 12000]
 	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
@@ -43,43 +46,47 @@ int32_t motor_move(int8_t port, int32_t voltage) {
 }
 
 int32_t motor_brake(int8_t port) {
-	port = abs(port);
 	return motor_move_velocity(port, 0);
 }
 
-int32_t motor_move_absolute(int8_t port, const double position, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+int32_t motor_move_absolute(int8_t port, const double position, int32_t velocity) {
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_relative(int8_t port, const double position, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+int32_t motor_move_relative(int8_t port, const double position, int32_t velocity) {
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorRelativeTargetSet(device->device_info, position, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_velocity(int8_t port, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+int32_t motor_move_velocity(int8_t port, int32_t velocity) {
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorVelocitySet(device->device_info, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_voltage(int8_t port, const int32_t voltage) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+int32_t motor_move_voltage(int8_t port, int32_t voltage) {
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if (port < 0) voltage = -voltage;
 	vexDeviceMotorVoltageSet(device->device_info, voltage);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity) {
-	port = abs(port);
-	claim_port_i(port - 1, E_DEVICE_MOTOR);
+int32_t motor_modify_profiled_velocity(int8_t port, int32_t velocity) {
+	uint8_t abs_port = abs(port);
+	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
+	if (port < 0) velocity = -velocity;
 	vexDeviceMotorVelocityUpdate(device->device_info, velocity);
-	return_port(port - 1, PROS_SUCCESS);
+	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
 double motor_get_target_position(int8_t port) {
@@ -139,8 +146,6 @@ int32_t motor_is_over_temp(int8_t port) {
 	int rtn = vexDeviceMotorOverTempFlagGet(device->device_info);
 	return_port(port - 1, rtn);
 }
-
-
 
 uint32_t motor_get_faults(int8_t port) {
 	port = abs(port);
@@ -238,20 +243,8 @@ int32_t motor_set_encoder_units(int8_t port, const motor_encoder_units_e_t units
 int32_t motor_set_gearing(int8_t port, const motor_gearset_e_t gearset) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
-	motor_gearset_e_t final_gearset = gearset;
-	// in the case that the motor gearset is actually a color, we need to handle this too:
-	if(gearset > E_MOTOR_GEAR_BLUE) {
-		switch(gearset) {
-			case COLOR_RED: 	final_gearset = E_MOTOR_GEAR_RED; break;
-			case COLOR_GREEN: 	final_gearset = E_MOTOR_GEAR_GREEN; break;
-			case COLOR_BLUE: 	final_gearset = E_MOTOR_GEAR_BLUE; break;
-			default: 		 	errno = EINVAL; 
-								return_port(port - 1, PROS_ERR);
-		}
-	}
-
-	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)final_gearset);
-	return_port(port - 1, PROS_SUCCESS);
+	vexDeviceMotorGearingSet(device->device_info, (V5MotorGearset)gearset);
+  return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t motor_set_reversed(int8_t port, const bool reverse) {

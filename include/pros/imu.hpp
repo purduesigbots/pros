@@ -62,7 +62,7 @@ class Imu : public Device {
 	
 
 	public:
-	Imu(const std::uint8_t port) : Device(port) {};
+	explicit Imu(const std::uint8_t port) : Device(port) {};
 
 	/**
 	 * Checks if the current device is installed.

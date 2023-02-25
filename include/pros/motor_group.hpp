@@ -20,29 +20,33 @@
  * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
  */
 
-#ifndef _PROS_MOTORS_HPP_
-#define _PROS_MOTORS_HPP_
+#ifndef _PROS_MOTOR_GROUP_HPP_
+#define _PROS_MOTOR_GROUP_HPP_
 
 #include <cstdint>
 #include <iostream>
 
 #include "pros/abstract_motor.hpp"
+#include "pros/colors.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
+#include "pros/motors.hpp"
 #include "rtos.hpp"
 
 namespace pros {
 inline namespace v5 {
-
-class Motor : public AbstractMotor, public Device {
-	public:
-	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-	               const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
-
+class MotorGroup : public virtual AbstractMotor {
 	/**
 	 * \addtogroup cpp-motors
 	 *  @{
 	 */
+	public:
+	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
+	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
+	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
+	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
+	std::int32_t operator=(const std::int32_t);
+
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -254,6 +258,7 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t move_voltage(const std::int32_t voltage) const;
 
 	std::int32_t brake(void) const;
+
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 	/**
 	 * Gets the target position set for the motor by the user, with a parameter
@@ -278,7 +283,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index = 0) const;
+	double get_target_position(const std::uint8_t index) const;
 	std::vector<double> get_target_position_all(void) const;
 
 	/**
@@ -789,6 +794,8 @@ class Motor : public AbstractMotor, public Device {
 
 	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
+	 * (ALL THE PORTS WILL BE POSITIVE)
+	 * Use get_ports if you want to get the information on reversal.
 	 *
 	 * @return std::vector<std::uint8_t>
 	 */
@@ -952,7 +959,6 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t set_gearing_all(const Motor_Gears gearset) const;
 	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
 
-
 	/**
 	 * Sets the reverse flag for the motor.
 	 *
@@ -1074,20 +1080,43 @@ class Motor : public AbstractMotor, public Device {
 	 * @return std::int8_t
 	 */
 	std::int8_t size(void) const;
-
 	std::int8_t get_port(const std::uint8_t index = 0) const;
 
-	virtual bool is_installed();
+	/**
+	 * @brief Appends the other motor group reference to this motor group
+	 *
+	 */
+	void operator+=(MotorGroup&);
 
-	DeviceType get_type() const;
+	/**
+	 * @brief Appends the other motor group reference to this motor group
+	 *
+	 */
+	void append(MotorGroup&);
 
+	/**
+	 * @brief Removes the port (and it's reversed )
+	 *
+	 * @param port
+	 */
+	void erase_port(std::int8_t port);
+
+	/**
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format:
+	 * Motor [port: (motor port), brake mode: (brake mode), current draw: (current draw),
+	 * current limit: (current limit), direction: (direction), efficiency: (efficiency),
+	 * encoder units: (encoder units), gearing: (gearing), is over temp: (over temp),
+	 * position: (position), reversed: (reversed boolean), temperature: (temperature),
+	 * torque: (torque), voltage: (voltage)]
+	 */
+	friend std::ostream& operator<<(std::ostream& os, pros::MotorGroup& motor);
+	///@}
 	private:
-	std::int8_t _port;
+	std::vector<std::int8_t> _ports;
+	mutable pros::Mutex _MotorGroup_mutex;
 };
-namespace literals {
-const pros::Motor operator"" _mtr(const unsigned long long int m);
-const pros::Motor operator"" _rmtr(const unsigned long long int m);
-}  // namespace literals
 }  // namespace v5
 }  // namespace pros
-#endif  // _PROS_MOTORS_HPP_
+#endif
