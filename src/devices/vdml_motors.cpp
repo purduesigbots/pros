@@ -494,11 +494,17 @@ std::vector<std::uint32_t> Motor_Group::get_voltages(void) {
 
 std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
 	std::vector<std::uint32_t> out;
+	printf("Created vector out to store voltage limits\n");
 	claim_mg_mutex_vector(PROS_ERR);
-	for (Motor motor : _motors) {
+	printf("Claimed mutex\n");
+	for (Motor &motor : _motors) {
+		/*
 		out.push_back(motor.get_voltage_limit());
+		*/
+		printf("Got voltage limit for motor\n");
 	}
 	give_mg_mutex_vector(PROS_ERR);
+	printf("Released mutex\n");
 	return out;
 }
 
@@ -519,7 +525,7 @@ std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32
 	for (int i = 0; i < min_iter; i++) {
 		// Check timestamp is not nullptr before getting the raw position
 		if (timestamps[i] != nullptr) {
-			out.push_back(_motors[i].get_raw_position(timestamps[i]));
+			out[i] = _motors[i].get_raw_position(timestamps[i]);
 		}
 	}
 	give_mg_mutex_vector(PROS_ERR);

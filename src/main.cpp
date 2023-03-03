@@ -77,8 +77,22 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
+	pros::Motor_Group motors({left_mtr, right_mtr});
+	std::vector<std::uint32_t*> timestamps;
+	std::vector<std::int32_t> positions;
+	std::uint32_t temp = 0;
+	std::uint32_t temp2 = 0;
+	timestamps.push_back(&temp);
+	timestamps.push_back(&temp2);
+
+	std::vector<std::uint32_t> voltages;
+	std::vector<std::uint32_t> voltage_limits;
+
+	printf("Hello PROS User!\n");
 
 	while (true) {
+		printf("Before print buttons\n");
+
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
 		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
@@ -87,6 +101,34 @@ void opcontrol() {
 
 		left_mtr = left;
 		right_mtr = right;
+
+		/*
+		positions = motors.get_raw_positions(timestamps);
+
+		printf("Motor 1 position: %ld, time: %lu\n", left_mtr.get_raw_position(&temp), temp);
+
+		printf("Position: %ld, Time: %lu\n", positions[0], *timestamps[0]);
+		printf("Position: %ld, Time: %lu\n", positions[1], *timestamps[1]);
+
+		temp = pros::millis();
+		temp2 = pros::millis();
+
+		voltages = motors.get_voltages();
+
+		for (uint32_t i = 0; i < voltages.size(); i++) {
+			printf("Voltages: %ld\n", voltages[i]);
+		}
+		*/
+
+		printf("Getting voltage limits...\n");
+
+		voltage_limits = motors.get_voltage_limits();
+
+		printf("Got voltage limits!\n");
+
+		for (uint32_t i = 0; i < voltage_limits.size(); i++) {
+			printf("Voltage Limits: %ld\n", voltage_limits[i]);
+		}
 
 		pros::delay(20);
 	}
