@@ -494,17 +494,11 @@ std::vector<std::uint32_t> Motor_Group::get_voltages(void) {
 
 std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
 	std::vector<std::uint32_t> out;
-	printf("Created vector out to store voltage limits\n");
 	claim_mg_mutex_vector(PROS_ERR);
-	printf("Claimed mutex\n");
-	for (Motor &motor : _motors) {
-		/*
+	for (Motor &motor : _motors) {	
 		out.push_back(motor.get_voltage_limit());
-		*/
-		printf("Got voltage limit for motor\n");
 	}
 	give_mg_mutex_vector(PROS_ERR);
-	printf("Released mutex\n");
 	return out;
 }
 

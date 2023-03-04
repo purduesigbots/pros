@@ -425,5 +425,5 @@ int32_t motor_is_reversed(uint8_t port) {
 int32_t motor_get_voltage_limit(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVoltageLimitGet(device->device_info);
-	return_port(rtn, port - 1);
+	return_port(port - 1, rtn);
 }
