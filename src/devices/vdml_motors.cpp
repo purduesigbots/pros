@@ -491,6 +491,50 @@ std::int32_t Motor_Group::tare_position(void) {
 	return out;
 }
 
+std::vector<std::uint32_t> Motor_Group::get_voltages(void) {
+	std::vector<std::uint32_t> out;
+	claim_mg_mutex_vector(PROS_ERR);
+	for (Motor motor : _motors) {
+		out.push_back(motor.get_voltage());
+	}
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
+std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
+	std::vector<std::uint32_t> out;
+	claim_mg_mutex_vector(PROS_ERR);
+	for (Motor &motor : _motors) {	
+		out.push_back(motor.get_voltage_limit());
+	}
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
+std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32_t*> &timestamps) {
+	// Create a vector size of the number of motors and fill it with PROS_ERR
+	std::vector<std::int32_t> out(_motors.size(), PROS_ERR);
+	claim_mg_mutex_vector(PROS_ERR);
+	if (timestamps.empty()) {
+		// If the timestamps vector is null, return a vector of PROS_ERR
+		give_mg_mutex_vector(PROS_ERR);
+		return out;
+	}
+	// Find the minimum between the number of motors and the number of timestamps
+	// Use this to know how many times to iterate through the loop
+	// To prevent a segfault if vector of timestamps smaller than the number of motors
+	// If the timestamps vector larger than motor, the extra timestamps will be ignored
+	int min_iter = std::min(_motors.size(), timestamps.size());
+	for (int i = 0; i < min_iter; i++) {
+		// Check timestamp is not nullptr before getting the raw position
+		if (timestamps[i] != nullptr) {
+			out[i] = _motors[i].get_raw_position(timestamps[i]);
+		}
+	}
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
 std::vector<double> Motor_Group::get_target_positions(void) {
 	std::vector<double> out;
 	claim_mg_mutex_vector(PROS_ERR_F);
