@@ -61,6 +61,13 @@ class Serial : public Device {
 	/******************************************************************************/
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Sets the baudrate for the serial port to operate at.
 	 *
 	 * This function uses the following values of errno when an error state is

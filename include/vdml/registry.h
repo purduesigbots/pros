@@ -18,6 +18,7 @@
 #include "vdml/vdml.h"
 
 #ifdef __cplusplus
+#define v5_device_e_t pros::c::v5_device_e_t
 extern "C" {
 #endif
 
@@ -94,4 +95,5 @@ int32_t registry_validate_binding(uint8_t port, v5_device_e_t expected_t);
 
 #ifdef __cplusplus
 }
+#undef v5_device_e_t
 #endif

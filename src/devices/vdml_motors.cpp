@@ -12,6 +12,8 @@
 
 #include "kapi.h"
 #include "pros/motors.hpp"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
@@ -21,6 +23,17 @@ Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const 
     : Device(port), _port(port) {
 	set_gearing(gearset);
 	set_encoder_units(encoder_units);
+}
+
+bool Motor::is_installed() {
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
+    pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    port_mutex_give(port);
+    if (deviceType == c::E_DEVICE_MOTOR) {
+        return true;
+    }
+    return false;
 }
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {

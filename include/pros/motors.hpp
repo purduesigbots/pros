@@ -40,6 +40,13 @@ class Motor : public AbstractMotor, public Device {
 	               const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * \addtogroup cpp-motors
 	 *  @{
 	 */

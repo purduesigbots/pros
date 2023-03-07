@@ -60,6 +60,13 @@ class Gps : public Device {
 	};
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Set the GPS's offset relative to the center of turning in meters,
 	 * as well as its initial position.
 	 *

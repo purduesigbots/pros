@@ -55,6 +55,13 @@ class Optical : public Device {
 	explicit Optical(const std::uint8_t port);
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Get the detected color hue
 	 *
 	 * This is not available if gestures are being detected. Hue has a

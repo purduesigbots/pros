@@ -55,6 +55,13 @@ class Vision : public Device {
 	explicit Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
 
 	/**
+	 * Checks if the current device is installed.
+	 * 
+	 * \return true if the corresponding device is installed, false otherwise.
+	*/
+	virtual bool is_installed();
+
+	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
 	 * behavior, displaying the most prominent object signature color.
 	 *

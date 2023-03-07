@@ -11,12 +11,25 @@
  */
 
 #include "pros/rotation.hpp"
+#include "pros/apix.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
     
 Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(port) {
 	pros::c::rotation_set_reversed(port, reverse_flag);
+}
+
+bool Rotation::is_installed() {
+	std::uint8_t port = this->_port - 1;
+    port_mutex_take(port);
+    pros::c::v5_device_e_t deviceType = c::registry_get_plugged_type(port);
+    port_mutex_give(port);
+    if (deviceType == c::E_DEVICE_ROTATION) {
+        return true;
+    }
+    return false;
 }
 
 std::int32_t Rotation::reset() {
