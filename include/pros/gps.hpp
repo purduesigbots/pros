@@ -213,7 +213,7 @@ class Gps : public Device {
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
 	 */
-	virtual pros::gps_position_s_t gps_get_position() const;
+	virtual pros::gps_position_s_t get_position() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
