@@ -120,7 +120,7 @@ int32_t motor_brake(int8_t port);
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1-21. 
  * \param position
  *        The absolute position to move to in the motor's encoder units
  * \param velocity
@@ -195,7 +195,7 @@ int32_t motor_move_absolute(int8_t port, const double position, const int32_t ve
  * }
  * \endcode
  */
-int32_t motor_move_relative(int8_t port, const double position, const int32_t velocity);
+int32_t motor_move_relative(int8_t port, double position, const int32_t velocity);
 
 /**
  * Sets the velocity for the motor.
