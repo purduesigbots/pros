@@ -1466,7 +1466,7 @@ class Motor_Group {
 	 * \return The vector filled with motors' temperature in degrees Celsius or PROS_ERR_F if the
  	 * operation failed, setting errno.
 	 */
-	virtual double get_temperature(void) const;
+	virtual std::vector<double> get_temperatures(void) const;
 
 	private:
 	std::vector<Motor> _motors;
