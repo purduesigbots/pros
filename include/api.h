@@ -40,9 +40,9 @@
 #endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 3
-#define PROS_VERSION_MINOR 7
-#define PROS_VERSION_PATCH 3
-#define PROS_VERSION_STRING "3.7.3"
+#define PROS_VERSION_MINOR 8
+#define PROS_VERSION_PATCH 0
+#define PROS_VERSION_STRING "3.8.0"
 
 #include "pros/adi.h"
 #include "pros/colors.h"
