@@ -52,7 +52,6 @@ int32_t motor_brake(int8_t port) {
 int32_t motor_move_absolute(int8_t port, const double position, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	if (port < 0) velocity = -velocity;
 	vexDeviceMotorAbsoluteTargetSet(device->device_info, position, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
@@ -60,7 +59,7 @@ int32_t motor_move_absolute(int8_t port, const double position, int32_t velocity
 int32_t motor_move_relative(int8_t port, const double position, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
-	if (port < 0) velocity = -velocity;
+	if (port < 0) position = -position;
 	vexDeviceMotorRelativeTargetSet(device->device_info, position, velocity);
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
