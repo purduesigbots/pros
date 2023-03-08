@@ -806,10 +806,6 @@ Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset)
 
 Motor::Motor(const std::int8_t port, const bool reverse) : Motor_Group({port}, reverse), Device(port) {}
 
-DeviceType Motor::get_type() const {
-	return DeviceType::motor;
-}
-
 }  // namespace v5
 namespace literals {
 const pros::Motor operator"" _mtr(const unsigned long long int m) {

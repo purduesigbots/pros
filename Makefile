@@ -17,7 +17,7 @@ EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
 C_STANDARD=gnu11
-CXX_STANDARD=gnu++20
+CXX_STANDARD=gnu++2a
 
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
@@ -55,7 +55,7 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 
 .PHONY: $(INCDIR)/api.h
 $(INCDIR)/api.h: version.py
-	$(VV)python version.py
+	$(VV)python3 version.py
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))

@@ -495,12 +495,6 @@ class Imu : public Device {
 	 * gyro rate: {x,y,z}, get accel: {x,y,z}, calibrating: (calibrating boolean)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
-
-	/**
-     * Returns the type of device
-     *
-	 */
-	pros::DeviceType get_type() const;
 	///@}
 };
 

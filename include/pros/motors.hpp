@@ -1302,8 +1302,6 @@ class Motor : public Motor_Group, public Device {
 
 	explicit Motor(const std::int8_t port, const bool reverse);
 
-	DeviceType get_type() const;
-
 	using Motor_Group::operator=;
 
 	private:
