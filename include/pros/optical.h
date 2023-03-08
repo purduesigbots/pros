@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -264,6 +264,39 @@ int32_t optical_enable_gesture(uint8_t port);
  * setting errno.
  */
 int32_t optical_disable_gesture(uint8_t port);
+
+/**
+ * Get integration time (update rate) of the optical sensor in milliseconds, with
+ * minimum time being 
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Optical Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \return Integration time in milliseconds if the operation is successful 
+ * or PROS_ERR if the operation failed, setting errno.
+ */
+double optical_get_integration_time(uint8_t port);
+
+/**
+ * Set integration time (update rate) of the optical sensor in milliseconds.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Optical Sensor
+ *
+ * \param port
+ *        The V5 Optical Sensor port number from 1-21
+ * \param time
+ *        The desired integration time in milliseconds
+ * \return 1 if the operation is successful or PROS_ERR if the operation failed,
+ * setting errno.
+ */
+int32_t optical_set_integration_time(uint8_t port, double time);
 
 #ifdef __cplusplus
 }

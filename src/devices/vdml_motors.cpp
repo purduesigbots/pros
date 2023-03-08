@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -339,11 +339,20 @@ Motor_Group::Motor_Group(const std::initializer_list<Motor> motors)
     assert(_motor_count > 0);
 }
 
+Motor_Group::Motor_Group(const std::vector<pros::Motor>& motors) 
+	: _motors(motors), _motor_group_mutex(pros::Mutex()), _motor_count(motors.size()) {}
+
+Motor_Group::Motor_Group(const std::initializer_list<std::int8_t> motor_ports) 
+	: _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
+	for (auto& i : motor_ports) {
+		_motors.emplace_back(i);
+	}	
+}
+
 Motor_Group::Motor_Group(const std::vector<std::int8_t> motor_ports)
     : _motor_group_mutex(pros::Mutex()), _motor_count(motor_ports.size()) {
-    assert(_motor_count > 0);
-	for (std::uint8_t i = 0; i < _motor_count; ++i) {
-		_motors.push_back(Motor(motor_ports[i]));
+	for (auto& i: motor_ports) {
+		_motors.emplace_back(i);
 	}
 }
 
@@ -373,6 +382,13 @@ pros::Motor& Motor_Group::operator[](int i) {
 		return _motors[0];
 	}
 	return _motors.at(i);
+}
+
+pros::Motor& Motor_Group::at(int i) {
+	if (i >= _motor_count || _motors.empty()) {
+		throw std::out_of_range("Out of Range! Motor_Group for at() method is out of range");
+	}
+	return _motors[i];
 }
 
 std::int32_t Motor_Group::size() {
@@ -444,6 +460,16 @@ std::int32_t Motor_Group::set_reversed(const bool reversed) {
 	return out;
 }
 
+std::vector<double> Motor_Group::get_temperatures(void) {
+	std::vector<double> out;
+	claim_mg_mutex_vector(PROS_ERR_F);
+	for (Motor motor : _motors) {
+		out.push_back(motor.get_temperature());
+	}
+	give_mg_mutex_vector(PROS_ERR_F);
+	return out;
+}
+
 std::int32_t Motor_Group::set_voltage_limit(const std::int32_t limit) {
 	claim_mg_mutex(PROS_ERR);
 	std::int32_t out = PROS_SUCCESS;
@@ -472,6 +498,50 @@ std::int32_t Motor_Group::tare_position(void) {
 	std::int32_t out = PROS_SUCCESS;
 	mg_foreach(tare_position(), _motors, out);
 	give_mg_mutex(PROS_ERR);
+	return out;
+}
+
+std::vector<std::uint32_t> Motor_Group::get_voltages(void) {
+	std::vector<std::uint32_t> out;
+	claim_mg_mutex_vector(PROS_ERR);
+	for (Motor motor : _motors) {
+		out.push_back(motor.get_voltage());
+	}
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
+std::vector<std::uint32_t> Motor_Group::get_voltage_limits(void) {
+	std::vector<std::uint32_t> out;
+	claim_mg_mutex_vector(PROS_ERR);
+	for (Motor &motor : _motors) {	
+		out.push_back(motor.get_voltage_limit());
+	}
+	give_mg_mutex_vector(PROS_ERR);
+	return out;
+}
+
+std::vector<std::int32_t> Motor_Group::get_raw_positions(std::vector<std::uint32_t*> &timestamps) {
+	// Create a vector size of the number of motors and fill it with PROS_ERR
+	std::vector<std::int32_t> out(_motors.size(), PROS_ERR);
+	claim_mg_mutex_vector(PROS_ERR);
+	if (timestamps.empty()) {
+		// If the timestamps vector is null, return a vector of PROS_ERR
+		give_mg_mutex_vector(PROS_ERR);
+		return out;
+	}
+	// Find the minimum between the number of motors and the number of timestamps
+	// Use this to know how many times to iterate through the loop
+	// To prevent a segfault if vector of timestamps smaller than the number of motors
+	// If the timestamps vector larger than motor, the extra timestamps will be ignored
+	int min_iter = std::min(_motors.size(), timestamps.size());
+	for (int i = 0; i < min_iter; i++) {
+		// Check timestamp is not nullptr before getting the raw position
+		if (timestamps[i] != nullptr) {
+			out[i] = _motors[i].get_raw_position(timestamps[i]);
+		}
+	}
+	give_mg_mutex_vector(PROS_ERR);
 	return out;
 }
 

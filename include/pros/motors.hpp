@@ -461,6 +461,7 @@ class Motor {
 	 *
 	 * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
 	 * setting errno.
+	 * 
 	 */
 	virtual std::int32_t get_voltage(void) const;
 
@@ -859,8 +860,11 @@ class Motor {
 
 class Motor_Group {
 	public:
-	explicit Motor_Group(const std::initializer_list<Motor> motors);
-	explicit Motor_Group(const std::vector<std::int8_t> motor_ports);
+	Motor_Group(const std::initializer_list<Motor> motors);
+	explicit Motor_Group(const std::vector<pros::Motor>& motors);
+	explicit Motor_Group(const std::initializer_list<std::int8_t> motor_ports);
+	explicit Motor_Group(const std::vector<std::int8_t> motor_ports); // Pass by value to preserve ABI
+
 	/****************************************************************************/
 	/**                      Motor Group movement functions                    **/
 	/**                                                                        **/
@@ -1014,6 +1018,101 @@ class Motor_Group {
 	 * failed, setting errno.
 	 */
 	std::int32_t brake(void);
+
+	/* 
+	 * Gets the voltages delivered to the motors in millivolts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return The voltage of the motor in millivolts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor_Group motors({1, 2});
+	 *   std::vector<std::uint32_t> voltages;
+	 *   while (true) {
+	 * 	   voltages = motors.get_voltages();
+	 * 
+	 *     for (uint32_t i = 0; i < voltages.size(); i++) {
+	 * 	     printf("Voltages: %ld\n", voltages[i]);
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 * 
+	 */
+	std::vector<std::uint32_t> get_voltages(void);
+
+	/* 
+	 * Get the voltage limits of the motors set by the user.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 
+	 * \return The voltage limit of the motor in millivolts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor_Group motors({1, 2});
+	 *   std::vector<std::uint32_t> voltage_limits;
+	 *   while (true) {
+	 * 	   voltage_limits = motors.get_voltage_limits();
+	 * 
+	 *     for (uint32_t i = 0; i < voltage_limits.size(); i++) {
+	 * 	     printf("Voltage Limits: %ld\n", voltage_limits[i]);
+	 *     }
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::uint32_t> get_voltage_limits(void);
+
+	/* 
+	 * Gets the raw encoder positions of a motor group at a given timestamp.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 * 	
+	 * \return A vector of the raw encoder positions of the motors in the motor group
+	 * based on the timestamps passed in. If a timestamp is not found for a motor, the
+	 * value at that index will be PROS_ERR.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor_Group motors({1, 2});
+	 *   std::vector<std::uint32_t*> timestamps;
+	 *   std::vector<std::int32_t> positions;
+	 * 	 std::uint32_t temp = 0;
+	 *   std::uint32_t temp2 = 0;
+	 *   timestamps.push_back(&temp);
+	 *   timestamps.push_back(&temp2);
+	 * 
+	 *   while (true) {
+	 *     positions = motors.get_raw_positions(timestamps);
+	 * 
+	 *     printf("Position: %ld, Time: %ln\n", positions[0], timestamps[0]);
+     *	   printf("Position: %ld, Time: %ln\n", positions[1], timestamps[1]);
+	 *
+	 *     pros::delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_raw_positions(std::vector<std::uint32_t*> &timestamps);
 	/****************************************************************************/
 	/**                      Motor configuration functions                     **/
 	/**                                                                        **/
@@ -1035,6 +1134,20 @@ class Motor_Group {
 	 */ 
 	pros::Motor& operator[](int i);
 
+
+	/**
+	 * Indexes Motor in the Motor_Group.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * Throws an std::out_of_range error when indexing out of range
+	 * 
+	 * \param i
+	 *        The index value in the motor group.
+	 *
+	 * \return the appropriate Motor reference.
+	 */ 	
+	pros::Motor& at(int i);
 
 	/**
 	 * Indexes Motor in the Motor_Group in the same way as an array.
@@ -1341,6 +1454,19 @@ class Motor_Group {
 	 * E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	std::vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
+	
+	/**
+	 * Gets the encoder units that were set for each motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \return The vector filled with motors' temperature in degrees Celsius or PROS_ERR_F if the
+ 	 * operation failed, setting errno.
+	 */
+	virtual std::vector<double> get_temperatures(void);
 
 	private:
 	std::vector<Motor> _motors;

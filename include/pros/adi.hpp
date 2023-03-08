@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -494,10 +494,13 @@ class ADIEncoder : private ADIPort {
 	 * 		  sensor with the removable cover side up, and the "bottom" wire from
 	 * 		  the encoder sensor
 	 * \param reverse
-	 *        If "true", the sensor will count in theopposite direction
+	 *        If "true", the sensor will count in the opposite direction
 	 */
 	ADIEncoder(ext_adi_port_tuple_t port_tuple, bool reversed = false);
 
+	// Delete copy constructor to prevent a compilation error from the constructor above.
+	ADIEncoder(ADIEncoder &) = delete;
+	
 	/**
 	 * Sets the encoder value to zero.
 	 *

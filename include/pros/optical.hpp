@@ -9,7 +9,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -40,6 +40,8 @@ class Optical {
 	 *        The V5 port number from 1-21
 	 */
 	explicit Optical(const std::uint8_t port);
+
+	explicit Optical(std::uint8_t port, double time);
 
 	/**
 	 * Get the detected color hue
@@ -218,6 +220,36 @@ class Optical {
  	 * setting errno.
 	 */
 	virtual std::int32_t disable_gesture();
+
+	/**
+	 * Set integration time (update rate) of the optical sensor in milliseconds, with
+	 * minimum time being 3 ms and maximum time being 712 ms. Default is 100 ms, with the 
+	 * optical sensor communciating with the V5 brain every 20 ms. 
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Optical Sensor
+ 	 *
+	 * \return 1 if the operation is successful or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 */
+	double get_integration_time();
+
+	/**
+	 * Get integration time (update rate) of the optical sensor in milliseconds.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Optical Sensor
+	 *
+	 * \param time
+	 *        The desired integration time in milliseconds
+	 * \return Integration time in milliseconds if the operation is successful 
+	 *  or PROS_ERR if the operation failed, setting errno.
+	 */
+	std::int32_t set_integration_time(double time);
 
 	/**
 	 * Gets the port number of the Optical Sensor.

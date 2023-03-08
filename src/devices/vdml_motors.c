@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * Copyright (c) 2017-2022, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -385,8 +385,7 @@ motor_pid_full_s_t motor_get_pos_pid(uint8_t port) {
 	rtn.limit = pid.limit;
 	rtn.threshold = pid.threshold;
 	rtn.loopspeed = pid.loopspeed;
-	port_mutex_give(port - 1);
-	return rtn;
+	return_port(port - 1, rtn);
 }
 
 motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
@@ -412,8 +411,7 @@ motor_pid_full_s_t motor_get_vel_pid(uint8_t port) {
 	rtn.limit = pid.limit;
 	rtn.threshold = pid.threshold;
 	rtn.loopspeed = pid.loopspeed;
-	port_mutex_give(port - 1);
-	return rtn;
+	return_port(port - 1, rtn);
 }
 
 int32_t motor_is_reversed(uint8_t port) {
@@ -425,5 +423,5 @@ int32_t motor_is_reversed(uint8_t port) {
 int32_t motor_get_voltage_limit(uint8_t port) {
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVoltageLimitGet(device->device_info);
-	return_port(rtn, port - 1);
+	return_port(port - 1, rtn);
 }
