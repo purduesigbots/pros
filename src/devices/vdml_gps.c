@@ -44,7 +44,14 @@ gps_position_s_t gps_get_offset(uint8_t port) {
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
 		return rtv;
 	}
-	vexDeviceGpsOriginGet(device->device_info, &rtv.x, &rtv.y);
+	// This is necessary for warning suppression as a packed struct's address
+	// may be misaligned. 
+	double x = PROS_ERR_F;
+	double y = PROS_ERR_F;
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	vexDeviceGpsOriginGet(device->device_info, &x, &y);
+	rtv.x = x;
+	rtv.y = y;
 	return_port(port - 1, rtv);
 }
 
