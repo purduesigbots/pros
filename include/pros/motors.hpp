@@ -1454,6 +1454,19 @@ class Motor_Group {
 	 * E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	std::vector<pros::motor_encoder_units_e_t> get_encoder_units(void);
+	
+	/**
+	 * Gets the encoder units that were set for each motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EACCESS - The Motor group mutex can't be taken or given
+	 *
+	 * \return The vector filled with motors' temperature in degrees Celsius or PROS_ERR_F if the
+ 	 * operation failed, setting errno.
+	 */
+	virtual std::vector<double> get_temperatures(void);
 
 	private:
 	std::vector<Motor> _motors;
