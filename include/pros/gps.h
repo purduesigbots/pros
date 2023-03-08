@@ -202,7 +202,7 @@ gps_status_s_t gps_get_status(uint8_t port);
  * If the operation failed, all the structure's members are filled with
  * PROS_ERR_F and errno is set.
  */
-gps_position_s_t get_position(uint8_t port);
+gps_position_s_t gps_get_position(uint8_t port);
 
 /**
  * Get the GPS's raw gyroscope values
