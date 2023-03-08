@@ -39,16 +39,9 @@ class Rotation : public Device {
 	 */
 
 	public:
-	explicit Rotation(const std::uint8_t port) : Device(port) {};
+	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
 
 	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
-
-	/**
-	 * Checks if the current device is installed.
-	 * 
-	 * \return true if the corresponding device is installed, false otherwise.
-	*/
-	virtual bool is_installed();
 
 	/**
 	 * Reset the Rotation Sensor
@@ -218,7 +211,7 @@ class Rotation : public Device {
      * Returns the type of device
      *
 	 */
-	pros::DeviceType get_type() const;
+	DeviceType get_type() const;
 };
 
 namespace literals {

@@ -62,14 +62,7 @@ class Imu : public Device {
 	
 
 	public:
-	explicit Imu(const std::uint8_t port) : Device(port) {};
-
-	/**
-	 * Checks if the current device is installed.
-	 * 
-	 * \return true if the corresponding device is installed, false otherwise.
-	*/
-	virtual bool is_installed();
+	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**
 	 * Calibrate IMU
@@ -507,7 +500,7 @@ class Imu : public Device {
      * Returns the type of device
      *
 	 */
-	pros::DeviceType get_type() const;
+	DeviceType get_type() const;
 	///@}
 };
 

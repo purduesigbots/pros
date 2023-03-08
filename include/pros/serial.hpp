@@ -61,13 +61,6 @@ class Serial : public Device {
 	/******************************************************************************/
 
 	/**
-	 * Checks if the current device is installed.
-	 * 
-	 * \return true if the corresponding device is installed, false otherwise.
-	*/
-	virtual bool is_installed();
-
-	/**
 	 * Sets the baudrate for the serial port to operate at.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -233,7 +226,7 @@ class Serial : public Device {
      * Returns the type of device
      *
 	 */
-	pros::DeviceType get_type() const;
+	DeviceType get_type() const;
 
 	private:
 	///@}

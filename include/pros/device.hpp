@@ -23,6 +23,23 @@
 
 namespace pros {
 inline namespace v5 {
+
+enum class DeviceType {
+	none = 0,
+	motor = 2,
+	rotation = 4,
+	imu = 6,
+	distance = 7,
+	radio = 8,
+	vision = 11,
+	adi = 12,
+	optical = 16,
+	gps = 20,
+	serial = 129,
+	generic __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = serial,
+	undefined = 255
+};
+
 class Device {
 	public:
 	/**
@@ -39,7 +56,7 @@ class Device {
 	 *
 	 * \return The device type as an enum.
 	 */
-	virtual pros::DeviceType get_type() const = 0;
+	virtual DeviceType get_type() const = 0;
 
 	/**
 	 * Checks if the device is installed.
@@ -53,12 +70,16 @@ class Device {
 	 * Creates a Device object.
 	 *
 	 * \param port The V5 port number from 1-21
+	 * \param deviceType The type of the constructed device
 	 *
 	 */
-	Device(const std::uint8_t port) : _port(port) {}
+	Device(const std::uint8_t port, const enum DeviceType deviceType) : _port(port), _deviceType(deviceType) {}
 
 	protected:
 	const std::uint8_t _port;
+	const enum DeviceType _deviceType;
+
+	
 };
 }  // namespace v5
 }  // namespace pros

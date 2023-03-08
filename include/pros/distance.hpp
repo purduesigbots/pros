@@ -53,13 +53,6 @@ class Distance : public Device {
 	explicit Distance(const std::uint8_t port);
 
 	/**
-	 * Checks if the current device is installed.
-	 * 
-	 * \return true if the corresponding device is installed, false otherwise.
-	*/
-	virtual bool is_installed();
-
-	/**
 	 * Get the currently measured distance from the sensor in mm
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -132,7 +125,7 @@ class Distance : public Device {
      * Returns the type of device
      *
 	 */
-	pros::DeviceType get_type() const;
+	DeviceType get_type() const;
 
 	private:
 	///@}

@@ -66,12 +66,6 @@ class Link : public Device {
 	 */
 	explicit Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
-	/**
-	 * Checks if the current device is installed.
-	 * 
-	 * \return true if the corresponding device is installed, false otherwise.
-	*/
-	virtual bool is_installed();
 
 	/**
 	 * Checks if a radio link on a port is active or not.
@@ -217,7 +211,7 @@ class Link : public Device {
      * Returns the type of device
      *
 	 */
-	pros::DeviceType get_type() const;
+	DeviceType get_type() const;
 	///@}
 };
 }  // namespace pros
