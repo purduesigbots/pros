@@ -56,7 +56,7 @@ int32_t motor_move_absolute(int8_t port, const double position, int32_t velocity
 	return_port(abs_port - 1, PROS_SUCCESS);
 }
 
-int32_t motor_move_relative(int8_t port, const double position, int32_t velocity) {
+int32_t motor_move_relative(int8_t port, double position, int32_t velocity) {
 	uint8_t abs_port = abs(port);
 	claim_port_i(abs_port - 1, E_DEVICE_MOTOR);
 	if (port < 0) position = -position;
