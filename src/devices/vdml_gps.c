@@ -39,10 +39,20 @@ int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
-	claim_port_i(port - 1, E_DEVICE_GPS);
-	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
-	return_port(port - 1, PROS_SUCCESS);
+gps_position_s_t gps_get_offset(uint8_t port) {
+	gps_position_s_t rtv = {PROS_ERR_F, PROS_ERR_F};
+	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
+		return rtv;
+	}
+	// This is necessary for warning suppression as a packed struct's address
+	// may be misaligned. 
+	double x = PROS_ERR_F;
+	double y = PROS_ERR_F;
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	vexDeviceGpsOriginGet(device->device_info, &x, &y);
+	rtv.x = x;
+	rtv.y = y;
+	return_port(port - 1, rtv);
 }
 
 int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial) {
@@ -84,6 +94,19 @@ gps_status_s_t gps_get_status(uint8_t port) {
 	rtv.pitch = data.pitch;
 	rtv.roll = data.roll;
 	rtv.yaw = data.yaw;
+	return_port(port - 1, rtv);
+}
+
+gps_position_s_t gps_get_position(uint8_t port) {
+	gps_position_s_t rtv = {PROS_ERR_F, PROS_ERR_F};
+	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
+		return rtv;
+	}
+	v5_smart_device_s_t* device = registry_get_device(port - 1);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv.x = data.position_x;
+	rtv.y = data.position_y;
 	return_port(port - 1, rtv);
 }
 

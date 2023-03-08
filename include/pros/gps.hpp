@@ -104,22 +104,35 @@ class Gps : public Device {
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
 	/**
-	 * Get the GPS's location relative to the center of turning/origin in meters.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  xOffset
-	 * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
-	 * \param  yOffset
-	 * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 */
-	virtual std::int32_t get_offset(double* xOffset, double* yOffset) const;
+	* Get the GPS's cartesian location relative to the center of turning/origin in meters.
+	*
+	* This function uses the following values of errno when an error state is
+	* reached:
+	* ENXIO - The given value is not within the range of V5 ports (1-21).
+	* ENODEV - The port cannot be configured as a GPS
+	* EAGAIN - The sensor is still calibrating
+	*
+	* \param  port
+	* 				 The V5 GPS port number from 1-21
+	* \return A struct (gps_position_s_t) containing the X and Y values if the operation
+	* failed, setting errno.
+	* 
+	* \b Example
+	* \code
+	* #define GPS_PORT 1
+	* 
+	* void opcontrol() {
+	*   gps_position_s_t pos;
+	* 	Gps gps(GPS_PORT);
+	*   while (true) {
+	*     pos = gps.get_offset();
+	*     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
+	*     delay(20);
+	*   }
+	* }
+	* \endcode
+	*/
+	virtual pros::gps_position_s_t get_offset() const;
 
 	/**
 	 * Sets the robot's location relative to the center of the field in meters.
@@ -186,6 +199,21 @@ class Gps : public Device {
 	 * PROS_ERR_F and errno is set.
 	 */
 	virtual pros::gps_status_s_t get_status() const;
+
+	/**
+	 * Gets the x and y position on the field of the GPS in meters.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return A struct (gps_position_s_t) containing values mentioned above.
+	 * If the operation failed, all the structure's members are filled with
+	 * PROS_ERR_F and errno is set.
+	 */
+	virtual pros::gps_position_s_t get_position() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
