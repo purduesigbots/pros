@@ -460,13 +460,13 @@ std::int32_t Motor_Group::set_reversed(const bool reversed) {
 	return out;
 }
 
-std::vector<double> Motor_Group::get_temperatures(void) const {
+std::vector<double> Motor_Group::get_temperatures(void) {
 	std::vector<double> out;
-	claim_mg_mutex_vector(PROS_ERR);
+	claim_mg_mutex_vector(PROS_ERR_F);
 	for (Motor motor : _motors) {
 		out.push_back(motor.get_temperature());
 	}
-	give_mg_mutex_vector(PROS_ERR);
+	give_mg_mutex_vector(PROS_ERR_F);
 	return out;
 }
 
