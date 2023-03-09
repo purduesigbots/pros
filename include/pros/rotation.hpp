@@ -39,9 +39,9 @@ class Rotation : public Device {
 	 */
 
 	public:
-	Rotation(const std::uint8_t port) : Device(port) {};
+	explicit Rotation(const std::uint8_t port) : Device(port) {};
 
-	Rotation(const std::uint8_t port, const bool reverse_flag);
+	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
 	 * Reset the Rotation Sensor

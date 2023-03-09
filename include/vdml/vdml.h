@@ -148,11 +148,6 @@ void vdml_unset_port_error(uint8_t port);
 bool vdml_get_port_error(uint8_t port);
 
 /**
- * Reset all ports' error bits.
- */
-void vdml_reset_port_error();
-
-/**
  * Claims the mutex for the given port.
  *
  * Reserves the mutex for this port. Any other tasks trying to access this port

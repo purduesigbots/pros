@@ -64,7 +64,7 @@ class Link : public Device {
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 */
-	Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
+	explicit Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
 	/**
 	 * Checks if a radio link on a port is active or not.

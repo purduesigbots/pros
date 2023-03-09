@@ -24,8 +24,8 @@ std::int32_t Gps::set_offset(double xOffset, double yOffset) const {
 	return pros::c::gps_set_offset(_port, xOffset, yOffset);
 }
 
-std::int32_t Gps::get_offset(double* xOffset, double* yOffset) const {
-	return pros::c::gps_get_offset(_port, xOffset, yOffset);
+pros::gps_position_s_t Gps::get_offset() const {
+	return pros::c::gps_get_offset(_port);
 }
 
 std::int32_t Gps::set_position(double xInitial, double yInitial, double headingInitial) const {
@@ -42,6 +42,10 @@ double Gps::get_error() const {
 
 pros::gps_status_s_t Gps::get_status() const {
 	return pros::c::gps_get_status(_port);
+}
+
+pros::gps_position_s_t Gps::get_position() const {
+	return pros::c::gps_get_position(_port);
 }
 
 double Gps::get_heading() const {

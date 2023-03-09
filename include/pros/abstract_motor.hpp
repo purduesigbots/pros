@@ -1,32 +1,9 @@
-/**
- * \file pros/motors.hpp
- * \ingroup cpp-motors
- *
- * Contains prototypes for the V5 Motor-related functions.
- *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/motors.html to learn
- * more.
- *
- * This file should not be modified by users, since it gets replaced whenever
- * a kernel upgrade occurs.
- *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
- * \defgroup cpp-motors Motors C++ API
- * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
- */
-
-#ifndef _PROS_MOTORS_HPP_
-#define _PROS_MOTORS_HPP_
+#ifndef _PROS_ABSTRACT_MOTORS_HPP_
+#define _PROS_ABSTRACT_MOTORS_HPP_
 
 #include <cstdint>
 #include <iostream>
 
-#include "pros/abstract_motor.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
 #include "rtos.hpp"
@@ -34,15 +11,73 @@
 namespace pros {
 inline namespace v5 {
 
-class Motor : public AbstractMotor, public Device {
-	public:
-	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-	               const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
+/**
+ * \enum motor_brake
+ * Indicates the current 'brake mode' of a motor.
+ */
+enum class Motor_Brake {
+	/// Motor coasts when stopped, traditional behavior
+	coast = 0,
+	/// Motor brakes when stopped
+	brake = 1,
+	/// Motor actively holds position when stopped
+	hold = 2,
+	/// Invalid brake mode
+	invalid = INT32_MAX
+};
 
+/**
+ * \enum Motor_Encoder_Units
+ * Indicates the units used by the motor encoders.
+ */
+enum class Motor_Encoder_Units {
+	/// Position is recorded as angle in degrees as a floating point number
+	degrees = 0,
+	/// Position is recorded as angle in degrees as a floating point number
+	deg = 0,
+	/// Position is recorded as angle in rotations as a floating point number
+	rotations = 1,
+	/// Position is recorded as raw encoder ticks as a whole number
+	counts = 2,
+	/// Invalid motor encoder units
+	invalid = INT32_MAX
+};
+
+// Alias for Motor_Encoder_Units
+using Motor_Units = Motor_Encoder_Units;
+
+enum class Motor_Gears {
+	/// 36:1, 100 RPM, Red gear set
+	ratio_36_to_1 = 0,
+	red = ratio_36_to_1,
+	rpm_100 = ratio_36_to_1,
+	/// 18:1, 200 RPM, Green gear set
+	ratio_18_to_1 = 1,
+	green = ratio_18_to_1,
+	rpm_200 = ratio_18_to_1,
+	/// 6:1, 600 RPM, Blue gear set
+	ratio_6_to_1 = 2,
+	blue = ratio_6_to_1,
+	rpm_600 = ratio_6_to_1,
+	/// Error return code
+	invalid = INT32_MAX
+};
+
+// Provide Aliases for Motor_Gears
+using Motor_Gearset = Motor_Gears;
+using Motor_Cart = Motor_Gears;
+using Motor_Cartridge = Motor_Gears;
+using Motor_Gear = Motor_Gears;
+
+/**
+ * \ingroup cpp-motors
+ */
+class AbstractMotor {
 	/**
 	 * \addtogroup cpp-motors
 	 *  @{
 	 */
+	public:
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -76,7 +111,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t operator=(std::int32_t voltage) const;
+	virtual std::int32_t operator=(std::int32_t voltage) const = 0;
 
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
@@ -107,7 +142,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t move(std::int32_t voltage) const;
+	virtual std::int32_t move(std::int32_t voltage) const = 0;
 
 	/**
 	 * Sets the target absolute position for the motor to move to.
@@ -152,7 +187,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t move_absolute(const double position, const std::int32_t velocity) const;
+	virtual std::int32_t move_absolute(const double position, const std::int32_t velocity) const = 0;
 
 	/**
 	 * Sets the relative target position for the motor to move to.
@@ -193,7 +228,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t move_relative(const double position, const std::int32_t velocity) const;
+	virtual std::int32_t move_relative(const double position, const std::int32_t velocity) const = 0;
 
 	/**
 	 * Sets the velocity for the motor.
@@ -225,7 +260,7 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t move_velocity(const std::int32_t velocity) const;
+	virtual std::int32_t move_velocity(const std::int32_t velocity) const = 0;
 
 	/**
 	 * Sets the output voltage for the motor from -12000 to 12000 in millivolts.
@@ -251,10 +286,10 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t move_voltage(const std::int32_t voltage) const;
+	virtual std::int32_t move_voltage(const std::int32_t voltage) const = 0;
 
-	std::int32_t brake(void) const;
-	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
+	virtual std::int32_t brake(void) const = 0;
+	virtual std::int32_t modify_profiled_velocity(const std::int32_t velocity) const = 0;
 	/**
 	 * Gets the target position set for the motor by the user, with a parameter
 	 * for the motor index.
@@ -278,8 +313,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index = 0) const;
-	std::vector<double> get_target_position_all(void) const;
+	virtual double get_target_position(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_target_position_all(void) const = 0;
 
 	/**
 	 * Gets the velocity commanded to the motor by the user.
@@ -305,8 +340,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_target_velocity(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_target_velocity_all(void) const;
+	virtual std::int32_t get_target_velocity(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_target_velocity_all(void) const = 0;
 
 	///@}
 
@@ -336,8 +371,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_actual_velocity(const std::uint8_t index = 0) const;
-	std::vector<double> get_actual_velocity_all(void) const;
+	virtual double get_actual_velocity(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_actual_velocity_all(void) const = 0;
 
 	/**
 	 * Gets the current drawn by the motor in mA.
@@ -362,8 +397,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_current_draw(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_current_draw_all(void) const;
+	virtual std::int32_t get_current_draw(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_current_draw_all(void) const = 0;
 
 	/**
 	 * Gets the direction of movement for the motor.
@@ -388,8 +423,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_direction(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_direction_all(void) const;
+	virtual std::int32_t get_direction(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_direction_all(void) const = 0;
 
 	/**
 	 * Gets the efficiency of the motor in percent.
@@ -418,8 +453,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_efficiency(const std::uint8_t index = 0) const;
-	std::vector<double> get_efficiency_all(void) const;
+	virtual double get_efficiency(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_efficiency_all(void) const = 0;
 
 	/**
 	 * Gets the faults experienced by the motor.
@@ -447,8 +482,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::uint32_t get_faults(const std::uint8_t index = 0) const;
-	std::vector<std::uint32_t> get_faults_all(void) const;
+	virtual std::uint32_t get_faults(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::uint32_t> get_faults_all(void) const = 0;
 	/**
 	 * Gets the flags set by the motor's operation.
 	 *
@@ -476,8 +511,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::uint32_t get_flags(const std::uint8_t index = 0) const;
-	std::vector<std::uint32_t> get_flags_all(void) const;
+	virtual std::uint32_t get_flags(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::uint32_t> get_flags_all(void) const = 0;
 
 	/**
 	 * Gets the absolute position of the motor in its encoder units.
@@ -502,8 +537,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_position(const std::uint8_t index = 0) const;
-	std::vector<double> get_position_all(void) const;
+	virtual double get_position(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_position_all(void) const = 0;
 
 	/**
 	 * Gets the power drawn by the motor in Watts.
@@ -528,8 +563,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_power(const std::uint8_t index = 0) const;
-	std::vector<double> get_power_all(void) const;
+	virtual double get_power(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_power_all(void) const = 0;
 	/**
 	 * Gets the raw encoder count of the motor at a given timestamp.
 	 *
@@ -559,8 +594,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const;
+	virtual std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const = 0;
 
 	/**
 	 * Gets the temperature of the motor in degrees Celsius.
@@ -585,8 +620,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_temperature(const std::uint8_t index = 0) const;
-	std::vector<double> get_temperature_all(void) const;
+	virtual double get_temperature(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_temperature_all(void) const = 0;
 	/**
 	 * Gets the torque generated by the motor in Newton Meters (Nm).
 	 *
@@ -610,8 +645,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	double get_torque(const std::uint8_t index = 0) const;
-	std::vector<double> get_torque_all(void) const;
+	virtual double get_torque(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<double> get_torque_all(void) const = 0;
 	/**
 	 * Gets the voltage delivered to the motor in millivolts.
 	 *
@@ -635,8 +670,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_voltage(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_voltage_all(void) const;
+	virtual std::int32_t get_voltage(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_voltage_all(void) const = 0;
 
 	/**
 	 * Checks if the motor is drawing over its current limit.
@@ -662,8 +697,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_over_current(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> is_over_current_all(void) const;
+	virtual std::int32_t is_over_current(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> is_over_current_all(void) const = 0;
 
 	/**
 	 * Gets the temperature limit flag for the motor.
@@ -688,8 +723,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_over_temp(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> is_over_temp_all(void) const;
+	virtual std::int32_t is_over_temp(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> is_over_temp_all(void) const = 0;
 
 	///@}
 
@@ -716,8 +751,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	Motor_Brake get_brake_mode(const std::uint8_t index = 0) const;
-	std::vector<Motor_Brake> get_brake_mode_all(void) const;
+	virtual Motor_Brake get_brake_mode(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<Motor_Brake> get_brake_mode_all(void) const = 0;
 
 	/**
 	 * Gets the current limit for the motor in mA.
@@ -742,8 +777,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_current_limit(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_current_limit_all(void) const;
+	virtual std::int32_t get_current_limit(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_current_limit_all(void) const = 0;
 
 	/**
 	 * Gets the encoder units that were set for the motor.
@@ -763,8 +798,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	Motor_Units get_encoder_units(const std::uint8_t index = 0) const;
-	std::vector<Motor_Units> get_encoder_units_all(void) const;
+	virtual Motor_Units get_encoder_units(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<Motor_Units> get_encoder_units_all(void) const = 0;
 
 	/**
 	 * Gets the gearset that was set for the motor.
@@ -784,15 +819,15 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	Motor_Gears get_gearing(const std::uint8_t index = 0) const;
-	std::vector<Motor_Gears> get_gearing_all(void) const;
+	virtual Motor_Gears get_gearing(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<Motor_Gears> get_gearing_all(void) const = 0;
 
 	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
 	 *
-	 * @return std::vector<std::uint8_t>
+	 * @return std::vector<std::int8_t>
 	 */
-	std::vector<std::int8_t> get_port_all(void) const;
+	virtual std::vector<std::int8_t> get_port_all(void) const = 0;
 
 	/**
 	 * Gets the voltage limit set by the user.
@@ -815,8 +850,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t get_voltage_limit(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_voltage_limit_all(void) const;
+	virtual std::int32_t get_voltage_limit(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> get_voltage_limit_all(void) const = 0;
 
 	/**
 	 * Gets the operation direction of the motor as set by the user.
@@ -837,8 +872,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t is_reversed(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> is_reversed_all(void) const;
+	virtual std::int32_t is_reversed(const std::uint8_t index = 0) const = 0;
+	virtual std::vector<std::int32_t> is_reversed_all(void) const = 0;
 
 	/**
 	 * Sets one of Motor_Brake to the motor. Works with the C enum
@@ -863,10 +898,10 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_brake_mode(const Motor_Brake mode, const std::uint8_t index = 0) const;
-	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
-	std::int32_t set_brake_mode_all(const Motor_Brake mode) const;
-	std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const;
+	virtual std::int32_t set_brake_mode(const Motor_Brake mode, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_brake_mode_all(const Motor_Brake mode) const = 0;
+	virtual std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const = 0;
 	/**
 	 * Sets the current limit for the motor in mA.
 	 *
@@ -895,8 +930,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
-	std::int32_t set_current_limit_all(const std::int32_t limit) const;
+	virtual std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_current_limit_all(const std::int32_t limit) const = 0;
 	/**
 	 * Sets one of Motor_Units for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
@@ -920,10 +955,10 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_encoder_units(const Motor_Units units, const std::uint8_t index = 0) const;
-	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
-	std::int32_t set_encoder_units_all(const Motor_Units units) const;
-	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
+	virtual std::int32_t set_encoder_units(const Motor_Units units, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_encoder_units_all(const Motor_Units units) const = 0;
+	virtual std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const = 0;
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
 	 * the C++ enum class and the C enum.
@@ -947,11 +982,10 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const Motor_Gears gearset, const std::uint8_t index = 0) const;
-	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
-	std::int32_t set_gearing_all(const Motor_Gears gearset) const;
-	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
-
+	virtual std::int32_t set_gearing(const Motor_Gears gearset, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_gearing_all(const Motor_Gears gearset) const = 0;
+	virtual std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const = 0;
 
 	/**
 	 * Sets the reverse flag for the motor.
@@ -977,8 +1011,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_reversed(const bool reverse, const std::uint8_t index = 0);
-	std::int32_t set_reversed_all(const bool reverse);
+	virtual std::int32_t set_reversed(const bool reverse, const std::uint8_t index = 0) = 0;
+	virtual std::int32_t set_reversed_all(const bool reverse) = 0;
 
 	/**
 	 * Sets the voltage limit for the motor in Volts.
@@ -1008,8 +1042,8 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_voltage_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
-	std::int32_t set_voltage_limit_all(const std::int32_t limit) const;
+	virtual std::int32_t set_voltage_limit(const std::int32_t limit, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_voltage_limit_all(const std::int32_t limit) const = 0;
 
 	/**
 	 * Sets the position for the motor in its encoder units.
@@ -1040,8 +1074,8 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 *
 	 */
-	std::int32_t set_zero_position(const double position, const std::uint8_t index = 0) const;
-	std::int32_t set_zero_position_all(const double position) const;
+	virtual std::int32_t set_zero_position(const double position, const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t set_zero_position_all(const double position) const = 0;
 
 	/**
 	 * Sets the "absolute" zero position of the motor to its current position.
@@ -1065,25 +1099,23 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t tare_position(const std::uint8_t index = 0) const;
-	std::int32_t tare_position_all(void) const;
-
+	virtual std::int32_t tare_position(const std::uint8_t index = 0) const = 0;
+	virtual std::int32_t tare_position_all(void) const = 0;
+	virtual std::int8_t get_port(const std::uint8_t index = 0) const = 0;
 	/**
 	 * @brief Returns the number of objects
 	 *
 	 * @return std::int8_t
 	 */
-	std::int8_t size(void) const;
+	virtual std::int8_t size(void) const = 0;
 
-	std::int8_t get_port(const std::uint8_t index = 0) const;
-
+	///@}
 	private:
-	std::int8_t _port;
 };
-namespace literals {
-const pros::Motor operator"" _mtr(const unsigned long long int m);
-const pros::Motor operator"" _rmtr(const unsigned long long int m);
-}  // namespace literals
-}  // namespace v5
-}  // namespace pros
-#endif  // _PROS_MOTORS_HPP_
+
+///@}
+
+} // namespace v5
+} // namespace pros
+
+#endif
