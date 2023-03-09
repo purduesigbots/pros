@@ -37,7 +37,7 @@ class Device {
 	 *
 	 * \return The device type as an enum.
 	 */
-	pros::DeviceType get_type() const;
+	pros::DeviceType get_plugged_type() const;
 
 	protected:
 	/**

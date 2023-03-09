@@ -88,17 +88,6 @@ void opcontrol() {
 		left_mtr = left;
 		right_mtr = right;
 
-
-		/*
-		pros::Rotation rot(10);	
-		pros::Device test = rot;
-		pros::Rotation rot(10);
-	
-		pros::c::v5_device_e typea = rot.get_type();
-		pros::c::v5_device_e  typeb = test.get_type();
-		printf("dev: %d, general: %d, genport: %d, devport: %d\n", typea, typeb, test.get_port(), rot.get_port());
-		*/
-
-		pros::delay(1000 * 2); 	
+		pros::delay(20);
 	}
 }
