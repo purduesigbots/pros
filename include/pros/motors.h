@@ -150,7 +150,7 @@ int32_t motor_brake(int8_t port);
  * }
  * \endcode
  */
-int32_t motor_move_absolute(int8_t port, const double position, const int32_t velocity);
+int32_t motor_move_absolute(int8_t port, double position, const int32_t velocity);
 
 /**
  * Sets the relative target position for the motor to move to.
