@@ -503,6 +503,58 @@ int32_t serctl(const uint32_t action, void* const extra_arg);
 int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
 
 /**
+ * Sets the reverse flag for the motor.
+ *
+ * This will invert its movements and the values returned for its position.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param reverse
+ *        True reverses the motor, false is default
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_set_reversed(1, true);
+ *   printf("Is this motor reversed? %d\n", motor_is_reversed(1));
+ * }
+ * \endcode
+ */
+int32_t motor_set_reversed(int8_t port, const bool reverse);
+
+/**
+ * Gets the operation direction of the motor as set by the user.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return 1 if the motor has been reversed and 0 if the motor was not reversed,
+ * or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Is the motor reversed? %d\n", motor_is_reversed(1));
+ *   // Prints "Is the motor reversed? 0"
+ * }
+ * \endcode
+ */
+int32_t motor_is_reversed(int8_t port);
+
+/**
  * Action macro to pass into serctl or fdctl that activates the stream
  * identifier.
  *

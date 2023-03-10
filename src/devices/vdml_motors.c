@@ -17,6 +17,7 @@
 #include "kapi.h"
 #include "pros/colors.h"
 #include "pros/motors.h"
+#include "pros/apix.h"
 #include "v5_api.h"
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
