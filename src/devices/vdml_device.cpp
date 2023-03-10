@@ -23,22 +23,21 @@
 namespace pros {
 inline namespace v5 {
 
-	std::uint8_t Device::get_port(void) {
-		return _port;
+std::uint8_t Device::get_port(void) {
+	return _port;
+}
+
+pros::DeviceType Device::get_plugged_type() const {
+	if (!port_mutex_take(_port - 1)) {                            
+		errno = EACCES; 
+		return DeviceType::undefined;                                                                           
 	}
-
+	DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(_port - 1);
 	
-	pros::DeviceType Device::get_plugged_type() const {
-		if (!port_mutex_take(_port - 1)) {                            
-			errno = EACCES; 
-			return DeviceType::undefined;                                                                           
-		}
-		DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(_port - 1);
-		
-		return_port(_port - 1, type);
-    }
+	return_port(_port - 1, type);
+}
 
-	Device::Device(const std::uint8_t port) : _port(port) {}
+Device::Device(const std::uint8_t port) : _port(port) {}
 
 
 }  // namespace v5
