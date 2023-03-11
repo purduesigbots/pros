@@ -93,6 +93,7 @@ double motor_get_target_position(int8_t port) {
 	port = abs(port);
 	claim_port_f(port - 1, E_DEVICE_MOTOR);
 	double rtn = vexDeviceMotorTargetGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -100,6 +101,7 @@ int32_t motor_get_target_velocity(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVelocityGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -109,6 +111,7 @@ double motor_get_actual_velocity(int8_t port) {
 	port = abs(port);
 	claim_port_f(port - 1, E_DEVICE_MOTOR);
 	double rtn = vexDeviceMotorActualVelocityGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -123,6 +126,7 @@ int32_t motor_get_direction(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorDirectionGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -165,6 +169,7 @@ int32_t motor_get_raw_position(int8_t port, uint32_t* const timestamp) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorPositionRawGet(device->device_info, timestamp);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -172,6 +177,7 @@ double motor_get_position(int8_t port) {
 	port = abs(port);
 	claim_port_f(port - 1, E_DEVICE_MOTOR);
 	double rtn = vexDeviceMotorPositionGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -179,6 +185,7 @@ double motor_get_power(int8_t port) {
 	port = abs(port);
 	claim_port_f(port - 1, E_DEVICE_MOTOR);
 	double rtn = vexDeviceMotorPowerGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
@@ -200,6 +207,7 @@ int32_t motor_get_voltage(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVoltageGet(device->device_info);
+	if (port < 0) rtn = -rtn;
 	return_port(port - 1, rtn);
 }
 
