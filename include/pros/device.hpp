@@ -24,6 +24,11 @@
 namespace pros {
 inline namespace v5 {
 
+/*
+ * Enum of possible v5 devices.
+ *
+ * Contains all current V5 Devices.
+ */
 enum class DeviceType {
 	none = 0,
 	motor = 2,
@@ -71,7 +76,6 @@ class Device {
 	 *
 	 * \param port The V5 port number from 1-21
 	 * \param deviceType The type of the constructed device
-	 *
 	 */
 	Device(const std::uint8_t port, const enum DeviceType deviceType) : _port(port), _deviceType(deviceType) {}
 

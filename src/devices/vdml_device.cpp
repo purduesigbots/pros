@@ -26,4 +26,3 @@ bool Device::is_installed() {
 
 }
 }
-
