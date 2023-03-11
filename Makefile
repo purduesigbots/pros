@@ -17,7 +17,7 @@ EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
 C_STANDARD=gnu11
-CXX_STANDARD=gnu++2a
+CXX_STANDARD=gnu++20
 
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
