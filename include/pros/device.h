@@ -48,9 +48,9 @@ typedef enum v5_device_e {
 } v5_device_e_t;
 
 /**
-	 * Gets the type of device on given port.
-	 *
-	 * \return The device type as an enum.
+ * Gets the type of device on given port.
+ *
+ * \return The device type as an enum.
 */
 v5_device_e_t get_plugged_type(uint8_t port);
 
