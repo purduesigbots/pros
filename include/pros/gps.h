@@ -41,6 +41,16 @@ namespace pros {
  */
 
 /**
+ * \struct gps_position_s_t
+ */
+typedef struct __attribute__((__packed__)) gps_position_s {
+	/// X Position (meters)
+	double x;
+	/// Y Position (meters)
+	double y;
+} gps_position_s_t;
+
+/**
  * \struct gps_status_s_t
  */
 typedef struct __attribute__((__packed__)) gps_status_s {
@@ -177,6 +187,24 @@ int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
 gps_status_s_t gps_get_status(uint8_t port);
 
 /**
+ * Gets the x and y position on the field of the GPS in meters.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ *
+ * \return A struct (gps_position_s_t) containing values mentioned above.
+ * If the operation failed, all the structure's members are filled with
+ * PROS_ERR_F and errno is set.
+ */
+gps_position_s_t gps_get_position(uint8_t port);
+
+/**
  * Get the GPS's raw gyroscope values
  *
  * This function uses the following values of errno when an error state is
@@ -209,7 +237,7 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
 gps_accel_s_t gps_get_accel(uint8_t port);
 
 /**
- * Get the GPS's location relative to the center of turning/origin in meters.
+ * Get the GPS's cartesian location relative to the center of turning/origin in meters.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -219,11 +247,7 @@ gps_accel_s_t gps_get_accel(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * \param  xOffset
- * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
- * \param  yOffset
- * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
- * \return 1 if the operation was successful or PROS_ERR if the operation
+ * \return A struct (gps_position_s_t) containing the X and Y values if the operation
  * failed, setting errno.
  * 
  * \b Example
@@ -231,18 +255,17 @@ gps_accel_s_t gps_get_accel(uint8_t port);
  * #define GPS_PORT 1
  * 
  * void opcontrol() {
- *   int *x;
- *   int *y;
+ *   gps_position_s_t pos;
  * 
  *   while (true) {
- *     gps_get_offset(GPS_PORT, x, y);
- *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", *x, *y);
+ *     pos = gps_get_offset(GPS_PORT, x, y);
+ *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
  *     delay(20);
  *   }
  * }
  * \endcode
  */
-int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
+gps_position_s_t gps_get_offset(uint8_t port);
 
 /**
  * Sets the robot's location relative to the center of the field in meters.
