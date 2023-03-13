@@ -75,6 +75,7 @@ class Device {
 	 * Creates a Device object.
 	 *
 	 * \param port The V5 port number from 1-21
+	 * 
 	 * \param deviceType The type of the constructed device
 	 */
 	Device(const std::uint8_t port, const enum DeviceType deviceType) : _port(port), _deviceType(deviceType) {}
