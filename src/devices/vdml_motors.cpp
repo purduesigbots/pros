@@ -510,9 +510,7 @@ std::int32_t Motor::set_voltage_limit_all(const std::int32_t limit) const {
 std::int8_t Motor::size() const {
 	return 1;
 }
-DeviceType Motor::get_type() const {
-	return DeviceType::motor;
-}
+
 std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 	os << "Motor [";
 	os << "port: " << motor.get_port();
@@ -532,7 +530,6 @@ std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 	os << "]";
 	return os;
 }
-
 
 }  // namespace v5
 namespace literals {

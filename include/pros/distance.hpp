@@ -120,13 +120,7 @@ class Distance : public Device {
      * object size: (object size), object velocity: (object velocity)]
      */
 	friend std::ostream& operator<<(std::ostream& os, pros::Distance& distance);
-
-	/**
-     * Returns the type of device
-     *
-	 */
-	pros::DeviceType get_type() const;
-
+	
 	private:
 	///@}
 };

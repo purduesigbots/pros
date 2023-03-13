@@ -325,12 +325,6 @@ class Gps : public Device {
 	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
-
-	/**
-	 * Returns the type of device
-	 *
-	 */
-	pros::DeviceType get_type() const;
 ///@}
 };  // Gps Class
 
