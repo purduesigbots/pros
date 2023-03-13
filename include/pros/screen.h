@@ -151,7 +151,7 @@ namespace c {
  * }
  * \endcode
  */
-uint32_t screen_set_pen(color_e_t color);
+uint32_t screen_set_pen(uint32_t color);
 
 /**
  * Set the eraser color for erasing and the current background.
@@ -180,7 +180,7 @@ uint32_t screen_set_pen(color_e_t color);
  * }
  * \endcode
  */
-uint32_t screen_set_eraser(color_e_t color);
+uint32_t screen_set_eraser(uint32_t color);
 
 /**
  *  Get the current pen color.

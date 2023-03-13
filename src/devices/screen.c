@@ -36,7 +36,7 @@ typedef struct touch_event_position_data_s {
 	int16_t y;
 } touch_event_position_data_s_t;
 
-uint32_t screen_set_pen(color_e_t color){
+uint32_t screen_set_pen(uint32_t color){
 	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
 		errno = EACCES;
 		return PROS_ERR;
@@ -49,7 +49,7 @@ uint32_t screen_set_pen(color_e_t color){
 	}
 }
 
-uint32_t screen_set_eraser(color_e_t color){
+uint32_t screen_set_eraser(uint32_t color){
 	if (!mutex_take(_screen_mutex, TIMEOUT_MAX)) {
 		errno = EACCES;
 		return PROS_ERR;
