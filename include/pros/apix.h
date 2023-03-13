@@ -28,6 +28,7 @@
 #define _PROS_API_EXTENDED_H_
 
 #include "api.h"
+#include "pros/device.h"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"
 #pragma GCC diagnostic pop
@@ -370,28 +371,6 @@ void queue_reset(queue_t queue);
 /// \name Device Registration
 ///@{
 
-/*
- * List of possible v5 devices
- *
- * This list contains all current V5 Devices, and mirrors V5_DeviceType from the
- * api.
- */
-typedef enum v5_device_e {
-	E_DEVICE_NONE = 0,
-	E_DEVICE_MOTOR = 2,
-	E_DEVICE_ROTATION = 4,
-	E_DEVICE_IMU = 6,
-	E_DEVICE_DISTANCE = 7,
-	E_DEVICE_RADIO = 8,
-	E_DEVICE_VISION = 11,
-	E_DEVICE_ADI = 12,
-	E_DEVICE_OPTICAL = 16,
-	E_DEVICE_GPS = 20,
-	E_DEVICE_SERIAL = 129,
-	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
-	E_DEVICE_UNDEFINED = 255
-} v5_device_e_t;
-
 /**
  * Registers a device in the given zero-indexed port
  *
@@ -501,6 +480,58 @@ int32_t serctl(const uint32_t action, void* const extra_arg);
  * 		  	An argument to pass in based on the action
  */
 int32_t fdctl(int file, const uint32_t action, void* const extra_arg);
+
+/**
+ * Sets the reverse flag for the motor.
+ *
+ * This will invert its movements and the values returned for its position.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ * \param reverse
+ *        True reverses the motor, false is default
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void autonomous() {
+ *   motor_set_reversed(1, true);
+ *   printf("Is this motor reversed? %d\n", motor_is_reversed(1));
+ * }
+ * \endcode
+ */
+int32_t motor_set_reversed(int8_t port, const bool reverse);
+
+/**
+ * Gets the operation direction of the motor as set by the user.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1-21
+ *
+ * \return 1 if the motor has been reversed and 0 if the motor was not reversed,
+ * or PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Is the motor reversed? %d\n", motor_is_reversed(1));
+ *   // Prints "Is the motor reversed? 0"
+ * }
+ * \endcode
+ */
+int32_t motor_is_reversed(int8_t port);
 
 /**
  * Action macro to pass into serctl or fdctl that activates the stream
