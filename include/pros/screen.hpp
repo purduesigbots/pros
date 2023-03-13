@@ -472,6 +472,13 @@ namespace lcd {
   extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
 
   /**
+  * Checks whether the emulated three-button LCD has already been initialized.
+  *
+  * \return True if the LCD has been initialized or false if not.
+  */
+  extern __attribute__((weak)) bool lcd_is_initialized(void);
+
+  /**
   * Displays a formatted string on the emulated three-button LCD screen.
   *
   * This function uses the following values of errno when an error state is
