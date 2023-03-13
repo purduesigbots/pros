@@ -25,6 +25,14 @@ namespace screen {
         return pros::c::screen_set_eraser(static_cast<pros::c::color_e_t>(color));
     }
 
+    std::uint32_t set_pen(std::uint32_t color){
+        return pros::c::screen_set_pen(static_cast<pros::c::color_e_t>(color));
+    }
+
+    std::uint32_t set_eraser(std::uint32_t color) {
+        return pros::c::screen_set_pen(static_cast<pros::c::color_e_t>(color));
+    }
+
     std::uint32_t get_pen(){
         return pros::c::screen_get_pen();
     }

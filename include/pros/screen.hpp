@@ -64,12 +64,26 @@ const char* convert_args(const std::string& arg) {
      * EACCESS - Another resource is currently trying to access the screen mutex.
      *
      * \param color	The pen color to set (it is recommended to use values
-     * 		 from the enum defined in colors.h)
+     * 		 from the enum defined in colors.hpp)
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_pen(pros::Color color);
+
+    /**
+     * Set the pen color for subsequent graphics operations
+     * 
+     * This function uses the following values of errno when an error state is
+     * reached:
+     * EACCESS - Another resource is currently trying to access the screen mutex.
+     *
+     * \param color	The pen color to set (in hex form)
+     * 
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
+     * there was an error either taking or returning the screen mutex.
+     */
+    std::uint32_t set_pen(std::uint32_t color);
 
     /**
      * Set the eraser color for erasing and the current background.
@@ -79,12 +93,26 @@ const char* convert_args(const std::string& arg) {
      * EACCESS - Another resource is currently trying to access the screen mutex.
      * 
      * \param color	The background color to set (it is recommended to use values
-     * 					from the enum defined in colors.h)
+     * 					from the enum defined in colors.hpp)
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
      */
     std::uint32_t set_eraser(pros::Color color);
+
+    /**
+     * Set the eraser color for erasing and the current background.
+     *
+     * This function uses the following values of errno when an error state is
+     * reached:
+     * EACCESS - Another resource is currently trying to access the screen mutex.
+     * 
+     * \param color	The background color to set to set (in hex form)
+     * 
+     * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
+     *  if there was an error either taking or returning the screen mutex.
+     */
+    std::uint32_t set_eraser(std::uint32_t color);
 
     /**
      *  Get the current pen color.
