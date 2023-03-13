@@ -34,7 +34,11 @@ class Device {
 
 	/**
 	 * Gets the type of device.
-	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Mutex of port cannot be taken (access denied).
+	 * 
 	 * \return The device type as an enum.
 	 */
 	pros::DeviceType get_plugged_type() const;
