@@ -476,7 +476,7 @@ namespace lcd {
   *
   * \return True if the LCD has been initialized or false if not.
   */
-  extern __attribute__((weak)) bool lcd_is_initialized(void);
+  extern __attribute__((weak)) bool is_initialized(void);
 
   /**
   * Displays a formatted string on the emulated three-button LCD screen.
