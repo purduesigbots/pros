@@ -18,15 +18,14 @@
 #include "pros/device.hpp"
 #include "vdml/vdml.h"
 
-namespace pros{
+namespace pros {
 inline namespace v5 {
 
 bool Device::is_installed() {
-    std::uint8_t port = _port - 1;
-    port_mutex_take(port);
-    DeviceType deviceType = (DeviceType) c::registry_get_plugged_type(port);
-    port_mutex_give(port);
-    return _deviceType == deviceType;
+    std::uint8_t zero_indexed_port = _port - 1;
+    port_mutex_take(zero_indexed_port);
+    pros::DeviceType plugged_device_type = (pros::DeviceType)pros::c::registry_get_plugged_type(port);
+	return_port(zero_indexed_port, _deviceType == plugged_device_type);
 }
 
 std::uint8_t Device::get_port(void) {

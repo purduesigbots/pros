@@ -44,12 +44,12 @@ enum class DeviceType {
 
 class Device {
 	public:
-  /**
+  	/**
 	 * Creates a Device object.
 	 *
 	 * \param port The V5 port number from 1-21
 	 */
-  explicit Device(const std::uint8_t port);
+  	explicit Device(const std::uint8_t port);
   
 	/**
 	 * Gets the port number of the Smart Device.
@@ -59,23 +59,13 @@ class Device {
 	std::uint8_t get_port(void);
 
 	/**
-	 * Gets the type of device.
-	 * 
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * EACCES - Mutex of port cannot be taken (access denied).
-	 * 
-	 * \return The device type as an enum.
-	 */
-
-	/**
 	 * Checks if the device is installed.
 	 * 
 	 * \return true if the corresponding device is installed, false otherwise.
 	*/
 	virtual bool is_installed();
 
-  /**
+  	/**
 	 * Gets the type of device.
 	 * 
 	 * This function uses the following values of errno when an error state is
@@ -95,13 +85,13 @@ class Device {
 	 * 
 	 * \param deviceType The type of the constructed device
 	 */
-	Device(const std::uint8_t port, const enum DeviceType deviceType) : _port(port), _deviceType(deviceType) {}
+	Device(const std::uint8_t port, const enum DeviceType deviceType) : 
+								_port(port), 
+								_deviceType(deviceType) {}
 
 	protected:
 	const std::uint8_t _port;
-	const enum DeviceType _deviceType;
-
-	
+	const enum DeviceType _deviceType = E_DEVICE_NONE;
 };
 }  // namespace v5
 }  // namespace pros
