@@ -91,7 +91,7 @@ class Device {
 
 	protected:
 	const std::uint8_t _port;
-	const enum DeviceType _deviceType = E_DEVICE_NONE;
+	const enum DeviceType _deviceType = pros::DeviceType::none;
 };
 }  // namespace v5
 }  // namespace pros
