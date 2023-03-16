@@ -206,12 +206,7 @@ class Link : public Device {
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
 	std::uint32_t clear_receive_buf();
-
-	/**
-     * Returns the type of device
-     *
-	 */
-	DeviceType get_type() const;
+  
 	///@}
 };
 }  // namespace pros

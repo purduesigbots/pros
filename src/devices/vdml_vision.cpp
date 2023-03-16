@@ -115,9 +115,5 @@ std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
 }
 
-pros::DeviceType Vision::get_type() const {
-	return pros::DeviceType::vision;
-}
-
 }  // namespace v5
 }  // namespace pros

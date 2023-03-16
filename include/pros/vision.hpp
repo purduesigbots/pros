@@ -443,13 +443,7 @@ class Vision : public Device {
 	 * failed, setting errno.
 	 */
 	std::int32_t set_wifi_mode(const std::uint8_t enable) const;
-
-	/**
-	 * Returns the type of device
-	 *
-	 */
-	DeviceType get_type() const;
-
+  
 	private:
 	///@}
 };

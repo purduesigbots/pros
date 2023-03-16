@@ -3,8 +3,6 @@
  *
  * Base class for all smart devices.
  *
- *
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -41,27 +39,34 @@ enum class DeviceType {
 	optical = 16,
 	gps = 20,
 	serial = 129,
-	generic __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = serial,
 	undefined = 255
 };
 
 class Device {
 	public:
+  /**
+	 * Creates a Device object.
+	 *
+	 * \param port The V5 port number from 1-21
+	 */
+  explicit Device(const std::uint8_t port);
+  
 	/**
 	 * Gets the port number of the Smart Device.
 	 *
 	 * \return The smart device's port number.
 	 */
-	std::uint8_t get_port(void) {
-		return _port;
-	}
+	std::uint8_t get_port(void);
 
 	/**
 	 * Gets the type of device.
-	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Mutex of port cannot be taken (access denied).
+	 * 
 	 * \return The device type as an enum.
 	 */
-	virtual DeviceType get_type() const = 0;
 
 	/**
 	 * Checks if the device is installed.
@@ -69,6 +74,18 @@ class Device {
 	 * \return true if the corresponding device is installed, false otherwise.
 	*/
 	virtual bool is_installed();
+
+  /**
+	 * Gets the type of device.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Mutex of port cannot be taken (access denied).
+	 * 
+	 * \return The device type as an enum.
+	 */
+	pros::DeviceType get_plugged_type() const;
+
 
 	protected:
 	/**

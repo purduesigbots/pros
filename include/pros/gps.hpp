@@ -326,11 +326,6 @@ class Gps : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 
-	/**
-	 * Returns the type of device
-	 *
-	 */
-	DeviceType get_type() const;
 ///@}
 };  // Gps Class
 

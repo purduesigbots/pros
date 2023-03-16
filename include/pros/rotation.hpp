@@ -207,11 +207,6 @@ class Rotation : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 
-	/**
-     * Returns the type of device
-     *
-	 */
-	DeviceType get_type() const;
 };
 
 namespace literals {

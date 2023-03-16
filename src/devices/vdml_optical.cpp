@@ -81,9 +81,6 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   return os;
 }
 
-pros::DeviceType Optical::get_type() const {
-	return pros::DeviceType::optical;
-}
 namespace literals {
 const pros::Optical operator"" _opt(const unsigned long long int o) {
   return pros::Optical(o);

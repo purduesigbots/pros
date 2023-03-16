@@ -139,10 +139,6 @@ std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	return os;
 }
 
-pros::DeviceType Imu::get_type() const {
-	return pros::DeviceType::imu;
-}
-
 namespace literals {
 const pros::Imu operator"" _imu(const unsigned long long int i) {
 	return pros::Imu(i);

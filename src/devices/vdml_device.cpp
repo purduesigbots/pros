@@ -1,7 +1,12 @@
 /**
- * \file pros/device.cpp
+ * \file devices/vdml_device.cpp
  *
- * Contains functions related to PROS devices.
+ * Base class for all smart devices.
+ *
+ *
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
  *
  * \copyright (c) 2017-2021, Purdue University ACM SIGBots.
  *
@@ -24,5 +29,22 @@ bool Device::is_installed() {
     return _deviceType == deviceType;
 }
 
+std::uint8_t Device::get_port(void) {
+	return _port;
 }
+
+pros::DeviceType Device::get_plugged_type() const {
+	if (!port_mutex_take(_port - 1)) {                            
+		errno = EACCES; 
+		return DeviceType::undefined;                                                                           
+	}
+	DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(_port - 1);
+	
+	return_port(_port - 1, type);
 }
+
+Device::Device(const std::uint8_t port) : _port(port) {}
+
+
+}  // namespace v5
+}  // namespace pros

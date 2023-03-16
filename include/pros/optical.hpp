@@ -241,13 +241,7 @@ class Optical : public Device {
 	 * brightness: (brightness), proximity: (proximity), rgb: {red, green, blue}]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
-
-	/**
-     * Returns the type of device
-     *
-	 */
-	DeviceType get_type() const;
-
+  
 	private:
 	///@}
 };

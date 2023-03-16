@@ -46,6 +46,7 @@
 
 #include "pros/adi.h"
 #include "pros/colors.h"
+#include "pros/device.h"
 #include "pros/distance.h"
 #include "pros/error.h"
 #include "pros/ext_adi.h"

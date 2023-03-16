@@ -71,9 +71,6 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
 	return os;
 }
 
-pros::DeviceType Rotation::get_type() const {
-	return pros::DeviceType::rotation;
-}
 namespace literals {
 const pros::Rotation operator"" _rot(const unsigned long long int r) {
     return pros::Rotation(r);
