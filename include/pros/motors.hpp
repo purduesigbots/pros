@@ -1077,8 +1077,6 @@ class Motor : public AbstractMotor, public Device {
 
 	std::int8_t get_port(const std::uint8_t index = 0) const;
 
-	DeviceType get_type() const;
-
 	private:
 	std::int8_t _port;
 };

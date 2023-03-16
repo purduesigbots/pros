@@ -54,8 +54,4 @@ std::uint32_t Link::receive(void* dest, std::uint16_t data_size) {
 std::uint32_t Link::clear_receive_buf() {
 	return pros::c::link_clear_receive_buf(_port);
 }
-
-pros::DeviceType Link::get_type() const {
-	return pros::DeviceType::radio;
-}
 }  // namespace pros
