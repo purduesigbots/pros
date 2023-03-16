@@ -499,6 +499,8 @@ std::int32_t Motor::set_reversed_all(const bool reverse) {
 	std::int8_t abs_port = std::abs(_port);
 	if (reverse) {
 		_port = -abs_port;
+	} else {
+		_port = abs_port;
 	}
 	return PROS_SUCCESS;
 }

@@ -108,6 +108,7 @@ namespace screen {
         extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
         extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
         extern __attribute__((weak)) bool initialize(void) {return false;}
+        extern __attribute__((weak)) bool is_initialized(void) {return false;}
         extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
         extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
 
