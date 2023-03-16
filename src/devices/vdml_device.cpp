@@ -24,7 +24,7 @@ inline namespace v5 {
 bool Device::is_installed() {
     std::uint8_t zero_indexed_port = _port - 1;
     port_mutex_take(zero_indexed_port);
-    pros::DeviceType plugged_device_type = (pros::DeviceType)pros::c::registry_get_plugged_type(port);
+    pros::DeviceType plugged_device_type = (pros::DeviceType)pros::c::registry_get_plugged_type(zero_indexed_port);
 	return_port(zero_indexed_port, _deviceType == plugged_device_type);
 }
 
