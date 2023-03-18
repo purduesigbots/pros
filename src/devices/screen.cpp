@@ -31,7 +31,7 @@ namespace screen {
     }
 
     std::uint32_t set_eraser(std::uint32_t color) {
-        return pros::c::screen_set_pen(color);
+        return pros::c::screen_set_eraser(color);
     }
 
     std::uint32_t get_pen(){
