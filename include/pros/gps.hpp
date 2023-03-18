@@ -44,18 +44,18 @@ class Gps : public Device {
 	 */
 
 	public:
-	explicit Gps(const std::uint8_t port) : Device(port){};
+	explicit Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
 
-	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port){
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port, DeviceType::gps){
 		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
 	};
 
-	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port){
+	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port, DeviceType::gps){
 		pros::c::gps_set_offset(port, xOffset, yOffset);
 	};
 
 	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
-	     : Device(port){
+	     : Device(port, DeviceType::gps){
 		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 	};
 
@@ -325,6 +325,7 @@ class Gps : public Device {
 	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
+
 ///@}
 };  // Gps Class
 

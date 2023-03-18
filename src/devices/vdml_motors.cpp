@@ -12,13 +12,14 @@
 
 #include "kapi.h"
 #include "pros/motors.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
 Motor::Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset, const pros::v5::Motor_Units encoder_units)
-    : Device(port), _port(port) {
+    : Device(port, DeviceType::motor), _port(port) {
 	set_gearing(gearset);
 	set_encoder_units(encoder_units);
 }

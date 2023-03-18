@@ -120,7 +120,7 @@ class Distance : public Device {
      * object size: (object size), object velocity: (object velocity)]
      */
 	friend std::ostream& operator<<(std::ostream& os, pros::Distance& distance);
-	
+  
 	private:
 	///@}
 };

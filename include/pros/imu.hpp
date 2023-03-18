@@ -62,7 +62,7 @@ class Imu : public Device {
 	
 
 	public:
-	explicit Imu(const std::uint8_t port) : Device(port) {};
+	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**
 	 * Calibrate IMU
@@ -495,6 +495,7 @@ class Imu : public Device {
 	 * gyro rate: {x,y,z}, get accel: {x,y,z}, calibrating: (calibrating boolean)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
+
 	///@}
 };
 

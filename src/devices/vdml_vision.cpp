@@ -11,12 +11,13 @@
  */
 
 #include "kapi.h"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port) {
+Vision::Vision(std::uint8_t port, vision_zero_e_t zero_point) : Device(port, DeviceType::vision) {
 	vision_set_zero_point(port, zero_point);
 }
 

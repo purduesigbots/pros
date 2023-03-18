@@ -39,7 +39,7 @@ class Rotation : public Device {
 	 */
 
 	public:
-	explicit Rotation(const std::uint8_t port) : Device(port) {};
+	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
 
 	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
 

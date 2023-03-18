@@ -66,6 +66,7 @@ class Link : public Device {
 	 */
 	explicit Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
 
+
 	/**
 	 * Checks if a radio link on a port is active or not.
 	 *
@@ -205,6 +206,7 @@ class Link : public Device {
 	 * \return PROS_ERR if port is not a link, 1 if the operation succeeded.
 	 */
 	std::uint32_t clear_receive_buf();
+  
 	///@}
 };
 }  // namespace pros

@@ -12,16 +12,17 @@
 
 #include "kapi.h"
 #include "pros/serial.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 using namespace pros::c;
 
-Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port) {
+Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port, DeviceType::serial) {
 	serial_enable(port);
 	set_baudrate(baudrate);
 }
 
-Serial::Serial(std::uint8_t port) : Device(port) {
+Serial::Serial(std::uint8_t port) : Device(port, DeviceType::serial) {
 	serial_enable(port);
 }
 

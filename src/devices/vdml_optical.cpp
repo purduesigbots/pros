@@ -11,12 +11,13 @@
  */
 
 #include "pros/optical.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Optical::Optical(std::uint8_t port) : Device(port) {}
+Optical::Optical(std::uint8_t port) : Device(port, DeviceType::optical) {}
 
 double Optical::get_hue(){
   return optical_get_hue(_port);

@@ -17,9 +17,10 @@
  */
 
 #include "pros/link.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
-Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : Device(port) {
+Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov) : Device(port, DeviceType::radio) {
 	(ov) ? pros::c::link_init_override(_port, link_id.c_str(), type) : pros::c::link_init(_port, link_id.c_str(), type);
 }
 

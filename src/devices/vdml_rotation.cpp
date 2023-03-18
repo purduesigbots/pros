@@ -11,11 +11,12 @@
  */
 
 #include "pros/rotation.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
     
-Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(port) {
+Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(port, DeviceType::rotation) {
 	pros::c::rotation_set_reversed(port, reverse_flag);
 }
 

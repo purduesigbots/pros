@@ -11,11 +11,12 @@
  */
 
 #include "pros/distance.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
 
-Distance::Distance(const std::uint8_t port) : Device(port) {}
+Distance::Distance(const std::uint8_t port) : Device(port, DeviceType::distance) {}
 
 std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);

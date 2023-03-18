@@ -241,7 +241,7 @@ class Optical : public Device {
 	 * brightness: (brightness), proximity: (proximity), rgb: {red, green, blue}]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
-
+  
 	private:
 	///@}
 };

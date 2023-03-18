@@ -11,6 +11,7 @@
  */
 
 #include "pros/imu.hpp"
+#include "vdml/vdml.h"
 
 namespace pros {
 inline namespace v5 {
