@@ -41,10 +41,10 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  @{
 	 */
 	public:
-	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
-	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
-	                    const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
+	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
+	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
+	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
 	std::int32_t operator=(const std::int32_t);
 
 	/// \name Motor movement functions
@@ -721,8 +721,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	Motor_Brake get_brake_mode(const std::uint8_t index = 0) const;
-	std::vector<Motor_Brake> get_brake_mode_all(void) const;
+	MotorBrake get_brake_mode(const std::uint8_t index = 0) const;
+	std::vector<MotorBrake> get_brake_mode_all(void) const;
 
 	/**
 	 * Gets the current limit for the motor in mA.
@@ -768,8 +768,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	Motor_Units get_encoder_units(const std::uint8_t index = 0) const;
-	std::vector<Motor_Units> get_encoder_units_all(void) const;
+	MotorUnits get_encoder_units(const std::uint8_t index = 0) const;
+	std::vector<MotorUnits> get_encoder_units_all(void) const;
 
 	/**
 	 * Gets the gearset that was set for the motor.
@@ -789,8 +789,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	Motor_Gears get_gearing(const std::uint8_t index = 0) const;
-	std::vector<Motor_Gears> get_gearing_all(void) const;
+	MotorGears get_gearing(const std::uint8_t index = 0) const;
+	std::vector<MotorGears> get_gearing_all(void) const;
 
 	/**
 	 * @brief Gets returns a vector with all the port numbers in the motor group.
@@ -870,9 +870,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_brake_mode(const Motor_Brake mode, const std::uint8_t index = 0) const;
+	std::int32_t set_brake_mode(const MotorBrake mode, const std::uint8_t index = 0) const;
 	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
-	std::int32_t set_brake_mode_all(const Motor_Brake mode) const;
+	std::int32_t set_brake_mode_all(const MotorBrake mode) const;
 	std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const;
 	/**
 	 * Sets the current limit for the motor in mA.
@@ -927,9 +927,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_encoder_units(const Motor_Units units, const std::uint8_t index = 0) const;
+	std::int32_t set_encoder_units(const MotorUnits units, const std::uint8_t index = 0) const;
 	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
-	std::int32_t set_encoder_units_all(const Motor_Units units) const;
+	std::int32_t set_encoder_units_all(const MotorUnits units) const;
 	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
@@ -954,9 +954,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const Motor_Gears gearset, const std::uint8_t index = 0) const;
+	std::int32_t set_gearing(const MotorGears gearset, const std::uint8_t index = 0) const;
 	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
-	std::int32_t set_gearing_all(const Motor_Gears gearset) const;
+	std::int32_t set_gearing_all(const MotorGears gearset) const;
 	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
 
 	/**
