@@ -79,4 +79,12 @@
 #include "pros/vision.hpp"
 #endif
 
+#ifdef _PROS_INCLUDE_LLEMU_H
+#include "pros/llemu.h"
+#endif
+
+#ifdef _PROS_INCLUDE_LLEMU_HPP
+#include "pros/llemu.hpp"
+#endif
+
 #endif  // _PROS_API_H_

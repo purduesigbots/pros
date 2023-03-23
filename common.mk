@@ -5,13 +5,23 @@ MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -D_POSIX_TIMERS -D_POSIX_MONOTONIC_CLOCK
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
 
+# Check if the llemu files exist, and if so, set a define that api.h
+# uses to conditionally include them
+ifneq (,$(wildcard ./include/pros/llemu.h))
+	CPPFLAGS += -D_PROS_INCLUDE_LLEMU_H
+endif
+ifneq (,$(wildcard ./include/pros/llemu.hpp))
+	CPPFLAGS += -D_PROS_INCLUDE_LLEMU_HPP
+endif
+
+
 WARNFLAGS+=-Wno-psabi
 
 SPACE := $() $()
 COMMA := ,
 
 C_STANDARD?=gnu11
-CXX_STANDARD?=gnu++20
+CXX_STANDARD?=gnu++2a
 
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR))
