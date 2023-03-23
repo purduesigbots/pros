@@ -53,6 +53,7 @@
 #include "pros/gps.h"
 #include "pros/imu.h"
 #include "pros/link.h"
+#include "pros/llemu.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
 #include "pros/optical.h"
@@ -69,6 +70,7 @@
 #include "pros/gps.hpp"
 #include "pros/imu.hpp"
 #include "pros/link.hpp"
+#include "pros/llemu.hpp"
 #include "pros/misc.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
@@ -77,14 +79,6 @@
 #include "pros/rtos.hpp"
 #include "pros/screen.hpp"
 #include "pros/vision.hpp"
-#endif
-
-#ifdef _PROS_INCLUDE_LLEMU_H
-#include "pros/llemu.h"
-#endif
-
-#ifdef _PROS_INCLUDE_LLEMU_HPP
-#include "pros/llemu.hpp"
 #endif
 
 #endif  // _PROS_API_H_
