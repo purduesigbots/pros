@@ -30,7 +30,6 @@ namespace c {
  * errno values as specified above.
  */
 bool __attribute__((weak)) lcd_print(int16_t line, const char* fmt, ...)  {
-    printf("pros::c::lcd_print() weak symbol called\n");
     return false;
 }
 
