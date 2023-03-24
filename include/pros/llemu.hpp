@@ -11,6 +11,19 @@
 /******************************************************************************/
 namespace pros {
 namespace lcd {
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wunused-function"
+    namespace {
+    template <typename T>
+    T convert_args(T arg) {
+        return arg;
+    }
+    const char* convert_args(const std::string& arg) {
+        return arg.c_str();
+    }
+    }  // namespace
+    #pragma GCC diagnostic pop
+
     using lcd_btn_cb_fn_t = void (*)(void);
 
     /**
@@ -108,7 +121,9 @@ namespace lcd {
      * errno values as specified above.
      */
     template <typename... Params>
-    extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args);
+    bool print(std::int16_t line, const char* fmt, Params... args) {
+	    return pros::c::lcd_print(line, fmt, convert_args(args)...);
+    }
 
     #ifndef LCD_BTN_LEFT
         #define LCD_BTN_LEFT 4
@@ -132,7 +147,7 @@ namespace lcd {
 /**   present. If it is, we conditionally include it so that it gets         **/
 /**   included into api.h.                                                   **/
 /******************************************************************************/
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
+#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
 #include "liblvgl/llemu.hpp"
 #endif
 

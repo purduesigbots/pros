@@ -3,6 +3,43 @@
 
 // TODO:? Should there be weak symbols for the C api in here as well?
 
+#include "stdint.h"
+
+#ifdef __cplusplus
+extern "C" {
+namespace pros {
+namespace c {
+#endif//__cplusplus
+
+/**
+ * Displays a formatted string on the emulated three-button LCD screen.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
+ * EINVAL - The line number specified is not in the range [0-7]
+ *
+ * \param line
+ *        The line on which to display the text [0-7]
+ * \param fmt
+ *        Format string
+ * \param ...
+ *        Optional list of arguments for the format string
+ *
+ * \return True if the operation was successful, or false otherwise, setting
+ * errno values as specified above.
+ */
+bool __attribute__((weak)) lcd_print(int16_t line, const char* fmt, ...)  {
+    printf("pros::c::lcd_print() weak symbol called\n");
+    return false;
+}
+
+#ifdef __cplusplus
+} // namespace c
+} // namespace pros
+} // extern "C"
+#endif//__cplusplus
+
 
 /******************************************************************************/
 /**                        LLEMU Conditional Include                         **/
@@ -13,7 +50,7 @@
 /**   included into api.h.                                                   **/
 /******************************************************************************/
 #ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
-#include "pros/llemu.h"
+#include "liblvgl/llemu.h"
 #endif
 
 #endif // _PROS_LLEMU_H_
