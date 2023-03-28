@@ -67,7 +67,7 @@ typedef struct screen_touch_status_s {
 #define TEXT_MEDIUM pros::E_TEXT_MEDIUM
 #define TEXT_LARGE pros::E_TEXT_LARGE
 #define TEXT_MEDIUM_CENTER pros::E_TEXT_MEDIUM_CENTER
-#define TEXT_LARGE_CENTER pros::E_LARGE_CENTER
+#define TEXT_LARGE_CENTER pros::E_TEXT_LARGE_CENTER
 #define TOUCH_RELEASED pros::E_TOUCH_RELEASED
 #define TOUCH_PRESSED pros::E_TOUCH_PRESSED
 #define TOUCH_HELD pros::E_TOUCH_HELD
