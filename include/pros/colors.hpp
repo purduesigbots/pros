@@ -17,6 +17,13 @@
 
 
 namespace pros{
+
+/**
+ * @brief
+ * Enum class of possible colors
+ *
+ * Contains common colors, all members are self descriptive. 
+ */
 enum class Color {
   alice_blue = 0x00F0F8FF,
   antique_white = 0x00FAEBD7,

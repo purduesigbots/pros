@@ -25,6 +25,13 @@
 namespace pros {
 namespace c {
 #endif
+
+/**
+ * @brief
+ * Enum of possible colors
+ *
+ * Contains common colors, all members are self descriptive. 
+ */
 typedef enum color_e {
 	COLOR_ALICE_BLUE = 0x00F0F8FF,
 	COLOR_ANTIQUE_WHITE = 0x00FAEBD7,
