@@ -188,7 +188,6 @@ class Gps : public Device {
 	 * }
 	 * \endcode
 	 */
-	 */
 	virtual std::int32_t initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
 	                                     double yOffset) const;
 

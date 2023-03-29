@@ -310,13 +310,15 @@ int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity);
 /**
  * Gets the target position set for the motor by the user.
  *
+ * \note A negative port negates the return value
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The target position in its encoder units or PROS_ERR_F if the
  * operation failed, setting errno.
@@ -335,13 +337,15 @@ double motor_get_target_position(int8_t port);
 /**
  * Gets the velocity commanded to the motor by the user.
  *
+ * \note A negative port negates the return value
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The commanded motor velocity from +-100, +-200, or +-600, or PROS_ERR
  * if the operation failed, setting errno.
