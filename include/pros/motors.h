@@ -54,13 +54,15 @@ namespace c {
  *
  * \note This function will not respect brake modes, and simply sets the voltage to the desired value.
  * 
+ * \note A negative port will negate the input voltage
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param voltage
  *        The new motor voltage from -127 to 127
  *
@@ -89,18 +91,22 @@ int32_t motor_move(int8_t port, int32_t voltage);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  * 
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * 
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  * 
  * \b Example
- * \code {.language-id}
- * code
+ * \code 
+ * 	void autonomous() {
+ * 		motor_move(1, 127);
+ * 		delay(1000);
+ * 		motor_break(1);
+ * }
  * \endcode
  */
 int32_t motor_brake(int8_t port);
@@ -114,13 +120,15 @@ int32_t motor_brake(int8_t port);
  * \note This function simply sets the target for the motor, it does not block program
  * execution until the movement finishes. The example code shows how to block until a movement is finished.
  *
+ * \note A negative port number will negate the target position 
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21. 
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param position
  *        The absolute position to move to in the motor's encoder units
  * \param velocity
@@ -164,13 +172,15 @@ int32_t motor_move_absolute(int8_t port, double position, const int32_t velocity
  * program execution until the movement finishes. The example code shows how to
  * block until a movement is finished.
  *
+ * \note A negative port will negate the target position
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param position
  *        The relative position to move to in the motor's encoder units
  * \param velocity
@@ -206,13 +216,15 @@ int32_t motor_move_relative(int8_t port, double position, const int32_t velocity
  * is held with PID to ensure consistent speed, as opposed to setting the
  * motor's voltage.
  *
+ * \note A negative port will negate the velocity
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param velocity
  *        The new motor velocity from +-100, +-200, or +-600 depending on the
  *        motor's gearset
@@ -234,16 +246,18 @@ int32_t motor_move_velocity(int8_t port, const int32_t velocity);
 /**
  * Sets the output voltage for the motor from -12000 to 12000 in millivolts
  *
+ * \note A negative port negates the voltage
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  * 
  * \note This function will not respect brake modes, and simply sets the
  * voltage to the desired value.
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param voltage
  *        The new voltage value from -12000 to 12000
  *
@@ -266,13 +280,15 @@ int32_t motor_move_voltage(int8_t port, const int32_t voltage);
  * motor_move_relative). This will have no effect if the motor is not following
  * a profiled movement.
  *
+ * \note A negative port negates the velocity
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param velocity
  *        The new motor velocity from +-100, +-200, or +-600 depending on the
  *        motor's gearset
