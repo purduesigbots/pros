@@ -1919,6 +1919,4 @@ LEGACY_TYPEDEF(ADILed, pros::adi::Led);
 
 }  // namespace pros
 
-}  // namespace pros
-
 #endif  // _PROS_ADI_HPP_
