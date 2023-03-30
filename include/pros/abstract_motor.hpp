@@ -1136,4 +1136,6 @@ class AbstractMotor {
 } // namespace v5
 } // namespace pros
 
+///@}
+
 #endif
