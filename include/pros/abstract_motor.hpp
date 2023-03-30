@@ -1133,7 +1133,8 @@ class AbstractMotor {
 	private:
 };
 
-///@}
+// disabling on purpose for testing
+//@}
 
 } // namespace v5
 } // namespace pros
