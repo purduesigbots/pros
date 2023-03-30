@@ -62,7 +62,7 @@ class Imu : public Device {
 	
 
 	public:
-	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
+	Imu(const std::uint8_t port) : Device(port) {};
 
 	/**
 	 * Calibrate IMU
@@ -496,6 +496,11 @@ class Imu : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Imu& imu);
 
+	/**
+	* Returns the type of device
+	*
+	*/
+	pros::DeviceType get_type() const;
 	///@}
 };
 
