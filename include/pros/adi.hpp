@@ -349,7 +349,7 @@ class AnalogIn : protected Port {
 	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
-	 * -16384 to 
+	 * -16384 to 16384
 	 * 
 	 * \b Example
 	 * \code
