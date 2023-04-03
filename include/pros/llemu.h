@@ -5,6 +5,18 @@
 
 #include "stdint.h"
 
+/******************************************************************************/
+/**                        LLEMU Conditional Include                         **/
+/**                                                                          **/
+/**   When the libvgl versions of llemu.h is present, common.mk will         **/
+/**   define a macro which lets this file know that liblvgl's llemu.h   is   **/
+/**   present. If it is, we conditionally include it so that it gets         **/
+/**   included into api.h.                                                   **/
+/******************************************************************************/
+#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
+#include "liblvgl/llemu.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 namespace pros {
@@ -38,18 +50,5 @@ bool __attribute__((weak)) lcd_print(int16_t line, const char* fmt, ...)  {
 } // namespace pros
 } // extern "C"
 #endif//__cplusplus
-
-
-/******************************************************************************/
-/**                        LLEMU Conditional Include                         **/
-/**                                                                          **/
-/**   When the libvgl versions of llemu.h is present, common.mk will         **/
-/**   define a macro which lets this file know that liblvgl's llemu.h   is   **/
-/**   present. If it is, we conditionally include it so that it gets         **/
-/**   included into api.h.                                                   **/
-/******************************************************************************/
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
-#include "liblvgl/llemu.h"
-#endif
 
 #endif // _PROS_LLEMU_H_
