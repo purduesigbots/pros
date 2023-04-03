@@ -349,7 +349,7 @@ class AnalogIn : protected Port {
 	 * ENODEV - The port is not configured as an analog input
 	 *
 	 * \return The difference of the sensor value from its calibrated default from
-	 * -16384 to 
+	 * -16384 to 16384
 	 * 
 	 * \b Example
 	 * \code
@@ -498,7 +498,6 @@ class AnalogOut : private Port {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out);
 };
-
 ///@}
 
 class DigitalOut : private Port {
@@ -1429,6 +1428,10 @@ class Potentiometer : public AnalogIn {
 ///@}
 
 class Led : protected Port {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * @brief Configures an ADI port to act as a LED.
@@ -1714,12 +1717,16 @@ class Led : protected Port {
 	protected:
 	std::vector<uint32_t> _buffer;
 };
+///@}
 
-// Alias for ADILed
+/// @brief Alias for ADILed
 using LED = Led;
 
-
 class Pneumatics : public DigitalOut {
+	/**
+	 * \addtogroup cpp-adi
+	 *  @{
+	 */	
 	public:
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1879,6 +1886,7 @@ private:
 	bool active_low;
 	bool state;
 };
+///@}
 
 }  // namespace adi
 
@@ -1905,10 +1913,9 @@ LEGACY_TYPEDEF(ADILineSensor,pros::adi::LineSensor);
 LEGACY_TYPEDEF(ADILightSensor,pros::adi::LightSensor);
 LEGACY_TYPEDEF(ADIAccelerometer,pros::adi::Accelerometer);
 LEGACY_TYPEDEF(ADIButton,pros::adi::Button);
-
-///@}
-
-///@}
+LEGACY_TYPEDEF(ADIPneumatics,pros::adi::Pneumatics);
+LEGACY_TYPEDEF(ADILED, pros::adi::Led);
+LEGACY_TYPEDEF(ADILed, pros::adi::Led);
 
 }  // namespace pros
 

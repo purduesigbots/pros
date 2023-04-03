@@ -60,8 +60,18 @@ typedef void* sem_t;
  * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a
  * semaphore, etc.).
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#abort_delay for
- * details.
+ * \param task
+ *        The task to unblock
+ *
+ * \return True if the task was unblocked, false otherwise
+ * 
+ * \b Example:
+ * \code
+ * task_t task = task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ * task_delay(1000);
+ * task_abort_delay(task);
+ * \endcode
  */
 bool task_abort_delay(task_t task);
 

@@ -1,3 +1,20 @@
+/**
+ * \file abstract_motor.hpp
+ *
+ * Header containing the definition for the pure abstract motor class. For 
+ * template writers, along with its documentation. 
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * All rights reserved.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef _PROS_ABSTRACT_MOTORS_HPP_
 #define _PROS_ABSTRACT_MOTORS_HPP_
 
@@ -79,11 +96,12 @@ class AbstractMotor {
 	 */
 	public:
 	/// \name Motor movement functions
+	/// \addtogroup cpp-motor-movement
 	/// These functions allow programmers to make motors move
 	///@{
 
 	/**
-	 * Sets the voltage for the motor from -128 to 127.
+	 * Sets the voltage for the motor from -127 to 127.
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
@@ -346,6 +364,7 @@ class AbstractMotor {
 	///@}
 
 	/// \name Motor telemetry functions
+	/// \addtogroup cpp-motor-telemetry
 	/// These functions allow programmers to collect telemetry from motors
 	///@{
 
@@ -729,6 +748,7 @@ class AbstractMotor {
 	///@}
 
 	/// \name Motor configuration functions
+	/// \addtogroup cpp-motor-configuration
 	/// These functions allow programmers to configure the behavior of motors
 	///@{
 
@@ -1113,9 +1133,9 @@ class AbstractMotor {
 	private:
 };
 
-///@}
-
 } // namespace v5
 } // namespace pros
+
+///@}
 
 #endif
