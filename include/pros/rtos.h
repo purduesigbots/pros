@@ -45,24 +45,48 @@ namespace pros {
 /// \name Macros
 ///@{
 
-/// The highest priority that can be assigned to a task. Beware of deadlock.
+
+/**
+ * The highest priority that can be assigned to a task.
+ * 
+ * A task with this priority will always run if it is available to. Beware of
+ * deadlocks when using this priority.
+ */
 #define TASK_PRIORITY_MAX 16
 
 /// The lowest priority that can be assigned to a task.
 /// This may cause severe performance problems and is generally not recommended.
+
+/**
+ * The lowest priority that can be assigned to a task.
+ *
+ * This can cause severe performance problems and is generally not recommended
+ * that users use this priority.
+ */
 #define TASK_PRIORITY_MIN 1
 
-/// The default task priority, which should be used for most tasks.
-/// Default tasks such as autonomous() inherit this priority.
+/**
+ * The default task priority, which should be used for most tasks unless you
+ * have a specific need for a higher or lower priority task.
+ * 
+ * The default tasks, such as autonomous(), are run with this priority
+ */
 #define TASK_PRIORITY_DEFAULT 8
 
-/// The recommended stack size for a new task. This stack size is used for
-/// default tasks such as autonomous(). This equates to 32,768 bytes, or 128
-/// times the default stack size for a task in PROS 2.
+/**
+ * The recommended stack size for a new task.
+ * 
+ * This stack size is used for the default tasks such as autonomous(). This
+ * size is 8,192 words, or 32,768 bytes. This should be enough for the majority
+ * of tasks
+ */
 #define TASK_STACK_DEPTH_DEFAULT 0x2000
 
-/// The minimal stack size for a task. This equates to 2048 bytes, or 8 times the
-/// default stack size for a task in PROS 2.
+/**
+ * The minimal stack size for a task.
+ * 
+ * This equates to  512 words, or 2,048 bytes. 
+ */
 #define TASK_STACK_DEPTH_MIN 0x200
 
 /// The maximum number of characters allowed in a task's name.
@@ -74,14 +98,18 @@ namespace pros {
 ///@}
 
 /**
- * \typedef
- * Points to a task handle. Used for referencing a task.
+ * \typedef task_t
+ * An opaque type that pontis to a task handle. This is used for referencing a
+ * task.
  */
 typedef void* task_t;
 
 /**
- * \typedef
- * Points to the function associated with a task.
+ * \typedef task_fn_t
+ * A pointer to a task's function. 
+ * 
+ * Such a function is called when a task starts, and exiting said function will
+ * terminate the task.
  */
 typedef void (*task_fn_t)(void*);
 
@@ -119,6 +147,8 @@ typedef enum {
 	E_NOTIFY_ACTION_NO_OWRITE
 } notify_action_e_t;
 
+
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define TASK_STATE_RUNNING pros::E_TASK_STATE_RUNNING
@@ -148,10 +178,19 @@ typedef enum {
 #endif
 
 /**
- * \typedef A [mutex.](@ref multitasking)
+ * \typedef mutex_t 
+ * A [mutex.](@ref multitasking)
+ * 
+ * A mutex is a synchronization object that can be used to protect a shared
+ * resource from being accessed by multiple tasks at the same time. A mutex can 
+ * be claimed by a task, which will prevent other tasks from claiming it until
+ * that task releases it.
  */
 typedef void* mutex_t;
 
+
+/// \name Macros 
+/// @{
 /**
  * \def Refers to the current task handle
  */
@@ -160,6 +199,7 @@ typedef void* mutex_t;
 #else
 #define CURRENT_TASK ((task_t)NULL)
 #endif
+/// @}
 
 #ifdef __cplusplus
 namespace c {
@@ -276,7 +316,7 @@ task_t task_create(task_fn_t function, void* const parameters, uint32_t prio, co
 void task_delete(task_t task);
 
 /**
- * Delays a task for a given number of milliseconds.
+ * Delays the current task for a given number of milliseconds.
  *
  * This is not the best method to have a task execute code at predefined
  * intervals, as the delay time is measured from when the delay is requested.
@@ -297,11 +337,31 @@ void task_delete(task_t task);
  */
 void task_delay(const uint32_t milliseconds);
 
+/**
+ * Delays the current task for a given number of milliseconds.
+ * 
+ * This is not the best method to have a task execute code at predefined
+ * intervals, as the delay time is measured from when the delay is requested.
+ * To delay cyclically, use task_delay_until().
+ * 
+ * \param milliseconds
+ *        The number of milliseconds to wait (1000 milliseconds per second)
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * while (true) {
+ *   // Do opcontrol things
+ *   delay(2);
+ *   }
+ * }
+ * \endcode
+ */
 void delay(const uint32_t milliseconds);
 
 /**
- * Delays a task until a specified time.  This function can be used by periodic
- * tasks to ensure a constant execution frequency.
+ * Delays the current task until a specified time.  This function can be used 
+ * by periodic tasks to ensure a constant execution frequency.
  *
  * The task will be woken up at the time *prev_time + delta, and *prev_time will
  * be updated to reflect the time at which the task will unblock.
