@@ -467,19 +467,31 @@ task_state_e_t task_get_state(task_t task);
  * \param task
  *        The task to suspend
  * 
- * \b Example
+ *\b Example
  * \code
- * void my_task_fn(void* ign) {
- *   // Do things
+ * mutex_t counter_mutex;
+ * int counter = 0;
+ * 
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     mutex_take(counter_mutex, TIMEOUT_MAX);// Mutexes are used for protecting shared resources
+ *     counter++;
+ *     mutex_give(counter_mutex);
+ *     pros::delay(10);
+ *   }
  * }
  * 
  * void opcontrol() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
- *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
- *   // Do things
- *   task_suspend(my_task); // The task will no longer execute
- *   // Do other things
- *   task_resume(my_task); // The task will resume execution
+ *   task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,;
+ * 
+ *   while(true) {
+ *     counter_mutex.take();
+ *     if(counter > 100) {
+ *       task_suspepend(task);
+ * 	   }
+ *     counter_mutex.give();
+ *     pros::delay(10);
+ *   }
  * }
  * \endcode
  */
@@ -493,18 +505,29 @@ void task_suspend(task_t task);
  * 
  * \b Example
  * \code
- * void my_task_fn(void* ign) {
- *   // Do things
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     // Do stuff
+ *     pros::delay(10);
+ *   }
+ * }
+ * 
+ * pros::Task task(my_task_fn);
+ * 
+ * void autonomous() {
+ *   task.resume();
+ * 
+ *  // Run autonomous , then suspend the task so it doesn't interfere run
+ *  // outside of autonomous or opcontrol
+ *  task.suspend();
  * }
  * 
  * void opcontrol() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
- *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
- *   // Do things
- *   task_suspend(my_task); // The task will no longer execute
- *   // Do other things
- *   task_resume(my_task); // The task will resume execution
+ *   task.resume();
+ *   // Opctonrol code here
+ *   task.suspend();
  * }
+ * 
  * \endcode
  */
 void task_resume(task_t task);
