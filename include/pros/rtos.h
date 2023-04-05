@@ -42,8 +42,10 @@ namespace pros {
  *  @{
  */
 
-/// \name Macros
-///@{
+/**
+ * \name Macros
+ * @{
+ */
 
 
 /**
@@ -53,9 +55,6 @@ namespace pros {
  * deadlocks when using this priority.
  */
 #define TASK_PRIORITY_MAX 16
-
-/// The lowest priority that can be assigned to a task.
-/// This may cause severe performance problems and is generally not recommended.
 
 /**
  * The lowest priority that can be assigned to a task.
@@ -89,10 +88,16 @@ namespace pros {
  */
 #define TASK_STACK_DEPTH_MIN 0x200
 
-/// The maximum number of characters allowed in a task's name.
+/**
+ * @brief
+ * The maximum number of characters allowed in a task's name.
+ */
 #define TASK_NAME_MAX_LEN 32
 
-/// The maximum timeout value that can be given to, for instance, a mutex grab.
+/**
+ * @brief
+ * The maximum timeout value that can be given to, for instance, a mutex grab.
+ */
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
 ///@}
@@ -115,36 +120,27 @@ typedef void (*task_fn_t)(void*);
 
 /**
  * \enum task_state_e_t
+ * \brief The state of a task.
  */
 typedef enum {
-	///The task is actively executing.
-	E_TASK_STATE_RUNNING = 0,
-	///The task exists and is available to run, but is not currently running.
-	E_TASK_STATE_READY,
-	///The task is delayed or blocked by a mutex, semaphore, or I/O operation.
-	E_TASK_STATE_BLOCKED,
-	///The task is supended using task_suspend.
-	E_TASK_STATE_SUSPENDED,
-	///The task has been deleted using task_delete.
-	E_TASK_STATE_DELETED,
-	///The task handle does not point to a current or past task.
-	E_TASK_STATE_INVALID
+	E_TASK_STATE_RUNNING = 0, ///< The task is actively executing.
+	E_TASK_STATE_READY, ///< The task exists and is available to run, but is not currently running.
+	E_TASK_STATE_BLOCKED, ///< The task is delayed or blocked by a mutex, semaphore, or I/O operation.
+	E_TASK_STATE_SUSPENDED, ///< The task is supended using task_suspend.
+	E_TASK_STATE_DELETED, ///< The task has been deleted using task_delete.
+	E_TASK_STATE_INVALID ///< The task handle does not point to a current or past task.
 } task_state_e_t;
 
 /**
  * \enum
+ * \brief The action to take when a task is notified.
  */
 typedef enum {
-	///The task’s notification value will not be touched.
-	E_NOTIFY_ACTION_NONE,
-	///The task’s notification value will be bitwise ORed with the new value.
-	E_NOTIFY_ACTION_BITS,
-	///The task’s notification value will be incremented by one, effectively using it as a notification counter.
-	E_NOTIFY_ACTION_INCR,
-	///The task’s notification value will be unconditionally set to the new value.
-	E_NOTIFY_ACTION_OWRITE,
-	///The task’s notification value will be set to the new value if the task does not already have a pending notification.
-	E_NOTIFY_ACTION_NO_OWRITE
+	E_NOTIFY_ACTION_NONE, ///< The task’s notification value will not be touched.
+	E_NOTIFY_ACTION_BITS, ///< The task’s notification value will be bitwise ORed with the new value.
+	E_NOTIFY_ACTION_INCR, ///< The task’s notification value will be incremented by one, effectively using it as a notification counter.
+	E_NOTIFY_ACTION_OWRITE, ///< The task’s notification value will be unconditionally set to the new value.
+	E_NOTIFY_ACTION_NO_OWRITE ///< The task’s notification value will be set to the new value if the task does not already have a pending notification.
 } notify_action_e_t;
 
 
@@ -189,8 +185,11 @@ typedef enum {
 typedef void* mutex_t;
 
 
-/// \name Macros 
-/// @{
+/**
+ * \name Macros
+ * @{
+ */
+
 /**
  * \def Refers to the current task handle
  */
@@ -205,8 +204,10 @@ typedef void* mutex_t;
 namespace c {
 #endif
 
-/// \name Functions
-/// @{
+/**
+ * \name Functions
+ * @{
+ */
 
 /**
  * Gets the number of milliseconds since PROS initialized.
@@ -466,19 +467,31 @@ task_state_e_t task_get_state(task_t task);
  * \param task
  *        The task to suspend
  * 
- * \b Example
+ *\b Example
  * \code
- * void my_task_fn(void* ign) {
- *   // Do things
+ * mutex_t counter_mutex;
+ * int counter = 0;
+ * 
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     mutex_take(counter_mutex, TIMEOUT_MAX);// Mutexes are used for protecting shared resources
+ *     counter++;
+ *     mutex_give(counter_mutex);
+ *     pros::delay(10);
+ *   }
  * }
  * 
  * void opcontrol() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
- *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
- *   // Do things
- *   task_suspend(my_task); // The task will no longer execute
- *   // Do other things
- *   task_resume(my_task); // The task will resume execution
+ *   task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,;
+ * 
+ *   while(true) {
+ *     counter_mutex.take();
+ *     if(counter > 100) {
+ *       task_suspepend(task);
+ * 	   }
+ *     counter_mutex.give();
+ *     pros::delay(10);
+ *   }
  * }
  * \endcode
  */
@@ -492,18 +505,29 @@ void task_suspend(task_t task);
  * 
  * \b Example
  * \code
- * void my_task_fn(void* ign) {
- *   // Do things
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     // Do stuff
+ *     pros::delay(10);
+ *   }
+ * }
+ * 
+ * pros::Task task(my_task_fn);
+ * 
+ * void autonomous() {
+ *   task.resume();
+ * 
+ *  // Run autonomous , then suspend the task so it doesn't interfere run
+ *  // outside of autonomous or opcontrol
+ *  task.suspend();
  * }
  * 
  * void opcontrol() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
- *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
- *   // Do things
- *   task_suspend(my_task); // The task will no longer execute
- *   // Do other things
- *   task_resume(my_task); // The task will resume execution
+ *   task.resume();
+ *   // Opctonrol code here
+ *   task.suspend();
  * }
+ * 
  * \endcode
  */
 void task_resume(task_t task);

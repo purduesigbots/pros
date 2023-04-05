@@ -142,17 +142,18 @@ typedef enum adi_potentiometer_type_e {
 namespace c {
 #endif
 
+/// @}
+
 /**
  * \ingroup c-adi
  */
 
 /**
  * \addtogroup c-adi
+ * \name General ADI Use Functions
+ * These functions allow for interaction with any ADI port type
  *  @{
  */
-/// \name General ADI Use Functions
-/// These functions allow for interaction with any ADI port type
-///@{
 
 /**
  * Gets the configuration for the given ADI port.
@@ -261,44 +262,6 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  * \endcode
  */
 int32_t adi_port_set_value(uint8_t port, int32_t value);
-
-///@}
-
-/// \name PROS 2 Compatibility Functions
-/// These functions provide similar functionality to the PROS 2 API
-///@{
-
-/**
- * Used for adi_digital_write() to specify a logic HIGH state to output.
- *
- * In reality, using any non-zero expression or "true" will work to set a pin to
- * HIGH.
- */
-#define HIGH 1
-/**
- * Used for adi_digital_write() to specify a logic LOW state to output.
- *
- * In reality, using a zero expression or "false" will work to set a pin to LOW.
- */
-#define LOW 0
-
-/**
- * adi_pin_mode() state for a digital input.
- */
-#define INPUT 0x00
-/**
- * adi_pin_mode() state for a digital output.
- */
-#define OUTPUT 0x01
-/**
- * adi_pin_mode() state for an analog input.
- */
-#define INPUT_ANALOG 0x02
-
-/**
- * adi_pin_mode() state for an analog output.
- */
-#define OUTPUT_ANALOG 0x03
 
 /**
  * Calibrates the analog sensor on the specified port and returns the new
@@ -1378,6 +1341,46 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  * \endcode
  */
 int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
+
+///@}
+
+/**
+ * \name Ease of use macro definitions
+ * These functions provide ease of use definitions for the ADI functions. 
+ */
+///@{
+
+/**
+ * Used for adi_digital_write() to specify a logic HIGH state to output.
+ *
+ * In reality, using any non-zero expression or "true" will work to set a pin to
+ * HIGH.
+ */
+#define HIGH 1
+/**
+ * Used for adi_digital_write() to specify a logic LOW state to output.
+ *
+ * In reality, using a zero expression or "false" will work to set a pin to LOW.
+ */
+#define LOW 0
+
+/**
+ * adi_pin_mode() state for a digital input.
+ */
+#define INPUT 0x00
+/**
+ * adi_pin_mode() state for a digital output.
+ */
+#define OUTPUT 0x01
+/**
+ * adi_pin_mode() state for an analog input.
+ */
+#define INPUT_ANALOG 0x02
+
+/**
+ * adi_pin_mode() state for an analog output.
+ */
+#define OUTPUT_ANALOG 0x03
 
 ///@}
 
