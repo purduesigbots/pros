@@ -34,21 +34,6 @@ namespace pros {
 #endif
 
 /**
- * \ingroup c-rtos
- */
-
-/**
- * \addtogroup c-rtos
- *  @{
- */
-
-/**
- * \name Macros
- * @{
- */
-
-
-/**
  * The highest priority that can be assigned to a task.
  * 
  * A task with this priority will always run if it is available to. Beware of
@@ -182,32 +167,15 @@ typedef enum {
  */
 typedef void* mutex_t;
 
-
-/**
- * \name Macros
- * @{
- */
-
-/**
- * def Refers to the current task handle
- */
 #ifdef __cplusplus
 #define CURRENT_TASK ((pros::task_t)NULL)
 #else
 #define CURRENT_TASK ((task_t)NULL)
 #endif
-/** @} Name: Macros */
 
 #ifdef __cplusplus
 namespace c {
 #endif
-
-/** \ingroup c-rtos */
-
-/**
- * \name Functions
- * @{
- */
 
 /**
  * Gets the number of milliseconds since PROS initialized.
@@ -884,10 +852,6 @@ bool mutex_give(mutex_t mutex);
  * \endcode
  */
 void mutex_delete(mutex_t mutex);
-
-/** @} Name: Functions */
-
-/** @} Add to group: c-rtos */
 
 #ifdef __cplusplus
 }  // namespace c
