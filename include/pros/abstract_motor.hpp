@@ -722,6 +722,22 @@ class AbstractMotor {
 	 * errno.
 	 */
 	virtual std::int32_t is_over_current(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of whether each motor is drawing over its current limit.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return 1 if the motor's current limit is being exceeded and 0 if the
+	 * current limit is not exceeded, or PROS_ERR if the operation failed, setting
+	 * errno.
+	 */
 	virtual std::vector<std::int32_t> is_over_current_all(void) const = 0;
 
 	/**
@@ -739,6 +755,21 @@ class AbstractMotor {
 	 * below the limit, or PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t is_over_temp(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the temperature limit flag(s) for the motor(s).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
+	 * below the limit, or PROS_ERR if the operation failed, setting errno.
+	 */
 	virtual std::vector<std::int32_t> is_over_temp_all(void) const = 0;
 
 	///@}
@@ -763,6 +794,21 @@ class AbstractMotor {
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	virtual MotorBrake get_brake_mode(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the brake mode(s) that was set for the motor(s).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing Motor_Brake(s), according to what was set for the
+	 * motor(s), or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 */
 	virtual std::vector<MotorBrake> get_brake_mode_all(void) const = 0;
 
 	/**
@@ -782,6 +828,23 @@ class AbstractMotor {
 	 * setting errno.
 	 */
 	virtual std::int32_t get_current_limit(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the current limit(s) for the motor(s) in mA.
+	 *
+	 * The default value is 2500 mA.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing the motor's/motors' current limit(s) in mA or PROS_ERR if the operation failed,
+	 * setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_current_limit_all(void) const = 0;
 
 	/**
@@ -799,6 +862,21 @@ class AbstractMotor {
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	virtual MotorUnits get_encoder_units(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the encoder units that were set for the motor(s).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector of Motor_Units according to what is set for the
+	 * motor(s) or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 */
 	virtual std::vector<MotorUnits> get_encoder_units_all(void) const = 0;
 
 	/**
@@ -816,6 +894,21 @@ class AbstractMotor {
 	 * or pros::Motor_Gears::invalid if the operation failed.
 	 */
 	virtual MotorGears get_gearing(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the gearset(s) that was/were set for the motor(s).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector of Motor_Gears according to what is set for the motor(s),
+	 * or pros::Motor_Gears::invalid if the operation failed.
+	 */
 	virtual std::vector<MotorGears> get_gearing_all(void) const = 0;
 
 	/**
@@ -843,6 +936,24 @@ class AbstractMotor {
 	 * setting errno.
 	 */
 	virtual std::int32_t get_voltage_limit(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the voltage limit(s) set by the user.
+	 *
+	 * Default value is 0V, which means that there is no software limitation
+	 * imposed on the voltage.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing the motor's/motors' voltage limit(s) in V or PROS_ERR if the operation failed,
+	 * setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_voltage_limit_all(void) const = 0;
 
 	/**
@@ -860,6 +971,21 @@ class AbstractMotor {
 	 * reversed, or PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t is_reversed(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the operation direction(s) of the motor(s) as set by the user.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return 1 if the motor has been reversed and 0 if the motor was not
+	 * reversed, or PROS_ERR if the operation failed, setting errno.
+	 */
 	virtual std::vector<std::int32_t> is_reversed_all(void) const = 0;
 
 	/**
