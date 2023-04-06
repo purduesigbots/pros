@@ -207,9 +207,6 @@ namespace c {
 /// \addtogroup c-rtos
 /// @{
 
-/// \name Functions
-/// @{
-
 /**
  * Gets the number of milliseconds since PROS initialized.
  *
@@ -518,9 +515,9 @@ void task_suspend(task_t task);
  * void autonomous() {
  *   task.resume();
  * 
- *  // Run autonomous , then suspend the task so it doesn't interfere run
- *  // outside of autonomous or opcontrol
- *  task.suspend();
+ *   // Run autonomous , then suspend the task so it doesn't interfere run
+ *   // outside of autonomous or opcontrol
+ *   task.suspend();
  * }
  * 
  * void opcontrol() {
@@ -647,7 +644,7 @@ task_t task_get_current();
  * \code
  * void my_task_fn(void* ign) {
  *   while(task_notify_take(true, TIMEOUT_MAX)) {
- *   puts("I was unblocked!");
+ *     puts("I was unblocked!");
  *   }
  * }
  * 
@@ -656,7 +653,7 @@ task_t task_get_current();
  *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
  *   while(true) {
  *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
- *     task_notify(my_task);
+ *       task_notify(my_task);
  *     }
  *   }
  * }
@@ -722,7 +719,33 @@ void task_join(task_t task);
  * 
  * \b Example
  * \code
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     // Wait until we have been notified 20 times before running the code
+ *     if(task_notify_take(false, TIMEOUT_MAX) == 20) {
+ *       // ... Code to do stuff here ...
  * 
+ *       // Reset the notification counter
+ *       task_notify_take(true, TIMEOUT_MAX);
+ *     }
+ *     delay(10);
+ * 	 }
+ * }
+ * 
+ * void opcontrol() {
+ * 	 task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ * 						   TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   
+ *   int count = 0;
+ *   
+ *   while(true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *       task_notify_ext(task, 1, NOTIFY_ACTION_INCREMENT, &count);
+ * 
+ *     
+ *     delay(20);
+ *   }
+ * }
  * \endcode
  */
 uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
@@ -747,7 +770,7 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  * \code
  * void my_task_fn(void* ign) {
  *   while(task_notify_take(true, TIMEOUT_MAX)) {
- *   puts("I was unblocked!");
+ *     puts("I was unblocked!");
  *   }
  * }
  * 
@@ -755,8 +778,8 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
  *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
  *   while(true) {
- *   if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
- *     task_notify(my_task);
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *       task_notify(my_task);
  *     }
  *   }
  * }
@@ -886,7 +909,6 @@ bool mutex_give(mutex_t mutex);
  */
 void mutex_delete(mutex_t mutex);
 
-/// @} Name: Functions
 /// @} Add to group: c-rtos
 
 #ifdef __cplusplus
