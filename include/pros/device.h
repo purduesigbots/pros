@@ -59,7 +59,7 @@ typedef enum v5_device_e {
  * void opcontrol() {
  *   while (true) {
  *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
- *     printf("device plugged type: {x: %d}\n", pt);
+ *     printf("device plugged type: {plugged type: %d}\n", pt);
  *     delay(20);
  *   }
  * }
