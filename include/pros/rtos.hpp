@@ -18,7 +18,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * 
- * \defgroup cpp-rtos RTOS Facilities C API
+ * \defgroup cpp-rtos RTOS Facilities C++ API
  * \note Additional example code for this module can be found in its [Tutorial.](@ref multitasking)
  */
 
@@ -69,7 +69,17 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 *\b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::Task my_task(my_task_fn, (void*)"PROS");
+	 * }
+	 * \endcode
 	 */
 	Task(task_fn_t function, void* parameters = nullptr, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
 	     std::uint16_t stack_depth = TASK_STACK_DEPTH_DEFAULT, const char* name = "");
@@ -91,7 +101,18 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::Task my_task(my_task_fn, (void*)"PROS", "My Task");
+	 * }
+	 * \endcode
 	 */
 	Task(task_fn_t function, void* parameters, const char* name);
 
@@ -113,7 +134,18 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, (void*)"PROS");
+	 * }
+	 * \endcode
 	 */
 	template <class F>
 	static task_t create(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
@@ -139,7 +171,18 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 * }
+	 * \endcode
 	 */
 	template <class F>
 	static task_t create(F&& function, const char* name) {
@@ -164,7 +207,19 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * void initialize() {
+	 *   // Create a task function using lambdas
+	 *   auto task_fn = [](void* param) {
+	 *     printf("Hello %s\n", (char*)param);
+	 *   }
+	 * 
+	 *   pros::Task my_task(task_fn, (void*)"PROS", "My Task");
+	 * }
+	 * \endcode
 	 */
 	template <class F>
 	explicit Task(F&& function, std::uint32_t prio = TASK_PRIORITY_DEFAULT,
@@ -190,7 +245,22 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::Task my_task(
+	 *     [](void* param) {
+	 *       printf("Inside the task!\n");
+	 *     },
+	 *     "My Task"
+	 *   );
+	 * }
+	 * \endcode
 	 */
 	template <class F>
 	Task(F&& function, const char* name)
@@ -202,20 +272,60 @@ class Task {
 	 * \param task
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("Hello %s\n", (char*)param);
+	 *   // ...
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 * 
+	 *   pros::Task my_task_cpp(my_task);
+	 * }
+	 * \endcode
 	 */
 	explicit Task(task_t task);
 
 	/**
 	 * Get the currently running Task
+	 * 
+	 * @return The currently running Task.
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("The name of this task is \"%s\"\n", pros::Task::current().get_name()
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::Task my_task(my_task_fn, pros::TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+	 * }
+	 * \endcode
 	 */
 	static Task current();
 
 	/**
-	 * Creates a new task and add it to the list of tasks that are ready to run.
+	 * Creates a task object from the passed task handle.
 	 *
 	 * \param in
 	 *        A task handle from task_create() for which to create a pros::Task
 	 *        object.
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   printf("The name of this task is \"%s\"\n", pros::Task::current().get_name()
+	 * }
+	 * 
+	 * void initialize() {
+	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 * 
+	 *   pros::Task my_task_cpp = my_task;
+	 * }
+	 * \endcode
 	 */
 	Task& operator=(task_t in);
 
@@ -225,6 +335,21 @@ class Task {
 	 *
 	 * Memory dynamically allocated by the task is not automatically freed, and
 	 * should be freed before the task is deleted.
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+     *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+     *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+     *   // Do other things
+     *   task_delete(my_task);
+     * }
+     * \endcode
 	 */
 	void remove();
 
