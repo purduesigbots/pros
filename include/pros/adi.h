@@ -1340,8 +1340,6 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  */
 int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
 
-/** @} */
-
 /**
  * \name Ease of use macro definitions
  * These functions provide ease of use definitions for the ADI functions. 
@@ -1382,7 +1380,7 @@ int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 
 /** @} Name: Ease of use macro definitions*/
 
-/** @} */
+/** @} Add to group: c-adi*/
 
 #ifdef __cplusplus
 }  // namespace c
