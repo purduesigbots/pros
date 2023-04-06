@@ -55,6 +55,7 @@ class Device {
 	 * Gets the port number of the Smart Device.
 	 *
 	 * \return The smart device's port number.
+	 *
 	* \b Example
  	 * \code
  	 * void opcontrol() {
@@ -72,6 +73,7 @@ class Device {
 	 * 
 	 * \return true if the corresponding device is installed, false otherwise.
 	 * \b Example
+	 *
  	 * \code
 	 * void opcontrol() {
 	 *   while (true) {
@@ -91,6 +93,7 @@ class Device {
 	 * EACCES - Mutex of port cannot be taken (access denied).
 	 * 
 	 * \return The device type as an enum.
+	 *
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
