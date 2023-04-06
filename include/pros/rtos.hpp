@@ -344,10 +344,9 @@ class Task {
      * }
      * 
      * void initialize() {
-     *   task_t my_task = task_create(my_task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
-     *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
-     *   // Do other things
-     *   task_delete(my_task);
+	 *   pros::Task my_task(my_task_fn, "My Task");
+	 *   
+	 *   my_task.remove();
      * }
      * \endcode
 	 */
@@ -357,6 +356,20 @@ class Task {
 	 * Gets the priority of the specified task.
 	 *
 	 * \return The priority of the task
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+	 *   pros::Task my_task(my_task_fn, "My Task");
+	 * 
+     *   printf("Task Priority: %d\n", my_task.get_priority());
+     * }
+     * \endcode
 	 */
 	std::uint32_t get_priority();
 
@@ -369,6 +382,20 @@ class Task {
 	 *
 	 * \param prio
 	 *        The new priority of the task
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+	 *   pros::Task my_task(my_task_fn, "My Task");
+	 * 
+	 *   Task.set_priority(pros::DEFAULT_PRIORITY + 1);
+     * }
+     * \endcode
 	 */
 	void set_priority(std::uint32_t prio);
 
@@ -376,11 +403,53 @@ class Task {
 	 * Gets the state of the specified task.
 	 *
 	 * \return The state of the task
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+	 *   pros::Task my_task(my_task_fn, "My Task");
+	 * 
+     *   printf("Task State: %d\n", my_task.get_state());
+     * }
+     * \endcode
 	 */
 	std::uint32_t get_state();
 
 	/**
 	 * Suspends the specified task, making it ineligible to be scheduled.
+	 * 
+	 * \b Example
+     * \code
+	 * pros::Mutex counter_mutex;
+     * int counter = 0;
+     * 
+     * void my_task_fn(void* param) {
+     *   while(true) {
+	 * 	   counter_mutex.take(); // Mutexes are used for protecting shared resources
+     *     counter++;
+	 *     counter_mutex.give();
+     *     pros::delay(10);
+     *   }
+     * }
+     * 
+     * void opcontrol() {
+	 *   pros::Task task(my_task_fn, "My Task");
+     * 
+     *   while(true) {
+     *     counter_mutex.take();
+     *     if(counter > 100) {
+     *       task_suspepend(task);
+     * 	   }
+     *     counter_mutex.give();
+     *     pros::delay(10);
+     *   }
+     * }
+     * \endcode
 	 */
 	void suspend();
 
@@ -389,6 +458,33 @@ class Task {
 	 *
 	 * \param task
 	 *        The task to resume
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   while(true) {
+     *     // Do stuff
+     *     pros::delay(10);
+     *   }
+     * }
+     * 
+     * pros::Task task(my_task_fn);
+     * 
+     * void autonomous() {
+     *   task.resume();
+     * 
+     *   // Run autonomous , then suspend the task so it doesn't interfere run
+     *   // outside of autonomous or opcontrol
+     *   task.suspend();
+     * }
+     * 
+     * void opcontrol() {
+     *   task.resume();
+     *   // Opctonrol code here
+     *   task.suspend();
+     * }
+     * 
+     * \endcode
 	 */
 	void resume();
 
@@ -396,11 +492,38 @@ class Task {
 	 * Gets the name of the specified task.
 	 *
 	 * \return A pointer to the name of the task
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+	 *   pros::Task my_task(my_task_fn, "My Task");
+     *   printf("Number of Running Tasks: %d\n", my_task.get_name());
+     * }
+     * \endcode
 	 */
 	const char* get_name();
 
 	/**
 	 * Convert this object to a C task_t handle
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+     * 
+     * void initialize() {
+	 *   pros::Task my_task(my_task_fn, "My Task");
+	 * 
+	 *   pros::c::task_t my_task_c = (pros::c::task_t)my_task;
+     * }
+     * \endcode
 	 */
 	explicit operator task_t() {
 		return task;
@@ -414,6 +537,26 @@ class Task {
 	 * details.
 	 *
 	 * \return Always returns true.
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* ign) {
+     *   while(pros::Task::current_task().notify_take(true) == 0) {
+	 *     // Code while waiting
+     *   }
+	*    puts("I was unblocked!");
+     * }
+     * 
+     * void opcontrol() {
+     *   pros::Task my_task(my_task_fn);
+	 *   
+     *   while(true) {
+     *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+     *       my_task.notify();
+     *     }
+     *   }
+     * }
+     * \endcode
 	 */
 	std::uint32_t notify();
 
@@ -425,6 +568,23 @@ class Task {
 	 * details.
 	 *
 	 * \return void
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* ign) {
+     *   lcd_print(1, "%s running", task_get_name(NULL));
+     *   task_delay(1000);
+     *   lcd_print(2, "End of %s", task_get_name(NULL));
+     * }
+     * 
+     * void opcontrol() {
+     *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+     *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
+     *   lcd_set_text(0, "Running task.");
+     *   task_join(my_task);
+     *   lcd_set_text(3, "Task completed.");
+     * }
+     * \endcode
 	 */
 	void join();
 

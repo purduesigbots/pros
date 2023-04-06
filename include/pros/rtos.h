@@ -465,7 +465,7 @@ task_state_e_t task_get_state(task_t task);
  * \param task
  *        The task to suspend
  * 
- *\b Example
+ * \b Example
  * \code
  * mutex_t counter_mutex;
  * int counter = 0;
@@ -483,11 +483,11 @@ task_state_e_t task_get_state(task_t task);
  *   task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,;
  * 
  *   while(true) {
- *     counter_mutex.take();
+ * 	   mutex_take(counter_mutex, TIMEOUT_MAX);
  *     if(counter > 100) {
  *       task_suspepend(task);
  * 	   }
- *     counter_mutex.give();
+ *     mutex_give(counter_mutex);
  *     pros::delay(10);
  *   }
  * }
@@ -506,24 +506,30 @@ void task_suspend(task_t task);
  * void my_task_fn(void* param) {
  *   while(true) {
  *     // Do stuff
- *     pros::delay(10);
+ *     delay(10);
  *   }
  * }
  * 
- * pros::Task task(my_task_fn);
+ * task_t task;
+ * 
+ * void initialize() {
+ *   task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ * 					TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * }
  * 
  * void autonomous() {
- *   task.resume();
+ *   task_resume(task);
  * 
  *   // Run autonomous , then suspend the task so it doesn't interfere run
+ *   
  *   // outside of autonomous or opcontrol
- *   task.suspend();
+ *   task_suspend(task);
  * }
  * 
  * void opcontrol() {
- *   task.resume();
+ *   task_resume(task);
  *   // Opctonrol code here
- *   task.suspend();
+ *   task_suspend(task);
  * }
  * 
  * \endcode
@@ -643,7 +649,8 @@ task_t task_get_current();
  * \b Example
  * \code
  * void my_task_fn(void* ign) {
- *   while(task_notify_take(true, TIMEOUT_MAX)) {
+ *   while(task_notify_take(true)) {
+ *     // Code while waiting
  *     puts("I was unblocked!");
  *   }
  * }
