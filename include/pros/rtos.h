@@ -123,12 +123,12 @@ typedef void (*task_fn_t)(void*);
  * brief The state of a task.
  */
 typedef enum {
-	E_TASK_STATE_RUNNING = 0, ///< The task is actively executing.
-	E_TASK_STATE_READY, ///< The task exists and is available to run, but is not currently running.
-	E_TASK_STATE_BLOCKED, ///< The task is delayed or blocked by a mutex, semaphore, or I/O operation.
-	E_TASK_STATE_SUSPENDED, ///< The task is supended using task_suspend.
-	E_TASK_STATE_DELETED, ///< The task has been deleted using task_delete.
-	E_TASK_STATE_INVALID ///< The task handle does not point to a current or past task.
+	E_TASK_STATE_RUNNING = 0, /**< The task is actively executing. */
+	E_TASK_STATE_READY, /**< The task exists and is available to run, but is not currently running. */
+	E_TASK_STATE_BLOCKED, /**< The task is delayed or blocked by a mutex, semaphore, or I/O operation. */
+	E_TASK_STATE_SUSPENDED, /**< The task is supended using task_suspend. */
+	E_TASK_STATE_DELETED, /**< The task has been deleted using task_delete. */
+	E_TASK_STATE_INVALID /**< The task handle does not point to a current or past task.*/
 } task_state_e_t;
 
 /**
@@ -136,14 +136,12 @@ typedef enum {
  * brief The action to take when a task is notified.
  */
 typedef enum {
-	E_NOTIFY_ACTION_NONE, ///< The task’s notification value will not be touched.
-	E_NOTIFY_ACTION_BITS, ///< The task’s notification value will be bitwise ORed with the new value.
-	E_NOTIFY_ACTION_INCR, ///< The task’s notification value will be incremented by one, effectively using it as a notification counter.
-	E_NOTIFY_ACTION_OWRITE, ///< The task’s notification value will be unconditionally set to the new value.
-	E_NOTIFY_ACTION_NO_OWRITE ///< The task’s notification value will be set to the new value if the task does not already have a pending notification.
+	E_NOTIFY_ACTION_NONE, /**< The task’s notification value will not be touched.*/
+	E_NOTIFY_ACTION_BITS, /**< The task’s notification value will be bitwise ORed with the new value.*/
+	E_NOTIFY_ACTION_INCR, /**< The task’s notification value will be incremented by one, effectively using it as a notification counter.*/
+	E_NOTIFY_ACTION_OWRITE, /**< The task’s notification value will be unconditionally set to the new value.*/
+	E_NOTIFY_ACTION_NO_OWRITE /**< The task’s notification value will be set to the new value if the task does not already have a pending notification.*/
 } notify_action_e_t;
-
-
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -203,6 +201,8 @@ typedef void* mutex_t;
 #ifdef __cplusplus
 namespace c {
 #endif
+
+/** \ingroup c-rtos */
 
 /**
  * \name Functions
