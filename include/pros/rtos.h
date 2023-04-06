@@ -100,7 +100,7 @@ namespace pros {
  */
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
-///@}
+/** @} Name: Macros */
 
 /**
  * \typedef task_t
@@ -198,7 +198,7 @@ typedef void* mutex_t;
 #else
 #define CURRENT_TASK ((task_t)NULL)
 #endif
-/// @}
+/** @} Name: Macros */
 
 #ifdef __cplusplus
 namespace c {
@@ -885,9 +885,9 @@ bool mutex_give(mutex_t mutex);
  */
 void mutex_delete(mutex_t mutex);
 
-///@}
+/** @} Name: Functions */
 
-///@}
+/** @} Add to group: c-rtos */
 
 #ifdef __cplusplus
 }  // namespace c
