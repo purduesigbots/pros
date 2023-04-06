@@ -103,14 +103,14 @@ namespace pros {
 /** @} Name: Macros */
 
 /**
- * \typedef task_t
+ * typedef task_t
  * An opaque type that pontis to a task handle. This is used for referencing a
  * task.
  */
 typedef void* task_t;
 
 /**
- * \typedef task_fn_t
+ * typedef task_fn_t
  * A pointer to a task's function. 
  * 
  * Such a function is called when a task starts, and exiting said function will
@@ -119,7 +119,7 @@ typedef void* task_t;
 typedef void (*task_fn_t)(void*);
 
 /**
- * \enum task_state_e_t
+ * enum task_state_e_t
  * \brief The state of a task.
  */
 typedef enum {
@@ -132,7 +132,7 @@ typedef enum {
 } task_state_e_t;
 
 /**
- * \enum
+ * enum
  * \brief The action to take when a task is notified.
  */
 typedef enum {
@@ -174,7 +174,7 @@ typedef enum {
 #endif
 
 /**
- * \typedef mutex_t 
+ * typedef mutex_t 
  * A [mutex.](@ref multitasking)
  * 
  * A mutex is a synchronization object that can be used to protect a shared
