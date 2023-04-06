@@ -66,7 +66,7 @@ class Motor : public AbstractMotor, public Device {
  	 * \code
  	 * void opcontrol() {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
-	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 with standard gearset and encoder units
+	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 2 with standard gearset and encoder units
 	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set and degrees
 	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
  	 *  

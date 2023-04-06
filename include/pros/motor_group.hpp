@@ -1,6 +1,6 @@
 /**
- * \file pros/motors.hpp
- * \ingroup cpp-motors
+ * \file pros/motors_group.hpp
+ * \ingroup cpp-motor-group
  *
  * Contains prototypes for the V5 Motor-related functions.
  *
@@ -41,6 +41,43 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  @{
 	 */
 	public:
+	
+	/**
+	 * Constructs a new Motor object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+ 	 * reached:
+ 	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param ports
+ 	 *        A vector containing the V5 port numbers from 1 to 21, or from -21 to -1 for reversed motors. 
+	 * 		  A reversed motor will reverse the input or output movement functions and movement related
+	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
+	 * 
+	 * \param gearset =  pros::v5::MotorGears::green
+	 * 		  Optional parameter for the gearset for the motors.
+	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 
+	 * \param encoder_units = pros::v5::MotorUnits::degrees
+	 * 		  Optional parameter for the encoder units of the motors
+	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 
+	 *  \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	MotorGroup first_motor_group({1, -2}); //Creates a motorgroup with a motor on port 1 
+	 *  // and a reversed motor on port 2 with green gearset and degrees as the encoder units
+ 	 *  
+	 * MotorGroup second_motor_group({3, 4}, pros::v5::MotorUnits::blue); //Creates a motorgroup with a motor on port 1 
+	 *  // and a motor on port 4 with blue gearset and degrees as the encoder units
+ 	 * MotorGroup third_motor_group({-5, -6}, pros::v5::MotorUnits::blue, pros::v5::MotorGears); //Creates a motorgroup with a motor on port 1 
+	 *  // and a motor on port 4 with blue gearset and degrees as the encoder units
+ 	 *  
+ 	 * }
+ 	 * \endcode
+	 * 
+	 */
 	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
 	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
