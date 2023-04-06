@@ -36,13 +36,48 @@ inline namespace v5 {
 
 class Motor : public AbstractMotor, public Device {
 	public:
-	explicit Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
-	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
-
 	/**
 	 * \addtogroup cpp-motors
 	 *  @{
 	 */
+
+	/**
+	 * Constructs a new Motor object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+ 	 * reached:
+ 	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param port
+ 	 *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors. 
+	 * 		  A reversed motor will reverse the input or output movement functions and movement related
+	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
+	 * 
+	 * \param gearset =  pros::v5::MotorGears::green
+	 * 		  Optional parameter for the gearset for the motor.
+	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 
+	 * \param encoder_units = pros::v5::MotorUnits::degrees
+	 * 		  Optional parameter for the encoder units of the motor
+	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 
+	 *  \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
+	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 with standard gearset and encoder units
+	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set and degrees
+	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
+ 	 *  
+ 	 * }
+ 	 * \endcode
+	 * 
+	 */
+	explicit Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
+	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+
+	
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -52,7 +87,7 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of pros::Motor::move(), or motorSet from the PROS 2 API.
+	 * analogous to use of pros::Motor::move().
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -83,7 +118,7 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of motor_move(), or motorSet() from the PROS 2 API.
+	 * analogous to use of motor_move().
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -160,8 +195,8 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This movement is relative to the current position of the motor as given in
 	 * pros::Motor::motor_get_position(). Providing 10.0 as the position parameter
-	 * would result in the motor moving clockwise 10 units, no matter what the
-	 * current position is.
+	 * would result in the motor moving clockwise 10 units (counter clockwise if reversed),
+	 *  no matter what the current position is.
 	 *
 	 * \note This function simply sets the target for the motor, it does not block
 	 * program execution until the movement finishes.
@@ -271,8 +306,13 @@ class Motor : public AbstractMotor, public Device {
 	* failed, setting errno.
 	* 
 	* \b Example
-	* \code {.language-id}
-	* code
+	* \code 
+	*  void autonomous() {
+	*	Motor motor(1);
+	*   motor.move_voltage(12000);
+	*   pros::delay(1000); // Move at max voltage for 1 second
+	*   motor.brake();
+	* }
 	* \endcode
 	*/
 	std::int32_t brake(void) const;
@@ -286,8 +326,6 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
 	 * \param velocity
 	 *        The new motor velocity from +-100, +-200, or +-600 depending on the
 	 *        motor's gearset
@@ -309,16 +347,20 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 
 	/**
-	 * Gets the target position set for the motor by the user, with a parameter
-	 * for the motor index.
+	 * Gets the target position set for the motor by the user
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor to get the target position of.
-	 * By default index is 0, and will return an error for a non-zero index
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The target position in its encoder units or PROS_ERR_F if the
 	 * operation failed, setting errno.
@@ -342,10 +384,8 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \param index The index of the motor to get the target position of.
-	 * By default index is 0, and will return an error for a non-zero index
 	 *
-	 * \return The target position in its encoder units or PROS_ERR_F if the
+	 * \return A vector containing the target position in its encoder units or PROS_ERR_F if the
 	 * operation failed, setting errno.
 	 *
 	 * \b Example
@@ -363,12 +403,18 @@ class Motor : public AbstractMotor, public Device {
 	/**
 	 * Gets the velocity commanded to the motor by the user at the index specified.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EOVERFLOW - The index is non 0
-	 *
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The commanded motor velocity from +-100, +-200, or +-600, or
 	 * PROS_ERR if the operation failed, setting errno.
@@ -396,8 +442,7 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * 
-	 * \return A vector of length 1 containing the commanded motor velocity from +-100, 
+	 * \return A vector containing the commanded motor velocity from +-100, 
 	 * +-200, or +-600, or PROS_ERR if the operation failed, setting errno.
 	 *
 	 * \b Example
@@ -425,12 +470,18 @@ class Motor : public AbstractMotor, public Device {
 	/**
 	 * Gets the actual velocity of the motor.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index 
 	 * 
 	 * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
 	 * failed, setting errno.
@@ -448,17 +499,49 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	double get_actual_velocity(const std::uint8_t index = 0) const;
+
+
+	/**
+	 * Gets a vector containing the actual velocity commanded of the motor
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A vector containing the motor's actual velocity in RPM or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     std::cout << "Motor Velocity: " << motor.get_actual_velocity_all()[0];
+	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */	
 	std::vector<double> get_actual_velocity_all(void) const;
 
 	/**
 	 * Gets the current drawn by the motor in mA.
-	 *
+	 * 
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's current in mA or PROS_ERR if the operation failed,
 	 * setting errno.
@@ -477,6 +560,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::int32_t get_current_draw(const std::uint8_t index = 0) const;
+
+
+	
 	std::vector<std::int32_t> get_current_draw_all(void) const;
 
 	/**

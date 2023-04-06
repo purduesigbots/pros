@@ -372,13 +372,15 @@ int32_t motor_get_target_velocity(int8_t port);
 /**
  * Gets the actual velocity of the motor.
  *
+ * \note A negative port negates the return value 
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
  * failed, setting errno.
@@ -401,11 +403,11 @@ double motor_get_actual_velocity(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's current in mA or PROS_ERR if the operation failed,
  * setting errno.
@@ -426,13 +428,15 @@ int32_t motor_get_current_draw(int8_t port);
 /**
  * Gets the direction of movement for the motor.
  *
+ * \note A negative port number negates the return value. 
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return 1 for moving in the positive direction, -1 for moving in the
  * negative direction, or PROS_ERR if the operation failed, setting errno.
@@ -459,11 +463,11 @@ int32_t motor_get_direction(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's efficiency in percent or PROS_ERR_F if the operation
  * failed, setting errno.
@@ -486,11 +490,11 @@ double motor_get_efficiency(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return 1 if the motor's current limit is being exceeded and 0 if the current
  * limit is not exceeded, or PROS_ERR if the operation failed, setting errno.
@@ -513,11 +517,11 @@ int32_t motor_is_over_current(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return 1 if the temperature limit is exceeded and 0 if the the temperature
  * is below the limit, or PROS_ERR if the operation failed, setting errno.
@@ -535,31 +539,6 @@ int32_t motor_is_over_current(int8_t port);
  */
 int32_t motor_is_over_temp(int8_t port);
 
-/**
- * Checks if the motor is stopped.
- *
- * \note Although this function forwards data from the motor, the motor
- * presently does not provide any value. This function returns PROS_ERR with
- * errno set to ENOSYS.
- *
- * \param port
- *        The V5 port number from 1-21
- *
- * \return 1 if the motor is not moving, 0 if the motor is moving, or PROS_ERR
- * if the operation failed, setting errno
- * 
- * \b Example
- * \code
- * void opcontrol() {
- *   while (true) {
- *     motor_move(1, controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y));
- *     printf("Is the motor stopped? %d\n", motor_is_stopped(1));
- *     delay(2);
- *   }
- * }
- * \endcode
- */
-int32_t motor_is_stopped(int8_t port);
 
 
 #ifdef __cplusplus
@@ -674,11 +653,11 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return A bitfield containing the motor's flags.
  * 
@@ -698,13 +677,15 @@ uint32_t motor_get_flags(int8_t port);
 /**
  * Gets the raw encoder count of the motor at a given timestamp.
  *
+ * \note A negative port value negates the return value
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param[in] timestamp
  *            A pointer to a time in milliseconds for which the encoder count
  *            will be returned. If NULL, the timestamp at which the encoder
@@ -730,13 +711,15 @@ int32_t motor_get_raw_position(int8_t port, uint32_t* const timestamp);
 /**
  * Gets the absolute position of the motor in its encoder units.
  *
+ * \note A negative port value negates the return value
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's absolute position in its encoder units or PROS_ERR_F
  * if the operation failed, setting errno.
@@ -759,11 +742,11 @@ double motor_get_position(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's power draw in Watts or PROS_ERR_F if the operation
  * failed, setting errno.
@@ -787,11 +770,11 @@ double motor_get_power(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's temperature in degrees Celsius or PROS_ERR_F if the
  * operation failed, setting errno.
@@ -814,11 +797,11 @@ double motor_get_temperature(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's torque in Nm or PROS_ERR_F if the operation failed,
  * setting errno.
@@ -845,7 +828,7 @@ double motor_get_torque(int8_t port);
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
  * setting errno.
@@ -1021,11 +1004,11 @@ namespace c {
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param position
  *        The new reference position in its encoder units
  *
@@ -1061,11 +1044,11 @@ int32_t motor_set_zero_position(int8_t port, const double position);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
@@ -1098,11 +1081,11 @@ int32_t motor_tare_position(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param mode
  *        The motor_brake_mode_e_t to set for the motor
  *
@@ -1124,11 +1107,11 @@ int32_t motor_set_brake_mode(int8_t port, const motor_brake_mode_e_t mode);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param limit
  *        The new current limit in mA
  *
@@ -1154,11 +1137,11 @@ int32_t motor_set_current_limit(int8_t port, const int32_t limit);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param units
  *        The new motor encoder units
  *
@@ -1180,11 +1163,11 @@ int32_t motor_set_encoder_units(int8_t port, const motor_encoder_units_e_t units
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param gearset
  *        The new motor gearset
  *
@@ -1206,11 +1189,11 @@ int32_t motor_set_gearing(int8_t port, const motor_gearset_e_t gearset);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  * \param limit
  *        The new voltage limit in Volts
  *
@@ -1236,11 +1219,11 @@ int32_t motor_set_voltage_limit(int8_t port, const int32_t limit);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return One of motor_brake_mode_e_t, according to what was set for the motor,
  * or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
@@ -1262,11 +1245,11 @@ motor_brake_mode_e_t motor_get_brake_mode(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's current limit in mA or PROS_ERR if the operation failed,
  * setting errno.
@@ -1286,11 +1269,11 @@ int32_t motor_get_current_limit(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return One of motor_encoder_units_e_t according to what is set for the motor
  * or E_MOTOR_ENCODER_INVALID if the operation failed.
@@ -1302,11 +1285,11 @@ motor_encoder_units_e_t motor_get_encoder_units(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return One of motor_gearset_e_t according to what is set for the motor,
  * or E_GEARSET_INVALID if the operation failed.
@@ -1329,11 +1312,11 @@ motor_gearset_e_t motor_get_gearing(int8_t port);
  *
  * This function uses the following values of errno when an error state is
  * reached:
- * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
  *
  * \param port
- *        The V5 port number from 1-21
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
  * setting errno.
