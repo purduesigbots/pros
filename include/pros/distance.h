@@ -144,7 +144,7 @@ int32_t distance_get_object_size(uint8_t port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf("Distance Object Velocity: %d\n", distance_get_object_velocity(DISTANCE_PORT));
+ *     printf("Distance Object Velocity: %f\n", distance_get_object_velocity(DISTANCE_PORT));
  *     delay(20);
  *   }
  * }
