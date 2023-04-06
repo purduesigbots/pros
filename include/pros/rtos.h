@@ -20,7 +20,7 @@
  * 
  * \defgroup c-rtos RTOS Facilities C API
  * \note Additional example code for this module can be found in its [Tutorial.](@ref multitasking)
- */
+ */	
 
 #ifndef _PROS_RTOS_H_
 #define _PROS_RTOS_H_
@@ -32,6 +32,14 @@
 extern "C" {
 namespace pros {
 #endif
+
+/// \ingroup c-rtos
+
+/// \addtogroup c-rtos 
+/// @{
+
+/// \name Macros 
+/// @{
 
 /**
  * The highest priority that can be assigned to a task.
@@ -74,28 +82,27 @@ namespace pros {
 #define TASK_STACK_DEPTH_MIN 0x200
 
 /**
- * brief
  * The maximum number of characters allowed in a task's name.
  */
 #define TASK_NAME_MAX_LEN 32
 
 /**
- * brief
  * The maximum timeout value that can be given to, for instance, a mutex grab.
  */
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
 
-/** @} Name: Macros */
+/// @} Name: Macros
+
+/// \name Typedefs
+/// @{
 
 /**
- * typedef task_t
  * An opaque type that pontis to a task handle. This is used for referencing a
  * task.
  */
 typedef void* task_t;
 
 /**
- * typedef task_fn_t
  * A pointer to a task's function. 
  * 
  * Such a function is called when a task starts, and exiting said function will
@@ -103,9 +110,14 @@ typedef void* task_t;
  */
 typedef void (*task_fn_t)(void*);
 
+/// @} Name: Typedefs
+
+
+/// \name Enumerations
+/// @{
+
 /**
- * enum task_state_e_t
- * brief The state of a task.
+ * The state of a task.
  */
 typedef enum {
 	E_TASK_STATE_RUNNING = 0, /**< The task is actively executing. */
@@ -117,7 +129,6 @@ typedef enum {
 } task_state_e_t;
 
 /**
- * enum
  * brief The action to take when a task is notified.
  */
 typedef enum {
@@ -127,6 +138,11 @@ typedef enum {
 	E_NOTIFY_ACTION_OWRITE, /**< The task’s notification value will be unconditionally set to the new value.*/
 	E_NOTIFY_ACTION_NO_OWRITE /**< The task’s notification value will be set to the new value if the task does not already have a pending notification.*/
 } notify_action_e_t;
+
+/// @} Name: Enumerations
+
+/// \name Simple enum names
+/// @{
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -156,8 +172,11 @@ typedef enum {
 #endif
 #endif
 
+/// @} Name: Simple enum names
+
+/// \name Typedefs
+
 /**
- * typedef mutex_t 
  * A [mutex.](@ref multitasking)
  * 
  * A mutex is a synchronization object that can be used to protect a shared
@@ -167,15 +186,26 @@ typedef enum {
  */
 typedef void* mutex_t;
 
+/// @} Name: Typedefs
+
+/**
+ * The task handle of the currently running task. 
+ */
 #ifdef __cplusplus
 #define CURRENT_TASK ((pros::task_t)NULL)
 #else
 #define CURRENT_TASK ((task_t)NULL)
 #endif
 
+/// @} (add to group: c-rtos)
+
 #ifdef __cplusplus
 namespace c {
 #endif
+
+/// \ingroup c-rtos
+/// \addtogroup c-rtos
+/// @{
 
 /**
  * Gets the number of milliseconds since PROS initialized.
@@ -485,9 +515,9 @@ void task_suspend(task_t task);
  * void autonomous() {
  *   task.resume();
  * 
- *  // Run autonomous , then suspend the task so it doesn't interfere run
- *  // outside of autonomous or opcontrol
- *  task.suspend();
+ *   // Run autonomous , then suspend the task so it doesn't interfere run
+ *   // outside of autonomous or opcontrol
+ *   task.suspend();
  * }
  * 
  * void opcontrol() {
@@ -614,7 +644,7 @@ task_t task_get_current();
  * \code
  * void my_task_fn(void* ign) {
  *   while(task_notify_take(true, TIMEOUT_MAX)) {
- *   puts("I was unblocked!");
+ *     puts("I was unblocked!");
  *   }
  * }
  * 
@@ -623,7 +653,7 @@ task_t task_get_current();
  *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
  *   while(true) {
  *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
- *     task_notify(my_task);
+ *       task_notify(my_task);
  *     }
  *   }
  * }
@@ -689,7 +719,33 @@ void task_join(task_t task);
  * 
  * \b Example
  * \code
+ * void my_task_fn(void* param) {
+ *   while(true) {
+ *     // Wait until we have been notified 20 times before running the code
+ *     if(task_notify_take(false, TIMEOUT_MAX) == 20) {
+ *       // ... Code to do stuff here ...
  * 
+ *       // Reset the notification counter
+ *       task_notify_take(true, TIMEOUT_MAX);
+ *     }
+ *     delay(10);
+ * 	 }
+ * }
+ * 
+ * void opcontrol() {
+ * 	 task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ * 						   TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   
+ *   int count = 0;
+ *   
+ *   while(true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *       task_notify_ext(task, 1, NOTIFY_ACTION_INCREMENT, &count);
+ * 
+ *     
+ *     delay(20);
+ *   }
+ * }
  * \endcode
  */
 uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
@@ -714,7 +770,7 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  * \code
  * void my_task_fn(void* ign) {
  *   while(task_notify_take(true, TIMEOUT_MAX)) {
- *   puts("I was unblocked!");
+ *     puts("I was unblocked!");
  *   }
  * }
  * 
@@ -722,8 +778,8 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
  *                             TASK_STACK_DEPTH_DEFAULT, "Notify me! Task");
  *   while(true) {
- *   if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
- *     task_notify(my_task);
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *       task_notify(my_task);
  *     }
  *   }
  * }
@@ -852,6 +908,8 @@ bool mutex_give(mutex_t mutex);
  * \endcode
  */
 void mutex_delete(mutex_t mutex);
+
+/// @} Add to group: c-rtos
 
 #ifdef __cplusplus
 }  // namespace c
