@@ -227,8 +227,38 @@ class AbstractMotor {
 	 */
 	virtual std::int32_t move_voltage(const std::int32_t voltage) const = 0;
 
+	/**
+	 * Stops the motor using the currently configured brake mode.
+	 * 
+	 * This function sets motor velocity to zero, which will cause it to act
+	 * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
+	 * this function may behave differently than calling move_absolute(0)
+	 * or motor_move_relative(0).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 */
 	virtual std::int32_t brake(void) const = 0;
+
+	/**
+	 * Changes the output velocity for a profiled movement (motor_move_absolute or
+	 * motor_move_relative). This will have no effect if the motor is not following
+	 * a profiled movement.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \param velocity
+	 *        The new motor velocity from +-100, +-200, or +-600 depending on the
+	 *        motor's gearset
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
 	virtual std::int32_t modify_profiled_velocity(const std::int32_t velocity) const = 0;
+
 	/**
 	 * Gets the target position set for the motor by the user, with a parameter
 	 * for the motor index.
@@ -245,6 +275,18 @@ class AbstractMotor {
 	 * operation failed, setting errno.
 	 */
 	virtual double get_target_position(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the target position(s) set for the motor(s) by the user
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 *
+	 * \return A vector containing the target position(s) in its encoder units or PROS_ERR_F if the
+	 * operation failed, setting errno.
+	 */
 	virtual std::vector<double> get_target_position_all(void) const = 0;
 
 	/**
@@ -262,6 +304,17 @@ class AbstractMotor {
 	 * PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t get_target_velocity(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the velocity/velocities commanded to the motor(s) by the user
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A vector containing the commanded motor velocity/velocities from +-100, 
+	 * +-200, or +-600, or PROS_ERR if the operation failed, setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_target_velocity_all(void) const = 0;
 
 	///@}
@@ -286,6 +339,17 @@ class AbstractMotor {
 	 * failed, setting errno.
 	 */
 	virtual double get_actual_velocity(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the actual velocity/velocities of the motor(s)
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A vector containing the motor's/motors' actual velocity/velocities in RPM or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 */	
 	virtual std::vector<double> get_actual_velocity_all(void) const = 0;
 
 	/**
@@ -303,6 +367,19 @@ class AbstractMotor {
 	 * setting errno.
 	 */
 	virtual std::int32_t get_current_draw(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the current(s) drawn by the motor(s) in mA.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * 
+	 * \return A vector conatining the motor's/motors' current(s) in mA or PROS_ERR if the operation failed,
+	 * setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_current_draw_all(void) const = 0;
 
 	/**
@@ -320,6 +397,20 @@ class AbstractMotor {
 	 * negative direction, and PROS_ERR if the operation failed, setting errno.
 	 */
 	virtual std::int32_t get_direction(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the direction(s) of movement for the motor(s).
+	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * 
+	 * \return A vector containing 1 for moving in the positive direction, -1 for moving in the
+	 * negative direction, and PROS_ERR if the operation failed, setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_direction_all(void) const = 0;
 
 	/**
@@ -341,6 +432,23 @@ class AbstractMotor {
 	 * failed, setting errno.
 	 */
 	virtual double get_efficiency(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the efficiency/efficiencies of the motor(s) in percent.
+	 *
+	 * An efficiency of 100% means that the motor is moving electrically while
+	 * drawing no electrical power, and an efficiency of 0% means that the motor
+	 * is drawing power but not moving.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 *
+	 * \return A vector containing the motor's/motors' efficiency/efficiencies in percent or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 */
 	virtual std::vector<double> get_efficiency_all(void) const = 0;
 
 	/**
@@ -359,6 +467,19 @@ class AbstractMotor {
 	 * \return A bitfield containing the motor's faults.
 	 */
 	virtual std::uint32_t get_faults(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the faults experienced by the motor(s).
+	 *
+	 * Compare this bitfield to the bitmasks in pros::motor_fault_e_t.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A bitfield containing the motor's/motors' faults.
+	 */
 	virtual std::vector<std::uint32_t> get_faults_all(void) const = 0;
 	/**
 	 * Gets the flags set by the motor's operation.
@@ -376,6 +497,20 @@ class AbstractMotor {
 	 * \return A bitfield containing the motor's flags.
 	 */
 	virtual std::uint32_t get_flags(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the flags set by the motor's/motors' operation.
+	 *
+	 * Compare this bitfield to the bitmasks in pros::motor_flag_e_t.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 *
+	 * \return A bitfield containing the motor's/motors' flags.
+	 */
 	virtual std::vector<std::uint32_t> get_flags_all(void) const = 0;
 
 	/**
@@ -393,6 +528,19 @@ class AbstractMotor {
 	 * if the operation failed, setting errno.
 	 */
 	virtual double get_position(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the absolute position(s) of the motor(s) in its encoder units.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 
+	 *
+	 * \return A vector containing the motor's/motors' absolute position(s) in its encoder units or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 */
 	virtual std::vector<double> get_position_all(void) const = 0;
 
 	/**
@@ -410,7 +558,20 @@ class AbstractMotor {
 	 * failed, setting errno.
 	 */
 	virtual double get_power(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector containing the power(s) drawn by the motor(s) in Watts.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \return A vector containing the motor's/motors' power draw in Watts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 */
 	virtual std::vector<double> get_power_all(void) const = 0;
+
 	/**
 	 * Gets the raw encoder count of the motor at a given timestamp.
 	 *
@@ -431,6 +592,24 @@ class AbstractMotor {
 	 * operation failed.
 	 */
 	virtual std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the raw encoder count(s) of the motor(s) at a given timestamp.
+	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param timestamp
+	 *            A pointer to a time in milliseconds for which the encoder count
+	 *            will be returned. If NULL, the timestamp at which the encoder
+	 *            count was read will not be supplied
+	 * 
+	 * \return A vector containing the raw encoder count(s) at the given timestamp or PROS_ERR if the
+	 * operation failed.
+	 */
 	virtual std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const = 0;
 
 	/**
@@ -448,6 +627,21 @@ class AbstractMotor {
 	 * operation failed, setting errno.
 	 */
 	virtual double get_temperature(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the temperature(s) of the motor(s) in degrees Celsius.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing the motor's/motors' temperature(s) in degrees Celsius or PROS_ERR_F if the
+	 * operation failed, setting errno.
+	 */
 	virtual std::vector<double> get_temperature_all(void) const = 0;
 	/**
 	 * Gets the torque generated by the motor in Newton Meters (Nm).
@@ -464,6 +658,21 @@ class AbstractMotor {
 	 * setting errno.
 	 */
 	virtual double get_torque(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the torque(s) generated by the motor(s) in Newton Meters (Nm).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing the motor's/motors' torque(s) in Nm or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 */
 	virtual std::vector<double> get_torque_all(void) const = 0;
 	/**
 	 * Gets the voltage delivered to the motor in millivolts.
@@ -480,6 +689,21 @@ class AbstractMotor {
 	 * setting errno.
 	 */
 	virtual std::int32_t get_voltage(const std::uint8_t index = 0) const = 0;
+
+	/**
+	 * Gets a vector of the voltage(s) delivered to the motor(s) in millivolts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+     * \param index Optional parameter. 
+     *           The index of the motor to get the target position of.
+     *           By default index is 0, and will return an error for an out of bounds index
+	 *
+	 * \return A vector containing the motor's/motors' voltage(s) in mV or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 */
 	virtual std::vector<std::int32_t> get_voltage_all(void) const = 0;
 
 	/**
