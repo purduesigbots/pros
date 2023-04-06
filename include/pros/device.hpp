@@ -55,7 +55,8 @@ class Device {
 	 * Gets the port number of the Smart Device.
 	 *
 	 * \return The smart device's port number.
-	 *
+	* \b Example
+ 	 * \code
  	 * void opcontrol() {
  	 *   while (true) {
  	 *     printf("device plugged type: {port: %d}\n", get_port());
@@ -70,7 +71,8 @@ class Device {
 	 * Checks if the device is installed.
 	 * 
 	 * \return true if the corresponding device is installed, false otherwise.
-	 *
+	 * \b Example
+ 	 * \code
 	 * void opcontrol() {
 	 *   while (true) {
 	 *     printf("device plugged type: {is_installed: %d}\n", is_installed());
@@ -89,7 +91,8 @@ class Device {
 	 * EACCES - Mutex of port cannot be taken (access denied).
 	 * 
 	 * \return The device type as an enum.
-	 *
+	 * \b Example
+ 	 * \code
 	 * void opcontrol() {
 	 *   while (true) {
 	 *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
