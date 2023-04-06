@@ -213,7 +213,7 @@ class Rotation : public Device {
 	 *
 	 * \param  port
 	 * 				 The V5 Rotation Sensor port number from 1-21
-	 * \return The position value or PROS_ERR if the operation failed, setting
+	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
 	 * 	 
 	 *  \b Example
@@ -221,7 +221,7 @@ class Rotation : public Device {
  	 * void opcontrol() {
 	 * 	 pros::Rotation rotation_sensor(1);
  	 *   while (true) {
- 	 *     printf("Velocity: %d centidegrees per second \n", rotation_sensor.get_position());
+ 	 *     printf("Velocity: %d centidegrees per second \n", rotation_sensor.get_velocity));
  	 *     delay(20);
  	 *   }
  	 * }
