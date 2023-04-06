@@ -536,7 +536,9 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
@@ -562,18 +564,50 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t get_current_draw(const std::uint8_t index = 0) const;
 
 
-	
+	/**
+	 * Gets a vector containing the current drawn by the motor in mA.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * 
+	 * \return A vector conatining the motor's current in mA or PROS_ERR if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Current Draw: " << motor.get_current_draw_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> get_current_draw_all(void) const;
 
 	/**
 	 * Gets the direction of movement for the motor.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return 1 for moving in the positive direction, -1 for moving in the
 	 * negative direction, and PROS_ERR if the operation failed, setting errno.
@@ -592,6 +626,33 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::int32_t get_direction(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector containing the direction of movement for the motor.
+	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * 
+	 * \return A vecotr containing 1 for moving in the positive direction, -1 for moving in the
+	 * negative direction, and PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Direction: " << motor.get_direction_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> get_direction_all(void) const;
 
 	/**
@@ -601,12 +662,21 @@ class Motor : public AbstractMotor, public Device {
 	 * drawing no electrical power, and an efficiency of 0% means that the motor
 	 * is drawing power but not moving.
 	 *
+	 * 
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's efficiency in percent or PROS_ERR_F if the operation
 	 * failed, setting errno.
@@ -625,6 +695,36 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	double get_efficiency(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector containing the efficiency of the motor in percent.
+	 *
+	 * An efficiency of 100% means that the motor is moving electrically while
+	 * drawing no electrical power, and an efficiency of 0% means that the motor
+	 * is drawing power but not moving.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 *
+	 * \return A vector containing The motor's efficiency in percent or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Efficiency: " << motor.get_efficiency();
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<double> get_efficiency_all(void) const;
 
 	/**
@@ -632,15 +732,21 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * Compare this bitfield to the bitmasks in pros::motor_fault_e_t.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
 	 *
 	 * \return A bitfield containing the motor's faults.
 	 *
@@ -657,18 +763,53 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::uint32_t get_faults(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector of the faults experienced by the motor.
+	 *
+	 * Compare this bitfield to the bitmasks in pros::motor_fault_e_t.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A bitfield containing the motor's faults.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << motor.get_faults_all()[0];
+	 * 	   pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::uint32_t> get_faults_all(void) const;
+	
 	/**
 	 * Gets the flags set by the motor's operation.
 	 *
 	 * Compare this bitfield to the bitmasks in pros::motor_flag_e_t.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return A bitfield containing the motor's flags.
 	 *
@@ -686,17 +827,52 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::uint32_t get_flags(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector of the flags set by the motor's operation.
+	 *
+	 * Compare this bitfield to the bitmasks in pros::motor_flag_e_t.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 *
+	 * \return A bitfield containing the motor's flags.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << motor.get_faults_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::uint32_t> get_flags_all(void) const;
 
 	/**
 	 * Gets the absolute position of the motor in its encoder units.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR_F if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's absolute position in its encoder units or PROS_ERR_F
 	 * if the operation failed, setting errno.
@@ -715,17 +891,51 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	double get_position(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector containing the absolute position of the motor in its encoder units.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 
+	 *
+	 * \return A vector containing the motor's absolute position in its encoder units or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << motor.get_position_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<double> get_position_all(void) const;
 
 	/**
 	 * Gets the power drawn by the motor in Watts.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR_F if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's power draw in Watts or PROS_ERR_F if the operation
 	 * failed, setting errno.
@@ -744,22 +954,58 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	double get_power(const std::uint8_t index = 0) const;
+
+	/**
+	 * Gets a vector containing the power drawn by the motor in Watts.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \return A vector containing the motor's power draw in Watts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Power: " << motor.get_power_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<double> get_power_all(void) const;
 
 	/**
 	 * Gets the raw encoder count of the motor at a given timestamp.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
 	 * EOVERFLOW - The index is non 0
-	 *
-	 * \param[in] timestamp
+	 * 
+	 * 
+	 * \param timestamp
 	 *            A pointer to a time in milliseconds for which the encoder count
 	 *            will be returned. If NULL, the timestamp at which the encoder
 	 *            count was read will not be supplied
 	 * 
-	 * \param index The index of the motor. Set to 0 by default. Returns PROS_ERR if it is non 0 and sets errno. 
+	 * \param index Optional parameter. 
+	 * 		  The index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
+	 *
+	 *  
 	 *
 	 * \return The raw encoder count at the given timestamp or PROS_ERR if the
 	 * operation failed.
@@ -779,6 +1025,37 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the raw encoder count of the motor at a given timestamp.
+	 *
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param timestamp
+	 *            A pointer to a time in milliseconds for which the encoder count
+	 *            will be returned. If NULL, the timestamp at which the encoder
+	 *            count was read will not be supplied
+	 * 
+	 * \return A vector containing the raw encoder count at the given timestamp or PROS_ERR if the
+	 * operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   std::uint32_t now = pros::millis();
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << motor.get_raw_position(&now);
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const;
 
 	/**
