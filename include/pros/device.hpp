@@ -55,6 +55,14 @@ class Device {
 	 * Gets the port number of the Smart Device.
 	 *
 	 * \return The smart device's port number.
+	 *
+ 	 * void opcontrol() {
+ 	 *   while (true) {
+ 	 *     printf("device plugged type: {port: %d}\n", get_port());
+ 	 *     delay(20);
+ 	 *   }
+ 	 * }
+ 	 * \endcode
 	 */
 	std::uint8_t get_port(void);
 
@@ -62,6 +70,14 @@ class Device {
 	 * Checks if the device is installed.
 	 * 
 	 * \return true if the corresponding device is installed, false otherwise.
+	 *
+	 * void opcontrol() {
+	 *   while (true) {
+	 *     printf("device plugged type: {is_installed: %d}\n", is_installed());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	*/
 	virtual bool is_installed();
 
@@ -73,6 +89,15 @@ class Device {
 	 * EACCES - Mutex of port cannot be taken (access denied).
 	 * 
 	 * \return The device type as an enum.
+	 *
+	 * void opcontrol() {
+	 *   while (true) {
+	 *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
+	 *     printf("device plugged type: {plugged type: %d}\n", pt);
+	 *     delay(20);
+	 *   }
+	 * }
+ 	 * \endcode
 	 */
 	pros::DeviceType get_plugged_type() const;
 
