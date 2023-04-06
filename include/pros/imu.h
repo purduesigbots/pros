@@ -430,8 +430,8 @@ imu_status_e_t imu_get_status(uint8_t port);
  *
  * void opcontrol() {
  *   while (true) {
- *     imu_gyro_s_t gyro = imu_get_gyro_rate(IMU_PORT);
- *     printf("IMU gyro values: {x: %f, y: %f, z: %f}\n", gyro.x, gyro.y, gyro.z);
+ *     int32_t val = imu_set_euler(IMU_PORT, {45, 60, 90});
+ *     printf("IMU : {gyro vals: %d}\n", val);
  *     delay(20);
  *   }
  * }
