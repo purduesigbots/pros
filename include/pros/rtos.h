@@ -89,13 +89,13 @@ namespace pros {
 #define TASK_STACK_DEPTH_MIN 0x200
 
 /**
- * @brief
+ * brief
  * The maximum number of characters allowed in a task's name.
  */
 #define TASK_NAME_MAX_LEN 32
 
 /**
- * @brief
+ * brief
  * The maximum timeout value that can be given to, for instance, a mutex grab.
  */
 #define TIMEOUT_MAX ((uint32_t)0xffffffffUL)
@@ -120,7 +120,7 @@ typedef void (*task_fn_t)(void*);
 
 /**
  * enum task_state_e_t
- * \brief The state of a task.
+ * brief The state of a task.
  */
 typedef enum {
 	E_TASK_STATE_RUNNING = 0, ///< The task is actively executing.
@@ -133,7 +133,7 @@ typedef enum {
 
 /**
  * enum
- * \brief The action to take when a task is notified.
+ * brief The action to take when a task is notified.
  */
 typedef enum {
 	E_NOTIFY_ACTION_NONE, ///< The task’s notification value will not be touched.
@@ -191,7 +191,7 @@ typedef void* mutex_t;
  */
 
 /**
- * \def Refers to the current task handle
+ * def Refers to the current task handle
  */
 #ifdef __cplusplus
 #define CURRENT_TASK ((pros::task_t)NULL)
