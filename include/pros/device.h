@@ -51,6 +51,19 @@ typedef enum v5_device_e {
  * Gets the type of device on given port.
  *
  * \return The device type as an enum.
+ *
+ * \b Example
+ * \code
+ * #define IMU_PORT 1
+ *
+ * void opcontrol() {
+ *   while (true) {
+ *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
+ *     printf("device plugged type: {x: %d}\n", pt);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 v5_device_e_t get_plugged_type(uint8_t port);
 
