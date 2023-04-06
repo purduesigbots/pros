@@ -142,7 +142,7 @@ typedef enum adi_potentiometer_type_e {
 namespace c {
 #endif
 
-/// @}
+/** @} Add to group c-adi*/
 
 /**
  * \ingroup c-adi
@@ -150,8 +150,6 @@ namespace c {
 
 /**
  * \addtogroup c-adi
- * \name General ADI Use Functions
- * These functions allow for interaction with any ADI port type
  *  @{
  */
 
@@ -1342,13 +1340,13 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  */
 int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
 
-///@}
+/** @} */
 
 /**
  * \name Ease of use macro definitions
  * These functions provide ease of use definitions for the ADI functions. 
+ * @{
  */
-///@{
 
 /**
  * Used for adi_digital_write() to specify a logic HIGH state to output.
@@ -1382,9 +1380,9 @@ int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_len
  */
 #define OUTPUT_ANALOG 0x03
 
-///@}
+/** @} Name: Ease of use macro definitions*/
 
-///@}
+/** @} */
 
 #ifdef __cplusplus
 }  // namespace c
