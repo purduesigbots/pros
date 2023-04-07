@@ -89,16 +89,15 @@ using MotorCartridge = MotorGears;
 using MotorGear = MotorGears;
 
 /**
- * \ingroup cpp-motors
+ * \ingroup cpp-abstract-motor
  */
 class AbstractMotor {
 	/**
-	 * \addtogroup cpp-motors
+	 * \addtogroup cpp-abstract-motor
 	 *  @{
 	 */
 	public:
 	/// \name Motor movement functions
-	/// \addtogroup cpp-motor-movement
 	/// These functions allow programmers to make motors move
 	///@{
 

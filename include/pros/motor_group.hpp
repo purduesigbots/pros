@@ -37,7 +37,7 @@ namespace pros {
 inline namespace v5 {
 class MotorGroup : public virtual AbstractMotor {
 	/**
-	 * \addtogroup cpp-motors
+	 * \addtogroup cpp-motor-group
 	 *  @{
 	 */
 	public:
