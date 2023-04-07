@@ -62,6 +62,30 @@ class Imu : public Device {
 	
 
 	public:
+	/**
+	 * Creates an Imu object for the given port
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - Either the ADI port value or the smart port value is not within its
+	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 *
+	 * \param port
+	 *        The V5 Inertial Sensor port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Do something with the sensor data
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**
