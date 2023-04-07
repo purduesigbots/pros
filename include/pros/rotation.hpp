@@ -28,11 +28,11 @@ namespace pros {
 inline namespace v5 {
 /**
  * \ingroup cpp-rotation
- *  @{
  */
 class Rotation : public Device {
 	/**
 	 * \addtogroup cpp-rotation
+	 * @{
 	 */
 
 	public:
