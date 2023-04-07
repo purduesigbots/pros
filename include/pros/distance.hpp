@@ -46,6 +46,15 @@ class Distance : public Device {
 	 *
 	 * \param port
 	 *        The V5 port number from 1-21
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   Distance distance(DISTANCE_PORT);
+	 * }
+	 * \endcode
 	 */
 	explicit Distance(const std::uint8_t port);
 
