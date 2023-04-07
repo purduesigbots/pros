@@ -572,17 +572,16 @@ class Task {
 	 * \b Example
      * \code
      * void my_task_fn(void* ign) {
-     *   lcd_print(1, "%s running", task_get_name(NULL));
+     *   lcd_print(1, "%s running", pros::Task::current_task().get_name());
      *   task_delay(1000);
-     *   lcd_print(2, "End of %s", task_get_name(NULL));
+     *   lcd_print(2, "End of %s", pros::Task::current_task().get_name());
      * }
      * 
      * void opcontrol() {
-     *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
-     *                             TASK_STACK_DEPTH_DEFAULT, "Example Task");
-     *   lcd_set_text(0, "Running task.");
-     *   task_join(my_task);
-     *   lcd_set_text(3, "Task completed.");
+	 *   pros::Task my_task(my_task_fn);
+     *   pros::lcd::set_text(0, "Running task.");
+     *   my_task.join();
+     *   pros::lcd::lcd_set_text(3, "Task completed.");
      * }
      * \endcode
 	 */
