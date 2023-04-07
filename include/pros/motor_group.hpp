@@ -1341,7 +1341,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	 *   mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
 	 * }
 	 * \endcode
@@ -1362,7 +1362,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	 *   mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	 *   std::cout << "Brake Mode: " << mg.get_brake_mode_all()[0];
 	 * }
 	 * \endcode
@@ -1443,7 +1443,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1458,13 +1458,13 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * \return A vecotr with the following for each motor, One of Motor_Units according to what is set for the
+	 * \return A vector with the following for each motor, One of Motor_Units according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units_all()[0];
 	 * }
 	 * \endcode
@@ -1472,37 +1472,61 @@ class MotorGroup : public virtual AbstractMotor {
 	std::vector<MotorUnits> get_encoder_units_all(void) const;
 
 	/**
-	 * Gets the gearset that was set for the motor.
+	 * Gets the gearset that was set for a motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
-	 *
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 *\param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return One of Motor_Gears according to what is set for the motor,
 	 * or pros::Motor_Gears::invalid if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Gearing: " << mg.get_gearing();
 	 * }
 	 * \endcode
 	 */
 	MotorGears get_gearing(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the gearset that was set for each motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * 
+	 * \return A vector with one of Motor_Gears according to what is set for the motor,
+	 * or pros::Motor_Gears::invalid if the operation failed for each motor.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Gearing: " << mg.get_gearing_all()[0];
+	 * }
+	 * \endcode
+	 */
 	std::vector<MotorGears> get_gearing_all(void) const;
 
 	/**
-	 * @brief Gets returns a vector with all the port numbers in the motor group.
-	 * (ALL THE PORTS WILL BE POSITIVE)
-	 * Use get_ports if you want to get the information on reversal.
-	 *
-	 * @return std::vector<std::uint8_t>
+	 * Gets a vector with all the port numbers in the motor group.
+	 * A port will be negative if the motor in the motor group is reversed
+	 * 
+	 * @return a vector with all the port numbers for the motor group
 	 */
 	std::vector<std::int8_t> get_port_all(void) const;
 
 	/**
-	 * Gets the voltage limit set by the user.
+	 * Gets the voltage limit of a motor in the motor group set by the user.
 	 *
 	 * Default value is 0V, which means that there is no software limitation
 	 * imposed on the voltage.
@@ -1510,6 +1534,11 @@ class MotorGroup : public virtual AbstractMotor {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 *\param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
 	 * setting errno.
@@ -1518,19 +1547,47 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   std::cout << "Motor Voltage Limit: " << mg.get_voltage_limit();
+	 *   std::cout << "Motor Voltage Limit: " << mg.get_voltage_limit(1);
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_voltage_limit(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_voltage_limit_all(void) const;
 
 	/**
-	 * Gets the operation direction of the motor as set by the user.
+	 * Gets a vector of the voltage limit of each motor in the motor group 
+	 *
+	 * Default value is 0V, which means that there is no software limitation
+	 * imposed on the voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The Motor group is empty
+	 *
+	 * \return The motor's voltage limit in V or PROS_ERR if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   std::cout << "Motor Voltage Limit: " << mg.get_voltage_limit_all()[0];
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_voltage_limit_all(void) const;
+
+	/**
+	 * Gets the operation direction of a motor in the motor group as set by the user.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * 
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 *\param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return 1 if the motor has been reversed and 0 if the motor was not
 	 * reversed, or PROS_ERR if the operation failed, setting errno.
@@ -1545,18 +1602,43 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t is_reversed(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the operation direction of each motor in the motor group as set by the user.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vector conatining the following for each motor: 1 if the motor has been reversed and 0 if the motor was not
+	 * reversed, or PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   std::cout << "Is the motor reversed? " << motor.is_reversed_all()[0];
+	 *   // Prints "0"
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> is_reversed_all(void) const;
 
 	/**
-	 * Sets one of Motor_Brake to the motor. Works with the C enum
+	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
-	 *
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
 	 * \param mode
 	 *        The Motor_Brake to set for the motor
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -1565,21 +1647,136 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	 *   mg.set_brake_mode(pros::MotorBrake::brake, 1);
 	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
 	 * }
 	 * \endcode
 	 */
 	std::int32_t set_brake_mode(const MotorBrake mode, const std::uint8_t index = 0) const;
-	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
-	std::int32_t set_brake_mode_all(const MotorBrake mode) const;
-	std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const;
 	/**
-	 * Sets the current limit for the motor in mA.
+	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
+	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param mode
+	 *        The Motor_Brake to set for the motor
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD, 1);
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
+	/**
+	 * Sets one of Motor_Brake all the motors in the motor group. Works with the C enum
+	 * and the C++ enum class.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * 
+	 * \param mode
+	 *        The Motor_Brake to set for the motor
+	 * 
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_brake_mode_all(pros::MotorBrake:brake);
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_brake_mode_all(const MotorBrake mode) const;
+	/**
+	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
+	 * and the C++ enum class.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * 
+	 * \param mode
+	 *        The Motor_Brake to set for the motor
+	 *
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_brake_mode_all(pros::E_MOTOR_BRAKE_HOLD);
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_brake_mode_all(const pros::motor_brake_mode_e_t mode) const;
+	/**
+	 * Sets the current limit for one motor in the motor group in mA.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 *
+	 * \param limit
+	 *        The new current limit in mA
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *
+	 * mg.set_current_limit(1000);
+	 * while (true) {
+	 *   mg = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
+	 *   pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
+	/**
+	 * Sets the current limit for every motor in the motor group in mA.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group was empty
 	 *
 	 * \param limit
 	 *        The new current limit in mA
@@ -1593,7 +1790,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *
-	 * motor.set_current_limit(1000);
+	 * mg.set_current_limit_all(1000);
 	 * while (true) {
 	 *   mg = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
@@ -1602,19 +1799,22 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
 	std::int32_t set_current_limit_all(const std::int32_t limit) const;
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of Motor_Units for one motor in the motor group's motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
 	 *
 	 * \param units
 	 *        The new motor encoder units
-	 *
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 *
@@ -1622,26 +1822,27 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_encoder_units(E_MOTOR_ENCODER_DEGREES);
+	 *   mg.set_encoder_units(E_MOTOR_ENCODER_DEGREES, 1);
 	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
 	 */
 	std::int32_t set_encoder_units(const MotorUnits units, const std::uint8_t index = 0) const;
-	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
-	std::int32_t set_encoder_units_all(const MotorUnits units) const;
-	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
 	/**
-	 * Sets one of the gear cartridge (red, green, blue) for the motor. Usable with
-	 * the C++ enum class and the C enum.
+	 * Sets one of Motor_Units for one motor in the motor group's motor encoder. Works with the C
+	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
 	 *
-	 * \param gearset
-	 *        The new motor gearset
-	 *
+	 * \param units
+	 *        The new motor encoder units
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 *
@@ -1649,25 +1850,181 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
+	 *   mg.set_encoder_units(E_MOTOR_ENCODER_DEGREES, 1);
+	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
+	/**
+	 * Sets one of Motor_Units for every motor in the motor group's motor encoder. Works with the C
+	 * enum and the C++ enum class.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty 
+	 *
+	 * \param units
+	 *        The new motor encoder units
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_encoder_units_all(const MotorUnits units) const;
+	/**
+	 * Sets one of Motor_Units for every motor in the motor group's motor encoder. Works with the C
+	 * enum and the C++ enum class.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty 
+	 *
+	 * \param units
+	 *        The new motor encoder units
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
+	 * the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 *
+	 * \param gearset
+	 *        The new geatset of the motor
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing(pros::MotorGears::blue, 1);
 	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
 	 */
 	std::int32_t set_gearing(const MotorGears gearset, const std::uint8_t index = 0) const;
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
+	 * the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 *
+	 * \param gearset
+	 *        The new geatset of the motor
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing(E_MOTOR_GEARSET_06, 1);
+	 *   std::cout << "Gearset: " << mg.get_gearing();
+	 * }
+	 * \endcode
+	 */
 	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
+	 * the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \param gearset
+	 *        The new geatset of the motor
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   std::cout << "Gearset: " << mg.get_gearing();
+	 * }
+	 * \endcode
+	 */
 	std::int32_t set_gearing_all(const MotorGears gearset) const;
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for every motor in the motor group. Usable with
+	 * the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \param gearset
+	 *        The new geatset of the motor
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   std::cout << "Gearset: " << mg.get_gearing();
+	 * }
+	 * \endcode
+	 */
 	std::int32_t set_gearing_all(const pros::motor_gearset_e_t gearset) const;
 
 	/**
-	 * Sets the reverse flag for the motor.
+	 * sets the reversal for a motor in the motor group.
 	 *
 	 * This will invert its movements and the values returned for its position.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()  
+	 * 
 	 * \param reverse
 	 *        True reverses the motor, false is default
 	 *
@@ -1678,12 +2035,41 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.set_reversed(true);
-	 *   std::cout << "Is this motor reversed? " << motor.is_reversed();
+	 * 		//reverse the motor at index 1 (port 3)
+	 *   mg.set_reversed(true, 1);
+	 *   std::cout << "Is this motor reversed? " << motor.is_reversed(1);
+	 * pros::delay(100);
+	 * 	// unreverse the motor at index 1 (port 3)
+	 *   mg.set_reversed(false, 1);
+	 *   std::cout << "Is this motor reversed? " << motor.is_reversed(1);
 	 * }
 	 * \endcode
 	 */
 	std::int32_t set_reversed(const bool reverse, const std::uint8_t index = 0);
+	/**
+	 * Sets the reversal for all the motors in the motor group.
+	 *
+	 * This will invert its movements and the values returned for its position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EDOM - The motor group is empty
+	 * 
+	 * \param reverse
+	 *        True reverses the motor, false is default
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_reversed_all(true);
+	 *   std::cout << "Is this motor reversed? " << motor.is_reversed();
+	 * }
+	 * \endcode
+	 */
 	std::int32_t set_reversed_all(const bool reverse);
 
 	/**
@@ -1705,7 +2091,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *
-	 *   motor.set_voltage_limit(10000);
+	 *   mg.set_voltage_limit(10000);
 	 *   while (true) {
 	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     // The motor will not output more than 10 V
@@ -1740,7 +2126,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   motor.move_absolute(100, 100); // Moves 100 units forward
 	 *   motor.move_absolute(100, 100); // This does not cause a movement
 	 *
-	 *   motor.set_zero_position(80);
+	 *   mg.set_zero_position(80);
 	 *   motor.move_absolute(100, 100); // Moves 80 units forward
 	 * }
 	 * \endcode
@@ -1795,7 +2181,7 @@ class MotorGroup : public virtual AbstractMotor {
 	void append(MotorGroup&);
 
 	/**
-	 * @brief Removes the port (and it's reversed )
+	 * @brief Removes the port (regardless of regeral)
 	 *
 	 * @param port
 	 */
