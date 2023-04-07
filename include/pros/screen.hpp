@@ -68,6 +68,14 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   set_pen(red);
+     * }
+     *
+     * \endcode
      */
     std::uint32_t set_pen(pros::Color color);
 
@@ -82,6 +90,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR if 
      * there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   //set pen color to red
+     *   set_pen(0x00FF0000);
+     * }
+     *
+     * \endcode
      */
     std::uint32_t set_pen(std::uint32_t color);
 
@@ -97,6 +114,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   //set eraser color to red
+     *   set_eraser(red);
+     * }
+     *
+     * \endcode
      */
     std::uint32_t set_eraser(pros::Color color);
 
@@ -111,6 +137,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return Returns 1 if the mutex was successfully returned, or PROS_ERR
      *  if there was an error either taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   //set eraser color to red
+     *   set_eraser(0x00FF0000);
+     * }
+     *
+     * \endcode
      */
     std::uint32_t set_eraser(std::uint32_t color);
 
@@ -124,6 +159,20 @@ const char* convert_args(const std::string& arg) {
      * \return The current pen color in the form of a value from the enum 
      * defined in colors.h, or PROS_ERR if there was an error taking or 
      * returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   set_pen(red);
+     * }
+     *
+     * void opcontrol() {
+     *   while(1){
+     *     // Should print number equivalent to red defined in colors.hpp.
+     *     print(TEXT_MEDIUM, 1, "%d", get_pen());
+     *   }
+     * }
+     * \endcode
      */
     std::uint32_t get_pen();
 
@@ -137,6 +186,20 @@ const char* convert_args(const std::string& arg) {
      * \return The current eraser color in the form of a value from the enum
      *  defined in colors.h, or PROS_ERR if there was an error taking or 
      *  returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void initialize() {
+     *   set_eraser(red);
+     * }
+     *
+     * void opcontrol() {
+     *   while(1){
+     *     // Should print number equivalent to red defined in colors.h.
+     *     print(TEXT_MEDIUM, 1, "%d", get_eraser());
+     *   }
+     * }
+     * \endcode
      */
     std::uint32_t get_eraser();
 
@@ -149,6 +212,20 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      *         taking or returning the screen mutex.
+     * 
+     *  * \b Example
+     * \code
+     * void initialize() {
+     *   set_eraser(red);
+     * }
+     *
+     * void opcontrol() {
+     *   while(1){
+     *     // This should turn the screen red.
+     *     erase();
+     *   }
+     * }
+     * \endcode
      */
     std::uint32_t erase();
 
@@ -164,6 +241,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured
      *  taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   print(TEXT_MEDIUM, 4, "Line Here");
+     *   // Scroll 3 lines
+     *   scroll(4, 3);
+     * }
+     * \endcode
      */
     std::uint32_t scroll(const std::int16_t start_line, const std::int16_t lines);
 
@@ -186,6 +272,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   print(TEXT_MEDIUM, 1, "Line Here");
+     *   // Scrolls area of screen upwards slightly. including line of text
+     *   scroll_area(0,0, 400, 200, 3);
+     * }
+     * \endcode
      */
     std::uint32_t scroll_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, std::int16_t lines);
 
@@ -207,6 +302,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured taking
      *  or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   uint32_t* buf = malloc(sizeof(uint32_t) * 400 * 200);
+     *   print(TEXT_MEDIUM, 1, "Line Here");
+     *   // Copies area of the screen including text
+     *   copy_area(0, 0, 400, 200, (uint32_t*)buf, 400 + 1);
+     *   // Equation for stride is x2 - x1 + 1
+     * }
+     * \endcode
      */
     std::uint32_t copy_area(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1, uint32_t* buf, const std::int32_t stride);
 
@@ -221,6 +327,18 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * int i = 0;
+     * void opcontrol() {
+     *   while(i < 200){
+     *     draw_pixel(100,i++);
+     *     // Draws a line at x = 100 gradually down the screen, pixel by pixel
+     *     delay(200);
+     *   }
+     * }
+     * \endcode
      */
     std::uint32_t draw_pixel(const std::int16_t x, const std::int16_t y);
 
@@ -235,6 +353,21 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   // Color the Screen in Red
+     *   set_pen(red);
+     *   fill_rect(0,0,400,200);
+     *   int i = 0;
+     *   while(i < 200){
+     *     erase_pixel(100,i++);
+     *     // Erases a line at x = 100 gradually down the screen, pixel by pixel
+     *     delay(200);
+     *   }
+     * }
+     * \endcode
      */
     std::uint32_t erase_pixel(const std::int16_t x, const std::int16_t y);
 
@@ -250,6 +383,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     * 	 set_pen(red);
+     *   // Draw line down the screen at x = 100
+     *   draw_line(100,0,100,200);
+     * }
+     * \endcode
      */
     std::uint32_t draw_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -265,6 +407,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   // Color the Screen in Red
+     *   set_pen(red);
+     *   fill_rect(0,0,400,200);
+     *   // Erase line down the screen at x = 100
+     *   erase_line(100,0,100,200);
+     * }
+     * \endcode
      */
     std::uint32_t erase_line(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -280,6 +433,14 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   set_pen(red);
+     *   draw_rect(1,1,480,200);
+     * }
+     * \endcode
      */
     std::uint32_t draw_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -295,6 +456,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   // Draw Box Around Half the Screen in Red
+     *   set_eraser(red);
+     *   erase_rect(5,5,240,200);
+     * }
+     * \endcode
      */
     std::uint32_t erase_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -311,6 +481,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   // Fill Around Half the Screen in Red
+     *   set_pen(red);
+     *   fill_rect(5,5,240,200);
+     * }
+     * \endcode
      */
     std::uint32_t fill_rect(const std::int16_t x0, const std::int16_t y0, const std::int16_t x1, const std::int16_t y1);
 
@@ -326,6 +505,15 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   // Draw a circle with radius of 100 in red
+     *   set_pen(red);
+     *   draw_circle(240, 200, 100);
+     * }
+     * \endcode
      */
     std::uint32_t draw_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
@@ -341,6 +529,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   set_pen(red);
+     *   fill_rect(5,5,240,200);
+     *   // Erase a circle with radius of 100 in blue
+     *   set_pen(blue);
+     *   erase_circle(240, 200, 100);
+     * }
+     * \endcode
      */
     std::uint32_t erase_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
@@ -357,6 +556,17 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+    * void opcontrol() {
+     *   set_pen(red);
+     *   fill_rect(5,5,240,200);
+     *   // Fill a circlular area with radius of 100 in blue
+     *   set_pen(blue);
+     *   fill_circle(240, 200, 100);
+     * }
+     * \endcode
      */
     std::uint32_t fill_circle(const std::int16_t x, const std::int16_t y, const std::int16_t radius);
 
@@ -402,6 +612,25 @@ const char* convert_args(const std::string& arg) {
      * This will be released by default if no action was taken. 
      * If an error occured, the screen_touch_status_s_t will have its 
      * last_touch_e_t enum specifier set to E_TOUCH_ERR, and other values set to -1.
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *   int i = 0;
+     *   screen_touch_status_s_t status;
+     *   while(1){
+     *     status = touch_status();
+     *
+     *     // Will print various information about the last touch
+     *     print(TEXT_MEDIUM, 1, "Touch Status (Type): %d", status.touch_status);
+     *     print(TEXT_MEDIUM, 2, "Last X: %d", status.x);
+     *     print(TEXT_MEDIUM, 3, "Last Y: %d", status.y);
+     *     print(TEXT_MEDIUM, 4, "Press Count: %d", status.press_count);
+     *     print(TEXT_MEDIUM, 5, "Release Count: %d", status.release_count);
+     *     delay(20);
+     *   }
+     * }
+     * \endcode
      */
     screen_touch_status_s_t touch_status();
     
@@ -417,6 +646,20 @@ const char* convert_args(const std::string& arg) {
      * 
      * \return 1 if there were no errors, or PROS_ERR if an error occured 
      * while taking or returning the screen mutex.
+     * 
+     * \b Example
+     * \code
+     * touch_event_cb_fn_t changePixel(){
+     *   screen_touch_status_s_t status = touch_status();
+     *   draw_pixel(status.x,status.y);
+     *   return NULL;
+     * }
+     *
+     * void opcontrol() {
+     *   touch_callback(changePixel(), TOUCH_PRESSED);
+     *   while(1) delay(20);
+     * }
+     * \endcode
      */
     std::uint32_t touch_callback(touch_event_cb_fn_t cb, last_touch_e_t event_type);
 

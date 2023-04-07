@@ -35,14 +35,10 @@ inline namespace v5 {
  * Indicates the current 'brake mode' of a motor.
  */
 enum class MotorBrake {
-	/// Motor coasts when stopped, traditional behavior
-	coast = 0,
-	/// Motor brakes when stopped
-	brake = 1,
-	/// Motor actively holds position when stopped
-	hold = 2,
-	/// Invalid brake mode
-	invalid = INT32_MAX
+	coast = 0, ///< Motor coasts when stopped, traditional behavior
+	brake = 1, ///< Motor brakes when stopped
+	hold = 2, ///< Motor actively holds position when stopped
+	invalid = INT32_MAX ///< Invalid brake mode
 };
 
 /**
@@ -50,37 +46,29 @@ enum class MotorBrake {
  * Indicates the units used by the motor encoders.
  */
 enum class MotorEncoderUnits {
-	/// Position is recorded as angle in degrees as a floating point number
-	degrees = 0,
-	/// Position is recorded as angle in degrees as a floating point number
-	deg = 0,
-	/// Position is recorded as angle in rotations as a floating point number
-	rotations = 1,
-	/// Position is recorded as raw encoder ticks as a whole number
-	counts = 2,
-	/// Invalid motor encoder units
-	invalid = INT32_MAX
+	degrees = 0, ///< Position is recorded as angle in degrees as a floating point number
+	deg = 0, ///< Position is recorded as angle in degrees as a floating point number
+	rotations = 1, ///< Position is recorded as angle in rotations as a floating point number
+	counts = 2, ///< Position is recorded as raw encoder ticks as a whole number
+	invalid = INT32_MAX ///< Invalid motor encoder units
 };
 
 // Alias for Motor_Encoder_Units
 using MotorUnits = MotorEncoderUnits;
 
 enum class MotorGears {
-	/// 36:1, 100 RPM, Red gear set
-	ratio_36_to_1 = 0,
-	red = ratio_36_to_1,
-	rpm_100 = ratio_36_to_1,
-	/// 18:1, 200 RPM, Green gear set
-	ratio_18_to_1 = 1,
-	green = ratio_18_to_1,
-	rpm_200 = ratio_18_to_1,
-	/// 6:1, 600 RPM, Blue gear set
-	ratio_6_to_1 = 2,
-	blue = ratio_6_to_1,
-	rpm_600 = ratio_6_to_1,
-	/// Error return code
-	invalid = INT32_MAX
+	ratio_36_to_1 = 0, ///< 36:1, 100 RPM, Red gear set
+	red = ratio_36_to_1, ///< 36:1, 100 RPM, Red gear set
+	rpm_100 = ratio_36_to_1, ///< 36:1, 100 RPM, Red gear set
+	ratio_18_to_1 = 1, ///< 18:1, 200 RPM, Green gear set
+	green = ratio_18_to_1, ///< 18:1, 200 RPM, Green gear set
+	rpm_200 = ratio_18_to_1, ///< 18:1, 200 RPM, Green gear set
+	ratio_6_to_1 = 2, ///< 6:1, 600 RPM, Blue gear set
+	blue = ratio_6_to_1, ///< 6:1, 600 RPM, Blue gear set
+	rpm_600 = ratio_6_to_1, ///< 6:1, 600 RPM, Blue gear set
+	invalid = INT32_MAX ///< Error return code
 };
+
 
 // Provide Aliases for Motor_Gears
 using MotorGearset = MotorGears;

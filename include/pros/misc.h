@@ -560,6 +560,11 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
  * 
  * \b Example
  * \code
+ * void opcontrol() {
+ *   controller_set_text(E_CONTROLLER_MASTER, 0, 0, "Example");
+ *   delay(100);
+ *   controller_clear_line(E_CONTROLLER_MASTER, 0);
+ * }
  * \endcode
  */
 int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
@@ -589,7 +594,7 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
  * void opcontrol() {
  *   controller_set_text(E_CONTROLLER_MASTER, 0, 0, "Example");
  *   delay(100);
- *   controller_clear_line(E_CONTROLLER_MASTER, 0);
+ *   controller_clear(E_CONTROLLER_MASTER);
  * }
  * \endcode
  */
