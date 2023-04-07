@@ -890,7 +890,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's raw accelerometer values
 	 *     pros::imu_accel_s_t accel = imu.get_accel();
-	 *     printf("X: %f, Y: %f, Z: %f\n", accel.x, accel.y, accel.z);
+	 *     printf("x: %f, y: %f, z: %f\n", accel.x, accel.y, accel.z);
 	 *     delay(20);
 	 * 
 	 *     // Do something with sensor
