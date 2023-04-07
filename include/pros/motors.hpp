@@ -63,7 +63,7 @@ class Motor : public AbstractMotor, public Device {
  	 * \code
  	 * void opcontrol() {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
-	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 2 with standard gearset and encoder units
+	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 with standard gearset and encoder units
 	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set and degrees
 	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
  	 *  
@@ -297,7 +297,6 @@ class Motor : public AbstractMotor, public Device {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
-	 
 	* 
 	* \return 1 if the operation was successful or PROS_ERR if the operation
 	* failed, setting errno.
@@ -340,7 +339,6 @@ class Motor : public AbstractMotor, public Device {
 	 * }
 	 * \endcode
 	 */
-
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 
 	/**
@@ -356,7 +354,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The target position in its encoder units or PROS_ERR_F if the
@@ -410,7 +408,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The commanded motor velocity from +-100, +-200, or +-600, or
@@ -477,7 +475,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index 
 	 * 
 	 * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
@@ -539,7 +537,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's current in mA or PROS_ERR if the operation failed,
@@ -603,7 +601,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return 1 for moving in the positive direction, -1 for moving in the
@@ -672,7 +670,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's efficiency in percent or PROS_ERR_F if the operation
@@ -741,7 +739,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 *
@@ -805,7 +803,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return A bitfield containing the motor's flags.
@@ -868,7 +866,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's absolute position in its encoder units or PROS_ERR_F
@@ -931,7 +929,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's power draw in Watts or PROS_ERR_F if the operation
@@ -999,7 +997,7 @@ class Motor : public AbstractMotor, public Device {
 	 *            count was read will not be supplied
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 *  
@@ -1070,7 +1068,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's temperature in degrees Celsius or PROS_ERR_F if the
@@ -1131,7 +1129,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return The motor's torque in Nm or PROS_ERR_F if the operation failed,
@@ -1192,7 +1190,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
@@ -1254,7 +1252,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the motor's current limit is being exceeded and 0 if the
@@ -1317,7 +1315,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
@@ -1384,7 +1382,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of Motor_Brake, according to what was set for the
@@ -1437,7 +1435,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return The motor's current limit in mA or PROS_ERR if the operation failed,
@@ -1496,7 +1494,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of Motor_Units according to what is set for the
@@ -1547,7 +1545,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of Motor_Gears according to what is set for the motor,
@@ -1608,7 +1606,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \b Example
@@ -1657,7 +1655,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the motor has been reversed and 0 if the motor was not
@@ -1709,7 +1707,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The Motor_Brake to set for the motor
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -1743,7 +1741,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The Motor_Brake to set for the motor
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -1824,7 +1822,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The new current limit in mA
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -1915,7 +1913,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * * \param units
@@ -1953,7 +1951,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The new motor encoder units
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -2011,7 +2009,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * \param gearset
 	 *        The new motor gearset
@@ -2049,7 +2047,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The new motor gearset
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 *
@@ -2136,7 +2134,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        True reverses the motor, false is default direction
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -2222,7 +2220,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The new voltage limit in Volts
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -2266,7 +2264,7 @@ class Motor : public AbstractMotor, public Device {
 	 *        The new reference position in its encoder units
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * 
@@ -2334,7 +2332,7 @@ class Motor : public AbstractMotor, public Device {
 	 * EOVERFLOW - The index is non 0
 	 * 
 	 * \param index Optional parameter. 
-	 * 		  The index of the motor to get the target position of.
+	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 * 
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
