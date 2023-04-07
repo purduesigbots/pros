@@ -4,8 +4,6 @@
  * Contains functions for the PROS RTOS kernel for use by typical
  * VEX programmers.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html to learn more.
- *
  * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
  * All rights reserved.
  *

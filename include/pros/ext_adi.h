@@ -603,8 +603,7 @@ int32_t ext_adi_motor_stop(uint8_t smart_port, uint8_t adi_port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder, unlike its use as an
- * object to store encoder data in PROS 2.
+ * This merely contains the port number for the encoder.
  */
 typedef int32_t ext_adi_encoder_t;
 
@@ -752,8 +751,7 @@ int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc);
 /**
  * Reference type for an initialized ultrasonic.
  *
- * This merely contains the port number for the ultrasonic, unlike its use as an
- * object to store encoder data in PROS 2.
+ * This merely contains the port number for the ultrasonic.
  */
 typedef int32_t ext_adi_ultrasonic_t;
 
@@ -873,8 +871,7 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult);
 /**
  * Reference type for an initialized gyroscope.
  *
- * This merely contains the port number for the gyroscope, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the gyroscope.
  *
  * (Might Be useless with the wire expander.)
  */
@@ -1049,8 +1046,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro);
 /**
  * Reference type for an initialized potentiometer.
  *
- * This merely contains the port number for the potentiometer, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the potentiometer.
  */
 typedef int32_t ext_adi_potentiometer_t;
 

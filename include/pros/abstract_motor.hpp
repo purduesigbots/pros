@@ -94,7 +94,7 @@ class AbstractMotor {
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of pros::Motor::move(), or motorSet from the PROS 2 API.
+	 * analogous to use of pros::Motor::move().
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

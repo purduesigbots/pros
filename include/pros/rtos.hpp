@@ -66,7 +66,8 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
-	 *\b Example
+	 * 
+	 * \b Example
 	 * \code
 	 * void my_task_fn(void* param) {
 	 *   printf("Hello %s\n", (char*)param);
@@ -242,6 +243,7 @@ class Task {
 	 * \param name
 	 *        A descriptive name for the task.  This is mainly used to facilitate
 	 *        debugging. The name may be up to 32 characters long.
+	 *
 	 * \b Example
 	 * \code
 	 * void my_task_fn(void* param) {
