@@ -605,6 +605,38 @@ class Task {
 	 * For NOTIFY_ACTION_NO_WRITE: return 0 if the value could be written without
 	 * needing to overwrite, 1 otherwise.
 	 * For all other NOTIFY_ACTION values: always return 0
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+	 *   pros::Task task = pros::Task::current();
+	 * 
+     *   while(true) {
+     *     // Wait until we have been notified 20 times before running the code
+     *     if(task.notify_take(false, TIMEOUT_MAX) == 20) {
+     *       // ... Code to do stuff here ...
+     * 
+     *       // Reset the notification counter
+     *       task.notify_clear();
+     *     }
+     *     delay(10);
+     * 	 }
+     * }
+     * 
+     * void opcontrol() {
+	 *   pros::Task task(my_task_fn);
+     *   
+     *   int count = 0;
+     *   
+     *   while(true) {
+     *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+     *       task.notify_ext(1, NOTIFY_ACTION_INCREMENT, &count);
+     *     }
+     *     
+     *     delay(20);
+     *   }
+     * }
+     * \endcode
 	 */
 	std::uint32_t notify_ext(std::uint32_t value, notify_action_e_t action, std::uint32_t* prev_value);
 
@@ -623,6 +655,25 @@ class Task {
 	 *
 	 * \return The value of the task's notification value before it is decremented
 	 * or cleared
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* ign) {
+     *   pros::Task task = pros::task::current();
+     *   while(task.notify_take(true, TIMEOUT_MAX)) {
+     *     puts("I was unblocked!");
+     *   }
+     * }
+     * 
+     * void opcontrol() {
+	 *   pros::Task task(my_task_fn);
+     *   while(true) {
+     *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+     *       task.notify(my_task);
+     *     }
+     *   }
+     * }
+     * \endcode
 	 */
 	static std::uint32_t notify_take(bool clear_on_exit, std::uint32_t timeout);
 
@@ -633,11 +684,34 @@ class Task {
 	 * details.
 	 *
 	 * \return False if there was not a notification waiting, true if there was
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+	 *   pros::Task task = pros::Task::current();
+     *   while(true) {
+     *     printf("Waiting for notification...\n");
+     * 	   printf("Got a notification: %d\n", task.notify_take(false, TIMEOUT_MAX));
+     * 
+     * 	   tasK_notify(task);
+     *     delay(10):
+     *   }
+     * }
+     * 
+     * void opcontrol() {
+	 *   pros::Task task(my_task_fn);
+     *   while(true) {
+     *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+     *       task.notify();
+     *     }
+     *     delay(10);
+     *   }
+     * }
+     * \endcode
 	 */
 	bool notify_clear();
 
 	/**
-	 * Delays a task for a given number of milliseconds.
+	 * Delays the current task for a specified number of milliseconds.
 	 *
 	 * This is not the best method to have a task execute code at predefined
 	 * intervals, as the delay time is measured from when the delay is requested.
@@ -645,11 +719,20 @@ class Task {
 	 *
 	 * \param milliseconds
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
+	 * 
+	 * \b Example
+     * \code
+     * void opcontrol() {
+     *   while (true) {
+     *     // Do opcontrol things
+     *     pros::Task::delay(2);
+     *   }
+     * \endcode
 	 */
 	static void delay(const std::uint32_t milliseconds);
 
 	/**
-	 * Delays a task until a specified time.  This function can be used by
+	 * Delays the current Task until a specified time.  This function can be used by
 	 * periodic tasks to ensure a constant execution frequency.
 	 *
 	 * The task will be woken up at the time *prev_time + delta, and *prev_time
@@ -660,6 +743,16 @@ class Task {
 	 *        typically be initialized to the return value from pros::millis().
 	 * \param delta
 	 *        The number of milliseconds to wait (1000 milliseconds per second)
+	 * 
+	 * \b Example
+     * \code
+     * void opcontrol() {
+     *   while (true) {
+     *     // Do opcontrol things
+     *     pros::Task::delay(2);
+     *   }
+	 * }
+     * \endcode
 	 */
 	static void delay_until(std::uint32_t* const prev_time, const std::uint32_t delta);
 
@@ -670,6 +763,19 @@ class Task {
 	 * Tasks recently created may take one context switch to be counted.
 	 *
 	 * \return The number of tasks that are currently being managed by the kernel.
+	 * 
+	 * \b Example
+     * \code
+     * void my_task_fn(void* param) {
+     *   printf("Hello %s\n", (char*)param);
+     *   // ...
+     * }
+	 * 
+     * void opcontrol() {
+	 *   pros::Task my_task(my_task_fn);
+     *   printf("There are %d tasks running\n", pros::Task::get_count());
+     * }
+     * \endcode
 	 */
 	static std::uint32_t get_count();
 
@@ -691,6 +797,23 @@ struct Clock {
 	 * Effectively a wrapper around pros::millis()
 	 *
 	 * \return The current time
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Clock::time_point start = pros::Clock::now();
+	 *   pros::Clock::time_point end = pros::Clock::now();
+	 *   pros::Clock::duration duration = end - start;
+	 *   printf("Duration: %d\n", duration.count());
+	 * 
+	 *   if(duration.count() == 500) {
+	 *     // If you see this comment in the DOCS, ping @pros in VTOW. 
+	 *     // If you are the first person to do so, you will receive a free PROS 
+	 * 	   // holo!
+	 *     printf("Duration is 500 milliseconds\n");
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	static time_point now();
 };
@@ -718,7 +841,76 @@ class Mutex {
 	 *
 	 * \return True if the mutex was successfully taken, false otherwise. If false
 	 * is returned, then errno is set with a hint about why the the mutex
-	 * couldn't be taken.
+	 * couldn't be taken
+	 * 
+	 * \b Example
+     * \code
+     * // Global variables for the robot's odometry, which the rest of the robot's
+     * // subsystems will utilize
+     * double odom_x = 0.0;
+     * double odom_y = 0.0;
+     * double odom_heading = 0.0;
+     * 
+     * // This mutex protects the odometry data. Whenever we read or write to the
+     * // odometry data, we should make copies into the local variables, and read
+     * // all 3 values at once to avoid errors.
+     * pros::Mutex odom_mutex;
+     * 
+     * void odom_task(void* param) {
+     *   while(true) {
+     *     // First we fetch the odom coordinates from the previous iteration of the
+     *     // odometry task. These are put into local variables so that we can
+     *     // keep the size of the critical section as small as possible. This lets
+     *     // other tasks that need to use the odometry data run until we need to
+     *     // update it again.
+	 *     odom_mutex.take();
+     *     double x_old = odom_x;
+     *     double y_old = odom_y;
+     *     double heading_old = odom_heading;
+	 *     odom_mutex.give();
+     * 
+     *     double x_new = 0.0;
+     *     double y_new = 0.0;
+     *     double heading_new = 0.0;
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 *     odom_mutex.take();
+     *     odom_x = x_new;
+     *     odom_y = y_new;
+     *     odom_heading = heading_new;
+	 *     odom_mutex.give();
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+     *     // Here we copy the current odom values into local variables so that
+     *     // we can use them without worrying about the odometry task changing say,
+     *     // the y value right after we've read the x. This ensures our values are
+     *     // sound.
+	 *     odom_mutex.take();
+     *     double current_x = odom_x;
+     *     double current_y = odom_y;
+     *     double current_heading = odom_heading;
+	 *     odom_mutex.give();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+     * \endcode.
 	 */
 	bool take();
 
@@ -738,6 +930,75 @@ class Mutex {
 	 * \return True if the mutex was successfully taken, false otherwise. If false
 	 * is returned, then errno is set with a hint about why the the mutex
 	 * couldn't be taken.
+	 * 
+	 * \b Example
+     * \code
+     * // Global variables for the robot's odometry, which the rest of the robot's
+     * // subsystems will utilize
+     * double odom_x = 0.0;
+     * double odom_y = 0.0;
+     * double odom_heading = 0.0;
+     * 
+     * // This mutex protects the odometry data. Whenever we read or write to the
+     * // odometry data, we should make copies into the local variables, and read
+     * // all 3 values at once to avoid errors.
+     * pros::Mutex odom_mutex;
+     * 
+     * void odom_task(void* param) {
+     *   while(true) {
+     *     // First we fetch the odom coordinates from the previous iteration of the
+     *     // odometry task. These are put into local variables so that we can
+     *     // keep the size of the critical section as small as possible. This lets
+     *     // other tasks that need to use the odometry data run until we need to
+     *     // update it again.
+	 *     odom_mutex.take();
+     *     double x_old = odom_x;
+     *     double y_old = odom_y;
+     *     double heading_old = odom_heading;
+	 *     odom_mutex.give();
+     * 
+     *     double x_new = 0.0;
+     *     double y_new = 0.0;
+     *     double heading_new = 0.0;
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 *     odom_mutex.take();
+     *     odom_x = x_new;
+     *     odom_y = y_new;
+     *     odom_heading = heading_new;
+	 *     odom_mutex.give();
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+     *     // Here we copy the current odom values into local variables so that
+     *     // we can use them without worrying about the odometry task changing say,
+     *     // the y value right after we've read the x. This ensures our values are
+     *     // sound.
+	 *     odom_mutex.take();
+     *     double current_x = odom_x;
+     *     double current_y = odom_y;
+     *     double current_heading = odom_heading;
+	 *     odom_mutex.give();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+     * \endcode.
 	 */
 	bool take(std::uint32_t timeout);
 
@@ -751,6 +1012,75 @@ class Mutex {
 	 * \return True if the mutex was successfully returned, false otherwise. If
 	 * false is returned, then errno is set with a hint about why the mutex
 	 * couldn't be returned.
+	 * 
+	 * \b Example
+     * \code
+     * // Global variables for the robot's odometry, which the rest of the robot's
+     * // subsystems will utilize
+     * double odom_x = 0.0;
+     * double odom_y = 0.0;
+     * double odom_heading = 0.0;
+     * 
+     * // This mutex protects the odometry data. Whenever we read or write to the
+     * // odometry data, we should make copies into the local variables, and read
+     * // all 3 values at once to avoid errors.
+     * pros::Mutex odom_mutex;
+     * 
+     * void odom_task(void* param) {
+     *   while(true) {
+     *     // First we fetch the odom coordinates from the previous iteration of the
+     *     // odometry task. These are put into local variables so that we can
+     *     // keep the size of the critical section as small as possible. This lets
+     *     // other tasks that need to use the odometry data run until we need to
+     *     // update it again.
+	 *     odom_mutex.take();
+     *     double x_old = odom_x;
+     *     double y_old = odom_y;
+     *     double heading_old = odom_heading;
+	 *     odom_mutex.give();
+     * 
+     *     double x_new = 0.0;
+     *     double y_new = 0.0;
+     *     double heading_new = 0.0;
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 *     odom_mutex.take();
+     *     odom_x = x_new;
+     *     odom_y = y_new;
+     *     odom_heading = heading_new;
+	 *     odom_mutex.give();
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+     *     // Here we copy the current odom values into local variables so that
+     *     // we can use them without worrying about the odometry task changing say,
+     *     // the y value right after we've read the x. This ensures our values are
+     *     // sound.
+	 *     odom_mutex.take();
+     *     double current_x = odom_x;
+     *     double current_y = odom_y;
+     *     double current_heading = odom_heading;
+	 *     odom_mutex.give();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+     * \endcode.
 	 */
 	bool give();
 
@@ -768,6 +1098,75 @@ class Mutex {
 	 *
 	 * \exception std::system_error Mutex could not be locked within TIMEOUT_MAX
 	 *			  milliseconds. see errno for details.
+	 * 
+	 * \b Example
+     * \code
+     * // Global variables for the robot's odometry, which the rest of the robot's
+     * // subsystems will utilize
+     * double odom_x = 0.0;
+     * double odom_y = 0.0;
+     * double odom_heading = 0.0;
+     * 
+     * // This mutex protects the odometry data. Whenever we read or write to the
+     * // odometry data, we should make copies into the local variables, and read
+     * // all 3 values at once to avoid errors.
+     * pros::Mutex odom_mutex;
+     * 
+     * void odom_task(void* param) {
+     *   while(true) {
+     *     // First we fetch the odom coordinates from the previous iteration of the
+     *     // odometry task. These are put into local variables so that we can
+     *     // keep the size of the critical section as small as possible. This lets
+     *     // other tasks that need to use the odometry data run until we need to
+     *     // update it again.
+	 *     odom_mutex.lock();
+     *     double x_old = odom_x;
+     *     double y_old = odom_y;
+     *     double heading_old = odom_heading;
+	 *     odom_mutex.unlock();
+     * 
+     *     double x_new = 0.0;
+     *     double y_new = 0.0;
+     *     double heading_new = 0.0;
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 *     odom_mutex.lock();
+     *     odom_x = x_new;
+     *     odom_y = y_new;
+     *     odom_heading = heading_new;
+	 *     odom_mutex.unlock();
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+     *     // Here we copy the current odom values into local variables so that
+     *     // we can use them without worrying about the odometry task changing say,
+     *     // the y value right after we've read the x. This ensures our values are
+     *     // sound.
+	 *     odom_mutex.lock();
+     *     double current_x = odom_x;
+     *     double current_y = odom_y;
+     *     double current_heading = odom_heading;
+	 *     odom_mutex.unlock();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+     * \endcode.
 	 */
 	void lock();
 
@@ -781,6 +1180,75 @@ class Mutex {
 	 *
 	 * \note Consider using a std::unique_lock, std::lock_guard, or
 	 * 		 std::scoped_lock instead of interacting with the Mutex direcly.
+	 * 
+	 * \b Example
+     * \code
+     * // Global variables for the robot's odometry, which the rest of the robot's
+     * // subsystems will utilize
+     * double odom_x = 0.0;
+     * double odom_y = 0.0;
+     * double odom_heading = 0.0;
+     * 
+     * // This mutex protects the odometry data. Whenever we read or write to the
+     * // odometry data, we should make copies into the local variables, and read
+     * // all 3 values at once to avoid errors.
+     * pros::Mutex odom_mutex;
+     * 
+     * void odom_task(void* param) {
+     *   while(true) {
+     *     // First we fetch the odom coordinates from the previous iteration of the
+     *     // odometry task. These are put into local variables so that we can
+     *     // keep the size of the critical section as small as possible. This lets
+     *     // other tasks that need to use the odometry data run until we need to
+     *     // update it again.
+	 *     odom_mutex.lock();
+     *     double x_old = odom_x;
+     *     double y_old = odom_y;
+     *     double heading_old = odom_heading;
+	 *     odom_mutex.unlock();
+     * 
+     *     double x_new = 0.0;
+     *     double y_new = 0.0;
+     *     double heading_new = 0.0;
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 *     odom_mutex.lock();
+     *     odom_x = x_new;
+     *     odom_y = y_new;
+     *     odom_heading = heading_new;
+	 *     odom_mutex.unlock();
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+     *     // Here we copy the current odom values into local variables so that
+     *     // we can use them without worrying about the odometry task changing say,
+     *     // the y value right after we've read the x. This ensures our values are
+     *     // sound.
+	 *     odom_mutex.lock();
+     *     double current_x = odom_x;
+     *     double current_y = odom_y;
+     *     double current_heading = odom_heading;
+	 *     odom_mutex.unlock();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+     * \endcode.
 	 */
 	void unlock();
 
@@ -793,6 +1261,20 @@ class Mutex {
 	 * \see https://en.cppreference.com/w/cpp/named_req/Lockable
 	 *
 	 * \return True when lock was acquired succesfully, or false otherwise.
+	 * 
+	 * pros::Mutex mutex;
+	 * 
+	 * void my_task_fn(void* param) {
+	 *   while (true) {
+	 *     if(mutex.try_lock()) {
+	 *       printf("Mutex aquired successfully!\n");
+	 *       // Do stuff that requires the protected resource here
+	 *     }
+	 *     else {
+	 *       printf("Mutex not aquired!\n");
+	 *     }
+	 *   }
+	 * }
 	 */
 	bool try_lock();
 
@@ -807,6 +1289,21 @@ class Mutex {
 	 *
 	 * \param rel_time Time to wait before the mutex becomes available.
 	 * \return True if the lock was acquired succesfully, otherwise false.
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   while (true) {
+	 *     if(mutex.try_lock_for(std::chrono::milliseconds(100))) {
+	 *       printf("Mutex aquired successfully!\n");
+	 *       // Do stuff that requires the protected resource here
+	 *     }
+	 *     else {
+	 *       printf("Mutex not aquired after 100 milliseconds!\n");
+	 *     }
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	template <typename Rep, typename Period>
 	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
@@ -821,6 +1318,27 @@ class Mutex {
 	 *
 	 * \param abs_time Time point until which to wait for the mutex.
 	 * \return True if the lock was acquired succesfully, otherwise false.
+	 * 
+	 * \b Example
+	 * \code
+	 * void my_task_fn(void* param) {
+	 *   while (true) {
+	 *     // Get the current time point
+	 *     auto now = std::chrono::system_clock::now();
+	 * 
+	 *     // Calculate the time point 100 milliseconds from now
+	 *     auto abs_time = now + std::chrono::milliseconds(100);
+	 * 
+	 *     if(mutex.try_lock_until(abs_time)) {
+	 *       printf("Mutex aquired successfully!\n");
+	 *       // Do stuff that requires the protected resource here
+	 *     }
+	 *     else {
+	 *       printf("Mutex not aquired after 100 milliseconds!\n");
+	 *     }
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	template <typename Duration>
 	bool try_lock_until(const std::chrono::time_point<Clock, Duration>& abs_time) {
@@ -872,7 +1390,57 @@ class MutexVar {
 	 * constructor arguments.
 	 *
 	 * \param args
-	          The arguments to provide to the Var constructor.
+	 *        The arguments to provide to the Var constructor.
+     *
+     * \b Example
+	 * \code
+	 * // We create a pose class to contain all our odometry data in a single
+	 * // variable that can be protected by a MutexVar. Otherwise, we would have
+	 * // three seperate variables which could not be protected in a single 
+	 * // MutexVar
+	 * struct Pose {
+	 *   double x;
+	 *   double y;
+	 *   double heading;
+	 * }
+	 * 
+	 * pros::MutexVar<Pose> odom_pose(0.0, 0.0, 0.0);
+	 * 
+	 * void odom_task(void* param) {
+     *   while(true) {
+	 *     Pose old_pose = *odom_pose.lock();
+     * 
+	 *     Pose new_pose{0.0, 0.0, 0.0};
+     *     
+     *     // --- Calculate new pose for the robot here ---
+     * 
+     *     // Now that we have the new pose, we can update the global variables
+	 * 
+	 *     *odom_pose.take() = new_pose;
+	 *     
+	 *     delay(10);
+	 *   }
+	 * }
+     * 
+     * void chassis_task(void* param) {
+     *   while(true) {
+	 * 
+	 *     Pose cur_pose = *odom_pose.take();
+     *     
+     *     // ---- Move the robot using the current locations goes here ----
+     *     
+     *     delay(10);
+     *   }
+     * }
+     * 
+     * void initialize() {
+	 *   odom_mutex = pros::Mutex();
+	 * 
+	 *   pros::Task odom_task(odom_task, "Odometry Task");
+	 *   pros::Task chassis_task(odom_task, "Chassis Control Task");
+     * }
+	 * 
+	 * \endcode
 	 */
 	template <typename... Args>
 	MutexVar(Args&&... args) : mutex(), var(std::forward<Args>(args)...) {}
@@ -886,6 +1454,26 @@ class MutexVar {
 	 *
 	 * \return A std::optional which contains a MutexVarLock providing access to
 	 * the protected variable if locking is successful.
+	 * 
+	 * \b Example
+	 * \code
+	 * pros::MutexVar<Pose> odom_pose;
+	 * 
+	 * void my_task(void* param) {
+	 *   while(true) {
+	 *     std::optional<pros::MutexVar<Pose>> cur_pose_opt = odom_pose.try_lock(100);
+	 *     
+	 *     if(cur_pose_opt.has_value()) {
+	 *       Pose* cur_pose = **cur_pose_opt;
+	 *     }
+	 *     else {
+	 *       printf("Could not lock the mutex var!");
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::optional<MutexVarLock<Var>> try_lock(std::uint32_t timeout) {
 		if (mutex.take(timeout)) {
@@ -904,6 +1492,27 @@ class MutexVar {
 	 *
 	 * \return A std::optional which contains a MutexVarLock providing access to
 	 * the protected variable if locking is successful.
+	 * 
+	 * \b Example
+	 * \code
+	 * pros::MutexVar<Pose> odom_pose;
+	 * 
+	 * void my_task(void* param) {
+	 *   while(true) {
+	 *     std::chrono::duration<int, std::milli> timeout(100);
+	 *     std::optional<pros::MutexVar<Pose>> cur_pose_opt = odom_pose.try_lock(timeout);
+	 *     
+	 *     if(cur_pose_opt.has_value()) {
+	 *       Pose* cur_pose = **cur_pose_opt;
+	 *     }
+	 *     else {
+	 *       printf("Could not lock the mutex var!");
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	template <typename Rep, typename Period>
 	std::optional<MutexVarLock<Var>> try_lock(const std::chrono::duration<Rep, Period>& rel_time) {
@@ -914,6 +1523,22 @@ class MutexVar {
 	 * Lock the mutex-protected variable, waiting indefinitely.
 	 *
 	 * \return A MutexVarLock providing access to the protected variable.
+	 * 
+	 * \b Example
+	 * \code
+	 * pros::MutexVar<Pose> odom_pose;
+	 * 
+	 * void my_task(void* param) {
+	 *   while(true) {
+	 *     pros::delay(10);
+	 * 
+	 *     pros::MutexVarLock<Pose> cur_pose = odom_pose.lock();
+	 *     Pose cur_pose = *cur_pose;
+	 *      
+	 *     // do stuff with cur_pose
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	MutexVarLock<Var> lock() {
 		while (!mutex.take(TIMEOUT_MAX))
