@@ -173,7 +173,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup MotorGroup ({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     mg.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -294,9 +294,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.move_velocity(100);
+	 *   mg.move_velocity(100);
 	 *   pros::delay(1000); // Move at 100 RPM for 1 second
-	 *   motor.move_velocity(0);
+	 *   mg.move_velocity(0);
 	 * }
 	 * \endcode
 	 */
@@ -318,9 +318,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void autonomous() {
-	 *   motor.move_voltage(12000);
+	 *   mg.move_voltage(12000);
 	 *   pros::delay(1000); // Move at max voltage for 1 second
-	 *   motor.move_voltage(0);
+	 *   mg.move_voltage(0);
 	 * }
 	 * \endcode
 	 */
@@ -348,7 +348,7 @@ class MotorGroup : public virtual AbstractMotor {
 	* \code 
 	*  void autonomous() {
 	*	Motor motor(1);
-	*   motor.move_voltage(12000);
+	*   mg.move_voltage(12000);
 	*   pros::delay(1000); // Move at max voltage for 1 second
 	*   motor.brake();
 	* }
@@ -406,7 +406,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.move_absolute(100, 100);
+	 *   mg.move_absolute(100, 100);
 	 * 	// get the target position from motor at index 1. (port 3)
 	 *   std::cout << "Motor Target: " << mg.get_target_position(1);
 	 *   // Prints 100
@@ -430,7 +430,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.move_absolute(100, 100);
+	 *   mg.move_absolute(100, 100);
 	 *   std::cout << "Motor Target: " << mg.get_target_position_all()[0];
 	 *   // Prints 100
 	 * }
@@ -2073,11 +2073,47 @@ class MotorGroup : public virtual AbstractMotor {
 	std::int32_t set_reversed_all(const bool reverse);
 
 	/**
-	 * Sets the voltage limit for the motor in Volts.
+	 * Sets the voltage limit for a motor in the motor group in millivolts.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 *
+	 * \param limit
+	 *        The new voltage limit in Volts
+	 * 
+	 * 	\param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void autonomous() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *
+	 *   mg.set_voltage_limit(10000, 1);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     // The motor on at index 1 (port 3) will not output more than 10 V
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_voltage_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
+
+	/**
+	 * Sets the voltage limit for every motor in the motor group in millivolts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
 	 * \param limit
 	 *        The new voltage limit in Volts
@@ -2091,7 +2127,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *
-	 *   mg.set_voltage_limit(10000);
+	 *   mg.set_voltage_limit_all(10000);
 	 *   while (true) {
 	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     // The motor will not output more than 10 V
@@ -2100,11 +2136,10 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_voltage_limit(const std::int32_t limit, const std::uint8_t index = 0) const;
 	std::int32_t set_voltage_limit_all(const std::int32_t limit) const;
 
 	/**
-	 * Sets the position for the motor in its encoder units.
+	 * Sets the position for a motor in the motor group in its encoder units.
 	 *
 	 * This will be the future reference point for the motor's "absolute"
 	 * position.
@@ -2112,6 +2147,41 @@ class MotorGroup : public virtual AbstractMotor {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 * 
+	 * \param position
+	 *        The new reference position in its encoder units
+	 * \param index Optional parameter, 0 by default.
+	 * 		  The zero indexed index of the motor in the motor group
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void autonomous() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
+	 *   mg.move_absolute(100, 100); // This does not cause a movement
+	 *   mg.set_zero_position(80);
+	 *   mg.set_zero_position(80, 1);
+	 *   mg.move_absolute(100, 100); // Moves 80 units forward
+	 * }
+	 * \endcode
+	 *
+	 */
+	std::int32_t set_zero_position(const double position, const std::uint8_t index = 0) const;
+	/**
+	 * Sets the position for every motor in the motor group in its encoder units.
+	 *
+	 * This will be the future reference point for the motor's "absolute"
+	 * position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
 	 * \param position
 	 *        The new reference position in its encoder units
@@ -2123,20 +2193,50 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.move_absolute(100, 100); // Moves 100 units forward
-	 *   motor.move_absolute(100, 100); // This does not cause a movement
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
+	 *   mg.move_absolute(100, 100); // This does not cause a movement
 	 *
-	 *   mg.set_zero_position(80);
-	 *   motor.move_absolute(100, 100); // Moves 80 units forward
+	 *   mg.set_zero_position_all(80);
+	 *   mg.move_absolute(100, 100); // Moves 80 units forward
 	 * }
 	 * \endcode
 	 *
 	 */
-	std::int32_t set_zero_position(const double position, const std::uint8_t index = 0) const;
 	std::int32_t set_zero_position_all(const double position) const;
 
 	/**
-	 * Sets the "absolute" zero position of the motor to its current position.
+	 * Sets the "absolute" zero position of a motor in the motor group to its current position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 *
+	 * \param index Optional parameter, 0 by default.
+	 * 		The zero indexed index of the motor in the motor group
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void autonomous() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
+	 *   mg.move_absolute(100, 100); // This does not cause a movement
+	 *
+	 *   mg.tare_position();
+	 *   mg.tare_position(1); 
+	 * 
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
+	 * }
+	 * \endcode
+	 */
+	std::int32_t tare_position(const std::uint8_t index = 0) const;
+	
+	/**
+	 * Sets the "absolute" zero position of every motor in the motor group to its current position.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -2149,41 +2249,54 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   motor.move_absolute(100, 100); // Moves 100 units forward
-	 *   motor.move_absolute(100, 100); // This does not cause a movement
-	 *
-	 *   motor.tare_position();
-	 *   motor.move_absolute(100, 100); // Moves 100 units forward
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
+	 *   mg.move_absolute(100, 100); // This does not cause a movement
+	 *   mg.tare_position_all();
+	 *   mg.move_absolute(100, 100); // Moves 100 units forward
 	 * }
 	 * \endcode
 	 */
-	std::int32_t tare_position(const std::uint8_t index = 0) const;
 	std::int32_t tare_position_all(void) const;
 
 	/**
-	 * @brief Returns the number of objects
+	 * Returns the number of motors in the motor group
 	 *
-	 * @return std::int8_t
+	 * \return the number of motors in the motor group
 	 */
 	std::int8_t size(void) const;
+
+	/**
+	 * Gets the port of a motor in the motor group
+	 * 
+	 * 	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 * \return The port of the motor at the specified index. 
+	 * The return value is negative if the corresponding motor is reversed
+	*/
 	std::int8_t get_port(const std::uint8_t index = 0) const;
 
 	/**
-	 * @brief Appends the other motor group reference to this motor group
+	 * Appends all the motors in the other motor group reference to this motor group
+	 * 
+	 * Maintains the order of the other motor group
 	 *
 	 */
 	void operator+=(MotorGroup&);
 
 	/**
-	 * @brief Appends the other motor group reference to this motor group
+	 * Appends all the motors in the other motor group reference to this motor group
+	 * 
+	 * Maintains the order of the other motor group
 	 *
 	 */
 	void append(MotorGroup&);
 
 	/**
-	 * @brief Removes the port (regardless of regeral)
+	 * Removes the all motors on the port (regardless of reversal) from the motor group
 	 *
-	 * @param port
+	 * \param port The port to remove from the motor group
+	 * 
 	 */
 	void erase_port(std::int8_t port);
 
@@ -2200,6 +2313,9 @@ class MotorGroup : public virtual AbstractMotor {
 	friend std::ostream& operator<<(std::ostream& os, pros::MotorGroup& motor);
 	///@}
 	private:
+	/**
+	 * The ordered vector of ports used by the motor group
+	*/
 	std::vector<std::int8_t> _ports;
 	mutable pros::Mutex _MotorGroup_mutex;
 };
