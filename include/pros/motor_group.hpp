@@ -71,6 +71,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
  	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
  	 * }
+	 * \endcode
 	 */
 	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
@@ -107,6 +108,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
  	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
  	 * }
+	 * \endcode
 	 */
 	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
