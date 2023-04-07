@@ -63,6 +63,8 @@ class Rotation : public Device {
 	 * 
 	 * \param port
  	 *        The V5 port number from 1 to 21, or from -21 to -1 for reversed Rotation Sensors. 
+	 * \param reverse_flag
+	 * 		  Determines if the Rotation Sensor is reversed or not.
 	 * 		  
 	 * 	\b Example
  	 * \code
