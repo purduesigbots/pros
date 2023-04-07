@@ -324,9 +324,9 @@ void task_delete(task_t task);
  * \b Example
  * \code
  * void opcontrol() {
- * while (true) {
- *   // Do opcontrol things
- *   task_delay(2);
+ *   while (true) {
+ *     // Do opcontrol things
+ *     task_delay(2);
  *   }
  * }
  * \endcode
@@ -745,7 +745,7 @@ void task_join(task_t task);
  *   while(true) {
  *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
  *       task_notify_ext(task, 1, NOTIFY_ACTION_INCREMENT, &count);
- * 
+ *     }
  *     
  *     delay(20);
  *   }
@@ -773,7 +773,8 @@ uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, 
  * \b Example
  * \code
  * void my_task_fn(void* ign) {
- *   while(task_notify_take(true, TIMEOUT_MAX)) {
+ *   task_t current_task = task_get_current();
+ *   while(task_notify_take(current_task, true, TIMEOUT_MAX)) {
  *     puts("I was unblocked!");
  *   }
  * }
@@ -804,7 +805,28 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  * 
  * \b Example
  * \code
+ * void my_task_fn(void* param) {
+ *   task_t task = task_get_current();
+ *   while(true) {
+ *     printf("Waiting for notification...\n");
+ * 	   printf("Got a notification: %d\n", task_notify_take(task, false, TIMEOUT_MAX));
  * 
+ * 	   task_notify_clear(task);
+ *     delay(10):
+ *   }
+ * }
+ * 
+ * void opcontrol() {
+ *  task_t task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT,
+ *                            TASK_STACK_DEPTH_DEFAULT, "My Task");
+ * 
+ *   while(true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
+ *       task_notify(task);
+ *     }
+ *     delay(10);
+ *   }
+ * }
  * \endcode
  */
 bool task_notify_clear(task_t task);
@@ -820,14 +842,71 @@ bool task_notify_clear(task_t task);
  * 
  * \b Example
  * \code
- * mutex_t mutex = mutex_create();
- * // Acquire the mutex; other tasks using this command will wait until the mutex is released
- * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
- * // If the timeout expires, "false" will be returned, otherwise "true"
- * mutex_take(mutex, MAX_DELAY);
- * // do some work
- * // Release the mutex for other tasks
- * mutex_give(mutex);
+ * // Global variables for the robot's odometry, which the rest of the robot's
+ * // subsystems will utilize
+ * double odom_x = 0.0;
+ * double odom_y = 0.0;
+ * double odom_heading = 0.0;
+ * 
+ * // This mutex protects the odometry data. Whenever we read or write to the
+ * // odometry data, we should make copies into the local variables, and read
+ * // all 3 values at once to avoid errors.
+ * mutex_t odom_mutex;
+ * 
+ * void odom_task(void* param) {
+ *   while(true) {
+ *     // First we fetch the odom coordinates from the previous iteration of the
+ *     // odometry task. These are put into local variables so that we can
+ *     // keep the size of the critical section as small as possible. This lets
+ *     // other tasks that need to use the odometry data run until we need to
+ *     // update it again.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double x_old = odom_x;
+ *     double y_old = odom_y;
+ *     double heading_old = odom_heading;
+ * 	   mutex_give(odom_mutex);
+ * 
+ *     double x_new = 0.0;
+ *     double y_new = 0.0;
+ *     double heading_new = 0.0;
+ *     
+ *     // --- Calculate new pose for the robot here ---
+ * 
+ *     // Now that we have the new pose, we can update the global variables
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     odom_x = x_new;
+ *     odom_y = y_new;
+ *     odom_heading = heading_new;
+ *     mutex_give(odom_mutex);
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void chassis_task(void* param) {
+ *   while(true) {
+ *     // Here we copy the current odom values into local variables so that
+ *     // we can use them without worrying about the odometry task changing say,
+ *     // the y value right after we've read the x. This ensures our values are
+ *     // sound.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double current_x = odom_x;
+ *     double current_y = odom_y;
+ *     double current_heading = odom_heading;
+ *     mutex_give(odom_mutex);
+ *     
+ *     // ---- Move the robot using the current locations goes here ----
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void initialize() {
+ *   odom_mutex = mutex_create();
+ * 
+ *   task_create(odom_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Odometry Task");
+ *   task_create(chassis_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Chassis Task");
+ * }
  * \endcode
  */
 mutex_t mutex_create(void);
@@ -852,14 +931,71 @@ mutex_t mutex_create(void);
  * 
  * \b Example
  * \code
- * mutex_t mutex = mutex_create();
- * // Acquire the mutex; other tasks using this command will wait until the mutex is released
- * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
- * // If the timeout expires, "false" will be returned, otherwise "true"
- * mutex_take(mutex, timeout);
- * // do some work
- * // Release the mutex for other tasks
- * mutex_give(mutex);
+ * // Global variables for the robot's odometry, which the rest of the robot's
+ * // subsystems will utilize
+ * double odom_x = 0.0;
+ * double odom_y = 0.0;
+ * double odom_heading = 0.0;
+ * 
+ * // This mutex protects the odometry data. Whenever we read or write to the
+ * // odometry data, we should make copies into the local variables, and read
+ * // all 3 values at once to avoid errors.
+ * mutex_t odom_mutex;
+ * 
+ * void odom_task(void* param) {
+ *   while(true) {
+ *     // First we fetch the odom coordinates from the previous iteration of the
+ *     // odometry task. These are put into local variables so that we can
+ *     // keep the size of the critical section as small as possible. This lets
+ *     // other tasks that need to use the odometry data run until we need to
+ *     // update it again.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double x_old = odom_x;
+ *     double y_old = odom_y;
+ *     double heading_old = odom_heading;
+ * 	   mutex_give(odom_mutex);
+ * 
+ *     double x_new = 0.0;
+ *     double y_new = 0.0;
+ *     double heading_new = 0.0;
+ *     
+ *     // --- Calculate new pose for the robot here ---
+ * 
+ *     // Now that we have the new pose, we can update the global variables
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     odom_x = x_new;
+ *     odom_y = y_new;
+ *     odom_heading = heading_new;
+ *     mutex_give(odom_mutex);
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void chassis_task(void* param) {
+ *   while(true) {
+ *     // Here we copy the current odom values into local variables so that
+ *     // we can use them without worrying about the odometry task changing say,
+ *     // the y value right after we've read the x. This ensures our values are
+ *     // sound.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double current_x = odom_x;
+ *     double current_y = odom_y;
+ *     double current_heading = odom_heading;
+ *     mutex_give(odom_mutex);
+ *     
+ *     // ---- Move the robot using the current locations goes here ----
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void initialize() {
+ *   odom_mutex = mutex_create();
+ * 
+ *   task_create(odom_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Odometry Task");
+ *   task_create(chassis_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Chassis Task");
+ * }
  * \endcode
  */
 bool mutex_take(mutex_t mutex, uint32_t timeout);
@@ -879,14 +1015,71 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
  * 
  * \b Example
  * \code
- * mutex_t mutex = mutex_create();
- * // Acquire the mutex; other tasks using this command will wait until the mutex is released
- * // timeout can specify the maximum time to wait, or MAX_DELAY to wait forever
- * // If the timeout expires, "false" will be returned, otherwise "true"
- * mutex_take(mutex, timeout);
- * // do some work
- * // Release the mutex for other tasks
- * mutex_give(mutex);
+ * // Global variables for the robot's odometry, which the rest of the robot's
+ * // subsystems will utilize
+ * double odom_x = 0.0;
+ * double odom_y = 0.0;
+ * double odom_heading = 0.0;
+ * 
+ * // This mutex protects the odometry data. Whenever we read or write to the
+ * // odometry data, we should make copies into the local variables, and read
+ * // all 3 values at once to avoid errors.
+ * mutex_t odom_mutex;
+ * 
+ * void odom_task(void* param) {
+ *   while(true) {
+ *     // First we fetch the odom coordinates from the previous iteration of the
+ *     // odometry task. These are put into local variables so that we can
+ *     // keep the size of the critical section as small as possible. This lets
+ *     // other tasks that need to use the odometry data run until we need to
+ *     // update it again.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double x_old = odom_x;
+ *     double y_old = odom_y;
+ *     double heading_old = odom_heading;
+ * 	   mutex_give(odom_mutex);
+ * 
+ *     double x_new = 0.0;
+ *     double y_new = 0.0;
+ *     double heading_new = 0.0;
+ *     
+ *     // --- Calculate new pose for the robot here ---
+ * 
+ *     // Now that we have the new pose, we can update the global variables
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     odom_x = x_new;
+ *     odom_y = y_new;
+ *     odom_heading = heading_new;
+ *     mutex_give(odom_mutex);
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void chassis_task(void* param) {
+ *   while(true) {
+ *     // Here we copy the current odom values into local variables so that
+ *     // we can use them without worrying about the odometry task changing say,
+ *     // the y value right after we've read the x. This ensures our values are
+ *     // sound.
+ *     mutex_take(odom_mutex, MAX_DELAY);
+ *     double current_x = odom_x;
+ *     double current_y = odom_y;
+ *     double current_heading = odom_heading;
+ *     mutex_give(odom_mutex);
+ *     
+ *     // ---- Move the robot using the current locations goes here ----
+ *     
+ *     delay(10);
+ *   }
+ * }
+ * 
+ * void initialize() {
+ *   odom_mutex = mutex_create();
+ * 
+ *   task_create(odom_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Odometry Task");
+ *   task_create(chassis_task, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Chassis Task");
+ * }
  * \endcode
  */
 bool mutex_give(mutex_t mutex);
