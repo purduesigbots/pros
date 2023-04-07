@@ -67,8 +67,7 @@ class Imu : public Device {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * ENXIO - Either the ADI port value or the smart port value is not within its
-	 *	   valid range (ADI port: 1-8, 'a'-'h', or 'A'-'H'; smart port: 1-21).
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 *
 	 * \param port
 	 *        The V5 Inertial Sensor port number from 1-21
