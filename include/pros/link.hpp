@@ -27,7 +27,6 @@
 namespace pros {
 /**
  * \ingroup cpp-link
- * 
  */
 class Link : public Device {
 	/**
