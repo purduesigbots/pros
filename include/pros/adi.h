@@ -274,9 +274,7 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  * (gyro rotation, accelerometer movement).
  * 
  * \note The ADI currently returns data at 10ms intervals, in constrast to the
- * calibrate function’s 1ms sample rate. This sample rate was kept for the sake
- * of being similar to PROS 2, and increasing the sample rate would not have a
- * tangible difference in the function’s performance.
+ * calibrate function’s 1ms sample rate. 
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -625,8 +623,7 @@ int32_t adi_motor_stop(uint8_t port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder, unlike its use as an
- * object to store encoder data in PROS 2.
+ * This merely contains the port number for the encoder.
  */
 typedef int32_t adi_encoder_t;
 
@@ -761,8 +758,7 @@ int32_t adi_encoder_shutdown(adi_encoder_t enc);
 /**
  * Reference type for an initialized ultrasonic.
  *
- * This merely contains the port number for the ultrasonic, unlike its use as an
- * object to store ultrasonic data in PROS 2.
+ * This merely contains the port number for the ultrasonic.
  */
 typedef int32_t adi_ultrasonic_t;
 
@@ -871,8 +867,7 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 /**
  * Reference type for an initialized gyroscope.
  *
- * This merely contains the port number for the gyroscope, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the gyroscope.
  */
 typedef int32_t adi_gyro_t;
 
@@ -1031,8 +1026,7 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 /**
  * Reference type for an initialized potentiometer.
  *
- * This merely contains the port number for the potentiometer, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the potentiometer.
  */
 typedef int32_t adi_potentiometer_t;
 

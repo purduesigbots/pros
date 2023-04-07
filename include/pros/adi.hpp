@@ -276,9 +276,7 @@ class AnalogIn : protected Port {
 	 * rotation, accelerometer movement).
 	 * 
 	 * \note The ADI currently returns data at 10ms intervals, in contrast to the
-	 * calibrate function’s 1ms sample rate. This sample rate was kept for the sake
-	 * of being similar to PROS 2, and increasing the sample rate would not have a
-	 * tangible difference in the function’s performance.
+	 * calibrate function’s 1ms sample rate. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

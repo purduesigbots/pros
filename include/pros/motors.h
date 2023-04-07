@@ -47,7 +47,7 @@ namespace c {
  *
  * This is designed to map easily to the input from the controller's analog
  * stick for simple opcontrol use. The actual behavior of the motor is analogous
- * to use of motor_move_voltage(), or motorSet() from the PROS 2 API.
+ * to use of motor_move_voltage().
  *
  * \note This function will not respect brake modes, and simply sets the voltage to the desired value.
  * 

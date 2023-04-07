@@ -48,7 +48,6 @@ extern "C" {
  */
 
 /// \name RTOS Facilities
-/// See https://pros.cs.purdue.edu/v5/extended/multitasking.html to learn more
 ///@{
 
 typedef void* queue_t;
@@ -366,9 +365,6 @@ bool sem_wait(sem_t sem, uint32_t timeout);
 /**
  * Increments a semaphore's value.
  *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html#semaphores for
- * details.
- *
  * \param sem
  *        Semaphore to post
  *
@@ -399,14 +395,12 @@ bool sem_post(sem_t sem);
 /**
  * Returns the current value of the semaphore.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#extra for
- * details.
- *
  * \param sem
  *        A semaphore handle
  *
  * \return The current value of the semaphore (e.g. the number of resources
  * available)
+ * 
  * \b Example of sem_get_count:
  * \code
  * // Binary semaphore acts as a mutex
@@ -426,9 +420,6 @@ uint32_t sem_get_count(sem_t sem);
 
 /**
  * Creates a queue.
- *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
  *
  * \param length
  *        The maximum number of items that the queue can contain.
@@ -454,9 +445,6 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
 /**
  * Posts an item to the front of a queue. The item is queued by copy, not by
  * reference.
- *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
  *
  * \param queue
  *        The queue handle
@@ -485,9 +473,6 @@ bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
  * Posts an item to the end of a queue. The item is queued by copy, not by
  * reference.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
- *
  * \param queue
  *        The queue handle
  * \param item
@@ -514,9 +499,6 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
 
 /**
  * Receive an item from a queue without removing the item from the queue.
- *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
  *
  * \param queue
  *        The queue handle
@@ -600,9 +582,6 @@ uint32_t queue_get_waiting(const queue_t queue);
 /**
  * Return the number of spaces left in a queue.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
- *
  * \param queue
  *        The queue handle.
  *
@@ -624,9 +603,6 @@ uint32_t queue_get_available(const queue_t queue);
 
 /**
  * Delete a queue.
- *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#queues for
- * details.
  *
  * \param queue
  *        Queue handle to delete

@@ -278,9 +278,7 @@ class Vision : public Device {
 	vision_object_s_t get_by_code(const std::uint32_t size_id, const vision_color_code_t color_code) const;
 
 	/**
-	 * Gets the exposure parameter of the Vision Sensor. See
-	 * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
-	 * for more detials.
+	 * Gets the exposure parameter of the Vision Sensor. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -564,9 +562,7 @@ class Vision : public Device {
 	std::int32_t set_auto_white_balance(const std::uint8_t enable) const;
 
 	/**
-	 * Sets the exposure parameter of the Vision Sensor. See
-	 * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
-	 * for more detials.
+	 * Sets the exposure parameter of the Vision Sensor. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
