@@ -54,11 +54,11 @@ typedef enum v5_device_e {
  *
  * \b Example
  * \code
- * #define IMU_PORT 1
+ * #define DEVICE_PORT 1
  *
  * void opcontrol() {
  *   while (true) {
- *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
+ *     v5_device_e_t pt = get_plugged_type(DEVICE_PORT);
  *     printf("device plugged type: {plugged type: %d}\n", pt);
  *     delay(20);
  *   }

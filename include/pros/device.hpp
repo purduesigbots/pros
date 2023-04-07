@@ -59,8 +59,10 @@ class Device {
 	* \b Example
  	 * \code
  	 * void opcontrol() {
+	 * #define DEVICE_PORT 1
  	 *   while (true) {
- 	 *     printf("device plugged type: {port: %d}\n", get_port());
+	 *	Device device(DEVICE_PORT);
+ 	 *     printf("device plugged type: {port: %d}\n", device.get_port());
  	 *     delay(20);
  	 *   }
  	 * }
@@ -75,9 +77,12 @@ class Device {
 	 * \b Example
 	 *
  	 * \code
+	 * #define DEVICE_PORT 1
+	 *
 	 * void opcontrol() {
+	 *	Device device(DEVICE_PORT);
 	 *   while (true) {
-	 *     printf("device plugged type: {is_installed: %d}\n", is_installed());
+	 *     printf("device plugged type: {is_installed: %d}\n", device.is_installed());
 	 *     delay(20);
 	 *   }
 	 * }
@@ -96,10 +101,13 @@ class Device {
 	 *
 	 * \b Example
  	 * \code
+	 * #define DEVICE_PORT 1
+	 *
 	 * void opcontrol() {
-	 *   while (true) {
-	 *     v5_device_e_t pt = get_plugged_type(IMU_PORT);
-	 *     printf("device plugged type: {plugged type: %d}\n", pt);
+		Device device(DEVICE_PORT);
+	 *   while (true) { 
+	 *     DeviceType dt = device.get_plugged_type();
+	 *     printf("device plugged type: {plugged type: %d}\n", dt);
 	 *     delay(20);
 	 *   }
 	 * }
