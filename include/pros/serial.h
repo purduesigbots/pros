@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the V5 Generic Serial related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/serial.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

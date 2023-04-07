@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX Optical sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

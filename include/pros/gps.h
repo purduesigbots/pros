@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX GPS.
  *
- * Visit https://pros.cs.purdue.edu/v5/api/c/gps.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

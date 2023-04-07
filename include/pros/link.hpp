@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to robot to robot communications.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/link.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

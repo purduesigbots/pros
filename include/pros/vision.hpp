@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the VEX Vision Sensor-related functions in C++.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

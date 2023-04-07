@@ -5,9 +5,6 @@
  * Contains prototypes for miscellaneous functions pertaining to the controller,
  * battery, and competition control.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/controller.html to
- * learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
