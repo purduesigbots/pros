@@ -106,8 +106,8 @@ class Device {
 	 * void opcontrol() {
 		Device device(DEVICE_PORT);
 	 *   while (true) { 
-	 *     DeviceType pt = device.get_plugged_type();
-	 *     printf("device plugged type: {plugged type: %d}\n", pt);
+	 *     DeviceType dt = device.get_plugged_type();
+	 *     printf("device plugged type: {plugged type: %d}\n", dt);
 	 *     delay(20);
 	 *   }
 	 * }
