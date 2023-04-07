@@ -27,12 +27,12 @@
 namespace pros {
 inline namespace v5 {
 /**
- * \addtogroup cpp-rotation
+ * \ingroup cpp-rotation
+ *  @{
  */
 class Rotation : public Device {
 	/**
-	 * \ingroup cpp-rotation
-	 *  @{
+	 * \addtogroup cpp-rotation
 	 */
 
 	public:
@@ -48,13 +48,29 @@ class Rotation : public Device {
 	 * 	\b Example
  	 * \code
  	 * void opcontrol() {
-	 * 	 pros::Rotation rotation_sensor(1); //Creates a Rotation Sensor on port 1 
+	 * 	 pros::Rotation rotation_sensor(1); //Creates a Rotation Sensor on port 1
 	 *   pros::Rotation reversed_rotation_sensor(-2); //Creates a reversed Rotation Sensor on port 2
  	 * }
  	 * \endcode
 	*/
 	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
 
+	/**
+	 * Constructs a new Rotation Sensor object
+	 * 
+	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * ENODEV - The port cannot be configured as a Rotation Sensor
+	 * 
+	 * \param port
+ 	 *        The V5 port number from 1 to 21, or from -21 to -1 for reversed Rotation Sensors. 
+	 * 		  
+	 * 	\b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	 pros::Rotation rotation_sensor(1, true); //Creates a reversed Rotation Sensor on port 1 
+	 * }
+ 	 * \endcode
+	*/
 	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
 
 	/**
@@ -331,7 +347,6 @@ class Rotation : public Device {
  	 * \endcode	 
 	 */
 	virtual std::int32_t get_reversed() const;
-	///@}
 
 	/**
 	 * This is the overload for the << operator for printing to streams
@@ -339,9 +354,23 @@ class Rotation : public Device {
 	 * Prints in format(this below is all in one line with no new line):
 	 * Rotation [port: rotation._port, position: (rotation position), velocity: (rotation velocity), 
 	 * angle: (rotation angle), reversed: (reversed boolean)]
+	 * 
+	 * \b Example
+	 * \code
+	 * #define ROTATION_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	pros::Rotation rotation_sensor(1);
+	 *  while(true) {
+	 *		std::cout << rotation_sensor << std::endl;
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 
+///@}
 };
 
 namespace literals {
