@@ -48,6 +48,15 @@ class Device {
 	 * Creates a Device object.
 	 *
 	 * \param port The V5 port number from 1-21
+	 *
+	 * \b Example
+	 * \code
+	 * #define DEVICE_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   Device device(DEVICE_PORT);
+	 * }
+	 * \endcode
 	 */
   	explicit Device(const std::uint8_t port);
   
