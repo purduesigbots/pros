@@ -70,6 +70,7 @@ typedef void* sem_t;
  * task_t task = task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
  *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
  * task_delay(1000);
+ * // in another task somewhere else, this will abort the task_delay bove:
  * task_abort_delay(task);
  * \endcode
  */
@@ -77,11 +78,6 @@ bool task_abort_delay(task_t task);
 
 /**
  * Notify a task when a target task is being deleted.
- *
- * This function will configure the PROS kernel to call
- * task_notify_ext(task_to_notify, value, action, NULL) when target_task is
- * deleted.
- *
  *
  * \param target_task
  *				The task being watched for deletion
@@ -91,6 +87,19 @@ bool task_abort_delay(task_t task);
  *				The value to supply to task_notify_ext
  * \param notify_action
  * 				The action to supply to task_notify_ext
+ * 
+    * \b Example:
+    * \code
+    * task_t task_to_delete = task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+    *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+    * task_t task_to_notify = task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+    *                           TASK_STACK_DEPTH_DEFAULT, "task_fn2");
+    * 
+    * task_notify_ext(task_to_notify, 0, NOTIFY_ACTION_INCREMENT, NULL);
+    * 
+    * task_notify_when_deleting(task_to_delete, task_get_current(), 0, NOTIFY_ACTION_NONE);
+    * task_delete(task_to_delete);
+    * \endcode
  */
 void task_notify_when_deleting(task_t target_task, task_t task_to_notify, uint32_t value,
                                notify_action_e_t notify_action);
@@ -98,20 +107,29 @@ void task_notify_when_deleting(task_t target_task, task_t task_to_notify, uint32
 /**
  * Creates a recursive mutex which can be locked recursively by the owner.
  *
- * See
- * https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes
- * for details.
- *
  * \return A newly created recursive mutex.
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ * 
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
  */
 mutex_t mutex_recursive_create(void);
 
 /**
  * Takes a recursive mutex.
- *
- * See
- * https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes
- * for details.
  *
  * \param mutex
  *        A mutex handle created by mutex_recursive_create
@@ -119,42 +137,96 @@ mutex_t mutex_recursive_create(void);
  *        Amount of time to wait before timing out
  *
  * \return 1 if the mutex was obtained, 0 otherwise
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
  */
 bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
 
 /**
  * Gives a recursive mutex.
  *
- * See
- * https://pros.cs.purdue.edu/v5/extended/multitasking.html#recursive_mutexes
- * for details.
- *
  * \param mutex
  *        A mutex handle created by mutex_recursive_create
  *
  * \return 1 if the mutex was obtained, 0 otherwise
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
  */
 bool mutex_recursive_give(mutex_t mutex);
 
 /**
  * Returns a handle to the current owner of a mutex.
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#extra for
- * details.
- *
  * \param mutex
  *        A mutex handle
  *
  * \return A handle to the current task that owns the mutex, or NULL if the
  * mutex isn't owned.
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_take(mutex, 1000);
+ *     // critical section
+ *     mutex_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * void opcontrol(void) {
+*   while (1) {
+*     if (joystick_get_digital(1, 7, JOY_UP)) {
+*       task_t owner = mutex_get_owner(mutex);
+*       if (owner != NULL) {
+*         printf("Mutex is owned by task %s", task_get_name(owner));
+*       } else {
+*         printf("Mutex is not owned");
+*       }
+*     }
+*     task_delay(20);
+*   }
+* }
+ * \endcode
  */
 task_t mutex_get_owner(mutex_t mutex);
 
 /**
  * Creates a counting sempahore.
- *
- * See https://pros.cs.purdue.edu/v5/tutorials/multitasking.html#semaphores for
- *details.
  *
  * \param max_count
  *        The maximum count value that can be reached.
@@ -163,28 +235,86 @@ task_t mutex_get_owner(mutex_t mutex);
  *
  * \return A newly created semaphore. If an error occurred, NULL will be
  * returned and errno can be checked for hints as to why sem_create failed.
+ *
+ * \b Example:
+ * \code
+ * // Binary semaphore acts as a mutex
+ * sem_t sem = sem_create(1, 0);
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     sem_take(sem, 1000);
+ *     // critical section
+ *     sem_give(sem);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
  */
 sem_t sem_create(uint32_t max_count, uint32_t init_count);
 
 /**
  * Deletes a semaphore (or binary semaphore)
  *
- * See https://pros.cs.purdue.edu/v5/extended/multitasking.html#semaphores for
- * details.
- *
  * \param sem
  * 			  Semaphore to delete
+    *
+    * \b Example:
+    * \code
+    * // Binary semaphore acts as a mutex
+    * sem_t sem = sem_create(1, 0);
+    *
+    * void task_fn(void* param) {
+    *   while(1) {
+    *     sem_take(sem, 1000);
+    *     // critical section
+    *     sem_give(sem);
+    *     task_delay(1000);
+    *   }
+    * }
+    * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+    *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+    *
+    * void opcontrol(void) {
+    *   while (1) {
+    *     if (joystick_get_digital(1, 7, JOY_UP)) {
+    *       // honestly this is a bad example because you should never 
+    *       // delete a semaphore like this
+    *       sem_delete(sem);
+    *     }
+    *     task_delay(20);
+    *   }
+    * }
+    * 
+    * \endcode
  */
 void sem_delete(sem_t sem);
 
 /**
  * Creates a binary semaphore.
  *
- * See
- * https://pros.cs.purdue.edu/v5/extended/multitasking#.htmlbinary_semaphores
- * for details.
- *
  * \return A newly created semaphore.
+ * 
+ * \b Example:
+ * \code
+ * // Binary semaphore acts as a mutex
+ * sem_t sem = sem_binary_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     sem_take(sem, 1000);
+ *     // critical section
+ *     sem_give(sem);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
  */
 sem_t sem_binary_create(void);
 

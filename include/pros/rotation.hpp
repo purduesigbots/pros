@@ -51,8 +51,8 @@ class Rotation : public Device {
 	 * 	\b Example
  	 * \code
  	 * void opcontrol() {
-	 * 	Rotation rotation_sensor(1); //Creates a Rotation Sensor on port 1 
-	 *  Rotation reversed_rotation_sensor(-2); //Creates a reversed Rotation Sensor on port 2
+	 * 	 pros::Rotation rotation_sensor(1); //Creates a Rotation Sensor on port 1 
+	 *   pros::Rotation reversed_rotation_sensor(-2); //Creates a reversed Rotation Sensor on port 2
  	 * }
  	 * \endcode
 	*/

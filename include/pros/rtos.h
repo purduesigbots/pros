@@ -649,10 +649,10 @@ task_t task_get_current();
  * \b Example
  * \code
  * void my_task_fn(void* ign) {
- *   while(task_notify_take(true)) {
+ *   while(task_notify_take(true) == 0) {
  *     // Code while waiting
- *     puts("I was unblocked!");
  *   }
+ *   puts("I was unblocked!");
  * }
  * 
  * void opcontrol() {
