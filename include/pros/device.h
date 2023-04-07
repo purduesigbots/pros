@@ -13,6 +13,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * \defgroup c-device VEX Generic Device C API (For Advanced Users)
  */
 
 #ifndef _PROS_DEVICE_H_
@@ -24,6 +26,16 @@
 namespace pros::c {
 extern "C" {
 #endif
+
+/**
+ * \ingroup c-device
+ * \note These functions can be used for dynamic device instantiation. 
+ */
+
+/**
+ * \addtogroup c-device
+ *  @{
+ */
 
 /*
  * List of possible v5 devices
@@ -66,6 +78,8 @@ typedef enum v5_device_e {
  * \endcode
 */
 v5_device_e_t get_plugged_type(uint8_t port);
+
+///@}
 
 #ifdef __cplusplus
 } // namespace c

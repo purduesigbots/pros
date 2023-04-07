@@ -11,13 +11,22 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License v. 2.0. If a copy of the MPL was not distributed with this
  * file You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * \defgroup cpp-colors C++ Color API
  */
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
 
 
 namespace pros{
+/**
+ * \ingroup cpp-colors
+ */
 
+/**
+ * \addtogroup cpp-colors
+ *  @{
+ */
 /**
  * @brief
  * Enum class of possible colors
@@ -173,5 +182,7 @@ enum class Color {
   yellow_green = 0x009ACD32,
 };
 } // namespace pros
+
+///@}
 
 #endif //_PROS_COLORS_HPP_

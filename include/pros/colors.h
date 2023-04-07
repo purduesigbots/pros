@@ -11,6 +11,18 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License v. 2.0. If a copy of the MPL was not distributed with this
  * file You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * \defgroup c-colors Colors C API
+ */
+
+/**
+ * \ingroup c-colors
+ * \note These functions can be used for dynamic device instantiation. 
+ */
+
+/**
+ * \addtogroup c-colors
+ *  @{
  */
 
 #ifndef _PROS_COLORS_H_
@@ -180,6 +192,8 @@ typedef enum color_e {
 	COLOR_YELLOW = 0x00FFFF00,
 	COLOR_YELLOW_GREEN = 0x009ACD32,
 } color_e_t;
+
+///@}
 
 #ifdef __cplusplus
 }  // namespace c
