@@ -50,5 +50,5 @@ We maintain GitHub repositories for the three major components of the PROS ecosy
 
 If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](https://github.com/purduesigbots/pros-docs).
 
-### Hey! Why can't I build the PROS 3 kernel?
-The PROS 3 kernel depends on VEX's proprietary Software Development Kit (SDK), which is not publicly available.
+### Hey! Why can't I build the PROS kernel?
+The PROS kernel depends on VEX's proprietary Software Development Kit (SDK), which is not publicly available.
