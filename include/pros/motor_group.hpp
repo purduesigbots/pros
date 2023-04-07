@@ -1,6 +1,6 @@
 /**
  * \file pros/motors.hpp
- * \ingroup cpp-motors
+ * \ingroup cpp-motor-group
  *
  * Contains prototypes for the V5 Motor-related functions.
  *
@@ -16,7 +16,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * \defgroup cpp-motors Motors C++ API
+ * \defgroup cpp-motor-group Motors C++ API
  * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
  */
 
@@ -37,7 +37,7 @@ namespace pros {
 inline namespace v5 {
 class MotorGroup : public virtual AbstractMotor {
 	/**
-	 * \addtogroup cpp-motors
+	 * \addtogroup cpp-motor-group
 	 *  @{
 	 */
 	public:
