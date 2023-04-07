@@ -1,5 +1,5 @@
 /**
- * \file pros/motors.hpp
+ * \file pros/motor_group.hpp
  * \ingroup cpp-motor-group
  *
  * Contains prototypes for the V5 Motor-related functions.
