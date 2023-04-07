@@ -71,7 +71,6 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
  	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
  	 * }
-	 * \endcode
 	 */
 	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
@@ -108,7 +107,6 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
  	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
  	 * }
-	 * \endcode
 	 */
 	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
@@ -141,7 +139,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup MotorGroup ({1,3}, E_MOTOR_GEARSET_18);
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -219,7 +217,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   }
 	 *   mg.tare_position();
 	 *   mg.move_absolute(100, 100); // Moves 100 units forward
-	 *   while (!((mg.get_position() < 105) && (motor.get_position() > 95))) {
+	 *   while (!((mg.get_position() < 105) && (mg.get_position() > 95))) {
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -328,7 +326,7 @@ class MotorGroup : public virtual AbstractMotor {
 
 
 	/**
-	 * Stops the motor using the currently configured brake mode.
+	 * Stops the motor group using the currently configured brake mode.
 	 * 
 	 * This function sets motor velocity to zero, which will cause it to act
 	 * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
@@ -357,8 +355,8 @@ class MotorGroup : public virtual AbstractMotor {
 	std::int32_t brake(void) const;
 
 	/**
-	 * Changes the output velocity for a profiled movement (motor_move_absolute or
-	 * motor_move_relative). This will have no effect if the motor is not following
+	 * Changes the output velocity for a profiled movement (move_absolute or
+	 * move_relative). This will have no effect if the motor group is not following
 	 * a profiled movement.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -376,17 +374,17 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void autonomous() {
-	 * 	 pros::Motor motor (1);
-	 *   motor.move_absolute(100, 100);
+	 * 	 pros::MotorGroup mg ({1,3});
+	 *   mg.move_absolute(100, 100);
 	 *   pros::delay(100);
-	 *   motor.modify_profiled_velocity(0); // Stop the motor early
+	 *   mg.modify_profiled_velocity(0); // Stop the motor group early
 	 * }
 	 * \endcode
 	 */
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 	
 	/**
-	 * Gets the target position set for the motor group by the user, with a parameter
+	 * Gets the target position set for a motor in the motor group, with a parameter
 	 * for the motor index.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -396,7 +394,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 * 
 	 *
-	 * \param index Optional parameter.
+	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The target position in its encoder units or PROS_ERR_F if the
@@ -407,7 +405,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.move_absolute(100, 100);
-	 *   std::cout << "Motor Target: " << motor.get_target_position();
+	 * 	// get the target position from motor at index 1. (port 3)
+	 *   std::cout << "Motor Target: " << mg.get_target_position(1);
 	 *   // Prints 100
 	 * }
 	 * \endcode
@@ -430,7 +429,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.move_absolute(100, 100);
-	 *   std::cout << "Motor Target: " << motor.get_target_position();
+	 *   std::cout << "Motor Target: " << mg.get_target_position_all()[0];
 	 *   // Prints 100
 	 * }
 	 * \endcode
@@ -522,9 +521,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     motor = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the actual velocity from motor at index 1. (port 3)
-	 *     printf("Actual velocity: %lf\n", motor.get_actual_velocity(1));
+	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -549,9 +548,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     motor = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the target velocity from motor at index 1. (port 3)
-	 *     printf("Actual velocity: %lf\n", motor.get_actual_velocity(1));
+	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -566,7 +565,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *  
-	 * EDOM - THe motor group is empty
+	 * EDOM - The motor group is empty
 	 *
 	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 * 
@@ -582,23 +581,57 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Current Draw: " << motor.get_current_draw();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 * 	   //Print the current draw for the motor at index 1. (port 3)
+	 *     std::cout << "Motor Current Draw: " << mg.get_current_draw(1);
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_current_draw(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_current_draw_all(void) const;
-
 	/**
-	 * Gets the direction of movement for the motor.
+	 * Gets a vector of the current drawn each motor in the motor group in mA.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 *  
+	 * EDOM - The motor group is empty
 	 *
+	 *
+	 * \return A vector with each motor's current in mA or PROS_ERR if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Current Draw: " << mg.get_current_draw_all();
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_current_draw_all(void) const;
+
+	/**
+	 * Gets the direction of movement for a motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return 1 for moving in the positive direction, -1 for moving in the
 	 * negative direction, and PROS_ERR if the operation failed, setting errno.
 	 *
@@ -608,18 +641,44 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Direction: " << motor.get_direction();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 * 	   //Print the motor direction for the motor at index 1. (port 3)
+	 *     std::cout << "Motor Direction: " << mg.get_direction();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_direction(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the directions of movement for each motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * EDOM - The motor group is empty
+	 * 
+	 * \return 1 for moving in the positive direction, -1 for moving in the
+	 * negative direction, and PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Direction: " << mg.get_direction_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> get_direction_all(void) const;
 
 	/**
-	 * Gets the efficiency of the motor in percent.
+	 * Gets the efficiency of a motor in the motor group in percent.
 	 *
 	 * An efficiency of 100% means that the motor is moving electrically while
 	 * drawing no electrical power, and an efficiency of 0% means that the motor
@@ -628,6 +687,14 @@ class MotorGroup : public virtual AbstractMotor {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The motor's efficiency in percent or PROS_ERR_F if the operation
 	 * failed, setting errno.
@@ -638,27 +705,61 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Efficiency: " << motor.get_efficiency();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     //Prints the efficiency of the motor at index 1 (port 3)
+	 *     std::cout << "Motor Efficiency: " << mg.get_efficiency(1);
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	double get_efficiency(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the efficiency of each motor in percent.
+	 *
+	 * An efficiency of 100% means that the motor is moving electrically while
+	 * drawing no electrical power, and an efficiency of 0% means that the motor
+	 * is drawing power but not moving.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - THe motor group is empty
+	 *
+	 * \return A vecotr containing each motor's efficiency in percent or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Efficiency: " << mg.get_efficiency_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<double> get_efficiency_all(void) const;
 
 	/**
-	 * Gets the faults experienced by the motor.
+	 * Gets the faults experienced by a motor in the motor group.
 	 *
 	 * Compare this bitfield to the bitmasks in pros::motor_fault_e_t.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return A bitfield containing the motor's faults.
 	 *
@@ -668,25 +769,55 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Faults: " << motor.get_faults();pros::delay(2);
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << mg.get_faults();
+	 * pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::uint32_t get_faults(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the faults experienced by each motor in the motor group.
+	 *
+	 * Compare these bitfields to the bitmasks in pros::motor_fault_e_t.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 *
+	 * \return A vector containing the bitfields containing each motor's faults.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << mg.get_faults_all();
+	 * pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::uint32_t> get_faults_all(void) const;
 	/**
-	 * Gets the flags set by the motor's operation.
+	 * Gets the flags set by a motor in the motor group's operation.
 	 *
 	 * Compare this bitfield to the bitmasks in pros::motor_flag_e_t.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 *
-	 * \param port
-	 *        The V5 port number from 1-21
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return A bitfield containing the motor's flags.
 	 *
@@ -696,22 +827,53 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Faults: " << motor.get_faults();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << mg.get_faults(1);
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::uint32_t get_flags(const std::uint8_t index = 0) const;
-	std::vector<std::uint32_t> get_flags_all(void) const;
-
+	
 	/**
-	 * Gets the absolute position of the motor in its encoder units.
+	 * Gets a vector of the flags set by each motor in the motor groups's operation.
+	 *
+	 * Compare this bitfield to the bitmasks in pros::motor_flag_e_t.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A bitfield containing the motor's flags.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Faults: " << mg.get_faults_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::uint32_t> get_flags_all(void) const;
+
+	/**
+	 * Gets the absolute position of a motor in the motor group in its encoder units.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The motor's absolute position in its encoder units or PROS_ERR_F
 	 * if the operation failed, setting errno.
@@ -722,22 +884,51 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Position: " << motor.get_position();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << mg.get_position(1);
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	double get_position(const std::uint8_t index = 0) const;
-	std::vector<double> get_position_all(void) const;
-
 	/**
-	 * Gets the power drawn by the motor in Watts.
+	 * Gets a vector of the absolute position of each motor in its encoder units.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vector of the motor's absolute position in its encoder units or PROS_ERR_F
+	 * if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << mg.get_position_all();
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<double> get_position_all(void) const;
+
+	/**
+	 * Gets the power drawn by a motor in  the motor group in Watts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The motor's power draw in Watts or PROS_ERR_F if the operation
 	 * failed, setting errno.
@@ -748,26 +939,56 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Power: " << motor.get_power();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Power: " << mg.get_power();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	double get_power(const std::uint8_t index = 0) const;
-	std::vector<double> get_power_all(void) const;
 	/**
-	 * Gets the raw encoder count of the motor at a given timestamp.
+	 * Gets a vector of the power drawn by each motor in the motor group in Watts.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
-	 * \param[in] timestamp
+	 * \return A vector of each motor's power draw in Watts or PROS_ERR_F if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Power: " << mg.get_power_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<double> get_power_all(void) const;
+	/**
+	 * Gets the raw encoder count of a motor in the motor group at a given timestamp.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * 
+	 * \param timestamp
 	 *            A pointer to a time in milliseconds for which the encoder count
 	 *            will be returned. If NULL, the timestamp at which the encoder
 	 *            count was read will not be supplied
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The raw encoder count at the given timestamp or PROS_ERR if the
 	 * operation failed.
@@ -779,23 +1000,57 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Position: " << motor.get_raw_position(&now);
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << mg.get_raw_position(&now);
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_raw_position(std::uint32_t* const timestamp, const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const;
-
 	/**
-	 * Gets the temperature of the motor in degrees Celsius.
+	 * Gets the raw encoder count of each motor at a given timestamp.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
+	 * \param timestamp
+	 *            A pointer to a time in milliseconds for which the encoder count
+	 *            will be returned. If NULL, the timestamp at which the encoder
+	 *            count was read will not be supplied
+	 *
+	 * \return A vector of each raw encoder count at the given timestamp or PROS_ERR if the
+	 * operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   std::uint32_t now = pros::millis();
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Position: " << mg.get_raw_position_all(&now)[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_raw_position_all(std::uint32_t* const timestamp) const;
+
+	/**
+	 * Gets the temperature of a motor in the motor group in degrees Celsius.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 *
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return The motor's temperature in degrees Celsius or PROS_ERR_F if the
 	 * operation failed, setting errno.
 	 *
@@ -805,22 +1060,51 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Temperature: " << motor.get_temperature();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Temperature: " << mg.get_temperature();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	double get_temperature(const std::uint8_t index = 0) const;
-	std::vector<double> get_temperature_all(void) const;
 	/**
-	 * Gets the torque generated by the motor in Newton Meters (Nm).
+	 * Gets the temperature of each motor  in the motor group in degrees Celsius.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
+	 * \return A vecotr of each motor's temperature in degrees Celsius or PROS_ERR_F if the
+	 * operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Temperature: " << mg.get_temperature_all()[1];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<double> get_temperature_all(void) const;
+	/**
+	 * Gets the torque generated by a motor in the motor groupin Newton Meters (Nm).
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 *
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return The motor's torque in Nm or PROS_ERR_F if the operation failed,
 	 * setting errno.
 	 *
@@ -830,22 +1114,51 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Torque: " << motor.get_torque();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Torque: " << mg.get_torque();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	double get_torque(const std::uint8_t index = 0) const;
-	std::vector<double> get_torque_all(void) const;
 	/**
-	 * Gets the voltage delivered to the motor in millivolts.
+	 * Gets a vector of the torque generated by each motor in Newton Meters (Nm).
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
+	 * \return A vector containing each motor's torque in Nm or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Torque: " << mg.get_torque();
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<double> get_torque_all(void) const;
+	/**
+	 * Gets the voltage delivered to a motor in the motor group in millivolts.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
 	 * setting errno.
 	 *
@@ -855,23 +1168,52 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Motor Voltage: " << motor.get_voltage();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Voltage: " << mg.get_voltage();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_voltage(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_voltage_all(void) const;
-
 	/**
-	 * Checks if the motor is drawing over its current limit.
+	 * Gets a vector of the voltage delivered to each motor in millivolts.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
+	 * \return A vector of each motor's voltage in mV or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Motor Voltage: " << mg.get_voltage_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_voltage_all(void) const;
+
+	/**
+	 * Checks if a motor in the motor group is drawing over its current limit.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return 1 if the motor's current limit is being exceeded and 0 if the
 	 * current limit is not exceeded, or PROS_ERR if the operation failed, setting
 	 * errno.
@@ -882,22 +1224,52 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     std::cout << "Is the motor over its current limit?: " << motor.is_over_current();
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Is the motor over its current limit?: " << mg.is_over_current();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t is_over_current(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> is_over_current_all(void) const;
-
 	/**
-	 * Gets the temperature limit flag for the motor.
+	 * Checks if each motor in the motor group is drawing over its current limit.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vector containing the following for each motor: 1 if the motor's current limit is being exceeded and 0 if the
+	 * current limit is not exceeded, or PROS_ERR if the operation failed, setting
+	 * errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Is the motor over its current limit?: " << motor.is_over_current_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> is_over_current_all(void) const;
+
+	/**
+	 * Gets the temperature limit flag for a motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
 	 * below the limit, or PROS_ERR if the operation failed, setting errno.
@@ -908,7 +1280,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   pros::MotorGroup mg({1,3});
 	 *   pros::Controller master (E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp();
 	 *     pros::delay(2);
 	 *   }
@@ -916,6 +1288,30 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t is_over_temp(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vecotr with the temperature limit flag for each motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return 1 if the temperature limit is exceeded and 0 if the temperature is
+	 * below the limit, or PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp();
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	std::vector<std::int32_t> is_over_temp_all(void) const;
 
 	///@}
@@ -925,11 +1321,16 @@ class MotorGroup : public virtual AbstractMotor {
 	///@{
 
 	/**
-	 * Gets the brake mode that was set for the motor.
+	 * Gets the brake mode that was set for a motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return One of Motor_Brake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
@@ -939,21 +1340,46 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	 *   std::cout << "Brake Mode: " << motor.get_brake_mode();
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
 	 * }
 	 * \endcode
 	 */
 	MotorBrake get_brake_mode(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vecotr with the brake mode that was set for each motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vector with one of Motor_Brake for each motor in the motor group, according to what was set for the
+	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode_all()[0];
+	 * }
+	 * \endcode
+	 */
 	std::vector<MotorBrake> get_brake_mode_all(void) const;
 
 	/**
-	 * Gets the current limit for the motor in mA.
+	 * Gets the current limit for a motor in the motor group in mA.
 	 *
 	 * The default value is 2500 mA.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The motor's current limit in mA or PROS_ERR if the operation failed,
 	 * setting errno.
@@ -963,22 +1389,52 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     std::cout << "Motor Current Limit: " << motor.get_current_limit();
+	 *     std::cout << "Motor Current Limit: " << mg.get_current_limit();
 	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	std::int32_t get_current_limit(const std::uint8_t index = 0) const;
-	std::vector<std::int32_t> get_current_limit_all(void) const;
-
+	
 	/**
-	 * Gets the encoder units that were set for the motor.
+	 * Gets a vector of the current limit for each motor in the motor group in mA.
+	 *
+	 * The default value is 2500 mA.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
 	 *
+	 * \return A vector of each motor's current limit in mA or PROS_ERR if the operation failed,
+	 * setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   while (true) {
+	 *     std::cout << "Motor Current Limit: " << mg.get_current_limit_all()[0];
+	 *     pros::delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::vector<std::int32_t> get_current_limit_all(void) const;
+
+	/**
+	 * Gets the encoder units that were set for a motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
 	 * \return One of Motor_Units according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
@@ -986,11 +1442,31 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
-	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units();
+	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
 	 */
 	MotorUnits get_encoder_units(const std::uint8_t index = 0) const;
+	
+	/**
+	 * Gets a vector of the encoder units that were set for each motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vecotr with the following for each motor, One of Motor_Units according to what is set for the
+	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units_all()[0];
+	 * }
+	 * \endcode
+	 */
 	std::vector<MotorUnits> get_encoder_units_all(void) const;
 
 	/**
@@ -1007,7 +1483,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg (1, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
-	 *   std::cout << "Motor Gearing: " << motor.get_gearing();
+	 *   std::cout << "Motor Gearing: " << mg.get_gearing();
 	 * }
 	 * \endcode
 	 */
@@ -1040,7 +1516,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   std::cout << "Motor Voltage Limit: " << motor.get_voltage_limit();
+	 *   std::cout << "Motor Voltage Limit: " << mg.get_voltage_limit();
 	 * }
 	 * \endcode
 	 */
@@ -1088,7 +1564,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	 *   std::cout << "Brake Mode: " << motor.get_brake_mode();
+	 *   std::cout << "Brake Mode: " << mg.get_brake_mode();
 	 * }
 	 * \endcode
 	 */
@@ -1117,7 +1593,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * motor.set_current_limit(1000);
 	 * while (true) {
-	 *   motor = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   mg = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -1145,7 +1621,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.set_encoder_units(E_MOTOR_ENCODER_DEGREES);
-	 *   std::cout << "Encoder Units: " << motor.get_encoder_units();
+	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
 	 */
@@ -1172,7 +1648,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
-	 *   std::cout << "Gearset: " << motor.get_gearing();
+	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
 	 */
@@ -1229,7 +1705,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 *   motor.set_voltage_limit(10000);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     // The motor will not output more than 10 V
 	 *     pros::delay(2);
 	 *   }
