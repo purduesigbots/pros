@@ -27,7 +27,9 @@ namespace pros{
  * \addtogroup cpp-colors
  *  @{
  */
+
 /**
+ * \enum Color
  * @brief
  * Enum class of possible colors
  *
@@ -183,6 +185,6 @@ enum class Color {
 };
 } // namespace pros
 
-///@}
+  ///@}
 
 #endif //_PROS_COLORS_HPP_

@@ -34,6 +34,8 @@ inline namespace v5 {
  */
 
 /**
+ * \enum DeviceType
+ * \brief
  * Enum of possible v5 devices.
  *
  * Contains all current V5 Devices.

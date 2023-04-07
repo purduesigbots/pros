@@ -39,6 +39,7 @@ namespace c {
 #endif
 
 /**
+ * \enum color_e_t
  * @brief
  * Enum of possible colors
  *
@@ -193,7 +194,7 @@ typedef enum color_e {
 	COLOR_YELLOW_GREEN = 0x009ACD32,
 } color_e_t;
 
-///@}
+	///@}
 
 #ifdef __cplusplus
 }  // namespace c
