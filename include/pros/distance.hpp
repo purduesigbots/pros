@@ -62,6 +62,19 @@ class Distance : public Device {
 	 *
 	 * \return The distance value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 * 
+	 * void opcontrol() {
+		Distance distance(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance confidence: %d\n", distance.get());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get();
 
@@ -79,6 +92,19 @@ class Distance : public Device {
 	 *
 	 * \return The confidence value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 * 
+	 * void opcontrol() {
+		Distance distance(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance confidence: %d\n", distance.get_confidence());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_confidence();
 
@@ -96,6 +122,19 @@ class Distance : public Device {
 	 *
 	 * \return The size value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 * 
+	 * void opcontrol() {
+		Distance distance(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance confidence: %d\n", distance.get_object_size());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_object_size();
 
@@ -109,6 +148,18 @@ class Distance : public Device {
 	 *
 	 * \return The velocity value or PROS_ERR if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * void opcontrol() {
+	 *	Distance distance(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance Object velocity: %f\n", distance.get_object_velocity());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_object_velocity();
 
