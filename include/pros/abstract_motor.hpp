@@ -1,5 +1,6 @@
 /**
  * \file abstract_motor.hpp
+ * \ingroup cpp-abstract-motor
  *
  * Contains prototypes for AbstractMotor, the abstract base class of both
  * motors and motor groups. Abstract motors cannot be directly constructed, but
