@@ -8,8 +8,6 @@
  * VEX LCD, containing a set of functions that facilitate the use of a software-
  * emulated version of the classic VEX LCD module.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

@@ -5,9 +5,6 @@
  * Contains declarations for the PROS RTOS kernel for use by typical VEX
  * programmers.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html to
- * learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *

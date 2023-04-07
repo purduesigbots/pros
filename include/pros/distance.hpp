@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the V5 Distance Sensor-related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/distance.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -49,6 +46,15 @@ class Distance : public Device {
 	 *
 	 * \param port
 	 *        The V5 port number from 1-21
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   Distance distance(DISTANCE_PORT);
+	 * }
+	 * \endcode
 	 */
 	explicit Distance(const std::uint8_t port);
 

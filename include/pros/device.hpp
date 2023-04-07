@@ -11,6 +11,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * \defgroup cpp-device VEX Generic Device C++ API (For Advanced Users)
  */
 
 #ifndef _PROS_DEVICE_HPP_
@@ -21,6 +23,15 @@
 
 namespace pros {
 inline namespace v5 {
+/**
+ * \ingroup cpp-device
+ * \note These functions can be used for dynamic device instantiation. 
+ */
+
+/**
+ * \addtogroup cpp-device
+ *  @{
+ */
 
 /**
  * Enum of possible v5 devices.
@@ -48,6 +59,15 @@ class Device {
 	 * Creates a Device object.
 	 *
 	 * \param port The V5 port number from 1-21
+	 *
+	 * \b Example
+	 * \code
+	 * #define DEVICE_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   Device device(DEVICE_PORT);
+	 * }
+	 * \endcode
 	 */
   	explicit Device(const std::uint8_t port);
   
@@ -131,6 +151,8 @@ class Device {
 	protected:
 	const std::uint8_t _port;
 	const enum DeviceType _deviceType = pros::DeviceType::none;
+	
+	///@}
 };
 }  // namespace v5
 }  // namespace pros
