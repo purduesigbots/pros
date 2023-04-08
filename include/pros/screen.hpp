@@ -72,7 +72,15 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   set_pen(red);
+     *   pros::screen::set_pen(red);
+     * }
+     * 
+     * void opcontrol() {
+     * int iter = 0;
+     *  while(1){
+     *   // This should print in red.
+     *   pros::screen::print(TEXT_MEDIUM, 1, "%d", iter++);
+     *  }
      * }
      *
      * \endcode
@@ -95,7 +103,15 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void initialize() {
      *   //set pen color to red
-     *   set_pen(0x00FF0000);
+     *   pros::screen::set_pen(0x00FF0000);
+     * }
+     * 
+     * void opcontrol() {
+     * int iter = 0;
+     *  while(1){
+     *   // This should print in red.
+     *   pros::screen::print(TEXT_MEDIUM, 1, "%d", iter++);
+     *  }
      * }
      *
      * \endcode
@@ -121,6 +137,14 @@ const char* convert_args(const std::string& arg) {
      *   //set eraser color to red
      *   set_eraser(red);
      * }
+     * 
+     * void opcontrol() {
+     * int iter = 0;
+     *  while(1){
+     *   // This should print in red.
+     *   pros::screen::print(TEXT_MEDIUM, 1, "%d", iter++);
+     *  }
+     * }
      *
      * \endcode
      */
@@ -142,9 +166,15 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void initialize() {
      *   //set eraser color to red
-     *   set_eraser(0x00FF0000);
+     *   pros::screen::set_eraser(0x00FF0000);
      * }
-     *
+     * 
+     * void opcontrol() {
+     *   while(1){
+     *   // This should turn the screen red.
+     *   pros::screen::erase();
+     *   }
+     * }
      * \endcode
      */
     std::uint32_t set_eraser(std::uint32_t color);
@@ -163,13 +193,13 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   set_pen(red);
+     *   pros::screen::set_pen(red);
      * }
      *
      * void opcontrol() {
      *   while(1){
      *     // Should print number equivalent to red defined in colors.hpp.
-     *     print(TEXT_MEDIUM, 1, "%d", get_pen());
+     *     pros::screen::print(TEXT_MEDIUM, 1, "%d", get_pen());
      *   }
      * }
      * \endcode
@@ -190,13 +220,13 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   set_eraser(red);
+     *   pros::screen::set_eraser(red);
      * }
      *
      * void opcontrol() {
      *   while(1){
      *     // Should print number equivalent to red defined in colors.h.
-     *     print(TEXT_MEDIUM, 1, "%d", get_eraser());
+     *     pros::screen::print(TEXT_MEDIUM, 1, "%d", get_eraser());
      *   }
      * }
      * \endcode
@@ -216,13 +246,13 @@ const char* convert_args(const std::string& arg) {
      *  * \b Example
      * \code
      * void initialize() {
-     *   set_eraser(red);
+     *   pros::screen::set_eraser(red);
      * }
      *
      * void opcontrol() {
      *   while(1){
      *     // This should turn the screen red.
-     *     erase();
+     *     pros::screen::erase();
      *   }
      * }
      * \endcode
@@ -245,9 +275,9 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   print(TEXT_MEDIUM, 4, "Line Here");
+     *   pros::screen::print(TEXT_MEDIUM, 4, "Line Here");
      *   // Scroll 3 lines
-     *   scroll(4, 3);
+     *   pros::screen::scroll(4, 3);
      * }
      * \endcode
      */
@@ -276,9 +306,9 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   print(TEXT_MEDIUM, 1, "Line Here");
+     *   pros::screen::print(TEXT_MEDIUM, 1, "Line Here");
      *   // Scrolls area of screen upwards slightly. including line of text
-     *   scroll_area(0,0, 400, 200, 3);
+     *   pros::screen::scroll_area(0,0, 400, 200, 3);
      * }
      * \endcode
      */
@@ -307,9 +337,9 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   uint32_t* buf = malloc(sizeof(uint32_t) * 400 * 200);
-     *   print(TEXT_MEDIUM, 1, "Line Here");
+     *   pros::screen::print(TEXT_MEDIUM, 1, "Line Here");
      *   // Copies area of the screen including text
-     *   copy_area(0, 0, 400, 200, (uint32_t*)buf, 400 + 1);
+     *   pros::screen::copy_area(0, 0, 400, 200, (uint32_t*)buf, 400 + 1);
      *   // Equation for stride is x2 - x1 + 1
      * }
      * \endcode
@@ -333,9 +363,9 @@ const char* convert_args(const std::string& arg) {
      * int i = 0;
      * void opcontrol() {
      *   while(i < 200){
-     *     draw_pixel(100,i++);
+     *     pros::screen::draw_pixel(100,i++);
      *     // Draws a line at x = 100 gradually down the screen, pixel by pixel
-     *     delay(200);
+     *     pros::delay(200);
      *   }
      * }
      * \endcode
@@ -358,13 +388,13 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Color the Screen in Red
-     *   set_pen(red);
-     *   fill_rect(0,0,400,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::fill_rect(0,0,400,200);
      *   int i = 0;
      *   while(i < 200){
-     *     erase_pixel(100,i++);
+     *     pros::screen::erase_pixel(100,i++);
      *     // Erases a line at x = 100 gradually down the screen, pixel by pixel
-     *     delay(200);
+     *     pros::delay(200);
      *   }
      * }
      * \endcode
@@ -387,9 +417,9 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     * 	 set_pen(red);
+     * 	 pros::screen::set_pen(red);
      *   // Draw line down the screen at x = 100
-     *   draw_line(100,0,100,200);
+     *   pros::screen::draw_line(100,0,100,200);
      * }
      * \endcode
      */
@@ -412,10 +442,10 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Color the Screen in Red
-     *   set_pen(red);
-     *   fill_rect(0,0,400,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::fill_rect(0,0,400,200);
      *   // Erase line down the screen at x = 100
-     *   erase_line(100,0,100,200);
+     *   pros::screen::erase_line(100,0,100,200);
      * }
      * \endcode
      */
@@ -437,8 +467,8 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   set_pen(red);
-     *   draw_rect(1,1,480,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::draw_rect(1,1,480,200);
      * }
      * \endcode
      */
@@ -461,8 +491,8 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Draw Box Around Half the Screen in Red
-     *   set_eraser(red);
-     *   erase_rect(5,5,240,200);
+     *   pros::screen::set_eraser(red);
+     *   pros::screen::erase_rect(5,5,240,200);
      * }
      * \endcode
      */
@@ -486,8 +516,8 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Fill Around Half the Screen in Red
-     *   set_pen(red);
-     *   fill_rect(5,5,240,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::fill_rect(5,5,240,200);
      * }
      * \endcode
      */
@@ -510,8 +540,8 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Draw a circle with radius of 100 in red
-     *   set_pen(red);
-     *   draw_circle(240, 200, 100);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::draw_circle(240, 200, 100);
      * }
      * \endcode
      */
@@ -533,11 +563,11 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   set_pen(red);
-     *   fill_rect(5,5,240,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::fill_rect(5,5,240,200);
      *   // Erase a circle with radius of 100 in blue
-     *   set_pen(blue);
-     *   erase_circle(240, 200, 100);
+     *   pros::screen::set_pen(blue);
+     *   pros::screen::erase_circle(240, 200, 100);
      * }
      * \endcode
      */
@@ -560,11 +590,11 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
     * void opcontrol() {
-     *   set_pen(red);
-     *   fill_rect(5,5,240,200);
+     *   pros::screen::set_pen(red);
+     *   pros::screen::fill_rect(5,5,240,200);
      *   // Fill a circlular area with radius of 100 in blue
-     *   set_pen(blue);
-     *   fill_circle(240, 200, 100);
+     *   pros::screen::set_pen(blue);
+     *   pros::screen::fill_circle(240, 200, 100);
      * }
      * \endcode
      */
@@ -587,6 +617,18 @@ const char* convert_args(const std::string& arg) {
      * \param y The (x,y) coordinates of the top left corner of the string
      * \param fmt  Format string
      * \param ...  Optional list of arguments for the format string
+     * 
+     * \b Example
+     * \code
+     * void opcontrol() {
+     *    int i = 0;
+     *    pros::screen::set_pen(blue);
+     *    while(1){
+     *       // Will print seconds started since program started on line 3
+     *       pros::screen::print(pros::TEXT_MEDIUM, 3, "Seconds Passed: %3d", i++);
+     *       pros::delay(1000);
+     *    }
+     * }
      */
     template <typename... Params>
     void print(pros::text_format_e_t txt_fmt, const std::int16_t line, const char* text, Params... args){
@@ -617,17 +659,17 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   int i = 0;
-     *   screen_touch_status_s_t status;
+     *   pros::screen_touch_status_s_t status;
      *   while(1){
-     *     status = touch_status();
+     *     status = pros::touch_status();
      *
      *     // Will print various information about the last touch
-     *     print(TEXT_MEDIUM, 1, "Touch Status (Type): %d", status.touch_status);
-     *     print(TEXT_MEDIUM, 2, "Last X: %d", status.x);
-     *     print(TEXT_MEDIUM, 3, "Last Y: %d", status.y);
-     *     print(TEXT_MEDIUM, 4, "Press Count: %d", status.press_count);
-     *     print(TEXT_MEDIUM, 5, "Release Count: %d", status.release_count);
-     *     delay(20);
+     *     pros::screen::print(TEXT_MEDIUM, 1, "Touch Status (Type): %d", status.touch_status);
+     *     pros::screen::print(TEXT_MEDIUM, 2, "Last X: %d", status.x);
+     *     pros::screen::print(TEXT_MEDIUM, 3, "Last Y: %d", status.y);
+     *     pros::screen::print(TEXT_MEDIUM, 4, "Press Count: %d", status.press_count);
+     *     pros::screen::print(TEXT_MEDIUM, 5, "Release Count: %d", status.release_count);
+     *     pros::delay(20);
      *   }
      * }
      * \endcode
@@ -650,14 +692,16 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * touch_event_cb_fn_t changePixel(){
-     *   screen_touch_status_s_t status = touch_status();
-     *   draw_pixel(status.x,status.y);
+     *   pros::screen_touch_status_s_t status = pros::screen::touch_status();
+     *   pros::screen::draw_pixel(status.x,status.y);
      *   return NULL;
      * }
      *
      * void opcontrol() {
-     *   touch_callback(changePixel(), TOUCH_PRESSED);
-     *   while(1) delay(20);
+     *   pros::screen::touch_callback(changePixel(), TOUCH_PRESSED);
+     *   while(1) {
+     *     pros::delay(20);
+     *   }
      * }
      * \endcode
      */
