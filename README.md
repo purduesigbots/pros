@@ -15,13 +15,16 @@ You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and 
 
 The PROS team develops a plugin for Atom to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
 
+### What'st hte difference between PROS 4 and 3?
+PROS 4 is a Kernel upgrade from PROS 4 to both decrease the size of the base Kernel, and provide utilities such as the base device class and liblvgl that makes it easier for both users and library writers to customize their PROS projects. This version also moves all documentation to a doxygen site rather than a Sphinx documentation page. 
+
 ### What's the difference between PROS 2 and PROS 3?
 PROS 2 refers to the kernel that runs on the [VEX Arm Cortex-based Microcontroller](https://www.vexrobotics.com/276-2194.html). The source for this kernel is still available on the `cortex-master` branch. The future development for this version of the PROS kernel will be focused on maintenance and critical bugfixes.
 
 PROS 3 refers to the kernel that runs on the [VEX V5](https://www.vexrobotics.com/vexedr/v5) microcontroller platform. The majority of our development focus will be on this version of the PROS kernel.
 
 ### Does PROS support C++?
-- PROS 3.x (V5) officially supports C++. We're still working on enabling all of the features of C++ (particularly in the I/O area).
+- PROS 3.x and 4.x (V5) officially supports C++. We're still working on enabling all of the features of C++ (particularly in the I/O area).
 - PROS 2.x (Cortex) does not officially support C++. Some users have found ways around this, but be warned: we will not be able to help if you run into issues doing this.
 
 ### Cool, how do I get it?
@@ -47,5 +50,5 @@ We maintain GitHub repositories for the three major components of the PROS ecosy
 
 If you find a problem with our documentation or tutorials, we have a repository for that, too, at [purduesigbots/pros-docs](https://github.com/purduesigbots/pros-docs).
 
-### Hey! Why can't I build the PROS 3 kernel?
-The PROS 3 kernel depends on VEX's proprietary Software Development Kit (SDK), which is not publicly available.
+### Hey! Why can't I build the PROS kernel?
+The PROS kernel depends on VEX's proprietary Software Development Kit (SDK), which is not publicly available.

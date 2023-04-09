@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX Inertial sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/imu.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -62,6 +59,29 @@ class Imu : public Device {
 	
 
 	public:
+	/**
+	 * Creates an Imu object for the given port
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 *
+	 * \param port
+	 *        The V5 Inertial Sensor port number from 1-21
+	 * 
+	 * \b Example
+	 * \code
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Do something with the sensor data
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**
@@ -83,6 +103,19 @@ class Imu : public Device {
 	 *			Whether this function blocks during calibration.
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 *   imu.calibrate();
+	 *   // Block until calibration is complete
+	 *   imu.reset(true);
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t reset(bool blocking = false) const;
 	/**
@@ -106,6 +139,29 @@ class Imu : public Device {
 	 * \param rate The data refresh interval in milliseconds
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the refresh rate to 5ms
+	 *     std::int32_t status = imu.set_data_rate(5);
+	 *     delay(20);
+	 * 
+	 *     // Check if the operation was successful
+	 *     if (status == PROS_ERR) {
+	 *       // Do something with the error
+	 *     }
+	 * 
+	 *     // Do something with the sensor data
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 	/**
@@ -125,6 +181,22 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The degree value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *    // Get the total number of degrees the sensor has spun
+	 *    printf("Total rotation: %f\n", imu.get_rotation());
+	 *    delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_rotation() const;
 	/**
@@ -145,6 +217,22 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The degree value or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's heading
+	 *     printf("Heading: %f\n", imu.get_heading());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_heading() const;
 	/**
@@ -161,6 +249,23 @@ class Imu : public Device {
 	 * \return The quaternion representing the sensor's orientation. If the
 	 * operation failed, all the quaternion's members are filled with PROS_ERR_F and
 	 * errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's quaternion
+	 *     pros::quaternion_s_t quat = imu.get_quaternion();
+	 *     cout << "Quaternion: " << quat.w << ", " << quat.x << ", " << quat.y << ", " << quat.z << endl;
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual pros::quaternion_s_t get_quaternion() const;
 	/**
@@ -177,6 +282,23 @@ class Imu : public Device {
 	 * \return The Euler angles representing the sensor's orientation. If the
 	 * operation failed, all the structure's members are filled with PROS_ERR_F and
 	 * errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's Euler angles
+	 *     pros::euler_s_t euler = imu.get_euler();
+	 *     cout << "Euler: " << euler.roll << ", " << euler.pitch << ", " << euler.yaw << endl;
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual pros::euler_s_t get_euler() const;
 	/**
@@ -192,6 +314,22 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The pitch angle, or PROS_ERR_F if the operation failed, setting
 	 * errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's pitch
+	 *     printf("Pitch: %f\n", imu.get_pitch());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_pitch() const;
 	/**
@@ -206,6 +344,22 @@ class Imu : public Device {
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The roll angle, or PROS_ERR_F if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 *   
+	 *   while (true) {
+	 *     // Get the sensor's roll
+	 *     printf("Roll: %f\n", imu.get_roll());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_roll() const;
 	/**
@@ -220,6 +374,22 @@ class Imu : public Device {
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The yaw angle, or PROS_ERR_F if the operation failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's yaw
+	 *     printf("Yaw: %f\n", imu.get_yaw());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_yaw() const;
 	/**
@@ -235,6 +405,23 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's raw gyroscope values
+	 *     pros::imu_gyro_s_t gyro = imu.get_gyro_rate();
+	 *     cout << "Gyro: " << gyro.x << ", " << gyro.y << ", " << gyro.z << endl;
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual pros::imu_gyro_s_t get_gyro_rate() const;
 	/**
@@ -250,6 +437,28 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 *   
+	 *   while (true) {
+	 *     // Set the sensor's rotation value to 10
+	 *     imu.set_rotation(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 * 
+	 *     // Reset the sensor's rotation value to 0
+	 *     imu.tare_rotation();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare_rotation() const;
 	/**
@@ -265,6 +474,28 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's heading value to 10
+	 *     imu.set_heading(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *     
+	 *     // Reset the sensor's heading value to 0
+	 *     imu.tare_heading();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare_heading() const;
 	/**
@@ -280,6 +511,28 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's pitch value to 10
+	 *     imu.set_pitch(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 * 
+	 *     // Reset the sensor's pitch value to 0
+	 *     imu.tare_pitch();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare_pitch() const;
 	/**
@@ -295,6 +548,28 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's yaw value to 10
+	 *     imu.set_yaw(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 * 
+	 *     // Reset the sensor's yaw value to 0
+	 *     imu.tare_yaw();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare_yaw() const;
 	/**
@@ -310,6 +585,28 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's roll value to 10
+	 *     imu.set_roll(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 * 
+	 *     // Reset the sensor's roll value to 0
+	 *     imu.tare_roll();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare_roll() const;
 	/**
@@ -325,6 +622,22 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Reset all values of the sensor to 0
+	 *     imu.tare();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t tare() const;
 	/**
@@ -340,6 +653,22 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Reset all euler values of the sensor to 0
+	 *     imu.tare_euler();
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode 
 	 */
 	virtual std::int32_t tare_euler() const;
 	/**
@@ -358,6 +687,24 @@ class Imu : public Device {
 	 * 				 Target value for the heading value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's heading value to 10
+	 *     imu.set_heading(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_heading(const double target) const;
 	/**
@@ -375,6 +722,24 @@ class Imu : public Device {
 	 * 				 Target value for the rotation value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's rotation value to 10
+	 *     imu.set_rotation(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_rotation(const double target) const;
 	/**
@@ -393,6 +758,24 @@ class Imu : public Device {
 	 * 				 Target value for yaw value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's yaw value to 10
+	 *     imu.set_yaw(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_yaw(const double target) const;
 	/**
@@ -410,6 +793,24 @@ class Imu : public Device {
 	 * 				 Target value for the pitch value to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's pitch value to 10
+	 *     imu.set_pitch(10);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_pitch(const double target) const;
 	/**
@@ -428,6 +829,24 @@ class Imu : public Device {
 	 * 				 Target euler values for the euler values to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's roll value to 100
+	 *     imu.set_roll(100);
+	 *     delay(20);
+	 *   
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_roll(const double target) const;
 	/**
@@ -446,6 +865,24 @@ class Imu : public Device {
 	 * 				 Target euler values for the euler values to be set to
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Set the sensor's euler values to 50
+	 *     imu.set_euler(50);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t set_euler(const pros::euler_s_t target) const;
 	/**
@@ -461,6 +898,25 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's raw accelerometer values
+	 *     pros::imu_accel_s_t accel = imu.get_accel();
+	 *     printf("x: %f, y: %f, z: %f\n", accel.x, accel.y, accel.z);
+	 *     delay(20);
+	 * 
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode   
 	 */
 	virtual pros::imu_accel_s_t get_accel() const;
 	/**
@@ -476,6 +932,25 @@ class Imu : public Device {
 	 * 				 The V5 Inertial Sensor port number from 1-21
 	 * \return The Inertial Sensor's status code, or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Get the sensor's status
+	 *     pros::ImuStatus status = imu.get_status();
+	 *     cout << "Status: " << status << endl;
+	 *     delay(20);
+	 *   
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual pros::ImuStatus get_status() const;
 	/**
@@ -483,6 +958,29 @@ class Imu : public Device {
 	 *
 	 * \return true if the V5 Inertial Sensor is calibrating or false
 	 * false if it is not.
+	 * 
+	 * \b Example
+	 * \code
+	 * 
+	 * #define IMU_PORT 1
+	 * 
+	 * void opcontrol() {
+	 *   pros::Imu imu(IMU_PORT);
+	 * 
+	 *   while (true) {
+	 *     // Calibrate the sensor
+	 *     imu.calibrate();
+	 *     delay(20);
+	 * 
+	 *     // Check if the sensor is calibrating
+	 *     if (imu.is_calibrating()) {
+	 *       printf("Calibrating...\n");
+	 *     }
+	 *   
+	 *     // Do something with sensor
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	virtual bool is_calibrating() const;
 

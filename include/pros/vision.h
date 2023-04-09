@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the VEX Vision Sensor-related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -378,9 +375,7 @@ vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const 
 vision_object_s_t vision_get_by_code(uint8_t port, const uint32_t size_id, const vision_color_code_t color_code);
 
 /**
- * Gets the exposure parameter of the Vision Sensor. See
- * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
- * for more detials.
+ * Gets the exposure parameter of the Vision Sensor. 
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -703,9 +698,7 @@ int32_t vision_set_signature(uint8_t port, const uint8_t signature_id, vision_si
 int32_t vision_set_auto_white_balance(uint8_t port, const uint8_t enable);
 
 /**
- * Sets the exposure parameter of the Vision Sensor. See
- * https://pros.cs.purdue.edu/v5/tutorials/topical/vision.html#exposure-setting
- * for more detials.
+ * Sets the exposure parameter of the Vision Sensor. 
  *
  * This function uses the following values of errno when an error state is
  * reached:

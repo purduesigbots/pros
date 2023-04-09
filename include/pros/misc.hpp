@@ -5,9 +5,6 @@
  * Contains prototypes for miscellaneous functions pertaining to the controller,
  * battery, and competition control.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/controller.html to
- * learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -34,7 +31,6 @@ namespace pros {
 inline namespace v5 {
 /**
  * \ingroup cpp-misc
- * 
  */
 class Controller {
 	/**
@@ -60,6 +56,16 @@ class Controller {
 	 * port.
 	 *
 	 * \return 1 if the controller is connected, 0 otherwise
+	 * 
+	 * \b Example
+	 * \code
+	 * void status_display_controller(){
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   if(!master.is_connected()) {
+  	 * 	   pros::lcd::print(0, "Main controller is not connected!");
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t is_connected(void);
 
@@ -78,6 +84,17 @@ class Controller {
 	 *
 	 * \return The current reading of the analog channel: [-127, 127].
 	 * If the controller was not connected, then 0 is returned
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *     motor_move(1, master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_analog(controller_analog_e_t channel);
 
@@ -90,6 +107,14 @@ class Controller {
 	 * port.
 	 *
 	 * \return The controller's battery capacity
+	 * 
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   printf("Battery Capacity: %d\n", master.get_battery_capacity());
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_battery_capacity(void);
 
@@ -102,6 +127,14 @@ class Controller {
 	 * port.
 	 *
 	 * \return The controller's battery level
+	 * 
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 * 	 pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   printf("Battery Level: %d\n", master.get_battery_level());
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_battery_level(void);
 
@@ -120,6 +153,22 @@ class Controller {
 	 *
 	 * \return 1 if the button on the controller is pressed.
 	 * If the controller was not connected, then 0 is returned
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *     motor_set(1, 100);
+	 *   }
+	 *   else {
+	 *     motor_set(1, 0);
+	 *   }
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_digital(controller_digital_e_t button);
 
@@ -145,6 +194,20 @@ class Controller {
 	 *
 	 * \return 1 if the button on the controller is pressed and had not been
 	 * pressed the last time this function was called, 0 otherwise.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 	while (true) {
+	 *   if (master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *     // Toggle pneumatics or other similar actions
+	 *   }
+	 * 
+	 *   delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t get_digital_new_press(controller_digital_e_t button);
 
@@ -181,6 +244,22 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   int count = 0;
+	 * 	 pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *   if (!(count % 25)) {
+	 *     // Only print every 50ms, the controller text update rate is slow
+	 *     master.print(0, 0, "Counter: %d", count);
+	 *   }
+	 *     count++;
+	 *     delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	template <typename... Params>
 	std::int32_t print(std::uint8_t line, std::uint8_t col, const char* fmt, Params... args) {
@@ -207,6 +286,22 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+ 	 *   int count = 0;
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+ 	 *   while (true) {
+ 	 *     if (!(count % 25)) {
+ 	 *       // Only print every 50ms, the controller text update rate is slow
+ 	 *       master.set_text(0, 0, "Example text");
+ 	 *     }
+ 	 *   count++;
+ 	 *   delay(2);
+ 	 *   }
+ 	 * }
+ 	 * \endcode
 	 */
 	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const char* str);
 	std::int32_t set_text(std::uint8_t line, std::uint8_t col, const std::string& str);
@@ -227,6 +322,16 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+ 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+ 	 *   master.set_text(0, 0, "Example");
+ 	 *   delay(100);
+ 	 *   master.clear_line(0);
+ 	 * }
+ 	 * \endcode
 	 */
 	std::int32_t clear_line(std::uint8_t line);
 
@@ -248,6 +353,22 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   int count = 0;
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   while (true) {
+	 *   if (!(count % 25)) {
+	 *     // Only send every 50ms, the controller update rate is slow
+	 *     master.rumble(". - . -");
+	 *   }
+	 *   count++;
+	 *   delay(2);
+	 *   }
+	 * }
+	 * \endcode
 	 */
 	std::int32_t rumble(const char* rumble_pattern);
 
@@ -265,6 +386,16 @@ class Controller {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 *   master.set_text(0, 0, "Example");
+	 *   delay(100);
+	 *   master.clear();
+	 * }
+	 * \endcode
 	 */
 	std::int32_t clear(void);
 
@@ -287,6 +418,13 @@ namespace battery {
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current voltage of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Level: %.2f\n", get_capacity());
+ * }
+ * \endcode
  */
 double get_capacity(void);
 
@@ -298,6 +436,13 @@ double get_capacity(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current current of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery Current: %d\n", get_current());
+ * }
+ * \endcode
  */
 int32_t get_current(void);
 
@@ -309,6 +454,13 @@ int32_t get_current(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current temperature of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery's Temperature: %.2f\n", get_temperature());
+ * }
+ * \endcode
  */
 double get_temperature(void);
 
@@ -320,6 +472,13 @@ double get_temperature(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current capacity of the battery
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Battery's Voltage: %d\n", get_voltage());
+ * }
+ * \endcode
  */
 int32_t get_voltage(void);
 ///@}
@@ -331,6 +490,20 @@ namespace competition {
  *
  * \return The competition control status as a mask of bits with
  * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
+ * 
+ * \b Example
+ * \code
+ * void status_display_task(){
+ * 	if(!is_connected()) {
+ * 	 pros::lcd::print(0, "V5 Brain is not connected!");
+ *  }
+ *  if(is_autonomous()) {
+ * 	 pros::lcd::print(0, "V5 Brain is in autonomous mode!");
+ *  }
+ *  if(!is_disabled()) {
+ * 	 pros::lcd::print(0, "V5 Brain is disabled!");
+ *  }
+ * \endcode
  */
 std::uint8_t get_status(void);
 std::uint8_t is_autonomous(void);
@@ -343,6 +516,13 @@ namespace usd {
  * Checks if the SD card is installed.
  *
  * \return 1 if the SD card is installed, 0 otherwise
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ *   printf("%i", is_installed());
+ * }
+ * \endcode
  */
 std::int32_t is_installed(void);
 }  // namespace usd
