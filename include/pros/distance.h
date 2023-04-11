@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX Distance sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/distance.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -111,6 +108,18 @@ int32_t distance_get_confidence(uint8_t port);
  * \param  port The V5 Distance Sensor port number from 1-21
  * \return The size value or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example
+ * \code
+ * #define DISTANCE_PORT 1
+ * 
+ * void opcontrol() {
+ *   while (true) {
+ *     printf("Distance Object Size: %d\n", distance_get_object_size(DISTANCE_PORT));
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 int32_t distance_get_object_size(uint8_t port);
 
@@ -132,7 +141,7 @@ int32_t distance_get_object_size(uint8_t port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf("Distance Object Size: %d\n", distance_get_object_size(DISTANCE_PORT));
+ *     printf("Distance Object Velocity: %f\n", distance_get_object_velocity(DISTANCE_PORT));
  *     delay(20);
  *   }
  * }

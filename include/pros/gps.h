@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX GPS.
  *
- * Visit https://pros.cs.purdue.edu/v5/api/c/gps.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -183,6 +180,21 @@ int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
  * \return A struct (gps_status_s_t) containing values mentioned above.
  * If the operation failed, all the structure's members are filled with
  * PROS_ERR_F and errno is set.
+ *
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   gps_status_s_t status;
+ *
+ *   while (true) {
+ *     status = gps_get_status(GPS_PORT);
+ *     printf("X: %f, Y: %f, Pitch: %f, Roll: %f, Yaw: %f\n", status.x, status.y, status.pitch, status.roll, status.yaw);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 gps_status_s_t gps_get_status(uint8_t port);
 
@@ -201,6 +213,21 @@ gps_status_s_t gps_get_status(uint8_t port);
  * \return A struct (gps_position_s_t) containing values mentioned above.
  * If the operation failed, all the structure's members are filled with
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   gps_position_s_t position;
+ *
+ *   while (true) {
+ *     position = gps_get_position(GPS_PORT);
+ *     printf("X: %f, Y: %f\n", position.x, position.y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 gps_position_s_t gps_get_position(uint8_t port);
 
@@ -217,6 +244,21 @@ gps_position_s_t gps_get_position(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \return The raw gyroscope values. If the operation failed, all the
  * structure's members are filled with PROS_ERR_F and errno is set.
+ *
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   gps_gyro_s_t gyro;
+ *
+ *   while (true) {
+ *     gyro = gps_get_gyro(GPS_PORT);
+ *     printf("Gyro: %f %f %f\n", gyro.x, gyro.y, gyro.z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
 
@@ -233,6 +275,21 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
  * 				 The V5 GPS's port number from 1-21
  * \return The raw accelerometer values. If the operation failed, all the
  * structure's members are filled with PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   gps_accel_s_t accel;
+ *
+ *   while (true) {
+ *     accel = gps_get_accel(GPS_PORT);
+ *     printf("X: %f, Y: %f, Z: %f\n", accel.x, accel.y, accel.z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 gps_accel_s_t gps_get_accel(uint8_t port);
 
@@ -324,6 +381,9 @@ int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double 
  * 
  * void initialize() {
  *   gps_set_data_rate(GPS_PORT, GPS_DATA_RATE);
+ *   while (true) {
+ *     // Do something
+ *   }
  * }
  * \endcode
  */
@@ -351,6 +411,7 @@ int32_t gps_set_data_rate(uint8_t port, uint32_t rate);
  * void opcontrol() {
  *   double error;
  *   error = gps_get_error(GPS_PORT);
+ *   screen_print(TEXT_MEDIUM, 1, "Error: %4d", error);
  * }
  * \endcode
  */
@@ -475,6 +536,7 @@ double gps_get_heading_raw(uint8_t port);
  *   double elapsed_rotation;
  * 
  *   elapsed_rotation = gps_get_rotation(GPS_PORT);
+ *   printf("Elapsed rotation: %3f", elapsed_rotation);
  * }
  * \endcode
  */
@@ -502,6 +564,7 @@ double gps_get_rotation(uint8_t port);
  * 
  * void opcontrol() {
  *   gps_set_rotation(GPS_PORT, 60);
+ *   printf("Elapsed rotation: %3f", gps_get_rotation(GPS_PORT));
  * }
  * \endcode
  */
@@ -527,6 +590,7 @@ int32_t gps_set_rotation(uint8_t port, double target);
  * 
  * void initialize() {
  *   gps_tare_rotation(GPS_PORT);
+ *   printf("Elapsed rotation: %3f", gps_get_rotation(GPS_PORT)); // should be 0
  * }
  * \endcode
  */

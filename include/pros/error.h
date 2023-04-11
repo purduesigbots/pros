@@ -18,12 +18,25 @@
 #include "limits.h"
 
 // Different Byte Size Errors
+
+/// @brief
+/// Return This on Byte Sized Return Error
 #define PROS_ERR_BYTE (INT8_MAX)
+
+/// @brief
+/// Return This on 2 Byte Sized Return Error
 #define PROS_ERR_2_BYTE (INT16_MAX)
+
+/// @brief
+/// Return This on 4 Byte Sized Return Error
 #define PROS_ERR (INT32_MAX)
+
+/// @brief
+/// Return This on 8 Byte Sized Return Error
 #define PROS_ERR_F (INFINITY)
 
-// Return This on Success
+/// @brief
+/// Return This on Success (1)
 #define PROS_SUCCESS (1)
 
 #endif

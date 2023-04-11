@@ -4,8 +4,6 @@
  *
  * Contains prototypes for interfacing with the ADI.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/adi.html to learn more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -142,6 +140,8 @@ typedef enum adi_potentiometer_type_e {
 namespace c {
 #endif
 
+/** @} Add to group c-adi*/
+
 /**
  * \ingroup c-adi
  */
@@ -150,9 +150,6 @@ namespace c {
  * \addtogroup c-adi
  *  @{
  */
-/// \name General ADI Use Functions
-/// These functions allow for interaction with any ADI port type
-///@{
 
 /**
  * Gets the configuration for the given ADI port.
@@ -262,44 +259,6 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  */
 int32_t adi_port_set_value(uint8_t port, int32_t value);
 
-///@}
-
-/// \name PROS 2 Compatibility Functions
-/// These functions provide similar functionality to the PROS 2 API
-///@{
-
-/**
- * Used for adi_digital_write() to specify a logic HIGH state to output.
- *
- * In reality, using any non-zero expression or "true" will work to set a pin to
- * HIGH.
- */
-#define HIGH 1
-/**
- * Used for adi_digital_write() to specify a logic LOW state to output.
- *
- * In reality, using a zero expression or "false" will work to set a pin to LOW.
- */
-#define LOW 0
-
-/**
- * adi_pin_mode() state for a digital input.
- */
-#define INPUT 0x00
-/**
- * adi_pin_mode() state for a digital output.
- */
-#define OUTPUT 0x01
-/**
- * adi_pin_mode() state for an analog input.
- */
-#define INPUT_ANALOG 0x02
-
-/**
- * adi_pin_mode() state for an analog output.
- */
-#define OUTPUT_ANALOG 0x03
-
 /**
  * Calibrates the analog sensor on the specified port and returns the new
  * calibration value.
@@ -315,9 +274,7 @@ int32_t adi_port_set_value(uint8_t port, int32_t value);
  * (gyro rotation, accelerometer movement).
  * 
  * \note The ADI currently returns data at 10ms intervals, in constrast to the
- * calibrate function’s 1ms sample rate. This sample rate was kept for the sake
- * of being similar to PROS 2, and increasing the sample rate would not have a
- * tangible difference in the function’s performance.
+ * calibrate function’s 1ms sample rate. 
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -666,8 +623,7 @@ int32_t adi_motor_stop(uint8_t port);
 /**
  * Reference type for an initialized encoder.
  *
- * This merely contains the port number for the encoder, unlike its use as an
- * object to store encoder data in PROS 2.
+ * This merely contains the port number for the encoder.
  */
 typedef int32_t adi_encoder_t;
 
@@ -802,8 +758,7 @@ int32_t adi_encoder_shutdown(adi_encoder_t enc);
 /**
  * Reference type for an initialized ultrasonic.
  *
- * This merely contains the port number for the ultrasonic, unlike its use as an
- * object to store ultrasonic data in PROS 2.
+ * This merely contains the port number for the ultrasonic.
  */
 typedef int32_t adi_ultrasonic_t;
 
@@ -912,8 +867,7 @@ int32_t adi_ultrasonic_shutdown(adi_ultrasonic_t ult);
 /**
  * Reference type for an initialized gyroscope.
  *
- * This merely contains the port number for the gyroscope, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the gyroscope.
  */
 typedef int32_t adi_gyro_t;
 
@@ -1072,8 +1026,7 @@ int32_t adi_gyro_shutdown(adi_gyro_t gyro);
 /**
  * Reference type for an initialized potentiometer.
  *
- * This merely contains the port number for the potentiometer, unlike its use as an
- * object to store gyro data in PROS 2.
+ * This merely contains the port number for the potentiometer.
  */
 typedef int32_t adi_potentiometer_t;
 
@@ -1379,9 +1332,47 @@ int32_t adi_led_set_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_lengt
  */
 int32_t adi_led_clear_pixel(adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t pixel_position);
 
-///@}
+/**
+ * \name Ease of use macro definitions
+ * These functions provide ease of use definitions for the ADI functions. 
+ * @{
+ */
 
-///@}
+/**
+ * Used for adi_digital_write() to specify a logic HIGH state to output.
+ *
+ * In reality, using any non-zero expression or "true" will work to set a pin to
+ * HIGH.
+ */
+#define HIGH 1
+/**
+ * Used for adi_digital_write() to specify a logic LOW state to output.
+ *
+ * In reality, using a zero expression or "false" will work to set a pin to LOW.
+ */
+#define LOW 0
+
+/**
+ * adi_pin_mode() state for a digital input.
+ */
+#define INPUT 0x00
+/**
+ * adi_pin_mode() state for a digital output.
+ */
+#define OUTPUT 0x01
+/**
+ * adi_pin_mode() state for an analog input.
+ */
+#define INPUT_ANALOG 0x02
+
+/**
+ * adi_pin_mode() state for an analog output.
+ */
+#define OUTPUT_ANALOG 0x03
+
+/** @} Name: Ease of use macro definitions*/
+
+/** @} Add to group: c-adi*/
 
 #ifdef __cplusplus
 }  // namespace c

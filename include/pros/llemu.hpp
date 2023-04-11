@@ -1,3 +1,23 @@
+/**
+ * \file pros/llemu.hpp
+ * \ingroup cpp-llemu
+ * 
+ * Legacy LCD Emulator
+ *
+ * \details This file defines a high-level API for emulating the three-button, UART-based
+ * VEX LCD, containing a set of functions that facilitate the use of a software-
+ * emulated version of the classic VEX LCD module.
+ *
+ * This file should not be modified by users, since it gets replaced whenever
+ * a kernel upgrade occurs.
+ *
+ * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef _PROS_LLEMU_HPP_
 #define _PROS_LLEMU_HPP_
 
@@ -5,11 +25,28 @@
 #include <string>
 
 /******************************************************************************/
+/**                        LLEMU Conditional Include                         **/
+/**                                                                          **/
+/**   When the libvgl versions of llemu.hpp is present, common.mk will       **/
+/**   define a macro which lets this file know that liblvgl's llemu.hpp is   **/
+/**   present. If it is, we conditionally include it so that it gets         **/
+/**   included into api.h.                                                   **/
+/******************************************************************************/
+#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
+#include "liblvgl/llemu.hpp"
+#endif
+
+/******************************************************************************/
 /**                                 LLEMU Weak Stubs                         **/
 /**                                                                          **/
 /**   These functions allow main.cpp to be compiled without LVGL present     **/
 /******************************************************************************/
+
 namespace pros {
+    
+/**
+ * \ingroup cpp-llemu 
+ */
 namespace lcd {
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-function"
@@ -26,81 +63,29 @@ namespace lcd {
 
     using lcd_btn_cb_fn_t = void (*)(void);
 
-    /**
-     * Displays a string on the emulated three-button LCD screen.
-     *
-     * This function uses the following values of errno when an error state is
-     * reached:
-     * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
-     * EINVAL - The line number specified is not in the range [0-7]
-     *
-     * \param line
-     *        The line on which to display the text [0-7]
-     * \param text
-     *        The text to display
-     *
-     * \return True if the operation was successful, or false otherwise, setting
-     * errno values as specified above.
+    /* 
+     * These weak symbols allow the example main.cpp in to compile even when 
+     * the liblvgl template is missing from the project. 
+     * 
+     * For documentation on these functions, please see the doxygen comments for
+     * these functions in the libvgl llemu headers.
      */
+
     extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
-
-    /**
-     * Clears the contents of a line of the emulated three-button LCD screen.
-     *
-     * This function uses the following values of errno when an error state is
-     * reached:
-     * ENXIO  - The LCD has not been initialized. Call lcd_initialize() first.
-     * EINVAL - The line number specified is not in the range [0-7]
-     *
-     * \param line
-     *        The line to clear
-     *
-     * \return True if the operation was successful, or false otherwise, setting
-     * errno values as specified above.
-     */
     extern __attribute__((weak)) bool clear_line(std::int16_t line);
-
-    /**
-     * Creates an emulation of the three-button, UART-based VEX LCD on the display.
-     *
-     * \return True if the LCD was successfully initialized, or false if it has
-     * already been initialized.
-     */
     extern __attribute__((weak)) bool initialize(void);
-
-    /**
-     * Gets the button status from the emulated three-button LCD.
-     *
-     * The value returned is a 3-bit integer where 1 0 0 indicates the left button
-     * is pressed, 0 1 0 indicates the center button is pressed, and 0 0 1
-     * indicates the right button is pressed. 0 is returned if no buttons are
-     * currently being pressed.
-     *
-     * Note that this function is provided for legacy API compatibility purposes,
-     * with the caveat that the V5 touch screen does not actually support pressing
-     * multiple points on the screen at the same time.
-     *
-     * \return The buttons pressed as a bit mask
-     */
     extern __attribute__((weak)) std::uint8_t read_buttons(void);
-
-    /**
-     * Registers a callback function for the rightmost button.
-     *
-     * When the rightmost button on the emulated three-button LCD is pressed, the
-     * user-provided callback function will be invoked.
-     *
-     * \param cb
-     * A callback function of type lcd_btn_cb_fn_t(void (*cb)(void))
-     */
     extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) bool is_initialized(void);
 
     /**
-     * Checks whether the emulated three-button LCD has already been initialized.
-     *
-     * \return True if the LCD has been initialized or false if not.
+     * \addtogroup cpp-llemu
+     * @{ 
      */
-    extern __attribute__((weak)) bool is_initialized(void);
+    
+    /*
+     * Note: This template resides in this file since the 
+     */
 
     /**
      * Displays a formatted string on the emulated three-button LCD screen.
@@ -114,11 +99,21 @@ namespace lcd {
      *        The line on which to display the text [0-7]
      * \param fmt
      *        Format string
-     * \param ...
+     * \param ...args
      *        Optional list of arguments for the format string
      *
      * \return True if the operation was successful, or false otherwise, setting
      * errno values as specified above.
+     * 
+     * \b Example
+     * \code
+     * #include "pros/llemu.hpp"
+     * 
+     * void initialize() {
+     *   pros::lcd::initialize();
+     *   pros::lcd::print(0, "My formatted text: %d!", 2);
+     * }
+     * \endcode
      */
     template <typename... Params>
     bool print(std::int16_t line, const char* fmt, Params... args) {
@@ -136,19 +131,8 @@ namespace lcd {
     #ifndef LCD_BTN_RIGHT
         #define LCD_BTN_RIGHT 1
     #endif
+    /// @}
 } // namespace lcd
 } // namespace pros
-
-/******************************************************************************/
-/**                        LLEMU Conditional Include                         **/
-/**                                                                          **/
-/**   When the libvgl versions of llemu.hpp is present, common.mk will       **/
-/**   define a macro which lets this file know that liblvgl's llemu.hpp is   **/
-/**   present. If it is, we conditionally include it so that it gets         **/
-/**   included into api.h.                                                   **/
-/******************************************************************************/
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
-#include "liblvgl/llemu.hpp"
-#endif
 
 #endif // _PROS_LLEMU_HPP_

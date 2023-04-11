@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the V5 Generic Serial related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/serial.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -49,9 +46,30 @@ class Serial : public Device {
 	 *        The V5 port number from 1-21
 	 * \param baudrate
 	 *        The baudrate to run the port at
+	 * 
+	 * \b Example: 
+	 * \code
+	 * pros::Serial serial(1, 9600);
+	 * \endcode
 	 */
 	explicit Serial(std::uint8_t port, std::int32_t baudrate);
 
+	/**
+	 * Creates a Serial object for the given port without a set baudrate.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EINVAL - The given value is not within the range of V5 ports (1-21).
+	 * EACCES - Another resource is currently trying to access the port.
+	 *
+	 * \param port
+	 *        The V5 port number from 1-21
+	 *
+	 * \b Example:
+	 * \code
+	 * pros::Serial serial(1);
+	 * \endcode
+	 */
 	explicit Serial(std::uint8_t port);
 
 	/******************************************************************************/
@@ -73,6 +91,12 @@ class Serial : public Device {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example:
+	 * \code
+	 * pros::Serial serial(1);
+	 * serial.set_baudrate(9600);
+	 * \endcode
 	 */
 	virtual std::int32_t set_baudrate(std::int32_t baudrate) const;
 
@@ -95,6 +119,12 @@ class Serial : public Device {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * pros::Serial serial(1);
+	 * serial.flush();
+	 * \endcode
 	 */
 	virtual std::int32_t flush() const;
 
@@ -112,6 +142,16 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes avaliable to be read or PROS_ERR if the operation
 	 * failed, setting errno.
+	 * 
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	if(serial.get_read_avail() > 0) {
+	 *  	 std::uint8_t byte = serial.read_byte();
+	 * 	}
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_read_avail() const;
 
@@ -128,6 +168,17 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes free or PROS_ERR if the operation failed,
 	 * setting errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * pros::Serial serial(1);
+	 * 	if(serial.get_write_free() > 0) {
+	 * 		serial.write_byte(0x01);
+	 *  	pros::delay(10);
+	 * 	}
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t get_write_free() const;
 
@@ -141,6 +192,16 @@ class Serial : public Device {
 	 *
 	 * \return The next byte avaliable to be read, -1 if none are available, or
 	 * PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	if(serial.peek_byte() == 0x01) {
+	 * 		serial.read_byte();
+	 * 	}
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t peek_byte() const;
 
@@ -154,6 +215,16 @@ class Serial : public Device {
 	 *
 	 * \return The next byte avaliable to be read, -1 if none are available, or
 	 * PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	if(serial.read_byte() == 0x01) {
+	 * 		// Do something
+	 * 	}
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t read_byte() const;
 
@@ -176,6 +247,15 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes read or PROS_ERR if the operation failed, setting
 	 * errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	std::uint8_t buffer[10];
+	 * 	serial.read(buffer, 10);
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t read(std::uint8_t* buffer, std::int32_t length) const;
 
@@ -196,6 +276,14 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes written or PROS_ERR if the operation failed,
 	 * setting errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	serial.write_byte(0x01);
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t write_byte(std::uint8_t buffer) const;
 
@@ -219,6 +307,15 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes written or PROS_ERR if the operation failed,
 	 * setting errno.
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Serial serial(1);
+	 * 	std::uint8_t buffer[10];
+	 * 	serial.write(buffer, 10);
+	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
   

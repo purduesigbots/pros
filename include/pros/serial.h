@@ -4,9 +4,6 @@
  *
  * Contains prototypes for the V5 Generic Serial related functions.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/serial.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -60,6 +57,14 @@ namespace c {
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example: 
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * }
+ * \endcode
  */
 int32_t serial_enable(uint8_t port);
 
@@ -78,6 +83,18 @@ int32_t serial_enable(uint8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		serial_write(1, "Hello World!", 12);
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_set_baudrate(uint8_t port, int32_t baudrate);
 
@@ -103,6 +120,19 @@ int32_t serial_set_baudrate(uint8_t port, int32_t baudrate);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		serial_flush(1);
+ * 		serial_write(1, "Hello World!", 12);
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_flush(uint8_t port);
 
@@ -123,6 +153,23 @@ int32_t serial_flush(uint8_t port);
  *
  * \return The number of bytes avaliable to be read or PROS_ERR if the operation
  * failed, setting errno.
+ *
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_get_read_avail(1) >= 12) {
+ * 			char buffer[12];
+ * 			serial_read(1, buffer, 12);
+ * 			printf("%s", buffer);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
+
  */
 int32_t serial_get_read_avail(uint8_t port);
 
@@ -142,6 +189,20 @@ int32_t serial_get_read_avail(uint8_t port);
  *
  * \return The number of bytes free or PROS_ERR if the operation failed,
  * setting errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_get_write_free(1) >= 12) {
+ * 			serial_write(1, "Hello World!", 12);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_get_write_free(uint8_t port);
 
@@ -158,6 +219,22 @@ int32_t serial_get_write_free(uint8_t port);
  *
  * \return The next byte avaliable to be read, -1 if none are available, or
  * PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_peek_byte(1) == 'H') {
+ * 			char buffer[12];
+ * 			serial_read(1, buffer, 12);
+ * 			printf("%s", buffer);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_peek_byte(uint8_t port);
 
@@ -174,6 +251,22 @@ int32_t serial_peek_byte(uint8_t port);
  *
  * \return The next byte avaliable to be read, -1 if none are available, or
  * PROS_ERR if the operation failed, setting errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_read_byte(1) == 'H') {
+ * 			char buffer[12];
+ * 			serial_read(1, buffer, 12);
+ * 			printf("%s", buffer);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_read_byte(uint8_t port);
 
@@ -198,6 +291,22 @@ int32_t serial_read_byte(uint8_t port);
  *
  * \return The number of bytes read or PROS_ERR if the operation failed, setting
  * errno.
+ * 
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_get_read_avail(1) >= 12) {
+ * 			char buffer[12];
+ * 			serial_read(1, buffer, 12);
+ * 			printf("%s", buffer);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length);
 
@@ -220,6 +329,32 @@ int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length);
  *
  * \return The number of bytes written or PROS_ERR if the operation failed,
  * setting errno.
+ *
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_get_write_free(1) >= 12) {
+ * 			serial_write_byte(1, 'H');
+ * 			serial_write_byte(1, 'e');
+ * 			serial_write_byte(1, 'l');
+ * 			serial_write_byte(1, 'l');
+ * 			serial_write_byte(1, 'o');
+ * 			serial_write_byte(1, ' ');
+ * 			serial_write_byte(1, 'W');
+ * 			serial_write_byte(1, 'o');
+ * 			serial_write_byte(1, 'r');
+ * 			serial_write_byte(1, 'l');
+ * 			serial_write_byte(1, 'd');
+ * 			serial_write_byte(1, '!');
+ * 		    serial_write_byte(1, '\n');
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_write_byte(uint8_t port, uint8_t buffer);
 
@@ -245,6 +380,20 @@ int32_t serial_write_byte(uint8_t port, uint8_t buffer);
  *
  * \return The number of bytes written or PROS_ERR if the operation failed,
  * setting errno.
+ *
+ * \b Example:
+ * \code{.c}
+ * void opcontrol() {
+ * 	serial_enable(1);
+ * 	serial_set_baudrate(1, 9600);
+ * 	while (true) {
+ * 		if (serial_get_write_free(1) >= 12) {
+ * 			serial_write(1, "Hello World!\n", 12);
+ * 		}
+ * 		delay(100);
+ * 	}
+ * }
+ * \endcode
  */
 int32_t serial_write(uint8_t port, uint8_t* buffer, int32_t length);
 

@@ -43,9 +43,6 @@ These should be placed at the very start of a file.
  * in the file contains and a general description of what they do (no specifics,
  * but they should all have something in common anyway).
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/filename.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
