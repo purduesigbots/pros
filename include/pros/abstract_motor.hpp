@@ -31,7 +31,7 @@ namespace pros {
 inline namespace v5 {
 
 /**
- * \enum motor_brake
+ * \enum MotorBrake
  * Indicates the current 'brake mode' of a motor.
  */
 enum class MotorBrake {
