@@ -51,7 +51,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 * 
-	 * \param gearset =  pros::v5::MotorGears::green
+	 * \param gearset = pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
 	 * 		  set to pros::v5::MotorGears::green if not specifed. 
 	 * 
@@ -59,7 +59,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  Optional parameter for the encoder units of the motor
 	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
 	 * 
-	 *  \b Example
+	 * \b Example
  	 * \code
  	 * void opcontrol() {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
@@ -80,7 +80,7 @@ class Motor : public AbstractMotor, public Device {
 	///@{
 
 	/**
-	 * Sets the voltage for the motor from -128 to 127.
+	 * Sets the voltage for the motor from -127 to 127.
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
@@ -1385,7 +1385,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
-	 * \return One of Motor_Brake, according to what was set for the
+	 * \return One of MotorBrake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1406,7 +1406,7 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return One of Motor_Brake, according to what was set for the
+	 * \return One of MotorBrake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1497,7 +1497,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
-	 * \return One of Motor_Units according to what is set for the
+	 * \return One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
@@ -1517,7 +1517,7 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return A vector containing One of Motor_Units according to what is set for the
+	 * \return A vector containing One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
@@ -1548,8 +1548,8 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  The zero-indexed index of the motor to get the target position of.
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
-	 * \return One of Motor_Gears according to what is set for the motor,
-	 * or pros::Motor_Gears::invalid if the operation failed.
+	 * \return One of MotorGears according to what is set for the motor,
+	 * or pros::MotorGears::invalid if the operation failed.
 	 *
 	 * \b Example
 	 * \code
@@ -1568,8 +1568,8 @@ class Motor : public AbstractMotor, public Device {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
-	 * \return A vector containing one of Motor_Gears according to what is set for the motor,
-	 * or pros::Motor_Gears::invalid if the operation failed.
+	 * \return A vector containing one of MotorGears according to what is set for the motor,
+	 * or pros::MotorGears::invalid if the operation failed.
 	 *
 	 * \b Example
 	 * \code
@@ -1690,7 +1690,7 @@ class Motor : public AbstractMotor, public Device {
 	std::vector<std::int32_t> is_reversed_all(void) const;
 
 	/**
-	 * Sets one of Motor_Brake to the motor.
+	 * Sets one of MotorBrake to the motor.
 	 * \note This is one of many Motor functions that takes in an optional index parameter. 
 	 * 		 This parameter can be ignored by most users but exists to give a shared base class
 	 * 		 for motors and motor groups
@@ -1704,7 +1704,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
 	 * \param index Optional parameter. 
 	 * 		  The zero-indexed index of the motor to get the target position of.
@@ -1724,7 +1724,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t set_brake_mode(const MotorBrake mode, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Brake to the motor.
+	 * Sets one of MotorBrake to the motor.
 	 * \note This is one of many Motor functions that takes in an optional index parameter. 
 	 * 		 This parameter can be ignored by most users but exists to give a shared base class
 	 * 		 for motors and motor groups
@@ -1738,7 +1738,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
 	 * \param index Optional parameter. 
 	 * 		  The zero-indexed index of the motor to get the target position of.
@@ -1759,14 +1759,14 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
 	
 	/**
-	 * Sets one of Motor_Brake to the motor. 
+	 * Sets one of MotorBrake to the motor. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -1782,14 +1782,14 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t set_brake_mode_all(const MotorBrake mode) const;
 	/**
-	 * Sets one of Motor_Brake to the motor. 
+	 * Sets one of MotorBrake to the motor. 
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -1818,7 +1818,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 *  * \param limit
+	 * \param limit
 	 *        The new current limit in mA
 	 * 
 	 * \param index Optional parameter. 
@@ -1874,7 +1874,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t set_current_limit_all(const std::int32_t limit) const;
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of MotorUnits for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1898,7 +1898,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t set_encoder_units(const MotorUnits units, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of MotorUnits for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * \note This is one of many Motor functions that takes in an optional index parameter. 
@@ -1933,7 +1933,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of MotorUnits for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * \note This is one of many Motor functions that takes in an optional index parameter. 
@@ -1947,7 +1947,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * * \param units
+	 * \param units
 	 *        The new motor encoder units
 	 * 
 	 * \param index Optional parameter. 
@@ -1969,7 +1969,7 @@ class Motor : public AbstractMotor, public Device {
 	std::int32_t set_encoder_units_all(const MotorUnits units) const;
 	
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of MotorUnits for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -2385,9 +2385,9 @@ class Motor : public AbstractMotor, public Device {
 	std::int8_t size(void) const;
 
 	/**
-	 * gets the port number of the motor
+	 * Gets the port number of the motor.
 	 *
-	 * \return A vector containing the signed port of the motor. (negaitve if the motor is reversed) 
+	 * \return A vector containing the signed port of the motor. (negative if the motor is reversed) 
 	 * 
 	*/
 	std::int8_t get_port(const std::uint8_t index = 0) const;
