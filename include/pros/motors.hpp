@@ -51,7 +51,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 * 
-	 * \param gearset =  pros::v5::MotorGears::green
+	 * \param gearset = pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
 	 * 		  set to pros::v5::MotorGears::green if not specifed. 
 	 * 
@@ -59,7 +59,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  Optional parameter for the encoder units of the motor
 	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
 	 * 
-	 *  \b Example
+	 * \b Example
  	 * \code
  	 * void opcontrol() {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
@@ -80,7 +80,7 @@ class Motor : public AbstractMotor, public Device {
 	///@{
 
 	/**
-	 * Sets the voltage for the motor from -128 to 127.
+	 * Sets the voltage for the motor from -127 to 127.
 	 *
 	 * This is designed to map easily to the input from the controller's analog
 	 * stick for simple opcontrol use. The actual behavior of the motor is
@@ -1818,7 +1818,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 *  * \param limit
+	 * \param limit
 	 *        The new current limit in mA
 	 * 
 	 * \param index Optional parameter. 
@@ -1947,7 +1947,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * EOVERFLOW - The index is non 0
 	 * 
-	 * * \param units
+	 * \param units
 	 *        The new motor encoder units
 	 * 
 	 * \param index Optional parameter. 
@@ -2385,9 +2385,9 @@ class Motor : public AbstractMotor, public Device {
 	std::int8_t size(void) const;
 
 	/**
-	 * gets the port number of the motor
+	 * Gets the port number of the motor.
 	 *
-	 * \return A vector containing the signed port of the motor. (negaitve if the motor is reversed) 
+	 * \return A vector containing the signed port of the motor. (negative if the motor is reversed) 
 	 * 
 	*/
 	std::int8_t get_port(const std::uint8_t index = 0) const;
