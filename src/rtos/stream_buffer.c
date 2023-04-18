@@ -537,6 +537,7 @@ TimeOut_t xTimeOut;
 					break;
 				}
 			}
+			taskEXIT_CRITICAL();
 
 			traceBLOCKING_ON_STREAM_BUFFER_SEND( xStreamBuffer );
 			( void ) task_notify_wait( ( uint32_t ) 0, UINT32_MAX, NULL, xTicksToWait );
