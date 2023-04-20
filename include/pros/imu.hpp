@@ -62,6 +62,14 @@ class Imu : public Device {
 	
 
 	public:
+	/**
+	 * Creates an IMU Sensor object from the given Device object.
+	 * 
+	 * \param device
+	 *        The device object to base the new object on.
+	*/
+	explicit Imu(Device device) : Device(device.get_port(), DeviceType::imu) {};
+
 	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
 	/**

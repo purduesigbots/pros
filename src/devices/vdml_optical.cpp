@@ -17,6 +17,8 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
+Optical::Optical(pros::v5::Device device) : Device(device.get_port(), DeviceType::optical) {};
+
 Optical::Optical(std::uint8_t port) : Device(port, DeviceType::optical) {}
 
 double Optical::get_hue(){

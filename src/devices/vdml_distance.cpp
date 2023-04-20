@@ -16,6 +16,8 @@
 namespace pros {
 inline namespace v5 {
 
+Distance::Distance(pros::v5::Device device) : Device(device.get_port(), DeviceType::distance) {};
+
 Distance::Distance(const std::uint8_t port) : Device(port, DeviceType::distance) {}
 
 std::int32_t Distance::get() {

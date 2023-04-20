@@ -40,6 +40,19 @@ class Vision : public Device {
 	 */
 	public:
 	/**
+	 * Creates a Vision Sensor object from the given Device object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a Distance Sensor
+	 *
+	 * \param device
+	 *        The device object to base the new object on.
+	*/
+	explicit Vision(Device device);
+
+	/**
 	 * Create a Vision Sensor object on the given port.
 	 *
 	 * This function uses the following values of errno when an error state is

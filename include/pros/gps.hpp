@@ -44,6 +44,14 @@ class Gps : public Device {
 	 */
 
 	public:
+	/**
+	 * Creates a Gps Sensor object from the given Device object.
+	 *
+	 * \param device
+	 *        The device object to base the new object on.
+	*/
+	explicit Gps(Device device);
+
 	explicit Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
 
 	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port, DeviceType::gps){

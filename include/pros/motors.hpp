@@ -36,6 +36,19 @@ inline namespace v5 {
 
 class Motor : public AbstractMotor, public Device {
 	public:
+	/**
+	 * Creates a Distance Sensor object from the given Device object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a Distance Sensor
+	 *
+	 * \param device
+	 *        The device object to base the new object on.
+	*/
+	explicit Motor(Device device);
+
 	explicit Motor(const std::int8_t port, const pros::v5::Motor_Gears gearset = pros::v5::Motor_Gears::green,
 	               const pros::v5::Motor_Units encoder_units = pros::v5::Motor_Units::degrees);
 

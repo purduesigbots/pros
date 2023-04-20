@@ -50,6 +50,32 @@ class Link : public Device {
 	 * ENODEV - The port cannot be configured as a radio.
 	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
 	 *
+	 * \param device
+	 *      The device object to base the new object on.
+	 * \param link_id
+	 *      Unique link ID in the form of a string, needs to be different from other links in
+	 *      the area.
+	 * \param type
+	 *      Indicates whether the radio link on the brain is a transmitter or reciever,
+	 *      with the transmitter having double the transmitting bandwidth as the recieving
+	 *      end (1040 bytes/s vs 520 bytes/s).
+	 * \param ov
+	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
+	 *
+	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
+	*/
+	explicit Link(Device device, const std::string link_id, link_type_e_t type, bool ov = false);
+
+	/**
+	 * Initializes a link on a radio port, with an indicated type. There might be a
+	 * 1 to 2 second delay from when this function is called to when the link is initializes.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a radio.
+	 * ENXIO - The sensor is still calibrating, or no link is connected via the radio.
+	 *
 	 * \param port
 	 *      The port of the radio for the intended link.
 	 * \param link_id

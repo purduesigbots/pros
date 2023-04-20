@@ -39,6 +39,19 @@ class Rotation : public Device {
 	 */
 
 	public:
+	/**
+	 * Creates a Rotation Sensor object from the given Device object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a Distance Sensor
+	 *
+	 * \param device
+	 *        The device object to base the new object on.
+	*/
+	explicit Rotation(Device device);
+
 	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
 
 	explicit Rotation(const std::uint8_t port, const bool reverse_flag);

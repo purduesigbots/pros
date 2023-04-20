@@ -16,6 +16,8 @@
 namespace pros {
 inline namespace v5 {
 
+Gps::Gps(pros::v5::Device device) : Device(device.get_port(), DeviceType::gps) {};
+
 std::int32_t Gps::initialize_full(double xInitial, double yInitial, double headingInitial, double xOffset,
                                   double yOffset) const {
 	return pros::c::gps_initialize_full(_port, xInitial, yInitial, headingInitial, xOffset, yOffset);
