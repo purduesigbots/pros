@@ -11,12 +11,30 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License v. 2.0. If a copy of the MPL was not distributed with this
  * file You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * \defgroup cpp-colors C++ Color API
  */
 #ifndef _PROS_COLORS_HPP_
 #define _PROS_COLORS_HPP_
 
 
 namespace pros{
+/**
+ * \ingroup cpp-colors
+ */
+
+/**
+ * \addtogroup cpp-colors
+ *  @{
+ */
+
+/**
+ * \enum Color
+ * @brief
+ * Enum class of possible colors
+ *
+ * Contains common colors, all members are self descriptive. 
+ */
 enum class Color {
   alice_blue = 0x00F0F8FF,
   antique_white = 0x00FAEBD7,
@@ -166,5 +184,7 @@ enum class Color {
   yellow_green = 0x009ACD32,
 };
 } // namespace pros
+
+  ///@}
 
 #endif //_PROS_COLORS_HPP_

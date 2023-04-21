@@ -4,9 +4,6 @@
  *
  * Contains prototypes for functions related to the VEX Rotation Sensor.
  *
- * Visit https://pros.cs.purdue.edu/v5/tutorials/topical/rotation.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
@@ -187,7 +184,7 @@ int32_t rotation_reset_position(uint8_t port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf("Position: %d Ticks \n", rotation_get_position(ROTATION_PORT));
+ *     printf("Position: %d centidegrees \n", rotation_get_position(ROTATION_PORT));
  *     delay(20);
  *   }
  * }
@@ -214,7 +211,7 @@ int32_t rotation_get_position(uint8_t port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf("Velocity: %d Ticks \n", rotation_get_velocity(ROTATION_PORT));
+ *     printf("Velocity: %d centidegrees per second \n", rotation_get_velocity(ROTATION_PORT));
  *     delay(20);
  *   }
  * }
@@ -241,7 +238,7 @@ int32_t rotation_get_velocity(uint8_t port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf("Angle: %d Ticks \n", rotation_get_angle(ROTATION_PORT));
+ *     printf("Angle: %d centidegrees \n", rotation_get_angle(ROTATION_PORT));
  *     delay(20);
  *   }
  * }
@@ -274,7 +271,7 @@ int32_t rotation_get_angle(uint8_t port);
  *   while (true) {
  * 
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
- *       rotation_set_reversed(ROTATION_PORT);
+ *       rotation_set_reversed(ROTATION_PORT, true); // Reverses the Rotation Sensor on ROTATION_PORT
  *     }
  *     delay(20);
  *   }
@@ -333,7 +330,19 @@ int32_t rotation_reverse(uint8_t port);
  * 
  * \b Example
  * \code
+ * #define ROTATION_PORT 1
  * 
+ * void opcontrol() {
+ *   Rotation rotation_sensor(ROTATION_PORT);
+ *   bool reverse_flag = true;
+ *   while (true) {
+ * 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *       rotation_init_reverse(ROTATION_PORT, reverse_flag);
+ *     }
+ *     delay(20);
+ *   }
+ * }
  * \endcode
  */
 int32_t rotation_init_reverse(uint8_t port, bool reverse_flag);

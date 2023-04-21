@@ -3,9 +3,6 @@
  *
  * \brief Contains source code for functions related to the robot to robot communications.
  *
- * Visit https://pros.cs.purdue.edu/v5/api/c/link.html to learn
- * more.
- *
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  * 
