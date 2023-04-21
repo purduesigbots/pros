@@ -47,7 +47,7 @@ class Gps : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Gps(Device device);
+	explicit Gps(Device device) : Device(device.get_port(), DeviceType::gps) {};
 
 	/**
 	 * Creates a GPS object for the given port.
