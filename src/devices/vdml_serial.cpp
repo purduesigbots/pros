@@ -17,7 +17,7 @@
 namespace pros {
 using namespace pros::c;
 
-Serial::Serial(pros::v5::Device device) : Device(device.get_port(), DeviceType::serial) {};
+Serial::Serial(pros::v5::Device device) : Device(device.get_port(), DeviceType::serial) {}
 
 Serial::Serial(std::uint8_t port, std::int32_t baudrate) : Device(port, DeviceType::serial) {
 	serial_enable(port);

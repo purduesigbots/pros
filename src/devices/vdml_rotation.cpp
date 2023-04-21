@@ -16,7 +16,7 @@
 namespace pros {
 inline namespace v5 {
 
-Rotation::Rotation(pros::v5::Device device) : Device(device.get_port(), DeviceType::rotation) {};
+Rotation::Rotation(pros::v5::Device device) : Device(device.get_port(), DeviceType::rotation) {}
     
 Rotation::Rotation(const std::uint8_t port, const bool reverse_flag) : Device(port, DeviceType::rotation) {
 	pros::c::rotation_set_reversed(port, reverse_flag);

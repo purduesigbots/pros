@@ -38,12 +38,12 @@ class Serial : public Device {
 	 */
 	public:
 	/**
-	 * Creates a Distance Sensor object from the given Device object.
+	 * Creates a Serial Sensor object from the given Device object.
 	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a Distance Sensor
+	 * EINVAL - The given value is not within the range of V5 ports (1-21).
+	 * EACCES - Another resource is currently trying to access the port.
 	 *
 	 * \param device
 	 *        The device object to base the new object on.
