@@ -67,7 +67,7 @@ class Imu : public Device {
 	*/
 	explicit Imu(Device device) : Device(device.get_port(), DeviceType::imu) {};
 
-	 * Creates an Imu object for the given port
+	/** Creates an Imu object for the given port
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

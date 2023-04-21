@@ -49,7 +49,7 @@ class Rotation : public Device {
 	*/
 	explicit Rotation(Device device);
   
-	 * Constructs a new Rotation Sensor object
+	/** Constructs a new Rotation Sensor object
 	 * 
 	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
  	 * ENODEV - The port cannot be configured as a Rotation Sensor
