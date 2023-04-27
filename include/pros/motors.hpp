@@ -75,6 +75,33 @@ class Motor : public AbstractMotor, public Device {
 	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
 
 	
+
+	/**
+	 * Constructs a new Motor object.
+	 * 
+	 * This function uses the following values of errno when an error state is
+ 	 * reached:
+ 	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * \param The abstract motor to create into a motor
+ 	 *        Creates a new motor on the port of abstract_motor.get_port(), maintaining it's reversal status.
+	 * 
+	 * 
+	 *  \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
+	 * 	AbstractMotor abs_motor = first_motor;
+	 * 	Motor new_motor = (Motor) abs_motor;
+ 	 *  
+ 	 * }
+ 	 * \endcode
+	 * 
+	 */
+	Motor(AbstractMotor& abstract_motor);
+
+
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
