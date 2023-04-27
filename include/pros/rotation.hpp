@@ -47,7 +47,7 @@ class Rotation : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Rotation(Device device);
+	explicit Rotation(Device& device);
   
 	/** Constructs a new Rotation Sensor object
 	 * 

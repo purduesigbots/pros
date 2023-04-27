@@ -21,7 +21,7 @@ Link::Link(const std::uint8_t port, const std::string link_id, link_type_e_t typ
 	(ov) ? pros::c::link_init_override(_port, link_id.c_str(), type) : pros::c::link_init(_port, link_id.c_str(), type);
 }
 
-Link::Link(pros::v5::Device device, const std::string link_id, link_type_e_t type, bool ov) : Link::Link(device.get_port(), link_id, type, ov) {}
+Link::Link(pros::v5::Device& device, const std::string link_id, link_type_e_t type, bool ov) : Link::Link(device.get_port(), link_id, type, ov) {}
 
 bool Link::connected() {
 	return pros::c::link_connected(_port);

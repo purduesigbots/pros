@@ -60,7 +60,7 @@ class Link : public Device {
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	*/
-	explicit Link(Device device, const std::string link_id, link_type_e_t type, bool ov = false);
+	explicit Link(Device& device, const std::string link_id, link_type_e_t type, bool ov = false);
 
 	/**
 	 * Initializes a link on a radio port, with an indicated type. There might be a

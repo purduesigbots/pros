@@ -47,7 +47,7 @@ class Vision : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Vision(Device device);
+	explicit Vision(Device& device);
 
 	/**
 	 * Create a Vision Sensor object on the given port.

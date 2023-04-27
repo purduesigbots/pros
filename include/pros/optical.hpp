@@ -49,7 +49,7 @@ class Optical : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Optical(Device device);
+	explicit Optical(Device& device);
 
 	/**
 	 * Creates an Optical Sensor object for the given port.

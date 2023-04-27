@@ -65,7 +65,7 @@ class Imu : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Imu(Device device) : Device(device.get_port(), DeviceType::imu) {};
+	explicit Imu(Device& device) : Device(device.get_port(), DeviceType::imu) {};
 
 	/** Creates an Imu object for the given port
 	 *

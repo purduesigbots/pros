@@ -44,7 +44,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	 */
-	explicit Motor(Device device);
+	explicit Motor(Device& device);
 
 	/**
 	 * Constructs a new Motor object.

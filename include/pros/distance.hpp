@@ -47,7 +47,7 @@ class Distance : public Device {
 	 * \param device
 	 *        The device object to base the new object on.
 	*/
-	explicit Distance(Device device);
+	explicit Distance(Device& device);
 
 	/**
 	 * Creates a Distance Sensor object for the given port.

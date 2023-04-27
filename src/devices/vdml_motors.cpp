@@ -18,7 +18,8 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Motor::Motor(pros::v5::Device device) : Device(device.get_port(), DeviceType::motor) {}
+Motor::Motor(pros::v5::Device& device) : Motor(device.get_port()) {}
+
 
 
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
