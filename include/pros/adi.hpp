@@ -1753,7 +1753,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
+	explicit Pneumatics(std::uint8_t adi_port, bool start_extended);
 
 	/**
 	 * Creates a Pneumatics object for the given port.
@@ -1786,7 +1786,7 @@ class Pneumatics : public DigitalOut {
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
+	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended);
 
 	/* 
 	* Extends the piston, if not already extended.
