@@ -53,7 +53,7 @@ class Link : public Device {
 	 *      the area.
 	 * \param type
 	 *      Indicates whether the radio link on the brain is a transmitter or receiver,
-	 *      with the transmitter having double the transmitting bandwidth as the recieving
+	 *      with the transmitter having double the transmitting bandwidth as the receiving
 	 *      end (1040 bytes/s vs 520 bytes/s).
 	 * \param ov
 	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio

@@ -87,7 +87,7 @@ namespace c {
  *      the area.
  * \param type
  *      Indicates whether the radio link on the brain is a transmitter or receiver,
- *      with the transmitter having double the transmitting bandwidth as the recieving
+ *      with the transmitter having double the transmitting bandwidth as the receiving
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
@@ -123,7 +123,7 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
  *      the area.
  * \param type
  *      Indicates whether the radio link on the brain is a transmitter or receiver,
- *      with the transmitter having double the transmitting bandwidth as the recieving
+ *      with the transmitter having double the transmitting bandwidth as the receiving
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
