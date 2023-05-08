@@ -559,7 +559,9 @@ TimeOut_t xTimeOut;
 		mtCOVERAGE_TEST_MARKER();
 	}
 
+	taskENTER_CRITICAL();
 	xReturn = prvWriteMessageToBuffer( pxStreamBuffer, pvTxData, xDataLengthBytes, xSpace, xRequiredSpace );
+	taskEXIT_CRITICAL();
 
 	if( xReturn > ( size_t ) 0 )
 	{
@@ -666,7 +668,9 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
 		into the buffer.  Start by writing the length of the data, the data
 		itself will be written later in this function. */
 		xShouldWrite = pdTRUE;
+		taskENTER_CRITICAL();
 		( void ) prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) &( xDataLengthBytes ), sbBYTES_TO_STORE_MESSAGE_LENGTH );
+		taskEXIT_CRITICAL();
 	}
 	else
 	{
@@ -677,7 +681,9 @@ static size_t prvWriteMessageToBuffer( StreamBuffer_t * const pxStreamBuffer,
 	if( xShouldWrite != pdFALSE )
 	{
 		/* Writes the data itself. */
+		taskENTER_CRITICAL();
 		xReturn = prvWriteBytesToBuffer( pxStreamBuffer, ( const uint8_t * ) pvTxData, xDataLengthBytes ); /*lint !e9079 Storage buffer is implemented as uint8_t for ease of sizing, alighment and access. */
+		taskEXIT_CRITICAL();
 	}
 	else
 	{
@@ -864,7 +870,9 @@ size_t xOriginalTail, xReceivedLength, xNextMessageLength;
 		returned to its prior state if the length of the message is too
 		large for the provided buffer. */
 		xOriginalTail = pxStreamBuffer->xTail;
+		taskENTER_CRITICAL();
 		( void ) prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) &xNextMessageLength, xBytesToStoreMessageLength, xBytesAvailable );
+		taskEXIT_CRITICAL();
 
 		/* Reduce the number of bytes available by the number of bytes just
 		read out. */
@@ -893,7 +901,9 @@ size_t xOriginalTail, xReceivedLength, xNextMessageLength;
 	}
 
 	/* Read the actual data. */
+	taskENTER_CRITICAL();
 	xReceivedLength = prvReadBytesFromBuffer( pxStreamBuffer, ( uint8_t * ) pvRxData, xNextMessageLength, xBytesAvailable ); /*lint !e9079 Data storage area is implemented as uint8_t array for ease of sizing, indexing and alignment. */
+	taskEXIT_CRITICAL();
 
 	return xReceivedLength;
 }
