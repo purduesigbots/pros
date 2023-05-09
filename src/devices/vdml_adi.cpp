@@ -269,24 +269,36 @@ std::int32_t Led::clear_pixel(uint32_t pixel_position) {
 	return ext_adi_led_clear_pixel((adi_led_t)merge_adi_ports(_smart_port, _adi_port), (uint32_t*)_buffer.data(), _buffer.size(), pixel_position);
 }
 
-Pneumatics::Pneumatics(std::uint8_t adi_port, bool start_extended)
-	: DigitalOut(adi_port), state(start_extended) {
-	set_value(start_extended);
+Pneumatics::Pneumatics(std::uint8_t adi_port, bool start_extended, bool extended_is_low)
+	: DigitalOut(adi_port), state(start_extended ^ extended_is_low), extended_is_low(extended_is_low) {
+	set_value(state);
 }
 
-Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended) 
-	: DigitalOut(port_pair), state(start_extended) {
-	set_value(start_extended);
+Pneumatics::Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool extended_is_low) 
+	: DigitalOut(port_pair), state(start_extended ^ extended_is_low), extended_is_low(extended_is_low) {
+	set_value(state);
 }
 
 std::int32_t Pneumatics::extend() {
-	state = true; 
-	return set_value(state);
+	bool old_state = state;
+
+	state = !extended_is_low;
+	if(set_value(state) == PROS_ERR) {
+		return PROS_ERR;
+	}
+
+	return state != old_state;
 }
 
 std::int32_t Pneumatics::retract() {
-	state = false;
-	return set_value(state);
+	bool old_state = state;
+
+	state = extended_is_low;
+	if(set_value(state) == PROS_ERR) {
+		return PROS_ERR;
+	}
+
+	return state != old_state;
 }
 
 std::int32_t Pneumatics::toggle() {
@@ -294,8 +306,8 @@ std::int32_t Pneumatics::toggle() {
 	return set_value(state);
 }
 
-bool Pneumatics::get_state() const {
-	return state;
+bool Pneumatics::is_extended() const {
+	return state ^ extended_is_low;
 }
 
 std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
