@@ -113,6 +113,35 @@ class MotorGroup : public virtual AbstractMotor {
 	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
 
+	 /**
+	 * Constructs a new MotorGroup object from an abstract motor.
+	 * 
+	 * This function uses the following values of errno when an error state is
+ 	 * reached:
+ 	 * 
+	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 * \param abstract_motor
+	 * 		  THe abstract motor to turn into a motor group
+	 * 		  Uses abstract_motor.get_port_all() to get the vector of ports
+	 * 
+	 * 
+	 *  \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 with 
+	 *  with both motors using the green gearset and degrees as the encoder units
+	 * 	AbstractMotor abs_mtr_group = first_mg;
+	 * 	MotorGroup new_mg = (MotorGroup) abs_mtr_group;
+ 	 * }
+	 * \endcode
+	 */
+	
+	MotorGroup(AbstractMotor& abstract_motor);
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
