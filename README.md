@@ -15,7 +15,7 @@ You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and 
 
 The PROS team develops a plugin for Atom to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
 
-### What'st hte difference between PROS 4 and 3?
+### What's the difference between PROS 4 and 3?
 PROS 4 is a Kernel upgrade from PROS 4 to both decrease the size of the base Kernel, and provide utilities such as the base device class and liblvgl that makes it easier for both users and library writers to customize their PROS projects. This version also moves all documentation to a doxygen site rather than a Sphinx documentation page. 
 
 ### What's the difference between PROS 2 and PROS 3?

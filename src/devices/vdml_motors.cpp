@@ -22,6 +22,11 @@ Motor::Motor(pros::v5::Device& device) : Motor(device.get_port()) {}
 
 
 
+Motor::Motor(AbstractMotor& abstract_motor) : Motor(abstract_motor.get_port()) {
+	
+}
+
+
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
     : Device(port, DeviceType::motor), _port(port) {
 	set_gearing(gearset);
