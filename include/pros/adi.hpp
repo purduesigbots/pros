@@ -1953,10 +1953,11 @@ class Pneumatics : public DigitalOut {
 	bool is_extended() const; 
 
 private: 
+	bool state; 			// Holds the physical state of the ADI port
 	bool extended_is_low;	// A flag that sets whether extended corresponds to
 							// a low signal
 
-	bool state; 			// Holds the physical state of the ADI port
+	
 };
 ///@}
 
