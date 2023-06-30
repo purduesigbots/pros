@@ -73,6 +73,11 @@ static struct timespec user_time_spec;
 static int64_t set_microseconds = 0;
 
 int clock_settime(clockid_t clock_id, const struct timespec *tp) {
+	if(tp == NULL) {
+		errno = EINVAL;
+		return -1;
+	}
+
 	int retval = -1;
 
 	switch(clock_id) {
@@ -89,6 +94,11 @@ int clock_settime(clockid_t clock_id, const struct timespec *tp) {
 }
 
 int clock_gettime(clockid_t clock_id, struct timespec* tp) {
+	if(tp == NULL) {
+		errno = EINVAL;
+		return -1;
+	}
+
 	struct timeval tv;
 	int retval = -1;
 
