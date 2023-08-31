@@ -53,7 +53,7 @@ class Rotation : public Device {
  	 * }
  	 * \endcode
 	*/
-	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
+	explicit Rotation(const std::int8_t port) : Device(port, DeviceType::rotation) {};
 
 	/**
 	 * Constructs a new Rotation Sensor object
@@ -73,7 +73,7 @@ class Rotation : public Device {
 	 * }
  	 * \endcode
 	*/
-	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
+	explicit Rotation(const std::int8_t port, const bool reverse_flag);
 
 	/**
 	 * Reset the Rotation Sensor
