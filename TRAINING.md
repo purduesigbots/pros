@@ -13,7 +13,7 @@ Your task:
 
 A few quick notes, Please try to not use a controller in your testing code to find the bug (due to how many we have availible to use).
 
-If you want a starting point, for the testing program, here is some starter code that should replace the opcontrol method in main.cpp of your new project. (Make sure you add the ports that you are using for the motors.
+If you want a starting point, for the testing program, here is some starter code that should replace the opcontrol method in main.cpp of your new project. (Make sure you add the ports that you are using for the motors.)
 
 ```cpp
 void opcontrol() {
