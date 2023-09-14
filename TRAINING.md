@@ -4,7 +4,7 @@ A user on the most recent PROS 4 Beta release has found that their Motor stops r
 Your task: 
 
 1. Create a new PROS 4 project using the CLI (use the --beta flag when creating a project)
-2. Refrence the PROS 4 docs page to find likely methods that they have been using
+2. Refrence the PROS 4 docs page to find likely methods that they have been using. <https://purduesigbots.github.io/pros-doxygen-docs/>
 3. Try to get the motor to stop responding. 
 4. make a branch off of THIS BRANCH on the kernel repo with the naming scheme 'YOUR_NAME/training1'
 5. Attempt to fix the bug by edit the relvant kernel .c/.cpp files.
