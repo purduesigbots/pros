@@ -29,3 +29,4 @@ void opcontrol() {
   }
 }
 ```
+The bug was that the function for motor_get_actual_velocity was returning the mutex of the port parameter which, if negative, was causing the program to crash.
