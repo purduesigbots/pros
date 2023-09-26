@@ -442,7 +442,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index) const;
+	double get_target_position(const std::uint8_t index = 0) const;
 
 	/**
 	 * Gets a vector of the the target positions set for the motor group
