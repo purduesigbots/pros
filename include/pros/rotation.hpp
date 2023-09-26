@@ -53,7 +53,7 @@ class Rotation : public Device {
  	 * }
  	 * \endcode
 	*/
-	explicit Rotation(const std::int8_t port) : Device(port, DeviceType::rotation) {};
+	explicit Rotation(const std::int8_t port);
 
 	/**
 	 * Reset the Rotation Sensor
