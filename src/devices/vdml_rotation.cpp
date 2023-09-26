@@ -16,11 +16,11 @@
 namespace pros {
 inline namespace v5 {
     
-Rotation::Rotation(const std::int8_t port, const bool reverse_flag) : Device(port, DeviceType::rotation) {
+Rotation::Rotation(const std::int8_t port) : Device(port, DeviceType::rotation) {
     if (port < 0) {
         pros::c::rotation_set_reversed(abs(port), true);
     } else {
-        pros::c::rotation_set_reversed(port, reverse_flag);
+        pros::c::rotation_set_reversed(port, false);
     }
 }
 
