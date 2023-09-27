@@ -16,8 +16,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * \defgroup cpp-motor-group Motors C++ API
- * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
+ * \defgroup cpp-motor-group Motor Groups C++ API
  */
 
 #ifndef _PROS_MOTOR_GROUP_HPP_
