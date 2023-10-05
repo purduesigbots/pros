@@ -1549,7 +1549,7 @@ class Motor : public AbstractMotor, public Device {
 	/**
 	 * gets the port number of the motor
 	 *
-	 * \return A vector containing the signed port of the motor. (negative if the motor is reversed) 
+	 * \return The signed port of the motor. (negative if the motor is reversed) 
 	 * 
 	*/
 	std::int8_t get_port(const std::uint8_t index = 0) const;
