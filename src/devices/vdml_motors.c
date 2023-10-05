@@ -113,7 +113,7 @@ double motor_get_actual_velocity(int8_t port) {
 	claim_port_f(abs_port - 1, E_DEVICE_MOTOR);
 	double rtn = vexDeviceMotorActualVelocityGet(device->device_info);
 	if (port < 0) rtn = -rtn;
-	return_port(port - 1, rtn);
+	return_port(abs_port - 1, rtn);
 }
 
 int32_t motor_get_current_draw(int8_t port) {

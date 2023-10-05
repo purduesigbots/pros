@@ -1404,6 +1404,7 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return One of MotorBrake, according to what was set for the
@@ -1513,9 +1514,20 @@ class Motor : public AbstractMotor, public Device {
 	/**
 	 * Gets a vector containing the encoder units that were set for the motor.
 	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter. 
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
+	 * 
 	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EOVERFLOW - The index is non 0
+	 * 
+	 * \param index Optional parameter. 
+	 * 		  The zero-indexed index of the motor to get the target position of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return A vector containing One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
