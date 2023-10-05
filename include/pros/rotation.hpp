@@ -53,27 +53,7 @@ class Rotation : public Device {
  	 * }
  	 * \endcode
 	*/
-	explicit Rotation(const std::uint8_t port) : Device(port, DeviceType::rotation) {};
-
-	/**
-	 * Constructs a new Rotation Sensor object
-	 * 
-	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
- 	 * ENODEV - The port cannot be configured as a Rotation Sensor
-	 * 
-	 * \param port
- 	 *        The V5 port number from 1 to 21, or from -21 to -1 for reversed Rotation Sensors. 
-	 * \param reverse_flag
-	 * 		  Determines if the Rotation Sensor is reversed or not.
-	 * 		  
-	 * 	\b Example
- 	 * \code
- 	 * void opcontrol() {
-	 * 	 pros::Rotation rotation_sensor(1, true); //Creates a reversed Rotation Sensor on port 1 
-	 * }
- 	 * \endcode
-	*/
-	explicit Rotation(const std::uint8_t port, const bool reverse_flag);
+	explicit Rotation(const std::int8_t port);
 
 	/**
 	 * Reset the Rotation Sensor

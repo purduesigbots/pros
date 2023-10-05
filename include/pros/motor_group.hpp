@@ -758,7 +758,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 
 	 * EDOM - THe motor group is empty
 	 *
-	 * \return A vecotr containing each motor's efficiency in percent or PROS_ERR_F if the operation
+	 * \return A vector containing each motor's efficiency in percent or PROS_ERR_F if the operation
 	 * failed, setting errno.
 	 *
 	 * \b Example
@@ -1107,7 +1107,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * \return A vecotr of each motor's temperature in degrees Celsius or PROS_ERR_F if the
+	 * \return A vector of each motor's temperature in degrees Celsius or PROS_ERR_F if the
 	 * operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1320,7 +1320,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t is_over_temp(const std::uint8_t index = 0) const;
 	/**
-	 * Gets a vecotr with the temperature limit flag for each motor in the motor group.
+	 * Gets a vector with the temperature limit flag for each motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1377,7 +1377,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	MotorBrake get_brake_mode(const std::uint8_t index = 0) const;
 	/**
-	 * Gets a vecotr with the brake mode that was set for each motor in the motor group.
+	 * Gets a vector with the brake mode that was set for each motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
