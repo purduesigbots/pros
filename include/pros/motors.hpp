@@ -1671,7 +1671,7 @@ class Motor : public AbstractMotor, public Device {
 	 * ENODEV - The port cannot be configured as a motor
 	 * 
 	 * 
-	 * \return A vecotr containing 1 for moving in the positive direction, -1 for moving in the
+	 * \return A vector containing 1 for moving in the positive direction, -1 for moving in the
 	 * negative direction, and PROS_ERR if the operation failed, setting errno.
 	 *
 	 * \b Example
