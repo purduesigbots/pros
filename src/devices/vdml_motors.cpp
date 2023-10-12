@@ -70,7 +70,7 @@ double Motor::get_actual_velocity(const std::uint8_t index) const {
 }
 std::vector<double> Motor::get_actual_velocity_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_actual_velocity(_port));
+	return_vector.push_back(motor_get_actual_velocity(_port));
 	return return_vector;
 }
 
@@ -84,7 +84,7 @@ pros::v5::MotorBrake Motor::get_brake_mode(const std::uint8_t index) const {
 
 std::vector<pros::v5::MotorBrake> Motor::get_brake_mode_all() const {
 	std::vector<pros::v5::MotorBrake> return_vector;
-	return_vector.emplace_back(static_cast<pros::v5::MotorBrake>(motor_get_brake_mode(_port)));
+	return_vector.push_back(static_cast<pros::v5::MotorBrake>(motor_get_brake_mode(_port)));
 	return return_vector;
 }
 
@@ -97,7 +97,7 @@ std::int32_t Motor::get_current_draw(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::get_current_draw_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_current_draw(_port));
+	return_vector.push_back(motor_get_current_draw(_port));
 	return return_vector;
 }
 std::int32_t Motor::get_current_limit(const std::uint8_t index) const {
@@ -109,7 +109,7 @@ std::int32_t Motor::get_current_limit(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::get_current_limit_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_current_limit(_port));
+	return_vector.push_back(motor_get_current_limit(_port));
 	return return_vector;
 }
 
@@ -123,7 +123,7 @@ std::int32_t Motor::is_over_current(const std::uint8_t index) const {
 
 std::vector<std::int32_t> Motor::is_over_current_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_is_over_current(_port));
+	return_vector.push_back(motor_is_over_current(_port));
 
 	return return_vector;
 }
@@ -133,11 +133,15 @@ std::int32_t Motor::get_direction(const std::uint8_t index) const {
 		errno = EOVERFLOW;
 		return PROS_ERR;
 	}
-	return motor_get_direction(_port);
+	int ret = motor_get_direction(_port);
+	ret = _port >= 0 ? ret : ret * -1;
+	return ret;
 }
 std::vector<std::int32_t> Motor::get_direction_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_direction(_port));
+	int ret = motor_get_direction(_port);
+	ret = _port >= 0 ? ret : ret * -1;
+	return_vector.push_back(ret);
 	return return_vector;
 }
 
@@ -150,7 +154,7 @@ double Motor::get_efficiency(const std::uint8_t index) const {
 }
 std::vector<double> Motor::get_efficiency_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_efficiency(_port));
+	return_vector.push_back(motor_get_efficiency(_port));
 	return return_vector;
 }
 
@@ -164,7 +168,7 @@ pros::v5::MotorUnits Motor::get_encoder_units(const std::uint8_t index) const {
 
 std::vector<pros::v5::MotorUnits> Motor::get_encoder_units_all(void) const {
 	std::vector<pros::v5::MotorUnits> return_vector;
-	return_vector.emplace_back(static_cast<pros::v5::MotorUnits>(motor_get_encoder_units(_port)));
+	return_vector.push_back(static_cast<pros::v5::MotorUnits>(motor_get_encoder_units(_port)));
 	return return_vector;
 }
 
@@ -178,7 +182,7 @@ std::uint32_t Motor::get_faults(const std::uint8_t index) const {
 
 std::vector<std::uint32_t> Motor::get_faults_all(void) const {
 	std::vector<std::uint32_t> return_vector;
-	return_vector.emplace_back(motor_get_faults(_port));
+	return_vector.push_back(motor_get_faults(_port));
 	return return_vector;
 }
 
@@ -192,7 +196,7 @@ std::uint32_t Motor::get_flags(const std::uint8_t index) const {
 
 std::vector<std::uint32_t> Motor::get_flags_all(void) const {
 	std::vector<std::uint32_t> return_vector;
-	return_vector.emplace_back(motor_get_flags(_port));
+	return_vector.push_back(motor_get_flags(_port));
 	return return_vector;
 }
 
@@ -205,7 +209,7 @@ pros::v5::MotorGears Motor::get_gearing(const std::uint8_t index) const {
 }
 std::vector<pros::v5::MotorGears> Motor::get_gearing_all(void) const {
 	std::vector<pros::v5::MotorGears> return_vector;
-	return_vector.emplace_back(static_cast<pros::v5::MotorGears>(motor_get_gearing(_port)));
+	return_vector.push_back(static_cast<pros::v5::MotorGears>(motor_get_gearing(_port)));
 	return return_vector;
 }
 
@@ -219,7 +223,7 @@ std::int32_t Motor::get_raw_position(std::uint32_t* const timestamp, std::uint8_
 
 std::vector<std::int32_t> Motor::get_raw_position_all(std::uint32_t* const timestamp) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_raw_position(_port, timestamp));
+	return_vector.push_back(motor_get_raw_position(_port, timestamp));
 	return return_vector;
 }
 
@@ -233,7 +237,7 @@ std::int32_t Motor::is_over_temp(const std::uint8_t index) const {
 
 std::vector<std::int32_t> Motor::is_over_temp_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_is_over_temp(_port));
+	return_vector.push_back(motor_is_over_temp(_port));
 	return return_vector;
 }
 
@@ -246,7 +250,7 @@ double Motor::get_position(const std::uint8_t index) const {
 }
 std::vector<double> Motor::get_position_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_position(_port));
+	return_vector.push_back(motor_get_position(_port));
 	return return_vector;
 }
 
@@ -260,7 +264,7 @@ double Motor::get_power(const std::uint8_t index) const {
 
 std::vector<double> Motor::get_power_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_power(_port));
+	return_vector.push_back(motor_get_power(_port));
 	return return_vector;
 }
 
@@ -273,7 +277,7 @@ std::int32_t Motor::is_reversed(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::is_reversed_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(_port < 0);
+	return_vector.push_back(_port < 0);
 	return return_vector;
 }
 
@@ -287,7 +291,7 @@ double Motor::get_temperature(const std::uint8_t index) const {
 
 std::vector<double> Motor::get_temperature_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_temperature(_port));
+	return_vector.push_back(motor_get_temperature(_port));
 	return return_vector;
 }
 
@@ -301,7 +305,7 @@ double Motor::get_target_position(const std::uint8_t index) const {
 
 std::vector<double> Motor::get_target_position_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_target_position(_port));
+	return_vector.push_back(motor_get_target_position(_port));
 	return return_vector;
 }
 
@@ -314,7 +318,7 @@ double Motor::get_torque(const std::uint8_t index) const {
 }
 std::vector<double> Motor::get_torque_all(void) const {
 	std::vector<double> return_vector;
-	return_vector.emplace_back(motor_get_torque(_port));
+	return_vector.push_back(motor_get_torque(_port));
 	return return_vector;
 }
 std::int32_t Motor::get_target_velocity(const std::uint8_t index) const {
@@ -326,7 +330,7 @@ std::int32_t Motor::get_target_velocity(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::get_target_velocity_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_target_velocity(_port));
+	return_vector.push_back(motor_get_target_velocity(_port));
 	return return_vector;
 }
 
@@ -339,7 +343,7 @@ std::int32_t Motor::get_voltage(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::get_voltage_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_voltage(_port));
+	return_vector.push_back(motor_get_voltage(_port));
 	return return_vector;
 }
 
@@ -352,7 +356,7 @@ std::int32_t Motor::get_voltage_limit(const std::uint8_t index) const {
 }
 std::vector<std::int32_t> Motor::get_voltage_limit_all(void) const {
 	std::vector<std::int32_t> return_vector;
-	return_vector.emplace_back(motor_get_voltage_limit(_port));
+	return_vector.push_back(motor_get_voltage_limit(_port));
 	return return_vector;
 }
 std::int8_t Motor::get_port(const std::uint8_t index) const {
@@ -365,7 +369,7 @@ std::int8_t Motor::get_port(const std::uint8_t index) const {
 
 std::vector<std::int8_t> Motor::get_port_all(void) const {
 	std::vector<std::int8_t> return_vector;
-	return_vector.emplace_back(_port);
+	return_vector.push_back(_port);
 	return return_vector;
 }
 
