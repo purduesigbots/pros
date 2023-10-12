@@ -82,5 +82,14 @@ std::uint8_t is_connected(void) {
 std::uint8_t is_disabled(void) {
 	return competition_is_disabled();
 }
+
+bool is_field_control(void) {
+	return competition_is_field_control();
+}
+
+bool is_competition_switch(void) {
+	return competition_is_competition_switch();
+}
+
 }  // namespace competition
 }  // namespace pros

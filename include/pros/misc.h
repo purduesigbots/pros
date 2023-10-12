@@ -41,6 +41,7 @@
 #define COMPETITION_DISABLED (1 << 0)
 #define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
+#define COMPETITION_SYSTEM (1 << 3)
 
 #ifdef __cplusplus
 extern "C" {
@@ -129,6 +130,17 @@ uint8_t competition_get_status(void);
  * \endcode
  */
 #define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
+
+/**
+ * \return True if the V5 Brain is connected to VEXnet Field Controller, false otherwise.
+*/
+#define competition_is_field_control() ((competition_get_status() & COMPETITION_SYSTEM) != 0)
+
+/**
+ * \return True if the V5 Brain is connected to VEXnet Competition Switch, false otherwise.
+*/
+#define competition_is_competition_switch() ((competition_get_status() & COMPETITION_SYSTEM) == 0)
+
 
 ///@}
 
