@@ -59,23 +59,6 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-	while (1) {
-		if (pros::competition::is_field_control()) {
-				printf("[Auton] testing is_field_control(): true\n");
-			}
-			else {
-				printf("[Auton] testing is_field_control(): false\n");
-			}
-
-			if (pros::competition::is_competition_switch()) {
-				printf("[Auton] testing is_competition_switch(): true\n");
-			}
-			else {
-				printf("[Auton] testing is_competition_switch(): false\n");
-			}
-
-			pros::delay(1000);
-	}
 }
 
 /**
