@@ -16,8 +16,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * \defgroup cpp-motor-group Motors C++ API
- * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
+ * \defgroup cpp-motor-group Motor Groups C++ API
  */
 
 #ifndef _PROS_MOTOR_GROUP_HPP_
@@ -113,6 +112,35 @@ class MotorGroup : public virtual AbstractMotor {
 	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
 	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
 
+	 /**
+	 * Constructs a new MotorGroup object from an abstract motor.
+	 * 
+	 * This function uses the following values of errno when an error state is
+ 	 * reached:
+ 	 * 
+	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ 	 * 
+	 * ENODEV - The port cannot be configured as a motor
+	 * 
+	 * EDOM - The motor group is empty
+	 * 
+	 * \param abstract_motor
+	 * 		  THe abstract motor to turn into a motor group
+	 * 		  Uses abstract_motor.get_port_all() to get the vector of ports
+	 * 
+	 * 
+	 *  \b Example
+ 	 * \code
+ 	 * void opcontrol() {
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 with 
+	 *  with both motors using the green gearset and degrees as the encoder units
+	 * 	AbstractMotor abs_mtr_group = first_mg;
+	 * 	MotorGroup new_mg = (MotorGroup) abs_mtr_group;
+ 	 * }
+	 * \endcode
+	 */
+	
+	MotorGroup(AbstractMotor& abstract_motor);
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -413,7 +441,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index) const;
+	double get_target_position(const std::uint8_t index = 0) const;
 
 	/**
 	 * Gets a vector of the the target positions set for the motor group
@@ -729,7 +757,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 
 	 * EDOM - THe motor group is empty
 	 *
-	 * \return A vecotr containing each motor's efficiency in percent or PROS_ERR_F if the operation
+	 * \return A vector containing each motor's efficiency in percent or PROS_ERR_F if the operation
 	 * failed, setting errno.
 	 *
 	 * \b Example
@@ -1078,7 +1106,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * \return A vecotr of each motor's temperature in degrees Celsius or PROS_ERR_F if the
+	 * \return A vector of each motor's temperature in degrees Celsius or PROS_ERR_F if the
 	 * operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1291,7 +1319,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t is_over_temp(const std::uint8_t index = 0) const;
 	/**
-	 * Gets a vecotr with the temperature limit flag for each motor in the motor group.
+	 * Gets a vector with the temperature limit flag for each motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1348,7 +1376,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	MotorBrake get_brake_mode(const std::uint8_t index = 0) const;
 	/**
-	 * Gets a vecotr with the brake mode that was set for each motor in the motor group.
+	 * Gets a vector with the brake mode that was set for each motor in the motor group.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

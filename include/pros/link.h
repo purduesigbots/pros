@@ -41,20 +41,20 @@ namespace pros {
  * \brief Enum for the type of link (TX or RX)
  */
 typedef enum link_type_e {
-	E_LINK_RECIEVER = 0, ///< Indicates that the radio is a reciever.
+	E_LINK_RECEIVER = 0, ///< Indicates that the radio is a receiver.
 	E_LINK_TRANSMITTER, ///< Indicates that the link is a transmitter.
-	E_LINK_RX = E_LINK_RECIEVER, ///< Alias for E_LINK_RECIEVER
+	E_LINK_RX = E_LINK_RECEIVER, ///< Alias for E_LINK_RECEIVER
 	E_LINK_TX = E_LINK_TRANSMITTER ///< Alias for E_LINK_TRANSMITTER
 } link_type_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
-#define LINK_RECIEVER pros::E_LINK_RECIEVER
+#define LINK_RECEIVER pros::E_LINK_RECEIVER
 #define LINK_TRANSMITTER pros::E_LINK_TRANSMITTER
 #define LINK_RX pros::E_LINK_RX
 #define LINK_TX pros::E_LINK_TX
 #else
-#define LINK_RECIEVER E_LINK_RECIEVER
+#define LINK_RECEIVER E_LINK_RECEIVER
 #define LINK_TRANSMITTER E_LINK_TRANSMITTER
 #define LINK_RX E_LINK_RX
 #define LINK_TX E_LINK_TX
@@ -86,8 +86,8 @@ namespace c {
  *      Unique link ID in the form of a string, needs to be different from other links in
  *      the area.
  * \param type
- *      Indicates whether the radio link on the brain is a transmitter or reciever,
- *      with the transmitter having double the transmitting bandwidth as the recieving
+ *      Indicates whether the radio link on the brain is a transmitter or receiver,
+ *      with the transmitter having double the transmitting bandwidth as the receiving
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
@@ -122,8 +122,8 @@ uint32_t link_init(uint8_t port, const char* link_id, link_type_e_t type);
  *      Unique link ID in the form of a string, needs to be different from other links in
  *      the area.
  * \param type
- *      Indicates whether the radio link on the brain is a transmitter or reciever,
- *      with the transmitter having double the transmitting bandwidth as the recieving
+ *      Indicates whether the radio link on the brain is a transmitter or receiver,
+ *      with the transmitter having double the transmitting bandwidth as the receiving
  *      end (1040 bytes/s vs 520 bytes/s).
  *
  * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.

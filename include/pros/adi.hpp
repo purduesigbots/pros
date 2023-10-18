@@ -1724,21 +1724,212 @@ class Pneumatics : public DigitalOut {
 	 *  @{
 	 */	
 	public:
+
 	/**
 	 * Creates a Pneumatics object for the given port.
-	 *
+	 * 
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of ADI Ports
-	 *
+	 * 
 	 * \param adi_port
 	 *        The ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
 	 * \param start_extended
-	 * 		  If true, the pneumatic will start the match extended
-	 * \param active_low
-	 *        If set to true, a value of false corresponds to the pneumatic's
-	 * 		  wire being set to high.
+	 * 		  If true, the pneumatic will start extended when the program starts.
+	 *		  By default, the piston starts retracted when the program starts.
+	 * \param extended_is_low
+	 * 		  A flag to set whether the the pneumatic is extended when the ADI 
+	 * 		  it receives a high or a low value. When true, the extended state
+	 * 		  corresponds to a output low on the ADI port. This allows the user 
+	 * 		  to reverse the behavior of the pneumatics if needed.
+	 * 
+	 * /b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics left_piston('a', false);			// Starts retracted, extends when the ADI port is high
+	 *   pros::adi::Pneumatics right_piston('b', false, true);	// Starts retracted, extends when the ADI port is low 
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_2)) {
+	 *       left_piston.retract();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * 
+	 * \endcode
+	 */
+	explicit Pneumatics(std::uint8_t adi_port, 
+		bool start_extended, 
+		bool extended_is_low = false
+	);
+
+	/**
+	 * Creates a Pneumatics object for the given port pair.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of ADI Ports
+	 * 
+	 * \param port_pair
+	 *        The pair of the smart port number (from 1-22) and the
+	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
+	 * \param start_extended
+	 * 		  If true, the pneumatic will start extended when the program starts.
+	 *		  By default, the piston starts retracted when the program starts.
+	 * \param extended_is_low
+	 * 		  A flag to set whether the the pneumatic is extended when the ADI 
+	 * 		  it receives a high or a low value. When true, the extended state
+	 * 		  corresponds to a output low on the ADI port. This allows the user 
+	 * 		  to reverse the behavior of the pneumatics if needed.
+	 * 
+	 * /b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics left_piston({1, 'a'}, false);			// Starts retracted, extends when the ADI port is high
+	 *   pros::adi::Pneumatics right_piston({1, 'b'}, false, true);	    // Starts retracted, extends when the ADI port is low 
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+	 *       left_piston.retract();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	explicit Pneumatics(ext_adi_port_pair_t port_pair, 
+		bool start_extended, 
+		bool extended_is_low = false
+	);
+
+	/**
+	 * Extends the piston, if not already extended.
+	 * 
+	 * \return 1 if the piston newly extended, 0 if the piston was already
+	 *         extended, or PROS_ERR is the operation failed, setting errno. 
+	 * 
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t extend();
+
+	/**
+	 * Retracts the piston, if not already retracted.
 	 *
+	 * \return 1 if the piston newly retracted, 0 if the piston was already
+	 *         retracted, or PROS_ERR is the operation failed, setting errno. 
+	 *
+	 * \b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t retract();
+
+	/**
+	 * Puts the piston into the opposite state of its current state.
+	 * If it is retracted, it will extend. If it is extended, it will retract.
+	 *
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 * 
+	 * \return 1 if the piston successfully toggled, or PROS_ERR if the 
+	 *         operation failed, setting errno.
+	 *
+	 *\b Example:
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::adi::Pneumatics piston({1, 'a'}, false);            // Starts retracted, extends when the ADI port is high
+	 *   
+	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 
+	 *   while (true) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+	 *       left_piston.extend();
+	 *     }
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+	 *       left_piston.retract();
+	 *     }
+	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       left_piston.toggle();
+	 *     }
+	 * 
+	 *     pros::delay(10);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t toggle();
+
+	/**
+	 * Returns whether the piston is extended or not. 
+	 * 
+	 * \return true if the piston is extended, false if it is retracted.
+	 * 
 	 * \b Example
 	 * \code
 	 * #define ADI_PNEUMATICS_PORT 'a'
@@ -1746,141 +1937,27 @@ class Pneumatics : public DigitalOut {
 	 * void opcontrol() {
 	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
 	 *   while (true) {
-	 *     // Set the pneumatic solenoid to true
-	 *     pneumatics.set_value(true);
+	 *     // Check if the piston is extended
+	 *     if (pneumatics.is_extended()) {
+	 *       printf("The pneumatic is extended\n");
+	 *     }
+	 *     else {
+	 *       printf("The pneumatic is not extended\n");
+	 *     }
+	 * 
 	 *     pros::delay(10);
 	 *   }
 	 * }
 	 * \endcode
 	 */
-	explicit Pneumatics(std::uint8_t adi_port, bool start_extended, bool active_low = false);
-
-	/**
-	 * Creates a Pneumatics object for the given port.
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of ADI Ports
-	 *
-	 * \param port_pair
-	 *        The pair of the smart port number (from 1-22) and the
-	 *  	  ADI port number (from 1-8, 'a'-'h', 'A'-'H') to configure
-	 * \param start_extended
-	 * 		  If true, the pneumatic will start the match extended
-	 * \param active_low
-	 *        If set to true, a value of false corresponds to the pneumatic's
-	 * 		  wire being set to high.
-	 *
-	 * \b Example
-	 * \code
-	 * #define ADI_PNEUMATICS_PORT 'a'
-	 * #define SMART_PORT 1
-	 *
-	 * void opcontrol() {
-	 *   pros::adi::Pneumatics pneumatics ({{ SMART_PORT , ADI_PNEUMATICS_PORT }});
-	 *   while (true) {
-	 *     // Set the pneumatic solenoid to true
-	 *     pneumatics.set_value(true);
-	 *     pros::delay(10);
-	 *   }
-	 * }
-	 * \endcode
-	 */
-	explicit Pneumatics(ext_adi_port_pair_t port_pair, bool start_extended, bool active_low = false);
-
-	/* 
-	* Extends the piston, if not already extended.
-	* 
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Extend the piston
-	*     pneumatics.extend();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t extend();
-
-	/*
-	* Retracts the piston, if not already retracted.
-	*
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Retract the piston
-	*     pneumatics.retract();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t retract();
-
-	/*
-	* Puts the piston into the opposite state of its current state.
-	* If it is retracted, it will extend. If it is extended, it will retract.
-	*
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Toggle the piston
-	*     pneumatics.toggle();
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	std::int32_t toggle();
-
-	/*
-	* Returns the current state of the piston.
-	*
-	* \return true if the piston is extended, false if it is retracted.
-	*
-	* \b Example
-	* \code
-	* #define ADI_PNEUMATICS_PORT 'a'
-	*
-	* void opcontrol() {
-	*   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
-	*   while (true) {
-	*     // Check if the piston is extended
-	*     if (pneumatics.get_state()) {
-	*       // Do something
-	*     }
-	*     pros::delay(10);
-	*   }
-	* }
-	* \endcode
-	*/
-	bool get_state() const;
+	bool is_extended() const; 
 
 private: 
-	bool active_low;
-	bool state;
+	bool state; 			// Holds the physical state of the ADI port
+	bool extended_is_low;	// A flag that sets whether extended corresponds to
+							// a low signal
+
+	
 };
 ///@}
 
