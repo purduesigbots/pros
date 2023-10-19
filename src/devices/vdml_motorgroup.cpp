@@ -43,16 +43,16 @@ MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports,
                        const pros::v5::MotorGears gearset,
                        const pros::v5::MotorUnits encoder_units)
     : _ports(ports) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
+	set_gearing_all(gearset);
+	set_encoder_units_all(encoder_units);
 }
 
 MotorGroup::MotorGroup(const std::vector<std::int8_t>& ports,
                        const pros::v5::MotorGears gearset,
                        const pros::v5::MotorUnits encoder_units)
     : _ports(ports) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
+	set_gearing_all(gearset);
+	set_encoder_units_all(encoder_units);
 }
 
 std::int32_t MotorGroup::operator=(std::int32_t voltage) const {
