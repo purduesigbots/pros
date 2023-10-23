@@ -17,3 +17,15 @@
 int32_t usd_is_installed(void) {
 	return vexFileDriveStatus(0);
 }
+static const int FRESULTMAP[] = {0,       EIO,    EINVAL, EBUSY, ENOENT,  ENOENT, EINVAL, EACCES,  // FR_DENIED
+                                 EEXIST,  EINVAL, EROFS,  ENXIO, ENOBUFS, ENXIO,  EIO,    EACCES,  // FR_LOCKED
+                                 ENOBUFS, ENFILE, EINVAL};
+
+int32_t list_files(const char* path, char* buffer, int32_t len) {
+	FRESULT result =  vexFileDirectoryGet(path, buffer, len);
+	if (result != F_OK) {
+		errno = FRESULTMAP[result];
+		return PROS_ERR;
+	}
+	return PROS_SUCCESS;
+}

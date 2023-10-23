@@ -723,6 +723,26 @@ double battery_get_capacity(void);
  */
 int32_t usd_is_installed(void);
 
+/**
+ * Lists the files in a directory specified by the path
+ * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
+ * 
+ * \note use a path of "\" to list the files in the main directory
+ * 
+ * \return 1 on success or PROS_ERR on failure setting errno
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * 	char* test = (char*) malloc(128);
+ *	pros::c::list_files("/", test, 128);
+ *	pros::delay(200);
+ *	printf("%s\n", test);
+ * }
+ * \endcode
+*/
+int32_t list_files(const char* path, char* buffer, int32_t len);
+
 /******************************************************************************/
 /**                              Date and Time                               **/
 /******************************************************************************/
