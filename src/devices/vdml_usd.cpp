@@ -22,7 +22,7 @@ std::int32_t is_installed(void) {
 }
 
 int32_t list_files(const char* path, char* buffer, int32_t len) {
-	return list_files(path, buffer, len);
+	return usd_list_files(path, buffer, len);
 }
 
 }  // namespace usd

@@ -735,13 +735,13 @@ int32_t usd_is_installed(void);
  * \code
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
- *	pros::c::list_files("/", test, 128);
+ *	pros::c::usd_list_files("/", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test);
  * }
  * \endcode
 */
-int32_t list_files(const char* path, char* buffer, int32_t len);
+int32_t usd_list_files(const char* path, char* buffer, int32_t len);
 
 /******************************************************************************/
 /**                              Date and Time                               **/
