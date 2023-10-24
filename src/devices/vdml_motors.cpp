@@ -18,14 +18,15 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Motor::Motor(AbstractMotor& abstract_motor) : Motor(abstract_motor.get_port()) {
-	
-}
 
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
     : Device(port, DeviceType::motor), _port(port) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
+	if (gearset != pros::v5::MotorGears::invalid) {
+		set_gearing(gearset);
+	}
+	if (encoder_units != pros::v5::MotorEncoderUnits::invalid) {
+		set_encoder_units(encoder_units);
+	}
 }
 
 std::int32_t Motor::operator=(std::int32_t voltage) const {

@@ -54,26 +54,25 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 * 
-	 * \param gearset =  pros::v5::MotorGears::green
+	 * \param gearset =  pros::v5::MotorGears::invalid
 	 * 		  Optional parameter for the gearset for the motor.
-	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 		  Does not explicitly set the motor gearset if it is invalid or not specified
 	 * 
-	 * \param encoder_units = pros::v5::MotorUnits::degrees
+	 * \param encoder_units = pros::v5::MotorUnits::invalid
 	 * 		  Optional parameter for the encoder units of the motor
-	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 		  Does not explicitly set the motor units if it is invalid or not specified
 	 * 
 	 *  \b Example
  	 * \code
  	 * void opcontrol() {
-	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 with 
-	 *  with both motors using the green gearset and degrees as the encoder units
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
  	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
  	 * }
 	 * \endcode
 	 */
-	explicit MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
-	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+	MotorGroup(const std::initializer_list<std::int8_t>, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
+	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 	/**
 	 * Constructs a new MotorGroup object.
 	 * 
@@ -91,13 +90,13 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 * 
-	 * \param gearset =  pros::v5::MotorGears::green
+	 * \param gearset =  pros::v5::MotorGears::invalid
 	 * 		  Optional parameter for the gearset for the motor.
-	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 		  Does not explicitly set the motor gearset if it is invalid or not specified
 	 * 
-	 * \param encoder_units = pros::v5::MotorUnits::degrees
+	 * \param encoder_units = pros::v5::MotorUnits::invalid
 	 * 		  Optional parameter for the encoder units of the motor
-	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 		  Does not explicitly set the motor units if it is invalid or not specified
 	 * 
 	 *  \b Example
  	 * \code
@@ -109,8 +108,8 @@ class MotorGroup : public virtual AbstractMotor {
  	 * }
 	 * \endcode
 	 */
-	explicit MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
-	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+	MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
+	                    const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 
 	 /**
 	 * Constructs a new MotorGroup object from an abstract motor.
@@ -140,7 +139,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	
-	MotorGroup(AbstractMotor& abstract_motor);
+	MotorGroup(MotorGroup& motor_group);
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -1934,6 +1933,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_encoder_units_all(const pros::motor_encoder_units_e_t units) const;
+	
+
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -1942,7 +1943,13 @@ class MotorGroup : public virtual AbstractMotor {
 	 * reached:
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
-	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 * E2BIG - The size of the vector mismatches the number of motors in the motor group
+	 * 
+	 * \note If there are more motors than gearsets passed in, 
+	 * 	only the first n motors will have their gearsets changed where n is the number of gearsets passed in.
+	 *  If there are more gearsets passed in than motors, then the only the first m gearsets will be used, 
+	 *  where m is the number of motors. In either case, errno will be set to E2BIG, but the operation still occurs 
+	 *
 	 *
 	 * \param gearset
 	 *        The new geatset of the motor
@@ -1962,7 +1969,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	std::int32_t set_gearing(const MotorGears gearset, const std::uint8_t index = 0) const;
+	std::int32_t set_gearing(std::vector<pros::motor_gearset_e_t> gearsets) const;
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -1992,6 +1999,67 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_gearing(const pros::motor_gearset_e_t gearset, const std::uint8_t index = 0) const;
+	
+	/**
+	 * Sets the gear cartridge (red, green, blue) for each motor in the motor group by taking in a vector of the cartridges. 
+	 * Usable with the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * E2BIG - The size of the vector mismatches the number of motors in the motor group
+	 *
+	 * \note If there are more motors than gearsets passed in, 
+	 * 	only the first n motors will have their gearsets changed where n is the number of gearsets passed in.
+	 *  If there are more gearsets passed in than motors, then the only the first m gearsets will be used, 
+	 *  where m is the number of motors. In either case, errno will be set to E2BIG, but the operation still occurs 
+	 * 
+	 * \param gearset
+	 *        The a vector containing the new geatsets of the motors
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing(pros::MotorGears::blue, 1);
+	 *   std::cout << "Gearset: " << mg.get_gearing();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_gearing(std::vector<MotorGears> gearsets) const;
+	/**
+	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
+	 * the C++ enum class and the C enum.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size() 
+	 *
+	 * \param gearset
+	 *        The new geatset of the motor
+	 * 
+	 * \param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 * 
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg({1,3});
+	 *   mg.set_gearing(E_MOTOR_GEARSET_06, 1);
+	 *   std::cout << "Gearset: " << mg.get_gearing();
+	 * }
+	 * \endcode
+	 */
+	std::int32_t set_gearing(const MotorGears gearset, const std::uint8_t index = 0) const;
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.

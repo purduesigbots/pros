@@ -53,53 +53,30 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * \param gearset =  pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
-	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 		  Does not explicitly set the gearset if not specified or if the gearset is invalid
 	 * 
 	 * \param encoder_units = pros::v5::MotorUnits::degrees
 	 * 		  Optional parameter for the encoder units of the motor
-	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 		  Does not explicitly set the gearset if not specified or if the gearset is invalid
 	 * 
 	 *  \b Example
  	 * \code
  	 * void opcontrol() {
-	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
-	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 with standard gearset and encoder units
-	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set and degrees
+	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
+	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
+	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
 	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
  	 *  
  	 * }
  	 * \endcode
 	 * 
 	 */
-	explicit Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
-	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+	Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
+	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 
 	
 
-	/**
-	 * Constructs a new Motor object.
-	 * 
-	 * This function uses the following values of errno when an error state is
- 	 * reached:
- 	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
- 	 * ENODEV - The port cannot be configured as a motor
-	 * 
-	 * \param The abstract motor to create into a motor
- 	 *        Creates a new motor on the port of abstract_motor.get_port(), maintaining it's reversal status.
-	 * 
-	 * 
-	 *  \b Example
- 	 * \code
- 	 * void opcontrol() {
-	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
-	 * 	AbstractMotor abs_motor = first_motor;
-	 * 	Motor new_motor = (Motor) abs_motor;
- 	 *  
- 	 * }
- 	 * \endcode
-	 * 
-	 */
-	Motor(AbstractMotor& abstract_motor);
+	
 
 
 	/// \name Motor movement functions
