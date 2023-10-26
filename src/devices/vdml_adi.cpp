@@ -47,8 +47,7 @@ std::int32_t Port::get_value() const {
 }
 
 ext_adi_port_tuple_t Port::get_port() const {
-	ext_adi_port_pair_t _port_pair = std::make_pair(_adi_port, PROS_ERR_BYTE);
-	return std::make_tuple(+_smart_port, std::get<0>(_port_pair), std::get<1>(_port_pair));
+	return std::make_tuple(_smart_port, _adi_port, PROS_ERR_BYTE);
 }
 
 AnalogIn::AnalogIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_IN) {}
@@ -147,7 +146,6 @@ Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get
 	std::int32_t _port =
 	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
 	get_ports(_port, _smart_port, _adi_port);
-
 }
 
 std::int32_t Encoder::reset() const {

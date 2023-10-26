@@ -193,8 +193,10 @@ class Port {
 	/**
 	 * Gets the port of the sensor.
 	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
+	 * \return returns a tuple of integer ports.
+	 * 
+	 * \note The parts of the tuple are {smart port, adi port, second adi port (when applicable)}. 
+	 * 
 	 * 
 	 * \b Example
 	 * \code
@@ -203,8 +205,13 @@ class Port {
 	 * void initialize() {
 	 *   pros::adi::AnalogIn sensor (DIGITAL_SENSOR_PORT);
 	 *   
-	 * 	 // Prints the second value from the port tuple (The Adi Port. The first value is the Smart Port)
-	 * 	 printf("Sensor Port: %d", std::get<1>(sensor.get_port()));
+	 * 	 // Getting values from the tuple using std::get<index> 
+	 * 	 int sensorSmartPort = std::get<0>(sensor.get_port()); // First value
+	 *   int sensorAdiPort = std::get<1>(sensor.get_port()); // Second value
+	 * 
+	 * 	 // Prints the first and second value from the port tuple (The Adi Port. The first value is the Smart Port)
+	 *   printf("Sensor Smart Port: %d\n", sensorSmartPort);
+	 *   printf("Sensor Adi Port: %d\n", sensorAdiPort);	
 	 * }
 	 * \endcode
 	 */
