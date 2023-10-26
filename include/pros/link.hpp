@@ -56,7 +56,7 @@ class Link : public Device {
 	 *      with the transmitter having double the transmitting bandwidth as the receiving
 	 *      end (1040 bytes/s vs 520 bytes/s).
 	 * \param ov
-	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
+	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio. Defualts to True.
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 * 
@@ -65,7 +65,7 @@ class Link : public Device {
 	 * pros::Link link(1, "my_link", pros::E_LINK_TX);
 	 * \endcode
 	 */
-	explicit Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = false);
+	explicit Link(const std::uint8_t port, const std::string link_id, link_type_e_t type, bool ov = true);
 
 	/**
 	 * Checks if a radio link on a port is active or not.
