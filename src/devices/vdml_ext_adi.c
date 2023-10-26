@@ -282,7 +282,7 @@ ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top,
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[port];
 	adi_data->encoder_data.reversed = reverse;
 	vexDeviceAdiPortConfigSet(device->device_info, port, E_ADI_LEGACY_ENCODER);
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, port + 1));
 }
 
 int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
@@ -334,7 +334,7 @@ ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_por
 
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, port, E_ADI_LEGACY_ULTRASONIC);
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, port + 1));
 }
 
 int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult) {
@@ -371,7 +371,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 	adi_port_config_e_t config = vexDeviceAdiPortConfigGet(device->device_info, adi_port);
 	if (config == E_ADI_LEGACY_GYRO) {
 		// Port has already been calibrated, no need to do that again
-		return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+		return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 	}
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_LEGACY_GYRO);
@@ -381,7 +381,7 @@ ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double mu
 		// the calibration time in VexOS.
 		delay(GYRO_CALIBRATION_TIME);
 	}
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
 double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
@@ -430,7 +430,7 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
 	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
 
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
 double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
@@ -461,7 +461,7 @@ ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
-	return_port(smart_port - 1, merge_adi_ports(smart_port - 1, adi_port + 1));
+	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
 int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length) {
