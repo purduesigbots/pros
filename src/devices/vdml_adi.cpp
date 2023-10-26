@@ -46,6 +46,11 @@ std::int32_t Port::get_value() const {
 	return ext_adi_port_get_value(_smart_port, _adi_port);
 }
 
+ext_adi_port_tuple_t Port::get_port() const {
+	ext_adi_port_pair_t _port_pair = std::make_pair(_adi_port, PROS_ERR_BYTE);
+	return std::make_tuple(+_smart_port, std::get<0>(_port_pair), std::get<1>(_port_pair));
+}
+
 AnalogIn::AnalogIn(std::uint8_t adi_port) : Port(adi_port, E_ADI_ANALOG_IN) {}
 AnalogIn::AnalogIn(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANALOG_IN) {}
 
@@ -63,8 +68,8 @@ std::int32_t AnalogIn::get_value_calibrated_HR() const {
 
 std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in) {
 	os << "AnalogIn [";
-	os << "smart_port: " << analog_in._smart_port;
-	os << ", adi_port: " << analog_in._adi_port;
+	os << "smart_port: " << +analog_in._smart_port;
+	os << ", adi_port: " << ((analog_in._adi_port > 10) ? analog_in._adi_port : +analog_in._adi_port);
 	os << ", value calibrated: " << analog_in.get_value_calibrated();
 	os << ", value calibrated HR: " << analog_in.get_value_calibrated_HR();
 	os << ", value: " << analog_in.get_value();
@@ -78,8 +83,8 @@ AnalogOut::AnalogOut(ext_adi_port_pair_t port_pair) : Port(port_pair, E_ADI_ANAL
 
 std::ostream& operator<<(std::ostream& os, pros::adi::AnalogOut& analog_out) {
 	os << "AnalogOut [";
-	os << "smart_port: " << analog_out._smart_port;
-	os << ", adi_port: " << analog_out._adi_port;
+	os << "smart_port: " << +analog_out._smart_port;
+	os << ", adi_port: " << ((analog_out._adi_port > 10) ? analog_out._adi_port : +analog_out._adi_port);
 	os << ", value: " << analog_out.get_value();
 	os << "]";
 
@@ -95,8 +100,8 @@ std::int32_t DigitalIn::get_new_press() const {
 
 std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in) {
 	os << "DigitalIn [";
-	os << "smart_port: " << digital_in._smart_port;
-	os << ", adi_port: " << digital_in._adi_port;
+	os << "smart_port: " << +digital_in._smart_port;
+	os << ", adi_port: " << ((digital_in._adi_port > 10) ? digital_in._adi_port : +digital_in._adi_port);
 	os << ", value: " << digital_in.get_value();
 	os << "]";
 
@@ -113,8 +118,8 @@ DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort
 
 std::ostream& operator<<(std::ostream& os, pros::adi::DigitalOut& digital_out) {
 	os << "DigitalOut [";
-	os << "smart_port: " << digital_out._smart_port;
-	os << ", adi_port: " << digital_out._adi_port;
+	os << "smart_port: " << +digital_out._smart_port;
+	os << ", adi_port: " << ((digital_out._adi_port > 10) ? digital_out._adi_port : +digital_out._adi_port);
 	os << ", value: " << digital_out.get_value();
 	os << "]";
 
@@ -133,12 +138,12 @@ std::int32_t Motor::stop() const {
 	return ext_adi_motor_stop(_smart_port, _adi_port);
 }
 
-Encoder::Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) : Port(adi_port_top) {
+Encoder::Encoder(std::uint8_t adi_port_top, std::uint8_t adi_port_bottom, bool reversed) : Port(adi_port_top),  _port_pair(adi_port_top, adi_port_bottom) {
 	std::int32_t _port = ext_adi_encoder_init(INTERNAL_ADI_PORT, adi_port_top, adi_port_bottom, reversed);
 	get_ports(_port, _smart_port, _adi_port);
 }
 
-Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get<1>(port_tuple)) {
+Encoder::Encoder(ext_adi_port_tuple_t port_tuple, bool reversed) : Port(std::get<1>(port_tuple)), _port_pair(std::get<1>(port_tuple), std::get<2>(port_tuple)) {
 	std::int32_t _port =
 	    ext_adi_encoder_init(std::get<0>(port_tuple), std::get<1>(port_tuple), std::get<2>(port_tuple), reversed);
 	get_ports(_port, _smart_port, _adi_port);
@@ -153,10 +158,14 @@ std::int32_t Encoder::get_value() const {
 	return ext_adi_encoder_get(merge_adi_ports(_smart_port, _adi_port));
 }
 
+ext_adi_port_tuple_t ADIEncoder::get_port() const {
+	return std::make_tuple(_smart_port, std::get<0>(_port_pair), std::get<1>(_port_pair));
+}
+
 std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder) {
 	os << "Encoder [";
-	os << "smart_port: " << encoder._smart_port;
-	os << ", adi_port: " << encoder._adi_port;
+	os << "smart_port: " << +encoder._smart_port;
+	os << ", adi_port: " << ((encoder._adi_port > 10) ? encoder._adi_port : +encoder._adi_port);
 	os << ", value: " << encoder.get_value();
 	os << "]";
 
@@ -199,13 +208,11 @@ std::int32_t Gyro::reset() const {
 Potentiometer::Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(adi_port) { 
 	std::int32_t _port = ext_adi_potentiometer_init(INTERNAL_ADI_PORT, adi_port, potentiometer_type);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
 }
 
 Potentiometer::Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type) : AnalogIn(std::get<1>(port_pair)) { 
  	std::int32_t _port = ext_adi_potentiometer_init(port_pair.first, port_pair.second, potentiometer_type);
 	get_ports(_port, _smart_port, _adi_port);
-	_smart_port++; // for inherited functions this is necessary
 }
 
 double Potentiometer::get_angle() const {
@@ -312,7 +319,9 @@ bool Pneumatics::is_extended() const {
 
 std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer) {
 	os << "Potentiometer [";
-	os << "value: " << potentiometer.get_value();
+	os << "smart_port: " << +potentiometer._smart_port;
+	os << ", adi_port: " << ((potentiometer._adi_port > 10) ? potentiometer._adi_port : +potentiometer._adi_port);
+	os << ", value: " << potentiometer.get_value();
 	os << ", value calibrated: " << potentiometer.get_value_calibrated();
 	os << ", angle: " << potentiometer.get_angle();
 	os << "]";
