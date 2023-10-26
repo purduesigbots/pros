@@ -56,7 +56,7 @@ class Link : public Device {
 	 *      with the transmitter having double the transmitting bandwidth as the receiving
 	 *      end (1040 bytes/s vs 520 bytes/s).
 	 * \param ov
-	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio
+	 * 		Indicates if the radio on the given port needs vexlink to override the controller radio. Defualts to True.
 	 *
 	 * \return PROS_ERR if initialization fails, 1 if the initialization succeeds.
 	 * 
