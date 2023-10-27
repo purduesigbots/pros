@@ -602,10 +602,11 @@ Lists the files in a directory specified by the path
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
  *  // Will return vector containing names of files in root directory
- *	std::vector<std::string> files = list_files("/", test, 128);
+ *	std::vector<std::string> files = pros::usd::list_files("/", test, 128);
  *	pros::delay(200);
  *	// Given vector of std::string file names, print each file name
- *  // Note that if there is an error, the vector will contain one element, PROS_ERR
+ *  // Note that if there is an error, the vector will contain one element, which
+ * // is the error state
  *  // Print each file name
  *	for (std::string file : files) {
  *		std::cout << file << std::endl;
