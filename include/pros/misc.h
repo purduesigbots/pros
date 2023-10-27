@@ -38,9 +38,16 @@
 /// \name V5 Competition
 //@{
 
-#define COMPETITION_DISABLED (1 << 0)
+/*#define COMPETITION_DISABLED (1 << 0)
 #define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
+#define COMPETITION_SYSTEM (1 << 3)*/
+typedef enum {
+    COMPETITION_DISABLED = 1 << 0,
+	COMPETITION_CONNECTED = 1 << 2,
+	COMPETITION_AUTONOMOUS = 1 << 1,
+	COMPETITION_SYSTEM = 1 << 3,
+} competition_status;
 
 #ifdef __cplusplus
 extern "C" {
@@ -91,7 +98,7 @@ uint8_t competition_get_status(void);
  * }
  * \endcode
  */
-#define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
+uint8_t competition_is_disabled();
 
 /**
  * \return True if the V5 Brain is connected to competition control, false otherwise.
@@ -106,7 +113,7 @@ uint8_t competition_get_status(void);
  * }
  * \endcode
  */
-#define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
+uint8_t competition_is_connected();
 
 /**
  * \return True if the V5 Brain is in autonomous mode, false otherwise.
@@ -128,7 +135,34 @@ uint8_t competition_get_status(void);
  * }
  * \endcode
  */
-#define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
+uint8_t competition_is_autonomous();
+
+/**
+ * \return True if the V5 Brain is connected to VEXnet Field Controller, false otherwise.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_field()) {
+ *     // connected to VEXnet Field Controller
+ *   }
+ * }
+ * \endcode
+*/
+uint8_t competition_is_field();
+
+/**
+ * \return True if the V5 Brain is connected to VEXnet Competition Switch, false otherwise.
+ * 
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_switch()) {
+ *     // connected to VEXnet Competition Switch
+ *   }
+ * }
+*/
+uint8_t competition_is_switch();
 
 ///@}
 

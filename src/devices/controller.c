@@ -183,3 +183,23 @@ int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern) {
 uint8_t competition_get_status(void) {
 	return vexCompetitionStatus();
 }
+
+uint8_t competition_is_disabled() {
+    return (competition_get_status() & COMPETITION_DISABLED) != 0;
+}
+
+uint8_t competition_is_connected() {
+    return (competition_get_status() & COMPETITION_CONNECTED) != 0;
+}
+
+uint8_t competition_is_autonomous() {
+	return (competition_get_status() & COMPETITION_AUTONOMOUS) != 0;
+}
+
+uint8_t competition_is_field() {
+	return (competition_get_status() & COMPETITION_SYSTEM) != 0;
+}
+
+uint8_t competition_is_switch() {
+	return (competition_get_status() & COMPETITION_SYSTEM) == 0;
+}

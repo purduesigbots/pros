@@ -509,6 +509,8 @@ std::uint8_t get_status(void);
 std::uint8_t is_autonomous(void);
 std::uint8_t is_connected(void);
 std::uint8_t is_disabled(void);
+std::uint8_t is_field_control(void);
+std::uint8_t is_competition_switch(void);
 }  // namespace competition
 
 namespace usd {
