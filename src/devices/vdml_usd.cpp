@@ -21,10 +21,14 @@ std::int32_t is_installed(void) {
 	return usd_is_installed();
 }
 
+std::int32_t list_files_raw(const char* path, char* buffer, int32_t len) {
+	return usd_list_files_raw(path, buffer, len);
+}
+
 std::vector<std::string> list_files(const char* path, char* buffer, int32_t len) {
 	std::vector<std::string> files = {};
 	// Call the C function
-	int32_t success = usd_list_files(path, buffer, len);
+	int32_t success = usd_list_files_raw(path, buffer, len);
 	// Check if call successful, if PROS_ERR return vector containing PROS_ERR
 	if (success == PROS_ERR) {
 		// push_back PROS_ERR to files vector

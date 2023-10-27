@@ -753,18 +753,18 @@ int32_t usd_is_installed(void);
  * \code
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
- *	pros::c::usd_list_files("/", test, 128);
+ *	pros::c::usd_list_files_raw("/", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
  *  pros::delay(100);
- *  pros::c::usd_list_files("/test", test, 128);
+ *  pros::c::usd_list_files_raw("/usd/test", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
  *  pros::delay(100);
  * }
  * \endcode
 */
-int32_t usd_list_files(const char* path, char* buffer, int32_t len);
+int32_t usd_list_files_raw(const char* path, char* buffer, int32_t len);
 
 /******************************************************************************/
 /**                              Date and Time                               **/

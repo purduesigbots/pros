@@ -526,6 +526,50 @@ namespace usd {
  * \endcode
  */
 std::int32_t is_installed(void);
+
+/**
+Lists the files in a directory specified by the path
+ * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * 
+ * EIO - Hard error occured in the low level disk I/O layer
+ * EINVAL - file or directory is invalid, or length is invalid
+ * EBUSY - THe physical drinve cannot work
+ * ENOENT - cannot find the path or file
+ * EINVAL - the path name format is invalid
+ * EACCES - Access denied or directory full
+ * EEXIST - Access denied
+ * EROFS - SD card is write protected 
+ * ENXIO - drive number is invalid or not a FAT32 drive
+ * ENOBUFS - drive has no work area
+ * ENFILE - too many open files
+ * 
+ * 
+ *  
+ * \note use a path of "\" to list the files in the main directory NOT "/usd/"
+ *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
+ * 
+ * \return 1 on success or PROS_ERR on failure, setting errno
+ * 
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * 	char* test = (char*) malloc(128);
+ *	pros::usd::list_files_raw("/", test, 128);
+ *	pros::delay(200);
+ *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
+ *  pros::delay(100);
+ *  pros::list_files_raw("/usd/test", test, 128);
+ *	pros::delay(200);
+ *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
+ *  pros::delay(100);
+ * }
+ * \endcode
+*/
+std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
+
 /**
 Lists the files in a directory specified by the path
  * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
@@ -557,6 +601,7 @@ Lists the files in a directory specified by the path
  * \code
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
+ *  // Will return vector containing names of files in root directory
  *	std::vector<std::string> files = list_files("/", test, 128);
  *	pros::delay(200);
  *	// Given vector of std::string file names, print each file name

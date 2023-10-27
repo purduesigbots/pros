@@ -21,7 +21,7 @@ static const int FRESULTMAP[] = {0,       EIO,    EINVAL, EBUSY, ENOENT,  ENOENT
                                  EEXIST,  EINVAL, EROFS,  ENXIO, ENOBUFS, ENXIO,  EIO,    EACCES,  // FR_LOCKED
                                  ENOBUFS, ENFILE, EINVAL};
 
-int32_t usd_list_files(const char* path, char* buffer, int32_t len) {
+int32_t usd_list_files_raw(const char* path, char* buffer, int32_t len) {
 	FRESULT result =  vexFileDirectoryGet(path, buffer, len);
 	if (result != F_OK) {
 		errno = FRESULTMAP[result];
