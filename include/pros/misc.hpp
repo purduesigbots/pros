@@ -549,24 +549,25 @@ Lists the files in a directory specified by the path
  * \note use a path of "\" to list the files in the main directory NOT "/usd/"
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
  * 
- * \return 1 on success or PROS_ERR on failure setting errno
+ * \return vector of std::string of file names, if error occurs, returns vector containing
+ * one element, PROS_ERR
  * 
  * \b Example
  * \code
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
- *	pros::usd::list_files("/", test, 128);
+ *	std::vector<std::string> files = list_files("/", test, 128);
  *	pros::delay(200);
- *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
- *  pros::delay(100);
- *  pros::list_files("/test", test, 128);
- *	pros::delay(200);
- *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
- *  pros::delay(100);
+ *	// Given vector of std::string file names, print each file name
+ *  // Note that if there is an error, the vector will contain one element, PROS_ERR
+ *  // Print each file name
+ *	for (std::string file : files) {
+ *		std::cout << file << std::endl;
+ *	}
  * }
  * \endcode
 */
-std::int32_t list_files(const char* path, char* buffer, std::int32_t len);
+std::vector<std::string> list_files(const char* path, char* buffer, int32_t len);
 }  // namespace usd
 
 }  // namespace pros
