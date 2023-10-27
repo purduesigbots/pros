@@ -561,7 +561,7 @@ Lists the files in a directory specified by the path
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
  *  pros::delay(100);
- *  pros::list_files_raw("/usd/test", test, 128);
+ *  pros::list_files_raw("/test", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
  *  pros::delay(100);
@@ -595,7 +595,7 @@ Lists the files in a directory specified by the path
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
  * 
  * \return vector of std::string of file names, if error occurs, returns vector containing
- * one element, PROS_ERR
+ * one element specifying the error state
  * 
  * \b Example
  * \code

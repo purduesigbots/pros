@@ -757,7 +757,7 @@ int32_t usd_is_installed(void);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
  *  pros::delay(100);
- *  pros::c::usd_list_files_raw("/usd/test", test, 128);
+ *  pros::c::usd_list_files_raw("/test", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
  *  pros::delay(100);
