@@ -742,7 +742,12 @@ int32_t usd_is_installed(void);
  * ENOBUFS - drive has no work area
  * ENFILE - too many open files
  * 
- * 
+ * \param path
+ * 	  The path to the directory to list files in
+ * \param buffer
+ * 	  The buffer to put the file names into
+ * \param len
+ * 	  The length of the buffer
  *  
  * \note use a path of "\" to list the files in the main directory NOT "/usd/"
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"

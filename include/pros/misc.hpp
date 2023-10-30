@@ -546,7 +546,12 @@ Lists the files in a directory specified by the path
  * ENOBUFS - drive has no work area
  * ENFILE - too many open files
  * 
- * 
+ * \param path
+ * 	  The path to the directory to list files in
+ * \param buffer
+ * 	  The buffer to put the file names into
+ * \param len
+ * 	  The length of the buffer
  *  
  * \note use a path of "\" to list the files in the main directory NOT "/usd/"
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
@@ -589,7 +594,12 @@ Lists the files in a directory specified by the path
  * ENOBUFS - drive has no work area
  * ENFILE - too many open files
  * 
- * 
+ * \param path
+ * 	  The path to the directory to list files in
+ * \param buffer
+ * 	  The buffer to put the file names into
+ * \param len
+ * 	  The length of the buffer
  *  
  * \note use a path of "\" to list the files in the main directory NOT "/usd/"
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
@@ -606,9 +616,9 @@ Lists the files in a directory specified by the path
  *	pros::delay(200);
  *	// Given vector of std::string file names, print each file name
  *  // Note that if there is an error, the vector will contain one element, which
- * // is the error state
+ *  // is the error state
  *  // Print each file name
- *	for (std::string file : files) {
+ *	for (std::string& file : files) {
  *		std::cout << file << std::endl;
  *	}
  * }
