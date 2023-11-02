@@ -25,10 +25,12 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len) {
 	return usd_list_files_raw(path, buffer, len);
 }
 
-std::vector<std::string> list_files(const char* path, char* buffer, int32_t len) {
+std::vector<std::string> list_files(const char* path) {
 	std::vector<std::string> files = {};
+	// malloc buffer to store file names
+	char *buffer = (char *) malloc(10000);
 	// Call the C function
-	int32_t success = usd_list_files_raw(path, buffer, len);
+	int32_t success = usd_list_files_raw(path, buffer, 10000);
 	// Check if call successful, if error return vector containing error state
 	if (success == PROS_ERR) {
 		// Check errno to see which error state occurred
@@ -95,6 +97,12 @@ std::vector<std::string> list_files(const char* path, char* buffer, int32_t len)
 			break;
 		}
 	}
+
+	// Free buffer
+	free(buffer);
+
+	// Return vector of file names
+	return files;
 }
 
 }  // namespace usd

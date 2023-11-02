@@ -577,7 +577,7 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
 
 /**
 Lists the files in a directory specified by the path
- * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
+ * Puts the list of file names (NOT DIRECTORIES) into a vector of std::string
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -596,10 +596,6 @@ Lists the files in a directory specified by the path
  * 
  * \param path
  * 	  The path to the directory to list files in
- * \param buffer
- * 	  The buffer to put the file names into
- * \param len
- * 	  The length of the buffer
  *  
  * \note use a path of "\" to list the files in the main directory NOT "/usd/"
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
@@ -610,9 +606,8 @@ Lists the files in a directory specified by the path
  * \b Example
  * \code
  * void opcontrol() {
- * 	char* test = (char*) malloc(128);
  *  // Will return vector containing names of files in root directory
- *	std::vector<std::string> files = pros::usd::list_files("/", test, 128);
+ *	std::vector<std::string> files = pros::usd::list_files("/");
  *	pros::delay(200);
  *	// Given vector of std::string file names, print each file name
  *  // Note that if there is an error, the vector will contain one element, which
@@ -624,7 +619,7 @@ Lists the files in a directory specified by the path
  * }
  * \endcode
 */
-std::vector<std::string> list_files(const char* path, char* buffer, int32_t len);
+std::vector<std::string> list_files(const char* path);
 }  // namespace usd
 
 }  // namespace pros
