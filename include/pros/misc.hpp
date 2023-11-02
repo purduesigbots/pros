@@ -528,7 +528,7 @@ namespace usd {
 std::int32_t is_installed(void);
 
 /**
-Lists the files in a directory specified by the path
+ * Lists the files in a directory specified by the path
  * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
  * 
  * This function uses the following values of errno when an error state is
@@ -576,7 +576,7 @@ Lists the files in a directory specified by the path
 std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
 
 /**
-Lists the files in a directory specified by the path
+ * Lists the files in a directory specified by the path
  * Puts the list of file names (NOT DIRECTORIES) into a vector of std::string
  * 
  * This function uses the following values of errno when an error state is
