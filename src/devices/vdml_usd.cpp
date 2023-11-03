@@ -46,41 +46,12 @@ std::vector<std::string> list_files(const char* path) {
 	if (success == PROS_ERR) {
 		// Check errno to see which error state occurred
 		// push back error state to files vector as std::string
-		switch (errno) {
-			case EIO:
-				files.push_back("EIO");
-				break;
-			case EINVAL:
-				files.push_back("EINVAL");
-				break;
-			case EBUSY:
-				files.push_back("EBUSY");
-				break;
-			case ENOENT:
-				files.push_back("ENOENT");
-				break;
-			case EACCES:
-				files.push_back("EACCES");
-				break;
-			case EEXIST:
-				files.push_back("EEXIST");
-				break;
-			case EROFS:
-				files.push_back("EROFS");
-				break;
-			case ENXIO:
-				files.push_back("ENXIO");
-				break;
-			case ENOBUFS:
-				files.push_back("ENOBUFS");
-				break;
-			case ENFILE:
-				files.push_back("ENFILE");
-				break;
-			default:
-				// If none of the above, will be FILE IO error
-				files.push_back("FILE I/O ERROR");
-				break;
+		if (errno == EINVAL || errno == ENOENT) {
+			// errors related to path not found
+			files.push_back("path not found");
+		} else {
+			// other error stats related to file io
+			files.push_back("file i/o error");
 		}
 		return files;
 	}
