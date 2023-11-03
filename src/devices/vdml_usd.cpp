@@ -29,6 +29,15 @@ std::vector<std::string> list_files(const char* path) {
 	std::vector<std::string> files = {};
 	// malloc buffer to store file names
 	char *buffer = (char *) malloc(10000);
+	if (buffer == NULL) {
+		// try again smaller buffer to see if that works
+		buffer = (char *) malloc(500);
+		if (buffer == NULL) {
+			// if still fails, return vector containing error state
+			files.push_back("ENOMEM");
+			return files;
+		}
+	}
 	// Call the C function
 	int32_t success = usd_list_files_raw(path, buffer, 10000);
 	// Check if call successful, if error return vector containing error state
