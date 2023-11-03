@@ -34,7 +34,9 @@ std::vector<std::string> list_files(const char* path) {
 		buffer = (char *) malloc(500);
 		if (buffer == NULL) {
 			// if still fails, return vector containing error state
-			files.push_back("ENOMEM");
+			// set errno to ENOMEM
+			errno = ENOMEM;
+			files.push_back("not enough memory to get file names");
 			return files;
 		}
 	}
