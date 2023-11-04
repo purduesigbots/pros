@@ -601,7 +601,7 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
  * 
  * \return vector of std::string of file names, if error occurs, returns vector containing
- * one element specifying the error state
+ * two elements, first element is "ERROR" and second element is the error message
  * 
  * \b Example
  * \code
@@ -610,12 +610,20 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  *	std::vector<std::string> files = pros::usd::list_files("/");
  *	pros::delay(200);
  *	// Given vector of std::string file names, print each file name
- *  // Note that if there is an error, the vector will contain one element, which
- *  // is the error state
- *  // Print each file name
- *	for (std::string& file : files) {
- *		std::cout << file << std::endl;
- *	}
+ *  // Note that if there is an error, the vector will contain two elements,
+ *  // first element is "ERROR" and second element is the error message
+ * 
+ * 	// Check if error occurred
+ *  if (file_list.front().start_with("ERROR")) {
+ *  	// deal with error
+ *  }
+ *  else {
+ * 		// file list returned is valid
+ *  	// Print each file name
+ *		for (std::string& file : files) {
+ *			std::cout << file << std::endl;
+ *		}
+ *  }
  * }
  * \endcode
 */

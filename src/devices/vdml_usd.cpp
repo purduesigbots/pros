@@ -28,22 +28,26 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len) {
 std::vector<std::string> list_files(const char* path) {
 	std::vector<std::string> files = {};
 	// malloc buffer to store file names
-	char *buffer = (char *) malloc(10000);
+	size_t buffer_size = 10000;
+	char *buffer = (char *) malloc(buffer_size);
 	if (buffer == NULL) {
 		// try again smaller buffer to see if that works
-		buffer = (char *) malloc(500);
+		buffer_size = 500;
+		buffer = (char *) malloc(buffer_size);
 		if (buffer == NULL) {
 			// if still fails, return vector containing error state
 			// set errno to ENOMEM
 			errno = ENOMEM;
+			files.push_back("ERROR");
 			files.push_back("not enough memory to get file names");
 			return files;
 		}
 	}
 	// Call the C function
-	int32_t success = usd_list_files_raw(path, buffer, 10000);
+	int32_t success = usd_list_files_raw(path, buffer, buffer_size);
 	// Check if call successful, if error return vector containing error state
 	if (success == PROS_ERR) {
+		files.push_back("ERROR");
 		// Check errno to see which error state occurred
 		// push back error state to files vector as std::string
 		if (errno == EINVAL || errno == ENOENT) {
@@ -62,14 +66,16 @@ std::vector<std::string> list_files(const char* path) {
 	// delimter_pos is the position of the delimiter '\n'
 	// index of which character to start substr from
 	// file_name used to store each file name
-	size_t delimiter_pos, index = 0;
+	size_t delimiter_pos = 0;
+	size_t index = 0;
 	std::string_view file_name;
 
 	// Loop until delimiter '\n' can not be found anymore
 	while ((delimiter_pos = str.find('\n', index)) != std::string::npos) {
 		// file_name is the string from the beginning of str to the first '\n', excluding '\n'
 		file_name = std::string_view(str.data() + index, delimiter_pos - index);
-		// Add token to files vector
+		// This is point where content of the std::string_view file name is copied to its
+		// own std::string and added to the files vector
 		files.emplace_back(file_name);
 		// Increment index to start substr from
 		index = delimiter_pos + 1;
