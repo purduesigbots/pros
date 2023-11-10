@@ -43,6 +43,19 @@ std::vector<std::string> list_files(const char* path) {
 			return files;
 		}
 	}
+
+	// Check path user passed in
+	std::string_view path_sv(path);
+	size_t found = path_sv.find("usd");
+	if (found == 0 || found == 1) {
+		// Deal with when user prepends path with usd
+		// as either "usd/..." or "/usd/..."
+		path_sv.remove_prefix(3);
+	}
+
+	// set path to path_sv.data()
+	path = path_sv.data();
+
 	// Call the C function
 	int32_t success = usd_list_files_raw(path, buffer, buffer_size);
 	// Check if call successful, if error return vector containing error state
@@ -76,7 +89,7 @@ std::vector<std::string> list_files(const char* path) {
 		file_name = std::string_view(str.data() + index, delimiter_pos - index);
 		// This is point where content of the std::string_view file name is copied to its
 		// own std::string and added to the files vector
-		files.emplace_back(file_name);
+		files.emplace_back("/usd" + std::string(path) + "/" + std::string(file_name));
 		// Increment index to start substr from
 		index = delimiter_pos + 1;
 

@@ -577,7 +577,7 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
 
 /**
  * Lists the files in a directory specified by the path
- * Puts the list of file names (NOT DIRECTORIES) into a vector of std::string
+ * Puts the list of file paths (NOT DIRECTORIES) into a vector of std::string
  * 
  * This function uses the following values of errno when an error state is
  * reached:
@@ -596,9 +596,6 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  * 
  * \param path
  * 	  The path to the directory to list files in
- *  
- * \note use a path of "\" to list the files in the main directory NOT "/usd/"
- *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
  * 
  * \return vector of std::string of file names, if error occurs, returns vector containing
  * two elements, first element is "ERROR" and second element is the error message
@@ -606,10 +603,10 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  * \b Example
  * \code
  * void opcontrol() {
- *  // Will return vector containing names of files in root directory
- *	std::vector<std::string> files = pros::usd::list_files("/");
+ *  // Will return vector containing file paths of files in root directory
+ *	std::vector<std::string> files = pros::usd::list_files("/test");
  *	pros::delay(200);
- *	// Given vector of std::string file names, print each file name
+ *	// Given vector of std::string file paths, print each file path
  *  // Note that if there is an error, the vector will contain two elements,
  *  // first element is "ERROR" and second element is the error message
  * 
@@ -619,7 +616,8 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  *  }
  *  else {
  * 		// file list returned is valid
- *  	// Print each file name
+ *  	// Print each file path
+ *      // Each file path in format "/usd/path/file_name"
  *		for (std::string& file : files) {
  *			std::cout << file << std::endl;
  *		}
