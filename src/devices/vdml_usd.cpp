@@ -46,11 +46,12 @@ std::vector<std::string> list_files(const char* path) {
 
 	// Check path user passed in
 	std::string_view path_sv(path);
-	size_t found = path_sv.find("usd");
-	if (found == 0 || found == 1) {
+	constexpr std::string_view usd_prefix {"usd"};
+	const size_t usd_prefix_idx = path_sv.find(usd_prefix);
+	if (usd_prefix_idx == 0 || usd_prefix_idx == 1) {
 		// Deal with when user prepends path with usd
 		// as either "usd/..." or "/usd/..."
-		path_sv.remove_prefix(3);
+		path_sv.remove_prefix(usd_prefix.length() + usd_prefix_idx);
 	}
 
 	// set path to path_sv.data()
@@ -89,7 +90,12 @@ std::vector<std::string> list_files(const char* path) {
 		file_name = std::string_view(str.data() + index, delimiter_pos - index);
 		// This is point where content of the std::string_view file name is copied to its
 		// own std::string and added to the files vector
-		files.emplace_back("/usd" + std::string(path) + "/" + std::string(file_name));
+		const size_t path_size = 1 + usd_prefix.length() + strlen(path) + 1 + file_name.length() + 1;
+		std::string buffer;
+		buffer.reserve(path_size);
+		std::snprintf(buffer.data(), path_size, "/usd%s/%.*s", path, static_cast<int>(file_name.length()), file_name.data());
+
+		files.push_back(std::move(buffer));
 		// Increment index to start substr from
 		index = delimiter_pos + 1;
 
