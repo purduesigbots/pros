@@ -54,6 +54,8 @@ int usd_write_r(struct _reent* r, void* const arg, const uint8_t* buf, const siz
 	usd_file_arg_t* file_arg = (usd_file_arg_t*)arg;
 	// TODO: mutex here. Global or file lock?
 	int32_t result = vexFileWrite((char*)buf, sizeof(*buf), len, file_arg->ifi_fptr);
+	// Flush the buffer
+	vexFileSync(file_arg->ifi_fptr);
 	return result;
 }
 
