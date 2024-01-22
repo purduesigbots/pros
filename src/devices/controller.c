@@ -197,9 +197,9 @@ uint8_t competition_is_autonomous() {
 }
 
 uint8_t competition_is_field() {
-	return (competition_get_status() & COMPETITION_SYSTEM) != 0;
+	return ( (competition_get_status() & COMPETITION_SYSTEM) != 0 ) && competition_is_connected();
 }
 
 uint8_t competition_is_switch() {
-	return (competition_get_status() & COMPETITION_SYSTEM) == 0;
+	return ( (competition_get_status() & COMPETITION_SYSTEM) == 0)  && competition_is_connected();
 }
