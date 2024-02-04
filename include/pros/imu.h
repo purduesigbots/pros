@@ -29,8 +29,8 @@ namespace c {
 #endif
 
 typedef enum imu_status_e {
-	E_IMU_STATUS_READY = 0,
-	E_IMU_STATUS_CALIBRATING = 19,
+	E_IMU_STATUS_READY = 0, // IMU is connected but not currently calibrating
+	E_IMU_STATUS_CALIBRATING = 19, // IMU is calibrating
 	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
 	                            // necessarily in an error state
 } imu_status_e_t;
