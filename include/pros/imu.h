@@ -41,8 +41,9 @@ namespace pros {
  * @brief Indicates IMU status.
  */
 typedef enum imu_status_e {
+	E_IMU_STATUS_READY = 0, // IMU is connected but not currently calibrating
 	/** The IMU is calibrating */
-	E_IMU_STATUS_CALIBRATING = 0x01,
+	E_IMU_STATUS_CALIBRATING = 19,
 	/** Used to indicate that an error state was reached in the imu_get_status function,\
 	not that the IMU is necessarily in an error state */
 	E_IMU_STATUS_ERROR = 0xFF,
