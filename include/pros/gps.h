@@ -188,6 +188,16 @@ double gps_get_error(uint8_t port);
  */
 gps_status_s_t gps_get_status(uint8_t port);
 
+double gps_get_x_position(uint8_t port);
+
+double gps_get_y_position(uint8_t port);
+
+double gps_get_pitch(uint8_t port);
+
+double gps_get_roll(uint8_t port);
+
+double gps_get_yaw(uint8_t port);
+
 /**
  * Get the heading in [0,360) degree values.
  *

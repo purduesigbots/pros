@@ -232,6 +232,16 @@ class Gps {
 	 */
 	virtual std::int32_t set_rotation(double target) const;
 
+	virtual double get_x_position() const;
+
+	virtual double get_y_position() const;
+
+	virtual double get_pitch() const;
+
+	virtual double get_roll() const;
+
+	virtual double get_yaw() const;
+
 	/**
 	 * Tare the GPS sensor's rotation value
 	 *
