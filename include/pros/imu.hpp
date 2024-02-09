@@ -40,8 +40,9 @@ namespace pros {
  */
 
 enum class ImuStatus {
+	ready = 0,
 	/** The IMU is calibrating */
-	calibrating = 0x01,
+	calibrating = 19,
 	/** Used to indicate that an error state was reached in the imu_get_status function,\
 	not that the IMU is necessarily in an error state */
 	error = 0xFF,
