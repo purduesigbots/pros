@@ -188,14 +188,89 @@ double gps_get_error(uint8_t port);
  */
 gps_status_s_t gps_get_status(uint8_t port);
 
+/**
+ * Gets the X position in meters of the robot relative to the starting position.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The X position in meters. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
 double gps_get_x_position(uint8_t port);
 
+/**
+ * Gets the Y position in meters of the robot relative to the starting position.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The Y position in meters. If the operation failed,
+ * returns PROS_ERR_F and errno is set.t.
+ */
 double gps_get_y_position(uint8_t port);
 
+/**
+ * Gets the pitch of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The pitch in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is se
+ */
 double gps_get_pitch(uint8_t port);
 
+/**
+ * Gets the roll of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The roll in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
 double gps_get_roll(uint8_t port);
 
+/**
+ * Gets the yaw of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The yaw in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
 double gps_get_yaw(uint8_t port);
 
 /**

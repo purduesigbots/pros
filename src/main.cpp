@@ -77,7 +77,6 @@ void opcontrol() {
 	pros::Controller master(pros::E_CONTROLLER_MASTER);
 	pros::Motor left_mtr(1);
 	pros::Motor right_mtr(2);
-  pros::Gps my_gps(10);
 
 	while (true) {
 		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -85,12 +84,6 @@ void opcontrol() {
 		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
 		int left = master.get_analog(ANALOG_LEFT_Y);
 		int right = master.get_analog(ANALOG_RIGHT_Y);
-
-    pros::lcd::print(2, "X pos: %fm, Y pos: %fm", my_gps.get_x_position(), my_gps.get_y_position());
-    pros::lcd::print(3, "Pitch: %fdeg", my_gps.get_pitch());  
-    pros::lcd::print(4, "Roll:  %fdeg", my_gps.get_roll());
-    pros::lcd::print(5, "Yaw:   %fdeg", my_gps.get_yaw());
-    pros::lcd::print(6, "Get rotation: %fdeg", my_gps.get_rotation());
 
 		left_mtr = left;
 		right_mtr = right;
