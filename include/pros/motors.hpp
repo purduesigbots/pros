@@ -71,7 +71,7 @@ class Motor : public AbstractMotor, public Device {
  	 * \endcode
 	 * 
 	 */
-	Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
+	explicit Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
 	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 
 	
