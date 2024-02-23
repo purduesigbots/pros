@@ -88,21 +88,6 @@ void opcontrol() {
 		left_mtr = left;
 		right_mtr = right;
 
-		// Instantiate the IMU on port where is not connected
-		printf("Imu 1: \n");
-		pros::Imu imu(3);
-		// Call Imu::is_calibrating() to check if function is working
-		// Will return true if calibrating, false if not
-		printf("Imu::is_calibrating() = %d\n", imu.is_calibrating());
-		// Instantiate the IMU on port where is connected
-		printf("Imu 2: \n");
-		pros::Imu imu2(11);
-		// Calibrate the IMU, no blocking
-		imu2.reset();
-		// Call Imu::is_calibrating() to check if function is working
-		// Will return true if calibrating, false if not
-		printf("Imu::is_calibrating() = %d\n", imu2.is_calibrating());
-
 		pros::delay(20);
 	}
 }
