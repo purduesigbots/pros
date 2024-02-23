@@ -290,7 +290,7 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_ENCODER);
 
 	int32_t rtn;
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
@@ -306,7 +306,7 @@ int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc) {
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_ENCODER);
 
 	vexDeviceAdiValueSet(device->device_info, adi_port, 0);
 	return_port(smart_port, 1);
@@ -317,7 +317,7 @@ int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc) {
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_ENCODER);
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
@@ -342,7 +342,7 @@ int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult) {
 	get_ports(ult, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ULTRASONIC);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_ULTRASONIC);
 
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, adi_port);
 	return_port(smart_port, rtn);
@@ -353,7 +353,7 @@ int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult) {
 	get_ports(ult, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ULTRASONIC);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_ULTRASONIC);
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
@@ -403,7 +403,7 @@ int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_GYRO);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->gyro_data.tare_value = vexDeviceAdiValueGet(device->device_info, adi_port);
@@ -415,7 +415,7 @@ int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
+	validate_type(device, adi_port, smart_port, E_ADI_LEGACY_GYRO);
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
 	return_port(smart_port, 1);
@@ -439,7 +439,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	get_ports(potentiometer, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_f(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port - 1, E_ADI_ANALOG_IN);
+	validate_type(device, adi_port, smart_port, E_ADI_ANALOG_IN);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 
@@ -494,7 +494,7 @@ int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buff
 	}
 	buffer[pixel_position] = color;
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
-	return_port(smart_port - 1, rtv); 
+	return_port(smart_port, rtv); 
 }
 
 int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
