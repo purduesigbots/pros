@@ -20,11 +20,12 @@
 #undef _GNU_SOURCE
 #include <stdarg.h>
 #include <string.h>
+
 #include "kapi.h"
 #include "pros/llemu.h"
 
-#define LCD_WIDTH	480 
-#define LCD_HEIGHT 	240
+#define LCD_WIDTH 480
+#define LCD_HEIGHT 240
 #define LLEMU_LINES 8
 
 static lv_style_t frame_style;
@@ -311,6 +312,10 @@ uint8_t lcd_read_buttons(void) {
 }
 
 void lcd_set_background_color(lv_color_t color) {
+	if (!lcd_is_initialized()) {
+		errno = ENXIO;
+		return 0;
+	}
 	screen_style.body.main_color = color;
 	screen_style.body.grad_color = color;
 }
