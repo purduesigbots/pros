@@ -120,6 +120,21 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
+Imu Imu::getImu() {
+	static int curr_port = 0;
+	curr_port = curr_port % 21;
+	for (int i = 0; i < 21; i++) {
+		if (registry_get_device(curr_port)->device_type == pros::c::E_DEVICE_IMU) {
+			curr_port++;
+			return Imu(curr_port);
+		}
+		curr_port++;
+		curr_port = curr_port % 21;
+	}
+	errno = EERR;
+	return Imu(PROS_ERR_BYTE);
+}
+
 std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {
 	pros::imu_gyro_s_t gyro = imu.get_gyro_rate();
 	pros::imu_accel_s_t accel = imu.get_accel();

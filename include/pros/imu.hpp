@@ -82,8 +82,9 @@ class Imu : public Device {
 	 * }
 	 * \endcode
 	 */
-	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
+	Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
+	static Imu getImu();
 	/**
 	 * Calibrate IMU
 	 *
