@@ -388,14 +388,14 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_f(smart_port, E_DEVICE_ADI);
+	claim_port_f(smart_port - 1, E_DEVICE_ADI);
 	validate_type_f(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
 
 	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	rtv -= adi_data->gyro_data.tare_value;
 	rtv *= adi_data->gyro_data.multiplier;
-	return_port(smart_port, rtv);
+	return_port(smart_port - 1, rtv);
 }
 
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
