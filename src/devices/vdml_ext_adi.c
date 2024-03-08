@@ -289,7 +289,7 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
 	uint8_t smart_port, adi_port;
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
 
 	int32_t rtn;
@@ -298,29 +298,29 @@ int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
 		rtn = -vexDeviceAdiValueGet(device->device_info, adi_port);
 	else
 		rtn = vexDeviceAdiValueGet(device->device_info, adi_port);
-	return_port(smart_port, rtn);
+	return_port(smart_port - 1, rtn);
 }
 
 int32_t ext_adi_encoder_reset(ext_adi_encoder_t enc) {
 	uint8_t smart_port, adi_port;
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
 
 	vexDeviceAdiValueSet(device->device_info, adi_port, 0);
-	return_port(smart_port, 1);
+	return_port(smart_port - 1, 1);
 }
 
 int32_t ext_adi_encoder_shutdown(ext_adi_encoder_t enc) {
 	uint8_t smart_port, adi_port;
 	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
-	return_port(smart_port, 1);
+	return_port(smart_port - 1, 1);
 }
 
 ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_port_ping, uint8_t adi_port_echo) {
@@ -341,22 +341,22 @@ int32_t ext_adi_ultrasonic_get(ext_adi_ultrasonic_t ult) {
 	uint8_t smart_port, adi_port;
 	get_ports(ult, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ULTRASONIC);
 
 	int32_t rtn = vexDeviceAdiValueGet(device->device_info, adi_port);
-	return_port(smart_port, rtn);
+	return_port(smart_port - 1, rtn);
 }
 
 int32_t ext_adi_ultrasonic_shutdown(ext_adi_ultrasonic_t ult) {
 	uint8_t smart_port, adi_port;
 	get_ports(ult, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ULTRASONIC);
 
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
-	return_port(smart_port, 1);
+	return_port(smart_port - 1, 1);
 }
 
 ext_adi_gyro_t ext_adi_gyro_init(uint8_t smart_port, uint8_t adi_port, double multiplier) {
@@ -388,36 +388,36 @@ double ext_adi_gyro_get(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_f(smart_port, E_DEVICE_ADI);
+	claim_port_f(smart_port - 1, E_DEVICE_ADI);
 	validate_type_f(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
 
 	double rtv = (double)vexDeviceAdiValueGet(device->device_info, adi_port);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	rtv -= adi_data->gyro_data.tare_value;
 	rtv *= adi_data->gyro_data.multiplier;
-	return_port(smart_port, rtv);
+	return_port(smart_port - 1, rtv);
 }
 
 int32_t ext_adi_gyro_reset(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->gyro_data.tare_value = vexDeviceAdiValueGet(device->device_info, adi_port);
-	return_port(smart_port, 1);
+	return_port(smart_port - 1, 1);
 }
 
 int32_t ext_adi_gyro_shutdown(ext_adi_gyro_t gyro) {
 	uint8_t smart_port, adi_port;
 	get_ports(gyro, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_GYRO);
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_TYPE_UNDEFINED);
-	return_port(smart_port, 1);
+	return_port(smart_port - 1, 1);
 }
 
 ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t adi_port,
@@ -436,7 +436,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	uint8_t smart_port, adi_port;
 	get_ports(potentiometer, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_f(smart_port, E_DEVICE_ADI);
+	claim_port_f(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_ANALOG_IN);
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	switch (adi_data->potentiometer_data.potentiometer_type) {
@@ -450,7 +450,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			errno = ENXIO;
 			rtn = PROS_ERR_F;
 	}
-	return_port(smart_port, rtn);
+	return_port(smart_port - 1, rtn);
 }
 
 ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
@@ -464,8 +464,8 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port, E_ADI_DIGITAL_OUT);
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
 	}
@@ -475,18 +475,18 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 		return PROS_ERR;
 	}
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
-	return_port(smart_port, rtv); 
+	return_port(smart_port - 1, rtv); 
 }
 
 int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
-	claim_port_i(smart_port, E_DEVICE_ADI); 
+	claim_port_i(smart_port - 1, E_DEVICE_ADI); 
 	transform_adi_port(adi_port);
-	validate_type(device, adi_port, smart_port, E_ADI_DIGITAL_OUT);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
 	if(buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 || pixel_position > buffer_length - 1) {
 		errno = EINVAL;
-		return_port(smart_port, PROS_ERR);
+		return_port(smart_port - 1, PROS_ERR);
 	}
 	buffer[pixel_position] = color;
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
