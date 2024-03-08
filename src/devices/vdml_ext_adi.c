@@ -331,7 +331,7 @@ ext_adi_ultrasonic_t ext_adi_ultrasonic_init(uint8_t smart_port, uint8_t adi_por
 		errno = EINVAL;
 		return PROS_ERR;
 	}
-
+	printf("Smart port: %d\n", smart_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	vexDeviceAdiPortConfigSet(device->device_info, port, E_ADI_LEGACY_ULTRASONIC);
 	return_port(smart_port - 1, merge_adi_ports(smart_port, port + 1));
