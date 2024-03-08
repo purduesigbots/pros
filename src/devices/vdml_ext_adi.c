@@ -425,11 +425,9 @@ ext_adi_potentiometer_t ext_adi_potentiometer_init(uint8_t smart_port, uint8_t a
                                                    adi_potentiometer_type_e_t potentiometer_type) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
-
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 	adi_data->potentiometer_data.potentiometer_type = potentiometer_type;
 	vexDeviceAdiPortConfigSet(device->device_info, adi_port, E_ADI_ANALOG_IN);
-
 	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
@@ -438,8 +436,8 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 	uint8_t smart_port, adi_port;
 	get_ports(potentiometer, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	claim_port_f(smart_port, E_DEVICE_ADI);
-	validate_type(device, adi_port, smart_port, E_ADI_ANALOG_IN);
+	claim_port_f(smart_port - 1, E_DEVICE_ADI);
+	validate_type(device, adi_port, smart_port - 1, E_ADI_ANALOG_IN);
 
 	adi_data_s_t* const adi_data = &((adi_data_s_t*)(device->pad))[adi_port];
 
@@ -454,7 +452,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 			errno = ENXIO;
 			rtn = PROS_ERR_F;
 	}
-	return_port(smart_port, rtn);
+	return_port(smart_port - 1, rtn);
 }
 
 ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
