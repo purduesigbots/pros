@@ -204,7 +204,7 @@ class Gps {
 	virtual double get_y_position() const;
 
 	/**
-	 * Gets the pitch of the robot in degrees relative to the starting oreintation.
+	 * Gets the pitch of the GPS in degrees relative to the starting orientation.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -219,7 +219,7 @@ class Gps {
 	virtual double get_pitch() const;
 
 	/**
-	 * Gets the roll of the robot in degrees relative to the starting oreintation.
+	 * Gets the roll of the GPS in degrees relative to the starting orientation.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -234,7 +234,7 @@ class Gps {
 	virtual double get_roll() const;
 
 	/**
-	 * Gets the yaw of the robot in degrees relative to the starting oreintation.
+	 * Gets the yaw of the GPS in degrees relative to the starting orientation.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:

@@ -218,12 +218,12 @@ double gps_get_x_position(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * 
  * \return The Y position in meters. If the operation failed,
- * returns PROS_ERR_F and errno is set.t.
+ * returns PROS_ERR_F and errno is set.
  */
 double gps_get_y_position(uint8_t port);
 
 /**
- * Gets the pitch of the robot in degrees relative to the starting oreintation.
+ * Gets the pitch of the GPS in degrees relative to the starting orientation.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -235,12 +235,12 @@ double gps_get_y_position(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * 
  * \return The pitch in [0,360) degree values. If the operation failed,
- * returns PROS_ERR_F and errno is se
+ * returns PROS_ERR_F and errno is set.
  */
 double gps_get_pitch(uint8_t port);
 
 /**
- * Gets the roll of the robot in degrees relative to the starting oreintation.
+ * Gets the roll of the GPS in degrees relative to the starting orientation.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -257,7 +257,7 @@ double gps_get_pitch(uint8_t port);
 double gps_get_roll(uint8_t port);
 
 /**
- * Gets the yaw of the robot in degrees relative to the starting oreintation.
+ * Gets the yaw of the GPS in degrees relative to the starting orientation.
  *
  * This function uses the following values of errno when an error state is
  * reached:
