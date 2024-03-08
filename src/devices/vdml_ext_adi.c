@@ -50,14 +50,15 @@ typedef union adi_data {
 	} gyro_data;
 } adi_data_s_t;
 
-
 // These 2 functions aren't in v5_api.h but should be... so we're going to directly expose them with an extern "C".
 #ifdef __cplusplus
 extern "C" {
 #endif
-  // private addressable LED API
-  int32_t vexDeviceAdiAddrLedSet( V5_DeviceT device, uint32_t port, uint32_t *pData, uint32_t nOffset, uint32_t nLength, uint32_t options );
-  int32_t vexAdiAddrLedSet( uint32_t index, uint32_t port, uint32_t *pData, uint32_t nOffset, uint32_t nLength, uint32_t options );
+// private addressable LED API
+int32_t vexDeviceAdiAddrLedSet(V5_DeviceT device, uint32_t port, uint32_t* pData, uint32_t nOffset, uint32_t nLength,
+                               uint32_t options);
+int32_t vexAdiAddrLedSet(uint32_t index, uint32_t port, uint32_t* pData, uint32_t nOffset, uint32_t nLength,
+                         uint32_t options);
 #ifdef __cplusplus
 }
 #endif
@@ -74,26 +75,26 @@ extern "C" {
 		return PROS_ERR;                   \
 	}
 
-#define validate_type(device, adi_port, smart_port, type)                                                                 		\
-	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); 			\
-	if (config != type) {     													\
-		errno = EADDRINUSE;          												\
-		printf("Error: validate_type\n"); 											\
-		return_port(smart_port, PROS_ERR);                                                                                      \
+#define validate_type(device, adi_port, smart_port, type)                                                     \
+	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
+	if (config != type) {                                                                                       \
+		errno = EADDRINUSE;                                                                                       \
+		printf("Error: validate_type\n");                                                                         \
+		return_port(smart_port, PROS_ERR);                                                                        \
 	}
 
-#define validate_type_f(device, adi_port, smart_port, type)                                                                 \
+#define validate_type_f(device, adi_port, smart_port, type)                                                   \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
-	if (config != type) {                                                                                   \
-		errno = EADDRINUSE;                                                                                   \
-		return_port(smart_port, PROS_ERR_F);                                                                                     \
+	if (config != type) {                                                                                       \
+		errno = EADDRINUSE;                                                                                       \
+		return_port(smart_port, PROS_ERR_F);                                                                      \
 	}
 
-#define validate_motor(device, adi_port, smart_port)                                                                      \
+#define validate_motor(device, adi_port, smart_port)                                                          \
 	adi_port_config_e_t config = (adi_port_config_e_t)vexDeviceAdiPortConfigGet(device->device_info, adi_port); \
-	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                       \
-		errno = EADDRINUSE;                                                                                   \
-		return_port(smart_port, PROS_ERR);                                                                                   \
+	if (config != E_ADI_LEGACY_PWM && config != E_ADI_LEGACY_SERVO) {                                           \
+		errno = EADDRINUSE;                                                                                       \
+		return_port(smart_port, PROS_ERR);                                                                        \
 	}
 
 /*
@@ -287,7 +288,7 @@ ext_adi_encoder_t ext_adi_encoder_init(uint8_t smart_port, uint8_t adi_port_top,
 
 int32_t ext_adi_encoder_get(ext_adi_encoder_t enc) {
 	uint8_t smart_port, adi_port;
-	get_ports(enc, smart_port - 1, adi_port);
+	get_ports(enc, smart_port, adi_port);
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_LEGACY_ENCODER);
@@ -459,7 +460,7 @@ double ext_adi_potentiometer_get_angle(ext_adi_potentiometer_t potentiometer) {
 ext_adi_led_t ext_adi_led_init(uint8_t smart_port, uint8_t adi_port) {
 	transform_adi_port(adi_port);
 	claim_port_i(smart_port - 1, E_DEVICE_ADI);
-	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT); 
+	vexDeviceAdiPortConfigSet(device->device_info, adi_port, (V5_AdiPortConfiguration)E_ADI_DIGITAL_OUT);
 	return_port(smart_port - 1, merge_adi_ports(smart_port, adi_port + 1));
 }
 
@@ -471,35 +472,35 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
 	if (buffer_length > MAX_LED) {
 		buffer_length = MAX_LED;
-	}
-	else if (buffer == NULL || buffer_length < 1)
-	{
+	} else if (buffer == NULL || buffer_length < 1) {
 		errno = EINVAL;
 		return PROS_ERR;
 	}
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
-	return_port(smart_port - 1, rtv); 
+	return_port(smart_port - 1, rtv);
 }
 
-int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color, uint32_t pixel_position) {
+int32_t ext_adi_led_set_pixel(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color,
+                              uint32_t pixel_position) {
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
-	claim_port_i(smart_port - 1, E_DEVICE_ADI); 
+	claim_port_i(smart_port - 1, E_DEVICE_ADI);
 	transform_adi_port(adi_port);
 	validate_type(device, adi_port, smart_port - 1, E_ADI_DIGITAL_OUT);
-	if(buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 || pixel_position > buffer_length - 1) {
+	if (buffer == NULL || pixel_position < 0 || buffer_length >= MAX_LED || buffer_length < 1 ||
+	    pixel_position > buffer_length - 1) {
 		errno = EINVAL;
 		return_port(smart_port - 1, PROS_ERR);
 	}
 	buffer[pixel_position] = color;
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
-	return_port(smart_port - 1, rtv); 
+	return_port(smart_port - 1, rtv);
 }
 
 int32_t ext_adi_led_set_all(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_length, uint32_t color) {
-	for(int i = 0; i < buffer_length; i++){
+	for (int i = 0; i < buffer_length; i++) {
 		buffer[i] = color;
-  	}
+	}
 	return ext_adi_led_set(led, buffer, buffer_length);
 }
 
