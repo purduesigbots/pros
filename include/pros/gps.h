@@ -234,7 +234,7 @@ double gps_get_y_position(uint8_t port);
  * \param  port
  * 				 The V5 GPS port number from 1-21
  * 
- * \return The pitch in [0,360) degree values. If the operation failed,
+ * \return The pitch in (-90,90] degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
  */
 double gps_get_pitch(uint8_t port);
@@ -251,7 +251,7 @@ double gps_get_pitch(uint8_t port);
  * \param  port
  * 				 The V5 GPS port number from 1-21
  * 
- * \return The roll in [0,360) degree values. If the operation failed,
+ * \return The roll in (-180,180] degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
  */
 double gps_get_roll(uint8_t port);
@@ -268,7 +268,7 @@ double gps_get_roll(uint8_t port);
  * \param  port
  * 				 The V5 GPS port number from 1-21
  * 
- * \return The yaw in [0,360) degree values. If the operation failed,
+ * \return The yaw in (-180,180] degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
  */
 double gps_get_yaw(uint8_t port);
