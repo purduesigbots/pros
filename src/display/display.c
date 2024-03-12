@@ -12,6 +12,7 @@
 
 #include "display/lvgl.h"
 #include "kapi.h"
+#include "pros/rtos.h"
 #include "v5_api.h"
 
 static task_stack_t disp_daemon_task_stack[TASK_STACK_DEPTH_DEFAULT];
@@ -22,8 +23,8 @@ static void disp_daemon(void* ign) {
 	uint32_t time = millis();
 	while (true) {
 		lv_task_handler();
-		task_delay_until(&time, 2);
-		lv_tick_inc(2);
+		task_delay_until(&time, 16);
+		lv_tick_inc(16);
 	}
 }
 
@@ -72,6 +73,6 @@ void display_initialize(void) {
 	lv_obj_set_size(page, 480, 240);
 	lv_scr_load(page);
 
-	disp_daemon_task = task_create_static(disp_daemon, NULL, TASK_PRIORITY_MIN + 2, TASK_STACK_DEPTH_DEFAULT,
+	disp_daemon_task = task_create_static(disp_daemon, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT,
 	                                      "Display Daemon (PROS)", disp_daemon_task_stack, &disp_daemon_task_buffer);
 }
