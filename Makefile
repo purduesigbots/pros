@@ -51,8 +51,8 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 -include ./common.mk
 
 .PHONY: $(INCDIR)/api.h
-# $(INCDIR)/api.h: version.py
-# 	$(VV)python version.py
+$(INCDIR)/api.h: version.py
+	$(VV)python version.py
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
