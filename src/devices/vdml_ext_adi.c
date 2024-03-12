@@ -466,7 +466,6 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 	uint8_t smart_port, adi_port;
 	get_ports(led, smart_port, adi_port);
 	transform_adi_port(adi_port);
-	printf("%d\n", smart_port);
 	claim_port_i(smart_port, E_DEVICE_ADI);
 	validate_type(device, adi_port, smart_port, E_ADI_DIGITAL_OUT);
 	if (buffer_length > MAX_LED) {
