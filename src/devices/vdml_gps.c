@@ -87,6 +87,51 @@ gps_status_s_t gps_get_status(uint8_t port) {
 	return_port(port - 1, rtv);
 }
 
+double gps_get_x_position(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	double rtv = PROS_ERR_F;
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv = data.position_x;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_y_position(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);	
+	double rtv = PROS_ERR_F;
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv = data.position_y;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_pitch(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	double rtv = PROS_ERR_F;
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv = data.pitch;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_roll(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	double rtv = PROS_ERR_F;
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv = data.roll;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_yaw(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);		
+	double rtv = PROS_ERR_F;
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	rtv = data.yaw;
+	return_port(port - 1, rtv);
+}
+
 double gps_get_heading(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_GPS);
 	double rtv = vexDeviceGpsDegreesGet(device->device_info);
@@ -101,7 +146,7 @@ double gps_get_heading_raw(uint8_t port) {
 
 double gps_get_rotation(uint8_t port) {
 	claim_port_f(port - 1, E_DEVICE_GPS);
-	double rtv = vexDeviceGpsRotationGet(device->device_info);
+	double rtv = vexDeviceGpsHeadingGet(device->device_info);
 	return_port(port - 1, rtv);
 }
 

@@ -174,6 +174,81 @@ class Gps {
 	virtual pros::c::gps_status_s_t get_status() const;
 
 	/**
+	 * Gets the X position in meters of the robot relative to the starting position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 *
+	 * \return The X position in meters. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 */
+	virtual double get_x_position() const;
+
+	/**
+	 * Gets the Y position in meters of the robot relative to the starting position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 *
+	 * \return The Y position in meters. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 */
+	virtual double get_y_position() const;
+
+	/**
+	 * Gets the pitch of the GPS in degrees relative to the starting orientation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 *
+	 * \return The pitch in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 */
+	virtual double get_pitch() const;
+
+	/**
+	 * Gets the roll of the GPS in degrees relative to the starting orientation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 *
+	 * \return The roll in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 */
+	virtual double get_roll() const;
+
+	/**
+	 * Gets the yaw of the GPS in degrees relative to the starting orientation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 *
+	 * \return The yaw in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 */
+	virtual double get_yaw() const;
+
+	/**
 	 * Get the heading in [0,360) degree values.
 	 *
 	 * This function uses the following values of errno when an error state is

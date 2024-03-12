@@ -43,6 +43,26 @@ pros::c::gps_status_s_t Gps::get_status() const {
 	return pros::c::gps_get_status(_port);
 }
 
+double Gps::get_x_position() const {
+	return pros::c::gps_get_x_position(_port);
+}
+
+double Gps::get_y_position() const {
+	return pros::c::gps_get_y_position(_port);
+}
+
+double Gps::get_pitch() const {
+	return pros::c::gps_get_pitch(_port);
+}
+
+double Gps::get_roll() const {
+	return pros::c::gps_get_roll(_port);
+}
+
+double Gps::get_yaw() const {
+	return pros::c::gps_get_yaw(_port);
+}
+
 double Gps::get_heading() const {
 	return pros::c::gps_get_heading(_port);
 }
