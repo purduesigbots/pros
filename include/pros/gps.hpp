@@ -52,8 +52,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  xOffset
 	 * 				 Cartesian 4-Quadrant X offset from center of turning (meters)
@@ -77,8 +77,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  xOffset
 	 * 				 Cartesian 4-Quadrant X offset from center of turning (meters)
@@ -95,8 +95,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  xOffset
 	 * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
@@ -113,8 +113,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  xInitial
 	 * 				 Initial 4-Quadrant X Position, with (0,0) being at the center of the field (meters)
@@ -133,8 +133,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  rate
 	 * 				 Data rate in milliseconds (Minimum: 5 ms)
@@ -149,8 +149,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \return Possible RMS (Root Mean Squared) error in meters for GPS position.
 	 * If the operation failed, returns PROS_ERR_F and errno is set.
@@ -163,8 +163,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return A struct (gps_status_s_t) containing values mentioned above.
@@ -179,8 +179,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The X position in meters. If the operation failed,
@@ -194,8 +194,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The Y position in meters. If the operation failed,
@@ -209,8 +209,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The pitch in [0,360) degree values. If the operation failed,
@@ -224,8 +224,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The roll in [0,360) degree values. If the operation failed,
@@ -239,8 +239,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The yaw in [0,360) degree values. If the operation failed,
@@ -254,8 +254,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 *
 	 * \return The heading in [0,360) degree values. If the operation failed,
@@ -269,8 +269,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation
 	 * fails, returns PROS_ERR_F and errno is set.
@@ -283,8 +283,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \return The elased heading in degrees. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
@@ -297,8 +297,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  target
 	 * 				 Target rotation value to set rotation value to
@@ -313,8 +313,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -327,8 +327,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS.
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \return The raw gyroscope values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
@@ -341,8 +341,8 @@ class Gps {
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as an GPS
-	 * EAGAIN - The sensor is still calibrating
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating.
 	 *
 	 * \param  port
 	 * 				 The V5 GPS's port number from 1-21
