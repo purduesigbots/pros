@@ -45,6 +45,22 @@ int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
+double gps_get_offset_x(uint8_t port) {
+	claim_port_f(port-1, E_DEVICE_GPS);
+    double *xOffset, *yOffset;
+	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
+	double rtv = *xOffset;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_offset_y(uint8_t port) {
+	claim_port_f(port-1, E_DEVICE_GPS);
+    double *xOffset, *yOffset;
+	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
+	double rtv = *yOffset;
+	return_port(port - 1, rtv);
+}
+
 int32_t gps_set_position(uint8_t port, double xInitial, double yInitial, double headingInitial) {
 	claim_port_i(port - 1, E_DEVICE_GPS);
 	vexDeviceGpsInitialPositionSet(device->device_info, xInitial, yInitial, headingInitial);
@@ -84,6 +100,46 @@ gps_status_s_t gps_get_status(uint8_t port) {
 	rtv.pitch = data.pitch;
 	rtv.roll = data.roll;
 	rtv.yaw = data.yaw;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_position_x(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	double rtv = data.position_x;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_position_y(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	double rtv = data.position_y;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_pitch(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	double rtv = data.pitch;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_roll(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	double rtv = data.roll;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_yaw(uint8_t port) {
+	claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsAttitude data;
+	vexDeviceGpsAttitudeGet(device->device_info, &data, false);
+	double rtv = data.yaw;
 	return_port(port - 1, rtv);
 }
 
@@ -131,6 +187,30 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port) {
 	return_port(port - 1, rtv);
 }
 
+double gps_get_gyro_rate_x(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawGyroGet(device->device_info, &data);
+	double rtv = data.x;
+	return_port(port - 1, rtv);	
+}
+
+double gps_get_gyro_rate_y(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawGyroGet(device->device_info, &data);
+	double rtv = data.y;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_gyro_rate_z(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawGyroGet(device->device_info, &data);
+	double rtv = data.z;
+	return_port(port - 1, rtv);
+}
+
 gps_accel_s_t gps_get_accel(uint8_t port) {
 	gps_accel_s_t rtv = GPS_RAW_ERR_INIT;
 	if (!claim_port_try(port - 1, E_DEVICE_GPS)) {
@@ -142,5 +222,29 @@ gps_accel_s_t gps_get_accel(uint8_t port) {
 	rtv.x = data.x;
 	rtv.y = data.y;
 	rtv.z = data.z;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_accel_x(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawAccelGet(device->device_info, &data);
+	double rtv = data.x;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_accel_y(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawAccelGet(device->device_info, &data);
+	double rtv = data.y;
+	return_port(port - 1, rtv);
+}
+
+double gps_get_accel_z(uint8_t port) {
+    claim_port_f(port - 1, E_DEVICE_GPS);
+	V5_DeviceGpsRaw data;
+	vexDeviceGpsRawAccelGet(device->device_info, &data);
+	double rtv = data.z;
 	return_port(port - 1, rtv);
 }

@@ -114,6 +114,36 @@ int32_t gps_set_offset(uint8_t port, double xOffset, double yOffset);
 int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset);
 
 /**
+ * Get the GPS's horizontal location relative to the center of turning/origin in meters.
+ * 
+ * This function uses the following values of errno when an error state is reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param port
+ *				The V5 GPS port number from 1-21
+ * \return GPS's horizontal location relative to the center of turning/origin.
+ * If the operation failed, returns PROS_ERR_F and errno is set.
+*/
+double gps_get_offset_x(uint8_t port);
+
+/**
+ * Get the GPS's vertical location relative to the center of turning/origin in meters.
+ * 
+ * This function uses the following values of errno when an error state is reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param port
+ *				The V5 GPS port number from 1-21
+ * \return GPS's vertical location relative to the center of turning/origin.
+ * If the operation failed, returns PROS_ERR_F and errno is set.
+*/
+double gps_get_offset_y(uint8_t port);
+
+/**
  * Sets the robot's location relative to the center of the field in meters.
  *
  * This function uses the following values of errno when an error state is
@@ -187,6 +217,91 @@ double gps_get_error(uint8_t port);
  * PROS_ERR_F and errno is set.
  */
 gps_status_s_t gps_get_status(uint8_t port);
+
+/**
+ * Gets the X position in meters of the robot relative to the starting position.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The X position in meters. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
+double gps_get_position_x(uint8_t port);
+
+/**
+ * Gets the Y position in meters of the robot relative to the starting position.
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The Y position in meters. If the operation failed,
+ * returns PROS_ERR_F and errno is set.t.
+ */
+double gps_get_position_y(uint8_t port);
+
+/**
+ * Gets the pitch of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The pitch in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is se
+ */
+double gps_get_pitch(uint8_t port);
+
+/**
+ * Gets the roll of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The roll in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
+double gps_get_roll(uint8_t port);
+
+/**
+ * Gets the yaw of the robot in degrees relative to the starting oreintation.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ *
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * 
+ * \return The yaw in [0,360) degree values. If the operation failed,
+ * returns PROS_ERR_F and errno is set.
+ */
+double gps_get_yaw(uint8_t port);
 
 /**
  * Get the heading in [0,360) degree values.
@@ -289,6 +404,54 @@ int32_t gps_tare_rotation(uint8_t port);
 gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
 
 /**
+ * Get the GPS's raw gyroscope value in x-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \return The raw gyroscope value in x-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_gyro_rate_x(uint8_t port);
+
+/**
+ * Get the GPS's raw gyroscope value in y-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \return The raw gyroscope value in y-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_gyro_rate_y(uint8_t port);
+
+/**
+ * Get the GPS's raw gyroscope value in z-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS port number from 1-21
+ * \return The raw gyroscope value in z-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_gyro_rate_z(uint8_t port);
+
+/**
  * Get the GPS's raw accelerometer values
  *
  * This function uses the following values of errno when an error state is
@@ -303,6 +466,54 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
  * structure's members are filled with PROS_ERR_F and errno is set.
  */
 gps_accel_s_t gps_get_accel(uint8_t port);
+
+/**
+ * Get the GPS's raw accelerometer value in x-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS's port number from 1-21
+ * \return The raw accelerometer value in x-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_accel_x(uint8_t port);
+
+/**
+ * Get the GPS's raw accelerometer value in y-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS's port number from 1-21
+ * \return The raw accelerometer value in y-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_accel_y(uint8_t port);
+
+/**
+ * Get the GPS's raw accelerometer value in z-axis
+ * 
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an GPS
+ * EAGAIN - The sensor is still calibrating
+ * 
+ * \param  port
+ * 				 The V5 GPS's port number from 1-21
+ * \return The raw accelerometer value in z-axis. If the operation fails, returns
+ * PROS_ERR_F and errno is set.
+*/
+double gps_get_accel_z(uint8_t port);
 
 #ifdef __cplusplus
 }
