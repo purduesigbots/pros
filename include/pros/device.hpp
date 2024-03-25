@@ -137,6 +137,9 @@ class Device {
 	 */
 	pros::DeviceType get_plugged_type() const;
 
+	template <typename T>
+	static std::vector<T> get_all_devices();
+
 
 	protected:
 	/**
