@@ -409,5 +409,5 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target) {
 }
 
 imu_orientation_e_t imu_get_orientation(uint8_t port) {
-	return imu_get_status(port) >> 1;
+	return (imu_get_status(port) >> 1) & 7;
 }
