@@ -29,12 +29,20 @@ namespace c {
 #endif
 
 typedef enum imu_status_e {
-	E_IMU_STATUS_READY = 0, // IMU is connected but not currently calibrating
-	E_IMU_STATUS_CALIBRATING = 19, // IMU is calibrating
-	E_IMU_STATUS_ERROR = 0xFF,  // NOTE: used for returning an error from the get_status function, not that the IMU is
-	                            // necessarily in an error state
+	E_IMU_STATUS_READY = 0,        // IMU is connected but not currently calibrating
+	E_IMU_STATUS_CALIBRATING = 1,  // IMU is calibrating
+	E_IMU_STATUS_ERROR = 0xFF,     // NOTE: used for returning an error from the get_status function, not that the IMU is
+	                               // necessarily in an error state
 } imu_status_e_t;
 
+typedef enum imu_orientation_e {
+	E_IMU_Z_UP = 0,    // IMU has the Z axis UP (VEX Logo facing DOWN)
+	E_IMU_Z_DOWN = 1,  // IMU has the Z axis DOWN (VEX Logo facing UP)
+	E_IMU_X_UP = 2,    // IMU has the X axis UP
+	E_IMU_X_DOWN = 3,  // IMU has the X axis DOWN
+	E_IMU_Y_UP = 4,    // IMU has the Y axis UP
+	E_IMU_Y_DOWN = 5,  // IMU has the Y axis DOWN
+} imu_orientation_e_t;
 typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
 	double y;
@@ -92,10 +100,10 @@ int32_t imu_reset(uint8_t port);
 /**
  * Calibrate IMU and Blocks while Calibrating
  *
- * Calibration takes approximately 2 seconds and blocks during this period, 
+ * Calibration takes approximately 2 seconds and blocks during this period,
  * with a timeout for this operation being set a 3 seconds as a safety margin.
- * Like the other reset function, this function also blocks until the IMU 
- * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
+ * Like the other reset function, this function also blocks until the IMU
+ * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum
  * blocking time of 5ms and a timeout of 1 second if it's never set.
  *
  * This function uses the following values of errno when an error state is
@@ -297,7 +305,6 @@ imu_accel_s_t imu_get_accel(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
@@ -310,7 +317,7 @@ imu_status_e_t imu_get_status(uint8_t port);
 // void imu_set_mode(uint8_t port, uint32_t mode);
 // uint32_t imu_get_mode(uint8_t port);
 
-//Value reset functions:
+// Value reset functions:
 /**
  * Resets the current reading of the Inertial Sensor's heading to zero
  *
@@ -423,7 +430,7 @@ int32_t imu_tare_euler(uint8_t port);
  */
 int32_t imu_tare(uint8_t port);
 
-//Value set functions:
+// Value set functions:
 /**
  * Sets the current reading of the Inertial Sensor's euler values to
  * target euler values. Will default to +/- 180 if target exceeds +/- 180.
@@ -464,7 +471,7 @@ int32_t imu_set_rotation(uint8_t port, double target);
 /**
  * Sets the current reading of the Inertial Sensor's heading to target value
  * Target will default to 360 if above 360 and default to 0 if below 0.
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -483,7 +490,7 @@ int32_t imu_set_heading(uint8_t port, double target);
 /**
  * Sets the current reading of the Inertial Sensor's pitch to target value
  * Will default to +/- 180 if target exceeds +/- 180.
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -502,7 +509,7 @@ int32_t imu_set_pitch(uint8_t port, double target);
 /**
  * Sets the current reading of the Inertial Sensor's roll to target value
  * Will default to +/- 180 if target exceeds +/- 180.
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -521,7 +528,7 @@ int32_t imu_set_roll(uint8_t port, double target);
 /**
  * Sets the current reading of the Inertial Sensor's yaw to target value
  * Will default to +/- 180 if target exceeds +/- 180.
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -536,6 +543,21 @@ int32_t imu_set_roll(uint8_t port, double target);
  * failed, setting errno.
  */
 int32_t imu_set_yaw(uint8_t port, double target);
+
+/**
+ * Returns the physical orientation of the IMU
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
+ *
+ */
+imu_orientation_e_t imu_get_physical_orientation(uint8_t port);
 
 #ifdef __cplusplus
 }

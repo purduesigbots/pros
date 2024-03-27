@@ -19,6 +19,7 @@
 #define _PROS_IMU_HPP_
 
 #include <cstdint>
+
 #include "pros/imu.h"
 
 namespace pros {
@@ -31,47 +32,47 @@ class Imu {
 	/**
 	 * Calibrate IMU
 	 *
-	 * Calibration takes approximately 2 seconds and blocks during this period if 
-	 * the blocking param is true, with a timeout for this operation being set a 3 
-	 * seconds as a safety margin. This function also blocks until the IMU 
-	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum 
+	 * Calibration takes approximately 2 seconds and blocks during this period if
+	 * the blocking param is true, with a timeout for this operation being set a 3
+	 * seconds as a safety margin. This function also blocks until the IMU
+	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum
 	 * blocking time of 5ms and a timeout of 1 second if it's never set.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
 	 * EAGAIN - The sensor is already calibrating, or time out setting the status flag.
 	 *
-	 * \param blocking 
+	 * \param blocking
 	 *			Whether this function blocks during calibration.
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
 	 */
 	virtual std::int32_t reset(bool blocking = false) const;
 	/**
-	* Set the Inertial Sensor's refresh interval in milliseconds.
-	*
-	* The rate may be specified in increments of 5ms, and will be rounded down to
-	* the nearest increment. The minimum allowable refresh rate is 5ms. The default
-	* rate is 10ms.
-	*
-	* As values are copied into the shared memory buffer only at 10ms intervals,
-	* setting this value to less than 10ms does not mean that you can poll the
-	* sensor's values any faster. However, it will guarantee that the data is as
-	* recent as possible.
-	*
-	* This function uses the following values of errno when an error state is
-	* reached:
-	* ENXIO - The given value is not within the range of V5 ports (1-21).
-	* ENODEV - The port cannot be configured as an Inertial Sensor
-	* EAGAIN - The sensor is still calibrating
-	*
-	* \param rate 
-	*			The data refresh interval in milliseconds
-	* \return 1 if the operation was successful or PROS_ERR if the operation
-	* failed, setting errno.
-	*/
+	 * Set the Inertial Sensor's refresh interval in milliseconds.
+	 *
+	 * The rate may be specified in increments of 5ms, and will be rounded down to
+	 * the nearest increment. The minimum allowable refresh rate is 5ms. The default
+	 * rate is 10ms.
+	 *
+	 * As values are copied into the shared memory buffer only at 10ms intervals,
+	 * setting this value to less than 10ms does not mean that you can poll the
+	 * sensor's values any faster. However, it will guarantee that the data is as
+	 * recent as possible.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param rate
+	 *			The data refresh interval in milliseconds
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
+	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 	/**
 	 * Get the total number of degrees the Inertial Sensor has spun about the z-axis
@@ -310,7 +311,7 @@ class Imu {
 	/**
 	 * Sets the current reading of the Inertial Sensor's heading to target value
 	 * Target will default to 360 if above 360 and default to 0 if below 0.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -345,7 +346,7 @@ class Imu {
 	/**
 	 * Sets the current reading of the Inertial Sensor's yaw to target value
 	 * Will default to +/- 180 if target exceeds +/- 180.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -380,7 +381,7 @@ class Imu {
 	/**
 	 * Sets the current reading of the Inertial Sensor's roll to target value
 	 * Will default to +/- 180 if target exceeds +/- 180.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -435,7 +436,6 @@ class Imu {
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
@@ -450,6 +450,21 @@ class Imu {
 	 * false if it is not.
 	 */
 	virtual bool is_calibrating() const;
+
+	/**
+	 * Returns the physical orientation of the IMU
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \returns The physical orientation of the Inertial Sensor or PROS_ERR if an error occured.
+	 *
+	 */
+	virtual pros::c::imu_orientation_e_t get_physical_orientation() const;
 };
 
 using IMU = Imu;
