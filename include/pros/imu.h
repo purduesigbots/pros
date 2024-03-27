@@ -36,12 +36,12 @@ typedef enum imu_status_e {
 } imu_status_e_t;
 
 typedef enum imu_orientation_e {
-	E_IMU_Z_UP = 8,
-	E_IMU_Z_DOWN = 9,
-	E_IMU_X_UP = 10,
-	E_IMU_X_DOWN = 11,
-	E_IMU_Y_UP = 12,
-	E_IMU_Y_DOWN = 13,
+	E_IMU_Z_UP = 8,     // IMU has the Z axis UP (VEX Logo facing DOWN)
+	E_IMU_Z_DOWN = 9,   // IMU has the Z axis DOWN (VEX Logo facing UP)
+	E_IMU_X_UP = 10,    // IMU has the X axis UP
+	E_IMU_X_DOWN = 11,  // IMU has the X axis DOWN
+	E_IMU_Y_UP = 12,    // IMU has the Y axis UP
+	E_IMU_Y_DOWN = 13,  // IMU has the Y axis DOWN
 } imu_orientation_e_t;
 typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
@@ -305,7 +305,6 @@ imu_accel_s_t imu_get_accel(uint8_t port);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports (1-21).
  * ENODEV - The port cannot be configured as an Inertial Sensor
- * EAGAIN - The sensor is still calibrating
  *
  * \param  port
  * 				 The V5 Inertial Sensor port number from 1-21
@@ -545,6 +544,19 @@ int32_t imu_set_roll(uint8_t port, double target);
  */
 int32_t imu_set_yaw(uint8_t port, double target);
 
+/**
+ * Returns the orientation of the IMU
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as an Inertial Sensor
+ *
+ * \param  port
+ * 				 The V5 Inertial Sensor port number from 1-21
+ * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
+ *
+ */
 imu_orientation_e_t imu_get_orientation(uint8_t port);
 
 #ifdef __cplusplus

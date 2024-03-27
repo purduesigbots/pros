@@ -436,7 +436,6 @@ class Imu {
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Inertial Sensor
-	 * EAGAIN - The sensor is still calibrating
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
@@ -452,6 +451,19 @@ class Imu {
 	 */
 	virtual bool is_calibrating() const;
 
+	/**
+	 * Returns the orientation of the IMU
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
+	 *
+	 */
 	virtual pros::c::imu_orientation_e_t get_orientation() const;
 };
 
