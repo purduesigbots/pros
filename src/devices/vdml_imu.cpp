@@ -10,6 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "pros/imu.h"
 #include "pros/imu.hpp"
 
 namespace pros {
@@ -22,7 +23,7 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 double Imu::get_rotation() const {
-    return pros::c::imu_get_rotation(_port);
+	return pros::c::imu_get_rotation(_port);
 }
 
 double Imu::get_heading() const {
@@ -62,7 +63,7 @@ pros::c::imu_status_e_t Imu::get_status() const {
 }
 
 bool Imu::is_calibrating() const {
-	return get_status() == pros::c::E_IMU_STATUS_CALIBRATING;
+	return get_status() & pros::c::E_IMU_STATUS_CALIBRATING;
 }
 
 std::int32_t Imu::tare_heading() const {
@@ -115,6 +116,9 @@ std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
 
 std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
+}
+pros::c::imu_orientation_e_t Imu::get_orientation() const {
+	return pros::c::imu_get_orientation(_port);
 }
 
 }  // namespace pros
