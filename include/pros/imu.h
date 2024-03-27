@@ -545,7 +545,7 @@ int32_t imu_set_roll(uint8_t port, double target);
 int32_t imu_set_yaw(uint8_t port, double target);
 
 /**
- * Returns the orientation of the IMU
+ * Returns the physical orientation of the IMU
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -557,7 +557,7 @@ int32_t imu_set_yaw(uint8_t port, double target);
  * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
  *
  */
-imu_orientation_e_t imu_get_orientation(uint8_t port);
+imu_orientation_e_t imu_get_physical_orientation(uint8_t port);
 
 #ifdef __cplusplus
 }

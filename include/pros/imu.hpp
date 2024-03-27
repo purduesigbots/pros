@@ -452,7 +452,7 @@ class Imu {
 	virtual bool is_calibrating() const;
 
 	/**
-	 * Returns the orientation of the IMU
+	 * Returns the physical orientation of the IMU
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -461,10 +461,10 @@ class Imu {
 	 *
 	 * \param  port
 	 * 				 The V5 Inertial Sensor port number from 1-21
-	 * \returns The orientation of the Inertial Sensor or PROS_ERR if an error occured.
+	 * \returns The physical orientation of the Inertial Sensor or PROS_ERR if an error occured.
 	 *
 	 */
-	virtual pros::c::imu_orientation_e_t get_orientation() const;
+	virtual pros::c::imu_orientation_e_t get_physical_orientation() const;
 };
 
 using IMU = Imu;

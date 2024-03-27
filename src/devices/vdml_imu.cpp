@@ -117,8 +117,8 @@ std::int32_t Imu::set_euler(pros::c::euler_s_t target) const {
 std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
-pros::c::imu_orientation_e_t Imu::get_orientation() const {
-	return pros::c::imu_get_orientation(_port);
+pros::c::imu_orientation_e_t Imu::get_physical_orientation() const {
+	return pros::c::imu_get_physical_orientation(_port);
 }
 
 }  // namespace pros

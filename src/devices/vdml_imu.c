@@ -408,6 +408,6 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-imu_orientation_e_t imu_get_orientation(uint8_t port) {
+imu_orientation_e_t imu_get_physical_orientation(uint8_t port) {
 	return (imu_get_status(port) >> 1) & 7;
 }
