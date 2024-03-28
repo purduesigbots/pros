@@ -42,30 +42,8 @@ pros::DeviceType Device::get_plugged_type() const {
 	return_port(_port - 1, type);
 }
 
-template <typename T>
-std::vector<T> Device::get_all_devices() {
-	DeviceType device_type {};
-
-	if(std::is_same<T,Motor>::value)
-		device_type = DeviceType::motor;
-	else if (std::is_same<T,Rotation>::value)
-		device_type = DeviceType::motor;
-	else if (std::is_same<T,IMU>::value)
-		device_type = DeviceType::imu;
-	else if (std::is_same<T,Distance>::value)
-		device_type = DeviceType::distance;
-	else if (std::is_same<T,Vision>::value)
-		device_type = DeviceType::vision;
-	else if (std::is_same<T,Optical>::value)
-		device_type = DeviceType::optical;
-	else if (std::is_same<T,Gps>::value)
-		device_type = DeviceType::gps;
-	else if (std::is_same<T,Serial>::value)
-		device_type = DeviceType::serial;
-	else
-		device_type = DeviceType::undefined;
-
-	std::vector<T> device_list {};
+std::vector<Device> Device::get_all_devices(pros::DeviceType device_type) {
+	std::vector<Device> device_list {};
 
 	for (std::uint8_t curr_port = 0; curr_port < 21; ++curr_port) {
 		if (!port_mutex_take(curr_port)) {                            
@@ -73,14 +51,12 @@ std::vector<T> Device::get_all_devices() {
 			continue;
 		}
 
-        DeviceType type = (DeviceType) c::registry_get_plugged_type(curr_port);
+		pros::DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(curr_port);
 		if (device_type == type) {
-			device_list.push_back(T {curr_port});
+			device_list.push_back(Device {curr_port});
 		}
-
-		return_port(curr_port, type);
+		port_mutex_give(curr_port);
 	}
-
 	return device_list;
 }
 

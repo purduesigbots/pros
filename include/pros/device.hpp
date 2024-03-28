@@ -137,9 +137,7 @@ class Device {
 	 */
 	pros::DeviceType get_plugged_type() const;
 
-	template <typename T>
-	static std::vector<T> get_all_devices();
-
+	static std::vector<Device> get_all_devices(pros::DeviceType device_type = pros::DeviceType::undefined);
 
 	protected:
 	/**
