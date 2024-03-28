@@ -23,10 +23,6 @@ std::int32_t Gps::set_offset(double xOffset, double yOffset) const {
 	return pros::c::gps_set_offset(_port, xOffset, yOffset);
 }
 
-std::int32_t Gps::get_offset(double* xOffset, double* yOffset) const {
-	return pros::c::gps_get_offset(_port, xOffset, yOffset);
-}
-
 double Gps::get_offset_x() const {
 	return pros::c::gps_get_offset_x(_port);
 }
@@ -45,10 +41,6 @@ std::int32_t Gps::set_data_rate(std::uint32_t rate) const {
 
 double Gps::get_error() const {
 	return pros::c::gps_get_error(_port);
-}
-
-pros::c::gps_status_s_t Gps::get_status() const {
-	return pros::c::gps_get_status(_port);
 }
 
 double Gps::get_position_x() const {
@@ -79,22 +71,6 @@ double Gps::get_heading_raw() const {
 	return pros::c::gps_get_heading_raw(_port);
 }
 
-double Gps::get_rotation() const {
-	return pros::c::gps_get_rotation(_port);
-}
-
-std::int32_t Gps::set_rotation(double target) const {
-	return pros::c::gps_set_rotation(_port, target);
-}
-
-std::int32_t Gps::tare_rotation() const {
-	return pros::c::gps_tare_rotation(_port);
-}
-
-pros::c::gps_gyro_s_t Gps::get_gyro_rate() const {
-	return pros::c::gps_get_gyro_rate(_port);
-}
-
 double Gps::get_gyro_rate_x() const {
 	return pros::c::gps_get_gyro_rate_x(_port);
 }
@@ -107,9 +83,6 @@ double Gps::get_gyro_rate_z() const {
 	return pros::c::gps_get_gyro_rate_z(_port);
 }
 
-pros::c::gps_accel_s_t Gps::get_accel() const {
-	return pros::c::gps_get_accel(_port);
-}
 
 double Gps::get_accel_x() const {
 	return pros::c::gps_get_accel_x(_port);

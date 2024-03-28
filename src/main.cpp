@@ -107,7 +107,7 @@ void opcontrol() {
         double accel_y = gps1.get_accel_y();
         double accel_z = gps1.get_accel_z();
 
-		/*
+		
 
 		pros::lcd::print(3, "offsetX:%f\n", offset_x);
 		pros::lcd::print(4, "offsetY:%f\n", offset_y);
@@ -115,7 +115,7 @@ void opcontrol() {
 		pros::lcd::print(6, "heading:%f\n", heading);
 		pros::lcd::print(7, "headingYaw:%f\n", heading_yaw);
 
-        */
+        
 
 
 		/*

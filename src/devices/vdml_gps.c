@@ -47,7 +47,7 @@ int32_t gps_get_offset(uint8_t port, double* xOffset, double* yOffset) {
 
 double gps_get_offset_x(uint8_t port) {
 	claim_port_f(port-1, E_DEVICE_GPS);
-    double *xOffset, *yOffset;
+    double *xOffset=0, *yOffset=0;
 	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
 	double rtv = *xOffset;
 	return_port(port - 1, rtv);
@@ -55,7 +55,7 @@ double gps_get_offset_x(uint8_t port) {
 
 double gps_get_offset_y(uint8_t port) {
 	claim_port_f(port-1, E_DEVICE_GPS);
-    double *xOffset, *yOffset;
+    double *xOffset=0, *yOffset=0;
 	vexDeviceGpsOriginGet(device->device_info, xOffset, yOffset);
 	double rtv = *yOffset;
 	return_port(port - 1, rtv);
