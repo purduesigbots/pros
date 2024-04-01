@@ -90,30 +90,22 @@ class Gps {
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
 	/**
-	 * Get the GPS's horizontal location relative to the center of turning/origin in meters.
-	 * 
-	 * This function uses the following values of errno when an error state is reached:
+	 * Get the GPS's location relative to the center of turning/origin in meters.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as a GPS
 	 * EAGAIN - The sensor is still calibrating
-	 * 
-	 * \return GPS's horizontal location relative to the center of turning/origin.
-	 * If the operation failed, returns PROS_ERR_F and errno is set.
+	 *
+	 * \param  xOffset
+	 * 				 Pointer to cartesian 4-Quadrant X offset from center of turning (meters)
+	 * \param  yOffset
+	 * 				 Pointer to cartesian 4-Quadrant Y offset from center of turning (meters)
+	 * \return 1 if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno.
 	 */
-	virtual double get_offset_x() const;
-
-	/**
-	 * Get the GPS's vertical location relative to the center of turning/origin in meters.
-	 * 
-	 * This function uses the following values of errno when an error state is reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
-	 * 
-	 * \return GPS's vertical location relative to the center of turning/origin.
-	 * If the operation failed, returns PROS_ERR_F and errno is set.
-	 */
-	virtual double get_offset_y() const;
+	virtual std::int32_t get_offset(double* xOffset, double* yOffset) const;
 
 	/**
 	 * Sets the robot's location relative to the center of the field in meters.

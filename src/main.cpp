@@ -1,3 +1,4 @@
+
 #include "main.h"
 
 /**
@@ -74,71 +75,19 @@ void autonomous() {}
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-
-	pros::Gps gps1(1);
-
-	//Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial);
-
-	//Gps(const std::uint8_t port, double xOffset, double yOffset);
-
-	//Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset);
+	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	pros::Motor left_mtr(1);
+	pros::Motor right_mtr(2);
 
 	while (true) {
+		pros::lcd::print(0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
+		                 (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
+		                 (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);
+		int left = master.get_analog(ANALOG_LEFT_Y);
+		int right = master.get_analog(ANALOG_RIGHT_Y);
 
-		// test: 
-
-        double offset_x = gps1.get_offset_x();
-        double offset_y = gps1.get_offset_y();
-		double error = gps1.get_error();
-
-		double position_x = gps1.get_position_x();
-		double position_y = gps1.get_position_y();
-		double pitch = gps1.get_pitch();
-		double roll = gps1.get_roll();
-		double yaw = gps1.get_yaw();
-
-		double heading = gps1.get_heading();
-		double heading_yaw = gps1.get_heading_raw();
-
-		double gyro_rate_x = gps1.get_gyro_rate_x();
-		double gyro_rate_y = gps1.get_gyro_rate_y();
-		double gyro_rate_z = gps1.get_gyro_rate_z();
-        double accel_x = gps1.get_accel_x();
-        double accel_y = gps1.get_accel_y();
-        double accel_z = gps1.get_accel_z();
-
-		
-
-		pros::lcd::print(3, "offsetX:%f\n", offset_x);
-		pros::lcd::print(4, "offsetY:%f\n", offset_y);
-		pros::lcd::print(5, "error:%f\n", error);
-		pros::lcd::print(6, "heading:%f\n", heading);
-		pros::lcd::print(7, "headingYaw:%f\n", heading_yaw);
-
-        
-
-
-		/*
-
-		pros::lcd::print(3, "positionX:%f\n", position_x);
-		pros::lcd::print(4, "positionY:%f\n", position_y);
-        pros::lcd::print(5, "pitch:%f\n", pitch);
-        pros::lcd::print(6, "roll:%f\n", roll);
-        pros::lcd::print(7, "yaw:%f\n", yaw);
-
-		*/
-        
-
-		/*
-		
-        pros::lcd::print(3, "gyroX:%f\n", gyro_rate_x);
-        pros::lcd::print(4, "gyroY:%f\n", gyro_rate_y);
-        pros::lcd::print(5, "gyroZ:%f\n", gyro_rate_z);
-        pros::lcd::print(6,"accelX:%f\n", accel_x);
-        pros::lcd::print(7,"accelY:%f\n", accel_y);
-        pros::lcd::print(8,"accelZ:%f\n", accel_z);
-		
-		*/
+		left_mtr = left;
+		right_mtr = right;
 
 		pros::delay(20);
 	}
