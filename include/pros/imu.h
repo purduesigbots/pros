@@ -36,12 +36,14 @@ typedef enum imu_status_e {
 } imu_status_e_t;
 
 typedef enum imu_orientation_e {
-	E_IMU_Z_UP = 0,    // IMU has the Z axis UP (VEX Logo facing DOWN)
-	E_IMU_Z_DOWN = 1,  // IMU has the Z axis DOWN (VEX Logo facing UP)
-	E_IMU_X_UP = 2,    // IMU has the X axis UP
-	E_IMU_X_DOWN = 3,  // IMU has the X axis DOWN
-	E_IMU_Y_UP = 4,    // IMU has the Y axis UP
-	E_IMU_Y_DOWN = 5,  // IMU has the Y axis DOWN
+	E_IMU_Z_UP = 0,                 // IMU has the Z axis UP (VEX Logo facing DOWN)
+	E_IMU_Z_DOWN = 1,               // IMU has the Z axis DOWN (VEX Logo facing UP)
+	E_IMU_X_UP = 2,                 // IMU has the X axis UP
+	E_IMU_X_DOWN = 3,               // IMU has the X axis DOWN
+	E_IMU_Y_UP = 4,                 // IMU has the Y axis UP
+	E_IMU_Y_DOWN = 5,               // IMU has the Y axis DOWN
+	E_IMU_ORIENTATION_ERROR = 0xFF  // NOTE: used for returning an error from the get_physical_orientation function, not
+	                                // that the IMU is necessarily in an error state
 } imu_orientation_e_t;
 typedef struct __attribute__((__packed__)) quaternion_s {
 	double x;
