@@ -12,7 +12,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup cpp-gps VEX GPS Sensor C API
  * \note For a pros-specific usage guide on the GPS, please check out our article [here.](@ref gps)
  */
@@ -25,8 +25,8 @@
 #include <cstdint>
 #include <iostream>
 
-#include "pros/gps.h"
 #include "pros/device.hpp"
+#include "pros/gps.h"
 
 namespace pros {
 inline namespace v5 {
@@ -41,7 +41,6 @@ class Gps : public Device {
 	 */
 
 	public:
-
 	/**
 	 * Creates a GPS object for the given port.
 	 *
@@ -85,7 +84,8 @@ class Gps : public Device {
 	 * \endcode
 	 *
 	 */
-	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial) : Device(port, DeviceType::gps){
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial)
+	    : Device(port, DeviceType::gps) {
 		pros::c::gps_set_position(port, xInitial, yInitial, headingInitial);
 	};
 
@@ -105,19 +105,19 @@ class Gps : public Device {
 	 * \param yOffset
 	 * 				 Cartesian 4-Quadrant Y offset from center of turning (meters)
 	 *
-	 * \b Example: 
+	 * \b Example:
 	 * \code
 	 * pros::Gps gps(1, 1.30, 1.20);
 	 * \endcode
 	 *
 	 */
-	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port, DeviceType::gps){
+	explicit Gps(const std::uint8_t port, double xOffset, double yOffset) : Device(port, DeviceType::gps) {
 		pros::c::gps_set_offset(port, xOffset, yOffset);
 	};
 
 	/**
 	 * Creates a GPS object for the given port.
-	 * 
+	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
@@ -143,8 +143,9 @@ class Gps : public Device {
 	 * \endcode
 	 *
 	 */
-	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset, double yOffset)
-	     : Device(port, DeviceType::gps){
+	explicit Gps(const std::uint8_t port, double xInitial, double yInitial, double headingInitial, double xOffset,
+	             double yOffset)
+	    : Device(port, DeviceType::gps) {
 		pros::c::gps_initialize_full(port, xInitial, yInitial, headingInitial, xOffset, yOffset);
 	};
 
@@ -221,34 +222,34 @@ class Gps : public Device {
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
 	/**
-	* Get the GPS's cartesian location relative to the center of turning/origin in meters.
-	*
-	* This function uses the following values of errno when an error state is
-	* reached:
-	* ENXIO - The given value is not within the range of V5 ports (1-21).
-	* ENODEV - The port cannot be configured as a GPS
-	* EAGAIN - The sensor is still calibrating
-	*
-	* \param  port
-	* 				 The V5 GPS port number from 1-21
-	* \return A struct (gps_position_s_t) containing the X and Y values if the operation
-	* failed, setting errno.
-	* 
-	* \b Example
-	* \code
-	* #define GPS_PORT 1
-	* 
-	* void opcontrol() {
-	*   gps_position_s_t pos;
-	* 	Gps gps(GPS_PORT);
-	*   while (true) {
-	*     pos = gps.get_offset();
-	*     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
-	*     delay(20);
-	*   }
-	* }
-	* \endcode
-	*/
+	 * Get the GPS's cartesian location relative to the center of turning/origin in meters.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \param  port
+	 * 				 The V5 GPS port number from 1-21
+	 * \return A struct (gps_position_s_t) containing the X and Y values if the operation
+	 * failed, setting errno.
+	 *
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   gps_position_s_t pos;
+	 * 	Gps gps(GPS_PORT);
+	 *   while (true) {
+	 *     pos = gps.get_offset();
+	 *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 */
 	virtual pros::gps_position_s_t get_offset() const;
 
 	/**
@@ -268,7 +269,7 @@ class Gps : public Device {
 	 *  			 Heading with 0 being north on the field, in degrees [0,360) going clockwise
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
-	 * 
+	 *
 	 * \b Example
 	 * \code
 	 * #define GPS_PORT 1
@@ -277,7 +278,7 @@ class Gps : public Device {
 	 * 	Gps gps(GPS_PORT);
 	 *  gps.set_position(1.3, 1.4, 180);
 	 *   while (true) {
-	 *     printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x, 
+	 *     printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x,
 	 * 	   gps.get_position().y, gps.get_position().heading);
 	 *     delay(20);
 	 *   }
@@ -356,7 +357,7 @@ class Gps : public Device {
 	 * \return A struct (gps_status_s_t) containing values mentioned above.
 	 * If the operation failed, all the structure's members are filled with
 	 * PROS_ERR_F and errno is set.
-	 * 
+	 *
 	 * \b Example
 	 * \code
 	 * #define GPS_PORT 1
@@ -482,7 +483,7 @@ class Gps : public Device {
 	 * void opcontrol() {
 	 * 	Gps gps(GPS_PORT);
 	 *  while(true) {
-			double rotation = gps.get_rotation();
+	    double rotation = gps.get_rotation();
 	 *		printf("Rotation: %f\n", rotation);
 	 *  	pros::delay(20);
 	 *  }
@@ -532,8 +533,8 @@ class Gps : public Device {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
-	 * 
-	 * \b Example: 
+	 *
+	 * \b Example:
 	 * \code
 	 * #define GPS_PORT 1
 	 *
@@ -541,7 +542,7 @@ class Gps : public Device {
 	 * 	Gps gps(GPS_PORT);
 	 *  gps.tare_rotation();
 	 *  while(true) {
-	 * 	    Should be around 0 on first call since it was tared. 
+	 * 	    Should be around 0 on first call since it was tared.
 	 *		printf("Rotation: %f\n", rotation);
 	 *  	pros::delay(20);
 	 *  }
@@ -596,7 +597,7 @@ class Gps : public Device {
 
 	/**
 	 * This is the overload for the << operator for printing to streams
-	 * 
+	 *
 	 * Prints in format:
 	 * Gps [port: gps._port, x: (x position), y: (y position), heading: (gps heading), rotation: (gps rotation)]
 	 *
@@ -615,35 +616,36 @@ class Gps : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 
-///@}
+	static Gps getGps();
+	///@}
 };  // Gps Class
 
 namespace literals {
-	/**
-	 * Constructs a Gps object with the given port number
-	 * 
-	 * \b Example
-	 * \code
-	 * using namespace literals;
-	 * 
-	 * void opcontrol() {
-	 * 	 pros::Gps gps = 1_gps;
-	 *   while (true) {
-	 *     pos = gps.get_position();
-	 *     screen_print(TEXT_MEDIUM, 1, "X Position: %4d, Y Position: %4d", pos.x, pos.y);
-	 *     delay(20);
-	 *   }
-	 * }
-	 * \endcode
-	 */
-	const pros::Gps operator""_gps(const unsigned long long int g);
+/**
+ * Constructs a Gps object with the given port number
+ *
+ * \b Example
+ * \code
+ * using namespace literals;
+ *
+ * void opcontrol() {
+ * 	 pros::Gps gps = 1_gps;
+ *   while (true) {
+ *     pos = gps.get_position();
+ *     screen_print(TEXT_MEDIUM, 1, "X Position: %4d, Y Position: %4d", pos.x, pos.y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
+ */
+const pros::Gps operator""_gps(const unsigned long long int g);
 }  // namespace literals
 
 /// @brief
 /// Alias for Gps is GPS for user convenience.
 using GPS = Gps;
 
-} // namespace v5
-} // namespace pros
+}  // namespace v5
+}  // namespace pros
 
 #endif

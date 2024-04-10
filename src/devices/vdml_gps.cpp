@@ -10,6 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "pros/device.h"
 #include "pros/gps.hpp"
 #include "vdml/vdml.h"
 
@@ -89,10 +90,25 @@ std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
 	return os;
 }
 
+pros::Gps pros::Gps::getGps() {
+	static int curr_gps_port = 0;
+	curr_gps_port = curr_gps_port % 21;
+	for (int i = 0; i < 21; i++) {
+		if (registry_get_device(curr_gps_port)->device_type == pros::c::E_DEVICE_GPS) {
+			curr_gps_port++;
+			return Gps(curr_gps_port);
+		}
+		curr_gps_port++;
+		curr_gps_port = curr_gps_port % 21;
+	}
+	errno = ENODEV;
+	return Gps(PROS_ERR_BYTE);
+}
+
 namespace literals {
 const pros::Gps operator""_gps(const unsigned long long int g) {
 	return pros::Gps(g);
 }
 }  // namespace literals
-} // namespace v5
+}  // namespace v5
 }  // namespace pros
