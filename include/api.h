@@ -42,7 +42,7 @@
 #define PROS_VERSION_MAJOR 4
 #define PROS_VERSION_MINOR 0
 #define PROS_VERSION_PATCH 4
-#define PROS_VERSION_STRING "4.0.4-dirty.27.0b246ea"
+#define PROS_VERSION_STRING "4.0.4-dirty.28.4e2730a"
 
 
 #include "pros/adi.h"

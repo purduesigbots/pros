@@ -416,6 +416,20 @@ class Gps : public Device {
 	 *
 	 * \return The X position in meters. If the operation failed,
 	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pos_x = gps.get_position_x();
+	 *		printf("X: %f\n", pos_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
     virtual double get_position_x() const;
 
@@ -429,7 +443,21 @@ class Gps : public Device {
 	 * EAGAIN - The sensor is still calibrating
 	 *
 	 * \return The Y position in meters. If the operation failed,
-	 * returns PROS_ERR_F and errno is set.t.
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pos_y = gps.get_position_y();
+	 *		printf("Y: %f\n", pos_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_position_y() const;
 
@@ -474,7 +502,21 @@ class Gps : public Device {
 	 * EAGAIN - The sensor is still calibrating
 	 *
 	 * \return The pitch in [0,360) degree values. If the operation failed,
-	 * returns PROS_ERR_F and errno is se
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pitch = gps.get_pitch();
+	 *		printf("pitch: %f\n", pitch);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_pitch() const;
 
@@ -489,6 +531,20 @@ class Gps : public Device {
 	 *
 	 * \return The roll in [0,360) degree values. If the operation failed,
 	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double roll = gps.get_roll();
+	 *		printf("roll: %f\n", roll);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_roll() const;
 
@@ -503,6 +559,20 @@ class Gps : public Device {
 	 *
 	 * \return The yaw in [0,360) degree values. If the operation failed,
 	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double yaw = gps.get_yaw();
+	 *		printf("yaw: %f\n", yaw);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	 */
 	virtual double get_yaw() const;
 
@@ -602,6 +672,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw gyroscope value in x-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_x = gps.get_gyro_x();
+	 *		printf("gyro_x: %f\n", gyro_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
 	virtual double get_gyro_rate_x() const;
 
@@ -616,6 +700,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw gyroscope value in y-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_y = gps.get_gyro_y();
+	 *		printf("gyro_y: %f\n", gyro_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
 	virtual double get_gyro_rate_y() const;
 
@@ -630,6 +728,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw gyroscope value in z-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_z = gps.get_gyro_z();
+	 *		printf("gyro_z: %f\n", gyro_z);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
 	virtual double get_gyro_rate_z() const;
 
@@ -658,6 +770,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw accelerometer value in x-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_x = gps.get_accel_x();
+	 *		printf("accel_x: %f\n", accel_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
     virtual double get_accel_x() const;
 
@@ -672,6 +798,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw accelerometer value in y-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_y = gps.get_accel_y();
+	 *		printf("accel_y: %f\n", accel_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
 	virtual double get_accel_y() const;
 
@@ -686,6 +826,20 @@ class Gps : public Device {
 	 * 
 	 * \return The raw accelerometer value in z-axis. If the operation fails, returns
 	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_z = gps.get_accel_z();
+	 *		printf("accel_z: %f\n", accel_z);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
 	*/
 	virtual double get_accel_z() const;
 

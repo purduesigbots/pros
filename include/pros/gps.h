@@ -382,6 +382,21 @@ gps_position_s_t gps_get_position(uint8_t port);
  * 
  * \return The X position in meters. If the operation failed,
  * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double pos_x;
+ *
+ *   while (true) {
+ *     pos_x = gps_get_position_x(GPS_PORT);
+ *     printf("X: %f\n", pos_x);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_position_x(uint8_t port);
 
@@ -398,7 +413,22 @@ double gps_get_position_x(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * 
  * \return The Y position in meters. If the operation failed,
- * returns PROS_ERR_F and errno is set.t.
+ * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double pos_y;
+ *
+ *   while (true) {
+ *     pos_y = gps_get_position_y(GPS_PORT);
+ *     printf("Y: %f\n", pos_y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_position_y(uint8_t port);
 
@@ -448,7 +478,22 @@ gps_orientation_s_t gps_get_orientation(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * 
  * \return The pitch in [0,360) degree values. If the operation failed,
- * returns PROS_ERR_F and errno is se
+ * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double pitch;
+ *
+ *   while (true) {
+ *     pitch = gps_get_pitch(GPS_PORT);
+ *     printf("pitch: %f\n", pitch);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_pitch(uint8_t port);
 
@@ -466,6 +511,21 @@ double gps_get_pitch(uint8_t port);
  * 
  * \return The roll in [0,360) degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double roll;
+ *
+ *   while (true) {
+ *     roll = gps_get_roll(GPS_PORT);
+ *     printf("roll: %f\n", roll);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_roll(uint8_t port);
 
@@ -483,6 +543,21 @@ double gps_get_roll(uint8_t port);
  * 
  * \return The yaw in [0,360) degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double yaw;
+ *
+ *   while (true) {
+ *     yaw = gps_get_yaw(GPS_PORT);
+ *     printf("yaw: %f\n", yaw);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_yaw(uint8_t port);
 
@@ -500,6 +575,21 @@ double gps_get_yaw(uint8_t port);
  *
  * \return The heading in [0,360) degree values. If the operation failed,
  * returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double heading;
+ *
+ *   while (true) {
+ *     heading = gps_get_heading(GPS_PORT);
+ *     printf("heading: %f\n", heading);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_heading(uint8_t port);
 
@@ -517,6 +607,21 @@ double gps_get_heading(uint8_t port);
  *
  * \return The heading in [DOUBLE_MIN, DOUBLE_MAX] values. If the operation
  * fails, returns PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double heading_raw;
+ *
+ *   while (true) {
+ *     heading_raw = gps_get_heading_raw(GPS_PORT);
+ *     printf("heading_raw: %f\n", heading_raw);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
  */
 double gps_get_heading_raw(uint8_t port);
 
@@ -531,7 +636,8 @@ double gps_get_heading_raw(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS port number from 1-21
- * \return The raw gyroscope values. If the operation failed, all the
+ * \return A struct (gps_gyro_s_t) containing values mentioned above.
+ * If the operation failed, all the
  * structure's members are filled with PROS_ERR_F and errno is set.
  *
  * \b Example
@@ -564,6 +670,21 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \return The raw gyroscope value in x-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double gyro_x;
+ *
+ *   while (true) {
+ *     gyro_x = gps_get_gyro_x(GPS_PORT);
+ *     printf("gyro_x: %f\n", gyro_x);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_gyro_rate_x(uint8_t port);
 
@@ -580,6 +701,21 @@ double gps_get_gyro_rate_x(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \return The raw gyroscope value in y-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double gyro_y;
+ *
+ *   while (true) {
+ *     gyro_y = gps_get_gyro_y(GPS_PORT);
+ *     printf("gyro_y: %f\n", gyro_y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_gyro_rate_y(uint8_t port);
 
@@ -596,6 +732,21 @@ double gps_get_gyro_rate_y(uint8_t port);
  * 				 The V5 GPS port number from 1-21
  * \return The raw gyroscope value in z-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double gyro_z;
+ *
+ *   while (true) {
+ *     gyro_z = gps_get_gyro_z(GPS_PORT);
+ *     printf("gyro_z: %f\n", gyro_z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_gyro_rate_z(uint8_t port);
 
@@ -610,7 +761,8 @@ double gps_get_gyro_rate_z(uint8_t port);
  *
  * \param  port
  * 				 The V5 GPS's port number from 1-21
- * \return The raw accelerometer values. If the operation failed, all the
+ * \return A struct (gps_accel_s_t) containing values mentioned above.
+ * If the operation failed, all the
  * structure's members are filled with PROS_ERR_F and errno is set.
  * 
  * \b Example
@@ -643,6 +795,21 @@ gps_accel_s_t gps_get_accel(uint8_t port);
  * 				 The V5 GPS's port number from 1-21
  * \return The raw accelerometer value in x-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double accel_x;
+ *
+ *   while (true) {
+ *     accel_x = gps_get_accel_x(GPS_PORT);
+ *     printf("accel_x: %f\n", accel_x);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_accel_x(uint8_t port);
 
@@ -659,6 +826,21 @@ double gps_get_accel_x(uint8_t port);
  * 				 The V5 GPS's port number from 1-21
  * \return The raw accelerometer value in y-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double accel_y;
+ *
+ *   while (true) {
+ *     accel_y = gps_get_accel_y(GPS_PORT);
+ *     printf("accel_y: %f\n", accel_y);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_accel_y(uint8_t port);
 
@@ -675,6 +857,21 @@ double gps_get_accel_y(uint8_t port);
  * 				 The V5 GPS's port number from 1-21
  * \return The raw accelerometer value in z-axis. If the operation fails, returns
  * PROS_ERR_F and errno is set.
+ * 
+ * \b Example
+ * \code
+ * #define GPS_PORT 1
+ *
+ * void opcontrol() {
+ *   double accel_z;
+ *
+ *   while (true) {
+ *     accel_z = gps_get_accel_z(GPS_PORT);
+ *     printf("accel_z: %f\n", accel_z);
+ *     delay(20);
+ *   }
+ * }
+ * \endcode
 */
 double gps_get_accel_z(uint8_t port);
 
