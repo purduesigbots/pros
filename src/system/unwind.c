@@ -97,8 +97,15 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 }
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
+	static uint8_t line_num = 4;
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
+	if (line_num == 4) {
+		vexDisplayString(line_num, "START STACKTRACE\t%p", (void*)pc);
+	} else {
+		vexDisplayString(line_num, "\t%p", (void*)pc);
+	}
+	++line_num;
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
@@ -140,7 +147,7 @@ void report_data_abort(uint32_t _sp) {
 	fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
 	vexDisplayForegroundColor(ClrWhite);
 	vexDisplayBackgroundColor(ClrRed);
-	vexDisplayRectClear(0, 25, 480, 125);
+	vexDisplayRectClear(0, 25, 480, 200);
 	vexDisplayString(2, "DATA ABORT EXCEPTION");
 	vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
 	if (pxCurrentTCB) {
