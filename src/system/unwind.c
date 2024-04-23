@@ -96,16 +96,18 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 	return (_Unwind_Ptr)&__exidx_start;
 }
 
+struct {
+	uint32_t[12] pcs;
+	size_t size;
+} stacktrace;
+
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
-	static uint8_t line_num = 4;
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
-	if (line_num == 4) {
-		vexDisplayString(line_num, "START STACKTRACE\t%p", (void*)pc);
-	} else {
-		vexDisplayString(line_num, "\t%p", (void*)pc);
-	}
-	++line_num;
+	if (stacktrace.size < sizeof(stacktrace.pcs) / sizeof(stacktrace.pcs[0]))
+		stacktrace.pcs[stacktrace.size++] = pc;
+	else
+		; // TODO: handle this
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
@@ -150,8 +152,11 @@ void report_data_abort(uint32_t _sp) {
 	vexDisplayRectClear(0, 25, 480, 200);
 	vexDisplayString(2, "DATA ABORT EXCEPTION");
 	vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
+
+	int brain_line_no = 4;
+	
 	if (pxCurrentTCB) {
-		vexDisplayString(4, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+		vexDisplayString(brain_line_no++, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 		fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 	}
 
@@ -162,6 +167,21 @@ void report_data_abort(uint32_t _sp) {
 	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	fputs("END OF TRACE\n", stderr);
+	
+	for(size_t i = 0; i < stacktrace.size / 4; i++) {
+		vexDisplayString(brain_line_no++, "%p %p %p %p", stacktrace.pcs[4*i], stacktrace.pcs[4*i+1], stacktrace.pcs[4*i+2], stacktrace.pcs[4*i+3]);
+	}
+	switch (stacktrace.size % 4) {
+		case 3:
+			vexDisplayString(brain_line_no++, "%p %p %p", stacktrace.pcs[stacktrace.size-2], stacktrace.pcs[stacktrace.size-1], stacktrace.pcs[stacktrace.size]);
+			break;
+		case 2:
+			vexDisplayString(brain_line_no++, "%p %p", stacktrace.pcs[stacktrace.size-1], stacktrace.pcs[stacktrace.size]);
+			break;
+		case 1:
+			vexDisplayString(brain_line_no++, "%p", stacktrace.pcs[stacktrace.size]);
+			break;
+	}
 
 	struct mallinfo info = mallinfo();
 	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
