@@ -99,13 +99,13 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 struct {
 	uint32_t[12] pcs;
 	size_t size;
-} stacktrace;
+} trace;
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
-	if (stacktrace.size < sizeof(stacktrace.pcs) / sizeof(stacktrace.pcs[0]))
-		stacktrace.pcs[stacktrace.size++] = pc;
+	if (trace.size < sizeof(trace.pcs) / sizeof(trace.pcs[0]))
+		trace.pcs[trace.size++] = pc;
 	else
 		; // TODO: handle this
 	extern void task_clean_up();
@@ -168,18 +168,18 @@ void report_data_abort(uint32_t _sp) {
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	fputs("END OF TRACE\n", stderr);
 	
-	for(size_t i = 0; i < stacktrace.size / 4; i++) {
-		vexDisplayString(brain_line_no++, "%p %p %p %p", stacktrace.pcs[4*i], stacktrace.pcs[4*i+1], stacktrace.pcs[4*i+2], stacktrace.pcs[4*i+3]);
+	for(size_t i = 0; i < trace.size / 4; i++) {
+		vexDisplayString(brain_line_no++, "%p %p %p %p", (void*)trace.pcs[4*i], (void*)trace.pcs[4*i+1], (void*)trace.pcs[4*i+2], (void*)trace.pcs[4*i+3]);
 	}
-	switch (stacktrace.size % 4) {
+	switch (trace.size % 4) {
 		case 3:
-			vexDisplayString(brain_line_no++, "%p %p %p", stacktrace.pcs[stacktrace.size-2], stacktrace.pcs[stacktrace.size-1], stacktrace.pcs[stacktrace.size]);
+			vexDisplayString(brain_line_no++, "%p %p %p", (void*)trace.pcs[trace.size-2], (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
 			break;
 		case 2:
-			vexDisplayString(brain_line_no++, "%p %p", stacktrace.pcs[stacktrace.size-1], stacktrace.pcs[stacktrace.size]);
+			vexDisplayString(brain_line_no++, "%p %p", (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
 			break;
 		case 1:
-			vexDisplayString(brain_line_no++, "%p", stacktrace.pcs[stacktrace.size]);
+			vexDisplayString(brain_line_no++, "%p", (void*)trace.pcs[trace.size]);
 			break;
 	}
 
