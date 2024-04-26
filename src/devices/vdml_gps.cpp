@@ -37,6 +37,16 @@ std::int32_t Gps::set_data_rate(std::uint32_t rate) const {
 	return pros::c::gps_set_data_rate(_port, rate);
 }
 
+std::vector<Gps> Gps::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::gps)};
+	std::vector<Gps> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
+
 double Gps::get_error() const {
 	return pros::c::gps_get_error(_port);
 }
