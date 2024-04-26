@@ -97,8 +97,9 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 }
 
 struct trace_t {
-	uint32_t pcs[12];
+	uint32_t pcs[20];
 	size_t size;
+	bool truncated;
 };
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
@@ -108,7 +109,7 @@ _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0])) {
 		trace->pcs[trace->size++] = pc;
 	} else {
-		; // TODO: handle this
+		trace->truncated = true;
 	}
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
@@ -167,7 +168,7 @@ void report_data_abort(uint32_t _sp) {
 
 	fputs("BEGIN STACK TRACE\n", stderr);
 	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
-	struct trace_t trace = {{0}, 0};
+	struct trace_t trace = {{0}, 0, false};
 	__gnu_Unwind_Backtrace(trace_fn, &trace, &vrs);
 	fputs("END OF TRACE\n", stderr);
 	
@@ -185,7 +186,9 @@ void report_data_abort(uint32_t _sp) {
 			vexDisplayString(brain_line_no++, "%p", (void*)trace.pcs[trace.size]);
 			break;
 	}
-
+	if (trace.truncated) {
+		vexDisplayString(brain_line_no++, "Trace was truncated, see terminal for full trace");
+	}
 	struct mallinfo info = mallinfo();
 	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
 	if (pxCurrentTCB) {
