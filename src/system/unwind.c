@@ -96,16 +96,17 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 	return (_Unwind_Ptr)&__exidx_start;
 }
 
-struct {
-	uint32_t[12] pcs;
+struct trace_t {
+	uint32_t pcs[12];
 	size_t size;
-} trace;
+};
 
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
+	struct trace_t* trace = (struct trace_t*)d;
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
-	if (trace.size < sizeof(trace.pcs) / sizeof(trace.pcs[0]))
-		trace.pcs[trace.size++] = pc;
+	if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0]))
+		trace->pcs[trace->size++] = pc;
 	else
 		; // TODO: handle this
 	extern void task_clean_up();
@@ -165,7 +166,8 @@ void report_data_abort(uint32_t _sp) {
 
 	fputs("BEGIN STACK TRACE\n", stderr);
 	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
-	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
+	struct trace_t trace = {{0}, 0};
+	__gnu_Unwind_Backtrace(trace_fn, &trace, &vrs);
 	fputs("END OF TRACE\n", stderr);
 	
 	for(size_t i = 0; i < trace.size / 4; i++) {
