@@ -51,12 +51,36 @@ double Gps::get_error() const {
 	return pros::c::gps_get_error(_port);
 }
 
-pros::gps_status_s_t Gps::get_status() const {
-	return pros::c::gps_get_status(_port);
+pros::gps_status_s_t Gps::get_position_and_orientation() const {
+	return pros::c::gps_get_position_and_orientation(_port);
 }
 
 pros::gps_position_s_t Gps::get_position() const {
 	return pros::c::gps_get_position(_port);
+}
+
+double Gps::get_position_x() const {
+    return pros::c::gps_get_position_x(_port);
+}
+
+double Gps::get_position_y() const {
+    return pros::c::gps_get_position_y(_port);
+}
+
+pros::gps_orientation_s_t Gps::get_orientation() const {
+    return pros::c::gps_get_orientation(_port);
+}
+
+double Gps::get_pitch() const {
+    return pros::c::gps_get_pitch(_port);
+}
+
+double Gps::get_roll() const {
+    return pros::c::gps_get_roll(_port);
+}
+
+double Gps::get_yaw() const {
+    return pros::c::gps_get_yaw(_port);
 }
 
 double Gps::get_heading() const {
@@ -67,34 +91,45 @@ double Gps::get_heading_raw() const {
 	return pros::c::gps_get_heading_raw(_port);
 }
 
-double Gps::get_rotation() const {
-	return pros::c::gps_get_rotation(_port);
-}
-
-std::int32_t Gps::set_rotation(double target) const {
-	return pros::c::gps_set_rotation(_port, target);
-}
-
-std::int32_t Gps::tare_rotation() const {
-	return pros::c::gps_tare_rotation(_port);
-}
-
 pros::gps_gyro_s_t Gps::get_gyro_rate() const {
 	return pros::c::gps_get_gyro_rate(_port);
+}
+
+double Gps::get_gyro_rate_x() const {
+    return pros::c::gps_get_gyro_rate_x(_port);
+}
+
+double Gps::get_gyro_rate_y() const {
+	return pros::c::gps_get_gyro_rate_y(_port);
+}
+
+double Gps::get_gyro_rate_z() const {
+	return pros::c::gps_get_gyro_rate_z(_port);
 }
 
 pros::gps_accel_s_t Gps::get_accel() const {
 	return pros::c::gps_get_accel(_port);
 }
 
+double Gps::get_accel_x() const {
+    return pros::c::gps_get_accel_x(_port);
+}
+
+double Gps::get_accel_y() const {
+	return pros::c::gps_get_accel_y(_port);
+}
+
+double Gps::get_accel_z() const {
+	return pros::c::gps_get_accel_z(_port);
+}
+
 std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
-	pros::gps_status_s_t data = gps.get_status();
+	pros::gps_status_s_t data = gps.get_position_and_orientation();
 	os << "Gps [";
 	os << "port: " << gps._port;
 	os << ", x: " << data.x;
 	os << ", y: " << data.y;
 	os << ", heading: " << gps.get_heading();
-	os << ", rotation: " << gps.get_rotation();
 	os << "]";
 	return os;
 }
