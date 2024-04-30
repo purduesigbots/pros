@@ -59,7 +59,10 @@ class Gps : public Device {
 	 * \endcode
 	 *
 	 */
-	explicit Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
+	Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
+
+	Gps(const Device& device)
+		: Gps(device.get_port()) {};
 
 	/**
 	 * Creates a GPS object for the given port.
@@ -219,6 +222,8 @@ class Gps : public Device {
 	 * \endcode
 	 */
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
+
+	static std::vector<Gps> get_all_devices();
 
 	/**
 	* Get the GPS's cartesian location relative to the center of turning/origin in meters.
