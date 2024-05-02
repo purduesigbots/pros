@@ -90,7 +90,7 @@ std::ostream& operator<<(std::ostream& os, const pros::Gps& gps) {
 	return os;
 }
 
-pros::Gps pros::Gps::getGps() {
+pros::Gps pros::Gps::get_gps() {
 	static int curr_gps_port = 0;
 	curr_gps_port = curr_gps_port % 21;
 	for (int i = 0; i < 21; i++) {

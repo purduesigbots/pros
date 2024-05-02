@@ -63,7 +63,6 @@ std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
 
-
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
                              vision_object_s_t* const object_arr) const {
 	return vision_read_by_size(_port, size_id, object_count, object_arr);
@@ -113,6 +112,20 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
+}
+Vision Vision::get_vision() {
+	static int curr_vision_port = 0;
+	curr_vision_port = curr_vision_port % 21;
+	for (int i = 0; i < 21; i++) {
+		if (registry_get_device(curr_vision_port)->device_type == pros::c::E_DEVICE_VISION) {
+			curr_vision_port++;
+			return Vision(curr_vision_port);
+		}
+		curr_vision_port++;
+		curr_vision_port = curr_vision_port % 21;
+	}
+	errno = ENODEV;
+	return Vision(PROS_ERR_BYTE);
 }
 
 }  // namespace v5

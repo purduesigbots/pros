@@ -122,7 +122,7 @@ std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
 }
 
-Imu Imu::getImu() {
+Imu Imu::get_imu() {
 	static int curr_imu_port = 0;
 	curr_imu_port = curr_imu_port % 21;
 	for (int i = 0; i < 21; i++) {

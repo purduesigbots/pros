@@ -616,7 +616,27 @@ class Gps : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Gps& gps);
 
-	static Gps getGps();
+	/**
+	 * Gets a gps sensor that is plugged in to the brain
+	 *
+	 * \note The first time this function is called it returns the gps sensor at the lowest port
+	 * If this function is called multiple times, it will cycle through all the ports.
+	 * For example, if you have 1 gps sensor on the robot
+	 * this function will always return a gps sensor object for that port.
+	 * If you have 2 gps sensors, all the odd numered calls to this function will return objects
+	 * for the lower port number,
+	 * all the even number calls will return gps objects for the higher port number
+	 *
+	 *
+	 * This functions uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - No gps sensor is plugged into the brain
+	 *
+	 * \return A gps object corresponding to a port that a gps sensor is connected to the brain
+	 * If no gps sensor is plugged in, it returns a gps sensor on port PROS_ERR_BYTE
+	 *
+	 */
+	static Gps get_gps();
 	///@}
 };  // Gps Class
 
