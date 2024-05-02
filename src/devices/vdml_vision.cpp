@@ -39,6 +39,15 @@ vision_color_code_t Vision::create_color_code(const std::uint32_t sig_id1, const
 	return vision_create_color_code(_port, sig_id1, sig_id2, sig_id3, sig_id4, sig_id5);
 }
 
+std::vector<Vision> Vision::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::vision)};
+	std::vector<Vision> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
 vision_object_s_t Vision::get_by_size(const std::uint32_t size_id) const {
 	return vision_get_by_size(_port, size_id);
 }
