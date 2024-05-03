@@ -28,18 +28,40 @@ bool Device::is_installed() {
 	return_port(zero_indexed_port, _deviceType == plugged_device_type);
 }
 
-std::uint8_t Device::get_port(void) {
+std::uint8_t Device::get_port(void) const {
 	return _port;
 }
 
 pros::DeviceType Device::get_plugged_type() const {
-	if (!port_mutex_take(_port - 1)) {                            
+	return(get_plugged_type(_port));
+}
+
+pros::DeviceType Device::get_plugged_type(std::uint8_t port) {
+	if (!port_mutex_take(port - 1)) {                            
 		errno = EACCES; 
 		return DeviceType::undefined;                                                                           
 	}
-	DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(_port - 1);
+	DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(port - 1);
 	
-	return_port(_port - 1, type);
+	return_port(port - 1, type);
+}
+
+std::vector<Device> Device::get_all_devices(pros::DeviceType device_type) {
+	std::vector<Device> device_list {};
+
+	for (std::uint8_t curr_port = 0; curr_port < 21; ++curr_port) {
+		if (!port_mutex_take(curr_port)) {                            
+			errno = EACCES;
+			continue;
+		}
+
+		pros::DeviceType type = (DeviceType) pros::c::registry_get_plugged_type(curr_port);
+		if (device_type == type) {;
+			device_list.push_back(Device {static_cast<std::uint8_t>(curr_port + 1)});
+		}
+		port_mutex_give(curr_port);
+	}
+	return device_list;
 }
 
 Device::Device(const std::uint8_t port) : _port(port) {}

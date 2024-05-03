@@ -54,7 +54,12 @@ class Optical : public Device {
 	 * pros::Optical optical(1);
 	 * \endcode
 	 */
-	explicit Optical(const std::uint8_t port);
+	Optical(const std::uint8_t port);
+
+	Optical(const Device& device)
+		: Optical(device.get_port()) {};
+
+	static std::vector<Optical> get_all_devices();
 
 	/**
 	 * Get the detected color hue

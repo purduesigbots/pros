@@ -19,6 +19,15 @@ using namespace pros::c;
 
 Optical::Optical(std::uint8_t port) : Device(port, DeviceType::optical) {}
 
+std::vector<Optical> Optical::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::optical)};
+	std::vector<Optical> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
 double Optical::get_hue(){
   return optical_get_hue(_port);
 }

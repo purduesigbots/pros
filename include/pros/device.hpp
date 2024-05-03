@@ -90,7 +90,7 @@ class Device {
  	 * }
  	 * \endcode
 	 */
-	std::uint8_t get_port(void);
+	std::uint8_t get_port(void) const;
 
 	/**
 	 * Checks if the device is installed.
@@ -137,6 +137,9 @@ class Device {
 	 */
 	pros::DeviceType get_plugged_type() const;
 
+	static pros::DeviceType get_plugged_type(std::uint8_t port);
+
+	static std::vector<Device> get_all_devices(pros::DeviceType device_type = pros::DeviceType::undefined);
 
 	protected:
 	/**

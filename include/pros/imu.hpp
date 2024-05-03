@@ -82,7 +82,11 @@ class Imu : public Device {
 	 * }
 	 * \endcode
 	 */
-	explicit Imu(const std::uint8_t port) : Device(port, DeviceType::imu){};
+
+	Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
+
+	Imu(const Device& device)
+		: Imu(device.get_port()) {};
 
 	/**
 	 * Calibrate IMU
@@ -164,6 +168,9 @@ class Imu : public Device {
 	 * \endcode
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
+
+	static std::vector<Imu> get_all_devices();
+
 	/**
 	 * Get the total number of degrees the Inertial Sensor has spun about the z-axis
 	 *
