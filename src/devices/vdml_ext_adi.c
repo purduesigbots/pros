@@ -472,7 +472,7 @@ int32_t ext_adi_led_set(ext_adi_led_t led, uint32_t* buffer, uint32_t buffer_len
 		buffer_length = MAX_LED;
 	} else if (buffer == NULL || buffer_length < 1) {
 		errno = EINVAL;
-		return PROS_ERR;
+		return_port(smart_port - 1, PROS_ERR);
 	}
 	uint32_t rtv = (uint32_t)vexDeviceAdiAddrLedSet(device->device_info, adi_port, buffer, 0, buffer_length, 0);
 	return_port(smart_port - 1, rtv);
