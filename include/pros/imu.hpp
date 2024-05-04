@@ -85,9 +85,30 @@ class Imu : public Device {
 
 	Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
 
-	Imu(const Device& device)
-		: Imu(device.get_port()) {};
 
+	Imu(const Device& device) : Imu(device.get_port()){};
+
+	/**
+	 * Gets a IMU sensor that is plugged in to the brain
+	 *
+	 * \note The first time this function is called it returns the IMU sensor at the lowest port
+	 * If this function is called multiple times, it will cycle through all the ports.
+	 * For example, if you have 1 IMU sensor on the robot
+	 * this function will always return a IMU sensor object for that port.
+	 * If you have 2 IMU sensors, all the odd numered calls to this function will return objects
+	 * for the lower port number,
+	 * all the even number calls will return IMU objects for the higher port number
+	 *
+	 *
+	 * This functions uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - No IMU sensor is plugged into the brain
+	 *
+	 * \return A IMU object corresponding to a port that a IMU sensor is connected to the brain
+	 * If no IMU sensor is plugged in, it returns a IMU sensor on port PROS_ERR_BYTE
+	 *
+	 */
+	static Imu get_imu();
 	/**
 	 * Calibrate IMU
 	 *

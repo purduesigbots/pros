@@ -10,6 +10,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <cerrno>
+
 #include "pros/imu.hpp"
 #include "vdml/vdml.h"
 
@@ -135,6 +137,21 @@ std::int32_t Imu::tare() const {
 
 imu_orientation_e_t Imu::get_physical_orientation() const {
 	return pros::c::imu_get_physical_orientation(_port);
+}
+
+Imu Imu::get_imu() {
+	static int curr_imu_port = 0;
+	curr_imu_port = curr_imu_port % 21;
+	for (int i = 0; i < 21; i++) {
+		if (registry_get_device(curr_imu_port)->device_type == pros::c::E_DEVICE_IMU) {
+			curr_imu_port++;
+			return Imu(curr_imu_port);
+		}
+		curr_imu_port++;
+		curr_imu_port = curr_imu_port % 21;
+	}
+	errno = ENODEV;
+	return Imu(PROS_ERR_BYTE);
 }
 
 std::ostream& operator<<(std::ostream& os, const pros::Imu& imu) {

@@ -67,6 +67,7 @@ std::int32_t Controller::rumble(const char* rumble_pattern) {
 }  // namespace v5
 
 namespace competition {
+using namespace pros::c;
 std::uint8_t get_status(void) {
 	return competition_get_status();
 }
