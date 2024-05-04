@@ -108,7 +108,7 @@ class Distance : public Device {
 	 * void opcontrol() {
 		Distance distance(DISTANCE_PORT);
 	 *   while (true) {
-	 *     printf("Distance confidence: %d\n", distance.get());
+	 *     printf("Distance confidence: %d\n", distance.get_distance());
 	 *     delay(20);
 	 *   }
 	 * }
