@@ -59,7 +59,10 @@ class Gps : public Device {
 	 * \endcode
 	 *
 	 */
-	explicit Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
+	Gps(const std::uint8_t port) : Device(port, DeviceType::gps){};
+
+	Gps(const Device& device)
+		: Gps(device.get_port()) {};
 
 	/**
 	 * Creates a GPS object for the given port.
@@ -220,6 +223,8 @@ class Gps : public Device {
 	 */
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
+	static std::vector<Gps> get_all_devices();
+
 	/**
 	* Get the GPS's cartesian location relative to the center of turning/origin in meters.
 	*
@@ -365,15 +370,15 @@ class Gps : public Device {
 	 * 	Gps gps(GPS_PORT);
 	 *  gps_status_s_t status;
 	 *   while (true) {
-	 *     status = gps.get_status();
-	 *     printf("X: %f, Y: %f, Heading: %f, Roll: %f, Pitch: %f, Yaw: %f\n",
-	 * 	   status.x, status.y, status.heading, status.roll, status.pitch, status.yaw);
+	 *     status = gps.get_position_and_orientation();
+	 *     printf("X: %f, Y: %f, Roll: %f, Pitch: %f, Yaw: %f\n",
+	 * 	   status.x, status.y, status.roll, status.pitch, status.yaw);
 	 *     delay(20);
 	 *   }
 	 * }
 	 * \endcode
 	 */
-	virtual pros::gps_status_s_t get_status() const;
+	virtual pros::gps_status_s_t get_position_and_orientation() const;
 
 	/**
 	 * Gets the x and y position on the field of the GPS in meters.
@@ -397,14 +402,184 @@ class Gps : public Device {
 	 *  gps_position_s_t position;
 	 *   while (true) {
 	 *	 position = gps.get_position();
-	 *     printf("X: %f, Y: %f, Heading: %f\n", position.x, position.y,
-	 * 	   position.heading);
+	 *     printf("X: %f, Y: %f\n", position.x, position.y);
 	 *     delay(20);
 	 *   }
 	 * }
 	 * \endcode
 	 */
 	virtual pros::gps_position_s_t get_position() const;
+
+    /**
+	 * Gets the X position in meters of the robot relative to the starting position.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return The X position in meters. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pos_x = gps.get_position_x();
+	 *		printf("X: %f\n", pos_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	 */
+    virtual double get_position_x() const;
+
+    /**
+	 * Gets the Y position in meters of the robot relative to the starting position.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return The Y position in meters. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pos_y = gps.get_position_y();
+	 *		printf("Y: %f\n", pos_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	 */
+	virtual double get_position_y() const;
+
+    /**
+	 * Gets the pitch, roll, and yaw of the GPS relative to the starting orientation.
+     * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return A struct (gps_orientation_s_t) containing values mentioned above.
+	 * If the operation failed, all the structure's members are filled with
+	 * PROS_ERR_F and errno is set.
+	 *
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  gps_orientation_s_t orientation;
+	 *   while (true) {
+	 *	 orientation = gps.get_orientation();
+	 *     printf("pitch: %f, roll: %f, yaw: %f\n", orientation.pitch, 
+	 *         orientation.roll, orientation.yaw);
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	*/
+	virtual pros::gps_orientation_s_t get_orientation() const;
+
+    /**
+	 * Gets the pitch of the robot in degrees relative to the starting oreintation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return The pitch in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double pitch = gps.get_pitch();
+	 *		printf("pitch: %f\n", pitch);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	 */
+	virtual double get_pitch() const;
+
+    /**
+	 * Gets the roll of the robot in degrees relative to the starting oreintation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return The roll in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double roll = gps.get_roll();
+	 *		printf("roll: %f\n", roll);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	 */
+	virtual double get_roll() const;
+
+	/**
+	 * Gets the yaw of the robot in degrees relative to the starting oreintation.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 *
+	 * \return The yaw in [0,360) degree values. If the operation failed,
+	 * returns PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double yaw = gps.get_yaw();
+	 *		printf("yaw: %f\n", yaw);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	 */
+	virtual double get_yaw() const;
 
 	/**
 	 * Get the heading in [0,360) degree values.
@@ -464,93 +639,6 @@ class Gps : public Device {
 	virtual double get_heading_raw() const;
 
 	/**
-	 * Gets the GPS sensor's elapsed rotation value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \return The elased heading in degrees. If the operation fails, returns
-	 * PROS_ERR_F and errno is set.
-	 *
-	 * \b Example
-	 * \code
-	 * #define GPS_PORT 1
-	 *
-	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  while(true) {
-			double rotation = gps.get_rotation();
-	 *		printf("Rotation: %f\n", rotation);
-	 *  	pros::delay(20);
-	 *  }
-	 * }
-	 * \endcode
-	 */
-	virtual double get_rotation() const;
-
-	/**
-	 * Set the GPS sensor's rotation value to target value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \param  target
-	 * 				 Target rotation value to set rotation value to
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 *
-	 * \b Example
-	 * \code
-	 * #define GPS_PORT 1
-	 *
-	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  double rotation = gps.set_rotation(90);
-	 *  while(true) {
-	 *		printf("Rotation: %f\n", rotation);
-	 *  	pros::delay(20);
-	 *  }
-	 * }
-	 * \endcode
-	 */
-	virtual std::int32_t set_rotation(double target) const;
-
-	/**
-	 * Tare the GPS sensor's rotation value
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENXIO - The given value is not within the range of V5 ports (1-21).
-	 * ENODEV - The port cannot be configured as a GPS
-	 * EAGAIN - The sensor is still calibrating
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 * 
-	 * \b Example: 
-	 * \code
-	 * #define GPS_PORT 1
-	 *
-	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  gps.tare_rotation();
-	 *  while(true) {
-	 * 	    Should be around 0 on first call since it was tared. 
-	 *		printf("Rotation: %f\n", rotation);
-	 *  	pros::delay(20);
-	 *  }
-	 * }
-	 * \endcode
-	 */
-	virtual std::int32_t tare_rotation() const;
-
-	/**
 	 * Get the GPS's raw gyroscope values
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -579,6 +667,90 @@ class Gps : public Device {
 	virtual pros::gps_gyro_s_t get_gyro_rate() const;
 
 	/**
+	 * Get the GPS's raw gyroscope value in x-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw gyroscope value in x-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_x = gps.get_gyro_x();
+	 *		printf("gyro_x: %f\n", gyro_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+	virtual double get_gyro_rate_x() const;
+
+    /**
+	 * Get the GPS's raw gyroscope value in y-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw gyroscope value in y-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_y = gps.get_gyro_y();
+	 *		printf("gyro_y: %f\n", gyro_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+	virtual double get_gyro_rate_y() const;
+
+	/**
+	 * Get the GPS's raw gyroscope value in z-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw gyroscope value in z-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double gyro_z = gps.get_gyro_z();
+	 *		printf("gyro_z: %f\n", gyro_z);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+	virtual double get_gyro_rate_z() const;
+
+	/**
 	 * Get the GPS's raw accelerometer values
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -587,12 +759,94 @@ class Gps : public Device {
 	 * ENODEV - The port cannot be configured as an GPS
 	 * EAGAIN - The sensor is still calibrating
 	 *
-	 * \param  port
-	 * 				 The V5 GPS's port number from 1-21
 	 * \return The raw accelerometer values. If the operation failed, all the
 	 * structure's members are filled with PROS_ERR_F and errno is set.
 	 */
 	virtual pros::gps_accel_s_t get_accel() const;
+
+	/**
+	 * Get the GPS's raw accelerometer value in x-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw accelerometer value in x-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_x = gps.get_accel_x();
+	 *		printf("accel_x: %f\n", accel_x);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+    virtual double get_accel_x() const;
+
+	/**
+	 * Get the GPS's raw accelerometer value in y-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw accelerometer value in y-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_y = gps.get_accel_y();
+	 *		printf("accel_y: %f\n", accel_y);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+	virtual double get_accel_y() const;
+
+    /**
+	 * Get the GPS's raw accelerometer value in z-axis
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an GPS
+	 * EAGAIN - The sensor is still calibrating
+	 * 
+	 * \return The raw accelerometer value in z-axis. If the operation fails, returns
+	 * PROS_ERR_F and errno is set.
+	 * 
+	 * \b Example
+	 * \code
+	 * #define GPS_PORT 1
+	 *
+	 * void opcontrol() {
+	 * 	Gps gps(GPS_PORT);
+	 *  while(true) {
+	 *		double accel_z = gps.get_accel_z();
+	 *		printf("accel_z: %f\n", accel_z);
+	 *  	pros::delay(20);
+	 *  }
+	 * }
+	 * \endcode
+	*/
+	virtual double get_accel_z() const;
 
 	/**
 	 * This is the overload for the << operator for printing to streams

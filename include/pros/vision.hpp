@@ -56,7 +56,10 @@ class Vision : public Device {
 	 * }
 	 * \endcode
 	 */
-	explicit Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
+	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
+
+	Vision(const Device& device)
+		: Vision(device.get_port()) {};
 
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
@@ -167,6 +170,8 @@ class Vision : public Device {
 	vision_color_code_t create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
 	                                      const std::uint32_t sig_id5 = 0) const;
+
+	static std::vector<Vision> get_all_devices();
 
 	/**
 	 * Gets the nth largest object according to size_id.

@@ -56,7 +56,10 @@ class Distance : public Device {
 	 * }
 	 * \endcode
 	 */
-	explicit Distance(const std::uint8_t port);
+	Distance(const std::uint8_t port);
+
+	Distance(const Device& device)
+		: Distance(device.get_port()) {};
 
 	/**
 	 * Get the currently measured distance from the sensor in mm
@@ -83,6 +86,8 @@ class Distance : public Device {
 	 * \endcode
 	 */
 	virtual std::int32_t get();
+
+	static std::vector<Distance> get_all_devices();
 
 	/**
 	 * Get the currently measured distance from the sensor in mm.
