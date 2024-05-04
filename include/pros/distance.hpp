@@ -85,6 +85,33 @@ class Distance : public Device {
 	virtual std::int32_t get();
 
 	/**
+	 * Get the currently measured distance from the sensor in mm.
+	 * \note This function is identical to get().
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Distance Sensor
+	 *
+	 * \return The distance value or PROS_ERR if the operation failed, setting
+	 * errno. Will return 9999 if the sensor can not detect an object.
+	 *
+	 * \b Example
+	 * \code
+	 * #define DISTANCE_PORT 1
+	 * 
+	 * void opcontrol() {
+		Distance distance(DISTANCE_PORT);
+	 *   while (true) {
+	 *     printf("Distance confidence: %d\n", distance.get());
+	 *     delay(20);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	virtual std::int32_t get_distance();
+
+	/**
 	 * Get the confidence in the distance reading
 	 *
 	 * This is a value that has a range of 0 to 63. 63 means high confidence,

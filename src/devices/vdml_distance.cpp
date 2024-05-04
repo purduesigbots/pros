@@ -22,6 +22,10 @@ std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);
 }
 
+std::int32_t Distance::get_distance() {
+	return get();
+}
+
 std::int32_t Distance::get_confidence() {
 	return pros::c::distance_get_confidence(_port);
 }
