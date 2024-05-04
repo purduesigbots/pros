@@ -67,7 +67,7 @@ class Distance : public Device {
 	 * ENODEV - The port cannot be configured as an Distance Sensor
 	 *
 	 * \return The distance value or PROS_ERR if the operation failed, setting
-	 * errno.
+	 * errno. Will return 9999 if the sensor can not detect an object.
 	 *
 	 * \b Example
 	 * \code
@@ -127,7 +127,7 @@ class Distance : public Device {
 	 * ENODEV - The port cannot be configured as an Distance Sensor
 	 *
 	 * \return The size value or PROS_ERR if the operation failed, setting
-	 * errno.
+	 * errno. Will return -1 if the sensor is not able to determine object size.
 	 *
 	 * \b Example
 	 * \code
