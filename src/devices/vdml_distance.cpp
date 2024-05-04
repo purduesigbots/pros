@@ -22,6 +22,10 @@ std::int32_t Distance::get() {
 	return pros::c::distance_get(_port);
 }
 
+std::int32_t Distance::get_distance() {
+	return get();
+}
+
 std::vector<Distance> Distance::get_all_devices() {
 	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::distance)};
 	std::vector<Distance> return_vector;
