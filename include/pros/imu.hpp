@@ -40,8 +40,9 @@ namespace pros {
  */
 
 enum class ImuStatus {
+	ready = 0,
 	/** The IMU is calibrating */
-	calibrating = 0x01,
+	calibrating = 19,
 	/** Used to indicate that an error state was reached in the imu_get_status function,\
 	not that the IMU is necessarily in an error state */
 	error = 0xFF,
@@ -81,7 +82,9 @@ class Imu : public Device {
 	 * }
 	 * \endcode
 	 */
-	Imu(const std::uint8_t port) : Device(port, DeviceType::imu){};
+
+	Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
+
 
 	Imu(const Device& device) : Imu(device.get_port()){};
 
@@ -1008,6 +1011,20 @@ class Imu : public Device {
 	 * \endcode
 	 */
 	virtual bool is_calibrating() const;
+	/**
+	 * Returns the physical orientation of the IMU
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Inertial Sensor
+	 *
+	 * \param  port
+	 * 				 The V5 Inertial Sensor port number from 1-21
+	 * \returns The physical orientation of the Inertial Sensor or PROS_ERR if an error occured.
+	 *
+	 */
+	virtual imu_orientation_e_t get_physical_orientation() const;
 
 	/**
 	 * This is the overload for the << operator for printing to streams
