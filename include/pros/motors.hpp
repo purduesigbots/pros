@@ -53,62 +53,29 @@ class Motor : public AbstractMotor, public Device {
 	 * 
 	 * \param gearset = pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
-	 * 		  set to pros::v5::MotorGears::green if not specifed. 
+	 * 		  Does not explicitly set the gearset if not specified or if the gearset is invalid
 	 * 
 	 * \param encoder_units = pros::v5::MotorUnits::degrees
 	 * 		  Optional parameter for the encoder units of the motor
-	 * 		  set to pros::v5::MotorUnits::degrees if not specified by the user
+	 * 		  Does not explicitly set the gearset if not specified or if the gearset is invalid
 	 * 
 	 * \b Example
  	 * \code
  	 * void opcontrol() {
-	 * 	Motor first_motor(1); //Creates a motor on port 1 with green gearset and degrees as the encoder units
-	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 with standard gearset and encoder units
-	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set and degrees
+	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
+	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
+	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
 	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
  	 *  
  	 * }
  	 * \endcode
 	 * 
 	 */
-	explicit Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::green,
-	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::degrees);
+	Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
+	               const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 
-	
-	/// \name Motor movement functions
-	/// These functions allow programmers to make motors move
-	///@{
-
-	/**
-	 * Sets the voltage for the motor from -127 to 127.
-	 *
-	 * This is designed to map easily to the input from the controller's analog
-	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of pros::Motor::move().
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param voltage
-	 *        The new motor voltage from -127 to 127
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 *
-	 * \b Example
-	 * \code
-	 * void opcontrol() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_18);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
-	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
-	 *     pros::delay(2);
-	 *   }
-	 * }
-	 * \endcode
-	 */
-	std::int32_t operator=(std::int32_t voltage) const;
+	Motor(const Device& device)
+		: Motor(device.get_port()) {};
 
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
@@ -1516,6 +1483,8 @@ class Motor : public AbstractMotor, public Device {
 	 *  
 	 */
 	std::int8_t size(void) const;
+
+	static std::vector<Motor> get_all_devices();
 
 	/**
 	 * gets the port number of the motor

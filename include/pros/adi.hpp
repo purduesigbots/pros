@@ -190,6 +190,33 @@ class Port {
 	 */
 	std::int32_t set_value(std::int32_t value) const;
 
+	/**
+	 * Gets the port of the sensor.
+	 *
+	 * \return returns a tuple of integer ports.
+	 * 
+	 * \note The parts of the tuple are {smart port, adi port, second adi port (when applicable)}. 
+	 * 
+	 * 
+	 * \b Example
+	 * \code
+	 * #define DIGITAL_SENSOR_PORT 1 // 'A'
+	 * 
+	 * void initialize() {
+	 *   pros::adi::AnalogIn sensor (DIGITAL_SENSOR_PORT);
+	 *   
+	 * 	 // Getting values from the tuple using std::get<index> 
+	 * 	 int sensorSmartPort = std::get<0>(sensor.get_port()); // First value
+	 *   int sensorAdiPort = std::get<1>(sensor.get_port()); // Second value
+	 * 
+	 * 	 // Prints the first and second value from the port tuple (The Adi Port. The first value is the Smart Port)
+	 *   printf("Sensor Smart Port: %d\n", sensorSmartPort);
+	 *   printf("Sensor Adi Port: %d\n", sensorAdiPort);	
+	 * }
+	 * \endcode
+	 */
+	virtual ext_adi_port_tuple_t get_port() const;
+
 	protected:
 	std::uint8_t _smart_port;
 	std::uint8_t _adi_port;
@@ -396,6 +423,8 @@ class AnalogIn : protected Port {
 	 * value calibrated HR: (16 bit calibrated value), value: (12 bit value)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::AnalogIn& analog_in);
+
+	using Port::get_port;
 };
 
 ///@}
@@ -484,6 +513,8 @@ class AnalogOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+	
+	using Port::get_port;
 
 	/**
 	 * This is the overload for the << operator for printing to streams
@@ -594,6 +625,8 @@ class DigitalOut : private Port {
 	 * \endcode
 	 */
 	using Port::set_value;
+
+	using Port::get_port;
 
 	/**
 	 * This is the overload for the << operator for printing to streams
@@ -731,6 +764,8 @@ class DigitalIn : private Port {
 	 * value: (value)]
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::DigitalIn& digital_in);
+
+	using Port::get_port;
 };
 
 ///@}
@@ -875,6 +910,8 @@ class Motor : private Port {
 	 * \endcode
 	 */
 	using Port::get_value;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1004,6 +1041,11 @@ class Encoder : private Port {
 	 * value: (value)]
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Encoder& encoder);
+	ext_adi_port_tuple_t get_port() const override;
+
+	private:
+	ext_adi_port_pair_t _port_pair;
+
 };
 
 ///@}
@@ -1108,6 +1150,8 @@ class Ultrasonic : private Port {
 	 * \endcode
 	 */
 	std::int32_t get_value() const;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1259,6 +1303,8 @@ class Gyro : private Port {
 	 * \endcode
 	 */
 	std::int32_t reset() const;
+
+	using Port::get_port;
 };
 
 ///@}
@@ -1419,6 +1465,9 @@ class Potentiometer : public AnalogIn {
 	 * Prints in format(this below is all in one line with no new line):
 	 */ 
 	friend std::ostream& operator<<(std::ostream& os, pros::adi::Potentiometer& potentiometer);
+
+	using Port::get_port;
+	
 };
 
 ///@}
@@ -1709,6 +1758,8 @@ class Led : protected Port {
 	* \endcode
 	*/
 	std::int32_t length();
+
+	using Port::get_port;
 
 	protected:
 	std::vector<uint32_t> _buffer;

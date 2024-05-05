@@ -54,7 +54,12 @@ class Optical : public Device {
 	 * pros::Optical optical(1);
 	 * \endcode
 	 */
-	explicit Optical(const std::uint8_t port);
+	Optical(const std::uint8_t port);
+
+	Optical(const Device& device)
+		: Optical(device.get_port()) {};
+
+	static std::vector<Optical> get_all_devices();
 
 	/**
 	 * Get the detected color hue
@@ -124,6 +129,7 @@ class Optical : public Device {
 	 * 		pros::Optical optical(1);
 	 * 		std::cout << "Brightness: " << optical.get_brightness() << std::endl;
 	 * }
+	 * \endcode
 	 */
 	virtual double get_brightness();
 
@@ -235,6 +241,21 @@ class Optical : public Device {
 	 *
 	 * \return raw rgb value if the operation was successful or an optical_raw_s_t 
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
+	 * 
+	 * \b Example:
+	 * \code{.cpp}
+	 * void opcontrol() {
+	 * 		pros::Optical optical(1);
+	 * 		pros::c::optical_raw_s_t raw = optical.get_raw();
+	 * 		while (1) {
+	 * 			std::cout << "Red: " << raw.red << std::endl;
+	 * 			std::cout << "Green: " << raw.green << std::endl;
+	 * 			std::cout << "Blue: " << raw.blue << std::endl;
+	 * 			std::cout << "Clear: " << raw.clear << std::endl;
+	 * 			pros::delay(20);
+	 * 		}
+	 * }
+	 * \endcode
 	 */
 	virtual pros::c::optical_raw_s_t get_raw();
 
@@ -242,10 +263,11 @@ class Optical : public Device {
 	 * Get the most recent gesture data from the sensor
 	 *
 	 * Gestures will be cleared after 500mS
-	 * 0 = no gesture
-	 * 1 = up (towards cable)
-	 * 2 = down
-	 * 3 = right
+	 * 
+	 * 0 = no gesture,
+	 * 1 = up (towards cable),
+	 * 2 = down,
+	 * 3 = right,
 	 * 4 = left
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -331,6 +353,7 @@ class Optical : public Device {
 	 * 			pros::delay(20);
 	 * 		}
 	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t enable_gesture();
 

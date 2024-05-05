@@ -18,18 +18,15 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Motor::Motor(AbstractMotor& abstract_motor) : Motor(abstract_motor.get_port()) {
-	
-}
 
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
     : Device(port, DeviceType::motor), _port(port) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
-}
-
-std::int32_t Motor::operator=(std::int32_t voltage) const {
-	return motor_move(_port, voltage);
+	if (gearset != pros::v5::MotorGears::invalid) {
+		set_gearing(gearset);
+	}
+	if (encoder_units != pros::v5::MotorEncoderUnits::invalid) {
+		set_encoder_units(encoder_units);
+	}
 }
 
 std::int32_t Motor::move(std::int32_t voltage) const {
@@ -354,11 +351,22 @@ std::int32_t Motor::get_voltage_limit(const std::uint8_t index) const {
 	}
 	return motor_get_voltage_limit(_port);
 }
+
 std::vector<std::int32_t> Motor::get_voltage_limit_all(void) const {
 	std::vector<std::int32_t> return_vector;
 	return_vector.push_back(motor_get_voltage_limit(_port));
 	return return_vector;
 }
+
+std::vector<Motor> Motor::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::motor)};
+	std::vector<Motor> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
 std::int8_t Motor::get_port(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;

@@ -67,6 +67,7 @@ std::int32_t Controller::rumble(const char* rumble_pattern) {
 }  // namespace v5
 
 namespace competition {
+using namespace pros::c;
 std::uint8_t get_status(void) {
 	return competition_get_status();
 }
@@ -82,5 +83,14 @@ std::uint8_t is_connected(void) {
 std::uint8_t is_disabled(void) {
 	return competition_is_disabled();
 }
+
+std::uint8_t is_field_control(void) {
+	return competition_is_field();
+}
+
+std::uint8_t is_competition_switch(void) {
+	return competition_is_switch();
+}
+
 }  // namespace competition
 }  // namespace pros

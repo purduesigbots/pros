@@ -15,13 +15,13 @@
 
 namespace pros {
 inline namespace v5 {
-    
-Rotation::Rotation(const std::int8_t port) : Device(port, DeviceType::rotation) {
-    if (port < 0) {
-        pros::c::rotation_set_reversed(abs(port), true);
-    } else {
-        pros::c::rotation_set_reversed(port, false);
-    }
+
+Rotation::Rotation(const std::int8_t port) : Device(abs(port), DeviceType::rotation) {
+	if (port < 0) {
+		pros::c::rotation_set_reversed(abs(port), true);
+	} else {
+		pros::c::rotation_set_reversed(port, false);
+	}
 }
 
 std::int32_t Rotation::reset() {
@@ -77,9 +77,9 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
 
 namespace literals {
 const pros::Rotation operator"" _rot(const unsigned long long int r) {
-    return pros::Rotation(r);
+	return pros::Rotation(r);
 }
-} // namespace literals 
+}  // namespace literals
 
 }  // namespace v5
 }  // namespace pros
