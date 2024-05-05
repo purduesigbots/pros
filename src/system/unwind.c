@@ -97,7 +97,7 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 }
 
 struct trace_t {
-	uint32_t pcs[20];
+	void* pcs[20];
 	size_t size;
 	bool truncated;
 };
@@ -107,7 +107,7 @@ _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
 	if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0])) {
-		trace->pcs[trace->size++] = pc;
+		trace->pcs[trace->size++] = (void*) pc;
 	} else {
 		trace->truncated = true;
 	}
@@ -171,7 +171,7 @@ void report_data_abort(uint32_t _sp) {
 	struct trace_t trace = {{0}, 0, false};
 	__gnu_Unwind_Backtrace(trace_fn, &trace, &vrs);
 	fputs("END OF TRACE\n", stderr);
-	
+	/*
 	for(size_t i = 0; i < trace.size / 4; i++) {
 		vexDisplayString(brain_line_no++, "TRACE: %p %p %p %p", (void*)trace.pcs[4*i], (void*)trace.pcs[4*i+1], (void*)trace.pcs[4*i+2], (void*)trace.pcs[4*i+3]);
 	}
@@ -186,6 +186,24 @@ void report_data_abort(uint32_t _sp) {
 			vexDisplayString(brain_line_no++, "TRACE: %p", (void*)trace.pcs[trace.size]);
 			break;
 	}
+*/
+	for(size_t i = 0; i < trace.size; i += 4) {
+		switch (trace.size - i) {
+			case 1:
+				vexDisplayString(brain_line_no++, "TRACE: %p", trace.pcs[i]);
+				break;
+			case 2:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p", trace.pcs[i], trace.pcs[i+1]);
+				break;
+			case 3:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p %p", trace.pcs[i], trace.pcs[i+1], trace.pcs[i+2]);
+				break;
+			default:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p %p %p", trace.pcs[i], trace.pcs[i+1], trace.pcs[i+2], trace.pcs[i+3]);
+				break;
+		}
+	}
+
 	if (trace.truncated) {
 		vexDisplayString(brain_line_no++, "Trace was truncated, see terminal for full trace");
 	}
