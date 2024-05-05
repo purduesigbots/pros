@@ -16,7 +16,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  *
- * \defgroup cpp-motor-group Motor Groups C++ API
+ * \defgroup cpp-motor-group Motors C++ API
+ * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
  */
 
 #ifndef _PROS_MOTOR_GROUP_HPP_
@@ -91,6 +92,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 * 
 	 * \param gearset =  pros::v5::MotorGears::invalid
+	 * \param gearset = pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
 	 * 		  Does not explicitly set the motor gearset if it is invalid or not specified
 	 * 
@@ -440,7 +442,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * }
 	 * \endcode
 	 */
-	double get_target_position(const std::uint8_t index = 0) const;
+	double get_target_position(const std::uint8_t index) const;
 
 	/**
 	 * Gets a vector of the the target positions set for the motor group
@@ -1361,7 +1363,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
-	 * \return One of Motor_Brake, according to what was set for the
+	 * \return One of MotorBrake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1382,7 +1384,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * \return A vector with one of Motor_Brake for each motor in the motor group, according to what was set for the
+	 * \return A vector with one of MotorBrake for each motor in the motor group, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
@@ -1464,7 +1466,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 * 
-	 * \return One of Motor_Units according to what is set for the
+	 * \return One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
@@ -1485,7 +1487,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * \return A vector with the following for each motor, One of Motor_Units according to what is set for the
+	 * \return A vector with the following for each motor, One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
@@ -1510,8 +1512,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 *\param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 * 
-	 * \return One of Motor_Gears according to what is set for the motor,
-	 * or pros::Motor_Gears::invalid if the operation failed.
+	 * \return One of MotorGears according to what is set for the motor,
+	 * or pros::MotorGears::invalid if the operation failed.
 	 *
 	 * \b Example
 	 * \code
@@ -1531,8 +1533,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 *
 	 * 
-	 * \return A vector with one of Motor_Gears according to what is set for the motor,
-	 * or pros::Motor_Gears::invalid if the operation failed for each motor.
+	 * \return A vector with one of MotorGears according to what is set for the motor,
+	 * or pros::MotorGears::invalid if the operation failed for each motor.
 	 *
 	 * \b Example
 	 * \code
@@ -1651,7 +1653,7 @@ class MotorGroup : public virtual AbstractMotor {
 	std::vector<std::int32_t> is_reversed_all(void) const;
 
 	/**
-	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
+	 * Sets one of MotorBrake to a motor in the motor group. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1661,7 +1663,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
@@ -1681,7 +1683,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_brake_mode(const MotorBrake mode, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
+	 * Sets one of MotorBrake to a motor in the motor group. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1691,7 +1693,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
@@ -1711,7 +1713,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_brake_mode(const pros::motor_brake_mode_e_t mode, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Brake all the motors in the motor group. Works with the C enum
+	 * Sets one of MotorBrake all the motors in the motor group. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1720,7 +1722,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -1737,7 +1739,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_brake_mode_all(const MotorBrake mode) const;
 	/**
-	 * Sets one of Motor_Brake to a motor in the motor group. Works with the C enum
+	 * Sets one of MotorBrake to a motor in the motor group. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1746,7 +1748,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 * 
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 *
 	 * 
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
@@ -1828,7 +1830,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_current_limit_all(const std::int32_t limit) const;
 	/**
-	 * Sets one of Motor_Units for one motor in the motor group's motor encoder. Works with the C
+	 * Sets one of MotorUnits for one motor in the motor group's motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1856,7 +1858,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_encoder_units(const MotorUnits units, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Units for one motor in the motor group's motor encoder. Works with the C
+	 * Sets one of MotorUnits for one motor in the motor group's motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1884,7 +1886,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_encoder_units(const pros::motor_encoder_units_e_t units, const std::uint8_t index = 0) const;
 	/**
-	 * Sets one of Motor_Units for every motor in the motor group's motor encoder. Works with the C
+	 * Sets one of MotorUnits for every motor in the motor group's motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -1909,7 +1911,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	std::int32_t set_encoder_units_all(const MotorUnits units) const;
 	/**
-	 * Sets one of Motor_Units for every motor in the motor group's motor encoder. Works with the C
+	 * Sets one of MotorUnits for every motor in the motor group's motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
