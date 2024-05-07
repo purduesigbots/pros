@@ -65,7 +65,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
 	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
 	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
-	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
+	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); //port 4 w/ rotations
 	 *
 	 * }
 	 * \endcode
@@ -2374,6 +2374,9 @@ class Motor : public AbstractMotor, public Device {
 	///@}
 
 	private:
+	/**
+	 * The port of the motor. Negative ports indicate that the motor is reversed
+	 */
 	std::int8_t _port;
 };
 namespace literals {
