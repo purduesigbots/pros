@@ -80,6 +80,7 @@ class Motor : public AbstractMotor, public Device {
 	/// These functions allow programmers to make motors move
 	///@{
 
+
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
 	 *

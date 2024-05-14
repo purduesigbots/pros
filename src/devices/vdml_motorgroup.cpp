@@ -38,6 +38,7 @@ using namespace pros::c;
 
 MotorGroup::MotorGroup(AbstractMotor& motor_group) : MotorGroup(motor_group.get_port_all()) {}
 
+
 MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports, const pros::v5::MotorGears gearset,
                        const pros::v5::MotorUnits encoder_units)
     : _ports(ports) {
