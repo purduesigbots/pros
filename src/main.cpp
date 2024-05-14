@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include "pros/motor_group.hpp"
-
 /**
  * A callback function for LLEMU's center button.
  *
