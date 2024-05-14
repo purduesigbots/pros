@@ -141,7 +141,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 
-	MotorGroup(MotorGroup& motor_group);
+	MotorGroup(AbstractMotor& motor_group);
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -2345,7 +2345,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void operator+=(MotorGroup&);
+	void operator+=(AbstractMotor&);
 
 	/**
 	 * Appends all the motors in the other motor group reference to this motor group
@@ -2353,7 +2353,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void append(MotorGroup&);
+	void append(AbstractMotor&);
 
 	/**
 	 * Removes the all motors on the port (regardless of reversal) from the motor group
