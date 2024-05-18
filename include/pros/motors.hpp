@@ -1484,6 +1484,18 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int8_t size(void) const;
 
+	/**
+	 * Gets all motors.
+	 * 
+	 * \return A vector of Motor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Motor> motor_all = pros::Motor::get_all_devices();  // All motors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Motor> get_all_devices();
 
 	/**

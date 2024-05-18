@@ -178,6 +178,20 @@ class Rotation : public Device {
 	virtual std::int32_t reset_position(void) const;
 
 	/**
+	 * Gets all rotation sensors.
+	 * 
+	 * \return A vector of Rotation sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Rotation> rotation_all = pros::Rotation::get_all_devices();  // All rotation sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
+	static std::vector<Rotation> get_all_devices();
+
+	/**
 	 * Get the Rotation Sensor's current position in centidegrees
 	 *
 	 * This function uses the following values of errno when an error state is
