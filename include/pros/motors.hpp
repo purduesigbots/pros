@@ -65,7 +65,8 @@ class Motor : public AbstractMotor, public Device {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
 	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
 	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
-	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); port 4 w/ rotations
+
+	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); //port 4 w/ rotations
 	 *
 	 * }
 	 * \endcode
@@ -74,7 +75,13 @@ class Motor : public AbstractMotor, public Device {
 	Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
 	      const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
 
+
 	Motor(const Device& device) : Motor(device.get_port()){};
+
+	/// \name Motor movement functions
+	/// These functions allow programmers to make motors move
+	///@{
+
 
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
@@ -307,6 +314,12 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t modify_profiled_velocity(const std::int32_t velocity) const;
 
+	///@}
+
+	/// \name Motor telemetry functions
+	/// These functions allow programmers to collect telemetry from motors
+	///@{
+
 	/**
 	 * Gets the target position set for the motor by the user
 	 *
@@ -372,12 +385,6 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::int32_t get_target_velocity(const std::uint8_t index = 0) const;
-
-	///@}
-
-	/// \name Motor telemetry functions
-	/// These functions allow programmers to collect telemetry from motors
-	///@{
 
 	/**
 	 * Gets the actual velocity of the motor.
@@ -1483,6 +1490,18 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int8_t size(void) const;
 
+	/**
+	 * Gets all motors.
+	 * 
+	 * \return A vector of Motor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Motor> motor_all = pros::Motor::get_all_devices();  // All motors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Motor> get_all_devices();
 
 	/**
@@ -2370,6 +2389,9 @@ class Motor : public AbstractMotor, public Device {
 	///@}
 
 	private:
+	/**
+	 * The port of the motor. Negative ports indicate that the motor is reversed
+	 */
 	std::int8_t _port;
 };
 namespace literals {

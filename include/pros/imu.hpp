@@ -189,6 +189,18 @@ class Imu : public Device {
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
+	/**
+	 * Gets all IMU sensors.
+	 * 
+	 * \return A vector of Imu sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Imu> imu_all = pros::Imu::get_all_devices();  // All IMU sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Imu> get_all_devices();
 
 	/**

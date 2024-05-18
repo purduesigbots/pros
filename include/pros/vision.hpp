@@ -171,6 +171,18 @@ class Vision : public Device {
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
 	                                      const std::uint32_t sig_id5 = 0) const;
 
+	/**
+	 * Gets all vision sensors.
+	 * 
+	 * \return A vector of Vision sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Vision> vision_all = pros::Vision::get_all_devices();  // All vision sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Vision> get_all_devices();
 
 	/**
