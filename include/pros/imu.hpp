@@ -83,8 +83,7 @@ class Imu : public Device {
 	 * \endcode
 	 */
 
-	Imu(const std::uint8_t port) : Device(port, DeviceType::imu) {};
-
+	Imu(const std::uint8_t port) : Device(port, DeviceType::imu){};
 
 	Imu(const Device& device) : Imu(device.get_port()){};
 
@@ -1040,6 +1039,19 @@ class Imu : public Device {
 };
 
 namespace literals {
+/**
+ * Constructs a Imu from a literal ending in _imu via calling the constructor
+ *
+ * \return a pros::Imu for the corresponding port
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::Imu imu = 2_imu; //Makes an IMU object on port 2
+ * }
+ * \endcode
+ */
 const pros::Imu operator"" _imu(const unsigned long long int i);
 }  // namespace literals
 

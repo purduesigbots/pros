@@ -12,7 +12,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup cpp-serial Generic Serial C++ API
  */
 
@@ -20,8 +20,9 @@
 #define _PROS_SERIAL_HPP_
 
 #include <cstdint>
-#include "pros/serial.h"
+
 #include "pros/device.hpp"
+#include "pros/serial.h"
 
 namespace pros {
 /**
@@ -46,8 +47,8 @@ class Serial : public Device {
 	 *        The V5 port number from 1-21
 	 * \param baudrate
 	 *        The baudrate to run the port at
-	 * 
-	 * \b Example: 
+	 *
+	 * \b Example:
 	 * \code
 	 * pros::Serial serial(1, 9600);
 	 * \endcode
@@ -91,7 +92,7 @@ class Serial : public Device {
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
-	 * 
+	 *
 	 * \b Example:
 	 * \code
 	 * pros::Serial serial(1);
@@ -142,7 +143,7 @@ class Serial : public Device {
 	 *
 	 * \return The number of bytes avaliable to be read or PROS_ERR if the operation
 	 * failed, setting errno.
-	 * 
+	 *
 	 * \b Example:
 	 * \code
 	 * void opcontrol() {
@@ -192,7 +193,7 @@ class Serial : public Device {
 	 *
 	 * \return The next byte avaliable to be read, -1 if none are available, or
 	 * PROS_ERR if the operation failed, setting errno.
-	 * 
+	 *
 	 * \b Example:
 	 * \code
 	 * void opcontrol() {
@@ -318,12 +319,25 @@ class Serial : public Device {
 	 * \endcode
 	 */
 	virtual std::int32_t write(std::uint8_t* buffer, std::int32_t length) const;
-  
+
 	private:
 	///@}
 };
 
 namespace literals {
+/**
+ * Constructs a Serial device from a litteral ending in _ser
+ *
+ * \return a pros::Serial for the corresponding port
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::Serial serial = 2_ser; //Makes an Serial device object on port 2
+ * }
+ * \endcode
+ */
 const pros::Serial operator"" _ser(const unsigned long long int m);
 }  // namespace literals
 }  // namespace pros
