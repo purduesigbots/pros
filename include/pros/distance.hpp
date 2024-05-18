@@ -87,6 +87,18 @@ class Distance : public Device {
 	 */
 	virtual std::int32_t get();
 
+	/**
+	 * Gets all distance sensors.
+	 * 
+	 * \return A vector of Distance sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Distance> distance_all = pros::Distance::get_all_devices();  // All distance sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Distance> get_all_devices();
 
 	/**

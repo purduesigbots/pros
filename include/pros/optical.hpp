@@ -59,6 +59,19 @@ class Optical : public Device {
 	Optical(const Device& device)
 		: Optical(device.get_port()) {};
 
+
+	/**
+	 * Gets all optical sensors.
+	 * 
+	 * \return A vector of Optical sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Optical> optical_all = pros::Optical::get_all_devices();  // All optical sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
 	static std::vector<Optical> get_all_devices();
 
 	/**
