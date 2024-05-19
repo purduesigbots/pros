@@ -109,10 +109,9 @@ int _open(const char* file, int flags, int mode) {
 		return usd_open_r(r, file + strlen("/usd"), flags, mode);
 	} else if (strstr(file, "/dev") == file) {
 		return dev_open_r(r, file + strlen("/dev"), flags, mode);
+	} else {
+		return usd_open_r(r, file, flags, mode);
 	}
-
-	r->_errno = ENOENT;
-	return -1;
 }
 
 ssize_t _write(int file, const void* buf, size_t len) {

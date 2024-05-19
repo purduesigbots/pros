@@ -31,7 +31,7 @@ namespace pros {
 inline namespace v5 {
 
 /**
- * \enum motor_brake
+ * \enum MotorBrake
  * Indicates the current 'brake mode' of a motor.
  */
 enum class MotorBrake {
@@ -42,7 +42,7 @@ enum class MotorBrake {
 };
 
 /**
- * \enum Motor_Encoder_Units
+ * \enum MotorEncoderUnits
  * Indicates the units used by the motor encoders.
  */
 enum class MotorEncoderUnits {
@@ -53,7 +53,7 @@ enum class MotorEncoderUnits {
 	invalid = INT32_MAX ///< Invalid motor encoder units
 };
 
-// Alias for Motor_Encoder_Units
+// Alias for MotorEncoderUnits
 using MotorUnits = MotorEncoderUnits;
 
 enum class MotorGears {
@@ -70,7 +70,7 @@ enum class MotorGears {
 };
 
 
-// Provide Aliases for Motor_Gears
+// Provide Aliases for MotorGears
 using MotorGearset = MotorGears;
 using MotorCart = MotorGears;
 using MotorCartridge = MotorGears;
@@ -88,25 +88,6 @@ class AbstractMotor {
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
-
-	/**
-	 * Sets the voltage for the motor from -127 to 127.
-	 *
-	 * This is designed to map easily to the input from the controller's analog
-	 * stick for simple opcontrol use. The actual behavior of the motor is
-	 * analogous to use of pros::Motor::move().
-	 *
-	 * This function uses the following values of errno when an error state is
-	 * reached:
-	 * ENODEV - The port cannot be configured as a motor
-	 *
-	 * \param voltage
-	 *        The new motor voltage from -127 to 127
-	 *
-	 * \return 1 if the operation was successful or PROS_ERR if the operation
-	 * failed, setting errno.
-	 */
-	virtual std::int32_t operator=(std::int32_t voltage) const = 0;
 
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
@@ -778,7 +759,7 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return One of Motor_Brake, according to what was set for the
+	 * \return One of MotorBrake, according to what was set for the
 	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	virtual MotorBrake get_brake_mode(const std::uint8_t index = 0) const = 0;
@@ -794,7 +775,7 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return A vector containing Motor_Brake(s), according to what was set for the
+	 * \return A vector containing MotorBrake(s), according to what was set for the
 	 * motor(s), or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	virtual std::vector<MotorBrake> get_brake_mode_all(void) const = 0;
@@ -846,7 +827,7 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return One of Motor_Units according to what is set for the
+	 * \return One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	virtual MotorUnits get_encoder_units(const std::uint8_t index = 0) const = 0;
@@ -862,7 +843,7 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return A vector of Motor_Units according to what is set for the
+	 * \return A vector of MotorUnits according to what is set for the
 	 * motor(s) or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	virtual std::vector<MotorUnits> get_encoder_units_all(void) const = 0;
@@ -878,8 +859,8 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return One of Motor_Gears according to what is set for the motor,
-	 * or pros::Motor_Gears::invalid if the operation failed.
+	 * \return One of MotorGears according to what is set for the motor,
+	 * or pros::MotorGears::invalid if the operation failed.
 	 */
 	virtual MotorGears get_gearing(const std::uint8_t index = 0) const = 0;
 
@@ -894,8 +875,8 @@ class AbstractMotor {
      *           The index of the motor to get the target position of.
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
-	 * \return A vector of Motor_Gears according to what is set for the motor(s),
-	 * or pros::Motor_Gears::invalid if the operation failed.
+	 * \return A vector of MotorGears according to what is set for the motor(s),
+	 * or pros::MotorGears::invalid if the operation failed.
 	 */
 	virtual std::vector<MotorGears> get_gearing_all(void) const = 0;
 
@@ -977,7 +958,7 @@ class AbstractMotor {
 	virtual std::vector<std::int32_t> is_reversed_all(void) const = 0;
 
 	/**
-	 * Sets one of Motor_Brake to the motor. Works with the C enum
+	 * Sets one of MotorBrake to the motor. Works with the C enum
 	 * and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -985,7 +966,7 @@ class AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \param mode
-	 *        The Motor_Brake to set for the motor
+	 *        The MotorBrake to set for the motor
 	 * 
      * \param index Optional parameter. 
      *           The index of the motor to get the target position of.
@@ -1018,7 +999,7 @@ class AbstractMotor {
 	virtual std::int32_t set_current_limit(const std::int32_t limit, const std::uint8_t index = 0) const = 0;
 	virtual std::int32_t set_current_limit_all(const std::int32_t limit) const = 0;
 	/**
-	 * Sets one of Motor_Units for the motor encoder. Works with the C
+	 * Sets one of MotorUnits for the motor encoder. Works with the C
 	 * enum and the C++ enum class.
 	 *
 	 * This function uses the following values of errno when an error state is

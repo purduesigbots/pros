@@ -12,7 +12,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup cpp-optical VEX Optical Sensor C++ API
  */
 
@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <iostream>
 
-#include "pros/optical.h"
 #include "pros/device.hpp"
+#include "pros/optical.h"
 
 namespace pros {
 inline namespace v5 {
@@ -48,13 +48,30 @@ class Optical : public Device {
 	 *
 	 * \param port
 	 *        The V5 port number from 1-21
-	 * 
-	 * \b Example: 
+	 *
+	 * \b Example:
 	 * \code{.cpp}
 	 * pros::Optical optical(1);
 	 * \endcode
 	 */
-	explicit Optical(const std::uint8_t port);
+	Optical(const std::uint8_t port);
+
+	Optical(const Device& device) : Optical(device.get_port()){};
+
+
+	/**
+	 * Gets all optical sensors.
+	 * 
+	 * \return A vector of Optical sensor objects.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Optical> optical_all = pros::Optical::get_all_devices();  // All optical sensors that are connected
+	 * }
+ 	 * \endcode
+	 */
+	static std::vector<Optical> get_all_devices();
 
 	/**
 	 * Get the detected color hue
@@ -93,7 +110,7 @@ class Optical : public Device {
 	 *
 	 * \return saturation value if the operation was successful or PROS_ERR_F if
 	 * the operation failed, setting errno.
-	 * 
+	 *
 	 * \b Example:
 	 * \code{.cpp}
 	 * void opcontrol() {
@@ -124,6 +141,7 @@ class Optical : public Device {
 	 * 		pros::Optical optical(1);
 	 * 		std::cout << "Brightness: " << optical.get_brightness() << std::endl;
 	 * }
+	 * \endcode
 	 */
 	virtual double get_brightness();
 
@@ -161,8 +179,8 @@ class Optical : public Device {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return The Error code encountered or PROS_SUCCESS. 
-	 * 
+	 * \return The Error code encountered or PROS_SUCCESS.
+	 *
 	 * \b Example:
 	 * \code{.cpp}
 	 * void initialize() {
@@ -205,9 +223,9 @@ class Optical : public Device {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return rgb value if the operation was successful or an optical_rgb_s_t 
+	 * \return rgb value if the operation was successful or an optical_rgb_s_t
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
-	 * 
+	 *
 	 * \b Example:
 	 * \code{.cpp}
 	 * void opcontrol() {
@@ -233,8 +251,23 @@ class Optical : public Device {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return raw rgb value if the operation was successful or an optical_raw_s_t 
+	 * \return raw rgb value if the operation was successful or an optical_raw_s_t
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
+	 *
+	 * \b Example:
+	 * \code{.cpp}
+	 * void opcontrol() {
+	 * 		pros::Optical optical(1);
+	 * 		pros::c::optical_raw_s_t raw = optical.get_raw();
+	 * 		while (1) {
+	 * 			std::cout << "Red: " << raw.red << std::endl;
+	 * 			std::cout << "Green: " << raw.green << std::endl;
+	 * 			std::cout << "Blue: " << raw.blue << std::endl;
+	 * 			std::cout << "Clear: " << raw.clear << std::endl;
+	 * 			pros::delay(20);
+	 * 		}
+	 * }
+	 * \endcode
 	 */
 	virtual pros::c::optical_raw_s_t get_raw();
 
@@ -242,10 +275,12 @@ class Optical : public Device {
 	 * Get the most recent gesture data from the sensor
 	 *
 	 * Gestures will be cleared after 500mS
-	 * 0 = no gesture
-	 * 1 = up (towards cable)
-	 * 2 = down
-	 * 3 = right
+	 *
+	 * 
+	 * 0 = no gesture,
+	 * 1 = up (towards cable),
+	 * 2 = down,
+	 * 3 = right,
 	 * 4 = left
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -277,7 +312,7 @@ class Optical : public Device {
 	 * ENXIO - The given value is not within the range of V5 ports (1-21).
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
-	 * \return gesture value if the operation was successful or an optical_gesture_s_t 
+	 * \return gesture value if the operation was successful or an optical_gesture_s_t
 	 * with all fields set to PROS_ERR if the operation failed, setting errno.
 	 *
 	 * \b Example:
@@ -311,8 +346,8 @@ class Optical : public Device {
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
 	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
- 	 * setting errno.
-	 * 
+	 * setting errno.
+	 *
 	 * \b Example:
 	 * \code{.cpp}
 	 * void opcontrol() {
@@ -331,6 +366,7 @@ class Optical : public Device {
 	 * 			pros::delay(20);
 	 * 		}
 	 * }
+	 * \endcode
 	 */
 	virtual std::int32_t enable_gesture();
 
@@ -343,7 +379,7 @@ class Optical : public Device {
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
 	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
- 	 * setting errno.
+	 * setting errno.
 	 *
 	 * \b Example:
 	 * \code{.cpp}
@@ -362,12 +398,11 @@ class Optical : public Device {
 	 */
 	virtual std::int32_t disable_gesture();
 
-
 	/**
-     * This is the overload for the << operator for printing to streams
-     *
-     * Prints in format(this below is all in one line with no new line):
-	 * Optical [port: (port number), hue: (hue), saturation: (saturation), 
+	 * This is the overload for the << operator for printing to streams
+	 *
+	 * Prints in format(this below is all in one line with no new line):
+	 * Optical [port: (port number), hue: (hue), saturation: (saturation),
 	 * brightness: (brightness), proximity: (proximity), rgb: {red, green, blue}]
 	 *
 	 * \b Example:
@@ -377,15 +412,28 @@ class Optical : public Device {
 	 * \endcode
 	 */
 	friend std::ostream& operator<<(std::ostream& os, pros::Optical& optical);
-  
+
 	private:
 	///@}
 };
 
 namespace literals {
+/**
+ * Constructs a Optical sensor from a literal ending in _opt
+ *
+ * \return a pros::Optical for the corresponding port
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::Optical opt = 2_opt; //Makes an Optical object on port 2
+ * }
+ * \endcode
+ */
 const pros::Optical operator"" _opt(const unsigned long long int o);
 }  // namespace literals
-}
+}  // namespace v5
 }  // namespace pros
 
 #endif

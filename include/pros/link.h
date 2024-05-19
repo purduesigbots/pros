@@ -41,9 +41,9 @@ namespace pros {
  * \brief Enum for the type of link (TX or RX)
  */
 typedef enum link_type_e {
-	E_LINK_RECEIVER = 0, ///< Indicates that the radio is a receiver.
+	E_LINK_RECIEVER = 0, ///< Indicates that the radio is a reciever.
 	E_LINK_TRANSMITTER, ///< Indicates that the link is a transmitter.
-	E_LINK_RX = E_LINK_RECEIVER, ///< Alias for E_LINK_RECEIVER
+	E_LINK_RX = E_LINK_RECIEVER, ///< Alias for E_LINK_RECIEVER
 	E_LINK_TX = E_LINK_TRANSMITTER ///< Alias for E_LINK_TRANSMITTER
 } link_type_e_t;
 

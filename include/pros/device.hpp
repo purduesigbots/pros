@@ -90,7 +90,7 @@ class Device {
  	 * }
  	 * \endcode
 	 */
-	std::uint8_t get_port(void);
+	std::uint8_t get_port(void) const;
 
 	/**
 	 * Checks if the device is installed.
@@ -137,6 +137,49 @@ class Device {
 	 */
 	pros::DeviceType get_plugged_type() const;
 
+
+	/**
+	 * Gets the type of device on a given port.
+	 * 
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Mutex of port cannot be taken (access denied).
+	 * 
+	 * \param port The V5 port number from 1-21
+	 * 
+	 * \return The device type as an enum.
+	 *
+	 * \b Example
+ 	 * \code
+	 * #define DEVICE_PORT 1
+	 *
+	 * void opcontrol() {
+	 *   while (true) { 
+	 *     DeviceType dt = pros::Device::get_plugged_type(DEVICE_PORT);
+	 *     printf("device plugged type: {plugged type: %d}\n", dt);
+	 *     delay(20);
+	 *   }
+	 * }
+ 	 * \endcode
+	 */
+	static pros::DeviceType get_plugged_type(std::uint8_t port);
+
+	/**
+	 * Gets all devices of a given device type.
+	 * 
+	 * \param device_type The pros::DeviceType enum that matches the type of device desired.
+	 * 
+	 * \return A vector of Device objects for the given device type.
+	 *
+	 * \b Example
+ 	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Device> motor_devices = pros::Device::get_all_devices(pros::DeviceType::motor);  // All Device objects are motors
+	 * }
+ 	 * \endcode
+	 */
+
+	static std::vector<Device> get_all_devices(pros::DeviceType device_type = pros::DeviceType::undefined);
 
 	protected:
 	/**

@@ -14,7 +14,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup c-misc Miscellaneous C API
  * \note Additional example code for this module can be found in its [Tutorial.](@ref controller)
  */
@@ -38,9 +38,16 @@
 /// \name V5 Competition
 //@{
 
-#define COMPETITION_DISABLED (1 << 0)
+/*#define COMPETITION_DISABLED (1 << 0)
 #define COMPETITION_AUTONOMOUS (1 << 1)
 #define COMPETITION_CONNECTED (1 << 2)
+#define COMPETITION_SYSTEM (1 << 3)*/
+typedef enum {
+	COMPETITION_DISABLED = 1 << 0,
+	COMPETITION_CONNECTED = 1 << 2,
+	COMPETITION_AUTONOMOUS = 1 << 1,
+	COMPETITION_SYSTEM = 1 << 3,
+} competition_status;
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,7 +61,7 @@ namespace c {
  *
  * \return The competition control status as a mask of bits with
  * COMPETITION_{ENABLED,AUTONOMOUS,CONNECTED}.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -67,17 +74,11 @@ namespace c {
  */
 uint8_t competition_get_status(void);
 
-#ifdef __cplusplus
-}
-}
-}
-#endif
-
 /**
  * \fn competition_is_disabled()
- * 
+ *
  * \return True if the V5 Brain is disabled, false otherwise.
- * 
+ *
  * \b Example
  * \code
  * void my_task_fn(void* ignore) {
@@ -85,17 +86,17 @@ uint8_t competition_get_status(void);
  *   // Run competition tasks (like Lift Control or similar)
  *   }
  * }
- * 
+ *
  * void initialize() {
  *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
-#define competition_is_disabled() ((competition_get_status() & COMPETITION_DISABLED) != 0)
+uint8_t competition_is_disabled(void);
 
 /**
  * \return True if the V5 Brain is connected to competition control, false otherwise.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -106,11 +107,11 @@ uint8_t competition_get_status(void);
  * }
  * \endcode
  */
-#define competition_is_connected() ((competition_get_status() & COMPETITION_CONNECTED) != 0)
+uint8_t competition_is_connected(void);
 
 /**
  * \return True if the V5 Brain is in autonomous mode, false otherwise.
- * 
+ *
  * \b Example
  * \code
  * void my_task_fn(void* ignore) {
@@ -122,14 +123,46 @@ uint8_t competition_get_status(void);
  *     // Run whatever code is desired to just execute in autonomous
  *     }
  * }
- * 
+ *
  * void initialize() {
  *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
-#define competition_is_autonomous() ((competition_get_status() & COMPETITION_AUTONOMOUS) != 0)
+uint8_t competition_is_autonomous(void);
 
+/**
+ * \return True if the V5 Brain is connected to VEXnet Field Controller, false otherwise.
+ *
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_field()) {
+ *     // connected to VEXnet Field Controller
+ *   }
+ * }
+ * \endcode
+ */
+uint8_t competition_is_field(void);
+
+/**
+ * \return True if the V5 Brain is connected to VEXnet Competition Switch, false otherwise.
+ *
+ * \b Example
+ * \code
+ * void initialize() {
+ *   if (competition_is_switch()) {
+ *     // connected to VEXnet Competition Switch
+ *   }
+ * }
+ */
+uint8_t competition_is_switch(void);
+
+#ifdef __cplusplus
+}
+}
+}
+#endif
 ///@}
 
 /// \name V5 Controller
@@ -143,22 +176,23 @@ namespace pros {
  * \enum
  */
 typedef enum {
-	///The master controller.
+	/// The master controller.
 	E_CONTROLLER_MASTER = 0,
-	///The partner controller.
-	E_CONTROLLER_PARTNER } controller_id_e_t;
+	/// The partner controller.
+	E_CONTROLLER_PARTNER
+} controller_id_e_t;
 
 /**
  * \enum
  */
 typedef enum {
-	///The horizontal axis of the controller’s left analog stick.
+	/// The horizontal axis of the controller’s left analog stick.
 	E_CONTROLLER_ANALOG_LEFT_X = 0,
-	///The vertical axis of the controller’s left analog stick.
+	/// The vertical axis of the controller’s left analog stick.
 	E_CONTROLLER_ANALOG_LEFT_Y,
-	///The horizontal axis of the controller’s right analog stick.
+	/// The horizontal axis of the controller’s right analog stick.
 	E_CONTROLLER_ANALOG_RIGHT_X,
-	///The vertical axis of the controller’s right analog stick.
+	/// The vertical axis of the controller’s right analog stick.
 	E_CONTROLLER_ANALOG_RIGHT_Y
 } controller_analog_e_t;
 
@@ -166,29 +200,29 @@ typedef enum {
  * \enum
  */
 typedef enum {
-	///The first trigger on the left side of the controller.
+	/// The first trigger on the left side of the controller.
 	E_CONTROLLER_DIGITAL_L1 = 6,
-	///The second trigger on the left side of the controller.
+	/// The second trigger on the left side of the controller.
 	E_CONTROLLER_DIGITAL_L2,
-	///The first trigger on the right side of the controller.
+	/// The first trigger on the right side of the controller.
 	E_CONTROLLER_DIGITAL_R1,
-	///The second trigger on the right side of the controller.
+	/// The second trigger on the right side of the controller.
 	E_CONTROLLER_DIGITAL_R2,
-	///The up arrow on the left arrow pad of the controller.
+	/// The up arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_UP,
-	///The down arrow on the left arrow pad of the controller.
+	/// The down arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_DOWN,
-	///The left arrow on the left arrow pad of the controller.
+	/// The left arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_LEFT,
-	///The right arrow on the left arrow pad of the controller.
+	/// The right arrow on the left arrow pad of the controller.
 	E_CONTROLLER_DIGITAL_RIGHT,
-	///The ‘X’ button on the right button pad of the controller.
+	/// The ‘X’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_X,
-	///The ‘B’ button on the right button pad of the controller.
+	/// The ‘B’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_B,
-	///The ‘Y’ button on the right button pad of the controller.
+	/// The ‘Y’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_Y,
-	///The ‘A’ button on the right button pad of the controller.
+	/// The ‘A’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_A
 } controller_digital_e_t;
 
@@ -235,26 +269,27 @@ typedef enum {
 #endif
 
 /**
- * \def Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that port.
- * 
+ * \def Given an id and a port, this macro sets the port variable based on the id and allows the mutex to take that
+ * port.
+ *
  * \returns error (in the function/scope it's in) if the controller failed to connect or an invalid id is given.
-*/
+ */
 #define CONTROLLER_PORT_MUTEX_TAKE(id, port) \
-	switch (id) {							\
-		case E_CONTROLLER_MASTER:			\
-			port = V5_PORT_CONTROLLER_1;	\
-			break;							\
-		case E_CONTROLLER_PARTNER:			\
-			port = V5_PORT_CONTROLLER_2;	\
-			break;							\
-		default:							\
-			errno = EINVAL;					\
-			return PROS_ERR;				\
-	}										\
-	if (!internal_port_mutex_take(port)) {	\
-		errno = EACCES;						\
-		return PROS_ERR;					\
-	}										\
+	switch (id) {                              \
+		case E_CONTROLLER_MASTER:                \
+			port = V5_PORT_CONTROLLER_1;           \
+			break;                                 \
+		case E_CONTROLLER_PARTNER:               \
+			port = V5_PORT_CONTROLLER_2;           \
+			break;                                 \
+		default:                                 \
+			errno = EINVAL;                        \
+			return PROS_ERR;                       \
+	}                                          \
+	if (!internal_port_mutex_take(port)) {     \
+		errno = EACCES;                          \
+		return PROS_ERR;                         \
+	}
 
 #ifdef __cplusplus
 namespace c {
@@ -274,7 +309,7 @@ namespace c {
  *        Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
  *
  * \return 1 if the controller is connected, 0 otherwise
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -306,7 +341,7 @@ int32_t controller_is_connected(controller_id_e_t id);
  *
  * \return The current reading of the analog channel: [-127, 127].
  * If the controller was not connected, then 0 is returned
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -333,7 +368,7 @@ int32_t controller_get_analog(controller_id_e_t id, controller_analog_e_t channe
  *        Must be one of E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER
  *
  * \return The controller's battery capacity
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -357,7 +392,7 @@ int32_t controller_get_battery_capacity(controller_id_e_t id);
  *        Must be one of E_CONTROLLER_MASTER or E_CONTROLLER_PARTNER
  *
  * \return The controller's battery level
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -385,7 +420,7 @@ int32_t controller_get_battery_level(controller_id_e_t id);
  *
  * \return 1 if the button on the controller is pressed.
  * If the controller was not connected, then 0 is returned
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -430,7 +465,7 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  *
  * \return 1 if the button on the controller is pressed and had not been pressed
  * the last time this function was called, 0 otherwise.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -438,7 +473,7 @@ int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t butt
  *   if (controller_get_digital_new_press(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
  *     // Toggle pneumatics or other similar actions
  *   }
- * 
+ *
  *   delay(2);
  *   }
  * }
@@ -473,7 +508,7 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -516,7 +551,7 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -554,7 +589,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -585,7 +620,7 @@ int32_t controller_clear_line(controller_id_e_t id, uint8_t line);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -619,7 +654,7 @@ int32_t controller_clear(controller_id_e_t id);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -645,7 +680,7 @@ int32_t controller_rumble(controller_id_e_t id, const char* rumble_pattern);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current voltage of the battery
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -663,7 +698,7 @@ int32_t battery_get_voltage(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current current of the battery
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -681,7 +716,7 @@ int32_t battery_get_current(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current temperature of the battery
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -699,7 +734,7 @@ double battery_get_temperature(void);
  * EACCES - Another resource is currently trying to access the battery port.
  *
  * \return The current capacity of the battery
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -713,7 +748,7 @@ double battery_get_capacity(void);
  * Checks if the SD card is installed.
  *
  * \return 1 if the SD card is installed, 0 otherwise
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -723,6 +758,49 @@ double battery_get_capacity(void);
  */
 int32_t usd_is_installed(void);
 
+/**
+ * Lists the files in a directory specified by the path
+ * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ *
+ * EIO - Hard error occured in the low level disk I/O layer
+ * EINVAL - file or directory is invalid, or length is invalid
+ * EBUSY - THe physical drinve cannot work
+ * ENOENT - cannot find the path or file
+ * EINVAL - the path name format is invalid
+ * EACCES - Access denied or directory full
+ * EEXIST - Access denied
+ * EROFS - SD card is write protected
+ * ENXIO - drive number is invalid or not a FAT32 drive
+ * ENOBUFS - drive has no work area
+ * ENFILE - too many open files
+ *
+ *
+ *
+ * \note use a path of "\" to list the files in the main directory NOT "/usd/"
+ *  DO NOT PREPEND YOUR PATHS WITH "/usd/"
+ *
+ * \return 1 on success or PROS_ERR on failure setting errno
+ *
+ * \b Example
+ * \code
+ * void opcontrol() {
+ * 	char* test = (char*) malloc(128);
+ *	pros::c::usd_list_files("/", test, 128);
+ *	pros::delay(200);
+ *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
+ *  pros::delay(100);
+ *  pros::c::usd_list_files("/test", test, 128);
+ *	pros::delay(200);
+ *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
+ *  pros::delay(100);
+ * }
+ * \endcode
+ */
+int32_t usd_list_files(const char* path, char* buffer, int32_t len);
+
 /******************************************************************************/
 /**                              Date and Time                               **/
 /******************************************************************************/
@@ -731,16 +809,16 @@ extern const char* baked_date;
 extern const char* baked_time;
 
 typedef struct {
-	uint16_t year; // Year - 1980
+	uint16_t year;  // Year - 1980
 	uint8_t day;
-	uint8_t month; // 1 = January
+	uint8_t month;  // 1 = January
 } date_s_t;
 
 typedef struct {
 	uint8_t hour;
 	uint8_t min;
 	uint8_t sec;
-	uint8_t sec_hund; // hundredths of a second
+	uint8_t sec_hund;  // hundredths of a second
 } time_s_t;
 
 ///@}
@@ -749,7 +827,7 @@ typedef struct {
 
 #ifdef __cplusplus
 }
-} // namespace pros
+}  // namespace pros
 }
 #endif
 

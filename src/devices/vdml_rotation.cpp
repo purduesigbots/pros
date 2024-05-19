@@ -15,13 +15,13 @@
 
 namespace pros {
 inline namespace v5 {
-    
-Rotation::Rotation(const std::int8_t port) : Device(port, DeviceType::rotation) {
-    if (port < 0) {
-        pros::c::rotation_set_reversed(abs(port), true);
-    } else {
-        pros::c::rotation_set_reversed(port, false);
-    }
+
+Rotation::Rotation(const std::int8_t port) : Device(abs(port), DeviceType::rotation) {
+	if (port < 0) {
+		pros::c::rotation_set_reversed(abs(port), true);
+	} else {
+		pros::c::rotation_set_reversed(port, false);
+	}
 }
 
 std::int32_t Rotation::reset() {
@@ -38,6 +38,15 @@ std::int32_t Rotation::set_position(std::uint32_t position) const {
 
 std::int32_t Rotation::reset_position(void) const {
 	return pros::c::rotation_reset_position(_port);
+}
+
+std::vector<Rotation> Rotation::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::rotation)};
+	std::vector<Rotation> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
 }
 
 std::int32_t Rotation::get_position(void) const {
@@ -77,9 +86,9 @@ std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation) {
 
 namespace literals {
 const pros::Rotation operator"" _rot(const unsigned long long int r) {
-    return pros::Rotation(r);
+	return pros::Rotation(r);
 }
-} // namespace literals 
+}  // namespace literals
 
 }  // namespace v5
 }  // namespace pros

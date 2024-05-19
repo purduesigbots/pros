@@ -11,6 +11,7 @@
  */
 
 #include "kapi.h"
+#include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
 
@@ -31,36 +32,33 @@ using namespace pros::c;
 #define empty_MotorGroup_check_vector(error, vector) \
 	if (_ports.size() <= 0) {                          \
 		errno = EDOM;                                    \
-		vector.push_back(error);                      \
+		vector.push_back(error);                         \
 		return vector;                                   \
 	}
 
 
-MotorGroup::MotorGroup(AbstractMotor& abstract_motor) : MotorGroup(abstract_motor.get_port_all()) {
-}
+MotorGroup::MotorGroup(AbstractMotor& motor_group) : MotorGroup(motor_group.get_port_all()) {}
 
-MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports,
-                       const pros::v5::MotorGears gearset,
+MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports, const pros::v5::MotorGears gearset,
                        const pros::v5::MotorUnits encoder_units)
     : _ports(ports) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
-}
-
-MotorGroup::MotorGroup(const std::vector<std::int8_t>& ports,
-                       const pros::v5::MotorGears gearset,
-                       const pros::v5::MotorUnits encoder_units)
-    : _ports(ports) {
-	set_gearing(gearset);
-	set_encoder_units(encoder_units);
-}
-
-std::int32_t MotorGroup::operator=(std::int32_t voltage) const {
-	empty_MotorGroup_check(PROS_ERR);
-	for (auto it = _ports.begin() + 1; it < _ports.end(); it++) {
-		motor_move(*it, voltage);
+	if (gearset != pros::v5::MotorGears::invalid) {
+		set_gearing_all(gearset);
 	}
-	return motor_move(_ports[0], voltage);
+	if (encoder_units != pros::v5::MotorUnits::invalid) {
+		set_encoder_units_all(encoder_units);
+	}
+}
+
+MotorGroup::MotorGroup(const std::vector<std::int8_t>& ports, const pros::v5::MotorGears gearset,
+                       const pros::v5::MotorUnits encoder_units)
+    : _ports(ports) {
+	if (gearset != pros::v5::MotorGears::invalid) {
+		set_gearing_all(gearset);
+	}
+	if (encoder_units != pros::v5::MotorUnits::invalid) {
+		set_encoder_units_all(encoder_units);
+	}
 }
 
 std::int32_t MotorGroup::move(std::int32_t voltage) const {
@@ -561,7 +559,27 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset, const std:
 	MotorGroup_index_check(PROS_ERR, index);
 	return motor_set_gearing(_ports[index], gearset);
 }
+std::int32_t MotorGroup::set_gearing(std::vector<motor_gearset_e_t> gearsets) const {
+	empty_MotorGroup_check(PROS_ERR);
+	for (int i = 0; i < gearsets.size(); i++) {
+		this->set_gearing(gearsets[i], _ports[i]);
+	}
+	if (gearsets.size() != _ports.size()) {
+		errno = E2BIG;
+	}
+	return PROS_SUCCESS;
+}
 
+std::int32_t MotorGroup::set_gearing(std::vector<MotorGears> gearsets) const {
+	empty_MotorGroup_check(PROS_ERR);
+	for (int i = 0; i < gearsets.size(); i++) {
+		this->set_gearing(gearsets[i], _ports[i]);
+	}
+	if (gearsets.size() != _ports.size()) {
+		errno = E2BIG;
+	}
+	return PROS_SUCCESS;
+}
 std::int32_t MotorGroup::set_gearing(const pros::v5::MotorGear gearset, const std::uint8_t index) const {
 	empty_MotorGroup_check(PROS_ERR);
 	MotorGroup_index_check(PROS_ERR, index);
@@ -636,13 +654,15 @@ std::int8_t MotorGroup::size() const {
 	return _ports.size();
 }
 
-void MotorGroup::operator+=(MotorGroup& other) {
-	for (auto it = other._ports.begin(); it < other._ports.end(); it++) {
-		_ports.push_back(*it);
+void MotorGroup::operator+=(AbstractMotor& other) {
+	auto ports = other.get_port_all();
+	for (auto it = ports.begin(); it < ports.end(); it++) {
+		auto port = *it;
+		_ports.push_back(port);
 	}
 }
 
-void MotorGroup::append(MotorGroup& other) {
+void MotorGroup::append(AbstractMotor& other) {
 	(*this) += other;
 }
 

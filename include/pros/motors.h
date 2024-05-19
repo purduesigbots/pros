@@ -241,7 +241,7 @@ int32_t motor_move_relative(int8_t port, double position, const int32_t velocity
 int32_t motor_move_velocity(int8_t port, const int32_t velocity);
 
 /**
- * Sets the output voltage for the motor from -12000 to 12000 in millivolts
+ * Sets the output voltage for the motor from -12000 to 12000 in millivolts.
  *
  * \note A negative port negates the voltage
  * 

@@ -39,6 +39,17 @@ vision_color_code_t Vision::create_color_code(const std::uint32_t sig_id1, const
 	return vision_create_color_code(_port, sig_id1, sig_id2, sig_id3, sig_id4, sig_id5);
 }
 
+std::vector<Vision> Vision::get_all_devices() {
+
+	std::vector<Device> matching_devices{Device::get_all_devices(DeviceType::vision)};
+
+	std::vector<Vision> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
 vision_object_s_t Vision::get_by_size(const std::uint32_t size_id) const {
 	return vision_get_by_size(_port, size_id);
 }
@@ -62,7 +73,6 @@ int32_t Vision::get_object_count(void) const {
 std::int32_t Vision::get_white_balance(void) const {
 	return vision_get_white_balance(_port);
 }
-
 
 int32_t Vision::read_by_size(const std::uint32_t size_id, const std::uint32_t object_count,
                              vision_object_s_t* const object_arr) const {
@@ -114,6 +124,26 @@ std::int32_t Vision::set_zero_point(vision_zero_e_t zero_point) const {
 std::int32_t Vision::set_wifi_mode(const std::uint8_t enable) const {
 	return vision_set_wifi_mode(_port, enable);
 }
+Vision Vision::get_vision() {
+	static int curr_vision_port = 0;
+	curr_vision_port = curr_vision_port % 21;
+	for (int i = 0; i < 21; i++) {
+		if (registry_get_device(curr_vision_port)->device_type == pros::c::E_DEVICE_VISION) {
+			curr_vision_port++;
+			return Vision(curr_vision_port);
+		}
+		curr_vision_port++;
+		curr_vision_port = curr_vision_port % 21;
+	}
+	errno = ENODEV;
+	return Vision(PROS_ERR_BYTE);
+}
 
 }  // namespace v5
+namespace literals {
+const pros::Vision operator"" _vis(const unsigned long long int m) {
+	return Vision(m);
+}
+
+}  // namespace literals
 }  // namespace pros
