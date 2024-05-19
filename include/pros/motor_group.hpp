@@ -1999,7 +1999,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_gearing(std::vector<MotorGears> gearsets) const;
-
+  
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -2013,7 +2013,6 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \param gearset
 	 *        The new geatset of the motor
 	 *
-
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
@@ -2335,7 +2334,6 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Gets the port of a motor in the motor group via index
 	 *
 	 * \param index Optional parameter, 0 by default.
-
 	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The port of the motor at the specified index.

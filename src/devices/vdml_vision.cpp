@@ -40,7 +40,9 @@ vision_color_code_t Vision::create_color_code(const std::uint32_t sig_id1, const
 }
 
 std::vector<Vision> Vision::get_all_devices() {
+
 	std::vector<Device> matching_devices{Device::get_all_devices(DeviceType::vision)};
+
 	std::vector<Vision> return_vector;
 	for (auto device : matching_devices) {
 		return_vector.push_back(device);

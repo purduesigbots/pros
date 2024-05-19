@@ -276,6 +276,7 @@ class Optical : public Device {
 	 *
 	 * Gestures will be cleared after 500mS
 	 *
+	 * 
 	 * 0 = no gesture,
 	 * 1 = up (towards cable),
 	 * 2 = down,

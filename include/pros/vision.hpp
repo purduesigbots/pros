@@ -173,15 +173,15 @@ class Vision : public Device {
 
 	/**
 	 * Gets all vision sensors.
-	 * 
+	 *
 	 * \return A vector of Vision sensor objects.
 	 *
 	 * \b Example
- 	 * \code
+	 * \code
 	 * void opcontrol() {
 	 *   std::vector<Vision> vision_all = pros::Vision::get_all_devices();  // All vision sensors that are connected
 	 * }
- 	 * \endcode
+	 * \endcode
 	 */
 	static std::vector<Vision> get_all_devices();
 

@@ -83,6 +83,7 @@ class Imu : public Device {
 	 * \endcode
 	 */
 
+
 	Imu(const std::uint8_t port) : Device(port, DeviceType::imu){};
 
 	Imu(const Device& device) : Imu(device.get_port()){};
@@ -189,6 +190,7 @@ class Imu : public Device {
 	 */
 	virtual std::int32_t set_data_rate(std::uint32_t rate) const;
 
+
 	/**
 	 * Gets all IMU sensors.
 	 * 
@@ -201,6 +203,7 @@ class Imu : public Device {
 	 * }
  	 * \endcode
 	 */
+
 	static std::vector<Imu> get_all_devices();
 
 	/**

@@ -530,10 +530,10 @@ std::int32_t is_installed(void);
 /**
  * Lists the files in a directory specified by the path
  * Puts the list of file names (NOT DIRECTORIES) into the buffer seperated by newlines
- *
+ * 
  * This function uses the following values of errno when an error state is
  * reached:
- *
+ * 
  * EIO - Hard error occured in the low level disk I/O layer
  * EINVAL - file or directory is invalid, or length is invalid
  * EBUSY - THe physical drinve cannot work
@@ -568,6 +568,7 @@ std::int32_t is_installed(void);
  * }
  * \endcode
  */
+
 std::int32_t list_files(const char* path, char* buffer, std::int32_t len);
 }  // namespace usd
 

@@ -59,7 +59,6 @@ class Distance : public Device {
 	Distance(const std::uint8_t port);
 
 	Distance(const Device& device) : Distance(device.get_port()){};
-
 	/**
 	 * Get the currently measured distance from the sensor in mm
 	 *
@@ -87,20 +86,6 @@ class Distance : public Device {
 	virtual std::int32_t get();
 
 	/**
-	 * Gets all distance sensors.
-	 * 
-	 * \return A vector of Distance sensor objects.
-	 *
-	 * \b Example
- 	 * \code
-	 * void opcontrol() {
-	 *   std::vector<Distance> distance_all = pros::Distance::get_all_devices();  // All distance sensors that are connected
-	 * }
- 	 * \endcode
-	 */
-	static std::vector<Distance> get_all_devices();
-
-	/**
 	 * Get the currently measured distance from the sensor in mm.
 	 * \note This function is identical to get().
 	 *
@@ -126,6 +111,21 @@ class Distance : public Device {
 	 * \endcode
 	 */
 	virtual std::int32_t get_distance();
+
+	/**
+	 * Gets all distance sensors.
+	 *
+	 * \return A vector of Distance sensor objects.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Distance> distance_all = pros::Distance::get_all_devices();  // All distance sensors that are
+	 * connected
+	 * }
+	 * \endcode
+	 */
+	static std::vector<Distance> get_all_devices();
 
 	/**
 	 * Get the confidence in the distance reading
