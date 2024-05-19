@@ -65,6 +65,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
 	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
 	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
+
 	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); //port 4 w/ rotations
 	 *
 	 * }
@@ -73,6 +74,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	Motor(const std::int8_t port, const pros::v5::MotorGears gearset = pros::v5::MotorGears::invalid,
 	      const pros::v5::MotorUnits encoder_units = pros::v5::MotorUnits::invalid);
+
 
 	Motor(const Device& device) : Motor(device.get_port()){};
 
@@ -2393,7 +2395,33 @@ class Motor : public AbstractMotor, public Device {
 	std::int8_t _port;
 };
 namespace literals {
+/**
+ * Constructs a Motor from a literal ending in _mtr
+ *
+ * \return a pros::Motor for the corresponding port
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::Motor motor = 2_mtr; //Makes an Motor object on port 2
+ * }
+ * \endcode
+ */
 const pros::Motor operator"" _mtr(const unsigned long long int m);
+/**
+ * Constructs a reversed Motor from a literal ending in _rmtr
+ *
+ * \return a pros::Motor for the corresponding port that is reversed
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::motor motor = 2_rmtr; //Makes an reversed Motor object on port 2
+ * }
+ * \endcode
+ */
 const pros::Motor operator"" _rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace v5
