@@ -57,6 +57,7 @@ class Rotation : public Device {
 
 	Rotation(const Device& device) : Rotation(device.get_port()){};
 
+
 	/**
 	 * Reset the Rotation Sensor
 	 *

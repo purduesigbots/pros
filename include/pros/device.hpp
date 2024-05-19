@@ -137,6 +137,7 @@ class Device {
 	 */
 	pros::DeviceType get_plugged_type() const;
 
+
 	/**
 	 * Gets the type of device on a given port.
 	 * 
@@ -177,6 +178,7 @@ class Device {
 	 * }
  	 * \endcode
 	 */
+
 	static std::vector<Device> get_all_devices(pros::DeviceType device_type = pros::DeviceType::undefined);
 
 	protected:

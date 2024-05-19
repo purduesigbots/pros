@@ -61,6 +61,7 @@ class Vision : public Device {
 
 	Vision(const Device& device) : Vision(device.get_port()){};
 
+
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
 	 * behavior, displaying the most prominent object signature color.
@@ -170,6 +171,8 @@ class Vision : public Device {
 	vision_color_code_t create_color_code(const std::uint32_t sig_id1, const std::uint32_t sig_id2,
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
 	                                      const std::uint32_t sig_id5 = 0) const;
+
+	static std::vector<Vision> get_all_devices();
 
 	/**
 	 * Gets all vision sensors.
