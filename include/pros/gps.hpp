@@ -223,20 +223,18 @@ class Gps : public Device {
 	 */
 	virtual std::int32_t set_offset(double xOffset, double yOffset) const;
 
-	static std::vector<Gps> get_all_devices();
-
 	/**
 
 	 * Gets all GPS sensors.
-	 * 
+	 *
 	 * \return A vector of Gps sensor objects.
 	 *
 	 * \b Example
- 	 * \code
+	 * \code
 	 * void opcontrol() {
 	 *   std::vector<Gps> gps_all = pros::Gps::get_all_devices();  // All GPS sensors that are connected
 	 * }
- 	 * \endcode
+	 * \endcode
 	 */
 	static std::vector<Gps> get_all_devices();
 

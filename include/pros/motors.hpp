@@ -79,7 +79,7 @@ class Motor : public AbstractMotor, public Device {
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
-  
+
 	/**
 	 * Sets the voltage for the motor from -127 to 127.
 	 *
@@ -1487,19 +1487,17 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int8_t size(void) const;
 
-	static std::vector<Motor> get_all_devices();
-
 	/**
 	 * Gets all motors.
-	 * 
+	 *
 	 * \return A vector of Motor objects.
 	 *
 	 * \b Example
- 	 * \code
+	 * \code
 	 * void opcontrol() {
 	 *   std::vector<Motor> motor_all = pros::Motor::get_all_devices();  // All motors that are connected
 	 * }
- 	 * \endcode
+	 * \endcode
 	 */
 	static std::vector<Motor> get_all_devices();
 
