@@ -141,7 +141,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 
-	MotorGroup(MotorGroup& motor_group);
+	MotorGroup(AbstractMotor& motor_group);
+
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -1998,6 +1999,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_gearing(std::vector<MotorGears> gearsets) const;
+  
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -2345,7 +2347,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void operator+=(MotorGroup&);
+	void operator+=(AbstractMotor&);
 
 	/**
 	 * Appends all the motors in the other motor group reference to this motor group
@@ -2353,7 +2355,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void append(MotorGroup&);
+	void append(AbstractMotor&);
 
 	/**
 	 * Removes the all motors on the port (regardless of reversal) from the motor group

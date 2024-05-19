@@ -40,6 +40,15 @@ std::int32_t Rotation::reset_position(void) const {
 	return pros::c::rotation_reset_position(_port);
 }
 
+std::vector<Rotation> Rotation::get_all_devices() {
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::rotation)};
+	std::vector<Rotation> return_vector;
+	for (auto device : matching_devices) {
+		return_vector.push_back(device);
+	}
+	return return_vector;
+}
+
 std::int32_t Rotation::get_position(void) const {
 	return pros::c::rotation_get_position(_port);
 }

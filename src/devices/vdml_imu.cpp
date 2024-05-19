@@ -27,7 +27,10 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 std::vector<Imu> Imu::get_all_devices() {
-	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::gps)};
+
+
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::imu)};
+  
 	std::vector<Imu> return_vector;
 	for (auto device : matching_devices) {
 		return_vector.push_back(device);
