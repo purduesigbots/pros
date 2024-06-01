@@ -33,7 +33,7 @@
 void _exit(int status) {
 	taskDISABLE_INTERRUPTS();
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
-	while (vexSerialWriteFree() != 2048) {
+	while (vexSerialWriteFree(1) != 2048) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
 		ser_output_flush();
