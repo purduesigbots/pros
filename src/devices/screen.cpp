@@ -113,14 +113,19 @@ namespace screen {
     /******************************************************************************/
     namespace lcd {
         using lcd_btn_cb_fn_t = void (*)(void);
-        
-        extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
-        extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
-        extern __attribute__((weak)) bool initialize(void) {return false;}
         extern __attribute__((weak)) bool is_initialized(void) {return false;}
-        extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
+        extern __attribute__((weak)) bool initialize(void) {return false;}
+        extern __attribute__((weak)) bool shutdown(void) {return false;}
+        extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
+        extern __attribute__((weak)) bool clear(void) {return false;}
+        extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
+        // TODO: Text_Align is defined in liblvgl so this ain't going to compile for now.
+        // extern __attribute__((weak)) void set_text_align(Text_Align text_align) {}
+        extern __attribute__((weak)) void register_btn0_cb(lcd_btn_cb_fn_t cb) {}
         extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
-
+        extern __attribute__((weak)) void register_btn2_cb(lcd_btn_cb_fn_t cb) {}
+        extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
+        
         template <typename... Params>
         extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
     }  // namespace lcd

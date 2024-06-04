@@ -70,14 +70,19 @@ namespace lcd {
      * For documentation on these functions, please see the doxygen comments for
      * these functions in the libvgl llemu headers.
      */
-
-    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
-    extern __attribute__((weak)) bool clear_line(std::int16_t line);
-    extern __attribute__((weak)) bool initialize(void);
-    extern __attribute__((weak)) std::uint8_t read_buttons(void);
-    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
     extern __attribute__((weak)) bool is_initialized(void);
-
+    extern __attribute__((weak)) bool initialize(void);
+    extern __attribute__((weak)) bool shutdown(void);
+    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
+    extern __attribute__((weak)) bool clear(void);
+    extern __attribute__((weak)) bool clear_line(std::int16_t line);
+    // TODO: Text_Align is defined in liblvgl so this ain't going to compile for now. 
+    // extern __attribute__((weak)) void set_text_align(Text_Align text_align);
+    extern __attribute__((weak)) void register_btn0_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn2_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) std::uint8_t read_buttons(void);
+    
     /**
      * \addtogroup cpp-llemu
      * @{ 
