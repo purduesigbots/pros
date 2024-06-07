@@ -1,0 +1,59 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build_template:
+    runs-on: ubuntu-latest
+    
+    env:
+      TOOLCHAIN_UPDATE: 10.3-2021.10
+      TOOLCHAIN_URL: "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${{ env.TOOLCHAIN_UPDATE }}/gcc-arm-none-eabi-${{ env.TOOLCHAIN_UPDATE }}-x86_64-linux.tar.bz2"
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Install gcc-arm-embedded
+      run: |
+        curl -LSso toolchain.tar.bz2 $TOOLCHAIN_URL
+        tar -xjvf toolchain.tar.bz2
+        echo "##[add-path]$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin"
+        
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        
+    - name: Install CLI
+      run: |
+        pip install pros-cli
+        
+    - name: Build template
+      run: |
+        make template
+        mkdir -p artifacts
+        cp template/*.zip artifacts
+        
+    - name: Update Build Number
+      run: |
+        echo "##[set-output name=build_number]$(cat version)"
+        echo "::set-env name=KernelVersion::$(cat version)"
+        
+    - name: Build binaries
+      run: |
+        make
+        
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: template
+        path: artifacts
