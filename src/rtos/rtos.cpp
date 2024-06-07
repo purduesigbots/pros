@@ -98,11 +98,11 @@ std::uint32_t Task::get_count() {
 	return task_get_count();
 }
 
-Mutex::Mutex() : mutex(mutex_create(), mutex_delete) {}
-
 Clock::time_point Clock::now() {
 	return Clock::time_point{Clock::duration{millis()}};
 }
+
+Mutex::Mutex() : mutex(mutex_create(), mutex_delete) {}
 
 bool Mutex::take() {
 	return mutex_take(mutex.get(), TIMEOUT_MAX);
@@ -127,6 +127,34 @@ void Mutex::unlock() {
 }
 
 bool Mutex::try_lock() {
+	return take(0);
+}
+
+RecursiveMutex::RecursiveMutex() : mutex(mutex_recursive_create(), mutex_delete) {}
+
+bool RecursiveMutex::take() {
+	return mutex_recursive_take(mutex.get(), TIMEOUT_MAX);
+}
+
+bool RecursiveMutex::take(std::uint32_t timeout) {
+	return mutex_recursive_take(mutex.get(), timeout);
+}
+
+bool RecursiveMutex::give() {
+	return mutex_recursive_give(mutex.get());
+}
+
+void RecursiveMutex::lock() {
+	if (!take(TIMEOUT_MAX)) {
+		throw std::system_error(errno, std::system_category(), "Cannot obtain lock!");
+	}
+}
+
+void RecursiveMutex::unlock() {
+	give();
+}
+
+bool RecursiveMutex::try_lock() {
 	return take(0);
 }
 }  // namespace pros
