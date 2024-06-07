@@ -11,7 +11,6 @@ jobs:
     
     env:
       TOOLCHAIN_UPDATE: 10.3-2021.10
-      TOOLCHAIN_URL: "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${TOOLCHAIN_UPDATE}/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}-x86_64-linux.tar.bz2"
       
     steps:
     - name: Checkout code
@@ -24,7 +23,7 @@ jobs:
         
     - name: Install gcc-arm-embedded
       run: |
-        curl -LSso toolchain.tar.bz2 $TOOLCHAIN_URL
+        curl -LSso toolchain.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${TOOLCHAIN_UPDATE}/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}-x86_64-linux.tar.bz2"
         tar -xjvf toolchain.tar.bz2
         echo "##[add-path]$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin"
         
