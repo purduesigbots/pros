@@ -26,6 +26,7 @@ jobs:
         curl -LSso toolchain.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${TOOLCHAIN_UPDATE}/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}-x86_64-linux.tar.bz2"
         tar -xjvf toolchain.tar.bz2
         echo "$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin >> $GITHUB_PATH"
+        echo "$GITHUB_PATH"
         
     - name: Set up Python
       uses: actions/setup-python@v2
