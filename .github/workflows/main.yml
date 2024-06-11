@@ -48,15 +48,6 @@ jobs:
         mkdir -p artifacts
         cp template/*.zip artifacts
         
-    - name: Update Build Number
-      run: |
-        echo "##[set-output name=build_number]$(cat version)"
-        echo "::set-env name=KernelVersion::$(cat version)"
-        
-    - name: Build binaries
-      run: |
-        make
-        
     - name: Publish artifacts
       uses: actions/upload-artifact@v2
       with:
