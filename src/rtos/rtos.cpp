@@ -102,18 +102,29 @@ Clock::time_point Clock::now() {
 	return Clock::time_point{Clock::duration{millis()}};
 }
 
-Mutex::Mutex() : mutex(mutex_create(), mutex_delete) {}
+void Mutex::lazy_init() {
+		if(unlikely(mutex.load() == nullptr)) {
+			taskENTER_CRITICAL();
+			if(likely(mutex.load() == nullptr)) {	
+				mutex = pros::c::mutex_create();
+			}
+			taskEXIT_CRITICAL();
+		}
+}
 
 bool Mutex::take() {
-	return mutex_take(mutex.get(), TIMEOUT_MAX);
+	lazy_init();
+	return mutex_take(mutex, TIMEOUT_MAX);
 }
 
 bool Mutex::take(std::uint32_t timeout) {
-	return mutex_take(mutex.get(), timeout);
+	lazy_init();
+	return mutex_take(mutex, timeout);
 }
 
 bool Mutex::give() {
-	return mutex_give(mutex.get());
+	lazy_init();
+	return mutex_give(mutex);
 }
 
 void Mutex::lock() {
@@ -130,18 +141,29 @@ bool Mutex::try_lock() {
 	return take(0);
 }
 
-RecursiveMutex::RecursiveMutex() : mutex(mutex_recursive_create(), mutex_delete) {}
+void RecursiveMutex::lazy_init() {
+		if(unlikely(mutex.load() == nullptr)) {
+			taskENTER_CRITICAL();
+			if(likely(mutex.load() == nullptr)) {	
+				mutex = pros::c::mutex_recursive_create();
+			}
+			taskEXIT_CRITICAL();
+		}
+}
 
 bool RecursiveMutex::take() {
-	return mutex_recursive_take(mutex.get(), TIMEOUT_MAX);
+	lazy_init();
+	return mutex_recursive_take(mutex, TIMEOUT_MAX);
 }
 
 bool RecursiveMutex::take(std::uint32_t timeout) {
-	return mutex_recursive_take(mutex.get(), timeout);
+	lazy_init();
+	return mutex_recursive_take(mutex, timeout);
 }
 
 bool RecursiveMutex::give() {
-	return mutex_recursive_give(mutex.get());
+	lazy_init();
+	return mutex_recursive_give(mutex);
 }
 
 void RecursiveMutex::lock() {

@@ -22,8 +22,12 @@
 #ifndef _PROS_RTOS_HPP_
 #define _PROS_RTOS_HPP_
 
+#include "rtos/task.h"
+#include "system/optimizers.h"
+#include "pros/apix.h"
 #include "pros/rtos.h"
 #undef delay
+#include <atomic>
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
@@ -821,10 +825,14 @@ struct Clock {
 };
 
 class Mutex {
-	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
-
+	std::atomic<mutex_t> mutex{nullptr};
+	void lazy_init();
 	public:
-	Mutex();
+	constexpr Mutex() {
+		if (!std::is_constant_evaluated()) {
+			mutex = pros::c::mutex_create();
+		}
+	}
 
 	// disable copy and move construction and assignment per Mutex requirements
 	// (see https://en.cppreference.com/w/cpp/named_req/Mutex)
@@ -1350,10 +1358,14 @@ class Mutex {
 };
 
 class RecursiveMutex {
-	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
-
+	std::atomic<mutex_t> mutex{nullptr};
+	void lazy_init();
 	public:
-	RecursiveMutex();
+	constexpr RecursiveMutex() {
+		if (!std::is_constant_evaluated()) {
+			mutex = pros::c::mutex_recursive_create();
+		}
+	}
 
 	// disable copy and move construction and assignment per Mutex requirements
 	// (see https://en.cppreference.com/w/cpp/named_req/Mutex)
