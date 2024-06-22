@@ -33,7 +33,9 @@
 void _exit(int status) {
 	taskDISABLE_INTERRUPTS();
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
-	while (vexSerialWriteFree(1) != 2048) {
+	uint32_t start_time = millis();
+	static const uint32_t max_flush_time = 50;
+	while (vexSerialWriteFree(1) != 2048 || millis() - start_time > max_flush_time) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
 		ser_output_flush();
