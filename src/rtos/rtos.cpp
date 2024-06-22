@@ -18,6 +18,7 @@
 #include <system_error>
 
 #include "kapi.h"
+#include "pros/rtos.h"
 
 namespace pros {
 using namespace pros::c;
@@ -141,6 +142,11 @@ bool Mutex::try_lock() {
 	return take(0);
 }
 
+Mutex::~Mutex() {
+	mutex_t _mutex = mutex.exchange(reinterpret_cast<mutex_t>(~0));
+	pros::c::mutex_delete(_mutex);
+}
+
 mutex_t RecursiveMutex::lazy_init() {
 		mutex_t _mutex;
 		if(unlikely((_mutex = mutex.load(std::memory_order::relaxed)) == nullptr)) {
@@ -177,5 +183,10 @@ void RecursiveMutex::unlock() {
 
 bool RecursiveMutex::try_lock() {
 	return take(0);
+}
+
+RecursiveMutex::~RecursiveMutex() {
+	mutex_t _mutex = mutex.exchange(reinterpret_cast<mutex_t>(~0));
+	pros::c::mutex_delete(_mutex);
 }
 }  // namespace pros
