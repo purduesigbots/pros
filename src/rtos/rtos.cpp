@@ -14,6 +14,7 @@
 
 #include "pros/rtos.hpp"
 
+#include <atomic>
 #include <system_error>
 
 #include "kapi.h"
@@ -102,29 +103,28 @@ Clock::time_point Clock::now() {
 	return Clock::time_point{Clock::duration{millis()}};
 }
 
-void Mutex::lazy_init() {
-		if(unlikely(mutex.load() == nullptr)) {
+mutex_t Mutex::lazy_init() {
+		mutex_t _mutex;
+		if(unlikely((_mutex = mutex.load(std::memory_order::relaxed)) == nullptr)) {
 			taskENTER_CRITICAL();
-			if(likely(mutex.load() == nullptr)) {	
-				mutex = pros::c::mutex_create();
+			if(likely((_mutex = mutex.load()) == nullptr)) {	
+				mutex.store((_mutex = pros::c::mutex_create()));
 			}
 			taskEXIT_CRITICAL();
 		}
+		return _mutex;
 }
 
 bool Mutex::take() {
-	lazy_init();
-	return mutex_take(mutex, TIMEOUT_MAX);
+	return mutex_take(lazy_init(), TIMEOUT_MAX);
 }
 
 bool Mutex::take(std::uint32_t timeout) {
-	lazy_init();
-	return mutex_take(mutex, timeout);
+	return mutex_take(lazy_init(), timeout);
 }
 
 bool Mutex::give() {
-	lazy_init();
-	return mutex_give(mutex);
+	return mutex_give(lazy_init());
 }
 
 void Mutex::lock() {
@@ -141,29 +141,28 @@ bool Mutex::try_lock() {
 	return take(0);
 }
 
-void RecursiveMutex::lazy_init() {
-		if(unlikely(mutex.load() == nullptr)) {
+mutex_t RecursiveMutex::lazy_init() {
+		mutex_t _mutex;
+		if(unlikely((_mutex = mutex.load(std::memory_order::relaxed)) == nullptr)) {
 			taskENTER_CRITICAL();
-			if(likely(mutex.load() == nullptr)) {	
-				mutex = pros::c::mutex_recursive_create();
+			if(likely((_mutex = mutex.load()) == nullptr)) {	
+				mutex.store((_mutex = pros::c::mutex_recursive_create()));
 			}
 			taskEXIT_CRITICAL();
 		}
+		return _mutex;
 }
 
 bool RecursiveMutex::take() {
-	lazy_init();
-	return mutex_recursive_take(mutex, TIMEOUT_MAX);
+	return mutex_recursive_take(lazy_init(), TIMEOUT_MAX);
 }
 
 bool RecursiveMutex::take(std::uint32_t timeout) {
-	lazy_init();
-	return mutex_recursive_take(mutex, timeout);
+	return mutex_recursive_take(lazy_init(), timeout);
 }
 
 bool RecursiveMutex::give() {
-	lazy_init();
-	return mutex_recursive_give(mutex);
+	return mutex_recursive_give(lazy_init());
 }
 
 void RecursiveMutex::lock() {

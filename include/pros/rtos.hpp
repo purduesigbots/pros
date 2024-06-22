@@ -826,7 +826,7 @@ struct Clock {
 
 class Mutex {
 	std::atomic<mutex_t> mutex{nullptr};
-	void lazy_init();
+	mutex_t lazy_init();
 	public:
 	constexpr Mutex() {
 		if (!std::is_constant_evaluated()) {
@@ -1359,7 +1359,7 @@ class Mutex {
 
 class RecursiveMutex {
 	std::atomic<mutex_t> mutex{nullptr};
-	void lazy_init();
+	mutex_t lazy_init();
 	public:
 	constexpr RecursiveMutex() {
 		if (!std::is_constant_evaluated()) {
