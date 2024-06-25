@@ -106,10 +106,14 @@ _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 	struct trace_t* trace = (struct trace_t*)d;
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
-	if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0])) {
-		trace->pcs[trace->size++] = (void*) pc;
-	} else {
-		trace->truncated = true;
+	extern void ser_output_flush();
+	ser_output_flush();
+	if (trace) {
+		if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0])) {
+			trace->pcs[trace->size++] = (void*) pc;
+		} else {
+			trace->truncated = true;
+		}
 	}
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {

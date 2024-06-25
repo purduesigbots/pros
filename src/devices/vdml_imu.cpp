@@ -27,7 +27,7 @@ std::int32_t Imu::set_data_rate(std::uint32_t rate) const {
 }
 
 std::vector<Imu> Imu::get_all_devices() {
-	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::gps)};
+	std::vector<Device> matching_devices {Device::get_all_devices(DeviceType::imu)};
 	std::vector<Imu> return_vector;
 	for (auto device : matching_devices) {
 		return_vector.push_back(device);
@@ -76,7 +76,11 @@ pros::ImuStatus Imu::get_status() const {
 }
 
 bool Imu::is_calibrating() const {
-	return (int)get_status() & (int)(pros::ImuStatus::calibrating);
+	imu_status_e_t status = pros::c::imu_get_status(_port);
+	if (status == E_IMU_STATUS_ERROR) {
+		return false;
+	}
+	return status & E_IMU_STATUS_CALIBRATING;
 }
 
 std::int32_t Imu::tare_heading() const {
@@ -129,6 +133,10 @@ std::int32_t Imu::set_euler(pros::euler_s_t target) const {
 
 std::int32_t Imu::tare() const {
 	return pros::c::imu_tare(_port);
+}
+
+imu_orientation_e_t Imu::get_physical_orientation() const {
+	return pros::c::imu_get_physical_orientation(_port);
 }
 
 Imu Imu::get_imu() {
