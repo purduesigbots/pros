@@ -96,9 +96,25 @@ _Unwind_Ptr __gnu_Unwind_Find_exidx(_Unwind_Ptr pc, int* nrec) {
 	return (_Unwind_Ptr)&__exidx_start;
 }
 
+struct trace_t {
+	void* pcs[20];
+	size_t size;
+	bool truncated;
+};
+
 _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
+	struct trace_t* trace = (struct trace_t*)d;
 	uint32_t pc = _Unwind_GetIP(unwind_ctx);
 	fprintf(stderr, "\t%p\n", (void*)pc);
+	extern void ser_output_flush();
+	ser_output_flush();
+	if (trace) {
+		if (trace->size < sizeof(trace->pcs) / sizeof(trace->pcs[0])) {
+			trace->pcs[trace->size++] = (void*) pc;
+		} else {
+			trace->truncated = true;
+		}
+	}
 	extern void task_clean_up();
 	if (pc == (uint32_t)task_clean_up) {
 		return _URC_FAILURE;
@@ -140,11 +156,14 @@ void report_data_abort(uint32_t _sp) {
 	fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
 	vexDisplayForegroundColor(ClrWhite);
 	vexDisplayBackgroundColor(ClrRed);
-	vexDisplayRectClear(0, 25, 480, 125);
+	vexDisplayRectClear(0, 25, 480, 200);
 	vexDisplayString(2, "DATA ABORT EXCEPTION");
 	vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
+
+	int brain_line_no = 4;
+	
 	if (pxCurrentTCB) {
-		vexDisplayString(4, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
+		vexDisplayString(brain_line_no++, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 		fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 	}
 
@@ -153,9 +172,45 @@ void report_data_abort(uint32_t _sp) {
 
 	fputs("BEGIN STACK TRACE\n", stderr);
 	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
-	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
+	struct trace_t trace = {{0}, 0, false};
+	__gnu_Unwind_Backtrace(trace_fn, &trace, &vrs);
 	fputs("END OF TRACE\n", stderr);
+	/*
+	for(size_t i = 0; i < trace.size / 4; i++) {
+		vexDisplayString(brain_line_no++, "TRACE: %p %p %p %p", (void*)trace.pcs[4*i], (void*)trace.pcs[4*i+1], (void*)trace.pcs[4*i+2], (void*)trace.pcs[4*i+3]);
+	}
+	switch (trace.size % 4) {
+		case 3:
+			vexDisplayString(brain_line_no++, "TRACE: %p %p %p", (void*)trace.pcs[trace.size-2], (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
+			break;
+		case 2:
+			vexDisplayString(brain_line_no++, "TRACE: %p %p", (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
+			break;
+		case 1:
+			vexDisplayString(brain_line_no++, "TRACE: %p", (void*)trace.pcs[trace.size]);
+			break;
+	}
+*/
+	for(size_t i = 0; i < trace.size; i += 4) {
+		switch (trace.size - i) {
+			case 1:
+				vexDisplayString(brain_line_no++, "TRACE: %p", trace.pcs[i]);
+				break;
+			case 2:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p", trace.pcs[i], trace.pcs[i+1]);
+				break;
+			case 3:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p %p", trace.pcs[i], trace.pcs[i+1], trace.pcs[i+2]);
+				break;
+			default:
+				vexDisplayString(brain_line_no++, "TRACE: %p %p %p %p", trace.pcs[i], trace.pcs[i+1], trace.pcs[i+2], trace.pcs[i+3]);
+				break;
+		}
+	}
 
+	if (trace.truncated) {
+		vexDisplayString(brain_line_no++, "Trace was truncated, see terminal for full trace");
+	}
 	struct mallinfo info = mallinfo();
 	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
 	if (pxCurrentTCB) {
