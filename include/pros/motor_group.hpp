@@ -141,7 +141,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 
-	MotorGroup(MotorGroup& motor_group);
+	MotorGroup(AbstractMotor& motor_group);
+
 	/// \name Motor movement functions
 	/// These functions allow programmers to make motors move
 	///@{
@@ -1431,7 +1432,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
-	 * 
+	 *
 	 * \return One of MotorUnits according to what is set for the
 	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
@@ -1477,7 +1478,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 *\param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
-	 * 
+	 *
 	 * \return One of MotorGears according to what is set for the motor,
 	 * or pros::MotorGears::invalid if the operation failed.
 	 *
@@ -1498,7 +1499,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * ENODEV - The port cannot be configured as a motor
 	 * EDOM - The motor group is empty
 	 *
-	 * 
+	 *
 	 * \return A vector with one of MotorGears according to what is set for the motor,
 	 * or pros::MotorGears::invalid if the operation failed for each motor.
 	 *
@@ -1630,7 +1631,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * \param mode
 	 *        The MotorBrake to set for the motor
-	 * 
+	 *
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
@@ -1660,7 +1661,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * \param mode
 	 *        The MotorBrake to set for the motor
-	 * 
+	 *
 	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
@@ -1689,7 +1690,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * \param mode
 	 *        The MotorBrake to set for the motor
-	 * 
+	 *
 	 *
 	 * \return 1 if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno.
@@ -1998,6 +1999,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_gearing(std::vector<MotorGears> gearsets) const;
+  
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -2329,9 +2331,9 @@ class MotorGroup : public virtual AbstractMotor {
 	std::int8_t size(void) const;
 
 	/**
-	 * Gets the port of a motor in the motor group
+	 * Gets the port of a motor in the motor group via index
 	 *
-	 * 	 * \param index Optional parameter, 0 by default.
+	 * \param index Optional parameter, 0 by default.
 	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return The port of the motor at the specified index.
@@ -2345,7 +2347,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void operator+=(MotorGroup&);
+	void operator+=(AbstractMotor&);
 
 	/**
 	 * Appends all the motors in the other motor group reference to this motor group
@@ -2353,7 +2355,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * Maintains the order of the other motor group
 	 *
 	 */
-	void append(MotorGroup&);
+	void append(AbstractMotor&);
 
 	/**
 	 * Removes the all motors on the port (regardless of reversal) from the motor group
