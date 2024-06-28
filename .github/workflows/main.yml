@@ -43,7 +43,7 @@ jobs:
       uses: actions/cache/save@v4
       with:
         path: 
-          $(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
+          gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
         key:
           gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
     
