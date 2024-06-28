@@ -31,7 +31,7 @@ jobs:
         path: 
           $(pwd)/gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
         key: 
-          gcc-arm-non-eabi-${{env.TOOLCHAIN_UPDATE}}
+          gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
           
     - name: Install gcc-arm-embedded
       if: steps.cache-gcc.outputs.cache-hit != 'true'
