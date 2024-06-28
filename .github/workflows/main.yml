@@ -1,4 +1,4 @@
-name: Build and Cache Example
+name: Build and Publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  build_and_cache:
+  build_template:
     runs-on: ubuntu-latest
     
     env:
@@ -14,25 +14,33 @@ jobs:
       
     steps:
       
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        repository: purduesigbots/pros
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Retrieve gcc-arm-embedded from cache
       id: cache-gcc
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with: 
-        path: gcc-arm-none-eabi-${{ env.TOOLCHAIN_UPDATE }}
-        key: gcc-arm-none-eabi-${{ env.TOOLCHAIN_UPDATE }}
+        path: 
+          ~/gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
+        key: 
+          gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
           
     - name: Install gcc-arm-embedded
       if: steps.cache-gcc.outputs.cache-hit != 'true'
       run: |
-        curl -LSso toolchain.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${{ env.TOOLCHAIN_UPDATE }}/gcc-arm-none-eabi-${{ env.TOOLCHAIN_UPDATE }}-x86_64-linux.tar.bz2"
+        curl -LSso toolchain.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${TOOLCHAIN_UPDATE}/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}-x86_64-linux.tar.bz2"
         tar -xjvf toolchain.tar.bz2
-        rm toolchain.tar.bz2
-    
+
     - name: Add gcc-arm-embedded to path
-      run: echo "$(pwd)/gcc-arm-none-eabi-${{ env.TOOLCHAIN_UPDATE }}/bin" >> $GITHUB_PATH
+      run: echo "$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin" >> $GITHUB_PATH
         
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -52,7 +60,7 @@ jobs:
         cp template/*.zip artifacts
         
     - name: Publish artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         path: artifacts/kernel@*.zip
         compression-level: 0
