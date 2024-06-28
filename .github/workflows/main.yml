@@ -39,7 +39,7 @@ jobs:
         curl -LSso toolchain.tar.bz2 "https://developer.arm.com/-/media/Files/downloads/gnu-rm/${TOOLCHAIN_UPDATE}/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}-x86_64-linux.tar.bz2"
         tar -xjvf toolchain.tar.bz2
     - name: Upload gcc-arm-embedded to cache
-      if: steps.cache-gcc.outputs.cache-hit != 'true
+      if: steps.cache-gcc.outputs.cache-hit != 'true'
       uses: actions/cache/save@v4
       with:
         path: 
