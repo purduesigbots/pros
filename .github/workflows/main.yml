@@ -29,7 +29,7 @@ jobs:
       uses: actions/cache@v4
       with: 
         path: 
-          ~/gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
+          gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
         key: 
           gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
           
@@ -40,7 +40,9 @@ jobs:
         tar -xjvf toolchain.tar.bz2
 
     - name: Add gcc-arm-embedded to path
-      run: echo "$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin" >> $GITHUB_PATH
+      run: |
+        echo "$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin" >> $GITHUB_PATH
+        echo "$(pwd)
         
     - name: Set up Python
       uses: actions/setup-python@v2
