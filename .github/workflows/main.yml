@@ -29,9 +29,9 @@ jobs:
       uses: actions/cache/restore@v4
       with: 
         path: 
-          $(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
+          $(pwd)/gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
         key: 
-          gcc-arm-non-eabi-${TOOLCHAIN_UPDATE}
+          gcc-arm-non-eabi-${{env.TOOLCHAIN_UPDATE}}
           
     - name: Install gcc-arm-embedded
       if: steps.cache-gcc.outputs.cache-hit != 'true'
@@ -43,9 +43,9 @@ jobs:
       uses: actions/cache/save@v4
       with:
         path: 
-          gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
+          gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
         key:
-          gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}
+          gcc-arm-none-eabi-${{env.TOOLCHAIN_UPDATE}}
     
     - name: Add gcc-arm-embedded to path
       run: echo "$(pwd)/gcc-arm-none-eabi-${TOOLCHAIN_UPDATE}/bin" >> $GITHUB_PATH
@@ -71,3 +71,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         path: artifacts/kernel@*.zip
+        compression-level: 0
