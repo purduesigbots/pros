@@ -55,6 +55,27 @@ class Rotation : public Device {
 	 */
 	Rotation(const std::int8_t port);
 
+	/**
+	 * Constructs a new Rotation Sensor object
+	 *
+	 * ENXIO - The given value is not within the range of V5 ports |1-21|.
+	 * ENODEV - The port cannot be configured as a Rotation Sensor
+	 *
+	 * \param port
+	 *        The V5 port number from 1 to 21.
+	 * \param reversed
+	 *        Whether or not the rotation sensor is reversed.
+	 *
+	 * 	\b Example
+	 * \code
+	 * void opcontrol() {
+	 * 	 pros::Rotation rotation_sensor(1, false); //Creates a Rotation Sensor on port 1
+	 *   pros::Rotation reversed_rotation_sensor(2, true); //Creates a reversed Rotation Sensor on port 2
+	 * }
+	 * \endcode
+	 */
+	Rotation(const std::uint8_t port, const bool reversed);
+
 	Rotation(const Device& device) : Rotation(device.get_port()){};
 
 
