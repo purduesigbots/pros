@@ -18,8 +18,6 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
-Controller::Controller(pros::controller_id_e_t id) : _id(id) {}
-
 std::int32_t Controller::is_connected(void) {
 	return controller_is_connected(_id);
 }
