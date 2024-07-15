@@ -551,12 +551,4 @@ std::ostream& operator<<(std::ostream& os, pros::Motor& motor) {
 }
 
 }  // namespace v5
-namespace literals {
-const pros::Motor operator"" _mtr(const unsigned long long int m) {
-	return pros::Motor(m);
-}
-const pros::Motor operator"" _rmtr(const unsigned long long int m) {
-	return pros::Motor(-m);
-}
-}  // namespace literals
 }  // namespace pros

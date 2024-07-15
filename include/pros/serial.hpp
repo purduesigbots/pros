@@ -338,7 +338,23 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Serial operator"" _ser(const unsigned long long int m);
+template <char... Cs>
+const pros::Serial operator"" _ser() {
+    constexpr int num = ([] (auto a) consteval {
+        int num;
+        auto iter = a.begin();
+        for(; iter != a.end(); iter++) {
+            if (*iter != 0) {break;}
+        }
+        if (a.end()-iter > 2 || iter==a.end()) return 0;
+        if (a.end()-iter == 2) num = (*iter) * 10 + *(iter+1);
+        else num = *iter;
+        if (num > 21 || num <= 0) return 0;
+        return num;
+    })(std::initializer_list<unsigned char>{(static_cast<unsigned char>(Cs-'0'))...});
+    static_assert(num != 0, "\033[31;1;4m[!!!]\033[0m Port out of bounds");
+    return pros::Serial(num);
+}
 }  // namespace literals
 }  // namespace pros
 #endif  // _PROS_SERIAL_HPP_
