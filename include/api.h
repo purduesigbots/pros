@@ -40,9 +40,11 @@
 #endif /* __cplusplus */
 
 #define PROS_VERSION_MAJOR 4
-#define PROS_VERSION_MINOR 0
-#define PROS_VERSION_PATCH 7
-#define PROS_VERSION_STRING "4.0.7"
+#define PROS_VERSION_MINOR 1
+
+#define PROS_VERSION_PATCH 0
+#define PROS_VERSION_STRING "4.1.0"
+
 
 #include "pros/adi.h"
 #include "pros/colors.h"

@@ -59,8 +59,7 @@ class Vision : public Device {
 	 */
 	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
 
-	Vision(const Device& device)
-		: Vision(device.get_port()) {};
+	Vision(const Device& device) : Vision(device.get_port()){};
 
 	/**
 	 * Clears the vision sensor LED color, reseting it back to its default
@@ -172,6 +171,18 @@ class Vision : public Device {
 	                                      const std::uint32_t sig_id3 = 0, const std::uint32_t sig_id4 = 0,
 	                                      const std::uint32_t sig_id5 = 0) const;
 
+	/**
+	 * Gets all vision sensors.
+	 *
+	 * \return A vector of Vision sensor objects.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 *   std::vector<Vision> vision_all = pros::Vision::get_all_devices();  // All vision sensors that are connected
+	 * }
+	 * \endcode
+	 */
 	static std::vector<Vision> get_all_devices();
 
 	/**
@@ -756,5 +767,21 @@ class Vision : public Device {
 	///@}
 };
 }  // namespace v5
+namespace literals {
+/**
+ * Constructs a Vision sensor from a litteral ending in _vis
+ *
+ * \return a pros::Vision for the corresponding port
+ *
+ * \b Example
+ * \code
+ * using namespace pros::literals;
+ * void opcontrol() {
+ *	pros::Vision vision = 2_vis; //Makes an Vision sensor object on port 2
+ * }
+ * \endcode
+ */
+const pros::Vision operator"" _vis(const unsigned long long int m);
+}  // namespace literals
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_

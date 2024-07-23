@@ -11,6 +11,7 @@
  */
 
 #include "kapi.h"
+#include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
 
@@ -35,7 +36,8 @@ using namespace pros::c;
 		return vector;                                   \
 	}
 
-MotorGroup::MotorGroup(MotorGroup& motor_group) : MotorGroup(motor_group.get_port_all()) {}
+
+MotorGroup::MotorGroup(AbstractMotor& motor_group) : MotorGroup(motor_group.get_port_all()) {}
 
 MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports, const pros::v5::MotorGears gearset,
                        const pros::v5::MotorUnits encoder_units)
@@ -652,13 +654,15 @@ std::int8_t MotorGroup::size() const {
 	return _ports.size();
 }
 
-void MotorGroup::operator+=(MotorGroup& other) {
-	for (auto it = other._ports.begin(); it < other._ports.end(); it++) {
-		_ports.push_back(*it);
+void MotorGroup::operator+=(AbstractMotor& other) {
+	auto ports = other.get_port_all();
+	for (auto it = ports.begin(); it < ports.end(); it++) {
+		auto port = *it;
+		_ports.push_back(port);
 	}
 }
 
-void MotorGroup::append(MotorGroup& other) {
+void MotorGroup::append(AbstractMotor& other) {
 	(*this) += other;
 }
 
