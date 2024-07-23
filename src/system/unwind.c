@@ -149,15 +149,18 @@ void p2vrs_from_data_abort(_uw* sp, struct phase2_vrs* vrs) {
 }
 
 // called by DataAbortInterrupt in rtos_hooks.c
-void report_data_abort(uint32_t _sp) {
+//void report_data_abort(uint32_t _sp) {
+void report_fatal_error(uint32_t _sp, const char* error_name) {
 	struct phase2_vrs vrs;
 	p2vrs_from_data_abort((_uw*)_sp, &vrs);
 
-	fputs("\n\nDATA ABORT EXCEPTION\n\n", stderr);
+	fputs("\n\n", stderr);
+	fputs(error_name, stderr);
+	fputs("\n\n", stderr);
 	vexDisplayForegroundColor(ClrWhite);
 	vexDisplayBackgroundColor(ClrRed);
 	vexDisplayRectClear(0, 25, 480, 200);
-	vexDisplayString(2, "DATA ABORT EXCEPTION");
+	vexDisplayString(2, error_name);
 	vexDisplayString(3, "PC: %x", vrs.core.r[R_PC]);
 
 	int brain_line_no = 4;
@@ -167,7 +170,7 @@ void report_data_abort(uint32_t _sp) {
 		fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 	}
 
-	fputs("REGISTERS AT ABORT\n", stderr);
+	fputs("REGISTERS AT ERROR\n", stderr);
 	print_phase2_vrs(&vrs);
 
 	fputs("BEGIN STACK TRACE\n", stderr);
@@ -214,7 +217,7 @@ void report_data_abort(uint32_t _sp) {
 	struct mallinfo info = mallinfo();
 	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
 	if (pxCurrentTCB) {
-		fprintf(stderr, "STACK REMAINING AT ABORT: %lu bytes\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
+		fprintf(stderr, "STACK REMAINING AT ERROR: %lu bytes\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
 	}
 }
 
