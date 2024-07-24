@@ -820,6 +820,63 @@ struct Clock {
 	static time_point now();
 };
 
+template <class T>
+class Queue {
+	queue_t queue;
+
+	public:
+	explicit Queue<T>(uint32_t length) : queue(pros::c::queue_create(length, sizeof(T))) {};
+
+	Queue() = delete;
+
+	Queue(const Queue&) = default;
+	Queue(Queue&&) = delete;
+
+	Queue& operator=(const Queue&) = default;
+	Queue& operator=(Queue&&) = delete;
+
+	void delete_queue() {
+		pros::c::queue_delete(queue);
+	}
+
+	~Queue() {
+		pros::c::queue_delete(queue);
+	}
+
+	bool prepend(T* item, uint32_t timeout = TIMEOUT_MAX) {
+		return pros::c::queue_prepend(queue, item, timeout);
+	}
+
+	bool append(T* item, uint32_t timeout = TIMEOUT_MAX) {
+		return pros::c::queue_append(queue, item, timeout);
+	}
+
+	bool send(T* item, uint32_t timeout = TIMEOUT_MAX) {
+		return pros::c::queue_append(queue, item, timeout); // same as append
+	}
+
+	bool peek(T* buffer, uint32_t timeout = TIMEOUT_MAX) {
+		return pros::c::queue_peek(queue, buffer, timeout);
+	}
+
+	bool receive(T* buffer, uint32_t timeout = TIMEOUT_MAX) {
+	    return pros::c::queue_recv(queue, buffer, timeout);
+	}
+
+	uint32_t get_waiting() {
+		return pros::c::queue_get_waiting(queue);
+	}
+
+	uint32_t get_available() {
+		return pros::c::queue_get_available(queue);
+	}
+
+	void reset() {
+		pros::c::queue_reset(queue);
+	}
+
+};
+
 class Mutex {
 	std::shared_ptr<std::remove_pointer_t<mutex_t>> mutex;
 
