@@ -821,6 +821,7 @@ struct Clock {
 };
 
 template <class T>
+requires std::is_trivially_copyable_v<T>
 class Queue {
 	queue_t queue;
 
@@ -834,10 +835,6 @@ class Queue {
 
 	Queue& operator=(const Queue&) = default;
 	Queue& operator=(Queue&&) = delete;
-
-	void delete_queue() {
-		pros::c::queue_delete(queue);
-	}
 
 	~Queue() {
 		pros::c::queue_delete(queue);
