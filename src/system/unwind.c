@@ -146,7 +146,7 @@ void p2vrs_from_data_abort(_uw* sp, struct phase2_vrs* vrs) {
 	vrs->core.r[15] = sp[5] - 8;
 }
 
-// called by DataAbortInterrupt in rtos_hooks.c
+// called by DataAbortInterrupt and PrefetchAbortInterrupt in rtos_hooks.c
 //void report_data_abort(uint32_t _sp) {
 void report_fatal_error(uint32_t _sp, const char* error_name) {
 	struct phase2_vrs vrs;
