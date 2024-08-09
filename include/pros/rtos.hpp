@@ -1286,7 +1286,7 @@ class Mutex {
 	 *   }
 	 * }
 	 */
-	bool try_lock();
+	[[nodiscard]] bool try_lock();
 
 	/**
 	 * Takes and locks a mutex, waiting for a specified duration.
@@ -1316,7 +1316,7 @@ class Mutex {
 	 * \endcode
 	 */
 	template <typename Rep, typename Period>
-	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
+	[[nodiscard]] bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
 		return take(std::chrono::duration_cast<Clock::duration>(rel_time).count());
 	}
 
@@ -1820,7 +1820,7 @@ class RecursiveMutex {
 	 *   }
 	 * }
 	 */
-	bool try_lock();
+	[[nodiscard]] bool try_lock();
 
 	/**
 	 * Takes and locks a mutex, waiting for a specified duration.
@@ -1850,7 +1850,7 @@ class RecursiveMutex {
 	 * \endcode
 	 */
 	template <typename Rep, typename Period>
-	bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
+	[[nodiscard]] bool try_lock_for(const std::chrono::duration<Rep, Period>& rel_time) {
 		return take(std::chrono::duration_cast<Clock::duration>(rel_time).count());
 	}
 
