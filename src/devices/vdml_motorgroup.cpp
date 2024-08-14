@@ -36,7 +36,6 @@ using namespace pros::c;
 		return vector;                                   \
 	}
 
-
 MotorGroup::MotorGroup(AbstractMotor& motor_group) : MotorGroup(motor_group.get_port_all()) {}
 
 MotorGroup::MotorGroup(const std::initializer_list<std::int8_t> ports, const pros::v5::MotorGears gearset,
@@ -325,6 +324,20 @@ std::vector<std::int32_t> MotorGroup::is_over_temp_all(void) const {
 	empty_MotorGroup_check_vector(PROS_ERR, return_vector);
 	for (auto it = _ports.begin(); it < _ports.end(); it++) {
 		return_vector.push_back(motor_is_over_temp(*it));
+	}
+	return return_vector;
+}
+
+pros::v5::MotorType MotorGroup::get_type(const std::uint8_t index) const {
+	empty_MotorGroup_check(pros::MotorType::invalid);
+	MotorGroup_index_check(pros::MotorType::invalid, index);
+	return static_cast<pros::v5::MotorType>(motor_get_type(_ports[index]));
+}
+
+std::vector<pros::v5::MotorType> MotorGroup::get_type_all(void) const {
+	std::vector<pros::v5::MotorType> return_vector;
+	for (auto it = _ports.begin(); it < _ports.end(); it++) {
+		return_vector.push_back(static_cast<pros::v5::MotorType>(motor_get_type(*it)));
 	}
 	return return_vector;
 }

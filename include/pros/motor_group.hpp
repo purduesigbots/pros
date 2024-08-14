@@ -1318,6 +1318,10 @@ class MotorGroup : public virtual AbstractMotor {
 	/// These functions allow programmers to configure the behavior of motors
 	///@{
 
+	MotorType get_type(const std::uint8_t index = 0) const;
+
+	std::vector<MotorType> get_type_all(void) const;
+
 	/**
 	 * Gets the brake mode that was set for a motor in the motor group.
 	 *

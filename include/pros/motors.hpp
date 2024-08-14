@@ -1943,6 +1943,10 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::vector<std::int32_t> is_over_temp_all(void) const;
 
+	MotorType get_type(const std::uint8_t index = 0) const;
+
+	std::vector<MotorType> get_type_all(void) const;
+
 	/**
 	 * Gets a vector containing the brake mode that was set for the motor.
 	 *

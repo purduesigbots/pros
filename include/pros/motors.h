@@ -12,7 +12,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup c-motors Motors C API
  * \note Additional example code for this module can be found in its [Tutorial](@ref motors).
  */
@@ -50,9 +50,9 @@ namespace c {
  * to use of motor_move_voltage().
  *
  * \note This function will not respect brake modes, and simply sets the voltage to the desired value.
- * 
+ *
  * \note A negative port will negate the input voltage
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -65,7 +65,7 @@ namespace c {
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -80,7 +80,7 @@ int32_t motor_move(int8_t port, int32_t voltage);
 
 /**
  * Stops the motor using the currently configured brake mode.
- * 
+ *
  * This function sets motor velocity to zero, which will cause it to act
  * according to the set brake mode. If brake mode is set to MOTOR_BRAKE_HOLD,
  * this function may behave differently than calling motor_move_absolute(port, 0)
@@ -90,15 +90,15 @@ int32_t motor_move(int8_t port, int32_t voltage);
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
- * 
+ *
  * \param port
  *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
- * 
+ *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
- * \code 
+ * \code
  * 	void autonomous() {
  * 		motor_move(1, 127);
  * 		delay(1000);
@@ -117,8 +117,8 @@ int32_t motor_brake(int8_t port);
  * \note This function simply sets the target for the motor, it does not block program
  * execution until the movement finishes. The example code shows how to block until a movement is finished.
  *
- * \note A negative port number will negate the target position 
- * 
+ * \note A negative port number will negate the target position
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -133,7 +133,7 @@ int32_t motor_brake(int8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -146,7 +146,7 @@ int32_t motor_brake(int8_t port);
  *   while(!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
  *     delay(2);
  *   }
- * 
+ *
  *   motor_tare_position(1);
  *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
  *   while (!((motor_get_position(1) < 105) && (motor_get_position(1) > 95))) {
@@ -170,7 +170,7 @@ int32_t motor_move_absolute(int8_t port, double position, const int32_t velocity
  * block until a movement is finished.
  *
  * \note A negative port will negate the target position
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -185,7 +185,7 @@ int32_t motor_move_absolute(int8_t port, double position, const int32_t velocity
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -194,7 +194,7 @@ int32_t motor_move_absolute(int8_t port, double position, const int32_t velocity
  *     // Continue running this loop as long as the motor is not within +-5 units of its goal
  *     delay(2);
  *   }
- * 
+ *
  *   motor_move_relative(1, 100, 100); // Also moves 100 units forward
  *   while (!((motor_get_position(1) < 205) && (motor_get_position(1) > 195))) {
  *     delay(2);
@@ -214,7 +214,7 @@ int32_t motor_move_relative(int8_t port, double position, const int32_t velocity
  * motor's voltage.
  *
  * \note A negative port will negate the velocity
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -228,7 +228,7 @@ int32_t motor_move_relative(int8_t port, double position, const int32_t velocity
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -244,12 +244,12 @@ int32_t motor_move_velocity(int8_t port, const int32_t velocity);
  * Sets the output voltage for the motor from -12000 to 12000 in millivolts.
  *
  * \note A negative port negates the voltage
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
  * ENODEV - The port cannot be configured as a motor
- * 
+ *
  * \note This function will not respect brake modes, and simply sets the
  * voltage to the desired value.
  *
@@ -260,7 +260,7 @@ int32_t motor_move_velocity(int8_t port, const int32_t velocity);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -278,7 +278,7 @@ int32_t motor_move_voltage(int8_t port, const int32_t voltage);
  * a profiled movement.
  *
  * \note A negative port negates the velocity
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -292,7 +292,7 @@ int32_t motor_move_voltage(int8_t port, const int32_t voltage);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -308,7 +308,7 @@ int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity);
  * Gets the target position set for the motor by the user.
  *
  * \note A negative port negates the return value
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -319,7 +319,7 @@ int32_t motor_modify_profiled_velocity(int8_t port, const int32_t velocity);
  *
  * \return The target position in its encoder units or PROS_ERR_F if the
  * operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -335,7 +335,7 @@ double motor_get_target_position(int8_t port);
  * Gets the velocity commanded to the motor by the user.
  *
  * \note A negative port negates the return value
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -346,7 +346,7 @@ double motor_get_target_position(int8_t port);
  *
  * \return The commanded motor velocity from +-100, +-200, or +-600, or PROS_ERR
  * if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -369,8 +369,8 @@ int32_t motor_get_target_velocity(int8_t port);
 /**
  * Gets the actual velocity of the motor.
  *
- * \note A negative port negates the return value 
- * 
+ * \note A negative port negates the return value
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -381,7 +381,7 @@ int32_t motor_get_target_velocity(int8_t port);
  *
  * \return The motor's actual velocity in RPM or PROS_ERR_F if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -408,7 +408,7 @@ double motor_get_actual_velocity(int8_t port);
  *
  * \return The motor's current in mA or PROS_ERR if the operation failed,
  * setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -425,8 +425,8 @@ int32_t motor_get_current_draw(int8_t port);
 /**
  * Gets the direction of movement for the motor.
  *
- * \note A negative port number negates the return value. 
- * 
+ * \note A negative port number negates the return value.
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -437,7 +437,7 @@ int32_t motor_get_current_draw(int8_t port);
  *
  * \return 1 for moving in the positive direction, -1 for moving in the
  * negative direction, or PROS_ERR if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -468,7 +468,7 @@ int32_t motor_get_direction(int8_t port);
  *
  * \return The motor's efficiency in percent or PROS_ERR_F if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -495,7 +495,7 @@ double motor_get_efficiency(int8_t port);
  *
  * \return 1 if the motor's current limit is being exceeded and 0 if the current
  * limit is not exceeded, or PROS_ERR if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -522,7 +522,7 @@ int32_t motor_is_over_current(int8_t port);
  *
  * \return 1 if the temperature limit is exceeded and 0 if the the temperature
  * is below the limit, or PROS_ERR if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -592,7 +592,7 @@ namespace c {
  *        The V5 port number from 1-21
  *
  * \return A bitfield containing the motor's faults.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -612,7 +612,7 @@ uint32_t motor_get_faults(int8_t port);
 
 /**
  * \enum motor_flag_e_t
- * 
+ *
  */
 typedef enum motor_flag_e {
 	///There are no flags raised
@@ -657,7 +657,7 @@ namespace c {
  *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
  *
  * \return A bitfield containing the motor's flags.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -675,7 +675,7 @@ uint32_t motor_get_flags(int8_t port);
  * Gets the raw encoder count of the motor at a given timestamp.
  *
  * \note A negative port value negates the return value
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -690,7 +690,7 @@ uint32_t motor_get_flags(int8_t port);
  *
  * \return The raw encoder count at the given timestamp or PROS_ERR if the
  * operation failed.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -709,7 +709,7 @@ int32_t motor_get_raw_position(int8_t port, uint32_t* const timestamp);
  * Gets the absolute position of the motor in its encoder units.
  *
  * \note A negative port value negates the return value
- * 
+ *
  * This function uses the following values of errno when an error state is
  * reached:
  * ENXIO - The given value is not within the range of V5 ports |1-21|.
@@ -720,7 +720,7 @@ int32_t motor_get_raw_position(int8_t port, uint32_t* const timestamp);
  *
  * \return The motor's absolute position in its encoder units or PROS_ERR_F
  * if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -747,7 +747,7 @@ double motor_get_position(int8_t port);
  *
  * \return The motor's power draw in Watts or PROS_ERR_F if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -775,7 +775,7 @@ double motor_get_power(int8_t port);
  *
  * \return The motor's temperature in degrees Celsius or PROS_ERR_F if the
  * operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -802,7 +802,7 @@ double motor_get_temperature(int8_t port);
  *
  * \return The motor's torque in Nm or PROS_ERR_F if the operation failed,
  * setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -829,7 +829,7 @@ double motor_get_torque(int8_t port);
  *
  * \return The motor's voltage in mV or PROS_ERR_F if the operation failed,
  * setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -878,7 +878,7 @@ typedef enum motor_encoder_units_e {
 	/// Position is recorded as angle in rotations as a floating point number
 	E_MOTOR_ENCODER_ROTATIONS = 1,
 	/// Position is recorded as raw encoder ticks as a whole number
-	E_MOTOR_ENCODER_COUNTS = 2,     
+	E_MOTOR_ENCODER_COUNTS = 2,
 	///Invalid motor encoder units
 	E_MOTOR_ENCODER_INVALID = INT32_MAX
 } motor_encoder_units_e_t;
@@ -899,6 +899,18 @@ typedef enum motor_gearset_e {
 	E_MOTOR_GEAR_600 = E_MOTOR_GEARSET_06, // 6:1, 600 RPM, Blue gear set
 	E_MOTOR_GEARSET_INVALID = INT32_MAX, // Error: Invalid Gearset
 } motor_gearset_e_t;
+
+/**
+ * \enum motor_type_e_t
+ * Indicates the type of motor connected to a port.
+ */
+
+typedef enum motor_type_e {
+	E_MOTOR_12W = 0,
+	E_REGULAR_V5_MOTOR = E_MOTOR_12W,
+	E_MOTOR_5_5W = 1,
+	E_EXP_MOTOR = E_MOTOR_5_5W,
+} motor_type_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
@@ -921,6 +933,10 @@ typedef enum motor_gearset_e {
 #define MOTOR_GEAR_BLUE pros::E_MOTOR_GEAR_BLUE
 #define MOTOR_GEAR_600 pros::E_MOTOR_GEAR_600
 #define MOTOR_GEARSET_INVALID pros::E_MOTOR_GEARSET_INVALID
+#define MOTOR_12W pros::E_MOTOR_12W
+#define REGULAR_V5_MOTOR pros::E_MOTOR_12W
+#define MOTOR_5_5W pros::E_MOTOR_5_5W
+#define EXP_MOTOR pros::E_MOTOR_5_5W
 #else
 #define MOTOR_BRAKE_COAST E_MOTOR_BRAKE_COAST
 #define MOTOR_BRAKE_BRAKE E_MOTOR_BRAKE_BRAKE
@@ -941,12 +957,16 @@ typedef enum motor_gearset_e {
 #define MOTOR_GEAR_BLUE E_MOTOR_GEAR_BLUE
 #define MOTOR_GEAR_600 E_MOTOR_GEAR_600
 #define MOTOR_GEARSET_INVALID E_MOTOR_GEARSET_INVALID
+#define MOTOR_12W E_MOTOR_12W
+#define REGULAR_V5_MOTOR E_MOTOR_12W
+#define MOTOR_5_5W E_MOTOR_5_5W
+#define EXP_MOTOR E_MOTOR_5_5W
 #endif
 #endif
 
 /**
  * \struct motor_pid_full_s_t
- * 
+ *
  * Holds the information about a Motor's position or velocity PID controls.
  *
  * These values are in 4.4 format, meaning that a value of 0x20 represents 2.0,
@@ -961,7 +981,7 @@ typedef struct motor_pid_full_s {
 	uint8_t ki;
 	/// The derivative constant
 	uint8_t kd;
-	/// A constant used for filtering the profile acceleration         
+	/// A constant used for filtering the profile acceleration
 	uint8_t filter;
 	/// The integral limit
 	uint16_t limit;
@@ -973,7 +993,7 @@ typedef struct motor_pid_full_s {
 
 /**
  * \struct motor_pid_s_t
- * 
+ *
  * Holds just the constants for a Motor's position or velocity PID controls.
  *
  * These values are in 4.4 format, meaning that a value of 0x20 represents 2.0,
@@ -993,6 +1013,21 @@ typedef struct motor_pid_s {
 #ifdef __cplusplus
 namespace c {
 #endif
+/**
+ * Gets the type of the motor connected to the port.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports |1-21|.
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
+ *
+ * \return 1 if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+motor_type_e_t motor_get_type(int8_t port);
 
 /**
  * Sets the position for the motor in its encoder units.
@@ -1011,9 +1046,9 @@ namespace c {
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
- * 
+ *
  * \code
  * void autonomous() {
  *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
@@ -1025,7 +1060,7 @@ namespace c {
  *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
  *     delay(2);
  *   }
- * 
+ *
  *   motor_set_zero_position(1, 80);
  *   motor_move_absolute(1, 100, 100); // Moves 80 units forward
  *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
@@ -1049,7 +1084,7 @@ int32_t motor_set_zero_position(int8_t port, const double position);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -1062,7 +1097,7 @@ int32_t motor_set_zero_position(int8_t port, const double position);
  *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
  *     delay(2);
  *   }
- * 
+ *
  *   motor_tare_position(1);
  *   motor_move_absolute(1, 100, 100); // Moves 100 units forward
  *   while (!((motor_get_position(1) - 100 < 105) && (motor_get_position(1) - 100 > 95))) {
@@ -1088,7 +1123,7 @@ int32_t motor_tare_position(int8_t port);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -1114,7 +1149,7 @@ int32_t motor_set_brake_mode(int8_t port, const motor_brake_mode_e_t mode);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void opcontrol() {
@@ -1170,7 +1205,7 @@ int32_t motor_set_encoder_units(int8_t port, const motor_encoder_units_e_t units
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -1196,7 +1231,7 @@ int32_t motor_set_gearing(int8_t port, const motor_gearset_e_t gearset);
  *
  * \return 1 if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void autonomous() {
@@ -1224,7 +1259,7 @@ int32_t motor_set_voltage_limit(int8_t port, const int32_t limit);
  *
  * \return One of motor_brake_mode_e_t, according to what was set for the motor,
  * or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
@@ -1250,7 +1285,7 @@ motor_brake_mode_e_t motor_get_brake_mode(int8_t port);
  *
  * \return The motor's current limit in mA or PROS_ERR if the operation failed,
  * setting errno.
- * 
+ *
  * \b Example
  * \code
  * void initialize() {
