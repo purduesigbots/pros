@@ -226,7 +226,7 @@ motor_type_e_t motor_get_type(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	motor_type_e_t rtn;
-	if ((*(uint32_t (**)(uint32_t))(0x037fc000 + 0x1d8))(port - 1) & DEVICE_FLAGS_EXP_MOTOR) {
+	if ((*(uint32_t (**)(uint32_t))(0x037fc000 + 0x1d8))((uint32_t)port - 1) & DEVICE_FLAGS_EXP_MOTOR) {
 		rtn = E_MOTOR_5_5W;
 	} else {
 		rtn = E_MOTOR_12W;
