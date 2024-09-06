@@ -10,6 +10,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include "pros/optical.h"
 #include "pros/optical.hpp"
 #include "vdml/vdml.h"
 
@@ -76,6 +77,13 @@ std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
+double Optical::get_integration_time() {
+  return optical_get_integration_time(_port);
+}
+
+std::int32_t Optical::set_integration_time(double time) {
+  return optical_set_integration_time(_port, time);
+}
 
 std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   pros::c::optical_rgb_s_t rgb = optical.get_rgb(); 

@@ -399,6 +399,36 @@ class Optical : public Device {
 	virtual std::int32_t disable_gesture();
 
 	/**
+	 * Set integration time (update rate) of the optical sensor in milliseconds, with
+	 * minimum time being 3 ms and maximum time being 712 ms. Default is 100 ms, with the 
+	 * optical sensor communciating with the V5 brain every 20 ms. 
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Optical Sensor
+ 	 *
+	 * \return 1 if the operation is successful or PROS_ERR_F if the operation failed,
+	 * setting errno.
+	 */
+	double get_integration_time();
+
+	/**
+	 * Get integration time (update rate) of the optical sensor in milliseconds.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as an Optical Sensor
+	 *
+	 * \param time
+	 *        The desired integration time in milliseconds
+	 * \return Integration time in milliseconds if the operation is successful 
+	 *  or PROS_ERR if the operation failed, setting errno.
+	 */
+	std::int32_t set_integration_time(double time);
+
+	/**
 	 * This is the overload for the << operator for printing to streams
 	 *
 	 * Prints in format(this below is all in one line with no new line):
