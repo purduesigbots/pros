@@ -101,7 +101,7 @@ class Port {
 	 * #define EXT_ADI_SMART_PORT 1
 	 * 
 	 * void initialize() {
-	 *   pros::adi::Port sensor ({{ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }}, E_ADI_ANALOG_IN);
+	 *   pros::adi::Port sensor ({ EXT_ADI_SMART_PORT , ANALOG_SENSOR_PORT }, E_ADI_ANALOG_IN);
 	 *   // Displays the value of E_ADI_ANALOG_IN
 	 *   std::cout << "Port Type: " << sensor.get_config();
 	 * }
