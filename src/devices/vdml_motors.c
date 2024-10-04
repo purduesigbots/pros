@@ -23,7 +23,8 @@
 #include "vdml/vdml.h"
 
 #define MOTOR_MOVE_RANGE 127
-#define MOTOR_VOLTAGE_RANGE 12000
+#define V5_MOTOR_VOLTAGE_RANGE 12000
+#define EXP_MOTOR_VOLTAGE_RANGE 8000
 
 // Movement functions
 
@@ -39,10 +40,17 @@ int32_t motor_move(int8_t port, int32_t voltage) {
 	}
 
 	port = abs(port);
+	int motor_v_range;
+	if(motor_get_type(port) == E_MOTOR_5_5W) {
+		motor_v_range = EXP_MOTOR_VOLTAGE_RANGE;
+	} else {
+		motor_v_range = V5_MOTOR_VOLTAGE_RANGE;
+	}
+
 	// Remap the input voltage range to the motor voltage
 	// scale to [-127, 127] -> [-12000, 12000]
-	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (MOTOR_VOLTAGE_RANGE)) / (MOTOR_MOVE_RANGE));
-	command -= MOTOR_VOLTAGE_RANGE;
+	int32_t command = (((voltage + MOTOR_MOVE_RANGE) * (motor_v_range)) / (MOTOR_MOVE_RANGE));
+	command -= motor_v_range;
 	return motor_move_voltage(port, command);
 }
 
@@ -212,6 +220,19 @@ int32_t motor_get_voltage(int8_t port) {
 }
 
 // Config functions
+
+motor_type_e_t motor_get_type(int8_t port) {
+	const uint32_t DEVICE_FLAGS_EXP_MOTOR = 0x1;
+	port = abs(port);
+	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	motor_type_e_t rtn;
+	if ((*(uint32_t (**)(uint32_t))(0x037fc000 + 0x1d8))((uint32_t)port - 1) & DEVICE_FLAGS_EXP_MOTOR) {
+		rtn = E_MOTOR_5_5W;
+	} else {
+		rtn = E_MOTOR_12W;
+	}
+	return_port(port - 1, rtn);
+}
 
 int32_t motor_set_zero_position(int8_t port, const double position) {
 	port = abs(port);

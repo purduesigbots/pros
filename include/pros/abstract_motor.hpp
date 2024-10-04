@@ -76,6 +76,17 @@ using MotorCart = MotorGears;
 using MotorCartridge = MotorGears;
 using MotorGear = MotorGears;
 
+
+enum class MotorTypes {
+	regular_v5_motor = 0,
+	motor_12W = regular_v5_motor,
+	exp_motor = 1,
+	motor_5_5w = exp_motor,
+	invalid = INT32_MAX
+};
+
+using MotorType = MotorTypes;
+
 /**
  * \ingroup cpp-abstract-motor
  */
@@ -747,6 +758,10 @@ class AbstractMotor {
 	/// \addtogroup cpp-motor-configuration
 	/// These functions allow programmers to configure the behavior of motors
 	///@{
+
+	virtual MotorType get_type(const std::uint8_t index = 0) const = 0;
+
+	virtual std::vector<MotorType> get_type_all(void) const = 0;
 
 	/**
 	 * Gets the brake mode that was set for the motor.
