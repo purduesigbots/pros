@@ -76,6 +76,14 @@ std::int32_t Optical::disable_gesture(){
   return optical_disable_gesture(_port);
 }
 
+double Optical::get_integration_time() {
+  return optical_get_integration_time(_port);
+}
+
+std::int32_t Optical::set_integration_time(double time) {
+  return optical_set_integration_time(_port, time);
+}
+
 
 std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
   pros::c::optical_rgb_s_t rgb = optical.get_rgb(); 
