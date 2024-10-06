@@ -67,7 +67,7 @@ static inline void print_phase2_vrs(struct phase2_vrs* vrs) {
 	                                      "r8", "r9", "r10", "r11", "r12", "sp", "lr", "pc"};
 	for (size_t i = 0; i < 16; i++) {
 		fprintf(stderr, "%3s: 0x%08x ", registers[i], vrs->core.r[i]);
-		if (i % 8 == 7) printf("\n");
+		if (i % 4 == 3) printf("\n");
 	}
 	fputs("\n", stderr);
 }
@@ -148,6 +148,12 @@ void report_data_abort(uint32_t _sp) {
 		fprintf(stderr, "CURRENT TASK: %.32s\n", pxCurrentTCB->pcTaskName);
 	}
 
+	struct mallinfo info = mallinfo();
+	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
+	if (pxCurrentTCB) {
+		fprintf(stderr, "STACK REMAINING AT ABORT: %lu bytes\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
+	}
+
 	fputs("REGISTERS AT ABORT\n", stderr);
 	print_phase2_vrs(&vrs);
 
@@ -155,12 +161,6 @@ void report_data_abort(uint32_t _sp) {
 	fprintf(stderr, "\t%p\n", (void*)vrs.core.r[R_PC]);
 	__gnu_Unwind_Backtrace(trace_fn, NULL, &vrs);
 	fputs("END OF TRACE\n", stderr);
-
-	struct mallinfo info = mallinfo();
-	fprintf(stderr, "HEAP USED: %d bytes\n", info.uordblks);
-	if (pxCurrentTCB) {
-		fprintf(stderr, "STACK REMAINING AT ABORT: %lu bytes\n", vrs.core.r[R_SP] - (uint32_t)pxCurrentTCB->pxStack);
-	}
 }
 
 /******************************************************************************/
