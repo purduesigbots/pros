@@ -638,9 +638,6 @@ void queue_reset(queue_t queue);
 
 ///@}
 
-/// \name Device Registration
-///@{
-
 /**
  * Registers a device in the given zero-indexed port
  *
