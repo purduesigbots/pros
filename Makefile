@@ -11,7 +11,7 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
-EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
+EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/patched_include
 
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
@@ -56,6 +56,10 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 .PHONY: $(INCDIR)/api.h
 $(INCDIR)/api.h: version.py
 	$(VV)python version.py
+
+.PHONY: patch_sdk_headers
+patch_sdk_headers: patch_headers.py
+	$(VV)python patch_headers.py
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
