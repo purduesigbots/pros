@@ -16,8 +16,8 @@ EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
-C_STANDARD=gnu11
-CXX_STANDARD=gnu++20
+C_STANDARD=gnu2x
+CXX_STANDARD=gnu++23
 
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
@@ -69,7 +69,11 @@ CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.b
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
-	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
+	$Dif [ $(shell uname -s) == "Darwin" ]; then \
+		rsync -R $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	else \
+		cp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	fi
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
