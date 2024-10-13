@@ -676,5 +676,29 @@ void MotorGroup::erase_port(std::int8_t port) {
 		}
 	}
 }
+
+// Question: Do we need to deal with port is already part of motor group?
+void MotorGroup::append(std::int8_t port) {
+	_ports.push_back(port);
+}
+
+void MotorGroup::operator-=(AbstractMotor& other) {
+	auto ports = other.get_port_all();
+	for (auto it = ports.begin(); it < ports.end(); it++) {
+		auto port = *it;
+
+		// Locate port in _ports, remove if found
+		auto port_it = std::find(_ports.begin(), _ports.end(), port); 
+		if (port_it != _ports.end()) {
+			_ports.erase(port_it);
+		}
+	}
+}
+
+void MotorGroup::erase_port(AbstractMotor& other) {
+	(*this) -= other;
+}
+
+
 }  // namespace v5
 }  // namespace pros
