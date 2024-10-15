@@ -6,6 +6,8 @@ with the sdk (which uses the soft float abi) when building pros with the hard fl
 from os import listdir, makedirs
 from os.path import isfile, join, exists, dirname, realpath
 
+print("Patching libv5rts")
+
 current_dir = dirname(realpath(__file__))
 include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/include/"
 patched_include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/patched_include/"
@@ -58,3 +60,5 @@ for file_name in files:
         output += f"__attribute__((pcs(\"aapcs\"))) {line}\n"
     with open(join(patched_include_path, file_name), "w") as file:
         file.write(output)
+
+print("libv5rts patched successfully")
