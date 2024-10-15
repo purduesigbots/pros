@@ -24,6 +24,7 @@ patched_include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/patched_inclu
 # create the include path if it does not exist already
 if exists(patched_include_path):
     print("libv5rts already patched")
+    exit(0)
 else:
     try:
         makedirs(patched_include_path)
