@@ -1,5 +1,5 @@
 '''
-Adds __atrribute__((pcs("aapcs")) to all sdk function declarations to allow properly linking
+Adds __attribute__((pcs("aapcs")) to all sdk function declarations to allow properly linking
 with the sdk (which uses the soft float abi) when building pros with the hard float abi
 '''
 
@@ -20,7 +20,7 @@ for file_name in files:
         if skip_next_line:
             # This line is a macro continuation
             if not line.endswith(("\\")):
-                # maco continuation ends here
+                # macro continuation ends here
                 skip_next_line = False
             continue
         if line.strip().startswith(("/", "*")):
