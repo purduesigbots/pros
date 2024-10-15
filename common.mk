@@ -184,9 +184,9 @@ endif
 
 .PHONY: all clean quick
 
-quick: $(DEFAULT_BIN)
+quick: patch_sdk_headers $(DEFAULT_BIN)
 
-all: clean $(DEFAULT_BIN)
+all: clean patch_sdk_headers $(DEFAULT_BIN)
 
 clean:
 	@echo Cleaning project

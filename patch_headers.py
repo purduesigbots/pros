@@ -17,6 +17,7 @@ if not exists(patched_include_path):
 # get a list of files in the include path
 files = [f for f in listdir(include_path) if isfile(join(include_path, f)) and str(f).endswith(".h")]
 
+# patch headers
 for file_name in files:
     header_file = ""
     output = ""
