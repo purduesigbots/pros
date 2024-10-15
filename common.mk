@@ -192,6 +192,8 @@ clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
 	-$Drm -rf $(DEPDIR)
+	-$Drm -f $(PATCHED_SDK)
+	-$Drm -rf $(EXTRA_INCDIR)
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
