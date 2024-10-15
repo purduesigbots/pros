@@ -8,22 +8,48 @@ from os.path import isfile, join, exists, dirname, realpath
 
 print("Patching libv5rts")
 
-current_dir = dirname(realpath(__file__))
+def print_and_exit(message):
+    print(message)
+    print("Failed to patch libv5rts")
+    exit(1)
+
+# get the current directory
+try:
+    current_dir = dirname(realpath(__file__))
+except:
+    print_and_exit("Could not get working directory!")
+# set the include path and the include path of the patched SDK
 include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/include/"
 patched_include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/patched_include/"
 # create the include path if it does not exist already
-if not exists(patched_include_path):
-    makedirs(patched_include_path)
-# get a list of files in the include path
-files = [f for f in listdir(include_path) if isfile(join(include_path, f)) and str(f).endswith(".h")]
+if exists(patched_include_path):
+    print("libv5rts already patched")
+else:
+    try:
+        makedirs(patched_include_path)
+    except:
+        print_and_exit("Could not create directory for patched libv5rts")
 
+# get a list of files in the include path
+try:
+    all_files = listdir(include_path)
+except:
+    print_and_exit("Error getting directories and files in include path")
+files = []
+for f in all_files:
+    if isfile(join(include_path, f)) and str(f).endswith(".h"):
+        files.append(f)
+        
 # patch headers
 for file_name in files:
     header_file = ""
     output = ""
     skip_next_line = False
-    with open(join(include_path, file_name), "r") as file:
-        header_file = file.read()
+    try:
+        with open(join(include_path, file_name), "r") as file:
+            header_file = file.read()
+    except:
+        print_and_exit("Failed to open file in v5rts")
     for line in header_file.splitlines():
         if skip_next_line:
             # This line is a macro continuation
@@ -59,7 +85,10 @@ for file_name in files:
             output += f"{line}\n"
             continue
         output += f"__attribute__((pcs(\"aapcs\"))) {line}\n"
-    with open(join(patched_include_path, file_name), "w") as file:
-        file.write(output)
+    try:
+        with open(join(patched_include_path, file_name), "w") as file:
+            file.write(output)
+    except:
+        print_and_exit("Failed to write patched file")
 
 print("libv5rts patched successfully")
