@@ -3,11 +3,16 @@ Adds __attribute__((pcs("aapcs")) to all sdk function declarations to allow prop
 with the sdk (which uses the soft float abi) when building pros with the hard float abi
 '''
 
-from os import listdir
-from os.path import isfile, join
+from os import listdir, makedirs
+from os.path import isfile, join, exists, dirname, realpath
 
-include_path = "./firmware/libv5rts/sdk/vexv5/include/"
-patched_include_path = "./firmware/libv5rts/sdk/vexv5/patched_include/"
+current_dir = dirname(realpath(__file__))
+include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/include/"
+patched_include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/patched_include/"
+# create the include path if it does not exist already
+if not exists(patched_include_path):
+    makedirs(patched_include_path)
+# get a list of files in the include path
 files = [f for f in listdir(include_path) if isfile(join(include_path, f)) and str(f).endswith(".h")]
 
 for file_name in files:
