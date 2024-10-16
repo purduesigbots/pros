@@ -6,8 +6,6 @@ with the sdk (which uses the soft float abi) when building pros with the hard fl
 from os import listdir, makedirs
 from os.path import isfile, join, exists, dirname, realpath
 
-print("Patching libv5rts")
-
 def print_and_exit(message):
     print(message)
     print("Failed to patch libv5rts")
