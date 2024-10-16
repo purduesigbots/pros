@@ -1,27 +1,14 @@
 ARCHTUPLE=arm-none-eabi-
 DEVICE=VEX EDR V5
 
-MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=hard -Os -g
+MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -D_POSIX_TIMERS -D_POSIX_MONOTONIC_CLOCK
 GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
-
-# Check if the llemu files in libvgl exist. If they do, define macros that the
-# llemu headers in the kernel repo can use to conditionally include the libvgl
-# versions
-ifneq (,$(wildcard ./include/liblvgl/llemu.h))
-	CPPFLAGS += -D_PROS_INCLUDE_LIBLVGL_LLEMU_H
-endif
-ifneq (,$(wildcard ./include/liblvgl/llemu.hpp))
-	CPPFLAGS += -D_PROS_INCLUDE_LIBLVGL_LLEMU_HPP
-endif
 
 WARNFLAGS+=-Wno-psabi
 
 SPACE := $() $()
 COMMA := ,
-
-C_STANDARD?=gnu11
-CXX_STANDARD?=gnu++20
 
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR))
@@ -37,8 +24,8 @@ wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
-CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=$(C_STANDARD)
-CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=$(CXX_STANDARD)
+CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu11
+CXXFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=gnu++17
 LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
@@ -182,27 +169,16 @@ endif
 
 -include $(wildcard $(FWDIR)/*.mk)
 
-ifeq ($(IS_LIBRARY),1)
-ifeq ($(LIBNAME),libpros)
-KERNEL_PROJECT=1
-endif
-endif
-
 .PHONY: all clean quick
 
-quick: $(if $(KERNEL_PROJECT), patch_sdk_headers) $(DEFAULT_BIN)
+quick: $(DEFAULT_BIN)
 
-all: clean $(if $(KERNEL_PROJECT), patch_sdk_headers) $(DEFAULT_BIN)
+all: clean $(DEFAULT_BIN)
 
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
 	-$Drm -rf $(DEPDIR)
-ifeq ($(KERNEL_PROJECT),1)
-	@echo Removing patched libv5rts
-	-$Drm -f $(PATCHED_SDK)
-	-$Drm -rf $(EXTRA_INCDIR)
-endif
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
@@ -221,10 +197,10 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $^, $(DONE_STRING))
 
 .PHONY: library
-library: $(if $(KERNEL_PROJECT), patch_sdk_headers) $(LIBAR)
+library: $(LIBAR)
 
 .PHONY: template
-template: $(if $(KERNEL_PROJECT), patch_sdk_headers) clean-template $(LIBAR)
+template: clean-template $(LIBAR)
 	$Dpros c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5 $(CREATE_TEMPLATE_FLAGS)
 endif
 

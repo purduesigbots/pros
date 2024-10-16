@@ -11,13 +11,10 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
-EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/patched_include
+EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
-
-C_STANDARD=gnu11
-CXX_STANDARD=gnu++20
 
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
@@ -40,7 +37,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 # that are in the the include directory get exported
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(FWDIR)/v5-common.ld $(FWDIR)/v5-hot.ld
 TEMPLATE_FILES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
-TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* 
+TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(INCDIR)/display
 TEMPLATE_FILES+= $(SRCDIR)/main.cpp
 TEMPLATE_FILES+= $(ROOT)/template-gitignore
 
@@ -56,10 +53,6 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 .PHONY: $(INCDIR)/api.h
 $(INCDIR)/api.h: version.py
 	$(VV)python version.py
-
-.PHONY: patch_sdk_headers
-patch_sdk_headers: patch_headers.py
-	$(VV)python patch_headers.py
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
@@ -79,7 +72,7 @@ template: clean-template library
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
-	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
+	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
