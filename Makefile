@@ -16,6 +16,9 @@ EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
+C_STANDARD=gnu2x
+CXX_STANDARD=gnu++23
+
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
@@ -37,7 +40,7 @@ EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(f
 # that are in the the include directory get exported
 TEMPLATE_FILES=$(ROOT)/common.mk $(FWDIR)/v5.ld $(FWDIR)/v5-common.ld $(FWDIR)/v5-hot.ld
 TEMPLATE_FILES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
-TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* $(INCDIR)/display
+TEMPLATE_FILES+= $(INCDIR)/api.h $(INCDIR)/main.h $(INCDIR)/pros/*.* 
 TEMPLATE_FILES+= $(SRCDIR)/main.cpp
 TEMPLATE_FILES+= $(ROOT)/template-gitignore
 
@@ -66,13 +69,17 @@ CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.b
 template: clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
-	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
+	$Dif [ $(shell uname -s) == "Darwin" ]; then \
+		rsync -R $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	else \
+		cp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	fi
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
-	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
+	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
