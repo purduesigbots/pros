@@ -224,7 +224,7 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 library: $(LIBAR)
 
 .PHONY: template
-template: clean-template $(LIBAR)
+template: $(if $(KERNEL_PROJECT), patch_sdk_headers) clean-template $(LIBAR)
 	$Dpros c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5 $(CREATE_TEMPLATE_FLAGS)
 endif
 
