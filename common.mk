@@ -182,18 +182,27 @@ endif
 
 -include $(wildcard $(FWDIR)/*.mk)
 
+ifeq ($(IS_LIBRARY),1)
+ifeq ($(LIBNAME),libpros)
+KERNEL_PROJECT=1
+endif
+endif
+
 .PHONY: all clean quick
 
-quick: patch_sdk_headers $(DEFAULT_BIN)
+quick: $(if $(KERNEL_PROJECT), patch_sdk_headers) $(DEFAULT_BIN)
 
-all: clean patch_sdk_headers $(DEFAULT_BIN)
+all: clean $(if $(KERNEL_PROJECT), patch_sdk_headers) $(DEFAULT_BIN)
 
 clean:
 	@echo Cleaning project
 	-$Drm -rf $(BINDIR)
 	-$Drm -rf $(DEPDIR)
+ifeq ($(KERNEL_PROJECT),1)
+	@echo Removing patched libv5rts
 	-$Drm -f $(PATCHED_SDK)
 	-$Drm -rf $(EXTRA_INCDIR)
+endif
 
 ifeq ($(IS_LIBRARY),1)
 ifeq ($(LIBNAME),libbest)
