@@ -221,7 +221,7 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $^, $(DONE_STRING))
 
 .PHONY: library
-library: $(LIBAR)
+library: $(if $(KERNEL_PROJECT), patch_sdk_headers) $(LIBAR)
 
 .PHONY: template
 template: $(if $(KERNEL_PROJECT), patch_sdk_headers) clean-template $(LIBAR)
