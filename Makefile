@@ -61,6 +61,11 @@ $(INCDIR)/api.h: version.py
 patch_sdk_headers: patch_headers.py
 	$(VV)python patch_headers.py
 
+# Override clean, necessary to remove patched sdk on clean
+clean::
+	@rm -f $(PATCHED_SDK)
+	@rm -rf $(EXTRA_INCDIR)
+
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
 
