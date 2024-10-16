@@ -5,3 +5,4 @@
 -N read
 -N write
 -N isatty
+-R .ARM.attributes
