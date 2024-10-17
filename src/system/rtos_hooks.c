@@ -13,7 +13,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
+#include "pros/motors.h"
 #include "rtos/FreeRTOS.h"
 #include "rtos/semphr.h"
 #include "rtos/task.h"
@@ -29,11 +29,15 @@ void FIQInterrupt() {
 // Replacement for DataAbortInterrupt
 void DataAbortInterrupt() {
 	taskDISABLE_INTERRUPTS();
+	taskENTER_CRITICAL();
 
 	register int sp;
 	asm("add %0,sp,#8\n" : "=r"(sp));
-	extern void report_data_abort(uint32_t);
-	report_data_abort(sp);
+	for(uint8_t i = 1; i <= 21; i++) {
+		motor_move_voltage(i, 0);
+	}
+	extern void report_fatal_error(uint32_t _sp, const char* error_name);
+	report_fatal_error(sp, "DATA ABORT EXCEPTION");
 	for (;;) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
@@ -42,7 +46,21 @@ void DataAbortInterrupt() {
 }
 // Replacement for PrefetchAbortInterrupt
 void PrefetchAbortInterrupt() {
-	vexSystemPrefetchAbortInterrupt();
+	taskDISABLE_INTERRUPTS();
+	taskENTER_CRITICAL();
+
+	register int sp;
+	asm("add %0,sp,#8\n" : "=r"(sp));
+	for(uint8_t i = 1; i <= 21; i++) {
+		motor_move_voltage(i, 0);
+	}
+	extern void report_fatal_error(uint32_t _sp, const char* error_name);
+	report_fatal_error(sp, "PREFETCH ABORT EXCEPTION");
+	for (;;) {
+		vexBackgroundProcessing();
+		extern void ser_output_flush();
+		ser_output_flush();
+	}
 }
 
 void _boot() {
