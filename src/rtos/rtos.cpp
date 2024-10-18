@@ -14,9 +14,11 @@
 
 #include "pros/rtos.hpp"
 
+#include <atomic>
 #include <system_error>
 
 #include "kapi.h"
+#include "pros/rtos.h"
 
 namespace pros {
 using namespace pros::c;
@@ -98,22 +100,32 @@ std::uint32_t Task::get_count() {
 	return task_get_count();
 }
 
-Mutex::Mutex() : mutex(mutex_create(), mutex_delete) {}
-
 Clock::time_point Clock::now() {
 	return Clock::time_point{Clock::duration{millis()}};
 }
 
+mutex_t Mutex::lazy_init() {
+		mutex_t _mutex;
+		if(unlikely((_mutex = mutex.load(std::memory_order::relaxed)) == nullptr)) {
+			taskENTER_CRITICAL();
+			if(likely((_mutex = mutex.load()) == nullptr)) {	
+				mutex.store((_mutex = pros::c::mutex_create()));
+			}
+			taskEXIT_CRITICAL();
+		}
+		return _mutex;
+}
+
 bool Mutex::take() {
-	return mutex_take(mutex.get(), TIMEOUT_MAX);
+	return mutex_take(lazy_init(), TIMEOUT_MAX);
 }
 
 bool Mutex::take(std::uint32_t timeout) {
-	return mutex_take(mutex.get(), timeout);
+	return mutex_take(lazy_init(), timeout);
 }
 
 bool Mutex::give() {
-	return mutex_give(mutex.get());
+	return mutex_give(lazy_init());
 }
 
 void Mutex::lock() {
@@ -128,5 +140,53 @@ void Mutex::unlock() {
 
 bool Mutex::try_lock() {
 	return take(0);
+}
+
+Mutex::~Mutex() {
+	mutex_t _mutex = mutex.exchange(reinterpret_cast<mutex_t>(~0));
+	pros::c::mutex_delete(_mutex);
+}
+
+mutex_t RecursiveMutex::lazy_init() {
+		mutex_t _mutex;
+		if(unlikely((_mutex = mutex.load(std::memory_order::relaxed)) == nullptr)) {
+			taskENTER_CRITICAL();
+			if(likely((_mutex = mutex.load()) == nullptr)) {	
+				mutex.store((_mutex = pros::c::mutex_recursive_create()));
+			}
+			taskEXIT_CRITICAL();
+		}
+		return _mutex;
+}
+
+bool RecursiveMutex::take() {
+	return mutex_recursive_take(lazy_init(), TIMEOUT_MAX);
+}
+
+bool RecursiveMutex::take(std::uint32_t timeout) {
+	return mutex_recursive_take(lazy_init(), timeout);
+}
+
+bool RecursiveMutex::give() {
+	return mutex_recursive_give(lazy_init());
+}
+
+void RecursiveMutex::lock() {
+	if (!take(TIMEOUT_MAX)) {
+		throw std::system_error(errno, std::system_category(), "Cannot obtain lock!");
+	}
+}
+
+void RecursiveMutex::unlock() {
+	give();
+}
+
+bool RecursiveMutex::try_lock() {
+	return take(0);
+}
+
+RecursiveMutex::~RecursiveMutex() {
+	mutex_t _mutex = mutex.exchange(reinterpret_cast<mutex_t>(~0));
+	pros::c::mutex_delete(_mutex);
 }
 }  // namespace pros
