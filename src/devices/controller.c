@@ -19,6 +19,7 @@
 #include "vdml/vdml.h"
 
 #define CONTROLLER_MAX_COLS 15
+#define CONTROLLER_MAX_CHARS 31
 
 // From enum in misc.h
 #define NUM_BUTTONS 12
@@ -107,7 +108,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 	else
 		col++;
 
-	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
+	char* buf = strndup(str, CONTROLLER_MAX_CHARS + 1);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
@@ -131,8 +132,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 	va_list args;
 	va_start(args, fmt);
-	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
+	char* buf = (char*)malloc(CONTROLLER_MAX_CHARS + 1);
+	vsnprintf(buf, CONTROLLER_MAX_CHARS + 1, fmt, args);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
