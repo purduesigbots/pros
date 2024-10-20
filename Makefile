@@ -53,16 +53,17 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-.PHONY: $(INCDIR)/api.h
+.PHONY: $(INCDIR)/api.h patch_sdk_headers clean
 $(INCDIR)/api.h: version.py
 	$(VV)python version.py
 
-.PHONY: patch_sdk_headers
 patch_sdk_headers: patch_headers.py
+	@echo "Patching SDK headers"
 	$(VV)python patch_headers.py
 
 # Override clean, necessary to remove patched sdk on clean
-clean::
+clean:
+	@echo "Cleaning patched SDK"
 	@rm -f $(PATCHED_SDK)
 	@rm -rf $(EXTRA_INCDIR)
 
