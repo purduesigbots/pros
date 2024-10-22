@@ -11,13 +11,13 @@ FWDIR:=$(ROOT)/firmware
 BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
-EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/include
+EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/patched_include
 
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 
-C_STANDARD=gnu11
-CXX_STANDARD=gnu++20
+C_STANDARD=gnu2x
+CXX_STANDARD=gnu++23
 
 WARNFLAGS+=-Wall -Wpedantic
 EXTRA_CFLAGS=
@@ -53,23 +53,36 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-.PHONY: $(INCDIR)/api.h
+.PHONY: $(INCDIR)/api.h patch_sdk_headers clean
 $(INCDIR)/api.h: version.py
 	$(VV)python version.py
 
+patch_sdk_headers: patch_headers.py
+	@echo "Patching SDK headers"
+	$(VV)python patch_headers.py
+
+# Override clean, necessary to remove patched sdk on clean
+clean:
+	@echo "Cleaning patched SDK"
+	@rm -f $(PATCHED_SDK)
+	@rm -rf $(EXTRA_INCDIR)
+
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
-
 
 CREATE_TEMPLATE_ARGS=--system "./**/*"
 CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,hh}" --user "Makefile" --user ".gitignore"
 CREATE_TEMPLATE_ARGS+=--target v5
 CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
-template: clean-template library
+template: patch_sdk_headers clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
-	$Dcp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR)
+	$Dif [ $(shell uname -s) == "Darwin" ]; then \
+		rsync -R $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	else \
+		cp --parents -r $(TEMPLATE_FILES) $(TEMPLATE_DIR); \
+	fi
 	$(VV)mkdir -p $(TEMPLATE_DIR)/firmware
 	$Dcp $(LIBAR) $(TEMPLATE_DIR)/firmware
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
@@ -78,7 +91,7 @@ template: clean-template library
 	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
-$(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
+$(LIBAR): patch_sdk_headers $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)
 	$(call test_output_2,Extracting libv5rts ,cd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(PATCHED_SDK),$(DONE_STRING))
 	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(PATCHED_SDK)))
