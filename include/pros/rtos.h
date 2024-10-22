@@ -792,7 +792,7 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  * \param task
  *        The task to clear
  *
- * \return False if there was not a notification waiting, true if there was
+ * \return 0 if there was not a notification waiting, 1 if there was
  * 
  * \b Example
  * \code
@@ -820,7 +820,7 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  * }
  * \endcode
  */
-bool task_notify_clear(task_t task);
+int32_t task_notify_clear(task_t task);
 
 /**
  * Creates a mutex.
