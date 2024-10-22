@@ -3,7 +3,7 @@ DEVICE=VEX EDR V5
 
 MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -D_POSIX_TIMERS -D_POSIX_MONOTONIC_CLOCK
-GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
+GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables -flto -fno-fat-lto-objects
 
 # Check if the llemu files in libvgl exist. If they do, define macros that the
 # llemu headers in the kernel repo can use to conditionally include the libvgl
@@ -43,7 +43,7 @@ LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
 
-AR:=$(ARCHTUPLE)ar
+AR:=$(ARCHTUPLE)gcc-ar
 # using arm-none-eabi-as generates a listing by default. This produces a super verbose output.
 # Using gcc accomplishes the same thing without the extra output
 AS:=$(ARCHTUPLE)gcc
