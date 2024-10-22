@@ -222,8 +222,7 @@ endif
 ifeq ($(IS_LIBRARY),1)
 ELF_DEPS+=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
-GCCFLAGS+=-fno-strict-aliasing -flto
-WARNFLAGS+=-Wno-lto-type-mismatch # ok because -fno-strict-antialiasing is used
+GCCFLAGS+=-flto
 else
 ELF_DEPS+=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
