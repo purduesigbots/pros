@@ -16,7 +16,6 @@ try:
     current_dir = dirname(realpath(__file__))
 except:
     print_and_exit("Could not get working directory!")
-    exit(1)
 # set the include path and the include path of the patched SDK
 include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/include/"
 patched_include_path = current_dir + "/firmware/libv5rts/sdk/vexv5/patched_include/"
@@ -29,14 +28,12 @@ else:
         makedirs(patched_include_path)
     except:
         print_and_exit("Could not create directory for patched libv5rts")
-        exit(1)
 
 # get a list of files in the include path
 try:
     all_files = listdir(include_path)
 except:
     print_and_exit("Error getting directories and files in include path")
-    exit(1)
 files = []
 for f in all_files:
     if isfile(join(include_path, f)) and str(f).endswith(".h"):
@@ -52,7 +49,6 @@ for file_name in files:
             header_file = file.read()
     except:
         print_and_exit("Failed to open file in v5rts")
-        exit(1)
     for line in header_file.splitlines():
         if skip_next_line:
             # This line is a macro continuation
@@ -93,6 +89,5 @@ for file_name in files:
             file.write(output)
     except:
         print_and_exit("Failed to write patched file")
-        exit(1)
 
 print("libv5rts patched successfully")
