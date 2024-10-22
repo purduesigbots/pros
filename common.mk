@@ -3,7 +3,7 @@ DEVICE=VEX EDR V5
 
 MFLAGS=-mcpu=cortex-a9 -mfpu=neon-fp16 -mfloat-abi=softfp -Os -g
 CPPFLAGS=-D_POSIX_THREADS -D_UNIX98_THREAD_MUTEX_ATTRIBUTES -D_POSIX_TIMERS -D_POSIX_MONOTONIC_CLOCK
-GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables -fno-strict-aliasing -flto
+GCCFLAGS=-ffunction-sections -fdata-sections -fdiagnostics-color -funwind-tables
 
 # Check if the llemu files in libvgl exist. If they do, define macros that the
 # llemu headers in the kernel repo can use to conditionally include the libvgl
@@ -15,7 +15,7 @@ ifneq (,$(wildcard ./include/liblvgl/llemu.hpp))
 	CPPFLAGS += -D_PROS_INCLUDE_LIBLVGL_LLEMU_HPP
 endif
 
-WARNFLAGS+=-Wno-psabi -Wno-lto-type-mismatch
+WARNFLAGS+=-Wno-psabi
 
 SPACE := $() $()
 COMMA := ,
@@ -218,9 +218,12 @@ template: clean-template $(LIBAR)
 endif
 
 # if project is a library source, compile the archive and link output.elf against the archive rather than source objects
+# and use Linker Time Optimization (LTO)
 ifeq ($(IS_LIBRARY),1)
 ELF_DEPS+=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
+GCCFLAGS+=-fno-strict-aliasing -flto
+WARNFLAGS+=-Wno-lto-type-mismatch # ok because -fno-strict-antialiasing is used
 else
 ELF_DEPS+=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif
