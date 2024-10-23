@@ -677,7 +677,6 @@ void MotorGroup::erase_port(std::int8_t port) {
 	}
 }
 
-// Question: Do we need to deal with port is already part of motor group?
 void MotorGroup::append(std::int8_t port) {
 	_ports.push_back(port);
 }
