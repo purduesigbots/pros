@@ -592,6 +592,7 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  * EROFS - SD card is write protected 
  * ENXIO - drive number is invalid or not a FAT32 drive
  * ENOBUFS - drive has no work area
+ * ETIMEDOUT - Operation timed out while accessing the volume
  * ENFILE - too many open files
  * 
  * \param path
@@ -616,8 +617,7 @@ std::int32_t list_files_raw(const char* path, char* buffer, int32_t len);
  *  }
  *  else {
  * 		// file list returned is valid
- *  	// Print each file path
- *      // Each file path in format "/usd/path/file_name"
+ *  	// Print each file
  *		for (std::string& file : files) {
  *			std::cout << file << std::endl;
  *		}

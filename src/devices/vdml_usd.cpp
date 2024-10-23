@@ -82,20 +82,14 @@ std::vector<std::string> list_files(const char* path) {
 	// file_name used to store each file name
 	size_t delimiter_pos = 0;
 	size_t index = 0;
-	std::string_view file_name;
+	std::string file_name;
 
 	// Loop until delimiter '\n' can not be found anymore
 	while ((delimiter_pos = str.find('\n', index)) != std::string::npos) {
 		// file_name is the string from the beginning of str to the first '\n', excluding '\n'
-		file_name = std::string_view(str.data() + index, delimiter_pos - index);
-		// This is point where content of the std::string_view file name is copied to its
-		// own std::string and added to the files vector
-		const size_t path_size = 1 + usd_prefix.length() + strlen(path) + 1 + file_name.length() + 1;
-		std::string buffer;
-		buffer.reserve(path_size);
-		std::snprintf(buffer.data(), path_size, "/usd%s/%.*s", path, static_cast<int>(file_name.length()), file_name.data());
+		file_name = std::string(str.data() + index, delimiter_pos - index);
 
-		files.push_back(std::move(buffer));
+		files.push_back(file_name);
 		// Increment index to start substr from
 		index = delimiter_pos + 1;
 
