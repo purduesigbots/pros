@@ -114,6 +114,7 @@ _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 /******************************************************************************/
 // recover registers from a data abort. Specific knowledge about callee stack
 // used from FreeRTOS_DataAbortHandler and it calling DataAbortInterrupt
+__attribute((target("arm")))
 void p2vrs_from_data_abort(_uw* sp, struct phase2_vrs* vrs) {
 	// sp is stack pointer when FreeRTOS_DataAbortHandler invokes DataAbortInterrupt
 	vrs->demand_save_flags = 0;
