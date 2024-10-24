@@ -166,11 +166,9 @@ SECTIONS
    __fini_array_end = .;
 } > RAM
 
-.ARM.attributes : {
-   __ARM.attributes_start = .;
-   *(.ARM.attributes)
-   __ARM.attributes_end = .;
-} > RAM
+/DISCARD/ : {
+  *(.ARM.attributes*)
+}
 
 .sdata : {
    __sdata_start = .;
@@ -228,7 +226,7 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
    _heap_end = .;
    HeapLimit = .;
 } > HEAP
-
+/*
 .stack (NOLOAD) : {
    . = ALIGN(16);
    _stack_end = .;
@@ -258,6 +256,6 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
    . = ALIGN(16);
    __undef_stack = .;
 } > COLD_MEMORY
-
+*/
 _end = .;
 }
