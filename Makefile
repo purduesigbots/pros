@@ -20,7 +20,7 @@ C_STANDARD=gnu11
 CXX_STANDARD=gnu++20
 
 WARNFLAGS+=-Wall -Wpedantic
-EXTRA_CFLAGS=
+EXTRA_CFLAGS+=-mthumb-interwork -mthumb
 EXTRA_CXXFLAGS=
 
 .DEFAULT_GOAL=quick
