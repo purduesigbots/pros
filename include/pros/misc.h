@@ -740,6 +740,7 @@ int32_t usd_is_installed(void);
  * EROFS - SD card is write protected 
  * ENXIO - drive number is invalid or not a FAT32 drive
  * ENOBUFS - drive has no work area
+ * ETIMEDOUT - Operation timed out while accessing the volume
  * ENFILE - too many open files
  * 
  * \param path
