@@ -678,20 +678,24 @@ void MotorGroup::erase_port(std::int8_t port) {
 }
 
 void MotorGroup::append(std::int8_t port) {
-	_ports.push_back(port);
+	if (std::find_if(_ports.begin(), _ports.end(), 
+                     [port](std::int8_t p) { return std::abs(p) == std::abs(port); }) 
+        == _ports.end()) {
+        // If no matching absolute value is found, append the port
+        _ports.push_back(port);
+    }
 }
 
 void MotorGroup::operator-=(AbstractMotor& other) {
 	auto ports = other.get_port_all();
-	for (auto it = ports.begin(); it < ports.end(); it++) {
-		auto port = *it;
 
-		// Locate port in _ports, remove if found
-		auto port_it = std::find(_ports.begin(), _ports.end(), port); 
-		if (port_it != _ports.end()) {
-			_ports.erase(port_it);
-		}
-	}
+	// Iterate over the ports in 'other'
+    for (auto port : ports) {
+        // Remove ports that match the absolute value
+        _ports.erase(std::remove_if(_ports.begin(), _ports.end(),
+            [port](std::int8_t p) { return std::abs(p) == std::abs(port); }),
+            _ports.end());
+    }
 }
 
 void MotorGroup::erase_port(AbstractMotor& other) {
