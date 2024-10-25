@@ -676,5 +676,32 @@ void MotorGroup::erase_port(std::int8_t port) {
 		}
 	}
 }
+
+void MotorGroup::append(std::int8_t port) {
+	if (std::find_if(_ports.begin(), _ports.end(), 
+                     [port](std::int8_t p) { return std::abs(p) == std::abs(port); }) 
+        == _ports.end()) {
+        // If no matching absolute value is found, append the port
+        _ports.push_back(port);
+    }
+}
+
+void MotorGroup::operator-=(AbstractMotor& other) {
+	auto ports = other.get_port_all();
+
+	// Iterate over the ports in 'other'
+    for (auto port : ports) {
+        // Remove ports that match the absolute value
+        _ports.erase(std::remove_if(_ports.begin(), _ports.end(),
+            [port](std::int8_t p) { return std::abs(p) == std::abs(port); }),
+            _ports.end());
+    }
+}
+
+void MotorGroup::erase_port(AbstractMotor& other) {
+	(*this) -= other;
+}
+
+
 }  // namespace v5
 }  // namespace pros
