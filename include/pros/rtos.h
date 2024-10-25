@@ -1076,7 +1076,87 @@ bool mutex_take(mutex_t mutex, uint32_t timeout);
 bool mutex_give(mutex_t mutex);
 
 /**
- * Deletes a mutex
+ * Creates a recursive mutex which can be locked recursively by the owner.
+ *
+ * \return A newly created recursive mutex.
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ * 
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
+ */
+mutex_t mutex_recursive_create(void);
+
+/**
+ * Takes a recursive mutex.
+ *
+ * \param mutex
+ *        A mutex handle created by mutex_recursive_create
+ * \param wait_time
+ *        Amount of time to wait before timing out
+ *
+ * \return 1 if the mutex was obtained, 0 otherwise
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
+ */
+bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
+
+/**
+ * Gives a recursive mutex.
+ *
+ * \param mutex
+ *        A mutex handle created by mutex_recursive_create
+ *
+ * \return 1 if the mutex was obtained, 0 otherwise
+ * 
+ * \b Example:
+ * \code
+ * mutex_t mutex = mutex_recursive_create();
+ *
+ * void task_fn(void* param) {
+ *   while(1) {
+ *     mutex_recursive_take(mutex, 1000);
+ *     // critical section
+ *     mutex_recursive_give(mutex);
+ *     task_delay(1000);
+ *   }
+ * }
+ * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
+ *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
+ *
+ * \endcode
+ */
+bool mutex_recursive_give(mutex_t mutex);
+
+/**
+ * Deletes a mutex or recursive mutex
  *
  * \param mutex
  *        Mutex to unlock.

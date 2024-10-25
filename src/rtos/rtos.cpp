@@ -19,6 +19,7 @@
 
 #include "kapi.h"
 #include "pros/rtos.h"
+#include "system/optimizers.h"
 
 namespace pros {
 using namespace pros::c;

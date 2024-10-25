@@ -23,8 +23,6 @@
 #define _PROS_RTOS_HPP_
 
 #include "rtos/task.h"
-#include "system/optimizers.h"
-#include "pros/apix.h"
 #include "pros/rtos.h"
 #undef delay
 #include <atomic>
