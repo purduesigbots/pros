@@ -1,8 +1,8 @@
 jobs:
 - job: BuildTemplate
   variables:
-    toolchain_update: 10.3-2021.10
-    toolchain: https://developer.arm.com/-/media/Files/downloads/gnu-rm/$(toolchain_update)/gcc-arm-none-eabi-$(toolchain_update)-x86_64-linux.tar.bz2
+    toolchain_update: 13.3.rel1
+    toolchain: https://developer.arm.com/-/media/Files/downloads/gnu/$(toolchain_update)/binrel/arm-gnu-toolchain-$(toolchain_update)-x86_64-arm-none-eabi.tar.xz
   pool:
     vmImage: 'ubuntu-latest'
   steps:
@@ -13,9 +13,9 @@ jobs:
       sshPublicKey: $(gh.publickey)
   - checkout: self
   - bash: |
-      curl -LSso toolchain.tar.bz2 $(toolchain)
-      tar -xjvf toolchain.tar.bz2
-      echo "##vso[task.prependpath]$(pwd)/gcc-arm-none-eabi-$(toolchain_update)/bin"
+      curl -LSso toolchain.tar.xz $(toolchain)
+      tar -xJvf toolchain.tar.xz
+      echo "##vso[task.prependpath]$(pwd)/arm-gnu-toolchain-$(toolchain_update)-x86_64-arm-none-eabi/bin"
     displayName: Install gcc-arm-embedded
   - task: UsePythonVersion@0
     inputs:
