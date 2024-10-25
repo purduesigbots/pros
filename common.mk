@@ -43,7 +43,7 @@ LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
 
-AR:=$(ARCHTUPLE)ar
+AR:=$(ARCHTUPLE)gcc-ar
 # using arm-none-eabi-as generates a listing by default. This produces a super verbose output.
 # Using gcc accomplishes the same thing without the extra output
 AS:=$(ARCHTUPLE)gcc
@@ -218,9 +218,11 @@ template: clean-template $(LIBAR)
 endif
 
 # if project is a library source, compile the archive and link output.elf against the archive rather than source objects
+# and use Linker Time Optimization (LTO)
 ifeq ($(IS_LIBRARY),1)
 ELF_DEPS+=$(filter-out $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)), $(call GETALLOBJ,$(EXCLUDE_SRCDIRS)))
 LIBRARIES+=$(LIBAR)
+GCCFLAGS+=-flto
 else
 ELF_DEPS+=$(call GETALLOBJ,$(EXCLUDE_SRCDIRS))
 endif

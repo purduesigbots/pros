@@ -17,8 +17,6 @@
 #include <stdio.h>
 #include <unwind.h>
 
-#include "unwind-arm-common.h"
-
 #include "rtos/task.h"
 #include "rtos/tcb.h"
 #include "system/hot.h"
@@ -72,14 +70,6 @@ static inline void print_phase2_vrs(struct phase2_vrs* vrs) {
 	fputs("\n", stderr);
 }
 
-// exidx is the table that tells the unwinder how to unwind a stack frame
-// for a PC. Under hot/cold, there's two tables and the unwinder was kind
-// enough to let us implement a function to give it a table for a PC so
-// support for hot/cold is as easy as it gets
-struct __EIT_entry {
-	_uw fnoffset;
-	_uw content;
-};
 // these are all defined by the linker
 extern struct __EIT_entry __exidx_start;
 extern struct __EIT_entry __exidx_end;
