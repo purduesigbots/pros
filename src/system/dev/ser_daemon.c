@@ -22,6 +22,7 @@
 #include "system/hot.h"
 #include "system/optimizers.h"
 #include "v5_api.h"
+#include "version.h"
 
 #define MAX_COMMAND_LENGTH 32
 
