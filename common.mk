@@ -43,7 +43,7 @@ LDFLAGS=$(MFLAGS) $(WARNFLAGS) -nostdlib $(GCCFLAGS)
 SIZEFLAGS=-d --common
 NUMFMTFLAGS=--to=iec --format %.2f --suffix=B
 
-AR:=$(ARCHTUPLE)ar
+AR:=$(ARCHTUPLE)gcc-ar
 # using arm-none-eabi-as generates a listing by default. This produces a super verbose output.
 # Using gcc accomplishes the same thing without the extra output
 AS:=$(ARCHTUPLE)gcc
