@@ -88,7 +88,7 @@ template: patch_sdk_headers clean-template library
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
-	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
+	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR): patch_sdk_headers $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
