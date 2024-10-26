@@ -820,7 +820,7 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  * }
  * \endcode
  */
-bool task_notify_clear(task_t task);
+int32_t task_notify_clear(task_t task);
 
 /**
  * Creates a mutex.

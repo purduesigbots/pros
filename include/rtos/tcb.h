@@ -3,6 +3,28 @@
 #include "rtos/FreeRTOS.h"
 #include "rtos/list.h"
 
+/* Sometimes the FreeRTOSConfig.h settings only allow a task to be created using
+dynamically allocated RAM, in which case when any task is deleted it is known
+that both the task's stack and TCB need to be freed.  Sometimes the
+FreeRTOSConfig.h settings only allow a task to be created using statically
+allocated RAM, in which case when any task is deleted it is known that neither
+the task's stack or TCB should be freed.  Sometimes the FreeRTOSConfig.h
+settings allow a task to be created using either statically or dynamically
+allocated RAM, in which case a member of the TCB is used to record whether the
+stack and/or TCB were allocated statically or dynamically, so when a task is
+deleted the RAM that was allocated dynamically is freed again and no attempt is
+made to free the RAM that was allocated statically.
+tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE is only true if it is possible for a
+task to be created using either statically or dynamically allocated RAM.  Note
+that if portUSING_MPU_WRAPPERS is 1 then a protected task can be created with
+a statically allocated stack and a dynamically allocated TCB.
+!!!NOTE!!! If the definition of tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE is
+changed then the definition of static_task_s_t must also be updated. */
+#define tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE	( ( configSUPPORT_STATIC_ALLOCATION == 1 ) && ( configSUPPORT_DYNAMIC_ALLOCATION == 1 ) )
+#define tskDYNAMICALLY_ALLOCATED_STACK_AND_TCB 		( ( uint8_t ) 0 )
+#define tskSTATICALLY_ALLOCATED_STACK_ONLY 			( ( uint8_t ) 1 )
+#define tskSTATICALLY_ALLOCATED_STACK_AND_TCB		( ( uint8_t ) 2 )
+
 /*
  * Task control block.  A task control block (TCB) is allocated for each task,
  * and stores task state information, including a pointer to the task's context

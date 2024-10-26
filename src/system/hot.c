@@ -23,8 +23,8 @@ extern char const* _PROS_COMPILE_TIMESTAMP;
 extern char const* _PROS_COMPILE_DIRECTORY;
 extern const int   _PROS_COMPILE_TIMESTAMP_INT;
 
-extern unsigned __exidx_start;
-extern unsigned __exidx_end;
+extern struct __EIT_entry __exidx_start;
+extern struct __EIT_entry __exidx_end;
 
 // this expands to a bunch of:
 // extern void autonomous();
