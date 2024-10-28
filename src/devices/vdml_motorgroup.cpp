@@ -562,7 +562,7 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset, const std:
 }
 std::int32_t MotorGroup::set_gearing(std::vector<motor_gearset_e_t> gearsets) const {
 	empty_MotorGroup_check(PROS_ERR);
-	for (size_t i = 0; i < gearsets.size(); i++) {
+	for (std::size_t i = 0; i < gearsets.size(); i++) {
 		this->set_gearing(gearsets[i], _ports[i]);
 	}
 	if (gearsets.size() != _ports.size()) {
@@ -573,7 +573,7 @@ std::int32_t MotorGroup::set_gearing(std::vector<motor_gearset_e_t> gearsets) co
 
 std::int32_t MotorGroup::set_gearing(std::vector<MotorGears> gearsets) const {
 	empty_MotorGroup_check(PROS_ERR);
-	for (size_t i = 0; i < gearsets.size(); i++) {
+	for (std::size_t i = 0; i < gearsets.size(); i++) {
 		this->set_gearing(gearsets[i], _ports[i]);
 	}
 	if (gearsets.size() != _ports.size()) {
