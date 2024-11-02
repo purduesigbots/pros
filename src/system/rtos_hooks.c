@@ -29,15 +29,13 @@ void FIQInterrupt() {
 // Replacement for DataAbortInterrupt
 void DataAbortInterrupt() {
 	taskDISABLE_INTERRUPTS();
-	taskENTER_CRITICAL();
-
 	register int sp;
 	asm("add %0,sp,#8\n" : "=r"(sp));
+	extern void report_fatal_error(uint32_t _sp, const char* error_name);
+	report_fatal_error(sp, "DATA ABORT EXCEPTION");
 	for(uint8_t i = 1; i <= 21; i++) {
 		motor_move_voltage(i, 0);
 	}
-	extern void report_fatal_error(uint32_t _sp, const char* error_name);
-	report_fatal_error(sp, "DATA ABORT EXCEPTION");
 	for (;;) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
@@ -47,15 +45,13 @@ void DataAbortInterrupt() {
 // Replacement for PrefetchAbortInterrupt
 void PrefetchAbortInterrupt() {
 	taskDISABLE_INTERRUPTS();
-	taskENTER_CRITICAL();
-
 	register int sp;
 	asm("add %0,sp,#8\n" : "=r"(sp));
+	extern void report_fatal_error(uint32_t _sp, const char* error_name);
+	report_fatal_error(sp, "PREFETCH ABORT EXCEPTION");
 	for(uint8_t i = 1; i <= 21; i++) {
 		motor_move_voltage(i, 0);
 	}
-	extern void report_fatal_error(uint32_t _sp, const char* error_name);
-	report_fatal_error(sp, "PREFETCH ABORT EXCEPTION");
 	for (;;) {
 		vexBackgroundProcessing();
 		extern void ser_output_flush();
