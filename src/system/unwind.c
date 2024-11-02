@@ -114,6 +114,9 @@ _Unwind_Reason_Code trace_fn(_Unwind_Context* unwind_ctx, void* d) {
 /******************************************************************************/
 // recover registers from a data abort. Specific knowledge about callee stack
 // used from FreeRTOS_DataAbortHandler and it calling DataAbortInterrupt
+// NOTE: this function needs to be compiled in ARM mode and not Thumb mode 
+// (hence the attribute), due to the specific assembly used here, which is
+// not supported in Thumb mode.
 __attribute__((target("arm")))
 void p2vrs_from_data_abort(_uw* sp, struct phase2_vrs* vrs) {
 	// sp is stack pointer when FreeRTOS_DataAbortHandler invokes DataAbortInterrupt
