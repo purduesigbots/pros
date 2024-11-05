@@ -132,12 +132,6 @@ SECTIONS
    *(.gcc_except_table)
 } > RAM
 
-.mmu_tbl (ALIGN(16384)) : {
-   __mmu_tbl_start = .;
-   *(.mmu_tbl)
-   __mmu_tbl_end = .;
-} > RAM
-
 .ARM.exidx : {
    __exidx_start = .;
    *(.ARM.exidx*)
