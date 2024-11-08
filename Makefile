@@ -12,6 +12,7 @@ BINDIR=$(ROOT)/bin
 SRCDIR=$(ROOT)/src
 INCDIR=$(ROOT)/include
 EXTRA_INCDIR=$(FWDIR)/libv5rts/sdk/vexv5/patched_include
+AMALGAMATE_SRCDIR=$(ROOT)/amalgamate-src
 
 # Directories to be excluded from all builds
 EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
@@ -46,6 +47,10 @@ TEMPLATE_FILES+= $(ROOT)/template-gitignore
 
 PATCHED_SDK=$(FWDIR)/libv5rts/sdk/vexv5/libv5rts.patched.a
 
+ifndef NO_AMALGAMATE
+SRCDIR=$(AMALGAMATE_SRCDIR)
+endif
+
 EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 
 ################################################################################
@@ -53,9 +58,15 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-.PHONY: $(INCDIR)/api.h patch_sdk_headers clean
+.PHONY: $(INCDIR)/api.h patch_sdk_headers amalgamate clean
 $(INCDIR)/api.h: version.py
 	$(VV)python version.py
+
+amalgamate: amalgamate.py
+ifndef NO_AMALGAMATE
+	@echo "Amalgamating src files"
+	$(VV)python amalgamate.py
+endif
 
 patch_sdk_headers: patch_headers.py
 	@echo "Patching SDK headers"
@@ -66,6 +77,7 @@ clean:
 	@echo "Cleaning patched SDK"
 	@rm -f $(PATCHED_SDK)
 	@rm -rf $(EXTRA_INCDIR)
+	@rm -rf $(AMALGAMATE_SRCDIR)
 
 $(PATCHED_SDK): $(FWDIR)/libv5rts/sdk/vexv5/libv5rts.a
 	$(call test_output_2,Stripping unwanted symbols from libv5rts.a ,$(STRIP) $^ @libv5rts-strip-options.txt -o $@, $(DONE_STRING))
@@ -75,7 +87,7 @@ CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,h
 CREATE_TEMPLATE_ARGS+=--target v5
 CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
-template: patch_sdk_headers clean-template library
+template: patch_sdk_headers amalgamate clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dif [ $(shell uname -s) == "Darwin" ]; then \
@@ -91,7 +103,7 @@ template: patch_sdk_headers clean-template library
 	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
-$(LIBAR): patch_sdk_headers $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
+$(LIBAR): patch_sdk_headers amalgamate $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 	$(VV)mkdir -p $(LIBV5RTS_EXTRACTION_DIR)
 	$(call test_output_2,Extracting libv5rts ,cd $(LIBV5RTS_EXTRACTION_DIR) && $(AR) x ../../$(PATCHED_SDK),$(DONE_STRING))
 	$(eval LIBV5RTS_OBJECTS := $(shell $(AR) t $(PATCHED_SDK)))
