@@ -45,5 +45,5 @@ with open(amalgamate_src_dir + "/amalgamate.cpp", "w") as dest:
             dest.write(contents + "\n")
 
 with open(amalgamate_src_dir + "/main.cpp", "w") as dest:
-    with open(src_dir + "/main.cpp", "w") as src:
+    with open(src_dir + "/main.cpp", "r") as src:
         dest.write(src.read())
