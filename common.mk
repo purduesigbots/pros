@@ -262,7 +262,7 @@ $(foreach asmext,$(ASMEXTS),$(eval $(call asm_rule,$(asmext))))
 
 define c_rule
 $(BINDIR)/%.$1.o: $(SRCDIR)/%.$1
-$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename $1).d
+$(BINDIR)/%.$1.o: $(SRCDIR)/%.$1 $(DEPDIR)/$(basename %).d
 	$(VV)mkdir -p $$(dir $$@)
 	$(MAKEDEPFOLDER)
 	$$(call test_output_2,Compiled $$< ,$(CC) -c $(INCLUDE) -iquote"$(INCDIR)/$$(dir $$*)" $(CFLAGS) $(EXTRA_CFLAGS) $(DEPFLAGS) -o $$@ $$<,$(OK_STRING))
