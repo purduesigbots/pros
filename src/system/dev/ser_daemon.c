@@ -18,11 +18,11 @@
 #include <errno.h>
 
 #include "kapi.h"
+#include "pros/version.h"
 #include "system/dev/banners.h"
 #include "system/hot.h"
 #include "system/optimizers.h"
 #include "v5_api.h"
-#include "version.h"
 
 #define MAX_COMMAND_LENGTH 32
 
