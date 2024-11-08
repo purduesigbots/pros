@@ -3,8 +3,8 @@
 *
 * PROS Version Information
 *
-* Contains common definitions and header files used throughout your PROS
-* project.
+* Contains PROS kernel version information
+*
 *
 * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
 * All rights reserved.
