@@ -176,22 +176,7 @@ void report_fatal_error(uint32_t _sp, const char* error_name) {
 	struct trace_t trace = {{0}, 0, false};
 	__gnu_Unwind_Backtrace(trace_fn, &trace, &vrs);
 	fputs("END OF TRACE\n", stderr);
-	/*
-	for(size_t i = 0; i < trace.size / 4; i++) {
-		vexDisplayString(brain_line_no++, "TRACE: %p %p %p %p", (void*)trace.pcs[4*i], (void*)trace.pcs[4*i+1], (void*)trace.pcs[4*i+2], (void*)trace.pcs[4*i+3]);
-	}
-	switch (trace.size % 4) {
-		case 3:
-			vexDisplayString(brain_line_no++, "TRACE: %p %p %p", (void*)trace.pcs[trace.size-2], (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
-			break;
-		case 2:
-			vexDisplayString(brain_line_no++, "TRACE: %p %p", (void*)trace.pcs[trace.size-1], (void*)trace.pcs[trace.size]);
-			break;
-		case 1:
-			vexDisplayString(brain_line_no++, "TRACE: %p", (void*)trace.pcs[trace.size]);
-			break;
-	}
-*/
+
 	for(size_t i = 0; i < trace.size; i += 4) {
 		switch (trace.size - i) {
 			case 1:
