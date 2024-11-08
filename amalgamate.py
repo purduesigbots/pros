@@ -28,6 +28,8 @@ cpp_src_files = [join(dp, f) for dp, dn, filenames in walk(f"{current_dir}/src")
 
 with open(amalgamate_src_dir + "/amalgamate.c", "w") as dest:
     for c_file in c_src_files:
+        if "/test/" in c_file:
+            continue
         with open(c_file) as f: 
             contents = f.read()
             dest.write(f"#line 1 \"{c_file}\"")
@@ -35,7 +37,13 @@ with open(amalgamate_src_dir + "/amalgamate.c", "w") as dest:
 
 with open(amalgamate_src_dir + "/amalgamate.cpp", "w") as dest:
     for cpp_file in cpp_src_files:
+        if "/test/" in cpp_file or "main.cpp" in cpp_file:
+            continue
         with open(cpp_file) as f: 
             contents = f.read()
-            dest.write(f"#line 1 \"{cpp_file}\"")
+            dest.write(f"#line 1 \"{cpp_file}\"\n")
             dest.write(contents + "\n")
+
+with open(amalgamate_src_dir + "/main.cpp", "w") as dest:
+    with open(src_dir + "/main.cpp", "w") as src:
+        dest.write(src.read())
