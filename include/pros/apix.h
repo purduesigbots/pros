@@ -848,6 +848,10 @@ int32_t motor_set_reversed(int8_t port, const bool reverse);
  */
 int32_t motor_is_reversed(int8_t port);
 
+typedef void (*generic_fn_t)(void);
+
+void add_initialize_hook(generic_fn_t hook_function);
+
 /**
  * Action macro to pass into serctl or fdctl that activates the stream
  * identifier.

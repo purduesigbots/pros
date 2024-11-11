@@ -16,6 +16,8 @@
 #include "system/user_functions.h"
 #include "v5_api.h"
 
+extern void call_all_hooks();
+
 extern void vdml_background_processing();
 
 extern void port_mutex_take_all();
@@ -131,6 +133,7 @@ void system_daemon_initialize() {
 // attempt to call whatever the user declares
 #define FUNC(NAME)                        \
 	static void _##NAME##_task(void* ign) { \
+	    if (__builtin_strcmp(#NAME, "initialize") == 0) call_all_hooks(); \
 		user_##NAME();                        \
 		task_notify(system_daemon_task);      \
 	}
