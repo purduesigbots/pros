@@ -116,7 +116,8 @@ typedef void (*task_fn_t)(void*);
 /**
  * The state of a task.
  */
-#ifndef AMALGAMATE
+#ifndef PROS_TASK_ENUMS_DEFINED
+#define PROS_TASK_ENUMS_DEFINED
 typedef enum {
 	E_TASK_STATE_RUNNING = 0, /**< The task is actively executing. */
 	E_TASK_STATE_READY, /**< The task exists and is available to run, but is not currently running. */
@@ -136,7 +137,7 @@ typedef enum {
 	E_NOTIFY_ACTION_OWRITE, /**< The task’s notification value will be unconditionally set to the new value.*/
 	E_NOTIFY_ACTION_NO_OWRITE /**< The task’s notification value will be set to the new value if the task does not already have a pending notification.*/
 } notify_action_e_t;
-#endif
+#endif // PROS_TASK_ENUMS_DEFINED
 
 /// @} Name: Enumerations
 
