@@ -28,7 +28,7 @@ try:
     assert semver.count('.') >= 2
     major, minor, patch = semver.split('.', 2)
     patch = patch.split('-', 1)[0]
-    with io.open('include/api.h', 'r', encoding='ascii') as file:
+    with io.open('include/pros/version.h', 'r', encoding='ascii') as file:
         data = file.readlines()
     for i, line in enumerate(data):
         if '#define PROS_VERSION_MAJOR' in line:
@@ -39,7 +39,7 @@ try:
             data[i] = u'#define PROS_VERSION_PATCH {}\n'.format(patch)
         if '#define PROS_VERSION_STRING ' in line:
             data[i] = u'#define PROS_VERSION_STRING "{}"\n'.format(semver)
-    with io.open('include/api.h', 'w', newline='\n', encoding='ascii') as file:
+    with io.open('include/pros/version.h', 'w', newline='\n', encoding='ascii') as file:
         file.writelines(data)
 
 except subprocess.CalledProcessError as e:
