@@ -66,6 +66,7 @@ amalgamate: amalgamate.py
 ifndef NO_AMALGAMATE
 	@echo "Amalgamating src files"
 	$(VV)python amalgamate.py
+	$(VV)cp src/main.cpp amalgamate-src/main.cpp
 endif
 
 patch_sdk_headers: patch_headers.py

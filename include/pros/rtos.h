@@ -116,6 +116,7 @@ typedef void (*task_fn_t)(void*);
 /**
  * The state of a task.
  */
+#ifndef AMALGAMATE
 typedef enum {
 	E_TASK_STATE_RUNNING = 0, /**< The task is actively executing. */
 	E_TASK_STATE_READY, /**< The task exists and is available to run, but is not currently running. */
@@ -135,6 +136,7 @@ typedef enum {
 	E_NOTIFY_ACTION_OWRITE, /**< The task’s notification value will be unconditionally set to the new value.*/
 	E_NOTIFY_ACTION_NO_OWRITE /**< The task’s notification value will be set to the new value if the task does not already have a pending notification.*/
 } notify_action_e_t;
+#endif
 
 /// @} Name: Enumerations
 
@@ -660,7 +662,7 @@ task_t task_get_current();
  * }
  * \endcode
  */
-uint32_t task_notify(task_t task);
+int32_t task_notify(task_t task);
 
 /**
  * 
@@ -743,7 +745,7 @@ void task_join(task_t task);
  * }
  * \endcode
  */
-uint32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
+int32_t task_notify_ext(task_t task, uint32_t value, notify_action_e_t action, uint32_t* prev_value);
 
 /**
  * Waits for a notification to be nonzero.
@@ -820,7 +822,7 @@ uint32_t task_notify_take(bool clear_on_exit, uint32_t timeout);
  * }
  * \endcode
  */
-bool task_notify_clear(task_t task);
+int32_t task_notify_clear(task_t task);
 
 /**
  * Creates a mutex.

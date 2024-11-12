@@ -32,7 +32,7 @@ with open(amalgamate_src_dir + "/amalgamate.c", "w") as dest:
             continue
         with open(c_file) as f: 
             contents = f.read()
-            dest.write(f"#line 1 \"{c_file}\"")
+            dest.write(f"#line 1 \"{c_file}\"\n")
             dest.write(contents + "\n")
 
 with open(amalgamate_src_dir + "/amalgamate.cpp", "w") as dest:
