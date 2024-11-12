@@ -71,7 +71,7 @@ typedef void* sem_t;
  * task_abort_delay(task);
  * \endcode
  */
-bool task_abort_delay(task_t task);
+int32_t task_abort_delay(task_t task);
 
 /**
  * Notify a task when a target task is being deleted.
@@ -152,7 +152,7 @@ mutex_t mutex_recursive_create(void);
  *
  * \endcode
  */
-bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
+uint8_t mutex_recursive_take(mutex_t mutex, uint32_t timeout);
 
 /**
  * Gives a recursive mutex.
@@ -179,7 +179,7 @@ bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
  *
  * \endcode
  */
-bool mutex_recursive_give(mutex_t mutex);
+uint8_t mutex_recursive_give(mutex_t mutex);
 
 /**
  * Returns a handle to the current owner of a mutex.
@@ -360,7 +360,7 @@ sem_t sem_binary_create(void);
  * }
  * \endcode
  */
-bool sem_wait(sem_t sem, uint32_t timeout);
+uint8_t sem_wait(sem_t sem, uint32_t timeout);
 
 /**
  * Increments a semaphore's value.
@@ -390,7 +390,7 @@ bool sem_wait(sem_t sem, uint32_t timeout);
  *
  * \endcode
  */
-bool sem_post(sem_t sem);
+uint8_t sem_post(sem_t sem);
 
 /**
  * Returns the current value of the semaphore.
@@ -524,7 +524,7 @@ bool queue_append(queue_t queue, const void* item, uint32_t timeout);
  * }
  * \endcode
  */
-bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
+int32_t queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Receive an item from the queue.
@@ -555,7 +555,7 @@ bool queue_peek(queue_t queue, void* const buffer, uint32_t timeout);
  * }
  * \endcode
  */
-bool queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
+int32_t queue_recv(queue_t queue, void* const buffer, uint32_t timeout);
 
 /**
  * Return the number of messages stored in a queue.

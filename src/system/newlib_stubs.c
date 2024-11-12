@@ -23,7 +23,7 @@
 #include "rtos/task.h"
 #include "v5_api.h"
 
-#include "hot.h"
+#include "system/hot.h"
 #include "pros/misc.h"
 
 #define SEC_TO_MSEC 1000

@@ -19,12 +19,12 @@ uint32_t const volatile* const MAGIC_ADDR = MAGIC;
 // When linking in hot, these pointers work just like any other weak symbol
 // Note: to get C++ style initialize and friends, we strip out cpp_initialize and friends so that linker
 // regenerates that function with the call to the correct (user-written) C++ version
-extern char const* _PROS_COMPILE_TIMESTAMP;
-extern char const* _PROS_COMPILE_DIRECTORY;
+extern char const* const _PROS_COMPILE_TIMESTAMP;
+extern char const* const _PROS_COMPILE_DIRECTORY;
 extern const int   _PROS_COMPILE_TIMESTAMP_INT;
 
-extern unsigned __exidx_start;
-extern unsigned __exidx_end;
+extern struct __EIT_entry __exidx_start;
+extern struct __EIT_entry __exidx_end;
 
 // this expands to a bunch of:
 // extern void autonomous();

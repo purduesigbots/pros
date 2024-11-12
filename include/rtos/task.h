@@ -67,6 +67,9 @@ typedef void * task_t;
  */
 typedef int32_t (*TaskHookFunction_t)( void * );
 
+
+#ifndef PROS_TASK_ENUMS_DEFINED
+#define PROS_TASK_ENUMS_DEFINED
 /* Task states returned by task_get_state. */
 typedef enum
 {
@@ -87,6 +90,7 @@ typedef enum
 	E_NOTIFY_ACTION_OWRITE,		/* Set the task's notification value to a specific value even if the previous value has not yet been read by the task. */
 	E_NOTIFY_ACTION_NO_OWRITE	/* Set the task's notification value if the previous value has been read by the task. */
 } notify_action_e_t;
+#endif // PROS_TASK_ENUMS_DEFINED
 
 /*
  * Used internally only.
