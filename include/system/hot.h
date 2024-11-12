@@ -14,4 +14,13 @@ struct hot_table {
 	} functions;
 };
 
+// exidx is the table that tells the unwinder how to unwind a stack frame
+// for a PC. Under hot/cold, there's two tables and the unwinder was kind
+// enough to let us implement a function to give it a table for a PC so
+// support for hot/cold is as easy as it gets
+struct __EIT_entry {
+	_uw fnoffset;
+	_uw content;
+};
+
 extern struct hot_table* const HOT_TABLE;

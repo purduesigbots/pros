@@ -13,12 +13,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <sys/reent.h>
 #include "rtos/task.h"
 
- void __malloc_lock(void) {
+void __malloc_lock(struct _reent* _) {
  	rtos_suspend_all();
- }
+}
 
- void __malloc_unlock(void) {
+void __malloc_unlock(struct _reent* _) {
  	rtos_resume_all();
- }
+}

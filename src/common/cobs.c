@@ -16,7 +16,7 @@
 
 #include <string.h>
 
-#include "cobs.h"
+#include "common/cobs.h"
 
 size_t cobs_encode_measure(const uint8_t* restrict src, const size_t src_len, const uint32_t prefix) {
 	size_t read_idx = 0;
