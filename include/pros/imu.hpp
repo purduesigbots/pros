@@ -55,7 +55,7 @@ inline namespace v5 {
 class Imu : public Device {
 	/**
 	 * \addtogroup cpp-imu
-	 * ///@{
+	 * @{
 	 */
 
 	public:
