@@ -934,7 +934,6 @@ typedef enum motor_type_e {
 #define MOTOR_TYPE_V5 pros::E_MOTOR_TYPE_V5
 #define MOTOR_TYPE_EXP pros::E_MOTOR_TYPE_EXP
 #define MOTOR_TYPE_INVALID pros::E_MOTOR_TYPE_INVALID
-#define 
 #else
 #define MOTOR_BRAKE_COAST E_MOTOR_BRAKE_COAST
 #define MOTOR_BRAKE_BRAKE E_MOTOR_BRAKE_BRAKE
