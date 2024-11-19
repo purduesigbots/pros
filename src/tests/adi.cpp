@@ -6,7 +6,7 @@
  * NOTE: There should also be a call to the constructor for the gyroscope object
  * in initialize() for calibration to occur before the opcontrol code.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
