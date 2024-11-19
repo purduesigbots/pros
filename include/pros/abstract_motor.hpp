@@ -76,7 +76,7 @@ enum class MotorGears {
 enum class MotorType {
 	v5 = 0, ///< 11w motor
 	exp = 1, ///< 5.5w motor
-	invalid = INT32_MAX //< Error return code
+	invalid = INT32_MAX ///< Error return code
 };
 
 
