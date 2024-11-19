@@ -900,6 +900,16 @@ typedef enum motor_gearset_e {
 	E_MOTOR_GEARSET_INVALID = INT32_MAX, // Error: Invalid Gearset
 } motor_gearset_e_t;
 
+/**
+ * \enum motor_type_e_t
+ * Indicates the type of a motor
+ */
+typedef enum motor_type_e {
+	E_MOTOR_TYPE_V5 = 0, // 11 watt V5 motor
+	E_MOTOR_TYPE_EXP = 1, // 5.5 watt EXP motor
+	E_MOTOR_TYPE_INVALID = INT32_MAX, // Error: invalid type
+} motor_type_e_t;
+
 #ifdef PROS_USE_SIMPLE_NAMES
 #ifdef __cplusplus
 #define MOTOR_BRAKE_COAST pros::E_MOTOR_BRAKE_COAST
@@ -921,6 +931,10 @@ typedef enum motor_gearset_e {
 #define MOTOR_GEAR_BLUE pros::E_MOTOR_GEAR_BLUE
 #define MOTOR_GEAR_600 pros::E_MOTOR_GEAR_600
 #define MOTOR_GEARSET_INVALID pros::E_MOTOR_GEARSET_INVALID
+#define MOTOR_TYPE_V5 pros::E_MOTOR_TYPE_V5
+#define MOTOR_TYPE_EXP pros::E_MOTOR_TYPE_EXP
+#define MOTOR_TYPE_INVALID pros::E_MOTOR_TYPE_INVALID
+#define 
 #else
 #define MOTOR_BRAKE_COAST E_MOTOR_BRAKE_COAST
 #define MOTOR_BRAKE_BRAKE E_MOTOR_BRAKE_BRAKE
@@ -941,6 +955,9 @@ typedef enum motor_gearset_e {
 #define MOTOR_GEAR_BLUE E_MOTOR_GEAR_BLUE
 #define MOTOR_GEAR_600 E_MOTOR_GEAR_600
 #define MOTOR_GEARSET_INVALID E_MOTOR_GEARSET_INVALID
+#define MOTOR_TYPE_V5 E_MOTOR_TYPE_V5
+#define MOTOR_TYPE_EXP E_MOTOR_TYPE_EXP
+#define MOTOR_TYPE_INVALID E_MOTOR_TYPE_INVALID
 #endif
 #endif
 
