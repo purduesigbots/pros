@@ -783,7 +783,7 @@ namespace literals {
  */
 template<char... Cs>
 const pros::Vision operator"" _vis() {
-    static_assert(pros::detail::is_valid_port<Cs...>(), "Port is out of range!");
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
     constexpr int num = pros::detail::parse_port<Cs...>();
     return pros::Vision(num);
 }

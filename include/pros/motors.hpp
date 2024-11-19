@@ -2408,7 +2408,7 @@ namespace literals {
  */
 template <char... Cs>
 const pros::Motor operator"" _mtr() {
-    static_assert(pros::detail::is_valid_port<Cs...>(), "Port is out of range!");
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
     constexpr int num = pros::detail::parse_port<Cs...>();
     return pros::Motor(num);
 }
@@ -2428,7 +2428,7 @@ const pros::Motor operator"" _mtr() {
  */
 template <char... Cs>
 const pros::Motor operator"" _rmtr() {
-    static_assert(pros::detail::is_valid_port<Cs...>(), "Port is out of range!");
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
     constexpr int num = pros::detail::parse_port<Cs...>();
     return pros::Motor(-num);
 }
