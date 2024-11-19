@@ -278,14 +278,14 @@ std::vector<std::int32_t> Motor::is_reversed_all(void) const {
 	return return_vector;
 }
 
-pros::v5::MotorType get_type(const std::uint8_t index = 0) const {
+pros::v5::MotorType Motor::get_type(const std::uint8_t index) const {
 	if (index != 0) {
 		errno = EOVERFLOW;
 		return pros::v5::MotorType::invalid;
 	}
 	return static_cast<pros::v5::MotorType>(motor_get_type(_port));
 }
-std::vector<pros::v5::MotorType> get_type_all(void) const {
+std::vector<pros::v5::MotorType> Motor::get_type_all(void) const {
 	std::vector<pros::v5::MotorType> return_vector;
 	return_vector.push_back(static_cast<pros::v5::MotorType>(motor_get_type(_port)));
 	return return_vector;
