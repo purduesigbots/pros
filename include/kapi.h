@@ -29,7 +29,7 @@ extern "C" {
 #define task_fn_t pros::task_fn_t
 #define mutex_t pros::mutex_t
 #define sem_t pros::c::sem_t
-#define queue_t pros::c::queue_t
+#define queue_t pros::queue_t
 #endif
 
 #define KDBG_FILENO 3
