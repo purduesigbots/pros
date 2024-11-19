@@ -1345,6 +1345,30 @@ motor_gearset_e_t motor_get_gearing(int8_t port);
  */
 int32_t motor_get_voltage_limit(int8_t port);
 
+/**
+ * Get the type of the motor
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports |1-21|
+ * ENODEV - The port cannot be configured as a motor
+ *
+ * \param port
+ *        The V5 port number from 1 to 21, or from -21 to -1 for reversed motors
+ *
+ * \return One of motor_type_e_t according to the type of the motor, or
+ * E_MOTOR_TYPE_INVALID if the operation failed.
+ *
+ * \b Example
+ * \code
+ * void initialize() {
+ *   printf("Motor Type: %d\n", motor_get_type(1));
+ *   // Prints the type of the motor
+ * }
+ * \endcode
+ */
+motor_type_e_t motor_get_type(int8_t port);
+
 ///@}
 
 ///@}
