@@ -370,6 +370,23 @@ class Rotation : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 
+	/**
+	 * Returns a rotation sesnor that has the same port as the original, but reversed.
+	 *
+	 * This can only be used on a temporary object (such as a device literal).
+	 *
+	 * \b Example
+	 * \code
+	 * using namespace pros::literals;
+	 *
+	 * void opcontrol() {
+	 * 	pros::Rotation rotation_sensor = -1_rot;
+	 *  printf("Reversed: %d \n", rotation_sensor.get_reversed());
+	 * }
+	 * \endcode
+	 */
+	Rotation operator-() && { return Rotation(-this->get_port()); }
+
 	///@}
 };
 
