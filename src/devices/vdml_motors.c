@@ -314,6 +314,7 @@ int32_t motor_get_voltage_limit(int8_t port) {
 motor_type_e_t motor_get_type(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
-	int32_t rtn = vexDeviceMotorTypeGet(device->device_info);
+	//int32_t rtn = vexDeviceMotorTypeGet(device->device_info);
+	int32_t rtn = 0;
 	return_port(port - 1, rtn);
 }
