@@ -45,7 +45,7 @@ int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask) {
     return_port(port - 1, PROS_SUCCESS);
 }
 
-uint32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t * class_name) {
+int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t * class_name) {
     claim_port_i(port - 1, E_DEVICE_AIVISION);
 	  vexDeviceAiVisionClassNameGet(device->device_info, id, class_name);
     return_port(port - 1, PROS_SUCCESS);
@@ -58,8 +58,8 @@ int32_t aivision_set_color(uint8_t port, aivision_color_s_t *color) {
     _color.red = color->red;
     _color.grn = color->green;
     _color.blu = color->blue;
-    _color.hangle = color->hue;
-    _color.hdsat = color->saturation;
+    _color.hangle = color->hue_range;
+    _color.hdsat = color->saturation_range;
     vexDeviceAiVisionColorSet(device->device_info, &_color);
     return_port(port - 1, PROS_SUCCESS);
 }
@@ -77,8 +77,8 @@ aivision_color_s_t aivision_get_color(uint8_t port, uint32_t id) {
     color.red = _color.red;
     color.green = _color.grn;
     color.blue = _color.blu;
-    color.hue = _color.hangle;
-    color.saturation = _color.hdsat;
+    color.hue_range = _color.hangle;
+    color.saturation_range = _color.hdsat;
     return_port(port - 1, color);
 }
 
@@ -89,7 +89,7 @@ int32_t aivision_get_object_count(uint8_t port) {
 }
 
 double aivision_get_temperature(uint8_t port) {
-    claim_port_i(port - 1, E_DEVICE_AIVISION);
+    claim_port_f(port - 1, E_DEVICE_AIVISION);
     double result = vexDeviceAiVisionTemperatureGet(device->device_info);
     return_port(port - 1, result);
 }
@@ -101,20 +101,16 @@ int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family) {
     return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t aivision_start_awb(uint8_t port) {
+int32_t aivision_set_usb_bounding_box_overlay(uint8_t port, bool enabled) {
 	claim_port_i(port - 1, E_DEVICE_AIVISION);
-	vexDeviceAiVisionModeSet(device->device_info, AIVISION_MODE_AWB_START_BIT);
-	return_port(port - 1, PROS_SUCCESS);
-}
-
-int32_t aivision_set_overlay(uint8_t port, bool enabled) {
-	claim_port_i(port - 1, E_DEVICE_AIVISION);
-	uint32_t mode = vexDeviceAiVisionModeGet(device->device_info);
+	uint32_t mode = vexDeviceAiVisionStatusGet(device->device_info);
 	if (enabled) {
-		mode |= AIVISION_MODE_STATUS_OVERLAY_BIT;
+		mode &= 0x7F;
 	} else {
-		mode &= ~((uint32_t)AIVISION_MODE_STATUS_OVERLAY_BIT);
+		mode = (mode != 0) | 0x80;
 	}
+	mode = (mode << 8) | (1 << 25);
+
 	vexDeviceAiVisionModeSet(device->device_info, mode);
 	return_port(port - 1, PROS_SUCCESS);
 }
@@ -144,25 +140,21 @@ aivision_code_s_t aivision_get_code(uint8_t port, uint32_t id) {
 	  code.c1 = _code.c1;
 	  code.c2 = _code.c2;
 	  code.c3 = _code.c3;
-	  code.c4 = _code.c3;
+	  code.c4 = _code.c4;
 	  code.c5 = _code.c5;
-	  code.c6 = _code.c6;
-	  code.c7 = _code.c7;
     return_port(port - 1, code);
 }
 
-uint32_t aivision_set_code(uint8_t port, aivision_code_s_t code) {
+int32_t aivision_set_code(uint8_t port, aivision_code_s_t *code) {
 	claim_port_i(port - 1, E_DEVICE_AIVISION);
 	V5_DeviceAiVisionCode _code;
-	_code.id = code.id;
-	_code.len = code.length;
-	_code.c1 = code.c1;
-	_code.c2 = code.c2;
-	_code.c3 = code.c3;
-	_code.c4 = code.c3;
-	_code.c5 = code.c5;
-	_code.c6 = code.c6;
-	_code.c7 = code.c7;
+	_code.id = code->id;
+	_code.len = code->length;
+	_code.c1 = code->c1;
+	_code.c2 = code->c2;
+	_code.c3 = code->c3;
+	_code.c4 = code->c4;
+	_code.c5 = code->c5;
 	vexDeviceAiVisionCodeSet(device->device_info, &_code);
 	return_port(port - 1, PROS_SUCCESS);
 }

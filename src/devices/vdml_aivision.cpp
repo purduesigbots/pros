@@ -93,7 +93,7 @@ aivision_code_s_t AIVision::get_code(uint32_t id) {
 }
 
 uint32_t AIVision::set_code(pros::aivision_code_s_t &code) {
-	return c::aivision_set_code(this->_port, code);
+	return c::aivision_set_code(this->_port, &code);
 }
 }
 }
