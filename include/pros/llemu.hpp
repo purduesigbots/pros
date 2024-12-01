@@ -70,13 +70,14 @@ namespace lcd {
      * For documentation on these functions, please see the doxygen comments for
      * these functions in the libvgl llemu headers.
      */
-
+    #ifndef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
     extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
     extern __attribute__((weak)) bool clear_line(std::int16_t line);
     extern __attribute__((weak)) bool initialize(void);
     extern __attribute__((weak)) std::uint8_t read_buttons(void);
     extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
     extern __attribute__((weak)) bool is_initialized(void);
+    #endif // _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
 
     /**
      * \addtogroup cpp-llemu

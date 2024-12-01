@@ -15,7 +15,7 @@
 /******************************************************************************/
 #ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
 #include "liblvgl/llemu.h"
-#endif
+#else
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,5 +50,7 @@ bool __attribute__((weak)) lcd_print(int16_t line, const char* fmt, ...)  {
 } // namespace pros
 } // extern "C"
 #endif//__cplusplus
+
+#endif // _PROS_INCLUDE_LIBLVGL_LLEMU_H
 
 #endif // _PROS_LLEMU_H_
