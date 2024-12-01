@@ -22,7 +22,6 @@ extern void rtos_initialize();
 extern void vfs_initialize();
 extern void system_daemon_initialize();
 extern void graphical_context_daemon_initialize(void);
-extern __attribute__((weak)) void display_initialize(void) {}
 extern void rtos_sched_start();
 extern void vdml_initialize();
 extern void invoke_install_hot_table();
@@ -33,7 +32,7 @@ extern void invoke_install_hot_table();
 // gives the compiler instructions on the priority of the constructor,
 // from 0-~65k. The first 0-100 priorities are reserved for language
 // implementation.
-__attribute__((constructor(101))) static void pros_init(void) {
+__attribute__((constructor(101))) static void pros_init_a(void) {
 	rtos_initialize();
 
 	vfs_initialize();
@@ -41,13 +40,16 @@ __attribute__((constructor(101))) static void pros_init(void) {
 	vdml_initialize();
 
 	graphical_context_daemon_initialize();
+}
 
-	display_initialize();
-
+__attribute__((constructor(103))) static void pros_init_b(void) {
 	// NOTE: this function should be called after all other initialize
 	// functions. for an example of what could happen if this is not
 	// the case, see
 	// https://github.com/purduesigbots/pros/pull/144/#issuecomment-496901942
+	// this is why this function is separate from pros_init_a
+	// this function has the "constructor(103)" attribute, because
+	// the display initialize function has the "constructor(102)" attribute
 	system_daemon_initialize();
 
 	invoke_install_hot_table();
