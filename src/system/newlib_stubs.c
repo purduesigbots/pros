@@ -31,6 +31,8 @@
 #define MICRO_TO_NANO 1000
 
 void _exit(int status) {
+	extern void flush_output_streams();
+	flush_output_streams();
 	extern void ser_output_flush();
 	ser_output_flush();
 	rtos_suspend_all();
