@@ -28,6 +28,28 @@
 
 namespace pros {
 inline namespace v5 {
+
+enum class AivisionDetectType {
+	color = (1 << 0),
+	code = (1 << 1),
+	object = (1 << 2),
+	tag = (1 << 3)
+};
+
+enum class AivisionModeType {
+	tags = (1 << 0),
+	colors = (1 << 1),
+	objects = (1 << 2),
+	all = (1 << 0) | (1 << 1) | (1 << 2),
+};
+
+enum class AivisionTagFamily {
+	tag_21H7 = 0,
+	tag_16H5 = 1,
+	tag_25H9 = 2,
+	tag_61H11 = 3
+};
+
 /**
 * \ingroup cpp-aivision
 */
@@ -73,24 +95,21 @@ class AIVision : public Device {
 	 */
 	static std::vector<AIVision> get_all_devices();
 
+	static bool is_type(AivisionDetectType type, const aivision_object_s_t& object);
+
 	int32_t reset();
 	int32_t get_enabled_detection_types();
-	int32_t set_enabled_detection_types(uint8_t bits, uint8_t types_mask);
-	int32_t enable_detection_types(uint8_t types_mask);
-	int32_t disable_detection_types(uint8_t types_mask);
-	int32_t set_tag_family(aivision_tag_family_e_t family);
+	int32_t enable_detection_types(AivisionModeType types_mask);
+	int32_t disable_detection_types(AivisionModeType types_mask);
+	int32_t set_tag_family(AivisionTagFamily family);
 	int32_t set_color(aivision_color_s_t &color);
+	uint32_t set_code(aivision_code_s_t &code);
 	aivision_color_s_t get_color(uint32_t id);
 	uint32_t get_class_name(int32_t id, uint8_t * class_name);
 	aivision_code_s_t get_code(uint32_t id);
-	uint32_t set_code(aivision_code_s_t &code);
 	int32_t get_object_count();
 	aivision_object_s_t get_object(uint32_t object_index);
 	std::vector<aivision_object_s_t> get_all_objects();
-
-
-
-
 
 };
 }  // namespace literals

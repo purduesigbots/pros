@@ -10,7 +10,8 @@
 * file, You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-#include "pros/aivision.h"
+#include "pros/device.h"
+#include "pros/aivision.hpp"
 #include "vdml/vdml.h"
 
 namespace pros {
@@ -32,6 +33,10 @@ std::vector<AIVision> AIVision::get_all_devices() {
 	return return_vector;
 }
 
+bool AIVision::is_type(AivisionDetectType type, const aivision_object_s_t& object) {
+	return static_cast<uint8_t>(type) == object.type;
+}
+
 int32_t AIVision::reset() {
 	return c::aivision_reset(this->_port);
 }
@@ -40,20 +45,16 @@ int32_t AIVision::get_enabled_detection_types() {
 	return c::aivision_get_enabled_detection_types(this->_port);
 }
 
-int32_t AIVision::set_enabled_detection_types(uint8_t bits, uint8_t types_mask) {
-	return c::aivision_set_enabled_detection_types(this->_port, bits, types_mask);
+int32_t AIVision::enable_detection_types(AivisionModeType types_mask) {
+	return c::aivision_enable_detection_types(this->_port, static_cast<uint8_t>(types_mask));
 }
 
-int32_t AIVision::enable_detection_types(uint8_t types_mask) {
-	return c::aivision_enable_detection_types(this->_port, types_mask);
+int32_t AIVision::disable_detection_types(AivisionModeType types_mask) {
+	return c::aivision_disable_detection_types(this->_port, static_cast<uint8_t>(types_mask));
 }
 
-int32_t AIVision::disable_detection_types(uint8_t types_mask) {
-	return c::aivision_disable_detection_types(this->_port, types_mask);
-}
-
-int32_t AIVision::set_tag_family(pros::aivision_tag_family_e_t family) {
-	return c::aivision_set_tag_family(this->_port, family);
+int32_t AIVision::set_tag_family(AivisionTagFamily family) {
+	return c::aivision_set_tag_family(this->_port, static_cast<aivision_tag_family_e_t>(family));
 }
 
 int32_t AIVision::set_color(pros::aivision_color_s_t& color) {
