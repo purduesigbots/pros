@@ -18,8 +18,8 @@
 #include "v5_api.h"
 #include "vdml/vdml.h"
 
-#define CONTROLLER_MAX_COLS 15
-#define CONTROLLER_MAX_CHARS 31
+#define CONTROLLER_MAX_COLS ( 20U )
+#define CONTROLLER_MAX_CHARS ( 31U )
 
 // From enum in misc.h
 #define NUM_BUTTONS 12
