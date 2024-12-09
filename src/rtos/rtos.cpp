@@ -18,7 +18,7 @@
 #include <system_error>
 
 #include "kapi.h"
-#include "pros/rtos.h"
+#include "rtos/task.h"
 #include "system/optimizers.h"
 
 namespace pros {

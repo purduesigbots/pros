@@ -22,7 +22,6 @@
 #ifndef _PROS_RTOS_HPP_
 #define _PROS_RTOS_HPP_
 
-#include "rtos/task.h"
 #include "pros/rtos.h"
 #undef delay
 #include <atomic>
@@ -828,7 +827,7 @@ class Mutex {
 	public:
 	constexpr Mutex() {
 		if (!std::is_constant_evaluated()) {
-			mutex = pros::c::mutex_create();
+			lazy_init();
 		}
 	}
 
@@ -1362,7 +1361,7 @@ class RecursiveMutex {
 	public:
 	constexpr RecursiveMutex() {
 		if (!std::is_constant_evaluated()) {
-			mutex = pros::c::mutex_recursive_create();
+			lazy_init();
 		}
 	}
 
