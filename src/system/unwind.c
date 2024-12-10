@@ -5,7 +5,7 @@
  * be arbitrarily stopped, requiring us to call all the destructors of the task
  * to be killed.
  *
- * Copyright (c) 2017-2021, Purdue University ACM SIGBots
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
