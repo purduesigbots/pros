@@ -29,19 +29,18 @@
 namespace pros {
 inline namespace v5 {
 
-enum class AivisionDetectType {
-	color = (1 << 0),
-	code = (1 << 1),
-	object = (1 << 2),
-	tag = (1 << 3)
-};
+enum class AivisionDetectType : uint8_t { color = (1 << 0), code = (1 << 1), object = (1 << 2), tag = (1 << 3) };
 
-enum class AivisionModeType {
+enum class AivisionModeType : uint8_t {
 	tags = (1 << 0),
 	colors = (1 << 1),
 	objects = (1 << 2),
 	all = (1 << 0) | (1 << 1) | (1 << 2),
 };
+
+AivisionModeType operator|(AivisionModeType lhs, AivisionModeType rhs) {
+	return static_cast<AivisionModeType>(static_cast<uint8_t>(lhs) | static_cast<uint8_t>(rhs));
+}
 
 enum class AivisionTagFamily {
 	tag_21H7 = 0,
@@ -112,6 +111,6 @@ class AIVision : public Device {
 	std::vector<aivision_object_s_t> get_all_objects();
 
 };
-}  // namespace literals
+}  // namespace v5
 }  // namespace pros
 #endif  // _PROS_VISION_HPP_
