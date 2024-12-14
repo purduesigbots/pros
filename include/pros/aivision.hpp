@@ -38,10 +38,6 @@ enum class AivisionModeType : uint8_t {
 	all = (1 << 0) | (1 << 1) | (1 << 2),
 };
 
-AivisionModeType operator|(AivisionModeType lhs, AivisionModeType rhs) {
-	return static_cast<AivisionModeType>(static_cast<uint8_t>(lhs) | static_cast<uint8_t>(rhs));
-}
-
 enum class AivisionTagFamily {
 	tag_21H7 = 0,
 	tag_16H5 = 1,

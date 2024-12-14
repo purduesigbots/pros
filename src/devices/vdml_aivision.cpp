@@ -18,6 +18,10 @@ namespace pros {
 inline namespace v5 {
 using namespace pros::c;
 
+AivisionModeType operator|(AivisionModeType lhs, AivisionModeType rhs) {
+	return static_cast<AivisionModeType>(static_cast<uint8_t>(lhs) | static_cast<uint8_t>(rhs));
+}
+
 AIVision::AIVision(const uint8_t port): Device(port, DeviceType::aivision) {
 	// empty constructor
 }
