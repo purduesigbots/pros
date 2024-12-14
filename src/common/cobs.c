@@ -6,7 +6,7 @@
  * Contains an implementation of Consistent Overhead Byte Stuffing, adapted from
  * https://github.com/jacquesf/COBS-Consistent-Overhead-Byte-Stuffing
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public

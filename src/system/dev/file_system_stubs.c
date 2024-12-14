@@ -6,7 +6,7 @@
  * Contains temporary stubs for the file system to allow compilation under gcc 9.2
  * This is temporary and should be removed as part of #184
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
