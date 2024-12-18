@@ -15,7 +15,7 @@ ifneq (,$(wildcard ./include/liblvgl/llemu.hpp))
 	CPPFLAGS += -D_PROS_INCLUDE_LIBLVGL_LLEMU_HPP
 endif
 
-WARNFLAGS+=-Wno-psabi -Wdeprecated-declarations
+WARNFLAGS+=-Wno-psabi
 
 SPACE := $() $()
 COMMA := ,
