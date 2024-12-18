@@ -75,7 +75,7 @@ CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,h
 CREATE_TEMPLATE_ARGS+=--target v5
 CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
-template:: patch_sdk_headers clean-template library
+template: patch_sdk_headers clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dif [ $(shell uname -s) == "Darwin" ]; then \
@@ -89,7 +89,6 @@ template:: patch_sdk_headers clean-template library
 	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
 	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
-
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR):: patch_sdk_headers $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
