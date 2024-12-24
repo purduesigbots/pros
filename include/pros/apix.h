@@ -52,6 +52,9 @@ extern "C" {
 
 typedef void* queue_t;
 typedef void* sem_t;
+typedef void (*generic_fn_t)(void);
+
+void add_daemon_hook(generic_fn_t hook);
 
 /**
  * Unblocks a task in the Blocked state (e.g. waiting for a delay, on a

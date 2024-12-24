@@ -12,6 +12,7 @@
  */
 
 #include "kapi.h"
+#include "common/linkedlist.h"
 #include "system/optimizers.h"
 #include "system/user_functions.h"
 #include "v5_api.h"
@@ -37,6 +38,9 @@ static void _competition_initialize_task(void* ign);
 static void _initialize_task(void* ign);
 static void _system_daemon_task(void* ign);
 
+static linked_list_s_t* hook_list = NULL;
+static mutex_t mut = 0;
+
 enum state_task { E_OPCONTROL_TASK = 0, E_AUTON_TASK, E_DISABLED_TASK, E_COMP_INIT_TASK };
 
 char task_names[4][32] = {"User Operator Control (PROS)", "User Autonomous (PROS)", "User Disabled (PROS)",
@@ -45,6 +49,19 @@ task_fn_t task_fns[4] = {_opcontrol_task, _autonomous_task, _disabled_task, _com
 
 extern void ser_output_flush(void);
 
+void add_daemon_hook(generic_fn_t hook) {
+	// TODO: make thread safe
+	if (unlikely(hook_list == NULL)) {
+		hook_list = linked_list_init();
+	} 
+	linked_list_append_func(hook_list, hook);
+}
+
+static void call_hook(ll_node_s_t* node, void* data) {
+	(void) data;
+	node->payload.func();
+}
+
 // does the basic background operations that need to occur every 2ms
 static inline void do_background_operations() {
 	port_mutex_take_all();
@@ -52,6 +69,7 @@ static inline void do_background_operations() {
 	rtos_suspend_all();
 	vexBackgroundProcessing();
 	rtos_resume_all();
+	linked_list_foreach(hook_list, &call_hook, NULL);
 	vdml_background_processing();
 	port_mutex_give_all();
 }
