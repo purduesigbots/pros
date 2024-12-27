@@ -35,16 +35,13 @@ EXCLUDE_COLD_LIBRARIES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
 COLD_LIBRARIES=$(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
 
+LVGL_LIB_FLAGS=
 ifneq (,$(wildcard ./firmware/liblvgl.a))
     LVGL_LIB_FLAGS=--whole-archive ./firmware/liblvgl.a --no-whole-archive
-    FILTERED_LIBRARIES=$(filter-out ./firmware/liblvgl.a, $(LIBRARIES))
-else
-    LVGL_LIB_FLAGS=
-    FILTERED_LIBRARIES=$(LIBRARIES)
+    LIBRARIES:=$(filter-out ./firmware/liblvgl.a, $(LIBRARIES))
 endif
 
-LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
-LNK_FLAGS_MONOLITH=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(FILTERED_LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
+LNK_FLAGS=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
 
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
@@ -241,7 +238,7 @@ $(MONOLITH_BIN): $(MONOLITH_ELF) $(BINDIR)
 
 $(MONOLITH_ELF): $(ELF_DEPS) $(LIBRARIES)
 	$(call _pros_ld_timestamp)
-	$(call test_output_2,Linking project with $(ARCHIVE_TEXT_LIST) ,$(LD) $(LDFLAGS) $(ELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS_MONOLITH)) -o $@,$(OK_STRING))
+	$(call test_output_2,Linking project with $(ARCHIVE_TEXT_LIST) ,$(LD) $(LDFLAGS) $(ELF_DEPS) $(LDTIMEOBJ) $(call wlprefix,-T$(FWDIR)/v5.ld $(LNK_FLAGS)) -o $@,$(OK_STRING))
 	@echo Section sizes:
 	-$(VV)$(SIZETOOL) $(SIZEFLAGS) $@ $(SIZES_SED) $(SIZES_NUMFMT)
 
