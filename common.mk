@@ -43,8 +43,8 @@ else
     FILTERED_LIBRARIES=$(LIBRARIES)
 endif
 
-LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld
-LNK_FLAGS_MONOLITH=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(FILTERED_LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld
+LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
+LNK_FLAGS_MONOLITH=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(FILTERED_LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
 
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
