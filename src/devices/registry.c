@@ -5,7 +5,7 @@
  * what devices are in use on the V5. Therefore, in order to use V5 devices with
  * PROS, they must be registered and deregistered using the registry.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this

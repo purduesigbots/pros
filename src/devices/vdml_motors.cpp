@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -275,6 +275,19 @@ std::int32_t Motor::is_reversed(const std::uint8_t index) const {
 std::vector<std::int32_t> Motor::is_reversed_all(void) const {
 	std::vector<std::int32_t> return_vector;
 	return_vector.push_back(_port < 0);
+	return return_vector;
+}
+
+pros::v5::MotorType Motor::get_type(const std::uint8_t index) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return pros::v5::MotorType::invalid;
+	}
+	return static_cast<pros::v5::MotorType>(motor_get_type(_port));
+}
+std::vector<pros::v5::MotorType> Motor::get_type_all(void) const {
+	std::vector<pros::v5::MotorType> return_vector;
+	return_vector.push_back(static_cast<pros::v5::MotorType>(motor_get_type(_port)));
 	return return_vector;
 }
 
