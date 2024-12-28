@@ -32,7 +32,7 @@ extern void invoke_install_hot_table();
 // gives the compiler instructions on the priority of the constructor,
 // from 0-~65k. The first 0-100 priorities are reserved for language
 // implementation.
-__attribute__((constructor(101))) static void pros_init_a(void) {
+__attribute__((constructor(101))) static void pros_init_stage_1(void) {
 	rtos_initialize();
 
 	vfs_initialize();
@@ -42,7 +42,7 @@ __attribute__((constructor(101))) static void pros_init_a(void) {
 	graphical_context_daemon_initialize();
 }
 
-__attribute__((constructor(103))) static void pros_init_b(void) {
+__attribute__((constructor(103))) static void pros_init_stage_2(void) {
 	// NOTE: this function should be called after all other initialize
 	// functions. for an example of what could happen if this is not
 	// the case, see
