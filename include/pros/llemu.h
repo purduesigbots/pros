@@ -16,7 +16,7 @@
 /******************************************************************************/
 #ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_H
 #include "liblvgl/llemu.h"
-#else
+#else // prevent lcd_print being resolved to definition below when liblvgl is present
 
 #ifdef __cplusplus
 extern "C" {
