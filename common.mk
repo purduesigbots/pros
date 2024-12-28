@@ -41,6 +41,7 @@ ifneq (,$(wildcard ./firmware/liblvgl.a))
     LIBRARIES:=$(filter-out ./firmware/liblvgl.a, $(LIBRARIES))
 endif
 
+# Adding --whole-archive to liblvgl to ensure that all symbols are included
 LNK_FLAGS=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
 
 
