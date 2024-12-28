@@ -52,6 +52,6 @@ bool __attribute__((weak)) lcd_print(__attribute__((unused)) int16_t line, __att
 } // extern "C"
 #endif//__cplusplus
 
-#endif // _PROS_INCLUDE_LIBLVGL_LLEMU_H
+#endif // _PROS_INCLUDE_LIBLVGL_LLEMU_H not present
 
 #endif // _PROS_LLEMU_H_
