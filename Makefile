@@ -19,7 +19,7 @@ EXCLUDE_SRCDIRS+=$(SRCDIR)/tests
 C_STANDARD=gnu2x
 CXX_STANDARD=gnu++23
 
-WARNFLAGS+=-Wall -Wpedantic
+WARNFLAGS+=-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror
 EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
 
