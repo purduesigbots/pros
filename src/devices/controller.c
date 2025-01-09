@@ -21,17 +21,17 @@
 #define CONTROLLER_MAX_COLS 15
 
 // From enum in misc.h
-#define NUM_BUTTONS 12
+#define NUM_BUTTONS 13
 
 typedef struct controller_data {
 	bool button_pressed[NUM_BUTTONS];
 } controller_data_s_t;
 
-bool get_button_pressed(int port, int button) {
+static bool get_button_pressed(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
-void set_button_pressed(int port, int button, bool state) {
+static void set_button_pressed(int port, int button, bool state) {
 	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data->button_pressed[button] = state;
 }
@@ -71,7 +71,7 @@ int32_t controller_get_battery_level(controller_id_e_t id) {
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
 	uint8_t port;
 	CONTROLLER_PORT_MUTEX_TAKE(id, port)
-	// the buttons enum starts at 4, the correct place for the libv5rts
+	// the buttons enum starts at 6, the correct place for the libv5rts
 	int32_t rtn = vexControllerGet(id, button);
 	internal_port_mutex_give(port);
 	return rtn;

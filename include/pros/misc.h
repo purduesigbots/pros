@@ -223,7 +223,9 @@ typedef enum {
 	/// The ‘Y’ button on the right button pad of the controller.
 	E_CONTROLLER_DIGITAL_Y,
 	/// The ‘A’ button on the right button pad of the controller.
-	E_CONTROLLER_DIGITAL_A
+	E_CONTROLLER_DIGITAL_A,
+	/// The power button on the front of the controller.
+	E_CONTROLLER_DIGITAL_POWER
 } controller_digital_e_t;
 
 #ifdef PROS_USE_SIMPLE_NAMES
@@ -246,6 +248,7 @@ typedef enum {
 #define DIGITAL_B pros::E_CONTROLLER_DIGITAL_B
 #define DIGITAL_Y pros::E_CONTROLLER_DIGITAL_Y
 #define DIGITAL_A pros::E_CONTROLLER_DIGITAL_A
+#define DIGITAL_POWER pros::E_CONTROLLER_DIGITAL_POWER
 #else
 #define CONTROLLER_MASTER E_CONTROLLER_MASTER
 #define CONTROLLER_PARTNER E_CONTROLLER_PARTNER
