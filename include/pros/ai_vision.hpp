@@ -23,13 +23,18 @@
 
 #include <cstdint>
 
-#include "pros/aivision.h"
+#include "pros/ai_vision.h"
 #include "pros/device.hpp"
 
 namespace pros {
 inline namespace v5 {
 
-enum class AivisionDetectType : uint8_t { color = (1 << 0), code = (1 << 1), object = (1 << 2), tag = (1 << 3) };
+enum class AivisionDetectType : uint8_t {
+	color = (1 << 0),
+	code = (1 << 1),
+	object = (1 << 2),
+	tag = (1 << 3)
+};
 
 enum class AivisionModeType : uint8_t {
 	tags = (1 << 0),

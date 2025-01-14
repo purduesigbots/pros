@@ -1,17 +1,17 @@
 /**
-* \file devices/vdml_vision.cpp
-*
-* Contains functions for interacting with the V5 Vision Sensor.
-*
-* \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
-*
-* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this
-* file, You can obtain one at http://mozilla.org/MPL/2.0/.
-*/
+ * \file devices/vdml_vision.cpp
+ *
+ * Contains functions for interacting with the V5 Vision Sensor.
+ *
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 
+#include "pros/ai_vision.hpp"
 #include "pros/device.h"
-#include "pros/aivision.hpp"
 #include "vdml/vdml.h"
 
 namespace pros {
@@ -22,12 +22,11 @@ AivisionModeType operator|(AivisionModeType lhs, AivisionModeType rhs) {
 	return static_cast<AivisionModeType>(static_cast<uint8_t>(lhs) | static_cast<uint8_t>(rhs));
 }
 
-AIVision::AIVision(const uint8_t port): Device(port, DeviceType::aivision) {
+AIVision::AIVision(const uint8_t port) : Device(port, DeviceType::aivision) {
 	// empty constructor
 }
 
 std::vector<AIVision> AIVision::get_all_devices() {
-
 	std::vector<Device> matching_devices{Device::get_all_devices(DeviceType::aivision)};
 
 	std::vector<AIVision> return_vector;
@@ -97,8 +96,9 @@ aivision_code_s_t AIVision::get_code(uint32_t id) {
 	return c::aivision_get_code(this->_port, id);
 }
 
-uint32_t AIVision::set_code(pros::aivision_code_s_t &code) {
+uint32_t AIVision::set_code(pros::aivision_code_s_t& code) {
 	return c::aivision_set_code(this->_port, &code);
 }
-}
-}
+
+}  // namespace v5
+}  // namespace pros

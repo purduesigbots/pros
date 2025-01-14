@@ -40,7 +40,7 @@
 #endif /* __cplusplus */
 
 #include "pros/adi.h"
-#include "pros/aivision.h"
+#include "pros/ai_vision.h"
 #include "pros/colors.h"
 #include "pros/device.h"
 #include "pros/distance.h"
@@ -60,7 +60,7 @@
 
 #ifdef __cplusplus
 #include "pros/adi.hpp"
-#include "pros/aivision.hpp"
+#include "pros/ai_vision.hpp"
 #include "pros/colors.hpp"
 #include "pros/device.hpp"
 #include "pros/distance.hpp"
