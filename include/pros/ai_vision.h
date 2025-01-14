@@ -13,7 +13,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- * 
+ *
  * \defgroup c-aivision AI Vision Sensor C API
  * \note Additional example code for this module can be found in its [Tutorial.](@ref aivision)
  */
@@ -31,12 +31,12 @@
  */
 
 /// \name Macros
-///Parameters given by VEX
+/// Parameters given by VEX
 ///@{
 
-#define AIVISION_MAX_OBJECT_COUNT     24
-#define AIVISION_MAX_CLASSNAME_COUNT  20
-#define AIVISION_MODE_TAG_SET_BIT     (1 << 29)
+#define AIVISION_MAX_OBJECT_COUNT 24
+#define AIVISION_MAX_CLASSNAME_COUNT 20
+#define AIVISION_MODE_TAG_SET_BIT (1 << 29)
 
 ///@}
 
@@ -65,25 +65,26 @@ typedef enum aivision_detected_type {
  */
 
 typedef enum aivision_mode_type {
-    E_AIVISION_MODE_TAGS = (1<<0),
-    E_AIVISION_MODE_COLORS = (1<<1),
-    E_AIVISION_MODE_OBJECTS = (1<<2),
-	  E_AIVISION_MODE_ALL = (1<<0) | (1<<1) | (1<<2),
+	E_AIVISION_MODE_TAGS = (1 << 0),
+	E_AIVISION_MODE_COLORS = (1 << 1),
+	E_AIVISION_MODE_OBJECTS = (1 << 2),
+	E_AIVISION_MODE_ALL = (1 << 0) | (1 << 1) | (1 << 2),
 } aivision_mode_type_e_t;
 
 /**
  * \struct aivision_color_s_t
  * This structure contains the parameters used by the AI Vision Sensor to define a color. hue_range and saturation_range
  * are ranges for hue and saturation that are acceptable.
- * For example, if a large hue range is specified for a blue color, colors that are more magenta or teal may be detected as "blue".
+ * For example, if a large hue range is specified for a blue color, colors that are more magenta or teal may be detected
+ * as "blue".
  */
 typedef struct __attribute__((packed)) aivision_color_s {
-    uint8_t       id;
-    uint8_t       red;
-    uint8_t       green;
-    uint8_t       blue;
-    float         hue_range;
-    float         saturation_range;
+	uint8_t id;
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+	float hue_range;
+	float saturation_range;
 } aivision_color_s_t;
 
 /**
@@ -91,13 +92,13 @@ typedef struct __attribute__((packed)) aivision_color_s {
  * This structure contains the parameters used by the AI Vision sensor to define a code.
  */
 typedef struct __attribute__((packed)) aivision_code_s {
-    uint8_t id;
-    uint8_t length;
-    int16_t c1;
-    int16_t c2;
-    int16_t c3;
-    int16_t c4;
-    int16_t c5;
+	uint8_t id;
+	uint8_t length;
+	int16_t c1;
+	int16_t c2;
+	int16_t c3;
+	int16_t c4;
+	int16_t c5;
 } aivision_code_s_t;
 
 /**
@@ -106,10 +107,10 @@ typedef struct __attribute__((packed)) aivision_code_s {
  * \see https://april.eecs.umich.edu/software/apriltag
  */
 typedef enum aivision_tag_family_e {
-    TAG_CIRCLE_21H7 = 0,
-    TAG_16H5 = 1,
-    TAG_25H9 = 2,
-    TAG_61H11 = 3
+	TAG_CIRCLE_21H7 = 0,
+	TAG_16H5 = 1,
+	TAG_25H9 = 2,
+	TAG_61H11 = 3
 } aivision_tag_family_e_t;
 
 /**
@@ -117,11 +118,11 @@ typedef enum aivision_tag_family_e {
  * This structure contains a detected color.
  */
 typedef struct __attribute__((packed)) aivision_object_color_s {
-	  uint16_t xoffset; // left edge (from camera's view)
-	  uint16_t yoffset; // top edge
-	  uint16_t width;
-	  uint16_t height;
-	  uint16_t angle; // angle, in tenths of a degree
+	uint16_t xoffset;  // left edge (from camera's view)
+	uint16_t yoffset;  // top edge
+	uint16_t width;
+	uint16_t height;
+	uint16_t angle;  // angle, in tenths of a degree
 } aivision_object_color_s_t;
 
 /**
@@ -129,23 +130,22 @@ typedef struct __attribute__((packed)) aivision_object_color_s {
  * This structure contains a detected tag.
  */
 typedef struct __attribute__((packed)) aivision_object_tag_s {
-		int16_t x0;
-		int16_t y0;
-		int16_t x1;
-		int16_t y1;
-		int16_t x2;
-		int16_t y2;
-		int16_t x3;
-		int16_t y3;
+	int16_t x0;
+	int16_t y0;
+	int16_t x1;
+	int16_t y1;
+	int16_t x2;
+	int16_t y2;
+	int16_t x3;
+	int16_t y3;
 } aivision_object_tag_s_t;
 
-
 typedef struct __attribute__((packed)) aivision_object_element_s {
-  	uint16_t xoffset; //left
-	  uint16_t yoffset; //top
-	  uint16_t width;
-  	uint16_t height;
-	  uint16_t score; // confidence that this struct is
+	uint16_t xoffset;  // left
+	uint16_t yoffset;  // top
+	uint16_t width;
+	uint16_t height;
+	uint16_t score;  // confidence that this struct is
 } aivision_object_element_s_t;
 /**
  * \struct aivision_object_s_t
@@ -153,16 +153,17 @@ typedef struct __attribute__((packed)) aivision_object_element_s {
  *
  * If the object is a color, id stores the color's id
  * If the object is an April Tag, id stores the tag's id
- * If the object is an AI model element, id stores the element id as per https://api.vex.com/v5/home/cpp/AiVision/AiObjdesc.html
+ * If the object is an AI model element, id stores the element id as per
+ * https://api.vex.com/v5/home/cpp/AiVision/AiObjdesc.html
  */
 typedef struct __attribute__((packed)) aivision_object_s {
-    uint8_t id; // object id
-    uint8_t type; // object type
-    union {
-        aivision_object_color_s_t color;
-		    aivision_object_tag_s_t tag;
-		    aivision_object_element_s_t element;
-    } object;    
+	uint8_t id;    // object id
+	uint8_t type;  // object type
+	union {
+		aivision_object_color_s_t color;
+		aivision_object_tag_s_t tag;
+		aivision_object_element_s_t element;
+	} object;
 } aivision_object_s_t;
 
 #ifdef __cplusplus
@@ -234,7 +235,7 @@ int32_t aivision_get_enabled_detection_types(uint8_t port);
  * \param bits the bits to set
  * \param bitmask the bitmask to apply
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno.
+ * failed, setting errno.
  */
 int32_t aivision_set_enabled_detection_types(uint8_t port, uint8_t bits, uint8_t bitmask);
 
@@ -260,7 +261,7 @@ int32_t aivision_set_enabled_detection_types(uint8_t port, uint8_t bits, uint8_t
  * \param port The V5 port number from 1-21
  * \param types_mask The types to enable
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno.
+ * failed, setting errno.
  */
 int32_t aivision_enable_detection_types(uint8_t port, uint8_t types_mask);
 
@@ -285,7 +286,7 @@ int32_t aivision_enable_detection_types(uint8_t port, uint8_t types_mask);
  * \param port The V5 port number from 1-21
  * \param types_mask The types to enable
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno.
+ * failed, setting errno.
  */
 int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
 
@@ -301,7 +302,7 @@ int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
  * \param port The V5 port number from 1-21
  * \param family the tag family to configure the AI Vision sensor to detect
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno.
+ * failed, setting errno.
  */
 int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
 
@@ -318,9 +319,9 @@ int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
  * \param port The V5 port number from 1-21
  * \param color the color to configure the AI Vision sensor to detect
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno
+ * failed, setting errno
  */
-int32_t aivision_set_color(uint8_t port, aivision_color_s_t * color);
+int32_t aivision_set_color(uint8_t port, aivision_color_s_t* color);
 
 /**
  * Get a color configuration that the AI vision sensor has stored.
@@ -335,7 +336,7 @@ int32_t aivision_set_color(uint8_t port, aivision_color_s_t * color);
  * \param port The V5 port number from 1-21
  * \param id the id of color from 1-7
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno
+ * failed, setting errno
  */
 aivision_color_s_t aivision_get_color(uint8_t port, uint32_t id);
 
@@ -357,7 +358,7 @@ aivision_color_s_t aivision_get_color(uint8_t port, uint32_t id);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno
  */
-int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t * class_name);
+int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t* class_name);
 
 /**
  * Enable or disable the bounding box overlay the AI Vision sensor outputs on the USB port.
@@ -402,9 +403,9 @@ aivision_code_s_t aivision_get_code(uint8_t port, uint32_t id);
  * \param port The V5 port number from 1-21
  * \param code The code to set
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
-* failed, setting errno
+ * failed, setting errno
  */
-int32_t aivision_set_code(uint8_t port, aivision_code_s_t *wcode);
+int32_t aivision_set_code(uint8_t port, aivision_code_s_t* wcode);
 
 /**
  * Get the current number of objects detected by the AI vision sensor.
@@ -420,7 +421,8 @@ int32_t aivision_set_code(uint8_t port, aivision_code_s_t *wcode);
 int32_t aivision_get_object_count(uint8_t port);
 
 /**
- * Get the detected object at a given object index; there are aivision_get_object_count objects and the index starts from 0.
+ * Get the detected object at a given object index; there are aivision_get_object_count objects and the index starts
+ * from 0.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -433,7 +435,6 @@ int32_t aivision_get_object_count(uint8_t port);
  * setting errno
  */
 aivision_object_s_t aivision_get_object(uint8_t port, uint32_t object_index);
-
 
 /**
  * Get the current reported temperature of the AI Vision sensor in degrees Celsius.
