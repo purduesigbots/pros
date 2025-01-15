@@ -7,7 +7,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1096,6 +1096,37 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t is_reversed(const std::uint8_t index = 0) const;
 
+    /**
+	 * Gets the type of the motor
+	 *
+	 * \note This is one of many Motor functions that takes in an optional index parameter.
+	 * 		 This parameter can be ignored by most users but exists to give a shared base class
+	 * 		 for motors and motor groups
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 *
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * EOVERFLOW - The index is non 0
+	 *
+	 * \param index Optional parameter.
+	 * 		  The zero-indexed index of the motor to get the type of.
+	 * 		  By default index is 0, and will return an error for a non-zero index
+	 *
+	 * \return One of MotorType according to the type of the motor,
+	 * or pros::MotorType::invalid if the operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Type: " << motor.get_type();
+	 * }
+	 * \endcode
+	 */
+	MotorType get_type(const std::uint8_t index = 0) const;
+
 	/**
 	 * Sets one of Motor_Brake to the motor.
 	 * \note This is one of many Motor functions that takes in an optional index parameter.
@@ -2075,6 +2106,26 @@ class Motor : public AbstractMotor, public Device {
 	 * \endcode
 	 */
 	std::vector<std::int32_t> is_reversed_all(void) const;
+
+	/**
+	 * Gets a vector containing the type of the motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 *
+	 * \return A vector containing one of MotorType according to the type of the motor,
+	 * or pros::MotorType::invalid if the operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Type: " << motor.get_type_all()[0];
+	 * }
+	 * \endcode
+	 */
+	std::vector<MotorType> get_type_all(void) const;
 
 	/**
 	 * Sets one of Motor_Brake to the motor.

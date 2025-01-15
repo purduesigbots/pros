@@ -7,7 +7,7 @@
  * characters and responding to any kernel commands (like printing the banner or
  * enabling COBS)
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,6 +18,7 @@
 #include <errno.h>
 
 #include "kapi.h"
+#include "pros/version.h"
 #include "system/dev/banners.h"
 #include "system/hot.h"
 #include "system/optimizers.h"

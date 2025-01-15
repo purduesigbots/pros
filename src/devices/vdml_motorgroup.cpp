@@ -3,13 +3,14 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <cstdint>
 #include "kapi.h"
 #include "pros/abstract_motor.hpp"
 #include "pros/motor_group.hpp"
@@ -374,6 +375,21 @@ std::vector<std::int32_t> MotorGroup::is_reversed_all(void) const {
 	return return_vector;
 }
 
+pros::v5::MotorType MotorGroup::get_type(const std::uint8_t index) const {
+	empty_MotorGroup_check(pros::v5::MotorType::invalid);
+	MotorGroup_index_check(pros::v5::MotorType::invalid, index);
+	return static_cast<pros::v5::MotorType>(motor_get_type(_ports[index]));
+}
+
+std::vector<pros::v5::MotorType> MotorGroup::get_type_all(void) const {
+	std::vector<pros::v5::MotorType> return_vector;
+	empty_MotorGroup_check_vector(pros::v5::MotorType::invalid, return_vector);
+	for (auto it = _ports.begin(); it < _ports.end(); it++) {
+		return_vector.push_back(static_cast<pros::v5::MotorType>(motor_get_type(*it)));
+	}
+	return return_vector;
+}
+
 double MotorGroup::get_temperature(const std::uint8_t index) const {
 	empty_MotorGroup_check(PROS_ERR_F);
 	MotorGroup_index_check(PROS_ERR_F, index);
@@ -561,7 +577,7 @@ std::int32_t MotorGroup::set_gearing(const motor_gearset_e_t gearset, const std:
 }
 std::int32_t MotorGroup::set_gearing(std::vector<motor_gearset_e_t> gearsets) const {
 	empty_MotorGroup_check(PROS_ERR);
-	for (int i = 0; i < gearsets.size(); i++) {
+	for (std::size_t i = 0; i < gearsets.size(); i++) {
 		this->set_gearing(gearsets[i], _ports[i]);
 	}
 	if (gearsets.size() != _ports.size()) {
@@ -572,7 +588,7 @@ std::int32_t MotorGroup::set_gearing(std::vector<motor_gearset_e_t> gearsets) co
 
 std::int32_t MotorGroup::set_gearing(std::vector<MotorGears> gearsets) const {
 	empty_MotorGroup_check(PROS_ERR);
-	for (int i = 0; i < gearsets.size(); i++) {
+	for (std::size_t i = 0; i < gearsets.size(); i++) {
 		this->set_gearing(gearsets[i], _ports[i]);
 	}
 	if (gearsets.size() != _ports.size()) {

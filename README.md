@@ -9,7 +9,7 @@ Primary maintenance of PROS is done by students at Purdue University through [Pu
 
 All PROS development is open sourced and available for the community to inspect. We believe that sharing source improves PROS through community contributions and allows students to learn by example.
 
-PROS is built using the GCC toolchain and standard C/C++ practices (C11 & C++17 w/GNU extensions) to make the learning curve small. Structures, pointers, dynamic memory allocation, and function pointers are all available. Additionally, code is run on bare metal, allowing you to take full advantage of the microcontroller's power.
+PROS is built using the GCC toolchain and standard C/C++ practices (C23 & C++23 w/GNU extensions) to make the learning curve small. Structures, pointers, dynamic memory allocation, and function pointers are all available. Additionally, code is run on bare metal, allowing you to take full advantage of the microcontroller's power.
 
 You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and the PROS CLI is available on most operating systems. The PROS development team makes distributions for Windows, OS X, and Debian-based Linux distributions.
 

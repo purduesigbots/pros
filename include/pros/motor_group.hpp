@@ -10,7 +10,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1618,6 +1618,51 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::vector<std::int32_t> is_reversed_all(void) const;
+
+	/**
+	 * Gets the type of a motor in the motor group.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 * EOVERFLOW - The index is greater than or equal to MotorGroup::size()
+	 *
+	 *\param index Optional parameter, 0 by default.
+	 * 				The zero indexed index of the motor in the motor group
+	 *
+	 * \return One of MotorType according to the type of the motor,
+	 * or pros::MotorType::invalid if the operation failed.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Type: " << mg.get_type();
+	 * }
+	 * \endcode
+	 */
+	MotorType get_type(const std::uint8_t index = 0) const;
+	/**
+	 * Gets a vector of the type of each motor.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENODEV - The port cannot be configured as a motor
+	 * EDOM - The motor group is empty
+	 *
+	 * \return A vector with one of MotorType according to the type of the motor,
+	 * or pros::MotorType::invalid if the operation failed for each motor.
+	 *
+	 * \b Example
+	 * \code
+	 * void initialize() {
+	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   std::cout << "Motor Type: " << mg.get_type_all()[0];
+	 * }
+	 * \endcode
+	 */
+	std::vector<MotorType> get_type_all(void) const;
 
 	/**
 	 * Sets one of MotorBrake to a motor in the motor group. Works with the C enum

@@ -53,8 +53,8 @@ EXTRA_LIB_DEPS=$(INCDIR)/api.h $(PATCHED_SDK)
 ########## Nothing below this line should be edited by typical users ###########
 -include ./common.mk
 
-.PHONY: $(INCDIR)/api.h patch_sdk_headers clean
-$(INCDIR)/api.h: version.py
+.PHONY: $(INCDIR)/pros/version.h patch_sdk_headers clean
+$(INCDIR)/pros/version.h: version.py
 	$(VV)python version.py
 
 patch_sdk_headers: patch_headers.py
@@ -62,7 +62,7 @@ patch_sdk_headers: patch_headers.py
 	$(VV)python patch_headers.py
 
 # Override clean, necessary to remove patched sdk on clean
-clean:
+clean::
 	@echo "Cleaning patched SDK"
 	@rm -f $(PATCHED_SDK)
 	@rm -rf $(EXTRA_INCDIR)
@@ -75,7 +75,7 @@ CREATE_TEMPLATE_ARGS+=--user "src/main.{cpp,c,cc}" --user "include/main.{hpp,h,h
 CREATE_TEMPLATE_ARGS+=--target v5
 CREATE_TEMPLATE_ARGS+=--output bin/monolith.bin --cold_output bin/cold.package.bin --hot_output bin/hot.package.bin --cold_addr 58720256 --hot_addr 125829120
 
-template: patch_sdk_headers clean-template library
+template:: patch_sdk_headers clean-template library
 	$(VV)mkdir -p $(TEMPLATE_DIR)
 	@echo "Moving template files to $(TEMPLATE_DIR)"
 	$Dif [ $(shell uname -s) == "Darwin" ]; then \
@@ -88,7 +88,7 @@ template: patch_sdk_headers clean-template library
 	$Dcp $(ROOT)/template-Makefile $(TEMPLATE_DIR)/Makefile
 	$Dmv $(TEMPLATE_DIR)/template-gitignore $(TEMPLATE_DIR)/.gitignore
 	@echo "Creating template"
-	$Dprosv5 c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
+	$Dpros c create-template $(TEMPLATE_DIR) kernel $(shell cat $(ROOT)/version) $(CREATE_TEMPLATE_ARGS)
 
 LIBV5RTS_EXTRACTION_DIR=$(BINDIR)/libv5rts
 $(LIBAR): patch_sdk_headers $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)

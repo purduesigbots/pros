@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 ADI.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -111,7 +111,7 @@ DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, 
 	set_value(init_state);
 }
 
-DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
+DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 
