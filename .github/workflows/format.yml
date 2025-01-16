@@ -18,7 +18,7 @@ jobs:
           # that's what will get formatted (i.e. the most recent commit)
           fetch-depth: 2
       # format the latest commit
-      - uses: purduesigbots/clang-format-action@1
+      - uses: purduesigbots/clang-format-action@9fc0a34df41572eb6f168d3e45f2338d9e447892
         # use one of clang-format's supported styles or leave this out to use the style in your .clang-format file
       # commit the changes (if there are any)
       - name: Commit changes
