@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <stdexcept>
 
+#include "pros/motors.h"
 #include "rtos/FreeRTOS.h"
 #include "rtos/task.h"
 #include "v5_api.h"
@@ -30,16 +31,24 @@ extern "C" void task_fn_wrapper(task_fn_t fn, void* args) {
 		vexDisplayString(5, "A runtime error occurred:");
 		vexDisplayString(6, "%s", re.what());
 		vexDisplayString(7, "Note: open terminal for error message");
+		goto kill_motors;
 	} catch (const std::exception& ex) {
 		fprintf(stderr, "Exception occurred: %s \n", ex.what());
 		vexDisplayString(5, "An exception occurred:");
 		vexDisplayString(6, "%s", ex.what());
 		vexDisplayString(7, "Note: open terminal for error message");
+		goto kill_motors;
 	} catch (...) {
 		fprintf(stderr, "Unknown error occurred. \n");
 		vexDisplayString(5, "An unknown error occurred");
+		goto kill_motors;
 	}
 #endif
+	return;
+	kill_motors:
+	for(uint8_t i = 1; i <= 21; i++) {
+		motor_move_voltage(i, 0);
+	}
 }
 
 /******************************************************************************/
