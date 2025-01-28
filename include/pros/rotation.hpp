@@ -146,7 +146,7 @@ class Rotation : public Device {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_position(std::uint32_t position) const;
+	virtual std::int32_t set_position(std::int32_t position) const;
 
 	/**
 	 * Reset the Rotation Sensor position to 0
