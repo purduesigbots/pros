@@ -29,11 +29,12 @@ extern void invoke_install_hot_table();
 
 // XXX: pros_init happens inside __libc_init_array, and before any global
 // C++ constructors are invoked. This is accomplished by instructing
-// GCC to include this function in the __init_array. The 101 argument
+// GCC to include this function in the __init_array. The 102 argument
 // gives the compiler instructions on the priority of the constructor,
 // from 0-~65k. The first 0-100 priorities are reserved for language
-// implementation.
-__attribute__((constructor(101))) static void pros_init(void) {
+// implementation. Priority 101 is not used to allow functions such as
+// banner_enable to run before PROS initializes.
+__attribute__((constructor(102))) static void pros_init(void) {
 	rtos_initialize();
 
 	vfs_initialize();
