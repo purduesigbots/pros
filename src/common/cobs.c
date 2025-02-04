@@ -55,7 +55,7 @@ size_t cobs_encode_measure(const uint8_t* restrict src, const size_t src_len, co
 	return write_idx;
 }
 
-int cobs_encode(uint8_t* restrict dest, const uint8_t* restrict src, const size_t src_len, const uint32_t prefix) {
+size_t cobs_encode(uint8_t* restrict dest, const uint8_t* restrict src, const size_t src_len, const uint32_t prefix) {
 	size_t read_idx = 0;
 	size_t write_idx = 1;
 	size_t code_idx = 0;
