@@ -50,6 +50,8 @@ namespace pros {
 #ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
 namespace lcd {
 #else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 namespace [[deprecated("Without liblvgl, LLEMU functions will not display anything. To install liblvgl run \"pros c install liblvgl\" in the PROS terminal.")]] lcd {
 #endif
     #pragma GCC diagnostic push
@@ -143,5 +145,9 @@ namespace [[deprecated("Without liblvgl, LLEMU functions will not display anythi
     /// @}
 } // namespace lcd
 } // namespace pros
+
+#ifndef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
+#pragma GCC diagnostic pop
+#endif
 
 #endif // _PROS_LLEMU_HPP_
