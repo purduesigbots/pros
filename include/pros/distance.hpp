@@ -77,7 +77,7 @@ class Distance : public Device {
 	 * void opcontrol() {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
-	 *     printf("Distance confidence: %d\n", distance.get());
+	 *     printf("Distance: %d\n", distance.get());
 	 *     delay(20);
 	 *   }
 	 * }
@@ -104,7 +104,7 @@ class Distance : public Device {
 	 * void opcontrol() {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
-	 *     printf("Distance confidence: %d\n", distance.get_distance());
+	 *     printf("Distance: %d\n", distance.get_distance());
 	 *     delay(20);
 	 *   }
 	 * }
@@ -179,7 +179,7 @@ class Distance : public Device {
 	 * void opcontrol() {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
-	 *     printf("Distance confidence: %d\n", distance.get_object_size());
+	 *     printf("Distance object size: %d\n", distance.get_object_size());
 	 *     delay(20);
 	 *   }
 	 * }
@@ -204,7 +204,7 @@ class Distance : public Device {
 	 * void opcontrol() {
 	 *	Distance distance(DISTANCE_PORT);
 	 *   while (true) {
-	 *     printf("Distance Object velocity: %f\n", distance.get_object_velocity());
+	 *     printf("Distance object velocity: %f\n", distance.get_object_velocity());
 	 *     delay(20);
 	 *   }
 	 * }
