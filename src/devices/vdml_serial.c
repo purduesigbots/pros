@@ -20,6 +20,19 @@
 #include "vdml/registry.h"
 #include "vdml/vdml.h"
 
+v5_device_e_t registry_get_plugged_type(uint8_t port);
+
+#define SERIAL_TIMEOUT 500
+
+/**
+ * VEXos does not immediately configure a port as geeric serial after calling
+ * vexDeviceGenericSerialEnable. Therefore, we have to check that the port is
+ * configured as a generic serial port, and if not, delay for up to 500ms.
+ */
+#define claim_serial_port_i(port) for (uint8_t i = 0; i < SERIAL_TIMEOUT / 5 ||                          \
+                                  registry_get_plugged_type(port) == E_DEVICE_SERIAL; ++i) { delay(5); } \
+								  claim_port_i(port, E_DEVICE_SERIAL)
+
 // Control function
 
 int32_t serial_enable(uint8_t port) {
@@ -43,13 +56,13 @@ int32_t serial_enable(uint8_t port) {
 }
 
 int32_t serial_set_baudrate(uint8_t port, int32_t baudrate) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	vexDeviceGenericSerialBaudrate(device->device_info, baudrate);
 	return_port(port - 1, PROS_SUCCESS);
 }
 
 int32_t serial_flush(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	vexDeviceGenericSerialFlush(device->device_info);
 	return_port(port - 1, PROS_SUCCESS);
 }
@@ -57,13 +70,13 @@ int32_t serial_flush(uint8_t port) {
 // Telemetry functions
 
 int32_t serial_get_read_avail(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialReceiveAvail(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_get_write_free(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialWriteFree(device->device_info);
 	return_port(port - 1, rtn);
 }
@@ -71,19 +84,19 @@ int32_t serial_get_write_free(uint8_t port) {
 // Read functions
 
 int32_t serial_peek_byte(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialPeekChar(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_read_byte(uint8_t port) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialReadChar(device->device_info);
 	return_port(port - 1, rtn);
 }
 
 int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialReceive(device->device_info, buffer, length);
 	return_port(port - 1, rtn);
 }
@@ -91,7 +104,7 @@ int32_t serial_read(uint8_t port, uint8_t* buffer, int32_t length) {
 // Write functions
 
 int32_t serial_write_byte(uint8_t port, uint8_t buffer) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialWriteChar(device->device_info, buffer);
 	if (rtn == -1) {
 		errno = EIO;
@@ -101,7 +114,7 @@ int32_t serial_write_byte(uint8_t port, uint8_t buffer) {
 }
 
 int32_t serial_write(uint8_t port, uint8_t* buffer, int32_t length) {
-	claim_port_i(port - 1, E_DEVICE_SERIAL);
+	claim_serial_port_i(port - 1);
 	int32_t rtn = vexDeviceGenericSerialTransmit(device->device_info, buffer, length);
 	if (rtn == -1) {
 		errno = EIO;
