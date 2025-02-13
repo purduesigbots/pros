@@ -690,11 +690,17 @@ void enable_banner(bool enabled);
  * \param enable
  *          Whether the banner should be enabled or disabled.
  */
+#ifdef __cplusplus
+#define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
+                               "Cannot use ENABLE_BANNER inside a function!");                                        \
+                               __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
+                               { pros::c::enable_banner(enabled); }
+#else
 #define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
                                "Cannot use ENABLE_BANNER inside a function!");                                        \
                                __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
                                { enable_banner(enabled); }
-
+#endif
 ///@}
 
 /// \name Filesystem
