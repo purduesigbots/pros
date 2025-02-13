@@ -193,6 +193,7 @@ clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
+	-$Dmkdir $(BINDIR)
 	-$Drm -f $@
 	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $^, $(DONE_STRING))
 
