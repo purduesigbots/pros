@@ -101,7 +101,7 @@ class AIVision : public Device {
 	int32_t get_enabled_detection_types();
 	int32_t enable_detection_types(AivisionModeType types_mask);
 	int32_t disable_detection_types(AivisionModeType types_mask);
-	int32_t set_tag_family(AivisionTagFamily family);
+	int32_t set_tag_family(AivisionTagFamily family, bool override = false);
 	int32_t set_color(aivision_color_s_t &color);
 	uint32_t set_code(aivision_code_s_t &code);
 	aivision_color_s_t get_color(uint32_t id);

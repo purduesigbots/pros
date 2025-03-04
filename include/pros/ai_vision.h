@@ -304,6 +304,7 @@ int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno.
  */
+int32_t aivision_set_tag_family_override(uint8_t port, aivision_tag_family_e_t family);
 int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
 
 /**

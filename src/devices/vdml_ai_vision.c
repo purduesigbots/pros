@@ -107,6 +107,15 @@ double aivision_get_temperature(uint8_t port) {
 
 int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family) {
 	claim_port_i(port - 1, E_DEVICE_AIVISION);
+	uint32_t tag_family_flag = vexDeviceAiVisionStatusGet(device->device_info);
+	tag_family_flag &= !(0xff << 16);
+	tag_family_flag |= (uint32_t)family << 16;
+	vexDeviceAiVisionModeSet(device->device_info, tag_family_flag | AIVISION_MODE_TAG_SET_BIT);
+	return_port(port - 1, PROS_SUCCESS);
+}
+
+int32_t aivision_set_tag_family_override(uint8_t port, aivision_tag_family_e_t family) {
+	claim_port_i(port - 1, E_DEVICE_AIVISION);
 	uint32_t tag_family_flag = (uint32_t)family << 16;
 	vexDeviceAiVisionModeSet(device->device_info, tag_family_flag | AIVISION_MODE_TAG_SET_BIT);
 	return_port(port - 1, PROS_SUCCESS);
@@ -133,7 +142,8 @@ aivision_object_s_t aivision_get_object(uint8_t port, uint32_t object_index) {
         return result;
     }
     v5_smart_device_s_t* device = registry_get_device(port - 1);
-    vexDeviceAiVisionObjectGet(device->device_info, object_index, (V5_DeviceAiVisionObject*)&result);
+	  // +1 because the SDK is 1-indexed
+    vexDeviceAiVisionObjectGet(device->device_info, object_index + 1, (V5_DeviceAiVisionObject*)&result);
     return_port(port - 1, result);
 }
 

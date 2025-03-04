@@ -56,7 +56,10 @@ int32_t AIVision::disable_detection_types(AivisionModeType types_mask) {
 	return c::aivision_disable_detection_types(this->_port, static_cast<uint8_t>(types_mask));
 }
 
-int32_t AIVision::set_tag_family(AivisionTagFamily family) {
+int32_t AIVision::set_tag_family(AivisionTagFamily family, bool override) {
+	if (override) {
+		return c::aivision_set_tag_family_override(this->_port, static_cast<aivision_tag_family_e_t>(family));
+	}
 	return c::aivision_set_tag_family(this->_port, static_cast<aivision_tag_family_e_t>(family));
 }
 
