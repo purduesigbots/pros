@@ -22,6 +22,7 @@
 #define _PROS_AIVISION_HPP_
 
 #include <cstdint>
+#include <type_traits>
 
 #include "pros/ai_vision.h"
 #include "pros/device.hpp"
@@ -40,6 +41,7 @@ enum class AivisionModeType : uint8_t {
 	tags = (1 << 0),
 	colors = (1 << 1),
 	objects = (1 << 2),
+	color_merge = (1 << 4),
 	all = (1 << 0) | (1 << 1) | (1 << 2),
 };
 
@@ -99,7 +101,15 @@ class AIVision : public Device {
 
 	int32_t reset();
 	int32_t get_enabled_detection_types();
+
 	int32_t enable_detection_types(AivisionModeType types_mask);
+	template <class... Flags>
+	  requires((std::conjunction_v<std::is_same<AivisionModeType, Flags>...>))
+	int32_t enable_detection_types(Flags... flags) {
+		auto types_mask = (static_cast<uint8_t>(flags) | ...);
+		return c::aivision_enable_detection_types(this->_port, static_cast<uint8_t>(types_mask));
+	}
+
 	int32_t disable_detection_types(AivisionModeType types_mask);
 	int32_t set_tag_family(AivisionTagFamily family, bool override = false);
 	int32_t set_color(aivision_color_s_t &color);

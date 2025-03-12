@@ -68,6 +68,7 @@ typedef enum aivision_mode_type {
 	E_AIVISION_MODE_TAGS = (1 << 0),
 	E_AIVISION_MODE_COLORS = (1 << 1),
 	E_AIVISION_MODE_OBJECTS = (1 << 2),
+	E_AIVISION_MODE_COLOR_MERGE = (1 << 4),
 	E_AIVISION_MODE_ALL = (1 << 0) | (1 << 1) | (1 << 2),
 } aivision_mode_type_e_t;
 
