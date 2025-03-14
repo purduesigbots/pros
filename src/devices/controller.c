@@ -35,20 +35,20 @@ static controller_data_s_t data = {
     .button_released = {true},
 };
 
-bool get_button_pressed(int port, int button) {
+static bool get_button_pressed(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
-void set_button_pressed(int port, int button, bool state) {
+static void set_button_pressed(int port, int button, bool state) {
 	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data.button_pressed[button] = state;
 }
 
-bool get_button_released(int port, int button) {
+static bool get_button_released(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_released[button];
 }
 
-void set_button_released(int port, int button, bool state) {
+static void set_button_released(int port, int button, bool state) {
 	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data.button_released[button] = state;
 }
