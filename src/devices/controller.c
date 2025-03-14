@@ -24,17 +24,39 @@
 // From enum in misc.h
 #define NUM_BUTTONS 13
 
+// button_pressed is used for get_digital_new_press and button_released is used for get_digital_new_release
 typedef struct controller_data {
 	bool button_pressed[NUM_BUTTONS];
+	bool button_released[NUM_BUTTONS];
 } controller_data_s_t;
+
+static controller_data_s_t data[2] = {
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        },
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        }
+};
 
 static bool get_button_pressed(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
 static void set_button_pressed(int port, int button, bool state) {
-	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data->button_pressed[button] = state;
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_pressed[button] = state;
+}
+
+static bool get_button_released(int port, int button) {
+	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_released[button];
+}
+
+static void set_button_released(int port, int button, bool state) {
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_released[button] = state;
 }
 
 int32_t controller_is_connected(controller_id_e_t id) {
@@ -96,6 +118,27 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 	} else {
 		internal_port_mutex_give(port);
 		return false;  // button is not pressed or was already detected
+	}
+}
+
+int32_t controller_get_digital_new_release(controller_id_e_t id, controller_digital_e_t button) {
+	int32_t pressed = controller_get_digital(id, button);
+	uint8_t port;
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
+	uint8_t button_num = button - E_CONTROLLER_DIGITAL_L1;
+
+	if (pressed) {
+		set_button_released(port, button_num, false);
+	}
+	if (!pressed && !get_button_released(port, button_num)) {
+		// button is currently not pressed and was detected as being pressed during
+		// last check
+		set_button_released(port, button_num, true);
+		internal_port_mutex_give(port);
+		return true;
+	} else {
+		internal_port_mutex_give(port);
+		return false;  // button is pressed or was already detected
 	}
 }
 
