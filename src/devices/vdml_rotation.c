@@ -45,7 +45,7 @@ int32_t rotation_reset_position(uint8_t port) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t rotation_set_position(uint8_t port, uint32_t position) {
+int32_t rotation_set_position(uint8_t port, int32_t position) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	vexDeviceAbsEncPositionSet(device->device_info, position);
 	return_port(port - 1, PROS_SUCCESS);

@@ -31,8 +31,19 @@
 #define MICRO_TO_NANO 1000
 
 void _exit(int status) {
+	extern void flush_output_streams();
+	flush_output_streams();
+	extern void ser_output_flush();
+	ser_output_flush();
+	rtos_suspend_all();
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
+	uint32_t start_time = millis();
+	static const uint32_t max_flush_time = 50;
+	while (vexSerialWriteFree(1) != 2048 || millis() - start_time > max_flush_time) {
+		vexBackgroundProcessing();
+	}
 	vexSystemExitRequest();
+	while (1) vexBackgroundProcessing();
 }
 
 int usleep( useconds_t period ) {

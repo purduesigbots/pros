@@ -18,10 +18,11 @@
 #include "v5_api.h"
 #include "vdml/vdml.h"
 
-#define CONTROLLER_MAX_COLS 15
+#define CONTROLLER_MAX_COLS ( 20U )
+#define CONTROLLER_MAX_CHARS ( 31U )
 
 // From enum in misc.h
-#define NUM_BUTTONS 12
+#define NUM_BUTTONS 13
 
 // button_pressed is used for get_digital_new_press and button_released is used for get_digital_new_release
 typedef struct controller_data {
@@ -87,7 +88,7 @@ int32_t controller_get_battery_level(controller_id_e_t id) {
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
 	uint8_t port;
 	CONTROLLER_PORT_MUTEX_TAKE(id, port)
-	// the buttons enum starts at 4, the correct place for the libv5rts
+	// the buttons enum starts at 6, the correct place for the libv5rts
 	int32_t rtn = vexControllerGet(id, button);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -144,7 +145,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 	else
 		col++;
 
-	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
+	char* buf = strndup(str, CONTROLLER_MAX_CHARS + 1);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
@@ -168,8 +169,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 	va_list args;
 	va_start(args, fmt);
-	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
+	char* buf = (char*)malloc(CONTROLLER_MAX_CHARS + 1);
+	vsnprintf(buf, CONTROLLER_MAX_CHARS + 1, fmt, args);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);

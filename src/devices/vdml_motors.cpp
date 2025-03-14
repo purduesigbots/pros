@@ -13,6 +13,7 @@
 #include "kapi.h"
 #include "pros/motors.hpp"
 #include "vdml/vdml.h"
+#include <cmath>
 
 namespace pros {
 inline namespace v5 {
@@ -20,7 +21,7 @@ using namespace pros::c;
 
 
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
-    : Device(port, DeviceType::motor), _port(port) {
+    : Device(std::abs(port), DeviceType::motor), _port(port) {
 	if (gearset != pros::v5::MotorGears::invalid) {
 		set_gearing(gearset);
 	}
@@ -275,6 +276,19 @@ std::int32_t Motor::is_reversed(const std::uint8_t index) const {
 std::vector<std::int32_t> Motor::is_reversed_all(void) const {
 	std::vector<std::int32_t> return_vector;
 	return_vector.push_back(_port < 0);
+	return return_vector;
+}
+
+pros::v5::MotorType Motor::get_type(const std::uint8_t index) const {
+	if (index != 0) {
+		errno = EOVERFLOW;
+		return pros::v5::MotorType::invalid;
+	}
+	return static_cast<pros::v5::MotorType>(motor_get_type(_port));
+}
+std::vector<pros::v5::MotorType> Motor::get_type_all(void) const {
+	std::vector<pros::v5::MotorType> return_vector;
+	return_vector.push_back(static_cast<pros::v5::MotorType>(motor_get_type(_port)));
 	return return_vector;
 }
 

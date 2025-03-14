@@ -51,6 +51,7 @@ enum class DeviceType {
 	adi = 12, ///< This port is an ADI expander
 	optical = 16, ///< An optical sensor is plugged into the port
 	gps = 20, ///< A GPS sensor is plugged into the port
+	aivision = 29, ///< An AI vision sensor is plugged into the port
 	serial = 129, ///< A serial device is plugged into the port
 	undefined = 255 ///< The device type is not defined, or is not a valid device
 };

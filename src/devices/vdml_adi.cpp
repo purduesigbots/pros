@@ -111,7 +111,7 @@ DigitalOut::DigitalOut(std::uint8_t adi_port, bool init_state) : Port(adi_port, 
 	set_value(init_state);
 }
 
-DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_IN) {
+DigitalOut::DigitalOut(ext_adi_port_pair_t port_pair, bool init_state) : ADIPort(port_pair, E_ADI_DIGITAL_OUT) {
 	set_value(init_state);
 }
 

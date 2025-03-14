@@ -206,6 +206,7 @@ clean-template:
 	-$Drm -rf $(TEMPLATE_DIR)
 
 $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
+	-$Dmkdir $(BINDIR)
 	-$Drm -f $@
 	$(call test_output_2,Creating $@ ,$(AR) rcs $@ $^, $(DONE_STRING))
 
@@ -213,7 +214,7 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 library: $(LIBAR)
 
 .PHONY: template
-template: clean-template $(LIBAR)
+template:: clean-template $(LIBAR)
 	$Dpros c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5 $(CREATE_TEMPLATE_FLAGS)
 endif
 

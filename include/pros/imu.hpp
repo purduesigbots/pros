@@ -55,7 +55,7 @@ inline namespace v5 {
 class Imu : public Device {
 	/**
 	 * \addtogroup cpp-imu
-	 * ///@{
+	 * @{
 	 */
 
 	public:
@@ -136,7 +136,7 @@ class Imu : public Device {
 	 *
 	 * void opcontrol() {
 	 *   pros::Imu imu(IMU_PORT);
-	 *   imu.calibrate();
+	 *
 	 *   // Block until calibration is complete
 	 *   imu.reset(true);
 	 * }
@@ -1011,7 +1011,7 @@ class Imu : public Device {
 	 *
 	 *   while (true) {
 	 *     // Calibrate the sensor
-	 *     imu.calibrate();
+	 *     imu.reset();
 	 *     delay(20);
 	 *
 	 *     // Check if the sensor is calibrating
