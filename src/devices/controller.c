@@ -29,13 +29,18 @@ typedef struct controller_data {
 	bool button_released[NUM_BUTTONS];
 } controller_data_s_t;
 
+static controller_data_s_t data = {
+    .button_pressed = {false},
+    .button_released = {true},
+};
+
 bool get_button_pressed(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
 void set_button_pressed(int port, int button, bool state) {
-	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data->button_pressed[button] = state;
+	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data.button_pressed[button] = state;
 }
 
 bool get_button_released(int port, int button) {
@@ -43,8 +48,8 @@ bool get_button_released(int port, int button) {
 }
 
 void set_button_released(int port, int button, bool state) {
-	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data->button_released[button] = state;
+	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data.button_released[button] = state;
 }
 
 int32_t controller_is_connected(controller_id_e_t id) {
@@ -126,7 +131,7 @@ int32_t controller_get_digital_new_release(controller_id_e_t id, controller_digi
 		return true;
 	} else {
 		internal_port_mutex_give(port);
-		return false; // button is pressed or was already detected
+		return false;  // button is pressed or was already detected
 	}
 }
 
