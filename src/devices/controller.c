@@ -30,9 +30,15 @@ typedef struct controller_data {
 	bool button_released[NUM_BUTTONS];
 } controller_data_s_t;
 
-static controller_data_s_t data = {
-    .button_pressed = {false},
-    .button_released = {true},
+static controller_data_s_t data[2] = {
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        },
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        }
 };
 
 static bool get_button_pressed(int port, int button) {
@@ -40,8 +46,8 @@ static bool get_button_pressed(int port, int button) {
 }
 
 static void set_button_pressed(int port, int button, bool state) {
-	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data.button_pressed[button] = state;
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_pressed[button] = state;
 }
 
 static bool get_button_released(int port, int button) {
@@ -49,8 +55,8 @@ static bool get_button_released(int port, int button) {
 }
 
 static void set_button_released(int port, int button, bool state) {
-	data = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data.button_released[button] = state;
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_released[button] = state;
 }
 
 int32_t controller_is_connected(controller_id_e_t id) {
