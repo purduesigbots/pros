@@ -82,7 +82,7 @@ std::vector<aivision_object_s_t> AIVision::get_all_objects() {
 		return {};
 	}
 	std::vector<aivision_object_s_t> objects = std::vector<aivision_object_s_t>(count);
-	for (size_t idx = 0; idx < count; idx++) {
+	for (size_t idx = 0; idx < static_cast<size_t>(count); idx++) {
 		objects.emplace_back(this->get_object(idx));
 	}
 	return objects;
