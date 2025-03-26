@@ -4752,6 +4752,7 @@ uint32_t uxReturn;
 	void task_join(task_t task) {
 		if(!task) return;
 		TaskStatus_t xTaskDetails;
+		extern void task_notify_when_deleting(task_t, task_t, uint32_t, notify_action_e_t);
 		task_notify_when_deleting(task, NULL, 1, E_NOTIFY_ACTION_INCR);
 		do
 		{

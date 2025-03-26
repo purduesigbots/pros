@@ -18,8 +18,12 @@
 #include <system_error>
 
 #include "kapi.h"
-#include "rtos/task.h"
 #include "system/optimizers.h"
+
+/* definitions needed from task.h, since directly including it conflicts with definitions in pros/rtos.h */
+
+#define taskENTER_CRITICAL()		portENTER_CRITICAL()
+#define taskEXIT_CRITICAL()			portEXIT_CRITICAL()
 
 namespace pros {
 using namespace pros::c;
