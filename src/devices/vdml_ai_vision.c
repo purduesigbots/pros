@@ -63,7 +63,7 @@ int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t* class_name) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t aivision_set_color(uint8_t port, aivision_color_s_t* color) {
+int32_t aivision_set_color(uint8_t port, const aivision_color_s_t* color) {
 	claim_port_i(port - 1, E_DEVICE_AIVISION);
 	V5_DeviceAiVisionColor _color;
 	_color.id = color->id;
@@ -165,7 +165,7 @@ aivision_code_s_t aivision_get_code(uint8_t port, uint32_t id) {
 	return_port(port - 1, code);
 }
 
-int32_t aivision_set_code(uint8_t port, aivision_code_s_t* code) {
+int32_t aivision_set_code(uint8_t port, const aivision_code_s_t* code) {
 	claim_port_i(port - 1, E_DEVICE_AIVISION);
 	V5_DeviceAiVisionCode _code;
 	_code.id = code->id;

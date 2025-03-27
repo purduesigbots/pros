@@ -292,8 +292,8 @@ int32_t aivision_enable_detection_types(uint8_t port, uint8_t types_mask);
 int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
 
 /**
- * Sets the april tag family to detect. Only one family can be detected at a time.
- * The tag detection type must be enabled as well.
+ * Sets the april tag family to detect. Use this function will override the enabled apriltag
+ * detection family.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -306,6 +306,21 @@ int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
  * failed, setting errno.
  */
 int32_t aivision_set_tag_family_override(uint8_t port, aivision_tag_family_e_t family);
+
+/**
+ * Sets the april tag family to detect. Use this function will allow multiple apriltags
+ * to be detected.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a vision sensor
+ *
+ * \param port The V5 port number from 1-21
+ * \param family the tag family to configure the AI Vision sensor to detect
+ * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
 int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
 
 /**
@@ -323,7 +338,7 @@ int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno
  */
-int32_t aivision_set_color(uint8_t port, aivision_color_s_t* color);
+int32_t aivision_set_color(uint8_t port, const aivision_color_s_t* color);
 
 /**
  * Get a color configuration that the AI vision sensor has stored.
@@ -407,7 +422,7 @@ aivision_code_s_t aivision_get_code(uint8_t port, uint32_t id);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno
  */
-int32_t aivision_set_code(uint8_t port, aivision_code_s_t* wcode);
+int32_t aivision_set_code(uint8_t port, const aivision_code_s_t* wcode);
 
 /**
  * Get the current number of objects detected by the AI vision sensor.
