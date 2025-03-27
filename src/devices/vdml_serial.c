@@ -25,13 +25,14 @@ v5_device_e_t registry_get_plugged_type(uint8_t port);
 #define SERIAL_TIMEOUT 500
 
 /**
- * VEXos does not immediately configure a port as geeric serial after calling
+ * VEXos does not immediately configure a port as generic serial after calling
  * vexDeviceGenericSerialEnable. Therefore, we have to check that the port is
  * configured as a generic serial port, and if not, delay for up to 500ms.
  */
 #define claim_serial_port_i(port) for (uint8_t i = 0; i < SERIAL_TIMEOUT / 5 ||                          \
-                                  registry_get_plugged_type(port) == E_DEVICE_SERIAL; ++i) { delay(5); } \
-								  claim_port_i(port, E_DEVICE_SERIAL)
+                                  registry_get_plugged_type(port) == E_DEVICE_SERIAL ||                  \
+				  registry_get_plugged_type(port) != E_DEVICE_NONE; ++i) { delay(5); }   \
+				  claim_port_i(port, E_DEVICE_SERIAL)
 
 // Control function
 
