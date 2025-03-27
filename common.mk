@@ -34,7 +34,16 @@ LIBRARIES+=$(wildcard $(FWDIR)/*.a)
 EXCLUDE_COLD_LIBRARIES+=$(FWDIR)/libc.a $(FWDIR)/libm.a
 COLD_LIBRARIES=$(filter-out $(EXCLUDE_COLD_LIBRARIES), $(LIBRARIES))
 wlprefix=-Wl,$(subst $(SPACE),$(COMMA),$1)
-LNK_FLAGS=--gc-sections --start-group $(strip $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
+
+LVGL_LIB_FLAGS=
+ifneq (,$(wildcard ./firmware/liblvgl.a))
+    LVGL_LIB_FLAGS=--whole-archive ./firmware/liblvgl.a --no-whole-archive
+    LIBRARIES:=$(filter-out ./firmware/liblvgl.a, $(LIBRARIES))
+endif
+
+# Adding --whole-archive to liblvgl to ensure that all symbols are included
+LNK_FLAGS=--gc-sections --start-group $(strip $(LVGL_LIB_FLAGS) $(LIBRARIES)) -lgcc -lstdc++ --end-group -T$(FWDIR)/v5-common.ld --no-warn-rwx-segments
+
 
 ASMFLAGS=$(MFLAGS) $(WARNFLAGS)
 CFLAGS=$(MFLAGS) $(CPPFLAGS) $(WARNFLAGS) $(GCCFLAGS) --std=$(C_STANDARD)
@@ -214,7 +223,7 @@ $(LIBAR): $(call GETALLOBJ,$(EXCLUDE_SRC_FROM_LIB)) $(EXTRA_LIB_DEPS)
 library: $(LIBAR)
 
 .PHONY: template
-template:: clean-template $(LIBAR)
+template: clean-template $(LIBAR)
 	$Dpros c create-template . $(LIBNAME) $(VERSION) $(foreach file,$(TEMPLATE_FILES) $(LIBAR),--system "$(file)") --target v5 $(CREATE_TEMPLATE_FLAGS)
 endif
 
