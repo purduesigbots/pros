@@ -25,7 +25,7 @@
 #define NUM_BUTTONS 13
 
 // button_pressed is used for get_digital_new_press and button_released is used for get_digital_new_release
-typedef struct controller_data {
+typedef struct __attribute__((__may_alias__)) controller_data {
 	bool button_pressed[NUM_BUTTONS];
 	bool button_released[NUM_BUTTONS];
 } controller_data_s_t;

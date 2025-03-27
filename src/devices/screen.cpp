@@ -21,7 +21,7 @@ namespace screen {
     std::uint32_t set_pen(pros::Color color){
         return pros::c::screen_set_pen((uint32_t)color);
     }
-    
+
     std::uint32_t set_eraser(pros::Color color){
         return pros::c::screen_set_eraser((uint32_t)color);
     }
@@ -112,11 +112,14 @@ namespace screen {
     /**   These functions allow main.cpp to be compiled without LVGL present     **/
     /******************************************************************************/
     namespace lcd {
+#if !defined(_PROS_INCLUDE_LIBLVGL_LLEMU_HPP) && defined(_PROS_KERNEL_SUPPRESS_LLEMU_WARNING)
+#warning "liblvgl is not installed. As this is a kernel build, this warning will only be shown once."
+#endif
         using lcd_btn_cb_fn_t = void (*)(void);
         extern __attribute__((weak)) bool is_initialized(void) {return false;}
         extern __attribute__((weak)) bool initialize(void) {return false;}
         extern __attribute__((weak)) bool shutdown(void) {return false;}
-        extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;} 
+        extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text) {return false;}
         extern __attribute__((weak)) bool clear(void) {return false;}
         extern __attribute__((weak)) bool clear_line(std::int16_t line) {return false;}
         // TODO: Text_Align is defined in liblvgl so this ain't going to compile for now.
@@ -125,7 +128,7 @@ namespace screen {
         extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb) {}
         extern __attribute__((weak)) void register_btn2_cb(lcd_btn_cb_fn_t cb) {}
         extern __attribute__((weak)) std::uint8_t read_buttons(void) {return 0xf;}
-        
+
         template <typename... Params>
         extern __attribute__((weak)) bool print(std::int16_t line, const char* fmt, Params... args) {return false;}
     }  // namespace lcd
