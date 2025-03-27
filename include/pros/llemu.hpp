@@ -47,7 +47,7 @@ namespace pros {
 /**
  * \ingroup cpp-llemu 
  */
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
+#if defined(_PROS_KERNEL_SUPPRESS_LLEMU_WARNING) || defined(_PROS_INCLUDE_LIBLVGL_LLEMU_HPP)
 namespace lcd {
 #else
 namespace [[deprecated("Without liblvgl, LLEMU functions will not display anything. To install liblvgl run \"pros c install liblvgl\" in the PROS terminal.")]] lcd {

@@ -70,9 +70,12 @@ int getentropy(void *_buffer, size_t _length) {
 
 // HACK: this helps confused libc++ functions call the right instruction. for
 // info see https://github.com/purduesigbots/pros/issues/153#issuecomment-519335375
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winfinite-recursion"
 void __sync_synchronize(void) {
 	__sync_synchronize();
 }
+#pragma GCC diagnostic pop
 
 // These variables are used to store the user-set time.
 // When user_time_set is false, the realtime clock will use the timestamp as the
