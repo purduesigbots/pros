@@ -80,8 +80,17 @@ AIVision::Object AIVision::get_object(uint32_t object_index) {
 	return c::aivision_get_object(this->_port, object_index);
 }
 
-uint32_t AIVision::get_class_name(int32_t id, uint8_t* class_name) {
-	return c::aivision_get_class_name(this->_port, id, class_name);
+uint32_t AIVision::get_class_name(int32_t id, char* class_name) {
+	return c::aivision_get_class_name(this->_port, id, reinterpret_cast<uint8_t*>(class_name));
+}
+
+std::optional<std::string> AIVision::get_class_name(int32_t id) {
+	char class_name[21];
+	uint32_t result = c::aivision_get_class_name(this->_port, id, reinterpret_cast<uint8_t*>(class_name));
+	if (result == PROS_SUCCESS) {
+		return std::string(class_name);
+	}
+	return std::nullopt;
 }
 
 AIVision::Code AIVision::get_code(uint32_t id) {

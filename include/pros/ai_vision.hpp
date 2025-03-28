@@ -23,6 +23,7 @@
 
 #include <cstdint>
 #include <type_traits>
+#include <expected>
 
 #include "pros/ai_vision.h"
 #include "pros/device.hpp"
@@ -120,7 +121,7 @@ class AIVision : public Device {
 	 * }
 	 * \endcode
 	 */
-	AIVision(const std::uint8_t port);
+	explicit AIVision(const std::uint8_t port);
 
 	AIVision(const Device& device) : AIVision(device.get_port()){};
 
@@ -163,7 +164,7 @@ class AIVision : public Device {
 	 * }
 	 * \endcode
 	 */
-	static bool is_type(const Object& object, AivisionDetectType type);
+	static inline bool is_type(const Object& object, AivisionDetectType type);
 
 	/**
 	 * Resets the AI Vision sensor to the initial state.
@@ -487,7 +488,7 @@ class AIVision : public Device {
 	 * #define AIVISION_PORT 1
 	 * void opcontrol() {
 	 *  pros::AIVision aivision(AIVISION_PORT);
-	 *  char* class_name = new char[20];
+	 *  char* class_name = new char[21];
 	 *  aivision.get_class_name(0, class_name);
 	 *  printf("%s\n", class_name);
 	 *  delete[] class_name;
@@ -500,7 +501,39 @@ class AIVision : public Device {
 	 * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno
 	 */
-	uint32_t get_class_name(int32_t id, uint8_t* class_name);
+	uint32_t get_class_name(int32_t id, char* class_name);
+
+	/**
+	 * Get a class name that the AI vision sensor has stored.
+	 * The AI Vision sensor may not correctly report classnames for the first several hundred milliseconds
+	 * of being plugged in.
+	 * By passing in -1 for the id, the function will return the number of class names the AI vision sensor reports.
+	 * For other values of id, the function return value is undefined
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a vision sensor
+	 * \code
+	 * #define AIVISION_PORT 1
+	 * void opcontrol() {
+	 *  pros::AIVision aivision(AIVISION_PORT);
+	 *  auto name = aivision.get_class_name(1);
+	 *
+	 *  if(name.has_value()) {
+	 *	  printf("Class name: %s\n", name.value().c_str());
+	 *  } else {
+	 *	  printf("Error: %ld\n", errno);
+	 *  }
+	 * }
+	 *
+	 * \endcode
+	 *
+	 * \param id the id of the class name from 0-(AIVISION_MAX_CLASSNAME_COUNT - 1)
+	 * \return the class name string in std::optional if the operation was successful
+	 * or an empty optional if the operation failed, setting errno
+	 */
+	std::optional<std::string> get_class_name(int32_t id);
 
 	/**
 	 * Get the current number of objects detected by the AI vision sensor.
