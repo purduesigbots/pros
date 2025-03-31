@@ -32,7 +32,7 @@ std::int32_t Rotation::set_data_rate(std::uint32_t rate) const {
 	return pros::c::rotation_set_data_rate(_port, rate);
 }
 
-std::int32_t Rotation::set_position(std::uint32_t position) const {
+std::int32_t Rotation::set_position(std::int32_t position) const {
 	return pros::c::rotation_set_position(_port, position);
 }
 

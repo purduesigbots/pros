@@ -47,7 +47,7 @@ namespace pros {
 /**
  * \ingroup cpp-llemu 
  */
-#ifdef _PROS_INCLUDE_LIBLVGL_LLEMU_HPP
+#if defined(_PROS_KERNEL_SUPPRESS_LLEMU_WARNING) || defined(_PROS_INCLUDE_LIBLVGL_LLEMU_HPP)
 namespace lcd {
 #else
 #pragma GCC diagnostic push

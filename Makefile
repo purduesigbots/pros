@@ -20,8 +20,8 @@ C_STANDARD=gnu2x
 CXX_STANDARD=gnu++23
 
 WARNFLAGS+=-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Werror -Wno-error=deprecated-declarations
-EXTRA_CFLAGS=
-EXTRA_CXXFLAGS=
+EXTRA_CFLAGS+=
+EXTRA_CXXFLAGS=-D_PROS_KERNEL_SUPPRESS_LLEMU_WARNING
 
 .DEFAULT_GOAL=quick
 USE_PACKAGE:=0
