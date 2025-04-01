@@ -22,8 +22,8 @@
 #define get_ports(ports, smart_port, adi_port) \
 	{                                            \
 		uint32_t uport = (uint32_t)ports;          \
-		smart_port = uport & SMART_PORT_MASK;      \
-		adi_port = uport >> SMART_PORT_BITS;       \
+		smart_port = (typeof(smart_port)) (uport & SMART_PORT_MASK);      \
+		adi_port = (typeof(adi_port)) (uport >> SMART_PORT_BITS);       \
 	}
 
 static inline uint32_t merge_adi_ports(uint8_t smart_port, uint8_t adi_port) {
