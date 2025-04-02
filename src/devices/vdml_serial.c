@@ -30,7 +30,7 @@ v5_device_e_t registry_get_plugged_type(uint8_t port);
  * configured as a generic serial port, and if not, delay for up to 500ms.
  */
 #define claim_serial_port_i(port)                                \
-    for (int i = 0; i < SERIAL_TIMEOUT / 5 &&                    \
+    for (uint8_t i = 0; i < SERIAL_TIMEOUT / 5 &&                    \
 		registry_get_plugged_type(port) == E_DEVICE_NONE; ++i) { \
 		if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) { \
 			vexBackgroundProcessing();                           \
