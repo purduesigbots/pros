@@ -29,10 +29,17 @@ v5_device_e_t registry_get_plugged_type(uint8_t port);
  * vexDeviceGenericSerialEnable. Therefore, we have to check that the port is
  * configured as a generic serial port, and if not, delay for up to 500ms.
  */
-#define claim_serial_port_i(port) for (uint8_t i = 0; i < SERIAL_TIMEOUT / 5 ||                          \
-                                  registry_get_plugged_type(port) == E_DEVICE_SERIAL ||                  \
-				  registry_get_plugged_type(port) != E_DEVICE_NONE; ++i) { delay(5); }   \
-				  claim_port_i(port, E_DEVICE_SERIAL)
+#define claim_serial_port_i(port)                                \
+    for (int i = 0; i < SERIAL_TIMEOUT / 5 &&                    \
+		registry_get_plugged_type(port) == E_DEVICE_NONE; ++i) { \
+		if (xTaskGetSchedulerState() != taskSCHEDULER_RUNNING) { \
+			vexBackgroundProcessing();                           \
+			registry_update_types();                             \
+		} else {                                                 \
+			delay(5);                                            \
+		}                                                        \
+	}                                                            \
+	claim_port_i(port, E_DEVICE_SERIAL)
 
 // Control function
 
