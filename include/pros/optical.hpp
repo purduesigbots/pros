@@ -407,7 +407,7 @@ class Optical : public Device {
 	 * ENODEV - The port cannot be configured as an Optical Sensor
 	 *
 	 * \return Integration time in milliseconds if the operation is successful
-	 *  or PROS_ERR if the operation failed, setting errno.
+	 *  or PROS_ERR_F if the operation failed, setting errno.
 	 */
 	double get_integration_time();
 
@@ -422,7 +422,7 @@ class Optical : public Device {
 	 * ENODEV - The port cannot be configured as an Optical Sensor
  	 *
 	 * \param time The desired integration time in milliseconds
-	 * \return 1 if the operation is successful or PROS_ERR_F if the operation failed,
+	 * \return 1 if the operation is successful or PROS_ERR if the operation failed,
 	 * setting errno.
 	 */
 	std::int32_t set_integration_time(double time);
