@@ -79,7 +79,7 @@ typedef enum aivision_mode_type {
  * For example, if a large hue range is specified for a blue color, colors that are more magenta or teal may be detected
  * as "blue".
  */
-typedef struct __attribute__((packed)) aivision_color_s {
+typedef struct aivision_color_s {
 	uint8_t id;
 	uint8_t red;
 	uint8_t green;
@@ -92,7 +92,7 @@ typedef struct __attribute__((packed)) aivision_color_s {
  * \struct aivision_code_s_t
  * This structure contains the parameters used by the AI Vision sensor to define a code.
  */
-typedef struct __attribute__((packed)) aivision_code_s {
+typedef struct aivision_code_s {
 	uint8_t id;
 	uint8_t length;
 	int16_t c1;
@@ -391,6 +391,20 @@ int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t* class_name);
  * failed, setting errno
  */
 int32_t aivision_set_usb_bounding_box_overlay(uint8_t port, bool enabled);
+
+/**
+ * Runs auto white balance to adjust to different lighting conditions.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a vision sensor
+ *
+ * \param port The V5 port number from 1-21
+ * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno
+ */
+int32_t aivision_start_awb(uint8_t port);
 
 /**
  * Get a code that the AI vision sensor has stored.

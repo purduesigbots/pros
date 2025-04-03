@@ -135,6 +135,13 @@ int32_t aivision_set_usb_bounding_box_overlay(uint8_t port, bool enabled) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
+int32_t aivision_start_awb(uint8_t port) {
+	claim_port_i(port - 1, E_DEVICE_AIVISION);
+	uint32_t mode = (1 << 18) | (1 << 27);
+	vexDeviceAiVisionModeSet(device->device_info, mode);
+	return_port(port - 1, PROS_SUCCESS);
+}
+
 aivision_object_s_t aivision_get_object(uint8_t port, uint32_t object_index) {
 	aivision_object_s_t result = AIVISION_OBJECT_ERR_INIT;
 

@@ -57,51 +57,15 @@ class AIVision : public Device {
 	 * \struct Color
 	 * This structure contains a detected color.
 	 */
-	struct __attribute__((packed)) Color {
-		uint8_t id;
-		uint8_t red;
-		uint8_t green;
-		uint8_t blue;
-		float hue_range;
-		float saturation_range;
-
-		Color(const aivision_color_s_t& color)
-		    : id(color.id),
-		      red(color.red),
-		      green(color.green),
-		      blue(color.blue),
-		      hue_range(color.hue_range),
-		      saturation_range(color.saturation_range) {}
-
-		explicit inline operator aivision_color_s() const {
-			return {id, red, green, blue, hue_range, saturation_range};
-		}
-	};
+	using Color = aivision_color_s_t;
 
 	/**
 	 * \struct Code
 	 * This structure contains the parameters used by the AI Vision sensor to define a code.
 	 */
-	typedef struct __attribute__((packed)) Code {
-		uint8_t id;
-		uint8_t length;
-		int16_t c1;
-		int16_t c2;
-		int16_t c3;
-		int16_t c4;
-		int16_t c5;
+	using Code = aivision_code_s_t;
 
-		Code(const aivision_code_s_t& code)
-		    : id(code.id), length(code.length), c1(code.c1), c2(code.c2), c3(code.c3), c4(code.c4), c5(code.c5) {}
-
-		explicit inline operator aivision_code_s() const {
-			return {id, length, c1, c2, c3, c4, c5};
-		}
-	};
-
-	typedef aivision_object_s_t Object;
-
-
+	using Object = aivision_object_s_t;
 
 	/**
 	 * Create a AI Vision Sensor object on the given port.
@@ -164,7 +128,7 @@ class AIVision : public Device {
 	 * }
 	 * \endcode
 	 */
-	static inline bool is_type(const Object& object, AivisionDetectType type);
+	static bool is_type(const Object& object, AivisionDetectType type);
 
 	/**
 	 * Resets the AI Vision sensor to the initial state.
@@ -472,6 +436,19 @@ class AIVision : public Device {
 	 * \return the code, or a struct with an invalid ID if the operation failed, setting errno
 	 */
 	AIVision::Code get_code(uint32_t id);
+
+	/**
+	 * Runs auto white balance to adjust to different lighting conditions.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * ENXIO - The given value is not within the range of V5 ports (1-21).
+	 * ENODEV - The port cannot be configured as a vision sensor
+	 *
+	 * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
+	 * failed, setting errno
+	 */
+	int32_t start_awb();
 
 	/**
 	 * Get a class name that the AI vision sensor has stored.

@@ -93,6 +93,10 @@ std::optional<std::string> AIVision::get_class_name(int32_t id) {
 	return std::nullopt;
 }
 
+int32_t AIVision::start_awb() {
+	return c::aivision_start_awb(this->_port);
+}
+
 AIVision::Code AIVision::get_code(uint32_t id) {
 	return c::aivision_get_code(this->_port, id);
 }
@@ -107,7 +111,8 @@ std::vector<AIVision::Object> AIVision::get_all_objects() {
 	if (count < 0 || count == PROS_ERR) {
 		return {};
 	}
-	std::vector<AIVision::Object> objects = std::vector<AIVision::Object>(count);
+	std::vector<AIVision::Object> objects = std::vector<AIVision::Object>();
+	objects.reserve(count);
 	for (size_t idx = 0; idx < count; idx++) {
 		objects.emplace_back(this->get_object(idx));
 	}
