@@ -661,6 +661,48 @@ v5_device_e_t registry_get_plugged_type(uint8_t port);
 
 ///@}
 
+/// \name Startup options
+///@{
+
+/**
+ * Enable/disable the PROS banner printed to the serial stream.
+ *
+ * \warning This function must be called BEFORE the PROS daemon starts.
+ * The easiest way to acheive this is to NOT call this function directly, 
+ * and instead use the BANNER_ENABLE macro.
+ *
+ * \param enable
+ *          Whether the banner should be enabled or disabled.
+ */
+void enable_banner(bool enabled);
+
+/**
+ * This priority value, when used with __attribute__((constructor( ))), is 
+ * guaranteed to run before PROS initializes.
+ */
+#define PRE_PROS_INIT_PRIORITY 101
+
+/**
+ * Enable/disable the PROS banner printed to the serial stream.
+ *
+ * \warning This macro must be used in global scope, outside of any function.
+ *
+ * \param enable
+ *          Whether the banner should be enabled or disabled.
+ */
+#ifdef __cplusplus
+#define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
+                               "Cannot use ENABLE_BANNER inside a function!");                                        \
+                               __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
+                               { pros::c::enable_banner(enabled); }
+#else
+#define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
+                               "Cannot use ENABLE_BANNER inside a function!");                                        \
+                               __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
+                               { enable_banner(enabled); }
+#endif
+///@}
+
 /// \name Filesystem
 ///@{
 

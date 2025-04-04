@@ -31,7 +31,7 @@
 #define IMU_RESET_FLAG_SET_TIMEOUT 1000
 #define IMU_RESET_TIMEOUT 3000  // Canonically this should be 2s, but 3s for good margin
 
-typedef struct __attribute__((packed)) imu_reset_data {
+typedef struct __attribute__((packed, __may_alias__)) imu_reset_data {
 	double heading_offset;
 	double rotation_offset;
 	double pitch_offset;

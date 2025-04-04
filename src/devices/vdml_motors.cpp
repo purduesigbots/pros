@@ -13,6 +13,7 @@
 #include "kapi.h"
 #include "pros/motors.hpp"
 #include "vdml/vdml.h"
+#include <cmath>
 
 namespace pros {
 inline namespace v5 {
@@ -20,7 +21,7 @@ using namespace pros::c;
 
 
 Motor::Motor(const std::int8_t port, const pros::v5::MotorGears gearset, const pros::v5::MotorUnits encoder_units)
-    : Device(port, DeviceType::motor), _port(port) {
+    : Device(std::abs(port), DeviceType::motor), _port(port) {
 	if (gearset != pros::v5::MotorGears::invalid) {
 		set_gearing(gearset);
 	}

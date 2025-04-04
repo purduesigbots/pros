@@ -44,6 +44,10 @@ std::int32_t Controller::get_digital_new_press(pros::controller_digital_e_t butt
 	return controller_get_digital_new_press(_id, button);
 }
 
+std::int32_t Controller::get_digital_new_release(pros::controller_digital_e_t button) {
+	return controller_get_digital_new_release(_id, button);
+}
+
 std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {
 	return controller_set_text(_id, line, col, str);
 }
