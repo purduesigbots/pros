@@ -81,12 +81,12 @@ AIVision::Object AIVision::get_object(uint32_t object_index) {
 }
 
 uint32_t AIVision::get_class_name(int32_t id, char* class_name) {
-	return c::aivision_get_class_name(this->_port, id, reinterpret_cast<uint8_t*>(class_name));
+	return c::aivision_get_class_name(this->_port, id, (uint8_t*)class_name);
 }
 
 std::optional<std::string> AIVision::get_class_name(int32_t id) {
 	char class_name[21];
-	uint32_t result = c::aivision_get_class_name(this->_port, id, reinterpret_cast<uint8_t*>(class_name));
+	uint32_t result = c::aivision_get_class_name(this->_port, id, (uint8_t*)class_name);
 	if (result == PROS_SUCCESS) {
 		return std::string(class_name);
 	}
@@ -113,7 +113,7 @@ std::vector<AIVision::Object> AIVision::get_all_objects() {
 	}
 	std::vector<AIVision::Object> objects = std::vector<AIVision::Object>();
 	objects.reserve(count);
-	for (size_t idx = 0; idx < count; idx++) {
+	for (int idx = 0; idx < count; idx++) {
 		objects.emplace_back(this->get_object(idx));
 	}
 	return objects;
