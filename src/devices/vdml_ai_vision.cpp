@@ -80,7 +80,7 @@ AIVision::Object AIVision::get_object(uint32_t object_index) {
 	return c::aivision_get_object(this->_port, object_index);
 }
 
-uint32_t AIVision::get_class_name(int32_t id, char* class_name) {
+int32_t AIVision::get_class_name(int32_t id, char* class_name) {
 	return c::aivision_get_class_name(this->_port, id, (uint8_t*)class_name);
 }
 

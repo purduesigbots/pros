@@ -488,7 +488,7 @@ class AIVision : public Device {
 	 * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno
 	 */
-	uint32_t get_class_name(int32_t id, char* class_name);
+	int32_t get_class_name(int32_t id, char* class_name);
 
 	/**
 	 * Get a class name that the AI vision sensor has stored.
