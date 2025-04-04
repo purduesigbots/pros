@@ -132,7 +132,7 @@ int32_t rotation_set_data_rate(uint8_t port, uint32_t rate);
  * }
  * \endcode
  */
-int32_t rotation_set_position(uint8_t port, uint32_t position);
+int32_t rotation_set_position(uint8_t port, int32_t position);
 
 /**
  * Reset the Rotation Sensor position to 0

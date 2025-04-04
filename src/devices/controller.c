@@ -18,22 +18,45 @@
 #include "v5_api.h"
 #include "vdml/vdml.h"
 
-#define CONTROLLER_MAX_COLS 15
+#define CONTROLLER_MAX_COLS ( 20U )
+#define CONTROLLER_MAX_CHARS ( 31U )
 
 // From enum in misc.h
-#define NUM_BUTTONS 12
+#define NUM_BUTTONS 13
 
-typedef struct controller_data {
+// button_pressed is used for get_digital_new_press and button_released is used for get_digital_new_release
+typedef struct __attribute__((__may_alias__)) controller_data {
 	bool button_pressed[NUM_BUTTONS];
+	bool button_released[NUM_BUTTONS];
 } controller_data_s_t;
 
-bool get_button_pressed(int port, int button) {
+static controller_data_s_t data[2] = {
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        },
+        {
+                .button_pressed = {false},
+                .button_released = {true},
+        }
+};
+
+static bool get_button_pressed(int port, int button) {
 	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
 }
 
-void set_button_pressed(int port, int button, bool state) {
-	controller_data_s_t* data = (controller_data_s_t*)registry_get_device_internal(port)->pad;
-	data->button_pressed[button] = state;
+static void set_button_pressed(int port, int button, bool state) {
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_pressed[button] = state;
+}
+
+static bool get_button_released(int port, int button) {
+	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_released[button];
+}
+
+static void set_button_released(int port, int button, bool state) {
+	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
+	data[port - V5_PORT_CONTROLLER_1].button_released[button] = state;
 }
 
 int32_t controller_is_connected(controller_id_e_t id) {
@@ -71,7 +94,7 @@ int32_t controller_get_battery_level(controller_id_e_t id) {
 int32_t controller_get_digital(controller_id_e_t id, controller_digital_e_t button) {
 	uint8_t port;
 	CONTROLLER_PORT_MUTEX_TAKE(id, port)
-	// the buttons enum starts at 4, the correct place for the libv5rts
+	// the buttons enum starts at 6, the correct place for the libv5rts
 	int32_t rtn = vexControllerGet(id, button);
 	internal_port_mutex_give(port);
 	return rtn;
@@ -98,6 +121,27 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
 	}
 }
 
+int32_t controller_get_digital_new_release(controller_id_e_t id, controller_digital_e_t button) {
+	int32_t pressed = controller_get_digital(id, button);
+	uint8_t port;
+	CONTROLLER_PORT_MUTEX_TAKE(id, port)
+	uint8_t button_num = button - E_CONTROLLER_DIGITAL_L1;
+
+	if (pressed) {
+		set_button_released(port, button_num, false);
+	}
+	if (!pressed && !get_button_released(port, button_num)) {
+		// button is currently not pressed and was detected as being pressed during
+		// last check
+		set_button_released(port, button_num, true);
+		internal_port_mutex_give(port);
+		return true;
+	} else {
+		internal_port_mutex_give(port);
+		return false;  // button is pressed or was already detected
+	}
+}
+
 int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, const char* str) {
 	uint8_t port;
 	CONTROLLER_PORT_MUTEX_TAKE(id, port)
@@ -107,7 +151,7 @@ int32_t controller_set_text(controller_id_e_t id, uint8_t line, uint8_t col, con
 	else
 		col++;
 
-	char* buf = strndup(str, CONTROLLER_MAX_COLS + 1);
+	char* buf = strndup(str, CONTROLLER_MAX_CHARS + 1);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
@@ -131,8 +175,8 @@ int32_t controller_print(controller_id_e_t id, uint8_t line, uint8_t col, const 
 
 	va_list args;
 	va_start(args, fmt);
-	char* buf = (char*)malloc(CONTROLLER_MAX_COLS + 1);
-	vsnprintf(buf, CONTROLLER_MAX_COLS + 1, fmt, args);
+	char* buf = (char*)malloc(CONTROLLER_MAX_CHARS + 1);
+	vsnprintf(buf, CONTROLLER_MAX_CHARS + 1, fmt, args);
 
 	uint32_t rtn_val = vexControllerTextSet(id, line, col, buf);
 	free(buf);
