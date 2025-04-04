@@ -22,10 +22,6 @@
 #define _PROS_AIVISION_H_
 
 /**
- * \ingroup c-aivision
- */
-
-/**
  * \addtogroup c-aivision
  *  @{
  */
@@ -40,6 +36,8 @@
 
 ///@}
 
+///@}
+
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -48,7 +46,12 @@ namespace pros {
 #endif
 
 /**
- * \enum aivision_detect_type_e_t
+ * \addtogroup c-aivision
+ *  @{
+ */
+
+/**
+ * \enum aivision_detected_type_e_t
  * This enumeration defines what kind of object is stored inside the union in aivision_object_s
  */
 typedef enum aivision_detected_type {
@@ -80,31 +83,35 @@ typedef enum aivision_mode_type {
  * as "blue".
  */
 typedef struct aivision_color_s {
-	uint8_t id;
-	uint8_t red;
-	uint8_t green;
-	uint8_t blue;
-	float hue_range;
-	float saturation_range;
+	uint8_t id;             /**< id of color descriptor, can range from 1-7 */
+	uint8_t red;            /**< red value of color */
+	uint8_t green;          /**< green value of color */
+	uint8_t blue;           /**< blue value of color */
+	float hue_range;        /**< range by which detected color's hue can vary from the base color */
+	float saturation_range; /**< range by which detected color's saturation can vary from base color */
 } aivision_color_s_t;
 
 /**
  * \struct aivision_code_s_t
  * This structure contains the parameters used by the AI Vision sensor to define a code.
+ * Codes are a combination of color descriptors, and tells the AI Vision sensor to merge objects
+ * close to each other that belong to the given color descriptors into a single object that matches
+ * the code descriptor.
+ * Codes must use at least 2, and no greater than 5, color descriptors.
  */
 typedef struct aivision_code_s {
-	uint8_t id;
-	uint8_t length;
-	int16_t c1;
-	int16_t c2;
-	int16_t c3;
-	int16_t c4;
-	int16_t c5;
+	uint8_t id;     /**< id of code descriptor, can range from 1-5 */
+	uint8_t length; /**< number of color descriptors used by this code. */
+	int16_t c1;     /**< id of first color descriptor */
+	int16_t c2;     /**< id of second color descriptor */
+	int16_t c3;     /**< id of third color descriptor */
+	int16_t c4;     /**< id of fourth color descriptor */
+	int16_t c5;     /**< id of fifth color descriptor */
 } aivision_code_s_t;
 
 /**
  * \enum aivision_tag_family_e_t
- * This enumeration corresponds to a familt of AprilTags.
+ * This enumeration corresponds to a family of AprilTags.
  * \see https://april.eecs.umich.edu/software/apriltag
  */
 typedef enum aivision_tag_family_e {
@@ -166,13 +173,17 @@ typedef struct __attribute__((packed)) aivision_object_s {
 		aivision_object_element_s_t element;
 	} object;
 } aivision_object_s_t;
+/// @}
 
 #ifdef __cplusplus
 namespace c {
 #endif
 
+/**
+ * \addtogroup c-aivision
+ *  @{
+ */
 /// \name Functions
-///@{
 
 /**
  * Resets the AI Vision sensor to the initial state.

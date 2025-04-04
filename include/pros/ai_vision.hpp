@@ -31,16 +31,36 @@
 namespace pros {
 inline namespace v5 {
 
-enum class AivisionDetectType : uint8_t { color = (1 << 0), code = (1 << 1), object = (1 << 2), tag = (1 << 3) };
+/**
+ * \enum AivisionDetectType
+ * \ingroup cpp-aivision
+ * Enum class for describing detection type of objects detected by the AI Vision Sensor.
+ */
+enum class AivisionDetectType : uint8_t {
+	color = (1 << 0), /**< object was detected based on color descriptor */
+	code = (1 << 1), /**< object was detected based on code descriptor */
+	object = (1 << 2), /**< object was detected using AI model */
+	tag = (1 << 3) /**< object was detected as an AprilTag */
+};
 
+/**
+ * \enum AivisionModeType
+ * \ingroup cpp-aivision
+ * Enum class for enabling/disabling detection types of AI Vision Sensor.
+ */
 enum class AivisionModeType : uint8_t {
-	tags = (1 << 0),
-	colors = (1 << 1),
-	objects = (1 << 2),
-	color_merge = (1 << 4),
+	tags = (1 << 0), /**< AprilTag detection */
+	colors = (1 << 1), /**< color and code detection */
+	objects = (1 << 2), /**< AI model object detection */
+	color_merge = (1 << 4), /**< merge adjacent color detections */
 	all = (1 << 0) | (1 << 1) | (1 << 2),
 };
 
+/**
+ * \enum AivisionTagFamily
+ * \ingroup cpp-aivision
+ * Enum class for describing family of apriltags to detect.
+ */
 enum class AivisionTagFamily { tag_21H7 = 0, tag_16H5 = 1, tag_25H9 = 2, tag_61H11 = 3 };
 
 /**
@@ -53,18 +73,8 @@ class AIVision : public Device {
 	 */
 	public:
 
-	/**
-	 * \struct Color
-	 * This structure contains a detected color.
-	 */
 	using Color = aivision_color_s_t;
-
-	/**
-	 * \struct Code
-	 * This structure contains the parameters used by the AI Vision sensor to define a code.
-	 */
 	using Code = aivision_code_s_t;
-
 	using Object = aivision_object_s_t;
 
 	/**
@@ -356,7 +366,7 @@ class AIVision : public Device {
 	 * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno
 	 */
-	int32_t set_color(const pros::AIVision::Color& color);
+	int32_t set_color(const Color& color);
 
 	/**
 	 * Get a color configuration that the AI vision sensor has stored.
@@ -408,7 +418,7 @@ class AIVision : public Device {
 	 * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
 	 * failed, setting errno
 	 */
-	uint32_t set_code(const pros::AIVision::Code& code);
+	uint32_t set_code(const Code& code);
 
 	/**
 	 * Get a code that the AI vision sensor has stored.
@@ -583,6 +593,7 @@ class AIVision : public Device {
 	 * @return a vector of all detected objects
 	 */
 	std::vector<Object> get_all_objects();
+	/// @}
 };
 }  // namespace v5
 }  // namespace pros
