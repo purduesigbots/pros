@@ -87,8 +87,8 @@ typedef struct aivision_color_s {
 	uint8_t red;            /**< red value of color */
 	uint8_t green;          /**< green value of color */
 	uint8_t blue;           /**< blue value of color */
-	float hue_range;        /**< range by which detected color's hue can vary from the base color */
-	float saturation_range; /**< range by which detected color's saturation can vary from base color */
+	float hue_range;        /**< range by which detected color's hue can vary from the base color, can range from 1-40 */
+	float saturation_range; /**< range by which detected color's saturation can vary from base color, can range from 0.1-1 */
 } aivision_color_s_t;
 
 /**
