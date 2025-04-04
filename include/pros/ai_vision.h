@@ -22,10 +22,6 @@
 #define _PROS_AIVISION_H_
 
 /**
- * \ingroup c-aivision
- */
-
-/**
  * \addtogroup c-aivision
  *  @{
  */
@@ -40,6 +36,8 @@
 
 ///@}
 
+///@}
+
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -48,7 +46,12 @@ namespace pros {
 #endif
 
 /**
- * \enum aivision_detect_type_e_t
+ * \addtogroup c-aivision
+ *  @{
+ */
+
+/**
+ * \enum aivision_detected_type_e_t
  * This enumeration defines what kind of object is stored inside the union in aivision_object_s
  */
 typedef enum aivision_detected_type {
@@ -68,6 +71,7 @@ typedef enum aivision_mode_type {
 	E_AIVISION_MODE_TAGS = (1 << 0),
 	E_AIVISION_MODE_COLORS = (1 << 1),
 	E_AIVISION_MODE_OBJECTS = (1 << 2),
+	E_AIVISION_MODE_COLOR_MERGE = (1 << 4),
 	E_AIVISION_MODE_ALL = (1 << 0) | (1 << 1) | (1 << 2),
 } aivision_mode_type_e_t;
 
@@ -78,32 +82,36 @@ typedef enum aivision_mode_type {
  * For example, if a large hue range is specified for a blue color, colors that are more magenta or teal may be detected
  * as "blue".
  */
-typedef struct __attribute__((packed)) aivision_color_s {
-	uint8_t id;
-	uint8_t red;
-	uint8_t green;
-	uint8_t blue;
-	float hue_range;
-	float saturation_range;
+typedef struct aivision_color_s {
+	uint8_t id;             /**< id of color descriptor, can range from 1-7 */
+	uint8_t red;            /**< red value of color */
+	uint8_t green;          /**< green value of color */
+	uint8_t blue;           /**< blue value of color */
+	float hue_range;        /**< range by which detected color's hue can vary from the base color, can range from 1-40 */
+	float saturation_range; /**< range by which detected color's saturation can vary from base color, can range from 0.1-1 */
 } aivision_color_s_t;
 
 /**
  * \struct aivision_code_s_t
  * This structure contains the parameters used by the AI Vision sensor to define a code.
+ * Codes are a combination of color descriptors, and tells the AI Vision sensor to merge objects
+ * close to each other that belong to the given color descriptors into a single object that matches
+ * the code descriptor.
+ * Codes must use at least 2, and no greater than 5, color descriptors.
  */
-typedef struct __attribute__((packed)) aivision_code_s {
-	uint8_t id;
-	uint8_t length;
-	int16_t c1;
-	int16_t c2;
-	int16_t c3;
-	int16_t c4;
-	int16_t c5;
+typedef struct aivision_code_s {
+	uint8_t id;     /**< id of code descriptor, can range from 1-5 */
+	uint8_t length; /**< number of color descriptors used by this code. */
+	int16_t c1;     /**< id of first color descriptor */
+	int16_t c2;     /**< id of second color descriptor */
+	int16_t c3;     /**< id of third color descriptor */
+	int16_t c4;     /**< id of fourth color descriptor */
+	int16_t c5;     /**< id of fifth color descriptor */
 } aivision_code_s_t;
 
 /**
  * \enum aivision_tag_family_e_t
- * This enumeration corresponds to a familt of AprilTags.
+ * This enumeration corresponds to a family of AprilTags.
  * \see https://april.eecs.umich.edu/software/apriltag
  */
 typedef enum aivision_tag_family_e {
@@ -165,13 +173,17 @@ typedef struct __attribute__((packed)) aivision_object_s {
 		aivision_object_element_s_t element;
 	} object;
 } aivision_object_s_t;
+/// @}
 
 #ifdef __cplusplus
 namespace c {
 #endif
 
+/**
+ * \addtogroup c-aivision
+ *  @{
+ */
 /// \name Functions
-///@{
 
 /**
  * Resets the AI Vision sensor to the initial state.
@@ -291,8 +303,24 @@ int32_t aivision_enable_detection_types(uint8_t port, uint8_t types_mask);
 int32_t aivision_disable_detection_types(uint8_t port, uint8_t types_mask);
 
 /**
- * Sets the april tag family to detect. Only one family can be detected at a time.
- * The tag detection type must be enabled as well.
+ * Sets the april tag family to detect. Use this function will override the enabled apriltag
+ * detection family.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a vision sensor
+ *
+ * \param port The V5 port number from 1-21
+ * \param family the tag family to configure the AI Vision sensor to detect
+ * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno.
+ */
+int32_t aivision_set_tag_family_override(uint8_t port, aivision_tag_family_e_t family);
+
+/**
+ * Sets the april tag family to detect. Use this function will allow multiple apriltags
+ * to be detected.
  *
  * This function uses the following values of errno when an error state is
  * reached:
@@ -321,7 +349,7 @@ int32_t aivision_set_tag_family(uint8_t port, aivision_tag_family_e_t family);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno
  */
-int32_t aivision_set_color(uint8_t port, aivision_color_s_t* color);
+int32_t aivision_set_color(uint8_t port, const aivision_color_s_t* color);
 
 /**
  * Get a color configuration that the AI vision sensor has stored.
@@ -376,6 +404,20 @@ int32_t aivision_get_class_name(uint8_t port, int32_t id, uint8_t* class_name);
 int32_t aivision_set_usb_bounding_box_overlay(uint8_t port, bool enabled);
 
 /**
+ * Runs auto white balance to adjust to different lighting conditions.
+ *
+ * This function uses the following values of errno when an error state is
+ * reached:
+ * ENXIO - The given value is not within the range of V5 ports (1-21).
+ * ENODEV - The port cannot be configured as a vision sensor
+ *
+ * \param port The V5 port number from 1-21
+ * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
+ * failed, setting errno
+ */
+int32_t aivision_start_awb(uint8_t port);
+
+/**
  * Get a code that the AI vision sensor has stored.
  *
  *
@@ -405,7 +447,7 @@ aivision_code_s_t aivision_get_code(uint8_t port, uint32_t id);
  * \return PROS_SUCCESS if the operation was successful or PROS_ERR if the operation
  * failed, setting errno
  */
-int32_t aivision_set_code(uint8_t port, aivision_code_s_t* wcode);
+int32_t aivision_set_code(uint8_t port, const aivision_code_s_t* wcode);
 
 /**
  * Get the current number of objects detected by the AI vision sensor.
