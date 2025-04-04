@@ -149,8 +149,7 @@ aivision_object_s_t aivision_get_object(uint8_t port, uint32_t object_index) {
         return result;
     }
     v5_smart_device_s_t* device = registry_get_device(port - 1);
-	  // +1 because the SDK is 1-indexed
-    vexDeviceAiVisionObjectGet(device->device_info, object_index + 1, (V5_DeviceAiVisionObject*)&result);
+    vexDeviceAiVisionObjectGet(device->device_info, object_index, (V5_DeviceAiVisionObject*)&result);
     return_port(port - 1, result);
 }
 
