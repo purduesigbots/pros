@@ -7,7 +7,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -146,7 +146,7 @@ class Rotation : public Device {
 	 * }
 	 * \endcode
 	 */
-	virtual std::int32_t set_position(std::uint32_t position) const;
+	virtual std::int32_t set_position(std::int32_t position) const;
 
 	/**
 	 * Reset the Rotation Sensor position to 0

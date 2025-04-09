@@ -11,7 +11,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -100,86 +100,6 @@ bool task_abort_delay(task_t task);
  */
 void task_notify_when_deleting(task_t target_task, task_t task_to_notify, uint32_t value,
                                notify_action_e_t notify_action);
-
-/**
- * Creates a recursive mutex which can be locked recursively by the owner.
- *
- * \return A newly created recursive mutex.
- * 
- * \b Example:
- * \code
- * mutex_t mutex = mutex_recursive_create();
- * 
- * void task_fn(void* param) {
- *   while(1) {
- *     mutex_recursive_take(mutex, 1000);
- *     // critical section
- *     mutex_recursive_give(mutex);
- *     task_delay(1000);
- *   }
- * }
- * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
- *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
- *
- * \endcode
- */
-mutex_t mutex_recursive_create(void);
-
-/**
- * Takes a recursive mutex.
- *
- * \param mutex
- *        A mutex handle created by mutex_recursive_create
- * \param wait_time
- *        Amount of time to wait before timing out
- *
- * \return 1 if the mutex was obtained, 0 otherwise
- * 
- * \b Example:
- * \code
- * mutex_t mutex = mutex_recursive_create();
- *
- * void task_fn(void* param) {
- *   while(1) {
- *     mutex_recursive_take(mutex, 1000);
- *     // critical section
- *     mutex_recursive_give(mutex);
- *     task_delay(1000);
- *   }
- * }
- * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
- *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
- *
- * \endcode
- */
-bool mutex_recursive_take(mutex_t mutex, uint32_t timeout);
-
-/**
- * Gives a recursive mutex.
- *
- * \param mutex
- *        A mutex handle created by mutex_recursive_create
- *
- * \return 1 if the mutex was obtained, 0 otherwise
- * 
- * \b Example:
- * \code
- * mutex_t mutex = mutex_recursive_create();
- *
- * void task_fn(void* param) {
- *   while(1) {
- *     mutex_recursive_take(mutex, 1000);
- *     // critical section
- *     mutex_recursive_give(mutex);
- *     task_delay(1000);
- *   }
- * }
- * task_create(task_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT,
- *                           TASK_STACK_DEPTH_DEFAULT, "task_fn");
- *
- * \endcode
- */
-bool mutex_recursive_give(mutex_t mutex);
 
 /**
  * Returns a handle to the current owner of a mutex.
@@ -739,6 +659,48 @@ v5_device_e_t registry_get_bound_type(uint8_t port);
  */
 v5_device_e_t registry_get_plugged_type(uint8_t port);
 
+///@}
+
+/// \name Startup options
+///@{
+
+/**
+ * Enable/disable the PROS banner printed to the serial stream.
+ *
+ * \warning This function must be called BEFORE the PROS daemon starts.
+ * The easiest way to acheive this is to NOT call this function directly, 
+ * and instead use the BANNER_ENABLE macro.
+ *
+ * \param enable
+ *          Whether the banner should be enabled or disabled.
+ */
+void enable_banner(bool enabled);
+
+/**
+ * This priority value, when used with __attribute__((constructor( ))), is 
+ * guaranteed to run before PROS initializes.
+ */
+#define PRE_PROS_INIT_PRIORITY 101
+
+/**
+ * Enable/disable the PROS banner printed to the serial stream.
+ *
+ * \warning This macro must be used in global scope, outside of any function.
+ *
+ * \param enable
+ *          Whether the banner should be enabled or disabled.
+ */
+#ifdef __cplusplus
+#define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
+                               "Cannot use ENABLE_BANNER inside a function!");                                        \
+                               __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
+                               { pros::c::enable_banner(enabled); }
+#else
+#define ENABLE_BANNER(enabled) static_assert(!__builtin_strcmp(__FUNCTION__, "top level"),                            \
+                               "Cannot use ENABLE_BANNER inside a function!");                                        \
+                               __attribute__((constructor(PRE_PROS_INIT_PRIORITY))) static void _enable_banner_impl() \
+                               { enable_banner(enabled); }
+#endif
 ///@}
 
 /// \name Filesystem

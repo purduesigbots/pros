@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2021, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -56,6 +56,7 @@ typedef enum v5_device_e {
 	E_DEVICE_ADI = 12, ///< This port is an ADI expander
 	E_DEVICE_OPTICAL = 16, ///< An optical sensor is plugged into the port
 	E_DEVICE_GPS = 20, ///< A GPS sensor is plugged into the port
+	E_DEVICE_AIVISION = 29, ///< An AI Vision sensor is plugged into the port
 	E_DEVICE_SERIAL = 129, ///< A serial device is plugged into the port
 	E_DEVICE_GENERIC __attribute__((deprecated("use E_DEVICE_SERIAL instead"))) = E_DEVICE_SERIAL,
 	E_DEVICE_UNDEFINED = 255 ///< The device type is not defined, or is not a valid device

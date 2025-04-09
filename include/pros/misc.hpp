@@ -8,7 +8,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reservered.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -210,6 +210,45 @@ class Controller {
 	 * \endcode
 	 */
 	std::int32_t get_digital_new_press(controller_digital_e_t button);
+
+	/**
+	 * Returns a falling-edge case for a controller button press.
+	 *
+	 * This function is not thread-safe.
+	 * Multiple tasks polling a single button may return different results under
+	 * the same circumstances, so only one task should call this function for any
+	 * given button. E.g., Task A calls this function for buttons 1 and 2.
+	 * Task B may call this function for button 3, but should not for buttons
+	 * 1 or 2. A typical use-case for this function is to call inside opcontrol
+	 * to detect new button releases, and not in any other tasks.
+	 *
+	 * This function uses the following values of errno when an error state is
+	 * reached:
+	 * EACCES - Another resource is currently trying to access the controller
+	 * port.
+	 *
+	 * \param button
+	 * 			  The button to read. Must be one of
+	 *        DIGITAL_{RIGHT,DOWN,LEFT,UP,A,B,Y,X,R1,R2,L1,L2}
+	 *
+	 * \return 1 if the button on the controller is not pressed and had been
+	 * pressed the last time this function was called, 0 otherwise.
+	 *
+	 * \b Example
+	 * \code
+	 * void opcontrol() {
+	 * 	pros::Controller master(pros::E_CONTROLLER_MASTER);
+	 * 	while (true) {
+	 *   if (master.get_digital_new_release(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *     // Toggle pneumatics or other similar actions
+	 *   }
+	 *
+	 *   delay(2);
+	 *   }
+	 * }
+	 * \endcode
+	 */
+	std::int32_t get_digital_new_release(controller_digital_e_t button);
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-function"

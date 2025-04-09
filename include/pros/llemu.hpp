@@ -11,7 +11,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -47,7 +47,11 @@ namespace pros {
 /**
  * \ingroup cpp-llemu 
  */
+#if defined(_PROS_KERNEL_SUPPRESS_LLEMU_WARNING) || defined(_PROS_INCLUDE_LIBLVGL_LLEMU_HPP)
 namespace lcd {
+#else
+namespace [[deprecated("Without liblvgl, LLEMU functions will not display anything. To install liblvgl run \"pros c install liblvgl\" in the PROS terminal.")]] lcd {
+#endif
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wunused-function"
     namespace {
@@ -70,14 +74,19 @@ namespace lcd {
      * For documentation on these functions, please see the doxygen comments for
      * these functions in the libvgl llemu headers.
      */
-
-    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
-    extern __attribute__((weak)) bool clear_line(std::int16_t line);
-    extern __attribute__((weak)) bool initialize(void);
-    extern __attribute__((weak)) std::uint8_t read_buttons(void);
-    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
     extern __attribute__((weak)) bool is_initialized(void);
-
+    extern __attribute__((weak)) bool initialize(void);
+    extern __attribute__((weak)) bool shutdown(void);
+    extern __attribute__((weak)) bool set_text(std::int16_t line, std::string text);
+    extern __attribute__((weak)) bool clear(void);
+    extern __attribute__((weak)) bool clear_line(std::int16_t line);
+    // TODO: Text_Align is defined in liblvgl so this ain't going to compile for now. 
+    // extern __attribute__((weak)) void set_text_align(Text_Align text_align);
+    extern __attribute__((weak)) void register_btn0_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn1_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) void register_btn2_cb(lcd_btn_cb_fn_t cb);
+    extern __attribute__((weak)) std::uint8_t read_buttons(void);
+    
     /**
      * \addtogroup cpp-llemu
      * @{ 

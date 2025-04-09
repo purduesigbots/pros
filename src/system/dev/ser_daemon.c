@@ -7,7 +7,7 @@
  * characters and responding to any kernel commands (like printing the banner or
  * enabling COBS)
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -18,6 +18,7 @@
 #include <errno.h>
 
 #include "kapi.h"
+#include "pros/version.h"
 #include "system/dev/banners.h"
 #include "system/hot.h"
 #include "system/optimizers.h"
@@ -29,7 +30,14 @@ __attribute__((weak)) char const* const _PROS_COMPILE_TIMESTAMP = "Unknown";
 __attribute__((weak)) char const* const _PROS_COMPILE_DIRECTORY = "Unknown";
 __attribute__((weak)) const int         _PROS_COMPILE_TIMESTAMP_INT = 0;
 
+static bool banner_is_enabled = true;
+
+void enable_banner(bool enabled) {
+	banner_is_enabled = enabled;
+}
+
 void print_small_banner(void) {
+	if (!banner_is_enabled) return;
 	uint32_t uptime = millis();
 	char const * const timestamp = (HOT_TABLE && HOT_TABLE->compile_timestamp) ? HOT_TABLE->compile_timestamp : _PROS_COMPILE_TIMESTAMP;
 	char const * const directory = (HOT_TABLE && HOT_TABLE->compile_directory) ? HOT_TABLE->compile_directory : _PROS_COMPILE_DIRECTORY;
@@ -38,6 +46,7 @@ void print_small_banner(void) {
 }
 
 void print_large_banner(void) {
+	if (!banner_is_enabled) return;
 	uint8_t version[4];
 	uint32_t* sys_ver = (uint32_t*)version;
 	*sys_ver = vexSystemVersion();

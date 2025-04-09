@@ -7,7 +7,7 @@
  * This file should not be modified by users, since it gets replaced whenever
  * a kernel upgrade occurs.
  *
- * \copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -132,7 +132,7 @@ int32_t rotation_set_data_rate(uint8_t port, uint32_t rate);
  * }
  * \endcode
  */
-int32_t rotation_set_position(uint8_t port, uint32_t position);
+int32_t rotation_set_position(uint8_t port, int32_t position);
 
 /**
  * Reset the Rotation Sensor position to 0

@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the VEX Rotation sensor.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -45,7 +45,7 @@ int32_t rotation_reset_position(uint8_t port) {
 	return_port(port - 1, PROS_SUCCESS);
 }
 
-int32_t rotation_set_position(uint8_t port, uint32_t position) {
+int32_t rotation_set_position(uint8_t port, int32_t position) {
 	claim_port_i(port - 1, E_DEVICE_ROTATION);
 	vexDeviceAbsEncPositionSet(device->device_info, position);
 	return_port(port - 1, PROS_SUCCESS);

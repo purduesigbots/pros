@@ -4,7 +4,7 @@
  * Contains functions for interacting with the V5 Controller, as well as the
  * competition control functions.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -42,6 +42,10 @@ std::int32_t Controller::get_digital(pros::controller_digital_e_t button) {
 
 std::int32_t Controller::get_digital_new_press(pros::controller_digital_e_t button) {
 	return controller_get_digital_new_press(_id, button);
+}
+
+std::int32_t Controller::get_digital_new_release(pros::controller_digital_e_t button) {
+	return controller_get_digital_new_release(_id, button);
 }
 
 std::int32_t Controller::set_text(std::uint8_t line, std::uint8_t col, const char* str) {

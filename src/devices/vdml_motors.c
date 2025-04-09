@@ -3,7 +3,7 @@
  *
  * Contains functions for interacting with the V5 Motors.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -308,5 +308,12 @@ int32_t motor_get_voltage_limit(int8_t port) {
 	port = abs(port);
 	claim_port_i(port - 1, E_DEVICE_MOTOR);
 	int32_t rtn = vexDeviceMotorVoltageLimitGet(device->device_info);
+	return_port(port - 1, rtn);
+}
+
+motor_type_e_t motor_get_type(int8_t port) {
+	port = abs(port);
+	claim_port_i(port - 1, E_DEVICE_MOTOR);
+	int32_t rtn = vexDeviceMotorTypeGet(device->device_info);
 	return_port(port - 1, rtn);
 }

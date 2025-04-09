@@ -5,7 +5,7 @@
  * It's used to check which streams are enabled in ser_driver for the moment,
  * but also has list_contains which may be useful in other contexts.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public

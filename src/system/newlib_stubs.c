@@ -6,7 +6,7 @@
  * Contains the various methods needed to enable standard C library support
  * through the use of the Arm-distributed implementation of newlib.
  *
- * \copyright Copyright (c) 2017-2023, Purdue University ACM SIGBots.
+ * \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -31,8 +31,19 @@
 #define MICRO_TO_NANO 1000
 
 void _exit(int status) {
+	extern void flush_output_streams();
+	flush_output_streams();
+	extern void ser_output_flush();
+	ser_output_flush();
+	rtos_suspend_all();
 	if(status != 0) dprintf(3, "Error %d\n", status); // kprintf
+	uint32_t start_time = millis();
+	static const uint32_t max_flush_time = 50;
+	while (vexSerialWriteFree(1) != 2048 || millis() - start_time > max_flush_time) {
+		vexBackgroundProcessing();
+	}
 	vexSystemExitRequest();
+	while (1) vexBackgroundProcessing();
 }
 
 int usleep( useconds_t period ) {
@@ -59,9 +70,12 @@ int getentropy(void *_buffer, size_t _length) {
 
 // HACK: this helps confused libc++ functions call the right instruction. for
 // info see https://github.com/purduesigbots/pros/issues/153#issuecomment-519335375
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winfinite-recursion"
 void __sync_synchronize(void) {
 	__sync_synchronize();
 }
+#pragma GCC diagnostic pop
 
 // These variables are used to store the user-set time.
 // When user_time_set is false, the realtime clock will use the timestamp as the
