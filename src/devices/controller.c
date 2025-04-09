@@ -33,29 +33,27 @@ typedef struct __attribute__((__may_alias__)) controller_data {
 static controller_data_s_t data[2] = {
         {
                 .button_pressed = {false},
-                .button_released = {true},
+                .button_released = {true, true, true, true, true, true, true, true, true, true, true, true, true},
         },
         {
                 .button_pressed = {false},
-                .button_released = {true},
+                .button_released = {true, true, true, true, true, true, true, true, true, true, true, true, true},
         }
 };
 
 static bool get_button_pressed(int port, int button) {
-	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_pressed[button];
+	return data[port - V5_PORT_CONTROLLER_1].button_pressed[button];
 }
 
 static void set_button_pressed(int port, int button, bool state) {
-	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data[port - V5_PORT_CONTROLLER_1].button_pressed[button] = state;
 }
 
 static bool get_button_released(int port, int button) {
-	return ((controller_data_s_t*)registry_get_device_internal(port)->pad)->button_released[button];
+	return data[port - V5_PORT_CONTROLLER_1].button_released[button];
 }
 
 static void set_button_released(int port, int button, bool state) {
-	data[port - V5_PORT_CONTROLLER_1] = *(controller_data_s_t*)registry_get_device_internal(port)->pad;
 	data[port - V5_PORT_CONTROLLER_1].button_released[button] = state;
 }
 
