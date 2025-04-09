@@ -33,11 +33,11 @@ typedef struct __attribute__((__may_alias__)) controller_data {
 static controller_data_s_t data[2] = {
         {
                 .button_pressed = {false},
-                .button_released = {true},
+                .button_released = {true, true, true, true, true, true, true, true, true, true, true, true, true},
         },
         {
                 .button_pressed = {false},
-                .button_released = {true},
+                .button_released = {true, true, true, true, true, true, true, true, true, true, true, true, true},
         }
 };
 
