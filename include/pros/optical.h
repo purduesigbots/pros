@@ -472,7 +472,7 @@ int32_t optical_disable_gesture(uint8_t port);
  * \param port
  *        The V5 Optical Sensor port number from 1-21
  * \return Integration time in milliseconds if the operation is successful 
- * or PROS_ERR if the operation failed, setting errno.
+ * or PROS_ERR_F if the operation failed, setting errno.
  */
 double optical_get_integration_time(uint8_t port);
 
