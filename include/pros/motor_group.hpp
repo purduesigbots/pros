@@ -54,7 +54,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 *
-	 * \param gearset =  pros::v5::MotorGears::invalid
+	 * \param gearset = pros::v5::MotorGears::invalid
 	 * 		  Optional parameter for the gearset for the motor.
 	 * 		  Does not explicitly set the motor gearset if it is invalid or not specified
 	 *
@@ -65,7 +65,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  \b Example
 	 * \code
 	 * void opcontrol() {
-	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1 and a reversed motor on port 2
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
 	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
 	 * }
@@ -91,7 +91,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 		  A reversed motor will reverse the input or output movement functions and movement related
 	 * 		  telemetry in order to produce consistant behavior with non-reversed motors
 	 *
-	 * \param gearset =  pros::v5::MotorGears::invalid
+	 * \param gearset = pros::v5::MotorGears::invalid
 	 * \param gearset = pros::v5::MotorGears::green
 	 * 		  Optional parameter for the gearset for the motor.
 	 * 		  Does not explicitly set the motor gearset if it is invalid or not specified
@@ -103,7 +103,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *  \b Example
 	 * \code
 	 * void opcontrol() {
-	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 with
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1 and a reversed motor on port 2 with
 	 *  with both motors using the green gearset and degrees as the encoder units
 	 *  MotorGroup rotations_mg({4, 5}, pros::v5::MotorGears::blue, pros::v5::MotorUnits::rotations);
 	 *  //Creates a motor group on ports 4 and 5 with blue motors using rotaions as the encoder units
@@ -126,14 +126,14 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 *
 	 * \param abstract_motor
-	 * 		  THe abstract motor to turn into a motor group
+	 * 		  The abstract motor to turn into a motor group
 	 * 		  Uses abstract_motor.get_port_all() to get the vector of ports
 	 *
 	 *
 	 *  \b Example
 	 * \code
 	 * void opcontrol() {
-	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1  and a reversed motor on port 2 with
+	 * 	MotorGroup first_mg({1, -2}); //Creates a motor on port 1 and a reversed motor on port 2 with
 	 *  with both motors using the green gearset and degrees as the encoder units
 	 * 	AbstractMotor abs_mtr_group = first_mg;
 	 * 	MotorGroup new_mg = (MotorGroup) abs_mtr_group;
@@ -918,7 +918,7 @@ class MotorGroup : public virtual AbstractMotor {
 	std::vector<double> get_position_all(void) const;
 
 	/**
-	 * Gets the power drawn by a motor in  the motor group in Watts.
+	 * Gets the power drawn by a motor in the motor group in Watts.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -1068,7 +1068,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	double get_temperature(const std::uint8_t index = 0) const;
 	/**
-	 * Gets the temperature of each motor  in the motor group in degrees Celsius.
+	 * Gets the temperature of each motor in the motor group in degrees Celsius.
 	 *
 	 * This function uses the following values of errno when an error state is
 	 * reached:
@@ -2044,7 +2044,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \endcode
 	 */
 	std::int32_t set_gearing(std::vector<MotorGears> gearsets) const;
-  
+
 	/**
 	 * Sets one of the gear cartridge (red, green, blue) for one motor in the motor group. Usable with
 	 * the C++ enum class and the C enum.
@@ -2276,7 +2276,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   mg.move_absolute(100, 100); // This does not cause a movement
 	 *   mg.set_zero_position(80);
 	 *   mg.set_zero_position(80, 1);
-	 *   mg.move_absolute(100, 100); // Moves 80 units forward
+	 *   mg.move_absolute(100, 100); // Moves 20 units forward
 	 * }
 	 * \endcode
 	 *
@@ -2307,7 +2307,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 *   mg.move_absolute(100, 100); // This does not cause a movement
 	 *
 	 *   mg.set_zero_position_all(80);
-	 *   mg.move_absolute(100, 100); // Moves 80 units forward
+	 *   mg.move_absolute(100, 100); // Moves 20 units forward
 	 * }
 	 * \endcode
 	 *

@@ -39,7 +39,7 @@ static uint32_t _link_init(uint8_t port, const char* link_id, link_type_e_t type
             return PROS_ERR;
     }
     v5_device_e_t plugged_type = registry_get_plugged_type(port);
-    if (plugged_type == E_DEVICE_RADIO) {
+    if (plugged_type == E_DEVICE_RADIO || plugged_type == E_DEVICE_NONE) {
         if (!VALIDATE_PORT_NO(port)) {
 		    errno = ENXIO;
 		    return PROS_ERR;
