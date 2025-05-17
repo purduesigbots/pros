@@ -17,7 +17,7 @@
 #pragma once
 
 #define PROS_VERSION_MAJOR 4
-#define PROS_VERSION_MINOR 1
+#define PROS_VERSION_MINOR 2
 
 #define PROS_VERSION_PATCH 0
-#define PROS_VERSION_STRING "4.1.0"
+#define PROS_VERSION_STRING "4.2.0"
