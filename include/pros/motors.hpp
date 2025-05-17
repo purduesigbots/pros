@@ -163,7 +163,7 @@ class Motor : public AbstractMotor, public Device {
 	 * This movement is relative to the current position of the motor as given in
 	 * pros::Motor::motor_get_position(). Providing 10.0 as the position parameter
 	 * would result in the motor moving clockwise 10 units (counter clockwise if reversed),
-	 *  no matter what the current position is.
+	 * no matter what the current position is.
 	 *
 	 * \note This function simply sets the target for the motor, it does not block
 	 * program execution until the movement finishes.
@@ -274,7 +274,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 *  void autonomous() {
-	 *	Motor motor(1);
+	 *  Motor motor(1);
 	 *   motor.move_voltage(12000);
 	 *   pros::delay(1000); // Move at max voltage for 1 second
 	 *   motor.brake();
@@ -1096,7 +1096,7 @@ class Motor : public AbstractMotor, public Device {
 	 */
 	std::int32_t is_reversed(const std::uint8_t index = 0) const;
 
-    /**
+	/**
 	 * Gets the type of the motor
 	 *
 	 * \note This is one of many Motor functions that takes in an optional index parameter.
@@ -1468,7 +1468,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   motor.move_absolute(100, 100); // This does not cause a movement
 	 *
 	 *   motor.set_zero_position(80);
-	 *   motor.move_absolute(100, 100); // Moves 80 units forward
+	 *   motor.move_absolute(100, 100); // Moves 20 units forward
 	 * }
 	 * \endcode
 	 *
@@ -1726,7 +1726,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   while (true) {
 	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Faults: " << motor.get_faults_all()[0];
-	 * 	   pros::delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -2403,7 +2403,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   motor.move_absolute(100, 100); // This does not cause a movement
 	 *
 	 *   motor.set_zero_position_all(80);
-	 *   motor.move_absolute(100, 100); // Moves 80 units forward
+	 *   motor.move_absolute(100, 100); // Moves 20 units forward
 	 * }
 	 * \endcode
 	 *

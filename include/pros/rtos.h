@@ -74,7 +74,7 @@ namespace pros {
 /**
  * The minimal stack size for a task.
  * 
- * This equates to  512 words, or 2,048 bytes. 
+ * This equates to 512 words, or 2,048 bytes. 
  */
 #define TASK_STACK_DEPTH_MIN 0x200
 
@@ -94,7 +94,7 @@ namespace pros {
 /// @{
 
 /**
- * An opaque type that pontis to a task handle. This is used for referencing a
+ * An opaque type that points to a task handle. This is used for referencing a
  * task.
  */
 typedef void* task_t;
