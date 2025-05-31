@@ -24,6 +24,7 @@
 
 #include "pros/device.hpp"
 #include "pros/distance.h"
+#include "pros/detail.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -239,7 +240,12 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Distance operator"" _dist(const unsigned long long int d);
+template <char... Cs>
+const pros::Distance operator"" _dist() {
+	static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Distance(num);
+}
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros

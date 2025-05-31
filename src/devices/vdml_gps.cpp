@@ -150,10 +150,5 @@ pros::Gps pros::Gps::get_gps() {
 	return Gps(PROS_ERR_BYTE);
 }
 
-namespace literals {
-const pros::Gps operator""_gps(const unsigned long long int g) {
-	return pros::Gps(g);
-}
-}  // namespace literals
 }  // namespace v5
 }  // namespace pros

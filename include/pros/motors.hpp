@@ -26,6 +26,7 @@
 #include "pros/abstract_motor.hpp"
 #include "pros/device.hpp"
 #include "pros/motors.h"
+#include "pros/detail.hpp"
 #include "rtos.hpp"
 
 namespace pros {
@@ -2456,7 +2457,13 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Motor operator"" _mtr(const unsigned long long int m);
+template <char... Cs>
+const pros::Motor operator"" _mtr() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Motor(num);
+}
+
 /**
  * Constructs a reversed Motor from a literal ending in _rmtr
  *
@@ -2470,7 +2477,12 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
  * }
  * \endcode
  */
-const pros::Motor operator"" _rmtr(const unsigned long long int m);
+template <char... Cs>
+const pros::Motor operator"" _rmtr() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Motor(-num);
+}
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros

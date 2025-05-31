@@ -140,10 +140,4 @@ Vision Vision::get_vision() {
 }
 
 }  // namespace v5
-namespace literals {
-const pros::Vision operator"" _vis(const unsigned long long int m) {
-	return Vision(m);
-}
-
-}  // namespace literals
 }  // namespace pros

@@ -23,6 +23,7 @@
 
 #include "pros/device.hpp"
 #include "pros/imu.h"
+#include "pros/detail.hpp"
 
 namespace pros {
 /**
@@ -1067,7 +1068,12 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Imu operator"" _imu(const unsigned long long int i);
+template <char... Cs>
+const pros::Imu operator"" _imu() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Imu(num);
+}
 }  // namespace literals
 
 using IMU = Imu;

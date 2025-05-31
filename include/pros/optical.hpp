@@ -26,6 +26,7 @@
 
 #include "pros/device.hpp"
 #include "pros/optical.h"
+#include "pros/detail.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -460,7 +461,12 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Optical operator"" _opt(const unsigned long long int o);
+ template <char... Cs>
+const pros::Optical operator"" _opt() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Optical(num);
+}
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros

@@ -338,7 +338,12 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Serial operator"" _ser(const unsigned long long int m);
+template <char... Cs>
+const pros::Serial operator"" _ser() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Serial(num);
+}
 }  // namespace literals
 }  // namespace pros
 #endif  // _PROS_SERIAL_HPP_

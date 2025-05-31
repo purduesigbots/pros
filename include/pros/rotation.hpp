@@ -23,6 +23,7 @@
 
 #include "pros/device.hpp"
 #include "pros/rotation.h"
+#include "pros/detail.hpp"
 
 namespace pros {
 inline namespace v5 {
@@ -369,6 +370,23 @@ class Rotation : public Device {
 	 */
 	friend std::ostream& operator<<(std::ostream& os, const pros::Rotation& rotation);
 
+	/**
+	 * Returns a rotation sesnor that has the same port as the original, but reversed.
+	 *
+	 * This can only be used on a temporary object (such as a device literal).
+	 *
+	 * \b Example
+	 * \code
+	 * using namespace pros::literals;
+	 *
+	 * void opcontrol() {
+	 * 	pros::Rotation rotation_sensor = -1_rot;
+	 *  printf("Reversed: %d \n", rotation_sensor.get_reversed());
+	 * }
+	 * \endcode
+	 */
+	Rotation operator-() && { return Rotation(-this->get_port()); }
+
 	///@}
 };
 
@@ -386,7 +404,12 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Rotation operator"" _rot(const unsigned long long int r);
+template <char... Cs>
+const pros::Rotation operator"" _rot() {
+    static_assert(pros::detail::is_valid_port<Cs...>(), "Invalid port number!");
+    constexpr int num = pros::detail::parse_port<Cs...>();
+    return pros::Rotation(num);
+}
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros
