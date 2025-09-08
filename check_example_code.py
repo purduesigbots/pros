@@ -1,12 +1,13 @@
 import os
 import re
 import subprocess
+import sys
 
 include_directory = "include/pros"
 
 def print_and_exit(message):
     print(f"Failed to check example code in pros headers:\n{message}")
-    exit(1)
+    sys.exit(1)
 
 def compile_code(code_text, is_cpp):
     """
@@ -14,7 +15,7 @@ def compile_code(code_text, is_cpp):
     
     Args:
         code_text (str): The C/C++ source code to compile.
-        is_cpp (list): Whether the code is C++ or not.
+        is_cpp (bool): Whether the code is C++ or not.
         
     Returns:
         (success: bool, stdout: str, stderr: str)
@@ -23,7 +24,7 @@ def compile_code(code_text, is_cpp):
         "arm-none-eabi-gcc",
         "-x", "c++" if is_cpp else "c",
         "-",                            # Read input from stdin
-        "-o", "/dev/null",              # Discard the output file
+        "-o", os.devnull,               # Discard the output file
         "-I", include_directory
     ]
 
@@ -65,7 +66,7 @@ try:
         if os.path.isfile(file_path):
             try:
                 with open(file_path, "r") as f:
-                    check_example_code(filename, f.read(), filename.ends_with(".hpp"))
+                    check_example_code(filename, f.read(), filename.endswith(".hpp"))
             except Exception as e:
                 print_and_exit(f"Error reading file '{filename}': {e}")
 except Exception as e:
