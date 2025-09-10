@@ -20,6 +20,7 @@ def compile_code(code_text, is_cpp):
     Returns:
         (success: bool, stdout: str, stderr: str)
     """
+    print("checking example:\n" + code_text + "\n======") # TODO: remove logging code
     flags = [
         "arm-none-eabi-gcc",
         "-x", "c++" if is_cpp else "c",
@@ -48,9 +49,9 @@ def check_example_code(filename, header_text, is_cpp):
         header_text (str): The content of the file.
         is_cpp (bool): Whether the file is C++ or not.
     """
-    # This pattern matches all lines between \code and \endcode
-    pattern = r"(^\s*\*\s*\\code\n)((.*\n)+?)(^\s*\*\s*\\endcode)"
-    for match in re.finditer(pattern, header_text, re.MULTILINE | re.DOTALL):
+    # This pattern matches all lines between the \code and \endcode markers
+    pattern = r"(^\t\* \\code\n)((.*\n)+?)(^\t\* \\endcode)"
+    for match in re.finditer(pattern, header_text, re.MULTILINE):
         code_block = match.group(2)
         lines = code_block.splitlines()
         # Remove the leading * from each line
