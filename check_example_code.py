@@ -24,7 +24,7 @@ def compile_code(code_text, is_cpp):
     flags = [
         "arm-none-eabi-gcc",
         "-x", "c++" if is_cpp else "c",
-        "-std=c++23" if is_cpp else "-std=c23",
+        "-std=c++23" if is_cpp else "-std=c2x",
         "-I", "include",
         "-D", "_PROS_KERNEL_SUPPRESS_LLEMU_WARNING",
         "-",                                         # Read input from stdin
@@ -67,6 +67,7 @@ def check_example_code(filename, header_text, is_cpp):
             print(code_snippet)
             print("=== compiler output below: ===")
             print(compiler_stderr)
+            global is_error
             is_error = True
 
 try:
