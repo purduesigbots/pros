@@ -57,7 +57,7 @@ class Vision : public Device {
 	 * }
 	 * \endcode
 	 */
-	Vision(std::uint8_t port, vision_zero_e_t zero_point = E_VISION_ZERO_TOPLEFT);
+	Vision(std::uint8_t port, vision_zero_e_t zero_point = pros::E_VISION_ZERO_TOPLEFT);
 
 	Vision(const Device& device) : Vision(device.get_port()){};
 
@@ -122,7 +122,7 @@ class Vision : public Device {
 	 *   // Gets the largest object of the EXAMPLE_SIG signature
 	 *   printf("sig: %d", rtn.signature);
 	 *   // Prints "sig: 1"
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -211,7 +211,7 @@ class Vision : public Device {
 	 *   vision_object_s_t rtn = vision_sensor.get_by_size(0);
 	 *   // Gets the largest object
 	 *   printf("sig: %d", rtn.signature);
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -250,7 +250,7 @@ class Vision : public Device {
 	 *   // Gets the largest object of the EXAMPLE_SIG signature
 	 *   printf("sig: %d", rtn.signature);
 	 *   // Prints "sig: 1"
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -287,7 +287,7 @@ class Vision : public Device {
 	 *     vision_object_s_t rtn = vision_sensor.get_by_code(0, code1);
 	 *     // Gets the largest object
 	 *     printf("sig: %d", rtn.signature);
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -335,7 +335,7 @@ class Vision : public Device {
 	 *   pros::Vision vision_sensor(VISION_PORT);
 	 *   while (true) {
 	 *     printf("Number of Objects Detected: %d\n", vision_sensor.get_object_count());
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -426,7 +426,7 @@ class Vision : public Device {
 	 *     vision_sensor.read_by_size(0, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
 	 *     // Prints the signature of the largest object found
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -474,7 +474,7 @@ class Vision : public Device {
 	 *     vision_sensor.read_by_sig(0, EXAMPLE_SIG, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
 	 *     // Prints "sig: 1"
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -522,7 +522,7 @@ class Vision : public Device {
 	 *     vision_sensor.read_by_code(0, code1, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
 	 *     // Prints the signature of the largest object found
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode

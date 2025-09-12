@@ -272,8 +272,8 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 * This velocity corresponds to different actual speeds depending on the
 	 * gearset used for the motor. This results in a range of +-100 for
-	 * E_MOTOR_GEARSET_36, +-200 for E_MOTOR_GEARSET_18, and +-600 for
-	 * E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
+	 * pros::E_MOTOR_GEARSET_36, +-200 for pros::E_MOTOR_GEARSET_18, and +-600 for
+	 * pros::E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
 	 * speed, as opposed to setting the motor's voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -520,7 +520,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the actual velocity from motor at index 1. (port 3)
 	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
@@ -547,7 +547,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the target velocity from motor at index 1. (port 3)
 	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
@@ -1331,7 +1331,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return One of MotorBrake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -1352,7 +1352,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 *
 	 * \return A vector with one of MotorBrake for each motor in the motor group, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -1434,12 +1434,12 @@ class MotorGroup : public virtual AbstractMotor {
 	 * 				The zero indexed index of the motor in the motor group
 	 *
 	 * \return One of MotorUnits according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1455,12 +1455,12 @@ class MotorGroup : public virtual AbstractMotor {
 	 * EDOM - The motor group is empty
 	 *
 	 * \return A vector with the following for each motor, One of MotorUnits according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << mg.get_encoder_units_all()[0];
 	 * }
 	 * \endcode
@@ -1485,7 +1485,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Gearing: " << mg.get_gearing();
 	 * }
 	 * \endcode
@@ -1506,7 +1506,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Gearing: " << mg.get_gearing_all()[0];
 	 * }
 	 * \endcode
@@ -1637,7 +1637,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Type: " << mg.get_type();
 	 * }
 	 * \endcode
@@ -1657,7 +1657,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::MotorGroup mg ({1,3}, E_MOTOR_GEARSET_06, false, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::MotorGroup mg ({1,3}, pros::E_MOTOR_GEARSET_06, false, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Type: " << mg.get_type_all()[0];
 	 * }
 	 * \endcode

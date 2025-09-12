@@ -91,7 +91,7 @@ class Controller {
 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
 	 *     motor_move(1, master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -165,7 +165,7 @@ class Controller {
 	 *   else {
 	 *     motor_set(1, 0);
 	 *   }
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -204,7 +204,7 @@ class Controller {
 	 *     // Toggle pneumatics or other similar actions
 	 *   }
 	 *
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -243,7 +243,7 @@ class Controller {
 	 *     // Toggle pneumatics or other similar actions
 	 *   }
 	 *
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -295,7 +295,7 @@ class Controller {
 	 *     master.print(0, 0, "Counter: %d", count);
 	 *   }
 	 *     count++;
-	 *     delay(2);
+	 *     pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -337,7 +337,7 @@ class Controller {
 	 *       master.set_text(0, 0, "Example text");
 	 *     }
 	 *   count++;
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -367,7 +367,7 @@ class Controller {
 	 * void opcontrol() {
 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *   master.set_text(0, 0, "Example");
-	 *   delay(100);
+	 *   pros::delay(100);
 	 *   master.clear_line(0);
 	 * }
 	 * \endcode
@@ -404,7 +404,7 @@ class Controller {
 	 *     master.rumble(". - . -");
 	 *   }
 	 *   count++;
-	 *   delay(2);
+	 *   pros::delay(2);
 	 *   }
 	 * }
 	 * \endcode
@@ -431,7 +431,7 @@ class Controller {
 	 * void opcontrol() {
 	 * 	 pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *   master.set_text(0, 0, "Example");
-	 *   delay(100);
+	 *   pros::delay(100);
 	 *   master.clear();
 	 * }
 	 * \endcode

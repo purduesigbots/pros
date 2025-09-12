@@ -86,7 +86,7 @@ class Device {
  	 *   while (true) {
 	 *	Device device(DEVICE_PORT);
  	 *     printf("device plugged type: {port: %d}\n", device.get_port());
- 	 *     delay(20);
+ 	 *     pros::delay(20);
  	 *   }
  	 * }
  	 * \endcode
@@ -106,7 +106,7 @@ class Device {
 	 *	Device device(DEVICE_PORT);
 	 *   while (true) {
 	 *     printf("device plugged type: {is_installed: %d}\n", device.is_installed());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -131,7 +131,7 @@ class Device {
 	 *   while (true) { 
 	 *     DeviceType dt = device.get_plugged_type();
 	 *     printf("device plugged type: {plugged type: %d}\n", dt);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
  	 * \endcode
@@ -158,7 +158,7 @@ class Device {
 	 *   while (true) { 
 	 *     DeviceType dt = pros::Device::get_plugged_type(DEVICE_PORT);
 	 *     printf("device plugged type: {plugged type: %d}\n", dt);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
  	 * \endcode

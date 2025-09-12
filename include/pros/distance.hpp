@@ -78,7 +78,7 @@ class Distance : public Device {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance: %d\n", distance.get());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -105,7 +105,7 @@ class Distance : public Device {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance: %d\n", distance.get_distance());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -150,7 +150,7 @@ class Distance : public Device {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance confidence: %d\n", distance.get_confidence());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -180,7 +180,7 @@ class Distance : public Device {
 	  Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance object size: %d\n", distance.get_object_size());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -205,7 +205,7 @@ class Distance : public Device {
 	 *	Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance object velocity: %f\n", distance.get_object_velocity());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode

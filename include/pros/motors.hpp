@@ -203,8 +203,8 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This velocity corresponds to different actual speeds depending on the
 	 * gearset used for the motor. This results in a range of +-100 for
-	 * E_MOTOR_GEARSET_36, +-200 for E_MOTOR_GEARSET_18, and +-600 for
-	 * E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
+	 * pros::E_MOTOR_GEARSET_36, +-200 for pros::E_MOTOR_GEARSET_18, and +-600 for
+	 * pros::E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
 	 * speed, as opposed to setting the motor's voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -375,7 +375,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   while (true) {
 	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_target_velocity();
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -407,7 +407,7 @@ class Motor : public AbstractMotor, public Device {
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
 	 *   while (true) {
-	 *     motor = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor = controller_get_analog(E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     printf("Actual velocity: %lf\n", motor.get_actual_velocity());
 	 *     pros::delay(2);
 	 *   }
@@ -926,7 +926,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of MotorBrake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -992,12 +992,12 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of MotorUnits according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1028,7 +1028,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -1120,7 +1120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Type: " << motor.get_type();
 	 * }
 	 * \endcode
@@ -1586,7 +1586,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   while (true) {
 	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_target_velocity_all()[0];
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -1612,7 +1612,7 @@ class Motor : public AbstractMotor, public Device {
 	 *   while (true) {
 	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_actual_velocity_all()[0];
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -1982,7 +1982,7 @@ class Motor : public AbstractMotor, public Device {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return One of Motor_Brake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -2028,12 +2028,12 @@ class Motor : public AbstractMotor, public Device {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return A vector containing One of Motor_Units according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units_all()[0];
 	 * }
 	 * \endcode
@@ -2053,7 +2053,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing_all()[0];
 	 * }
 	 * \endcode
@@ -2120,7 +2120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
 	 *   std::cout << "Motor Type: " << motor.get_type_all()[0];
 	 * }
 	 * \endcode

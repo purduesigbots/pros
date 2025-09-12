@@ -78,7 +78,7 @@ class Port {
 	 * }
 	 * \endcode
 	 */
-	explicit Port(std::uint8_t adi_port, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	explicit Port(std::uint8_t adi_port, adi_port_config_e_t type = pros::E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Configures an ADI port on an adi expander to act as a given sensor type.
@@ -100,13 +100,13 @@ class Port {
 	 * #define EXT_ADI_SMART_PORT 1
 	 *
 	 * void initialize() {
-	 *   pros::adi::Port sensor ({EXT_ADI_SMART_PORT, ANALOG_SENSOR_PORT}, E_ADI_ANALOG_IN);
-	 *   // Displays the value of E_ADI_ANALOG_IN
+	 *   pros::adi::Port sensor ({EXT_ADI_SMART_PORT, ANALOG_SENSOR_PORT}, pros::E_ADI_ANALOG_IN);
+	 *   // Displays the value of pros::E_ADI_ANALOG_IN
 	 *   std::cout << "Port Type: " << sensor.get_config();
 	 * }
 	 * \endcode
 	 */
-	explicit Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = E_ADI_TYPE_UNDEFINED);
+	explicit Port(ext_adi_port_pair_t port_pair, adi_port_config_e_t type = pros::E_ADI_TYPE_UNDEFINED);
 
 	/**
 	 * Gets the configuration for the given ADI port.
@@ -117,8 +117,8 @@ class Port {
 	 * \code
 	 * #define ANALOG_SENSOR_PORT 1
 	 *   void initialize() {
-	 *     adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
-	 *     // Displays the value of E_ADI_ANALOG_IN
+	 *     adi_port_set_config(ANALOG_SENSOR_PORT, pros::E_ADI_ANALOG_IN);
+	 *     // Displays the value of pros::E_ADI_ANALOG_IN
 	 *     printf("Port Type: %d\n", adi_port_get_config(ANALOG_SENSOR_PORT));
 	 *   }
 	 * \endcode
@@ -135,7 +135,7 @@ class Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
+	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, pros::E_ADI_ANALOG_IN);
 	 *   std::cout << "Port Value: " << sensor.get_value();
 	 * }
 	 * \endcode
@@ -156,7 +156,7 @@ class Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 *
 	 * void initialize() {
-	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, E_ADI_DIGITAL_IN);
+	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, pros::E_ADI_DIGITAL_IN);
 	 *   // Do things as a digital sensor
 	 *   // Digital is unplugged and an analog is plugged in
 	 *   sensor.set_config(E_ADI_ANALOG_IN);
@@ -182,7 +182,7 @@ class Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 *
 	 * void initialize() {
-	 *   pros::adi::Port sensor (DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
+	 *   pros::adi::Port sensor (DIGITAL_SENSOR_PORT, pros::E_ADI_DIGITAL_OUT);
 	 *   sensor.set_value(DIGITAL_SENSOR_PORT, HIGH);
 	 * }
 	 * \endcode
@@ -798,7 +798,7 @@ class Motor : private Port {
 	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
-	 *   delay(1000);
+	 *   pros::delay(1000);
 	 *   motor.set_value(0); // Stop the motor
 	 * }
 	 * \endcode
@@ -826,7 +826,7 @@ class Motor : private Port {
 	 *   pros::adi::Motor motor ({EXT_ADI_SMART_PORT, ADI_MOTOR_PORT});
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
-	 *   delay(1000);
+	 *   pros::delay(1000);
 	 *   motor.set_value(0); // Stop the motor
 	 * }
 	 * \endcode
@@ -851,7 +851,7 @@ class Motor : private Port {
 	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
-	 *   delay(1000);
+	 *   pros::delay(1000);
 	 *   motor.stop(); // Stop the motor
 	 * }
 	 * \endcode
@@ -880,7 +880,7 @@ class Motor : private Port {
 	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
-	 *   delay(1000);
+	 *   pros::delay(1000);
 	 *   motor.set_value(0); // Stop the motor
 	 * }
 	 * \endcode
@@ -904,7 +904,7 @@ class Motor : private Port {
 	 *   pros::adi::Motor motor (MOTOR_PORT);
 	 *   motor.set_value(127); // Go full speed forward
 	 *   std::cout << "Commanded Motor Power: " << motor.get_value(); // Will display 127
-	 *   delay(1000);
+	 *   pros::delay(1000);
 	 *   motor.set_value(0); // Stop the motor
 	 * }
 	 * \endcode
@@ -999,7 +999,7 @@ class Encoder : private Port {
 	 *
 	 * void opcontrol() {
 	 *   pros::adi::Encoder sensor (PORT_TOP, PORT_BOTTOM, false);
-	 *   delay(1000); // Move the encoder around in this time
+	 *   pros::delay(1000); // Move the encoder around in this time
 	 *   sensor.reset(); // The encoder is now zero again
 	 * }
 	 * \endcode
@@ -1342,7 +1342,7 @@ class Potentiometer : public AnalogIn {
 	 * }
 	 * \endcode
 	 */
-	explicit Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit Potentiometer(std::uint8_t adi_port, adi_potentiometer_type_e_t potentiometer_type = pros::E_ADI_POT_EDR);
 
 	/**
 	 * Configures an ADI port on an adi_expander to act as a Potentiometer.
@@ -1373,7 +1373,7 @@ class Potentiometer : public AnalogIn {
 	 * }
 	 * \endcode
 	 */
-	explicit Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = E_ADI_POT_EDR);
+	explicit Potentiometer(ext_adi_port_pair_t port_pair, adi_potentiometer_type_e_t potentiometer_type = pros::E_ADI_POT_EDR);
 
 	/**
 	 * Gets the current potentiometer angle in tenths of a degree.

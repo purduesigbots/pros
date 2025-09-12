@@ -183,7 +183,7 @@ class Gps : public Device {
 	 *  // this is equivalent to the above line
 	 *  gps.initialize_full(1.1, 1.2, 180, .4, .4);
 	 *   while (true) {
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -216,7 +216,7 @@ class Gps : public Device {
 	 *  // this is equivalent to the above line
 	 *  gps.set_offset(.4, .4);
 	 *   while (true) {
-	 *	 	delay(20);
+	 *	 	pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -262,7 +262,7 @@ class Gps : public Device {
 	 *   while (true) {
 	 *     pos = gps.get_offset();
 	 *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -297,7 +297,7 @@ class Gps : public Device {
 	 *   while (true) {
 	 *     printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x,
 	 * 	   gps.get_position().y, gps.get_position().heading);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -328,7 +328,7 @@ class Gps : public Device {
 	 *   while (true) {
 	 *	 	printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x,
 	 * 	   gps.get_position().y, gps.get_position().heading);
-	 *	 	delay(10);
+	 *	 	pros::delay(10);
 	 *   }
 	 * }
 	 * \endcode
@@ -386,7 +386,7 @@ class Gps : public Device {
 	 *     status = gps.get_position_and_orientation();
 	 *     printf("X: %f, Y: %f, Roll: %f, Pitch: %f, Yaw: %f\n",
 	 * 	   status.x, status.y, status.roll, status.pitch, status.yaw);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -416,7 +416,7 @@ class Gps : public Device {
 	 *   while (true) {
 	 *	 position = gps.get_position();
 	 *     printf("X: %f, Y: %f\n", position.x, position.y);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -503,7 +503,7 @@ class Gps : public Device {
 	 *	 orientation = gps.get_orientation();
 	 *     printf("pitch: %f, roll: %f, yaw: %f\n", orientation.pitch,
 	 *         orientation.roll, orientation.yaw);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -919,7 +919,7 @@ namespace literals {
  *   while (true) {
  *     pos = gps.get_position();
  *     screen_print(TEXT_MEDIUM, 1, "X Position: %4d, Y Position: %4d", pos.x, pos.y);
- *     delay(20);
+ *     pros::delay(20);
  *   }
  * }
  * \endcode

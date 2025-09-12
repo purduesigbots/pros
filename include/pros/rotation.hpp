@@ -208,7 +208,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Position: %d Ticks \n", rotation_sensor.get_position());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -234,7 +234,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Velocity: %d centidegrees per second \n", rotation_sensor.get_velocity));
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -258,7 +258,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Angle: %d centidegrees \n", rotation_sensor.get_angle());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -340,7 +340,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Reversed: %d \n", rotation_sensor.get_reversed());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode

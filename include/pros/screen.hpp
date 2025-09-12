@@ -650,10 +650,10 @@ const char* convert_args(const std::string& arg) {
    /**
      * Gets the touch status of the last touch of the screen.
      * 
-     * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
+     * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, pros::E_TOUCH_EVENT_PRESS, or pros::E_TOUCH_EVENT_PRESS_AND_HOLD).
      * This will be released by default if no action was taken. 
      * If an error occured, the screen_touch_status_s_t will have its 
-     * last_touch_e_t enum specifier set to E_TOUCH_ERR, and other values set to -1.
+     * last_touch_e_t enum specifier set to pros::E_TOUCH_ERR, and other values set to -1.
      * 
      * \b Example
      * \code
