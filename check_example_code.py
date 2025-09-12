@@ -4,6 +4,7 @@ import subprocess
 import sys
 
 include_directory = "include/pros"
+is_error = False
 
 def print_and_exit(message):
     print(f"Failed to check example code in pros headers:\n{message}")
@@ -20,13 +21,15 @@ def compile_code(code_text, is_cpp):
     Returns:
         (success: bool, stdout: str, stderr: str)
     """
-    print("checking example:\n" + code_text + "\n======") # TODO: remove logging code
     flags = [
         "arm-none-eabi-gcc",
         "-x", "c++" if is_cpp else "c",
-        "-",                            # Read input from stdin
-        "-o", os.devnull,               # Discard the output file
-        "-I", include_directory
+        "-std=c++23" if is_cpp else "-std=c23",
+        "-I", "include",
+        "-D", "_PROS_KERNEL_SUPPRESS_LLEMU_WARNING",
+        "-",                                         # Read input from stdin
+        "-S",                                        # Generate assembly (avoids linker errors)
+        "-o", os.devnull                             # Discard the output file
     ]
 
     process = subprocess.Popen(
@@ -42,24 +45,29 @@ def compile_code(code_text, is_cpp):
 
 def check_example_code(filename, header_text, is_cpp):
     """
-    Checks all the example code snippets  in the header file and ensures they compile.
+    Checks all the example code snippets in the header file and ensures they compile.
 
     Args:
         filename (str): The name of the header file.
         header_text (str): The content of the file.
         is_cpp (bool): Whether the file is C++ or not.
     """
+    print(f"checking example in {filename} ...")
     # This pattern matches all lines between the \code and \endcode markers
-    pattern = r"(^\t\* \\code\n)((.*\n)+?)(^\t\* \\endcode)"
+    pattern = r"(^.+\\code\n)((.*\n)+?)(^.+\\endcode)"
     for match in re.finditer(pattern, header_text, re.MULTILINE):
         code_block = match.group(2)
         lines = code_block.splitlines()
         # Remove the leading * from each line
-        cleaned_lines = [re.sub(r"^\s*\*\s", "", line) for line in lines]
-        code_snippet = "#include \"pros/main.h\"\n"+"\n".join(cleaned_lines)
-        is_success, compiler_stdout, compiler_stderr = compile_code(code_snippet)
+        cleaned_lines = [re.sub(r"^\s*\*", "", line) for line in lines]
+        code_snippet = "#include \"main.h\"\n"+"\n".join(cleaned_lines)
+        is_success, compiler_stdout, compiler_stderr = compile_code(code_snippet, is_cpp)
         if not is_success:
-            print_and_exit(f"Example code from {filename} failed to compile:\n{compiler_stderr}")
+            print(f"=== example code from {filename} failed to compile: ===")
+            print(code_snippet)
+            print("=== compiler output below: ===")
+            print(compiler_stderr)
+            is_error = True
 
 try:
     for filename in os.listdir(include_directory):
@@ -72,3 +80,6 @@ try:
                 print_and_exit(f"Error reading file '{filename}': {e}")
 except Exception as e:
     print_and_exit(f"Error accessing directory '{include_directory}': {e}")
+
+if is_error:
+    sys.exit(1)

@@ -459,7 +459,7 @@ class AnalogOut : private Port {
 	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
 	 *   // Use the sensor
 	 * }
-	 * @endcode
+	 * \endcode
 	 */
 	explicit AnalogOut(std::uint8_t adi_port);
 
