@@ -169,9 +169,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup MotorGroup ({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     mg.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -454,9 +454,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg ({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     mg.move_velocity(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 * 		// get the target velocity from motor at index 1. (port 3)
 	 *     std::cout << "Motor Velocity: " << mg.get_target_velocity(1);
 	 *     pros::delay(2);
@@ -481,9 +481,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg ({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     mg.move_velocity(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << mg.get_target_velocity_all();
 	 *     pros::delay(2);
 	 *   }
@@ -520,7 +520,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the actual velocity from motor at index 1. (port 3)
 	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
@@ -547,7 +547,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
 	 *   while (true) {
-	 *     mg = controller_get_analog(E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *	   // get the target velocity from motor at index 1. (port 3)
 	 *     printf("Actual velocity: %lf\n", mg.get_actual_velocity(1));
 	 *     pros::delay(2);
@@ -578,9 +578,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 * 	   //Print the current draw for the motor at index 1. (port 3)
 	 *     std::cout << "Motor Current Draw: " << mg.get_current_draw(1);
 	 *     pros::delay(2);
@@ -606,9 +606,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Current Draw: " << mg.get_current_draw_all();
 	 *     pros::delay(2);
 	 *   }
@@ -638,9 +638,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 * 	   //Print the motor direction for the motor at index 1. (port 3)
 	 *     std::cout << "Motor Direction: " << mg.get_direction();
 	 *     pros::delay(2);
@@ -665,9 +665,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Direction: " << mg.get_direction_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -702,9 +702,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     //Prints the efficiency of the motor at index 1 (port 3)
 	 *     std::cout << "Motor Efficiency: " << mg.get_efficiency(1);
 	 *     pros::delay(2);
@@ -733,9 +733,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Efficiency: " << mg.get_efficiency_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -766,9 +766,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Faults: " << mg.get_faults();
 	 * pros::delay(2);
 	 *   }
@@ -794,9 +794,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Faults: " << mg.get_faults_all();
 	 * pros::delay(2);
 	 *   }
@@ -824,9 +824,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Faults: " << mg.get_faults(1);
 	 *     pros::delay(2);
 	 *   }
@@ -851,9 +851,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Faults: " << mg.get_faults_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -881,9 +881,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Position: " << mg.get_position(1);
 	 *     pros::delay(2);
 	 *   }
@@ -906,9 +906,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Position: " << mg.get_position_all();
 	 *     pros::delay(2);
 	 *   }
@@ -936,9 +936,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Power: " << mg.get_power();
 	 *     pros::delay(2);
 	 *   }
@@ -961,9 +961,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Power: " << mg.get_power_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -997,9 +997,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   std::uint32_t now = pros::millis();
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Position: " << mg.get_raw_position(&now);
 	 *     pros::delay(2);
 	 *   }
@@ -1027,9 +1027,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * void opcontrol() {
 	 *   std::uint32_t now = pros::millis();
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Position: " << mg.get_raw_position_all(&now)[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1057,9 +1057,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Temperature: " << mg.get_temperature();
 	 *     pros::delay(2);
 	 *   }
@@ -1082,9 +1082,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Temperature: " << mg.get_temperature_all()[1];
 	 *     pros::delay(2);
 	 *   }
@@ -1111,9 +1111,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Torque: " << mg.get_torque();
 	 *     pros::delay(2);
 	 *   }
@@ -1136,9 +1136,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Torque: " << mg.get_torque();
 	 *     pros::delay(2);
 	 *   }
@@ -1165,9 +1165,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Voltage: " << mg.get_voltage();
 	 *     pros::delay(2);
 	 *   }
@@ -1190,9 +1190,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Motor Voltage: " << mg.get_voltage_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1221,9 +1221,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Is the motor over its current limit?: " << mg.is_over_current();
 	 *     pros::delay(2);
 	 *   }
@@ -1246,9 +1246,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Is the motor over its current limit?: " << motor.is_over_current_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1276,9 +1276,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp();
 	 *     pros::delay(2);
 	 *   }
@@ -1301,9 +1301,9 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp();
 	 *     pros::delay(2);
 	 *   }
@@ -1799,11 +1799,11 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 * mg.set_current_limit(1000);
 	 * while (true) {
-	 *   mg = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   mg = controller_get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -1829,11 +1829,11 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 * mg.set_current_limit_all(1000);
 	 * while (true) {
-	 *   mg = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   mg = controller_get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -1863,7 +1863,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_encoder_units(E_MOTOR_ENCODER_DEGREES, 1);
+	 *   mg.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES, 1);
 	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1891,7 +1891,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_encoder_units(E_MOTOR_ENCODER_DEGREES, 1);
+	 *   mg.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES, 1);
 	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1916,7 +1916,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   mg.set_encoder_units_all(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1941,7 +1941,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   mg.set_encoder_units_all(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << mg.get_encoder_units();
 	 * }
 	 * \endcode
@@ -2006,7 +2006,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_gearing(E_MOTOR_GEARSET_06, 1);
+	 *   mg.set_gearing(pros::E_MOTOR_GEARSET_06, 1);
 	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
@@ -2068,7 +2068,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_gearing(E_MOTOR_GEARSET_06, 1);
+	 *   mg.set_gearing(pros::E_MOTOR_GEARSET_06, 1);
 	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
@@ -2093,7 +2093,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   mg.set_gearing_all(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
@@ -2118,7 +2118,7 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void initialize() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   mg.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   mg.set_gearing_all(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << mg.get_gearing();
 	 * }
 	 * \endcode
@@ -2204,11 +2204,11 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 *   mg.set_voltage_limit(10000, 1);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     // The motor on at index 1 (port 3) will not output more than 10 V
 	 *     pros::delay(2);
 	 *   }
@@ -2235,11 +2235,11 @@ class MotorGroup : public virtual AbstractMotor {
 	 * \code
 	 * void autonomous() {
 	 *   pros::MotorGroup mg({1,3});
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 *   mg.set_voltage_limit_all(10000);
 	 *   while (true) {
-	 *     mg = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     mg = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
 	 *     // The motor will not output more than 10 V
 	 *     pros::delay(2);
 	 *   }

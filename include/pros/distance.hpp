@@ -52,7 +52,7 @@ class Distance : public Device {
 	 * #define DISTANCE_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   Distance distance(DISTANCE_PORT);
+	 *   pros::Distance distance(DISTANCE_PORT);
 	 * }
 	 * \endcode
 	 */
@@ -75,7 +75,7 @@ class Distance : public Device {
 	 * #define DISTANCE_PORT 1
 	 *
 	 * void opcontrol() {
-	  Distance distance(DISTANCE_PORT);
+	 *   pros::Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance: %d\n", distance.get());
 	 *     pros::delay(20);
@@ -102,7 +102,7 @@ class Distance : public Device {
 	 * #define DISTANCE_PORT 1
 	 *
 	 * void opcontrol() {
-	  Distance distance(DISTANCE_PORT);
+	 *   pros::Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance: %d\n", distance.get_distance());
 	 *     pros::delay(20);
@@ -120,8 +120,7 @@ class Distance : public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Distance> distance_all = pros::Distance::get_all_devices();  // All distance sensors that are
-	 * connected
+	 *   std::vector<pros::Distance> distance_all = pros::Distance::get_all_devices(); // All distance sensors that are connected
 	 * }
 	 * \endcode
 	 */
@@ -147,7 +146,7 @@ class Distance : public Device {
 	 * #define DISTANCE_PORT 1
 	 *
 	 * void opcontrol() {
-	  Distance distance(DISTANCE_PORT);
+	 *   pros::Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance confidence: %d\n", distance.get_confidence());
 	 *     pros::delay(20);
@@ -177,7 +176,7 @@ class Distance : public Device {
 	 * #define DISTANCE_PORT 1
 	 *
 	 * void opcontrol() {
-	  Distance distance(DISTANCE_PORT);
+	 *   pros::Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance object size: %d\n", distance.get_object_size());
 	 *     pros::delay(20);
@@ -202,7 +201,7 @@ class Distance : public Device {
 	 * \code
 	 *
 	 * void opcontrol() {
-	 *	Distance distance(DISTANCE_PORT);
+	 *	 pros::Distance distance(DISTANCE_PORT);
 	 *   while (true) {
 	 *     printf("Distance object velocity: %f\n", distance.get_object_velocity());
 	 *     pros::delay(20);

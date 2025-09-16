@@ -114,11 +114,11 @@ class Vision : public Device {
 	 * void opcontrol() {
 	 * pros::Vision vision_sensor(VISION_PORT);
 	 * // values acquired from the vision utility
-	 * vision_signature_s_t RED_SIG =
-	 *   vision_signature_from_utility(EXAMPLE_SIG, 8973, 11143, 10058, -2119, -1053, -1586, 5.4, 0);
+	 * pros::vision_signature_s_t RED_SIG =
+	 *   pros::vision_signature_from_utility(EXAMPLE_SIG, 8973, 11143, 10058, -2119, -1053, -1586, 5.4, 0);
 	 * vision_sensor.set_signature(EXAMPLE_SIG, &RED_SIG);
 	 * while (true) {
-	 *   vision_signature_s_t rtn = vision_sensor.get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
+	 *   pros::vision_object_s_t rtn = vision_sensor.get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
 	 *   // Gets the largest object of the EXAMPLE_SIG signature
 	 *   printf("sig: %d", rtn.signature);
 	 *   // Prints "sig: 1"
@@ -179,7 +179,7 @@ class Vision : public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Vision> vision_all = pros::Vision::get_all_devices();  // All vision sensors that are connected
+	 *   std::vector<pros::Vision> vision_all = pros::Vision::get_all_devices();  // All vision sensors that are connected
 	 * }
 	 * \endcode
 	 */
@@ -208,7 +208,7 @@ class Vision : public Device {
 	 * void opcontrol() {
 	 * pros::Vision vision_sensor(VISION_PORT);
 	 * while (true) {
-	 *   vision_object_s_t rtn = vision_sensor.get_by_size(0);
+	 *   pros::vision_object_s_t rtn = vision_sensor.get_by_size(0);
 	 *   // Gets the largest object
 	 *   printf("sig: %d", rtn.signature);
 	 *   pros::delay(2);
@@ -246,7 +246,7 @@ class Vision : public Device {
 	 * void opcontrol() {
 	 * pros::Vision vision_sensor(VISION_PORT);
 	 * while (true) {
-	 *   vision_object_s_t rtn = vision_sensor.get_by_sig(0, EXAMPLE_SIG);
+	 *   pros::vision_object_s_t rtn = vision_sensor.get_by_sig(0, EXAMPLE_SIG);
 	 *   // Gets the largest object of the EXAMPLE_SIG signature
 	 *   printf("sig: %d", rtn.signature);
 	 *   // Prints "sig: 1"
@@ -284,7 +284,7 @@ class Vision : public Device {
 	 * 	 pros::Vision vision_sensor(VISION_PORT);
 	 *   vision_color_code_t code1 = vision_sensor.create_color_code(EXAMPLE_SIG, OTHER_SIG);
 	 *   while (true) {
-	 *     vision_object_s_t rtn = vision_sensor.get_by_code(0, code1);
+	 *     pros::vision_object_s_t rtn = vision_sensor.get_by_code(0, code1);
 	 *     // Gets the largest object
 	 *     printf("sig: %d", rtn.signature);
 	 *     pros::delay(2);
@@ -421,7 +421,7 @@ class Vision : public Device {
 	 *
 	 * void opcontrol() {
 	 *   pros::Vision vision_sensor(VISION_PORT);
-	 *   vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   pros::vision_object_s_t object_arr[NUM_VISION_OBJECTS];
 	 *   while (true) {
 	 *     vision_sensor.read_by_size(0, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
@@ -469,7 +469,7 @@ class Vision : public Device {
 	 *
 	 * void opcontrol() {
 	 *   pros::Vision vision_sensor(VISION_PORT);
-	 *   vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   pros::vision_object_s_t object_arr[NUM_VISION_OBJECTS];
 	 *   while (true) {
 	 *     vision_sensor.read_by_sig(0, EXAMPLE_SIG, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
@@ -516,8 +516,8 @@ class Vision : public Device {
 	 *
 	 * void opcontrol() {
 	 *   pros::Vision vision_sensor(VISION_PORT);
-	 *   vision_object_s_t object_arr[NUM_VISION_OBJECTS];
-	 *   vision_color_code_t code1 = vision_sensor.create_color_code(EXAMPLE_SIG, OTHER_SIG, 0, 0, 0);
+	 *   pros::vision_object_s_t object_arr[NUM_VISION_OBJECTS];
+	 *   pros::vision_color_code_t code1 = vision_sensor.create_color_code(EXAMPLE_SIG, OTHER_SIG, 0, 0, 0);
 	 *   while (true) {
 	 *     vision_sensor.read_by_code(0, code1, NUM_VISION_OBJECTS, object_arr);
 	 *     printf("sig: %d", object_arr[0].signature);
@@ -710,7 +710,7 @@ class Vision : public Device {
 	 *
 	 * void initialize() {
 	 * 	 pros::Vision vision_sensor(VISION_PORT);
-	 *   vision_sensor.set_zero_point(E_VISION_ZERO_CENTER);
+	 *   vision_sensor.set_zero_point(pros::E_VISION_ZERO_CENTER);
 	 * }
 	 * \endcode
 	 */

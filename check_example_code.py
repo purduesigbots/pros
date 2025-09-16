@@ -96,7 +96,8 @@ def example_code_generator():
                             lines = code_block.splitlines()
                             # Remove the leading * from each line
                             cleaned_lines = [re.sub(r"^\s*\* ?", "", line) for line in lines]
-                            code_snippet = "#include \"main.h\"\n"+"\n".join(cleaned_lines)
+                            include_apix = "#include \"pros/apix.h\"" if filename == "apix.h" else ""
+                            code_snippet = f"#include \"main.h\"\n{include_apix}\n"+"\n".join(cleaned_lines)
                             yield code_snippet, filename, is_cpp
                 except Exception as e:
                     print_and_exit(f"Error reading file '{filename}': {e}")

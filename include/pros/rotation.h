@@ -95,7 +95,6 @@ int32_t rotation_reset(uint8_t port);
  * #define ROTATION_PORT 1
  * 
  * void initialize() {
- *   pros::Rotation rotation_sensor(ROTATION_PORT);
  *   rotation_set_data_rate(ROTATION_PORT, 5);
  * }
  * \endcode
@@ -267,10 +266,8 @@ int32_t rotation_get_angle(uint8_t port);
  * #define ROTATION_PORT 1
  * 
  * void opcontrol() {
- *   Rotation rotation_sensor(ROTATION_PORT);
  *   while (true) {
- * 
- *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)) {
  *       rotation_set_reversed(ROTATION_PORT, true); // Reverses the Rotation Sensor on ROTATION_PORT
  *     }
  *     delay(20);
@@ -299,10 +296,8 @@ int32_t rotation_set_reversed(uint8_t port, bool value);
  * #define ROTATION_PORT 1
  * 
  * void opcontrol() {
- *   Rotation rotation_sensor(ROTATION_PORT);
- *   while (true) {
- * 
- *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
+ *   while (true) { 
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)) {
  *       rotation_reverse(ROTATION_PORT);
  *     }
  *     delay(20);
@@ -333,10 +328,8 @@ int32_t rotation_reverse(uint8_t port);
  * #define ROTATION_PORT 1
  * 
  * void opcontrol() {
- *   Rotation rotation_sensor(ROTATION_PORT);
  *   bool reverse_flag = true;
- *   while (true) {
- * 
+ *   while (true) { 
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       rotation_init_reverse(ROTATION_PORT, reverse_flag);
  *     }
@@ -366,9 +359,7 @@ int32_t rotation_init_reverse(uint8_t port, bool reverse_flag);
  * #define ROTATION_PORT 1
  * 
  * void opcontrol() {
- *   Rotation rotation_sensor(ROTATION_PORT);
- *   while (true) {
- * 
+ *   while (true) { 
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       rotation_get_reversed(ROTATION_PORT);
  *     }

@@ -199,7 +199,7 @@ class Imu : public Device {
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Imu> imu_all = pros::Imu::get_all_devices();  // All IMU sensors that are connected
+	 *   std::vector<pros::Imu> imu_all = pros::Imu::get_all_devices();  // All IMU sensors that are connected
 	 * }
  	 * \endcode
 	 */
@@ -303,7 +303,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's quaternion
 	 *     pros::quaternion_s_t quat = imu.get_quaternion();
-	 *     cout << "Quaternion: " << quat.w << ", " << quat.x << ", " << quat.y << ", " << quat.z << endl;
+	 *     std::cout << "Quaternion: " << quat.w << ", " << quat.x << ", " << quat.y << ", " << quat.z << std::endl;
 	 *     pros::delay(20);
 	 *   }
 	 * }
@@ -336,7 +336,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's Euler angles
 	 *     pros::euler_s_t euler = imu.get_euler();
-	 *     cout << "Euler: " << euler.roll << ", " << euler.pitch << ", " << euler.yaw << endl;
+	 *     std::cout << "Euler: " << euler.roll << ", " << euler.pitch << ", " << euler.yaw << std::endl;
 	 *     pros::delay(20);
 	 *   }
 	 * }
@@ -459,7 +459,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's raw gyroscope values
 	 *     pros::imu_gyro_s_t gyro = imu.get_gyro_rate();
-	 *     cout << "Gyro: " << gyro.x << ", " << gyro.y << ", " << gyro.z << endl;
+	 *     std::cout << "Gyro: " << gyro.x << ", " << gyro.y << ", " << gyro.z << std::endl;
 	 *     pros::delay(20);
 	 *   }
 	 * }
@@ -918,7 +918,7 @@ class Imu : public Device {
 	 *
 	 *   while (true) {
 	 *     // Set the sensor's euler values to 50
-	 *     imu.set_euler(50);
+	 *     imu.set_euler({50, 50, 50});
 	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
@@ -986,7 +986,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's status
 	 *     pros::ImuStatus status = imu.get_status();
-	 *     cout << "Status: " << status << endl;
+	 *     std::cout << "Status: " << status << std::endl;
 	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor

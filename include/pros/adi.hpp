@@ -72,7 +72,7 @@ class Port {
 	 *   pros::ADIPotentiometer potentiometer (POTENTIOMETER_PORT, POTENTIOMETER_TYPE);
 	 *   while (true) {
 	 *     // Get the potentiometer angle
-	 *     std::cout << "Angle: " << potnetiometer.get_angle();
+	 *     std::cout << "Angle: " << potentiometer.get_angle();
 	 *     pros::delay(10);
 	 *   }
 	 * }
@@ -117,9 +117,9 @@ class Port {
 	 * \code
 	 * #define ANALOG_SENSOR_PORT 1
 	 *   void initialize() {
-	 *     adi_port_set_config(ANALOG_SENSOR_PORT, pros::E_ADI_ANALOG_IN);
+	 *     pros::c::adi_port_set_config(ANALOG_SENSOR_PORT, pros::E_ADI_ANALOG_IN);
 	 *     // Displays the value of pros::E_ADI_ANALOG_IN
-	 *     printf("Port Type: %d\n", adi_port_get_config(ANALOG_SENSOR_PORT));
+	 *     printf("Port Type: %d\n", pros::c::adi_port_get_config(ANALOG_SENSOR_PORT));
 	 *   }
 	 * \endcode
 	 */
@@ -159,7 +159,7 @@ class Port {
 	 *   pros::adi::Port sensor (ANALOG_SENSOR_PORT, pros::E_ADI_DIGITAL_IN);
 	 *   // Do things as a digital sensor
 	 *   // Digital is unplugged and an analog is plugged in
-	 *   sensor.set_config(E_ADI_ANALOG_IN);
+	 *   sensor.set_config(pros::E_ADI_ANALOG_IN);
 	 * }
 	 * \endcode
 	 */
@@ -183,7 +183,7 @@ class Port {
 	 *
 	 * void initialize() {
 	 *   pros::adi::Port sensor (DIGITAL_SENSOR_PORT, pros::E_ADI_DIGITAL_OUT);
-	 *   sensor.set_value(DIGITAL_SENSOR_PORT, HIGH);
+	 *   sensor.set_value(HIGH);
 	 * }
 	 * \endcode
 	 */
@@ -272,7 +272,7 @@ class AnalogIn : protected Port {
 	 *
 	 * \b Example
 	 * \code
-	 * #define EXT_ADI_SENSOR_PORT 1
+	 * #define EXT_ADI_SMART_PORT 1
 	 * #define ADI_PORT 'a'
 	 *
 	 * void opcontrol() {
@@ -316,7 +316,7 @@ class AnalogIn : protected Port {
 	 *
 	 * void initialize() {
 	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
-	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate();
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
 	 * }
@@ -345,7 +345,7 @@ class AnalogIn : protected Port {
 	 *
 	 * void initialize() {
 	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
-	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate();
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
 	 * }
@@ -379,7 +379,7 @@ class AnalogIn : protected Port {
 	 *
 	 * void initialize() {
 	 *   pros::adi::AnalogIn sensor (ANALOG_SENSOR_PORT);
-	 *   sensor.calibrate(ANALOG_SENSOR_PORT);
+	 *   sensor.calibrate();
 	 *   std::cout << "Calibrated Reading:" << sensor.get_value_calibrated();
 	 *   // All readings from then on will be calibrated
 	 * }
@@ -456,7 +456,7 @@ class AnalogOut : private Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogOut sensor (ANALOG_SENSOR_PORT);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -481,7 +481,7 @@ class AnalogOut : private Port {
 	 * #define ADI_PORT 'a'
 	 *
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor ({EXT_ADI_SMART_PORT, ADI_PORT});
+	 *   pros::adi::AnalogOut sensor ({EXT_ADI_SMART_PORT, ADI_PORT});
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -507,7 +507,7 @@ class AnalogOut : private Port {
 	 * #define ANALOG_SENSOR_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::AnalogOut sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::AnalogOut sensor (ANALOG_SENSOR_PORT);
 	 *   sensor.set_value(4095); // Set the port to 5V
 	 * }
 	 * \endcode
@@ -661,7 +661,7 @@ class DigitalIn : private Port {
 	 * #define DIGITAL_SENSOR_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::adi::DigitalIn sensor (ANALOG_SENSOR_PORT);
+	 *   pros::adi::DigitalIn sensor (DIGITAL_SENSOR_PORT);
 	 *   // Use the sensor
 	 * }
 	 * \endcode
@@ -1108,7 +1108,7 @@ class Ultrasonic : private Port {
 	 * #define SMART_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::adi::Ultrasonic sensor ( {{ SMART_PORT, PORT_PING, PORT_ECHO }} );
+	 *   pros::adi::Ultrasonic sensor ( { SMART_PORT, PORT_PING, PORT_ECHO } );
 	 *   while (true) {
 	 *     // Print the distance read by the ultrasonic
 	 *     std::cout << "Distance: " << sensor.get_value();
@@ -1394,7 +1394,7 @@ class Potentiometer : public AnalogIn {
 	 * #define SMART_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   pros::adi::Potentiometer potentiometer ({{ SMART_PORT , ADI_POTENTIOMETER_PORT }});
+	 *   pros::adi::Potentiometer potentiometer ({ SMART_PORT , ADI_POTENTIOMETER_PORT });
 	 *   while (true) {
 	 *     // Get the potentiometer angle
 	 *     std::cout << "Angle: " << potentiometer.get_angle();
@@ -1495,7 +1495,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
@@ -1528,7 +1528,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led ({SMART_PORT, LED_PORT}, LED_LENGTH);
+	 *   pros::adi::Led led ({SMART_PORT, LED_PORT}, LED_LENGTH);
 	 *   while (true) {
 	 *     // Set entire LED strip to red
 	 *     led.set_all(0xFF0000);
@@ -1552,7 +1552,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the first 3 pixels to red, green, and blue
 	 * 	   led.set_pixel(0xFF0000, 0);
@@ -1566,6 +1566,7 @@ class Led : protected Port {
 	 * 	   pros::delay(20);
 	 *   }
 	 * }
+	 * \endcode
 	 */
 	std::uint32_t& operator[](size_t i);
 
@@ -1586,7 +1587,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the first 3 pixels to red, green, and blue
 	 * 	   led.set_pixel(0xFF0000, 0);
@@ -1621,7 +1622,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the first 3 pixels to red, green, and blue
 	 * 	   led.set_pixel(0xFF0000, 0);
@@ -1657,7 +1658,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the entire led strip to blue
 	 * 	   led.set_all(0x0000FF);
@@ -1686,7 +1687,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the first pixel to blue
 	 * 	   led.set_pixel(0x0000FF, 0);
@@ -1714,7 +1715,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Set the first pixel to blue
 	 * 	   led.set_pixel(0x0000FF, 0);
@@ -1745,7 +1746,7 @@ class Led : protected Port {
 	 * #define LED_LENGTH 3
 	 *
 	 * void opcontrol() {
-	 *   pros::Led led (LED_PORT, LED_LENGTH);
+	 *   pros::adi::Led led (LED_PORT, LED_LENGTH);
 	 *   while (true) {
 	 * 	   // Get the length of the led strip
 	 * 	   int length = led.length();
@@ -1810,13 +1811,13 @@ class Pneumatics : public DigitalOut {
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
 	 *       left_piston.extend();
 	 *     }
-	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_2)) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
 	 *       left_piston.retract();
 	 *     }
 	 *
 	 *     pros::delay(10);
 	 *   }
-	 *
+	 * }
 	 * \endcode
 	 */
 	explicit Pneumatics(std::uint8_t adi_port, bool start_extended, bool extended_is_low = false);
@@ -1844,8 +1845,7 @@ class Pneumatics : public DigitalOut {
 	 * \code
 	 * void opcontrol() {
 	 * 	 pros::adi::Pneumatics left_piston({1, 'a'}, false);			// Starts retracted, extends when the ADI port is high
-	 *   pros::adi::Pneumatics right_piston({1, 'b'}, false, true);	    // Starts retracted, extends when the ADI port is
-	 *low
+	 *   pros::adi::Pneumatics right_piston({1, 'b'}, false, true);	    // Starts retracted, extends when the ADI port is low
 	 *
 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *
@@ -1886,13 +1886,13 @@ class Pneumatics : public DigitalOut {
 	 *
 	 *   while (true) {
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-	 *       left_piston.extend();
+	 *       piston.extend();
 	 *     }
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-	 *       left_piston.retract();
+	 *       piston.retract();
 	 *     }
-	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-	 *       left_piston.toggle();
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       piston.toggle();
 	 *     }
 	 *
 	 *     pros::delay(10);
@@ -1917,13 +1917,13 @@ class Pneumatics : public DigitalOut {
 	 *
 	 *   while (true) {
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-	 *       left_piston.extend();
+	 *       piston.extend();
 	 *     }
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-	 *       left_piston.retract();
+	 *       piston.retract();
 	 *     }
-	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-	 *       left_piston.toggle();
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       piston.toggle();
 	 *     }
 	 *
 	 *     pros::delay(10);
@@ -1952,13 +1952,13 @@ class Pneumatics : public DigitalOut {
 	 *
 	 *   while (true) {
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
-	 *       left_piston.extend();
+	 *       piston.extend();
 	 *     }
 	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-	 *       left_piston.retract();
+	 *       piston.retract();
 	 *     }
-	 *     if(mastetr.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-	 *       left_piston.toggle();
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+	 *       piston.toggle();
 	 *     }
 	 *
 	 *     pros::delay(10);
@@ -1978,7 +1978,7 @@ class Pneumatics : public DigitalOut {
 	 * #define ADI_PNEUMATICS_PORT 'a'
 	 *
 	 * void opcontrol() {
-	 *   pros::adi::Pneumatics pneumatics (ADI_PNEUMATICS_PORT);
+	 *   pros::adi::Pneumatics pneumatics(ADI_PNEUMATICS_PORT, false);
 	 *   while (true) {
 	 *     // Check if the piston is extended
 	 *     if (pneumatics.is_extended()) {

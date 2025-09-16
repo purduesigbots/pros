@@ -88,7 +88,7 @@ uint8_t competition_get_status(void);
  * }
  *
  * void initialize() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
@@ -125,7 +125,7 @@ uint8_t competition_is_connected(void);
  * }
  *
  * void initialize() {
- *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIO_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
+ *   task_t my_task = task_create(my_task_fn, NULL, TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "My Task");
  * }
  * \endcode
  */
@@ -155,6 +155,7 @@ uint8_t competition_is_field(void);
  *     // connected to VEXnet Competition Switch
  *   }
  * }
+ * \endcode
  */
 uint8_t competition_is_switch(void);
 
@@ -429,10 +430,10 @@ int32_t controller_get_battery_level(controller_id_e_t id);
  * void opcontrol() {
  *   while (true) {
  *   if (controller_get_digital(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
- *     motor_set(1, 100);
+ *     motor_move(1, 100);
  *   }
  *   else {
- *     motor_set(1, 0);
+ *     motor_move(1, 0);
  *   }
  *     delay(2);
  *   }
@@ -510,9 +511,8 @@ int32_t controller_get_digital_new_press(controller_id_e_t id, controller_digita
  * \b Example
  * \code
  * void opcontrol() {
- * 	pros::Controller master(pros::E_CONTROLLER_MASTER);
  * 	while (true) {
- *   if (master.get_digital_new_release(pros::E_CONTROLLER_DIGITAL_A)) {
+ *   if (controller_get_digital_new_release(E_CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_A)) {
  *     // Toggle pneumatics or other similar actions
  *   }
  *
@@ -830,14 +830,14 @@ int32_t usd_is_installed(void);
  * \code
  * void opcontrol() {
  * 	char* test = (char*) malloc(128);
- *	pros::c::usd_list_files("/", test, 128);
- *	pros::delay(200);
- *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
- *  pros::delay(100);
- *  pros::c::usd_list_files("/test", test, 128);
- *	pros::delay(200);
- *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
- *  pros::delay(100);
+ *	usd_list_files("/", test, 128);
+ *	delay(200);
+ *	printf("%s\n", test); // Prints the file names in the root directory seperated by newlines
+ *  delay(100);
+ *  usd_list_files("/test", test, 128);
+ *	delay(200);
+ *	printf("%s\n", test); // Prints the names of files in the folder named test seperated by newlines
+ *  delay(100);
  * }
  * \endcode
  */

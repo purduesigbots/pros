@@ -90,7 +90,7 @@ class Controller {
 	 * void opcontrol() {
 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor_move(1, master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     pros::c::motor_move(1, master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -160,10 +160,10 @@ class Controller {
 	 *   pros::Controller master(pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
 	 *   if (master.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
-	 *     motor_set(1, 100);
+	 *     pros::c::motor_move(1, 100);
 	 *   }
 	 *   else {
-	 *     motor_set(1, 0);
+	 *     pros::c::motor_move(1, 0);
 	 *   }
 	 *     pros::delay(2);
 	 *   }
@@ -461,7 +461,7 @@ namespace battery {
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery Level: %.2f\n", get_capacity());
+ *   printf("Battery Level: %.2f\n", pros::battery::get_capacity());
  * }
  * \endcode
  */
@@ -479,7 +479,7 @@ double get_capacity(void);
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery Current: %d\n", get_current());
+ *   printf("Battery Current: %d\n", pros::battery::get_current());
  * }
  * \endcode
  */
@@ -497,7 +497,7 @@ int32_t get_current(void);
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery's Temperature: %.2f\n", get_temperature());
+ *   printf("Battery's Temperature: %.2f\n", pros::battery::get_temperature());
  * }
  * \endcode
  */
@@ -515,7 +515,7 @@ double get_temperature(void);
  * \b Example
  * \code
  * void initialize() {
- *   printf("Battery's Voltage: %d\n", get_voltage());
+ *   printf("Battery's Voltage: %d\n", pros::battery::get_voltage());
  * }
  * \endcode
  */
@@ -532,16 +532,17 @@ namespace competition {
  *
  * \b Example
  * \code
- * void status_display_task(){
- * 	if(!is_connected()) {
- * 	 pros::lcd::print(0, "V5 Brain is not connected!");
- *  }
- *  if(is_autonomous()) {
- * 	 pros::lcd::print(0, "V5 Brain is in autonomous mode!");
- *  }
- *  if(!is_disabled()) {
- * 	 pros::lcd::print(0, "V5 Brain is disabled!");
- *  }
+ * void status_display_task() {
+ * 	 if(!pros::competition::is_connected()) {
+ * 	   pros::lcd::print(0, "V5 Brain is not connected!");
+ *   }
+ *   if(pros::competition::is_autonomous()) {
+ * 	   pros::lcd::print(0, "V5 Brain is in autonomous mode!");
+ *   }
+ *   if(pros::competition::is_disabled()) {
+ * 	   pros::lcd::print(0, "V5 Brain is disabled!");
+ *   }
+ * }
  * \endcode
  */
 std::uint8_t get_status(void);
@@ -561,7 +562,7 @@ namespace usd {
  * \b Example
  * \code
  * void opcontrol() {
- *   printf("%i", is_installed());
+ *   printf("%i", pros::usd::is_installed());
  * }
  * \endcode
  */
@@ -600,7 +601,7 @@ std::int32_t is_installed(void);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the file names in the root directory seperated by newlines
  *  pros::delay(100);
- *  pros::list_files("/test", test, 128);
+ *  pros::usd::list_files("/test", test, 128);
  *	pros::delay(200);
  *	printf("%s\n", test); //Prints the names of files in the folder named test seperated by newlines
  *  pros::delay(100);

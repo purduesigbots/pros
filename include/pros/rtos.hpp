@@ -142,7 +142,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, (void*)"PROS");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, (void*)"PROS");
 	 * }
 	 * \endcode
 	 */
@@ -179,7 +179,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * }
 	 * \endcode
 	 */
@@ -281,7 +281,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * 
 	 *   pros::Task my_task_cpp(my_task);
 	 * }
@@ -321,7 +321,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * 
 	 *   pros::Task my_task_cpp = my_task;
 	 * }
@@ -393,7 +393,7 @@ class Task {
      * void initialize() {
 	 *   pros::Task my_task(my_task_fn, "My Task");
 	 * 
-	 *   Task.set_priority(pros::DEFAULT_PRIORITY + 1);
+	 *   my_task.set_priority(pros::DEFAULT_PRIORITY + 1);
      * }
      * \endcode
 	 */
@@ -521,7 +521,7 @@ class Task {
      * void initialize() {
 	 *   pros::Task my_task(my_task_fn, "My Task");
 	 * 
-	 *   pros::c::task_t my_task_c = (pros::c::task_t)my_task;
+	 *   pros::task_t my_task_c = (pros::task_t)my_task;
      * }
      * \endcode
 	 */
