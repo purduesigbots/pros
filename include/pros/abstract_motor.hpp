@@ -41,6 +41,9 @@ enum class MotorBrake {
 	invalid = INT32_MAX ///< Invalid brake mode
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorBrake brake_mode);
+
 /**
  * \enum MotorEncoderUnits
  * Indicates the units used by the motor encoders.
@@ -52,6 +55,9 @@ enum class MotorEncoderUnits {
 	counts = 2, ///< Position is recorded as raw encoder ticks as a whole number
 	invalid = INT32_MAX ///< Invalid motor encoder units
 };
+
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorEncoderUnits brake_mode);
 
 // Alias for MotorEncoderUnits
 using MotorUnits = MotorEncoderUnits;
@@ -69,6 +75,9 @@ enum class MotorGears {
 	invalid = INT32_MAX ///< Error return code
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorGears brake_mode);
+
 /**
  * \enum MotorType
  * Indicates the type of a motor
@@ -79,6 +88,8 @@ enum class MotorType {
 	invalid = INT32_MAX ///< Error return code
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorType brake_mode);
 
 // Provide Aliases for MotorGears
 using MotorGearset = MotorGears;

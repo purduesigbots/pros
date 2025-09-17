@@ -407,7 +407,7 @@ class Motor : public AbstractMotor, public Device {
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
 	 *   while (true) {
-	 *     motor.move(controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     motor.move(pros::c::controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     printf("Actual velocity: %lf\n", motor.get_actual_velocity());
 	 *     pros::delay(2);
 	 *   }
@@ -997,7 +997,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1028,7 +1028,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -1120,7 +1120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Type: " << motor.get_type();
 	 * }
 	 * \endcode
@@ -1227,7 +1227,7 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * motor.set_current_limit(1000);
 	 * while (true) {
-	 *   motor.move(controller_get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
+	 *   motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -2033,7 +2033,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units_all()[0];
 	 * }
 	 * \endcode
@@ -2053,7 +2053,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing_all()[0];
 	 * }
 	 * \endcode
@@ -2120,7 +2120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, pros::E_MOTOR_GEARSET_06, pros::E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Type: " << motor.get_type_all()[0];
 	 * }
 	 * \endcode
@@ -2196,7 +2196,7 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * motor.set_current_limit_all(1000);
 	 * while (true) {
-	 *   motor.move(controller_get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
+	 *   motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -2466,7 +2466,7 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
  * \code
  * using namespace pros::literals;
  * void opcontrol() {
- *	pros::motor motor = 2_rmtr; //Makes an reversed Motor object on port 2
+ *	pros::Motor motor = 2_rmtr; //Makes an reversed Motor object on port 2
  * }
  * \endcode
  */
