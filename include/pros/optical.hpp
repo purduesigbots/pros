@@ -460,7 +460,7 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Optical operator"" _opt(const unsigned long long int o);
+const pros::Optical operator""_opt(const unsigned long long int o);
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros

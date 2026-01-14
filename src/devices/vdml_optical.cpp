@@ -99,7 +99,7 @@ std::ostream& operator<<(std::ostream& os, pros::Optical& optical) {
 }
 
 namespace literals {
-const pros::Optical operator"" _opt(const unsigned long long int o) {
+const pros::Optical operator""_opt(const unsigned long long int o) {
   return pros::Optical(o);
 }
 } //
