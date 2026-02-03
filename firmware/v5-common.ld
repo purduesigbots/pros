@@ -209,6 +209,29 @@ _SDA_BASE_ = __sdata_start + ((__sbss_end - __sdata_start) / 2 );
 
 _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
 
+/* Stack sections for different processor modes */
+.stack (NOLOAD) : ALIGN(8) {
+   _stack_end = .;
+   . += _UNDEF_STACK_SIZE;
+   __undef_stack = .;
+   
+   . += _FIQ_STACK_SIZE;
+   __fiq_stack = .;
+   
+   . += _IRQ_STACK_SIZE;
+   __irq_stack = .;
+   
+   . += _ABORT_STACK_SIZE;
+   __abort_stack = .;
+   
+   . += _SUPERVISOR_STACK_SIZE;
+   __supervisor_stack = .;
+   
+   . += _STACK_SIZE;
+   __stack = .;
+   _stack_start = .;
+} > RAM
+
 /* Generate Stack and Heap definitions */
 
 .heap (NOLOAD) : {
