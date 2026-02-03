@@ -232,8 +232,6 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
    _stack_start = .;
 } > RAM
 
-/* Generate Stack and Heap definitions */
-
 .heap (NOLOAD) : {
    . = ALIGN(16);
    _heap = .;
@@ -243,7 +241,7 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
    _heap_end = .;
    HeapLimit = .;
 } > HEAP
-/* There are no sections for the stack. This is intentional, since VEXOs sets up a stack before
-   starting the program, and FreeRTOS task stacks are dynamically allocated. */
+/* Even though VEXOs sets up a stack before starting the program, 
+   and FreeRTOS task stacks are dynamically allocated, we need to set up an inital stack that isn't BSS. */
 _end = .;
 }
