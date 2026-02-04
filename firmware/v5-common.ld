@@ -201,7 +201,6 @@ SECTIONS
    *(.bss)
    *(.bss.*)
    *(.gnu.linkonce.b.*)
-   *(COMMON)
    __bss_end = .;
 } > RAM
 
@@ -209,7 +208,10 @@ _SDA_BASE_ = __sdata_start + ((__sbss_end - __sdata_start) / 2 );
 
 _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
 
-/* Stack sections for different processor modes */
+/* Stack sections for different processor modes
+   VEXos handles this in vexSystemBoot; but we keep these sections
+   to provide __stack for vexMain. This prevents the stack from being
+   placed in `.bss` (see issue #783). */
 .stack (NOLOAD) : ALIGN(8) {
    _stack_end = .;
    . += _UNDEF_STACK_SIZE;
@@ -243,5 +245,6 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
 } > HEAP
 /* Even though VEXOs sets up a stack before starting the program, 
    and FreeRTOS task stacks are dynamically allocated, we need to set up an inital stack that isn't BSS. */
+   
 _end = .;
 }
