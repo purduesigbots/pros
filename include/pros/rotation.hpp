@@ -386,7 +386,7 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Rotation operator"" _rot(const unsigned long long int r);
+const pros::Rotation operator""_rot(const unsigned long long int r);
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros

@@ -2456,7 +2456,7 @@ namespace literals {
  * }
  * \endcode
  */
-const pros::Motor operator"" _mtr(const unsigned long long int m);
+const pros::Motor operator""_mtr(const unsigned long long int m);
 /**
  * Constructs a reversed Motor from a literal ending in _rmtr
  *
@@ -2470,7 +2470,7 @@ const pros::Motor operator"" _mtr(const unsigned long long int m);
  * }
  * \endcode
  */
-const pros::Motor operator"" _rmtr(const unsigned long long int m);
+const pros::Motor operator""_rmtr(const unsigned long long int m);
 }  // namespace literals
 }  // namespace v5
 }  // namespace pros
