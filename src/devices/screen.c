@@ -454,7 +454,7 @@ static inline bool _touch_status_equivalent(V5_TouchStatus x, V5_TouchStatus y) 
 }
 
 void _touch_handle_task(void* ignore) {
-	V5_TouchStatus last, current;
+	V5_TouchStatus current = {0}, last = {0};
 	while (true) {
 		mutex_take(_screen_mutex, TIMEOUT_MAX);
         vexTouchDataGet(&current);
