@@ -3,7 +3,7 @@
  *
  * C++ support hooks
  *
- * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
+ * \Copyright (c) 2017-2026, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
