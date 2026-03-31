@@ -6,7 +6,7 @@
  * FreeRTOS requires some porting to each platform to handle certain tasks. This
  * file contains the various methods required to be implemented for FreeRTOS.
  *
- * \copyright (c) 2017-2024, Purdue University ACM SIGBots.
+ * \Copyright (c) 2017-2026, Purdue University ACM SIGBots.
  * All rights reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
