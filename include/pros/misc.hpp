@@ -45,7 +45,7 @@ class Controller {
 	 * 			  The ID of the controller (e.g. the master or partner controller).
 	 * 			  Must be one of CONTROLLER_MASTER or CONTROLLER_PARTNER
 	 */
-	explicit Controller(controller_id_e_t id);
+	explicit constexpr Controller(controller_id_e_t id): _id(id) {}
 
 	/**
 	 * Checks if the controller is connected.
