@@ -62,10 +62,10 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 * 	Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
-	 *  Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
-	 *  Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
-	 *  Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); //port 4 w/ rotations
+	 * 	pros::Motor first_motor(1); //Creates a motor on port 1 without altering gearset or encoder units
+	 *  pros::Motor reversed_motor(-2); //Creates a reversed motor on port 1 port 1 without altering gearset or encoder units
+	 *  pros::Motor blue_motor(3, pros::v5::MotorGears::blue); //Creates a motor on port 3 with blue gear set
+	 *  pros::Motor rotations_motor(4, pros::v5::MotorGears::green, pros::v5::MotorUnits::rotations); //port 4 w/ rotations
 	 *
 	 * }
 	 * \endcode
@@ -100,10 +100,10 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   pros::Motor Motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Motor motor (1);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor.move(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -203,8 +203,8 @@ class Motor : public AbstractMotor, public Device {
 	 *
 	 * This velocity corresponds to different actual speeds depending on the
 	 * gearset used for the motor. This results in a range of +-100 for
-	 * E_MOTOR_GEARSET_36, +-200 for E_MOTOR_GEARSET_18, and +-600 for
-	 * E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
+	 * pros::E_MOTOR_GEARSET_36, +-200 for pros::E_MOTOR_GEARSET_18, and +-600 for
+	 * pros::E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
 	 * speed, as opposed to setting the motor's voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -274,7 +274,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 *  void autonomous() {
-	 *  Motor motor(1);
+	 *  pros::Motor motor(1);
 	 *   motor.move_voltage(12000);
 	 *   pros::delay(1000); // Move at max voltage for 1 second
 	 *   motor.brake();
@@ -371,11 +371,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     motor.move_velocity(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_target_velocity();
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -407,7 +407,7 @@ class Motor : public AbstractMotor, public Device {
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
 	 *   while (true) {
-	 *     motor = controller_get_analog(E_CONTROLLER_MASTER, E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(pros::c::controller_get_analog(pros::E_CONTROLLER_MASTER, pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     printf("Actual velocity: %lf\n", motor.get_actual_velocity());
 	 *     pros::delay(2);
 	 *   }
@@ -441,9 +441,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Current Draw: " << motor.get_current_draw();
 	 *     pros::delay(2);
 	 *   }
@@ -477,9 +477,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Direction: " << motor.get_direction();
 	 *     pros::delay(2);
 	 *   }
@@ -518,9 +518,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Efficiency: " << motor.get_efficiency();
 	 *     pros::delay(2);
 	 *   }
@@ -556,9 +556,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Faults: " << motor.get_faults();pros::delay(2);
 	 *   }
 	 * }
@@ -592,9 +592,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Faults: " << motor.get_faults();
 	 *     pros::delay(2);
 	 *   }
@@ -628,9 +628,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Position: " << motor.get_position();
 	 *     pros::delay(2);
 	 *   }
@@ -664,9 +664,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Power: " << motor.get_power();
 	 *     pros::delay(2);
 	 *   }
@@ -709,9 +709,9 @@ class Motor : public AbstractMotor, public Device {
 	 * void opcontrol() {
 	 *   std::uint32_t now = pros::millis();
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Position: " << motor.get_raw_position(&now);
 	 *     pros::delay(2);
 	 *   }
@@ -745,9 +745,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Temperature: " << motor.get_temperature();
 	 *     pros::delay(2);
 	 *   }
@@ -781,9 +781,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Torque: " << motor.get_torque();
 	 *     pros::delay(2);
 	 *   }
@@ -817,9 +817,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Voltage: " << motor.get_voltage();
 	 *     pros::delay(2);
 	 *   }
@@ -854,9 +854,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Is the motor over its current limit?: " << motor.is_over_current();
 	 *     pros::delay(2);
 	 *   }
@@ -890,9 +890,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp();
 	 *     pros::delay(2);
 	 *   }
@@ -926,7 +926,7 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of MotorBrake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -992,12 +992,12 @@ class Motor : public AbstractMotor, public Device {
 	 * 		  By default index is 0, and will return an error for a non-zero index
 	 *
 	 * \return One of MotorUnits according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1028,7 +1028,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -1120,7 +1120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Type: " << motor.get_type();
 	 * }
 	 * \endcode
@@ -1223,11 +1223,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 * motor.set_current_limit(1000);
 	 * while (true) {
-	 *   motor = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -1254,7 +1254,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_encoder_units(E_MOTOR_ENCODER_DEGREES);
+	 *   motor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1289,7 +1289,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_encoder_units(E_MOTOR_ENCODER_DEGREES);
+	 *   motor.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -1323,7 +1323,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
+	 *   motor.set_gearing(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -1360,7 +1360,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_gearing(E_MOTOR_GEARSET_06);
+	 *   motor.set_gearing(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -1419,11 +1419,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void autonomous() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 *   motor.set_voltage_limit(10000);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     // The motor will not output more than 10 V
 	 *     pros::delay(2);
 	 *   }
@@ -1526,7 +1526,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Motor> motor_all = pros::Motor::get_all_devices();  // All motors that are connected
+	 *   std::vector<pros::Motor> motor_all = pros::Motor::get_all_devices();  // All motors that are connected
 	 * }
 	 * \endcode
 	 */
@@ -1582,11 +1582,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     motor.move_velocity(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_target_velocity_all()[0];
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -1608,11 +1608,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor.move_velocity(master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y));
+	 *     motor.move_velocity(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Velocity: " << motor.get_actual_velocity_all()[0];
-	 *     // Prints the value of E_CONTROLLER_ANALOG_LEFT_Y
+	 *     // Prints the value of pros::E_CONTROLLER_ANALOG_LEFT_Y
 	 *     pros::delay(2);
 	 *   }
 	 * }
@@ -1636,9 +1636,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Current Draw: " << motor.get_current_draw_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1664,9 +1664,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Direction: " << motor.get_direction_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1695,9 +1695,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Efficiency: " << motor.get_efficiency();
 	 *     pros::delay(2);
 	 *   }
@@ -1722,9 +1722,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Faults: " << motor.get_faults_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1750,9 +1750,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Faults: " << motor.get_faults_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1777,9 +1777,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Position: " << motor.get_position_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1803,9 +1803,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Power: " << motor.get_power_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1836,9 +1836,9 @@ class Motor : public AbstractMotor, public Device {
 	 * void opcontrol() {
 	 *   std::uint32_t now = pros::millis();
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Position: " << motor.get_raw_position(&now);
 	 *     pros::delay(2);
 	 *   }
@@ -1861,9 +1861,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Temperature: " << motor.get_temperature_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1886,9 +1886,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Torque: " << motor.get_torque();
 	 *     pros::delay(2);
 	 *   }
@@ -1912,9 +1912,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Motor Voltage: " << motor.get_voltage_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1938,9 +1938,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Is the motor over its current limit?: " << motor.is_over_current_all()[0];
 	 *     pros::delay(2);
 	 *   }
@@ -1963,9 +1963,9 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     std::cout << "Is the motor over its temperature limit?: " << motor.is_over_temp_all();
 	 *     pros::delay(2);
 	 *   }
@@ -1982,7 +1982,7 @@ class Motor : public AbstractMotor, public Device {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return One of Motor_Brake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 *
 	 * \b Example
 	 * \code
@@ -2028,12 +2028,12 @@ class Motor : public AbstractMotor, public Device {
 	 * ENODEV - The port cannot be configured as a motor
 	 *
 	 * \return A vector containing One of Motor_Units according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 *
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Encoder Units: " << motor.get_encoder_units_all()[0];
 	 * }
 	 * \endcode
@@ -2053,7 +2053,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Gearing: " << motor.get_gearing_all()[0];
 	 * }
 	 * \endcode
@@ -2120,7 +2120,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \b Example
 	 * \code
 	 * void initialize() {
-	 *   pros::Motor motor (1, E_MOTOR_GEARSET_06, E_MOTOR_ENCODER_COUNTS);
+	 *   pros::Motor motor (1, pros::MotorGears::blue, pros::MotorUnits::counts);
 	 *   std::cout << "Motor Type: " << motor.get_type_all()[0];
 	 * }
 	 * \endcode
@@ -2192,11 +2192,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 * motor.set_current_limit_all(1000);
 	 * while (true) {
-	 *   motor = controller_get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *   motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *   // The motor will reduce its output at 1000 mA instead of the default 2500 mA
 	 *   pros::delay(2);
 	 *   }
@@ -2234,7 +2234,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   motor.set_encoder_units_all(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -2259,7 +2259,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_encoder_units_all(E_MOTOR_ENCODER_DEGREES);
+	 *   motor.set_encoder_units_all(pros::E_MOTOR_ENCODER_DEGREES);
 	 *   std::cout << "Encoder Units: " << motor.get_encoder_units();
 	 * }
 	 * \endcode
@@ -2284,7 +2284,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   motor.set_gearing_all(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -2309,7 +2309,7 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void initialize() {
 	 *   pros::Motor motor (1);
-	 *   motor.set_gearing_all(E_MOTOR_GEARSET_06);
+	 *   motor.set_gearing_all(pros::E_MOTOR_GEARSET_06);
 	 *   std::cout << "Gearset: " << motor.get_gearing();
 	 * }
 	 * \endcode
@@ -2366,11 +2366,11 @@ class Motor : public AbstractMotor, public Device {
 	 * \code
 	 * void autonomous() {
 	 *   pros::Motor motor (1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *
 	 *   motor.set_voltage_limit_all(10000);
 	 *   while (true) {
-	 *     motor = master.get_analog(E_CONTROLLER_ANALOG_LEFT_Y);
+	 *     motor.move(master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y));
 	 *     // The motor will not output more than 10 V
 	 *     pros::delay(2);
 	 *   }
@@ -2466,7 +2466,7 @@ const pros::Motor operator""_mtr(const unsigned long long int m);
  * \code
  * using namespace pros::literals;
  * void opcontrol() {
- *	pros::motor motor = 2_rmtr; //Makes an reversed Motor object on port 2
+ *	pros::Motor motor = 2_rmtr; //Makes an reversed Motor object on port 2
  * }
  * \endcode
  */

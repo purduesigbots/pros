@@ -108,7 +108,7 @@ adi_port_config_e_t ext_adi_port_get_config(uint8_t smart_port, uint8_t adi_port
  * 
  * void opcontrol() {
  *   ext_adi_port_set_config(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
- *   printf("Port Value: %d\n", ext_adi_get_value(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
+ *   printf("Port Value: %d\n", ext_adi_port_get_value(ADI_EXPANDER_PORT, ANALOG_SENSOR_PORT));
  * }
  * \endcode
  */
@@ -175,7 +175,7 @@ int32_t ext_adi_port_set_config(uint8_t smart_port, uint8_t adi_port, adi_port_c
  * 
  * void initialize() {
  *   ext_adi_port_set_config(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
- *   ext_adi_set_value(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, HIGH);
+ *   ext_adi_port_set_value(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT, HIGH);
  * }
  * \endcode
  */
@@ -374,7 +374,7 @@ int32_t ext_adi_analog_read_calibrated_HR(uint8_t smart_port, uint8_t adi_port);
  * 
  * void opcontrol() {
  *   while (true) {
- *     printf(“Sensor Value: %dn”, 
+ *     printf("Sensor Value: %dn", 
  *       ext_adi_digital_read(ADI_EXPANDER_PORT, DIGITAL_SENSOR_PORT)); 
  *     delay(5);
  *   }
@@ -552,13 +552,13 @@ int32_t ext_adi_motor_set(uint8_t smart_port, uint8_t adi_port, int8_t speed);
  * \b Example
  * \code
  * 
- * #define ADI_EXPANDER_PORT 20 #
- * define MOTOR_PORT 1
+ * #define ADI_EXPANDER_PORT 20
+ * #define MOTOR_PORT 1
  * 
  * void opcontrol() {
  *   ext_adi_motor_set(ADI_EXPANDER_PORT,
  *     MOTOR_PORT, 127); // Go full speed forward 
- *   printf(“Commanded Motor Power: %dn”,
+ *   printf("Commanded Motor Power: %dn",
  *     ext_adi_motor_get(ADI_EXPANDER_PORT, MOTOR_PORT)); // Will display 127
  *   delay(1000); 
  *   ext_adi_motor_set(ADI_EXPANDER_PORT, MOTOR_PORT, 0); // Stop the motor
@@ -628,13 +628,14 @@ typedef int32_t ext_adi_encoder_t;
  * \code
  * 
  * #define ADI_EXPANDER_PORT 20 
- * #define PORT_TOP 1 #define PORT_BOTTOM 2
+ * #define PORT_TOP 1
+ * #define PORT_BOTTOM 2
  * 
  * void opcontrol() {
  *   ext_adi_encoder_t enc = ext_adi_encoder_init(ADI_EXPANDER_PORT,
  *     PORT_TOP, PORT_BOTTOM, false); 
  *   while (true) {
- *     printf(“Encoder Value: %dn”,
+ *     printf("Encoder Value: %dn",
  *       ext_adi_encoder_get(enc));
  *     delay(5);
  *   }

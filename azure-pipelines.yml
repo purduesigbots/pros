@@ -28,6 +28,8 @@ jobs:
       onlyAddExtraIndex: true
   - bash: pip install pros-cli
     displayName: Install CLI
+  - bash: python check_example_code.py
+    displayName: Check example code in headers
   - bash: |
       make template
       mkdir -p artifacts

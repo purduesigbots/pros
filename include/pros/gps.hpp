@@ -179,11 +179,11 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT, 1.1, 1.2, 180, .4, .4);
+	 * 	pros::Gps gps(GPS_PORT, 1.1, 1.2, 180, .4, .4);
 	 *  // this is equivalent to the above line
 	 *  gps.initialize_full(1.1, 1.2, 180, .4, .4);
 	 *   while (true) {
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -212,11 +212,11 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT, 1.1, 1.2, 180, .4, .4);
+	 * 	pros::Gps gps(GPS_PORT, 1.1, 1.2, 180, .4, .4);
 	 *  // this is equivalent to the above line
 	 *  gps.set_offset(.4, .4);
 	 *   while (true) {
-	 *	 	delay(20);
+	 *	 	pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -232,7 +232,7 @@ class Gps : public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Gps> gps_all = pros::Gps::get_all_devices();  // All GPS sensors that are connected
+	 *   std::vector<pros::Gps> gps_all = pros::Gps::get_all_devices();  // All GPS sensors that are connected
 	 * }
 	 * \endcode
 	 */
@@ -257,12 +257,12 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   gps_position_s_t pos;
-	 * 	Gps gps(GPS_PORT);
+	 *   pros::gps_position_s_t pos;
+	 * 	 pros::Gps gps(GPS_PORT);
 	 *   while (true) {
-	 *     pos = gps.get_offset();
-	 *     screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
-	 *     delay(20);
+	 *     pros::gps_position_s_t pos = gps.get_offset();
+	 *     pros::c::screen_print(TEXT_MEDIUM, 1, "X Offset: %4d, Y Offset: %4d", pos.x, pos.y);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -292,12 +292,12 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  gps.set_position(1.3, 1.4, 180);
 	 *   while (true) {
 	 *     printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x,
-	 * 	   gps.get_position().y, gps.get_position().heading);
-	 *     delay(20);
+	 * 	   gps.get_position().y, gps.get_heading());
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -323,12 +323,12 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  gps.set_data_rate(10);
 	 *   while (true) {
 	 *	 	printf("X: %f, Y: %f, Heading: %f\n", gps.get_position().x,
-	 * 	   gps.get_position().y, gps.get_position().heading);
-	 *	 	delay(10);
+	 * 	   gps.get_position().y, gps.get_heading());
+	 *	 	pros::delay(10);
 	 *   }
 	 * }
 	 * \endcode
@@ -352,7 +352,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  double error = gps.get_error();
 	 *	printf("Error: %f\n", error);
 	 *  pros::delay(20);
@@ -380,13 +380,13 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  gps_status_s_t status;
+	 * 	pros::Gps gps(GPS_PORT);
+	 *  pros::gps_status_s_t status;
 	 *   while (true) {
 	 *     status = gps.get_position_and_orientation();
 	 *     printf("X: %f, Y: %f, Roll: %f, Pitch: %f, Yaw: %f\n",
 	 * 	   status.x, status.y, status.roll, status.pitch, status.yaw);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -411,12 +411,12 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  gps_position_s_t position;
+	 * 	pros::Gps gps(GPS_PORT);
+	 *  pros::gps_position_s_t position;
 	 *   while (true) {
 	 *	 position = gps.get_position();
 	 *     printf("X: %f, Y: %f\n", position.x, position.y);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -440,7 +440,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double pos_x = gps.get_position_x();
 	 *		printf("X: %f\n", pos_x);
@@ -468,7 +468,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double pos_y = gps.get_position_y();
 	 *		printf("Y: %f\n", pos_y);
@@ -497,13 +497,13 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
-	 *  gps_orientation_s_t orientation;
+	 * 	pros::Gps gps(GPS_PORT);
+	 *  pros::gps_orientation_s_t orientation;
 	 *   while (true) {
 	 *	 orientation = gps.get_orientation();
 	 *     printf("pitch: %f, roll: %f, yaw: %f\n", orientation.pitch,
 	 *         orientation.roll, orientation.yaw);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -527,7 +527,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double pitch = gps.get_pitch();
 	 *		printf("pitch: %f\n", pitch);
@@ -555,7 +555,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double roll = gps.get_roll();
 	 *		printf("roll: %f\n", roll);
@@ -583,7 +583,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double yaw = gps.get_yaw();
 	 *		printf("yaw: %f\n", yaw);
@@ -612,7 +612,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double heading = gps.get_heading();
 	 *		printf("Heading: %f\n", heading);
@@ -640,7 +640,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double heading = gps.get_heading_raw();
 	 *		printf("Heading: %f\n", heading);
@@ -668,10 +668,10 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
-	 *		double gyro_z = gps.get_gyro_z();
-	 *		printf("gyro_z: %f\n", gyro_z);
+	 *		pros::gps_gyro_s_t gyro = gps.get_gyro_rate();
+	 *		printf("gyro: (%f, %f, %f)\n", gyro.x, gyro.y, gyro.z);
 	 *  	pros::delay(20);
 	 *  }
 	 * }
@@ -696,9 +696,9 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
-	 *		double gyro_x = gps.get_gyro_x();
+	 *		double gyro_x = gps.get_gyro_rate_x();
 	 *		printf("gyro_x: %f\n", gyro_x);
 	 *  	pros::delay(20);
 	 *  }
@@ -724,9 +724,9 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
-	 *		double gyro_y = gps.get_gyro_y();
+	 *		double gyro_y = gps.get_gyro_rate_y();
 	 *		printf("gyro_y: %f\n", gyro_y);
 	 *  	pros::delay(20);
 	 *  }
@@ -752,9 +752,9 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
-	 *		double gyro_z = gps.get_gyro_z();
+	 *		double gyro_z = gps.get_gyro_rate_z();
 	 *		printf("gyro_z: %f\n", gyro_z);
 	 *  	pros::delay(20);
 	 *  }
@@ -794,7 +794,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double accel_x = gps.get_accel_x();
 	 *		printf("accel_x: %f\n", accel_x);
@@ -822,7 +822,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double accel_y = gps.get_accel_y();
 	 *		printf("accel_y: %f\n", accel_y);
@@ -850,7 +850,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		double accel_z = gps.get_accel_z();
 	 *		printf("accel_z: %f\n", accel_z);
@@ -872,7 +872,7 @@ class Gps : public Device {
 	 * #define GPS_PORT 1
 	 *
 	 * void opcontrol() {
-	 * 	Gps gps(GPS_PORT);
+	 * 	pros::Gps gps(GPS_PORT);
 	 *  while(true) {
 	 *		std::cout << gps << std::endl;
 	 *  	pros::delay(20);
@@ -912,14 +912,14 @@ namespace literals {
  *
  * \b Example
  * \code
- * using namespace literals;
+ * using namespace pros::literals;
  *
  * void opcontrol() {
  * 	 pros::Gps gps = 1_gps;
  *   while (true) {
- *     pos = gps.get_position();
- *     screen_print(TEXT_MEDIUM, 1, "X Position: %4d, Y Position: %4d", pos.x, pos.y);
- *     delay(20);
+ *     pros::gps_position_s_t pos = gps.get_position();
+ *     pros::c::screen_print(TEXT_MEDIUM, 1, "X Position: %4d, Y Position: %4d", pos.x, pos.y);
+ *     pros::delay(20);
  *   }
  * }
  * \endcode

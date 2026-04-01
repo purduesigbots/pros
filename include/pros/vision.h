@@ -208,7 +208,7 @@ int32_t vision_clear_led(uint8_t port);
  *   vision_signature_from_utility(EXAMPLE_SIG, 8973, 11143, 10058, -2119, -1053, -1586, 5.4, 0);
  * vision_set_signature(VISION_PORT, EXAMPLE_SIG, &RED_SIG);
  * while (true) {
- *   vision_signature_s_t rtn = vision_get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
+ *   vision_object_s_t rtn = vision_get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
  *   // Gets the largest object of the EXAMPLE_SIG signature
  *   printf("sig: %d", rtn.signature);
  *   // Prints "sig: 1"
@@ -253,7 +253,7 @@ vision_signature_s_t vision_signature_from_utility(const int32_t id, const int32
  * #define OTHER_SIG 2
  * 
  * void opcontrol() {
- *   vision_color_code_t code1 = vision_create_color_code(VISION_PORT, EXAMPLE_SIG, OTHER_SIG);
+ *   vision_color_code_t code1 = vision_create_color_code(VISION_PORT, EXAMPLE_SIG, OTHER_SIG, 0, 0, 0);
  * }
  * \endcode
  */
@@ -362,7 +362,7 @@ vision_object_s_t vision_get_by_sig(uint8_t port, const uint32_t size_id, const 
  * #define OTHER_SIG 2
  * 
  * void opcontrol() {
- *   vision_color_code_t code1 = vision_create_color_code(VISION_PORT, EXAMPLE_SIG, OTHER_SIG);
+ *   vision_color_code_t code1 = vision_create_color_code(VISION_PORT, EXAMPLE_SIG, OTHER_SIG, 0, 0, 0);
  *   while (true) {
  *     vision_object_s_t rtn = vision_get_by_code(VISION_PORT, 0, code1);
  *     // Gets the largest object

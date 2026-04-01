@@ -115,7 +115,7 @@ class Imu : public Device {
 	 * Calibration takes approximately 2 seconds and blocks during this period if
 	 * the blocking param is true, with a timeout for this operation being set a 3
 	 * seconds as a safety margin. This function also blocks until the IMU
-	 * status flag is set properly to E_IMU_STATUS_CALIBRATING, with a minimum
+	 * status flag is set properly to pros::E_IMU_STATUS_CALIBRATING, with a minimum
 	 * blocking time of 5ms and a timeout of 1 second if it's never set.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -176,7 +176,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the refresh rate to 5ms
 	 *     std::int32_t status = imu.set_data_rate(5);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Check if the operation was successful
 	 *     if (status == PROS_ERR) {
@@ -199,7 +199,7 @@ class Imu : public Device {
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Imu> imu_all = pros::Imu::get_all_devices();  // All IMU sensors that are connected
+	 *   std::vector<pros::Imu> imu_all = pros::Imu::get_all_devices();  // All IMU sensors that are connected
 	 * }
  	 * \endcode
 	 */
@@ -235,7 +235,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *    // Get the total number of degrees the sensor has spun
 	 *    printf("Total rotation: %f\n", imu.get_rotation());
-	 *    delay(20);
+	 *    pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -271,7 +271,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's heading
 	 *     printf("Heading: %f\n", imu.get_heading());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -303,8 +303,8 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's quaternion
 	 *     pros::quaternion_s_t quat = imu.get_quaternion();
-	 *     cout << "Quaternion: " << quat.w << ", " << quat.x << ", " << quat.y << ", " << quat.z << endl;
-	 *     delay(20);
+	 *     std::cout << "Quaternion: " << quat.w << ", " << quat.x << ", " << quat.y << ", " << quat.z << std::endl;
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -336,8 +336,8 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's Euler angles
 	 *     pros::euler_s_t euler = imu.get_euler();
-	 *     cout << "Euler: " << euler.roll << ", " << euler.pitch << ", " << euler.yaw << endl;
-	 *     delay(20);
+	 *     std::cout << "Euler: " << euler.roll << ", " << euler.pitch << ", " << euler.yaw << std::endl;
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -368,7 +368,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's pitch
 	 *     printf("Pitch: %f\n", imu.get_pitch());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -398,7 +398,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's roll
 	 *     printf("Roll: %f\n", imu.get_roll());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -428,7 +428,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's yaw
 	 *     printf("Yaw: %f\n", imu.get_yaw());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -459,8 +459,8 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's raw gyroscope values
 	 *     pros::imu_gyro_s_t gyro = imu.get_gyro_rate();
-	 *     cout << "Gyro: " << gyro.x << ", " << gyro.y << ", " << gyro.z << endl;
-	 *     delay(20);
+	 *     std::cout << "Gyro: " << gyro.x << ", " << gyro.y << ", " << gyro.z << std::endl;
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -491,13 +491,13 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's rotation value to 10
 	 *     imu.set_rotation(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *
 	 *     // Reset the sensor's rotation value to 0
 	 *     imu.tare_rotation();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -528,13 +528,13 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's heading value to 10
 	 *     imu.set_heading(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *
 	 *     // Reset the sensor's heading value to 0
 	 *     imu.tare_heading();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -565,13 +565,13 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's pitch value to 10
 	 *     imu.set_pitch(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *
 	 *     // Reset the sensor's pitch value to 0
 	 *     imu.tare_pitch();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -602,13 +602,13 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's yaw value to 10
 	 *     imu.set_yaw(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *
 	 *     // Reset the sensor's yaw value to 0
 	 *     imu.tare_yaw();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -639,13 +639,13 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's roll value to 10
 	 *     imu.set_roll(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *
 	 *     // Reset the sensor's roll value to 0
 	 *     imu.tare_roll();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -676,7 +676,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Reset all values of the sensor to 0
 	 *     imu.tare();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -707,7 +707,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Reset all euler values of the sensor to 0
 	 *     imu.tare_euler();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -741,7 +741,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's heading value to 10
 	 *     imu.set_heading(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -776,7 +776,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's rotation value to 10
 	 *     imu.set_rotation(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -812,7 +812,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's yaw value to 10
 	 *     imu.set_yaw(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -847,7 +847,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's pitch value to 10
 	 *     imu.set_pitch(10);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -883,7 +883,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Set the sensor's roll value to 100
 	 *     imu.set_roll(100);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -918,8 +918,8 @@ class Imu : public Device {
 	 *
 	 *   while (true) {
 	 *     // Set the sensor's euler values to 50
-	 *     imu.set_euler(50);
-	 *     delay(20);
+	 *     imu.set_euler({50, 50, 50});
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -953,7 +953,7 @@ class Imu : public Device {
 	 *     // Get the sensor's raw accelerometer values
 	 *     pros::imu_accel_s_t accel = imu.get_accel();
 	 *     printf("x: %f, y: %f, z: %f\n", accel.x, accel.y, accel.z);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -986,8 +986,8 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Get the sensor's status
 	 *     pros::ImuStatus status = imu.get_status();
-	 *     cout << "Status: " << status << endl;
-	 *     delay(20);
+	 *     std::cout << "Status: " << status << std::endl;
+	 *     pros::delay(20);
 	 *
 	 *     // Do something with sensor
 	 *   }
@@ -1012,7 +1012,7 @@ class Imu : public Device {
 	 *   while (true) {
 	 *     // Calibrate the sensor
 	 *     imu.reset();
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *
 	 *     // Check if the sensor is calibrating
 	 *     if (imu.is_calibrating()) {

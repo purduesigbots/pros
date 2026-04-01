@@ -72,7 +72,7 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      * }
      * 
      * void opcontrol() {
@@ -135,7 +135,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void initialize() {
      *   //set eraser color to red
-     *   set_eraser(red);
+     *   pros::screen::set_eraser(pros::Color::red);
      * }
      * 
      * void opcontrol() {
@@ -193,7 +193,7 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      * }
      *
      * void opcontrol() {
@@ -220,7 +220,7 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void initialize() {
-     *   pros::screen::set_eraser(red);
+     *   pros::screen::set_eraser(pros::Color::red);
      * }
      *
      * void opcontrol() {
@@ -246,7 +246,7 @@ const char* convert_args(const std::string& arg) {
      *  * \b Example
      * \code
      * void initialize() {
-     *   pros::screen::set_eraser(red);
+     *   pros::screen::set_eraser(pros::Color::red);
      * }
      *
      * void opcontrol() {
@@ -388,7 +388,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Color the Screen in Red
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::fill_rect(0,0,400,200);
      *   int i = 0;
      *   while(i < 200){
@@ -417,7 +417,7 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     * 	 pros::screen::set_pen(red);
+     * 	 pros::screen::set_pen(pros::Color::red);
      *   // Draw line down the screen at x = 100
      *   pros::screen::draw_line(100,0,100,200);
      * }
@@ -442,7 +442,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Color the Screen in Red
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::fill_rect(0,0,400,200);
      *   // Erase line down the screen at x = 100
      *   pros::screen::erase_line(100,0,100,200);
@@ -467,7 +467,7 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::draw_rect(1,1,480,200);
      * }
      * \endcode
@@ -491,7 +491,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Draw Box Around Half the Screen in Red
-     *   pros::screen::set_eraser(red);
+     *   pros::screen::set_eraser(pros::Color::red);
      *   pros::screen::erase_rect(5,5,240,200);
      * }
      * \endcode
@@ -516,7 +516,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Fill Around Half the Screen in Red
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::fill_rect(5,5,240,200);
      * }
      * \endcode
@@ -540,7 +540,7 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *   // Draw a circle with radius of 100 in red
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::draw_circle(240, 200, 100);
      * }
      * \endcode
@@ -563,10 +563,10 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
      * void opcontrol() {
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::fill_rect(5,5,240,200);
      *   // Erase a circle with radius of 100 in blue
-     *   pros::screen::set_pen(blue);
+     *   pros::screen::set_pen(pros::Color::blue);
      *   pros::screen::erase_circle(240, 200, 100);
      * }
      * \endcode
@@ -590,10 +590,10 @@ const char* convert_args(const std::string& arg) {
      * \b Example
      * \code
     * void opcontrol() {
-     *   pros::screen::set_pen(red);
+     *   pros::screen::set_pen(pros::Color::red);
      *   pros::screen::fill_rect(5,5,240,200);
      *   // Fill a circlular area with radius of 100 in blue
-     *   pros::screen::set_pen(blue);
+     *   pros::screen::set_pen(pros::Color::blue);
      *   pros::screen::fill_circle(240, 200, 100);
      * }
      * \endcode
@@ -622,13 +622,14 @@ const char* convert_args(const std::string& arg) {
      * \code
      * void opcontrol() {
      *    int i = 0;
-     *    pros::screen::set_pen(blue);
+     *    pros::screen::set_pen(pros::Color::blue);
      *    while(1){
      *       // Will print seconds started since program started on line 3
-     *       pros::screen::print(pros::TEXT_MEDIUM, 3, "Seconds Passed: %3d", i++);
+     *       pros::screen::print(TEXT_MEDIUM, 3, "Seconds Passed: %3d", i++);
      *       pros::delay(1000);
      *    }
      * }
+     * \endcode
      */
     template <typename... Params>
     void print(pros::text_format_e_t txt_fmt, const std::int16_t line, const char* text, Params... args){
@@ -650,10 +651,10 @@ const char* convert_args(const std::string& arg) {
    /**
      * Gets the touch status of the last touch of the screen.
      * 
-     * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, E_TOUCH_EVENT_PRESS, or E_TOUCH_EVENT_PRESS_AND_HOLD).
+     * \return The last_touch_e_t enum specifier that indicates the last touch status of the screen (E_TOUCH_EVENT_RELEASE, pros::E_TOUCH_EVENT_PRESS, or pros::E_TOUCH_EVENT_PRESS_AND_HOLD).
      * This will be released by default if no action was taken. 
      * If an error occured, the screen_touch_status_s_t will have its 
-     * last_touch_e_t enum specifier set to E_TOUCH_ERR, and other values set to -1.
+     * last_touch_e_t enum specifier set to pros::E_TOUCH_ERR, and other values set to -1.
      * 
      * \b Example
      * \code

@@ -266,7 +266,7 @@ int32_t aivision_set_enabled_detection_types(uint8_t port, uint8_t bits, uint8_t
  * #define AIVISION_PORT 1
  * void initialize() {
  *   // start or continue looking for AI model objects
- * 	 aivision_enable_detection_types(AIVISION_PORT, aivision_mode_type_e_t::E_AIVISION_MODE_OBJECTS);
+ * 	 aivision_enable_detection_types(AIVISION_PORT, E_AIVISION_MODE_OBJECTS);
  * }
  * \endcode
  *
@@ -291,7 +291,7 @@ int32_t aivision_enable_detection_types(uint8_t port, uint8_t types_mask);
  * #define AIVISION_PORT 1
  * void initialize() {
  *   // stop looking for AI model objects (competition elements, for example)
- * 	 aivision_disable_detection_types(AIVISION_PORT, aivision_mode_type_e_t::E_AIVISION_MODE_OBJECTS);
+ * 	 aivision_disable_detection_types(AIVISION_PORT, E_AIVISION_MODE_OBJECTS);
  * }
  * \endcode
  *

@@ -68,7 +68,7 @@ class Device {
 	 * #define DEVICE_PORT 1
 	 *
 	 * void opcontrol() {
-	 *   Device device(DEVICE_PORT);
+	 *   pros::Device device(DEVICE_PORT);
 	 * }
 	 * \endcode
 	 */
@@ -84,9 +84,9 @@ class Device {
  	 * void opcontrol() {
 	 * #define DEVICE_PORT 1
  	 *   while (true) {
-	 *	Device device(DEVICE_PORT);
+	 *	   pros::Device device(DEVICE_PORT);
  	 *     printf("device plugged type: {port: %d}\n", device.get_port());
- 	 *     delay(20);
+ 	 *     pros::delay(20);
  	 *   }
  	 * }
  	 * \endcode
@@ -103,10 +103,10 @@ class Device {
 	 * #define DEVICE_PORT 1
 	 *
 	 * void opcontrol() {
-	 *	Device device(DEVICE_PORT);
+	 *	 pros::Device device(DEVICE_PORT);
 	 *   while (true) {
 	 *     printf("device plugged type: {is_installed: %d}\n", device.is_installed());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -127,11 +127,11 @@ class Device {
 	 * #define DEVICE_PORT 1
 	 *
 	 * void opcontrol() {
-		Device device(DEVICE_PORT);
+	 *   pros::Device device(DEVICE_PORT);
 	 *   while (true) { 
-	 *     DeviceType dt = device.get_plugged_type();
+	 *     pros::DeviceType dt = device.get_plugged_type();
 	 *     printf("device plugged type: {plugged type: %d}\n", dt);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
  	 * \endcode
@@ -156,9 +156,9 @@ class Device {
 	 *
 	 * void opcontrol() {
 	 *   while (true) { 
-	 *     DeviceType dt = pros::Device::get_plugged_type(DEVICE_PORT);
+	 *     pros::DeviceType dt = pros::Device::get_plugged_type(DEVICE_PORT);
 	 *     printf("device plugged type: {plugged type: %d}\n", dt);
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
  	 * \endcode
@@ -175,7 +175,7 @@ class Device {
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Device> motor_devices = pros::Device::get_all_devices(pros::DeviceType::motor);  // All Device objects are motors
+	 *   std::vector<pros::Device> motor_devices = pros::Device::get_all_devices(pros::DeviceType::motor);  // All Device objects are motors
 	 * }
  	 * \endcode
 	 */

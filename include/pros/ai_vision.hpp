@@ -107,8 +107,7 @@ class AIVision : public Device {
 	 * \b Example
 	 * \code
 	 * void opcontrol() {
-	 *   std::vector<AIVision> aivision_all = pros::AIVision::get_all_devices();  // All AI vision sensors that are
-	 * connected
+	 *   std::vector<pros::AIVision> aivision_all = pros::AIVision::get_all_devices(); // All AI vision sensors that are connected
 	 * }
 	 * \endcode
 	 */
@@ -124,13 +123,13 @@ class AIVision : public Device {
 	 * void opcontrol() {
 	 *   pros::AIVision aivision(1);
 	 *   pros::AIVision::Object object = aivision.get_object(0);
-	 *   if (AIVision::is_type(AivisionDetectType::color, object)) {
+	 *   if (object.is_type(pros::AivisionDetectType::color, object)) {
 	 *       printf("is color\n");
-	 *   } else if (AIVision::is_type(AivisionDetectType::object, object)) {
+	 *   } else if (object.is_type(pros::AivisionDetectType::object, object)) {
 	 *       printf("is object\n");
-	 *   } else if (AIVision::is_type(AivisionDetectType::code, object)) {
+	 *   } else if (object.is_type(pros::AivisionDetectType::code, object)) {
 	 *       printf("is code\n");
-	 *   } else if (AIVision::is_type(AivisionDetectType::tag, object)) {
+	 *   } else if (object.is_type(pros::AivisionDetectType::tag, object)) {
 	 *       printf("is tag\n");
 	 *   } else {
 	 *       printf("unknown\n");
@@ -183,7 +182,7 @@ class AIVision : public Device {
 	 * void initialize() {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   int32_t enabled_types = aivision.get_enabled_detection_types();
-	 *   printf("is tag: %d\n", enabled_types | AivisionModeType::tags);
+	 *   printf("is tag: %d\n", enabled_types | pros::AivisionModeType::tags);
 	 * }
 	 * \endcode
 	 */
@@ -208,7 +207,7 @@ class AIVision : public Device {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   // start or continue looking for AI model objects
 	 *   // enable aivision to look for tags and objects
-	 * 	 aivision.enable_detection_types(AivisionModeType::tags | AivisionModeType::objects);
+	 * 	 aivision.enable_detection_types(pros::AivisionModeType::tags | pros::AivisionModeType::objects);
 	 * }
 	 * \endcode
 	 *
@@ -237,7 +236,7 @@ class AIVision : public Device {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   // start or continue looking for AI model objects
 	 *   // enable aivision to look for tags and objects
-	 * 	 aivision.enable_detection_types(AivisionModeType::tags, AivisionModeType::objects);
+	 * 	 aivision.enable_detection_types(pros::AivisionModeType::tags, pros::AivisionModeType::objects);
 	 * }
 	 * \endcode
 	 *
@@ -270,7 +269,7 @@ class AIVision : public Device {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   // stop looking for AI model objects (competition elements, for example)
 	 *   // disable aivision to look for tags and objects
-	 * 	 aivision.disable_detection_types(AivisionModeType::tags | AivisionModeType::objects);
+	 * 	 aivision.disable_detection_types(pros::AivisionModeType::tags | pros::AivisionModeType::objects);
 	 * }
 	 * \endcode
 	 *
@@ -298,7 +297,7 @@ class AIVision : public Device {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   // stop looking for AI model objects (competition elements, for example)
 	 *   // disable aivision to look for tags and objects
-	 * 	 aivision.disable_detection_types(AivisionModeType::tags | AivisionModeType::objects);
+	 * 	 aivision.disable_detection_types(pros::AivisionModeType::tags | pros::AivisionModeType::objects);
 	 * }
 	 * \endcode
 	 *
@@ -328,11 +327,11 @@ class AIVision : public Device {
 	 * void initialize() {
 	 *   pros::AIVision aivision(AIVISION_PORT);
 	 *   // set the only tag family to look for to 21H7
-	 *   aivision.set_tag_family(AivisionTagFamily::tag_21H7);
+	 *   aivision.set_tag_family(pros::AivisionTagFamily::tag_21H7);
 	 *   // add 16H5 to the list of enabled tag families
-	 *   aivision.set_tag_family(AivisionTagFamily::tag_16H5);
+	 *   aivision.set_tag_family(pros::AivisionTagFamily::tag_16H5);
 	 *   // set the only tag family to look for to 25H9
-	 *   aivision.set_tag_family(AivisionTagFamily::tag_25H9, true);
+	 *   aivision.set_tag_family(pros::AivisionTagFamily::tag_25H9, true);
 	 * }
 	 * \endcode
 	 *
@@ -357,7 +356,7 @@ class AIVision : public Device {
 	 * #define AIVISION_PORT 1
 	 * void opcontrol() {
 	 *   pros::AIVision aivision(AIVISION_PORT);
-	 *   AIVision::Color color = {1, 207, 19, 25, 10.00, 0.20};
+	 *   pros::AIVision::Color color = {1, 207, 19, 25, 10.00, 0.20};
 	 *   aivision.set_color(color);
 	 * }
 	 * \endcode
@@ -382,7 +381,7 @@ class AIVision : public Device {
 	 * #define AIVISION_PORT 1
 	 * void opcontrol() {
 	 *  pros::AIVision aivision(AIVISION_PORT);
-	 *  AIVision::Code color = aivision.get_color(0);
+	 *  pros::AIVision::Code color = aivision.get_color(0);
 	 *  printf("id: %d, red: %d, green: %d, blue: %d, hue_range: %f, saturation_range: %f\n",
 	 *  color.id, color.red, color.green, color.blue, color.hue_range, color.saturation_range);
 	 * }
@@ -408,7 +407,7 @@ class AIVision : public Device {
 	 * #define AIVISION_PORT 1
 	 * void opcontrol() {
 	 *  pros::AIVision aivision(AIVISION_PORT);
-	 *  AIVision::Code code = {1, 207, 19, 25, 10.00, 0.20};
+	 *  pros::AIVision::Code code = {1, 207, 19, 25, 10, 0};
 	 *  aivision.set_code(code);
 	 * }
 	 *
@@ -434,10 +433,9 @@ class AIVision : public Device {
 	 * #define AIVISION_PORT 1
 	 * void opcontrol() {
 	 *  pros::AIVision aivision(AIVISION_PORT);
-	 *  AIVision::Code code = aivision.get_code(0);
+	 *  pros::AIVision::Code code = aivision.get_code(0);
 	 *  printf("id: %d, length: %d, c1: %d, c2: %d, c3: %d, c4: %d, c5: %d\n",
 	 *  code.id, code.length, code.c1, code.c2, code.c3, code.c4, code.c5);
-	 *  )
 	 * }
 	 *
 	 * \endcode
