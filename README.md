@@ -1,9 +1,9 @@
 # PROS Kernel for the VEX V5 Brain
 
-[![Build Status](https://dev.azure.com/purdue-acm-sigbots/Kernel/_apis/build/status/purduesigbots.pros?branchName=develop)](https://dev.azure.com/purdue-acm-sigbots/Kernel/_build/latest?definitionId=5&branchName=develop)
+[![Build Status](https://dev.azure.com/purdue-acm-sigbots/Kernel/_apis/build/status/purduesigbots.pros?branchName=develop-pros-4)](https://dev.azure.com/purdue-acm-sigbots/Kernel/_build/latest?definitionId=5&branchName=develop-pros-4)
 
 ### What is PROS?
-PROS is a lightweight and fast alternative open source operating system for the VEX V5 Brain. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
+PROS is a lightweight and fast alternative programming environment for the VEX V5 Brain. PROS is built with developers in mind and with a focus on providing an environment for industry-applicable experience.
 
 Primary maintenance of PROS is done by students at Purdue University through [Purdue ACM SIGBots](http://purduesigbots.com). Inspiration for this project came from several computer science and engineering students itching to write code for the extended autonomous period. We created PROS to leverage this opportunity.
 
@@ -13,7 +13,7 @@ PROS is built using the GCC toolchain and standard C/C++ practices (C23 & C++23 
 
 You can develop code on Windows, OS X, or Linux. Code is compiled using GCC and the PROS CLI is available on most operating systems. The PROS development team makes distributions for Windows, OS X, and Debian-based Linux distributions.
 
-The PROS team develops a plugin for Atom to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
+The PROS team develops a plugin for VS Code to making developing projects in PROS the best possible experience. The highly customizable editor designed for the 21st century enables students to learn how to code in a modern environment.
 
 ### What's the difference between PROS 4 and 3?
 PROS 4 is a Kernel upgrade from PROS 4 to both decrease the size of the base Kernel, and provide utilities such as the base device class and liblvgl that makes it easier for both users and library writers to customize their PROS projects. This version also moves all documentation to a doxygen site rather than a Sphinx documentation page. 
