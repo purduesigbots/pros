@@ -2402,6 +2402,15 @@ class MotorGroup : public virtual AbstractMotor {
 	 */
 	void append(AbstractMotor&);
 
+
+	/**
+	 * Appends all the motors on the port to this motor group
+	 *
+	 * \param port The port to append to the motor group
+	 *
+	 */
+	void append(std::int8_t port);
+
 	/**
 	 * Removes the all motors on the port (regardless of reversal) from the motor group
 	 *
@@ -2409,6 +2418,19 @@ class MotorGroup : public virtual AbstractMotor {
 	 *
 	 */
 	void erase_port(std::int8_t port);
+
+	/**
+	 * Removes all the motors in the other motor group reference from this motor group
+	 *
+	 * Maintains the order of the other motor group
+	 *
+	 */
+	void operator-=(AbstractMotor&);
+
+	/**
+	 * Removes all the motors in the other motor group reference from this motor group
+	 */
+	void erase_port(AbstractMotor&);
 
 	///@}
 	private:
