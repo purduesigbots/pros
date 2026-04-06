@@ -55,7 +55,7 @@ class Rotation : public Device {
 	 */
 	Rotation(const std::int8_t port);
 
-	Rotation(const Device& device) : Rotation(device.get_port()){};
+	Rotation(const Device& device) : Device(device.get_port(), DeviceType::rotation) {};
 
 
 	/**

@@ -36,7 +36,7 @@
  *
  * \return The number of bytes written
  */
-int cobs_encode(uint8_t* restrict dest, const uint8_t* restrict src, const size_t src_len, const uint32_t prefix);
+size_t cobs_encode(uint8_t* restrict dest, const uint8_t* restrict src, const size_t src_len, const uint32_t prefix);
 
 /**
  * Same as cobs_encode() but doesn't write to an output buffer. Used to

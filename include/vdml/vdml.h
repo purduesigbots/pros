@@ -25,13 +25,18 @@
 extern "C" {
 #endif
 
+// If a is unsigned, (typeof (a)) (-1) will be a really big positive value, and the
+// entire comparison will become a >= a, to work around -Wtype-limits. Otherwise,
+// the comparison will expand to a >= 0, as expected.
+#define GTEQ_ZERO(a) ((a) >= __builtin_choose_expr( (typeof (a)) (-1) > 0, (a), 0))
+
 /**
  * Macro, returns true if the port is in range of user configurable ports,
  * false otherwise.
  */
-#define VALIDATE_PORT_NO(PORT) ((PORT) >= 0 && (PORT) < NUM_V5_PORTS)
+#define VALIDATE_PORT_NO(PORT) (GTEQ_ZERO(PORT) && (PORT) < NUM_V5_PORTS)
 
-#define VALIDATE_PORT_NO_INTERNAL(PORT) ((PORT) >= 0 && (PORT) < V5_MAX_DEVICE_PORTS)
+#define VALIDATE_PORT_NO_INTERNAL(PORT) (GTEQ_ZERO(PORT) && (PORT) < V5_MAX_DEVICE_PORTS)
 
 /**
  * Macro that handles error checking, sanity checking, automatic registration,
@@ -49,11 +54,11 @@ extern "C" {
  *        The error code that return if error checking failed
  */
 #define claim_port(port, device_type, error_code)          \
-  if (registry_validate_binding(port, device_type) != 0) { \
+  if (registry_validate_binding((uint8_t) (port), device_type) != 0) { \
     return error_code;                                     \
   }                                                        \
-  v5_smart_device_s_t* device = registry_get_device(port); \
-  if (!port_mutex_take(port)) {                            \
+  v5_smart_device_s_t* device = registry_get_device((uint8_t) (port)); \
+  if (!port_mutex_take((uint8_t) (port))) {                            \
     errno = EACCES;                                        \
     return error_code;                                     \
   }
@@ -111,7 +116,7 @@ int32_t claim_port_try(uint8_t port, v5_device_e_t type);
  * \return The rtn parameter
  */
 #define return_port(port, rtn) \
-  port_mutex_give(port);       \
+  port_mutex_give((uint8_t) (port));       \
   return rtn;
 
 /**
