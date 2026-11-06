@@ -6,7 +6,7 @@
 * Contains PROS kernel version information
 *
 *
-* \copyright Copyright (c) 2017-2024, Purdue University ACM SIGBots.
+* \copyright Copyright (c) 2017-2026, Purdue University ACM SIGBots.
 * All rights reserved.
 *
 * This Source Code Form is subject to the terms of the Mozilla Public
@@ -19,5 +19,5 @@
 #define PROS_VERSION_MAJOR 4
 #define PROS_VERSION_MINOR 2
 
-#define PROS_VERSION_PATCH 2
-#define PROS_VERSION_STRING "4.2.2"
+#define PROS_VERSION_PATCH 3
+#define PROS_VERSION_STRING "4.2.3"

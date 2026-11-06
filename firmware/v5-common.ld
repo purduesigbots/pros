@@ -201,7 +201,6 @@ SECTIONS
    *(.bss)
    *(.bss.*)
    *(.gnu.linkonce.b.*)
-   *(COMMON)
    __bss_end = .;
 } > RAM
 
@@ -209,7 +208,17 @@ _SDA_BASE_ = __sdata_start + ((__sbss_end - __sdata_start) / 2 );
 
 _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
 
-/* Generate Stack and Heap definitions */
+/* Stack section
+   provides __stack for the partner SDK initialization (vexMain).
+   This prevents the stack from being placed in .bss, which would
+   cause corruption of variables at the end of .bss (see issue #783).
+   FreeRTOS task stacks are dynamically allocated separately. */
+.stack (NOLOAD) : ALIGN(8) {
+   _stack_end = .;
+   . += _STACK_SIZE;
+   __stack = .;
+   _stack_start = .;
+} > RAM
 
 .heap (NOLOAD) : {
    . = ALIGN(16);
@@ -220,7 +229,6 @@ _SDA2_BASE_ = __sdata2_start + ((__sbss2_end - __sdata2_start) / 2 );
    _heap_end = .;
    HeapLimit = .;
 } > HEAP
-/* There are no sections for the stack. This is intentional, since VEXOs sets up a stack before
-   starting the program, and FreeRTOS task stacks are dynamically allocated. */
+
 _end = .;
 }
