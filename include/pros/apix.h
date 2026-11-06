@@ -386,6 +386,7 @@ queue_t queue_create(uint32_t length, uint32_t item_size);
  *   queue_append(queue, item, 1000);
  *   printf("queue length: %d", queue_get_length(queue));
  * }
+ * \endcode
  */
 bool queue_prepend(queue_t queue, const void* item, uint32_t timeout);
 
@@ -720,6 +721,7 @@ void enable_banner(bool enabled);
  * void opcontrol(void) {
  *   serctl(SERCTL_SET_BAUDRATE, (void*) 9600);
  * }
+ * \endcode
  */
 int32_t serctl(const uint32_t action, void* const extra_arg);
 

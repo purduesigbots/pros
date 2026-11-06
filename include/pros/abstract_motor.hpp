@@ -41,6 +41,9 @@ enum class MotorBrake {
 	invalid = INT32_MAX ///< Invalid brake mode
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorBrake brake_mode);
+
 /**
  * \enum MotorEncoderUnits
  * Indicates the units used by the motor encoders.
@@ -52,6 +55,9 @@ enum class MotorEncoderUnits {
 	counts = 2, ///< Position is recorded as raw encoder ticks as a whole number
 	invalid = INT32_MAX ///< Invalid motor encoder units
 };
+
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorEncoderUnits brake_mode);
 
 // Alias for MotorEncoderUnits
 using MotorUnits = MotorEncoderUnits;
@@ -69,6 +75,9 @@ enum class MotorGears {
 	invalid = INT32_MAX ///< Error return code
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorGears brake_mode);
+
 /**
  * \enum MotorType
  * Indicates the type of a motor
@@ -79,6 +88,8 @@ enum class MotorType {
 	invalid = INT32_MAX ///< Error return code
 };
 
+// TODO: implement
+std::ostream& operator<<(std::ostream& os, MotorType brake_mode);
 
 // Provide Aliases for MotorGears
 using MotorGearset = MotorGears;
@@ -172,8 +183,8 @@ class AbstractMotor {
 	 *
 	 * This velocity corresponds to different actual speeds depending on the
 	 * gearset used for the motor. This results in a range of +-100 for
-	 * E_MOTOR_GEARSET_36, +-200 for E_MOTOR_GEARSET_18, and +-600 for
-	 * E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
+	 * pros::E_MOTOR_GEARSET_36, +-200 for pros::E_MOTOR_GEARSET_18, and +-600 for
+	 * pros::E_MOTOR_GEARSET_6. The velocity is held with PID to ensure consistent
 	 * speed, as opposed to setting the motor's voltage.
 	 *
 	 * This function uses the following values of errno when an error state is
@@ -770,7 +781,7 @@ class AbstractMotor {
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
 	 * \return One of MotorBrake, according to what was set for the
-	 * motor, or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor, or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	virtual MotorBrake get_brake_mode(const std::uint8_t index = 0) const = 0;
 
@@ -786,7 +797,7 @@ class AbstractMotor {
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
 	 * \return A vector containing MotorBrake(s), according to what was set for the
-	 * motor(s), or E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
+	 * motor(s), or pros::E_MOTOR_BRAKE_INVALID if the operation failed, setting errno.
 	 */
 	virtual std::vector<MotorBrake> get_brake_mode_all(void) const = 0;
 
@@ -838,7 +849,7 @@ class AbstractMotor {
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
 	 * \return One of MotorUnits according to what is set for the
-	 * motor or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	virtual MotorUnits get_encoder_units(const std::uint8_t index = 0) const = 0;
 
@@ -854,7 +865,7 @@ class AbstractMotor {
      *           By default index is 0, and will return an error for an out of bounds index
 	 *
 	 * \return A vector of MotorUnits according to what is set for the
-	 * motor(s) or E_MOTOR_ENCODER_INVALID if the operation failed.
+	 * motor(s) or pros::E_MOTOR_ENCODER_INVALID if the operation failed.
 	 */
 	virtual std::vector<MotorUnits> get_encoder_units_all(void) const = 0;
 

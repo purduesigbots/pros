@@ -142,7 +142,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, (void*)"PROS");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, (void*)"PROS");
 	 * }
 	 * \endcode
 	 */
@@ -179,7 +179,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * }
 	 * \endcode
 	 */
@@ -281,7 +281,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * 
 	 *   pros::Task my_task_cpp(my_task);
 	 * }
@@ -321,7 +321,7 @@ class Task {
 	 * }
 	 * 
 	 * void initialize() {
-	 *   pros::c::task_t my_task = pros::Task::create(my_task_fn, "My Task");
+	 *   pros::task_t my_task = pros::Task::create(my_task_fn, "My Task");
 	 * 
 	 *   pros::Task my_task_cpp = my_task;
 	 * }
@@ -393,7 +393,7 @@ class Task {
      * void initialize() {
 	 *   pros::Task my_task(my_task_fn, "My Task");
 	 * 
-	 *   Task.set_priority(pros::DEFAULT_PRIORITY + 1);
+	 *   my_task.set_priority(pros::DEFAULT_PRIORITY + 1);
      * }
      * \endcode
 	 */
@@ -521,7 +521,7 @@ class Task {
      * void initialize() {
 	 *   pros::Task my_task(my_task_fn, "My Task");
 	 * 
-	 *   pros::c::task_t my_task_c = (pros::c::task_t)my_task;
+	 *   pros::task_t my_task_c = (pros::task_t)my_task;
      * }
      * \endcode
 	 */
@@ -622,7 +622,7 @@ class Task {
      *       // Reset the notification counter
      *       task.notify_clear();
      *     }
-     *     delay(10);
+     *     pros::delay(10);
      * 	 }
      * }
      * 
@@ -636,7 +636,7 @@ class Task {
      *       task.notify_ext(1, NOTIFY_ACTION_INCREMENT, &count);
      *     }
      *     
-     *     delay(20);
+     *     pros::delay(20);
      *   }
      * }
      * \endcode
@@ -696,7 +696,7 @@ class Task {
      * 	   printf("Got a notification: %d\n", task.notify_take(false, TIMEOUT_MAX));
      * 
      * 	   tasK_notify(task);
-     *     delay(10):
+     *     pros::delay(10):
      *   }
      * }
      * 
@@ -706,7 +706,7 @@ class Task {
      *     if(controller_get_digital(CONTROLLER_MASTER, DIGITAL_L1)) {
      *       task.notify();
      *     }
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * \endcode
@@ -889,7 +889,7 @@ class Mutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -907,7 +907,7 @@ class Mutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -977,7 +977,7 @@ class Mutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -995,7 +995,7 @@ class Mutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1059,7 +1059,7 @@ class Mutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1077,7 +1077,7 @@ class Mutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1145,7 +1145,7 @@ class Mutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.unlock();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1163,7 +1163,7 @@ class Mutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1227,7 +1227,7 @@ class Mutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.unlock();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1245,7 +1245,7 @@ class Mutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1423,7 +1423,7 @@ class RecursiveMutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1441,7 +1441,7 @@ class RecursiveMutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1511,7 +1511,7 @@ class RecursiveMutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1529,7 +1529,7 @@ class RecursiveMutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1593,7 +1593,7 @@ class RecursiveMutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.give();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1611,7 +1611,7 @@ class RecursiveMutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1679,7 +1679,7 @@ class RecursiveMutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.unlock();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1697,7 +1697,7 @@ class RecursiveMutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1761,7 +1761,7 @@ class RecursiveMutex {
      *     odom_heading = heading_new;
 	 *     odom_mutex.unlock();
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1779,7 +1779,7 @@ class RecursiveMutex {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 
@@ -1961,7 +1961,7 @@ class MutexVar {
 	 * 
 	 *     *odom_pose.take() = new_pose;
 	 *     
-	 *     delay(10);
+	 *     pros::delay(10);
 	 *   }
 	 * }
      * 
@@ -1972,7 +1972,7 @@ class MutexVar {
      *     
      *     // ---- Move the robot using the current locations goes here ----
      *     
-     *     delay(10);
+     *     pros::delay(10);
      *   }
      * }
      * 

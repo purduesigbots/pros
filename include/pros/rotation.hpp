@@ -76,9 +76,9 @@ class Rotation : public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Rotation rotation_sensor(1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     if(master.get_analog(E_CONTROLLER_DIGITAL_X) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 	 * 	     rotation_sensor.reset();
 	 *     }
 	 *     pros::delay(20);
@@ -136,9 +136,9 @@ class Rotation : public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Rotation rotation_sensor(1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     if(master.get_analog(E_CONTROLLER_DIGITAL_X) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 	 * 	     rotation_sensor.set_position(600);
 	 *     }
 	 *     pros::delay(20);
@@ -165,9 +165,9 @@ class Rotation : public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Rotation rotation_sensor(1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     if(master.get_analog(E_CONTROLLER_DIGITAL_X) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 	 * 	     rotation_sensor.reset_position();
 	 *     }
 	 *     pros::delay(20);
@@ -185,7 +185,7 @@ class Rotation : public Device {
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Rotation> rotation_all = pros::Rotation::get_all_devices();  // All rotation sensors that are connected
+	 *   std::vector<pros::Rotation> rotation_all = pros::Rotation::get_all_devices();  // All rotation sensors that are connected
 	 * }
  	 * \endcode
 	 */
@@ -208,7 +208,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Position: %d Ticks \n", rotation_sensor.get_position());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -233,8 +233,8 @@ class Rotation : public Device {
 	 * void opcontrol() {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
-	 *     printf("Velocity: %d centidegrees per second \n", rotation_sensor.get_velocity));
-	 *     delay(20);
+	 *     printf("Velocity: %d centidegrees per second \n", rotation_sensor.get_velocity());
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -258,7 +258,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Angle: %d centidegrees \n", rotation_sensor.get_angle());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode
@@ -284,9 +284,9 @@ class Rotation : public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Rotation rotation_sensor(1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     if(master.get_analog(E_CONTROLLER_DIGITAL_X) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 	 * 	     rotation_sensor.set_reversed(true); // Reverses the Rotation Sensor
 	 *     }
 	 *     pros::delay(20);
@@ -311,9 +311,9 @@ class Rotation : public Device {
 	 * \code
 	 * void opcontrol() {
 	 *   pros::Rotation rotation_sensor(1);
-	 *   pros::Controller master (E_CONTROLLER_MASTER);
+	 *   pros::Controller master (pros::E_CONTROLLER_MASTER);
 	 *   while (true) {
-	 *     if(master.get_analog(E_CONTROLLER_DIGITAL_X) {
+	 *     if(master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
 	 * 	     rotation_sensor.reverse();
 	 *     }
 	 *     pros::delay(20);
@@ -340,7 +340,7 @@ class Rotation : public Device {
 	 * 	 pros::Rotation rotation_sensor(1);
 	 *   while (true) {
 	 *     printf("Reversed: %d \n", rotation_sensor.get_reversed());
-	 *     delay(20);
+	 *     pros::delay(20);
 	 *   }
 	 * }
 	 * \endcode

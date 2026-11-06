@@ -439,7 +439,7 @@ imu_status_e_t imu_get_status(uint8_t port);
  *
  * void opcontrol() {
  *   while (true) {
- *     int32_t val = imu_set_euler(IMU_PORT, {45, 60, 90});
+ *     int32_t val = imu_set_euler(IMU_PORT, (euler_s_t){45, 60, 90});
  *     printf("IMU : {gyro vals: %d}\n", val);
  *     delay(20);
  *   }
@@ -558,7 +558,7 @@ double imu_get_yaw(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_heading(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -588,7 +588,7 @@ int32_t imu_tare_heading(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_rotation(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -611,12 +611,13 @@ int32_t imu_tare_rotation(uint8_t port);
  *
  * \b Example
  * \code
- * #define IMU_PORT 1void opcontrol() {
+ * #define IMU_PORT 1
+ * void opcontrol() {
  *   while (true) {
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_pitch(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -646,7 +647,7 @@ int32_t imu_tare_pitch(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_roll(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -676,7 +677,7 @@ int32_t imu_tare_roll(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_yaw(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -706,7 +707,7 @@ int32_t imu_tare_yaw(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare_euler(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -736,7 +737,7 @@ int32_t imu_tare_euler(uint8_t port);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_tare(IMU_PORT);
  *     }
- *   pros::delay(20);
+ *   delay(20);
  *   }
  * }
  * \endcode
@@ -774,9 +775,9 @@ int32_t imu_tare(uint8_t port);
  * void opcontrol() {
  *   while (true) {
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
- *       imu_set_euler(IMU_PORT, {45,45,45});
+ *       imu_set_euler(IMU_PORT, (euler_s_t){45,45,45});
  *     }
- *     pros::delay(20);
+ *     delay(20);
  *   }
  * }
  * \endcode
@@ -808,7 +809,7 @@ int32_t imu_set_euler(uint8_t port, euler_s_t target);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_set_rotation(IMU_PORT, 45);
  *     }
- *     pros::delay(20);
+ *     delay(20);
  *   }
  * }
  * \endcode
@@ -841,7 +842,7 @@ int32_t imu_set_rotation(uint8_t port, double target);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_set_heading(IMU_PORT, 45);
  *     }
- *     pros::delay(20);
+ *     delay(20);
  *   }
  * }
  * \endcode
@@ -874,7 +875,7 @@ int32_t imu_set_heading(uint8_t port, double target);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_set_pitch(IMU_PORT, 45);
  *     }
- *     pros::delay(20);
+ *     delay(20);
  *   }
  * }
  * \endcode
@@ -907,7 +908,7 @@ int32_t imu_set_pitch(uint8_t port, double target);
  *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
  *       imu_set_roll(IMU_PORT, 45);
  *     }
- *     pros::delay(20);
+ *     delay(20);
  *   }
  * }
  * \endcode
@@ -933,13 +934,13 @@ int32_t imu_set_roll(uint8_t port, double target);
  *
  * \b Example
  * \code
- * #define IMU_PORT 1void opcontrol() {
- *
- * while (true) {
- *   if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)){
- *     imu_set_yaw(IMU_PORT, 45);
- *   }
- *   pros::delay(20);
+ * #define IMU_PORT 1
+ * void opcontrol() {
+ *   while (true) {
+ *     if(controller_get_digital(CONTROLLER_MASTER, E_CONTROLLER_DIGITAL_X)) {
+ *       imu_set_yaw(IMU_PORT, 45);
+ *     }
+ *     delay(20);
  *   }
  * }
  * \endcode

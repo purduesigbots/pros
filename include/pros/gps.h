@@ -648,7 +648,7 @@ double gps_get_heading_raw(uint8_t port);
  *   gps_gyro_s_t gyro;
  *
  *   while (true) {
- *     gyro = gps_get_gyro(GPS_PORT);
+ *     gyro = gps_get_gyro_rate(GPS_PORT);
  *     printf("Gyro: %f %f %f\n", gyro.x, gyro.y, gyro.z);
  *     delay(20);
  *   }
@@ -679,7 +679,7 @@ gps_gyro_s_t gps_get_gyro_rate(uint8_t port);
  *   double gyro_x;
  *
  *   while (true) {
- *     gyro_x = gps_get_gyro_x(GPS_PORT);
+ *     gyro_x = gps_get_gyro_rate_x(GPS_PORT);
  *     printf("gyro_x: %f\n", gyro_x);
  *     delay(20);
  *   }
@@ -710,7 +710,7 @@ double gps_get_gyro_rate_x(uint8_t port);
  *   double gyro_y;
  *
  *   while (true) {
- *     gyro_y = gps_get_gyro_y(GPS_PORT);
+ *     gyro_y = gps_get_gyro_rate_y(GPS_PORT);
  *     printf("gyro_y: %f\n", gyro_y);
  *     delay(20);
  *   }
@@ -741,7 +741,7 @@ double gps_get_gyro_rate_y(uint8_t port);
  *   double gyro_z;
  *
  *   while (true) {
- *     gyro_z = gps_get_gyro_z(GPS_PORT);
+ *     gyro_z = gps_get_gyro_rate_z(GPS_PORT);
  *     printf("gyro_z: %f\n", gyro_z);
  *     delay(20);
  *   }

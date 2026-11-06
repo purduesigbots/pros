@@ -80,9 +80,11 @@ class Link : public Device {
 	 * 
 	 * \b Example:
 	 * \code
-	 * pros::Link link(1, "my_link", pros::E_LINK_TX);
-	 * if (link.connected()) {
-	 * 	// do something
+	 * void initialize() {
+	 *   pros::Link link(1, "my_link", pros::E_LINK_TX);
+	 *   if (link.connected()) {
+	 * 	  // do something
+	 *   }
 	 * }
 	 * \endcode
 	 */
@@ -104,7 +106,7 @@ class Link : public Device {
 	 * \code
 	 * void opcontrol() {
 	 * 	pros::Link link(1, "my_link", pros::E_LINK_TX);
-	 * 	printf("Bytes available to read: %d", link.receivable_size());
+	 * 	printf("Bytes available to read: %d", link.raw_receivable_size());
 	 * }
 	 * \endcode
 	 */
@@ -126,8 +128,9 @@ class Link : public Device {
 	 * \code
 	 * void opcontrol() {
 	 * 	pros::Link link(1, "my_link", pros::E_LINK_TX);
-	 * 	printf("Bytes available to transmit: %d", link.transmittable_size());
+	 * 	printf("Bytes available to transmit: %d", link.raw_transmittable_size());
 	 * }
+	 * \endcode
 	 */
 	std::uint32_t raw_transmittable_size();
 

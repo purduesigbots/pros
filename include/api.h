@@ -55,6 +55,7 @@
 #include "pros/rotation.h"
 #include "pros/rtos.h"
 #include "pros/screen.h"
+#include "pros/serial.h"
 #include "pros/vision.h"
 
 #ifdef __cplusplus
@@ -74,6 +75,7 @@
 #include "pros/rotation.hpp"
 #include "pros/rtos.hpp"
 #include "pros/screen.hpp"
+#include "pros/serial.hpp"
 #include "pros/vision.hpp"
 #endif
 

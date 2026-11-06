@@ -196,7 +196,7 @@ adi_port_config_e_t adi_port_get_config(uint8_t port);
  * 
  * void opcontrol() {
  *   adi_port_set_config(ANALOG_SENSOR_PORT, E_ADI_ANALOG_IN);
- *   printf("Port Value: %d\n", adi_get_value(ANALOG_SENSOR_PORT));
+ *   printf("Port Value: %d\n", adi_port_get_value(ANALOG_SENSOR_PORT));
  * }
  * \endcode
  */
@@ -253,7 +253,7 @@ int32_t adi_port_set_config(uint8_t port, adi_port_config_e_t type);
  * 
  * void initialize() {
  *   adi_port_set_config(DIGITAL_SENSOR_PORT, E_ADI_DIGITAL_OUT);
- *   adi_set_value(DIGITAL_SENSOR_PORT, HIGH);
+ *   adi_port_set_value(DIGITAL_SENSOR_PORT, HIGH);
  * }
  * \endcode
  */
@@ -495,7 +495,7 @@ int32_t adi_digital_get_new_press(uint8_t port);
  * 
  * \b Example
  * \code
- * #define DIGITAL_SENSOR_PORT
+ * #define DIGITAL_SENSOR_PORT 1
  * 
  * void opcontrol() {
  *   bool state = LOW;
@@ -1114,9 +1114,9 @@ adi_potentiometer_t adi_potentiometer_type_init(uint8_t port, adi_potentiometer_
  * #define POTENTIOMETER_PORT 1
  * 
  * void opcontrol() {
- *   adi_potentiometer_t potentiometer = adi_potentiometer_t(POTENTIOMETER_PORT);
+ *   adi_potentiometer_t potentiometer = POTENTIOMETER_PORT;
  *   while (true) {
- *     // Print the potnetiometer's angle
+ *     // Print the potentiometer's angle
  *     printf("Angle: %lf\n", adi_potentiometer_get_angle(potentiometer));
  *     delay(5);
  *   }
@@ -1192,7 +1192,7 @@ adi_led_t adi_led_init(uint8_t port);
  *     delay(5);
  * 
  *     // Clear the led strip
- *     adi_led_clear(led);
+ *     adi_led_clear_all(led, buffer, 10);
  *     delay(5);
  *   }
  * }

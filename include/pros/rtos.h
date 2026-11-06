@@ -230,7 +230,7 @@ uint32_t millis(void);
  * \b Example
  * \code
  * void opcontrol() {
- *   uint64_t now = micros();
+ *   uint32_t now = micros() / 1000;
  *   while (true) {
  *     // Do opcontrol things
  *     task_delay_until(&now, 2000);
@@ -472,7 +472,7 @@ task_state_e_t task_get_state(task_t task);
  *     mutex_take(counter_mutex, TIMEOUT_MAX);// Mutexes are used for protecting shared resources
  *     counter++;
  *     mutex_give(counter_mutex);
- *     pros::delay(10);
+ *     delay(10);
  *   }
  * }
  * 
@@ -485,7 +485,7 @@ task_state_e_t task_get_state(task_t task);
  *       task_suspepend(task);
  * 	   }
  *     mutex_give(counter_mutex);
- *     pros::delay(10);
+ *     delay(10);
  *   }
  * }
  * \endcode

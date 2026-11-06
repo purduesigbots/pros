@@ -67,7 +67,7 @@ class Optical : public Device {
 	 * \b Example
  	 * \code
 	 * void opcontrol() {
-	 *   std::vector<Optical> optical_all = pros::Optical::get_all_devices();  // All optical sensors that are connected
+	 *   std::vector<pros::Optical> optical_all = pros::Optical::get_all_devices();  // All optical sensors that are connected
 	 * }
  	 * \endcode
 	 */
